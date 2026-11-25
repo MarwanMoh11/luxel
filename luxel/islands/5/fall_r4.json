@@ -1,0 +1,443 @@
+{
+  "id": "fall_r4",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "music": "island5_boss_p1",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_FL_R4",
+  "spawn": [
+    48,
+    176
+  ],
+  "zones": [
+    {
+      "id": "fl_r4",
+      "name_key": "I5_FL_R4",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_fl_r4_w",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "fall_r3",
+      "to_spawn": [
+        520,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_fl_r4_n",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r1",
+      "to_spawn": [
+        176,
+        192
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [
+        "fall_done"
+      ],
+      "locked_door_id": "door_fl_r4_zenith"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_fl_r4",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "door_fl_r4_zenith",
+      "kind": "door",
+      "pos": [
+        256,
+        32
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "fall_done"
+        ]
+      }
+    },
+    {
+      "id": "sn_fl_r4_nw",
+      "kind": "star_node",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
+    {
+      "id": "sn_fl_r4_ne",
+      "kind": "star_node",
+      "pos": [
+        384,
+        96
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
+    {
+      "id": "sn_fl_r4_sw",
+      "kind": "star_node",
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
+    {
+      "id": "sn_fl_r4_se",
+      "kind": "star_node",
+      "pos": [
+        384,
+        256
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
+    {
+      "id": "lamp_fl_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        152
+      ],
+      "props": {
+        "zone": "fl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        84
+      ],
+      "props": {
+        "zone": "fl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        84
+      ],
+      "props": {
+        "zone": "fl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        260
+      ],
+      "props": {
+        "zone": "fl_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        260
+      ],
+      "props": {
+        "zone": "fl_r4",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_the_counterweight",
+      "kind": "the_counterweight",
+      "pos": [
+        256,
+        176
+      ],
+      "route": [
+        [
+          200,
+          176
+        ],
+        [
+          312,
+          176
+        ]
+      ],
+      "zone": "fl_r4",
+      "leash": 220
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 88,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 40
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        136,
+        104
+      ],
+      "radius": 22,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        376,
+        248
+      ],
+      "radius": 22,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        256,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        112,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        400,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        192,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        320,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        112,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        400,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "fl_r4_enter_cue",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "narrate": "I5_FL_R4_ENTER"
+        }
+      ]
+    },
+    {
+      "id": "fl_r4_dew_p2",
+      "on": "boss_hp:0.66",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "fl_r4_dew_p3",
+      "on": "boss_hp:0.33",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "fl_r4_victory_msg",
+      "on": "flag:fall_done",
+      "once": true,
+      "do": [
+        {
+          "sfx": "fl_dome_lock"
+        },
+        {
+          "shake": 0.28
+        },
+        {
+          "narrate": "I5_CUE_FALL_LOCK"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Counterweight Roof: duel the towering brass plumb-bob hammering the plunging Orrery Dome roof; curve shots around its central polarity well to snap its 3 chain links and lock the Grand Orrery home into Zenith!",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Set-piece boss mastery: curved rear-cowling shots through a shifting polarity well while navigating roof fractures.",
+    "decisions": 6,
+    "expert_s": 90,
+    "reward": "fall_done+permanent_orrery_entry",
+    "why": "Spectacular climax boss of The Fall locking the Grand Orrery Dome into place.",
+    "exit": "exit_fl_r4_n",
+    "start": {
+      "flags": [
+        "power_orbit_ring",
+        "power_sextant"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          176
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "fall_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_fl_r4_n"
+      }
+    ]
+  }
+}

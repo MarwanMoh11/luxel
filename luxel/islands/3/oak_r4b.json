@@ -154,7 +154,7 @@
       "kind": "dry_root_knot",
       "pos": [
         176,
-        48
+        56
       ],
       "props": {
         "size": [
@@ -350,16 +350,17 @@
         "target": "dew_r4b_lens",
         "to": [
           64,
-          48
-        ]
+          56
+        ],
+        "tol": 3.0
       },
       {
         "op": "goto",
         "to": [
-          44,
-          48
+          40,
+          56
         ],
-        "tol": 6.0
+        "tol": 3.0
       },
       {
         "op": "shoot",

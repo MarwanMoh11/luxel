@@ -135,16 +135,37 @@
     },
     {
       "id": "door_triple_eclipse_seal",
-      "kind": "eclipse_seal_gate",
+      "kind": "door",
       "pos": [
         304,
         48
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "beacon_8_1",
+          "beacon_8_2",
+          "beacon_8_3"
+        ]
+      }
+    },
+    {
+      "id": "seal_triple_eclipse",
+      "kind": "eclipse_seal_gate",
+      "pos": [
+        304,
+        56
       ],
       "props": {
         "size": [
           64,
           16
         ],
+        "target_door_id": "door_triple_eclipse_seal",
         "persist": true
       }
     },

@@ -1,0 +1,514 @@
+{
+  "id": "spire_r11",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R11",
+  "theme": "inverted_palace_silver",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    208,
+    240
+  ],
+  "zones": [
+    {
+      "id": "spire_r11",
+      "name_key": "ISL7_SP_R11",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r11_south",
+      "rect": [
+        176,
+        272,
+        64,
+        16
+      ],
+      "to_region": "spire_r2",
+      "to_spawn": [
+        208,
+        48
+      ]
+    },
+    {
+      "id": "exit_spire_r11_east",
+      "rect": [
+        432,
+        176,
+        16,
+        48
+      ],
+      "to_region": "spire_r4",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "locked_door_id": "door_spire_r11_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "jelly_r11_1",
+      "kind": "moon_jelly",
+      "pos": [
+        344,
+        184
+      ],
+      "route": [
+        [
+          320,
+          184
+        ],
+        [
+          376,
+          184
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r11",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_s",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "avatar_r11",
+      "kind": "mirror_avatar",
+      "pos": [
+        208,
+        88
+      ],
+      "props": {
+        "axis": "y",
+        "pivot": [
+          224,
+          136
+        ],
+        "fires_mirror_bolts": true,
+        "mirror_world": "same",
+        "range": 420
+      }
+    },
+    {
+      "id": "pool_r11",
+      "kind": "moon_pool",
+      "pos": [
+        208,
+        192
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "carry_bridge": true,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "orb_r11_light",
+      "kind": "carry_orb",
+      "pos": [
+        104,
+        176
+      ],
+      "props": {
+        "kind": "light",
+        "persist": false
+      }
+    },
+    {
+      "id": "ls_r11_black",
+      "kind": "light_sensor",
+      "pos": [
+        280,
+        224
+      ],
+      "props": {
+        "need_secs": 0.45,
+        "threshold": 0.3,
+        "hold": false,
+        "persist": true,
+        "target_id": "gate_r11_exit"
+      }
+    },
+    {
+      "id": "mirror_r11_n",
+      "kind": "blue_transformer",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sw_r11_n",
+      "kind": "switch_eye",
+      "pos": [
+        152,
+        40
+      ],
+      "props": {
+        "requires_prism": true,
+        "requires_blue": true,
+        "target_id": "gate_r11_exit"
+      }
+    },
+    {
+      "id": "portal_r11_s",
+      "kind": "blue_portal",
+      "pos": [
+        312,
+        160
+      ],
+      "props": {
+        "target_portal_id": "portal_r11_n",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r11_n",
+      "kind": "blue_portal",
+      "pos": [
+        312,
+        112
+      ],
+      "props": {
+        "target_portal_id": "portal_r11_s",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "gate_r11_exit",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        160
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "ls_r11_black",
+          "sw_r11_n"
+        ],
+        "sets_flag": "spire_r11_solved",
+        "persist": true,
+        "target_id": "door_spire_r11_east"
+      }
+    },
+    {
+      "id": "door_spire_r11_east",
+      "kind": "door",
+      "pos": [
+        408,
+        200
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r11_exit"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "zone": "spire_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        232
+      ],
+      "props": {
+        "zone": "spire_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "zone": "spire_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        72
+      ],
+      "props": {
+        "zone": "spire_r11",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        192
+      ],
+      "radius": 26,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        184,
+        152,
+        48,
+        112
+      ],
+      "color": "deep",
+      "border": "ice"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        360,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        48,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        400,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        144,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        272,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        368,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Split-glass atrium where Wick smuggles a Light Orb across a Moon Pool into Black while commanding their Y-mirrored reflection across glass to bank a Blue Bolt into the upper switch.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Combines Moon-Pocket orb smuggling, Beam clearing of Moon Jellies, and Y-axis Mirror Avatar aiming to open the Spire Cycle 1 shortcut to r4.",
+    "decisions": 7,
+    "expert_s": 50,
+    "reward": "spire_r11_solved+r4_shortcut",
+    "why": "Spire Cycle 1 loop connecting r2's Black Arch directly onto r4's west abyss ledge.",
+    "start": {
+      "flags": [
+        "item_moon_pocket"
+      ],
+      "vars": {
+        "world_face": "silver"
+      }
+    },
+    "exit": "exit_spire_r11_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          184
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "clear",
+        "timeout": 15.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "carry",
+        "target": "orb_r11_light",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "pool_r11"
+      },
+      {
+        "op": "carry",
+        "target": "orb_r11_light",
+        "action": "drop",
+        "to": [
+          280,
+          224
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          184
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          184
+        ],
+        "target": [
+          152,
+          184
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "spire_r11_solved"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r11_east"
+      }
+    ]
+  }
+}

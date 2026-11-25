@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R8",
+  "music": "island5_dungeon",
   "spawn": [
     192,
     232
@@ -32,7 +34,7 @@
       "to_region": "orrery_r7",
       "to_spawn": [
         192,
-        56
+        72
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -56,6 +58,27 @@
         "o5_r8_cleared"
       ],
       "locked_door_id": "door_o5_r8_combat"
+    },
+    {
+      "id": "exit_o5_r8_north",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r14",
+      "to_spawn": [
+        48,
+        160
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "o5_r8_cleared"
+      ],
+      "locked_door_id": "door_o5_r8_north"
     }
   ],
   "enemies": [
@@ -63,14 +86,14 @@
       "id": "phantom_owl_o5_r8",
       "kind": "phantom_owl",
       "pos": [
-        208,
-        64
+        216,
+        112
       ],
       "route": [],
       "perches": [
         [
-          208,
-          64
+          216,
+          112
         ],
         [
           168,
@@ -88,17 +111,17 @@
       "id": "orrery_sentinel_o5_r8",
       "kind": "orrery_sentinel",
       "pos": [
-        168,
-        144
+        152,
+        136
       ],
       "route": [
         [
           136,
-          144
+          136
         ],
         [
           208,
-          144
+          136
         ]
       ],
       "perches": [],
@@ -109,17 +132,38 @@
       "id": "echo_moth_o5_r8",
       "kind": "echo_moth",
       "pos": [
-        312,
+        296,
         152
       ],
       "route": [
         [
-          280,
-          120
+          272,
+          128
         ],
         [
-          320,
-          184
+          312,
+          176
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r8",
+      "leash": 145
+    },
+    {
+      "id": "null_moth_o5_r8",
+      "kind": "null_moth",
+      "pos": [
+        288,
+        104
+      ],
+      "route": [
+        [
+          264,
+          96
+        ],
+        [
+          312,
+          112
         ]
       ],
       "perches": [],
@@ -128,6 +172,52 @@
     }
   ],
   "interactables": [
+    {
+      "id": "anc_o5_r8",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_o5_r8",
+      "kind": "gravity_well",
+      "pos": [
+        224,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 44.0,
+        "strength": 300.0
+      }
+    },
+    {
+      "id": "sn_o5_r8_w",
+      "kind": "star_node",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
+    {
+      "id": "sn_o5_r8_e",
+      "kind": "star_node",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "pinned": true
+      }
+    },
     {
       "id": "door_o5_r8_combat",
       "kind": "door",
@@ -147,9 +237,95 @@
           "o5_r8_cleared"
         ]
       }
+    },
+    {
+      "id": "door_o5_r8_north",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "o5_r8_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_o5_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        216
+      ],
+      "props": {
+        "zone": "orrery_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r8_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        160
+      ],
+      "props": {
+        "zone": "orrery_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        64
+      ],
+      "props": {
+        "zone": "orrery_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        152
+      ],
+      "props": {
+        "zone": "orrery_r8",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        136
+      ],
+      "radius": 42,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        96,
+        176,
+        80
+      ]
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
@@ -234,19 +410,52 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.25
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        192,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Constellation Combat Nave (deepened + D25a fixed): four-role tactical nave uniting Phantom Owl, Orrery Sentinel, Echo Moth, and Null Moth around a central gravity well; clearing unlocks both the Boss Key Vault (E) and Nested Rings Conjunction (N).",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Full four-role Island 5 combat synthesis: Lens uncloak + curved gravity shot + pier flanking.",
+    "decisions": 8,
+    "expert_s": 52,
+    "reward": "o5_r8_cleared+access_to_r9_and_r14",
+    "why": "Peak ensemble combat crucible gating the upper Orrery wings.",
+    "exit": "exit_o5_r8_east",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "clear",
+        "zone": "orrery_r8",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r8_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r8_east"
+      }
+    ]
+  }
 }

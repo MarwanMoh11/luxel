@@ -1,0 +1,603 @@
+{
+  "id": "masq_r4",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_MASQ_R4",
+  "theme": "masquerade",
+  "music": "isl7_setpiece",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    272,
+    312
+  ],
+  "zones": [
+    {
+      "id": "masq_r4",
+      "name_key": "ISL7_MASQ_R4",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_masq_r4_south",
+      "rect": [
+        240,
+        336,
+        64,
+        16
+      ],
+      "to_region": "masq_r3",
+      "to_spawn": [
+        272,
+        56
+      ]
+    },
+    {
+      "id": "exit_masq_r4_spire",
+      "rect": [
+        240,
+        0,
+        64,
+        16
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        224,
+        200
+      ],
+      "one_way": true,
+      "requires_flags": [
+        "masquerade_done"
+      ],
+      "locked_door_id": "door_masq_r4_rose"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_r4_start",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        312
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r4_u1",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r4_u2",
+      "kind": "room_anchor",
+      "pos": [
+        456,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "crumb_r4_se",
+      "kind": "crumble_floor",
+      "pos": [
+        376,
+        224
+      ],
+      "props": {
+        "size": [
+          96,
+          32
+        ],
+        "delay": 1.4,
+        "respawn": 2.2
+      }
+    },
+    {
+      "id": "crumb_r4_sw",
+      "kind": "crumble_floor",
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "size": [
+          96,
+          32
+        ],
+        "delay": 1.4,
+        "respawn": 2.2
+      }
+    },
+    {
+      "id": "crumb_r4_ne",
+      "kind": "crumble_floor",
+      "pos": [
+        368,
+        128
+      ],
+      "props": {
+        "size": [
+          96,
+          32
+        ],
+        "delay": 1.4,
+        "respawn": 2.2
+      }
+    },
+    {
+      "id": "crumb_r4_apse",
+      "kind": "crumble_floor",
+      "pos": [
+        272,
+        104
+      ],
+      "props": {
+        "size": [
+          48,
+          32
+        ],
+        "delay": 1.5,
+        "respawn": 2.0
+      }
+    },
+    {
+      "id": "hook_r4_1",
+      "kind": "lantern_hook",
+      "pos": [
+        456,
+        240
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r4_2",
+      "kind": "lantern_hook",
+      "pos": [
+        272,
+        208
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r4_3",
+      "kind": "lantern_hook",
+      "pos": [
+        272,
+        128
+      ],
+      "props": {}
+    },
+    {
+      "id": "hook_r4_4",
+      "kind": "lantern_hook",
+      "pos": [
+        272,
+        64
+      ],
+      "props": {}
+    },
+    {
+      "id": "portal_r4_1",
+      "kind": "blue_portal",
+      "pos": [
+        72,
+        240
+      ],
+      "props": {
+        "target_portal_id": "portal_r4_2",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r4_2",
+      "kind": "blue_portal",
+      "pos": [
+        456,
+        136
+      ],
+      "props": {
+        "target_portal_id": "portal_r4_1",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "turret_r4_parting",
+      "kind": "turret_eye",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "dir": [
+          1,
+          0
+        ],
+        "cadence": 2.4
+      }
+    },
+    {
+      "id": "sw_masq_r4_rose",
+      "kind": "switch_eye",
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "requires_blue": false,
+        "sets_flag": "masquerade_done",
+        "target_id": "door_masq_r4_rose"
+      }
+    },
+    {
+      "id": "door_masq_r4_rose",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "sw_masq_r4_rose"
+        ]
+      }
+    },
+    {
+      "id": "lamp_m4_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        304
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m4_se",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        272
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m4_u1",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        184
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        272
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        456,
+        112
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m4_n",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        48
+      ],
+      "props": {
+        "zone": "masq_r4",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        56
+      ],
+      "radius": 34,
+      "style": "mosaic",
+      "color": "rose",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        248,
+        288,
+        48,
+        48
+      ],
+      "color": "wine",
+      "border": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        24
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_masquerade",
+      "prop": "velvet_rosette_arch",
+      "pos": [
+        272,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        192,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        352,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        472,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        64,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "moon_lantern_urn",
+      "pos": [
+        240,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "moon_lantern_urn",
+      "pos": [
+        304,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "domino_mask_pedestal",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        352,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_m4_breach",
+      "on": "signal:sw_masq_r4_rose",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "masquerade_done"
+        },
+        {
+          "shake": 0.34
+        },
+        {
+          "sfx": "masq_glass_crack"
+        },
+        {
+          "narrate": "ISL7_MASQ_R4_BREACH"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Hollow Wick shatters the grand gallery into starry void; pursue him over crumbling marble shards, chandelier Zip-hooks, and a Blue Portal slingshot straight through the Mirror Spire's rose window.",
+    "kind": "setpiece",
+    "beat": "ketsu",
+    "teaches": "Chains crumble-floor sprints, mid-pursuit room anchors, Blue Portal slingshots, and a final rose-window shatter straight into spire_r1.",
+    "decisions": 8,
+    "expert_s": 65,
+    "reward": "masquerade_done+spire_breach",
+    "why": "Breathless pursuit finale bridging The Masquerade into the Mirror Spire atrium.",
+    "exit": "exit_masq_r4_spire",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          456,
+          264
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          208
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          240
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "portal_r4_1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          128
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          64
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          64
+        ],
+        "target": "sw_masq_r4_rose"
+      },
+      {
+        "op": "expect",
+        "flag": "masquerade_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_masq_r4_spire"
+      }
+    ]
+  }
+}

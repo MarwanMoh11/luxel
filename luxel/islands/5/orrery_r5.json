@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R5",
+  "music": "island5_dungeon",
   "spawn": [
     40,
     136
@@ -39,6 +41,23 @@
       "locked_door_id": ""
     },
     {
+      "id": "exit_o5_r5_south",
+      "rect": [
+        64,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r12",
+      "to_spawn": [
+        424,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
       "id": "exit_o5_r5_north",
       "rect": [
         368,
@@ -60,6 +79,17 @@
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_o5_r5",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "shrine_lens",
       "kind": "shrine",
@@ -104,6 +134,34 @@
       }
     },
     {
+      "id": "sn_o5_r5_1",
+      "kind": "star_node",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "lens_only": true,
+        "links": [
+          "sn_o5_r5_2"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r5_2",
+      "kind": "star_node",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "lens_only": true,
+        "links": [
+          "sn_o5_r5_1"
+        ]
+      }
+    },
+    {
       "id": "chest_o5_r5_secret",
       "kind": "chest",
       "pos": [
@@ -121,6 +179,18 @@
       }
     },
     {
+      "id": "lamp_o5_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "orrery_r5",
+        "lit": true
+      }
+    },
+    {
       "id": "lamp_o5_r5_mid",
       "kind": "road_lamp",
       "pos": [
@@ -128,7 +198,8 @@
         120
       ],
       "props": {
-        "zone": "orrery_r5"
+        "zone": "orrery_r5",
+        "lit": true
       }
     },
     {
@@ -139,11 +210,31 @@
         128
       ],
       "props": {
-        "zone": "orrery_r5"
+        "zone": "orrery_r5",
+        "lit": true
       }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        72,
+        80
+      ],
+      "radius": 30,
+      "style": "ritual"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        392,
+        152
+      ],
+      "radius": 24
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
@@ -255,18 +346,6 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        120,
-        180
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
         216,
@@ -278,5 +357,62 @@
       "phase": 0.55
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Starlight Rift Sanctum (deepened): claim True Lens at the west altar and cross the winding phantom-and-star rift over lethal void using timed Lens pulses and lantern anchoring.",
+    "kind": "reward",
+    "beat": "ki",
+    "teaches": "True Lens pulse reveal, lantern phantom anchoring, and Lens-only constellation stars.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "move:lens+chest_o5_r5_secret",
+    "why": "Signature island move shrine granting True Lens for the rest of the game.",
+    "exit": "exit_o5_r5_north",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "shrine_lens"
+      },
+      {
+        "op": "expect",
+        "move": "lens"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          128
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          384,
+          128
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r5_north"
+      }
+    ]
+  }
 }

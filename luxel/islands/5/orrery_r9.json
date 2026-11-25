@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R9",
+  "music": "island5_dungeon",
   "spawn": [
     40,
     152
@@ -14,7 +16,7 @@
       "rect": [
         0,
         0,
-        480,
+        512,
         272
       ],
       "dark": true
@@ -35,6 +37,25 @@
         152
       ],
       "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r9_south",
+      "rect": [
+        112,
+        256,
+        32,
+        16
+      ],
+      "to_region": "orrery_r14",
+      "to_spawn": [
+        456,
+        160
+      ],
+      "requires_moves": [
+        "lens"
+      ],
       "requires_flags": [],
       "locked_door_id": ""
     },
@@ -60,9 +81,28 @@
       "locked_door_id": "door_boss_5"
     },
     {
+      "id": "exit_o5_r9_syzygy",
+      "rect": [
+        400,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r16",
+      "to_spawn": [
+        240,
+        240
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
       "id": "exit_o5_r9_return",
       "rect": [
-        464,
+        496,
         32,
         16,
         48
@@ -82,10 +122,21 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "anc_o5_r9",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
       "id": "phantom_o5_r9_se",
       "kind": "phantom_platform",
       "pos": [
-        232,
+        264,
         232
       ],
       "props": {
@@ -100,7 +151,7 @@
       "id": "phantom_o5_r9_e",
       "kind": "phantom_platform",
       "pos": [
-        408,
+        440,
         160
       ],
       "props": {
@@ -112,10 +163,38 @@
       }
     },
     {
+      "id": "sn_o5_r9_s1",
+      "kind": "star_node",
+      "pos": [
+        208,
+        216
+      ],
+      "props": {
+        "lens_only": true,
+        "links": [
+          "sn_o5_r9_s2"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r9_s2",
+      "kind": "star_node",
+      "pos": [
+        272,
+        216
+      ],
+      "props": {
+        "lens_only": true,
+        "links": [
+          "sn_o5_r9_s1"
+        ]
+      }
+    },
+    {
       "id": "transformer_o5_r9",
       "kind": "blue_transformer",
       "pos": [
-        376,
+        408,
         56
       ],
       "props": {
@@ -134,7 +213,7 @@
       "id": "switch_eye_o5_r9",
       "kind": "switch_eye",
       "pos": [
-        440,
+        472,
         104
       ],
       "props": {
@@ -151,7 +230,7 @@
       "id": "door_orrery_r9_vault",
       "kind": "door",
       "pos": [
-        312,
+        344,
         88
       ],
       "props": {
@@ -170,13 +249,13 @@
       "id": "bridge_o5_r9",
       "kind": "door",
       "pos": [
-        208,
+        224,
         96
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          64,
+          128,
           32
         ],
         "starts_open": false,
@@ -189,7 +268,7 @@
       "id": "door_o5_r9_return",
       "kind": "door",
       "pos": [
-        456,
+        488,
         56
       ],
       "props": {
@@ -210,7 +289,7 @@
       "id": "keepers_flame_5",
       "kind": "wick_key",
       "pos": [
-        272,
+        304,
         88
       ],
       "props": {
@@ -244,18 +323,71 @@
       }
     },
     {
+      "id": "lamp_o5_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        136
+      ],
+      "props": {
+        "zone": "orrery_r9",
+        "lit": true
+      }
+    },
+    {
       "id": "lamp_o5_r9_islet",
       "kind": "road_lamp",
       "pos": [
-        328,
+        360,
         224
       ],
       "props": {
-        "zone": "orrery_r9"
+        "zone": "orrery_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r9_ne",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        72
+      ],
+      "props": {
+        "zone": "orrery_r9",
+        "lit": true
       }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        104,
+        144
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        88
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        360,
+        48,
+        72,
+        64
+      ]
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
@@ -309,7 +441,7 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        152,
+        128,
         200
       ],
       "layer": "sort",
@@ -321,7 +453,7 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        344,
+        376,
         48
       ],
       "layer": "sort",
@@ -333,7 +465,7 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        436,
+        468,
         128
       ],
       "layer": "sort",
@@ -342,5 +474,109 @@
       "phase": 0.6
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Astrolabe Boss Key Vault (deepened + D06 fixed): cross the Lens-revealed phantom and star-node chasm to the NE optics deck, align the Blue Transformer to open the vault shutter, 128px bridge, and hub return gallery, then claim the Keeper's Flame and unlock the Crown Boss Door.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Full synthesis of True Lens rift crossing, Blue Transformer reflection, and Cycle 3 hub return.",
+    "decisions": 9,
+    "expert_s": 58,
+    "reward": "keepers_flame_5+hub_shortcut_3+syzygy_branch",
+    "why": "Grand Boss Key climax vault gating both the Boss Door and The Syzygy Bridge.",
+    "exit": "exit_o5_r9_north",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          224
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          104
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_o5_r9",
+        "to": [
+          408,
+          104
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_o5_r9",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "transformer_o5_r9",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_o5_r9",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_5"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          64
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_5"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r9_north"
+      }
+    ]
+  }
 }

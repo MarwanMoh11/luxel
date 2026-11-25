@@ -65,14 +65,35 @@
       ],
       "to_region": "conservatory_r5",
       "to_spawn": [
-        392,
-        184
+        424,
+        224
       ],
       "requires_moves": [],
       "requires_flags": [
         "c4_r5_shortcut"
       ],
       "locked_door_id": "door_c4_r1_shortcut"
+    },
+    {
+      "id": "exit_c4_r1_loft",
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r18",
+      "to_spawn": [
+        56,
+        168
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_loft_shortcut"
+      ],
+      "locked_door_id": "door_c4_r1_loft"
     }
   ],
   "enemies": [],
@@ -176,7 +197,8 @@
         96
       ],
       "props": {
-        "zone": "conservatory_r1"
+        "zone": "conservatory_r1",
+        "lit": true
       }
     },
     {
@@ -187,7 +209,60 @@
         168
       ],
       "props": {
-        "zone": "conservatory_r1"
+        "zone": "conservatory_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "plinth_c4_r1_vista",
+      "kind": "c4_canopy_plinth",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {
+        "grant_blessing": false,
+        "seal_flag": "c4_canopy_seal"
+      }
+    },
+    {
+      "id": "lamp_c4_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "door_c4_r1_loft",
+      "kind": "door",
+      "pos": [
+        352,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "c4_loft_shortcut"
+        ]
       }
     }
   ],
@@ -214,189 +289,165 @@
       ],
       "layer": "ground",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
-      "pos": [
-        144,
-        80
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
+      "shadow": false
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        116,
+        115,
         48
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        172,
+        173,
         48
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        356,
-        104
+        355,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        356,
+        355,
         168
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        172,
-        212
+        176,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
         248,
-        212
+        208
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
+      "prop": "mossy_planter_urn",
       "pos": [
-        48,
-        40
+        280,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        72,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        264,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        240,
-        32
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        56,
-        212
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        36,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        360,
-        212
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        332,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R1",
+  "music": "island4_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 32,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        120
+      ],
+      "size": [
+        64,
+        34
+      ],
+      "tint": "cool",
+      "shear": 0.42
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        136,
+        168
+      ],
+      "radius": 20,
+      "style": "moss"
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Sunken Glass Atrium cyclic hub: bank a yellow bolt off the Blue Transformer to open the portal pair to the northeast treasure island, inspect the Upper Canopy Seal plinth, and branch east into the Conservatory.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Blue Transformer portal linking and cyclic atrium shortcut landings",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "c4_r1_portal_lit, 35 shards",
+    "why": "Central 4-shortcut cyclic hub anchoring the Drowned Conservatory.",
+    "optional": true,
+    "exit": "exit_c4_r1_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": "plinth_c4_r1_vista",
+        "tol": 16
+      },
+      {
+        "op": "interact",
+        "target": "plinth_c4_r1_vista"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          112
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "target": "transformer_c4_r1"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r1_portal_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r1_east"
+      }
+    ]
+  }
 }

@@ -117,13 +117,13 @@
       "id": "raft_r7",
       "kind": "tide_raft",
       "pos": [
-        136,
+        152,
         152
       ],
       "props": {
         "size": [
-          24,
-          24
+          28,
+          28
         ],
         "mounts": "blue_transformer",
         "tide_var": "lock_water",
@@ -167,7 +167,7 @@
       "id": "sw_r7_east",
       "kind": "switch_eye",
       "pos": [
-        384,
+        356,
         72
       ],
       "props": {
@@ -296,7 +296,7 @@
       "id": "lamp_r7_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
+        312,
         72
       ],
       "props": {
@@ -523,7 +523,7 @@
       {
         "op": "goto",
         "to": [
-          136,
+          152,
           180
         ]
       },
@@ -541,14 +541,14 @@
       {
         "op": "throw",
         "target": "raft_r7",
-        "hold": 0.45
+        "hold": 0.22
       },
       {
         "op": "recall"
       },
       {
         "op": "wait",
-        "secs": 1.3
+        "secs": 1.4
       },
       {
         "op": "shoot",

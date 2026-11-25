@@ -37,7 +37,7 @@
       ],
       "to_region": "zenith_atoll",
       "to_spawn": [
-        56,
+        88,
         200
       ]
     }
@@ -81,6 +81,17 @@
         "mode": "cycle",
         "prompt_key": "ISL7_PROMPT_ANVIL",
         "hit_to_swap": true
+      }
+    },
+    {
+      "id": "bench_cgc_ember",
+      "kind": "i7_spotlight_bench",
+      "pos": [
+        264,
+        168
+      ],
+      "props": {
+        "require_flag": ""
       }
     },
     {
@@ -191,7 +202,8 @@
       "props": {
         "string_id": "ISL7_LORE_ORIGIN",
         "icon": "lantern",
-        "sets_flag": "lore_hollow_origin"
+        "sets_flag": "lore_hollow_origin",
+        "radius": 24
       }
     },
     {
@@ -378,7 +390,32 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "cgc_enter_black",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "black"
+          }
+        }
+      ]
+    },
+    {
+      "id": "cgc_lore_flag",
+      "on": "signal:lore_cgc_origin",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_hollow_origin"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Deep mastery secret crypt combining Moon-Anvil bolt tempering (Skip & Lance), True Lens phantom tiles, and Sunflare obsidian shattering to reveal Hollow Wick's origin mural.",
     "kind": "puzzle",
@@ -390,7 +427,7 @@
     "why": "Emotional lore payoff for Hollow Wick's six-island arc hidden behind Island 7's full-kit mastery test.",
     "start": {
       "vars": {
-        "world_face": "black"
+        "island:7:world_face": "black"
       }
     },
     "target": "chest_ember_7_crypt",
@@ -438,6 +475,10 @@
           216
         ],
         "target": "sw_cgc_lance"
+      },
+      {
+        "op": "interact",
+        "target": "bench_cgc_ember"
       },
       {
         "op": "goto",

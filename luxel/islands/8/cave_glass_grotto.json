@@ -71,11 +71,11 @@
       "id": "hook_grotto",
       "kind": "lantern_hook",
       "pos": [
-        360,
-        184
+        376,
+        196
       ],
       "props": {
-        "light_radius": 52.0
+        "light_radius": 44.0
       }
     },
     {
@@ -170,7 +170,7 @@
         104
       ],
       "props": {
-        "lit": true,
+        "lit": false,
         "zone": "cave_glass_grotto"
       }
     },
@@ -182,7 +182,7 @@
         112
       ],
       "props": {
-        "lit": true,
+        "lit": false,
         "zone": "cave_glass_grotto"
       }
     },
@@ -310,8 +310,8 @@
       {
         "op": "goto",
         "to": [
-          360,
-          168
+          368,
+          176
         ],
         "tol": 8.0
       },
@@ -329,8 +329,16 @@
       {
         "op": "goto",
         "to": [
+          368,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
           224,
-          144
+          152
         ],
         "tol": 8.0
       },
@@ -347,6 +355,22 @@
       },
       {
         "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          152
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          136
+        ],
+        "tol": 8.0
       },
       {
         "op": "goto",

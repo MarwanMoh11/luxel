@@ -1,0 +1,465 @@
+{
+  "id": "conservatory_r15",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_C4_R15",
+  "music": "island4_dungeon",
+  "spawn": [
+    488,
+    200
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r15",
+      "name_key": "ISL4_C4_R15",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r15_east",
+      "rect": [
+        528,
+        176,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r9",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r15_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r16",
+      "to_spawn": [
+        216,
+        248
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r15_open"
+      ],
+      "locked_door_id": "door_c4_r15_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anchor_c4_r15_e",
+      "kind": "room_anchor",
+      "pos": [
+        456,
+        200
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "anchor_c4_r15_c",
+      "kind": "room_anchor",
+      "pos": [
+        264,
+        216
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "anchor_c4_r15_w",
+      "kind": "room_anchor",
+      "pos": [
+        120,
+        200
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "crumble_c4_r15_1",
+      "kind": "crumble_floor",
+      "pos": [
+        376,
+        200
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "delay": 1.2,
+        "respawn": 2.6
+      }
+    },
+    {
+      "id": "updraft_c4_r15_2",
+      "kind": "updraft_vent",
+      "pos": [
+        408,
+        200
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          -1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r15_1",
+      "kind": "updraft_vent",
+      "pos": [
+        184,
+        200
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          -1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r15_n",
+      "kind": "updraft_vent",
+      "pos": [
+        200,
+        120
+      ],
+      "props": {
+        "radius": 24,
+        "on": false,
+        "requires_signals": [
+          "sw_c4_r15_vane"
+        ],
+        "dir": [
+          0,
+          -1
+        ],
+        "boost_mult": 1.3
+      }
+    },
+    {
+      "id": "wind_c4_r15_turn",
+      "kind": "wind_zone",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "size": [
+          64,
+          64
+        ],
+        "dir": "s",
+        "strength": 1100,
+        "on_signal": "flip"
+      }
+    },
+    {
+      "id": "mirror_c4_r15",
+      "kind": "blue_transformer",
+      "pos": [
+        312,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sw_c4_r15_vane",
+      "kind": "switch_eye",
+      "pos": [
+        312,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_ids": [
+          "wind_c4_r15_turn",
+          "updraft_c4_r15_n",
+          "door_c4_r15_north"
+        ],
+        "sets_flag": "c4_r15_open"
+      }
+    },
+    {
+      "id": "door_c4_r15_north",
+      "kind": "door",
+      "pos": [
+        208,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_c4_r15_vane"
+        ],
+        "sets_flag": "c4_r15_open"
+      }
+    },
+    {
+      "id": "lamp_c4_r15_e",
+      "kind": "road_lamp",
+      "pos": [
+        488,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r15_c",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r15_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r15_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        280,
+        200
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        32,
+        128,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        280,
+        168
+      ],
+      "size": [
+        72,
+        36
+      ],
+      "tint": "warm",
+      "shear": 0.45
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        456,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        88,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        208,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        336,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "mossy_garden_obelisk",
+      "pos": [
+        248,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING ROOM \u2014 The Glass Canopy: glide along cantilevered roof girders over the starry atrium void, rotate the central Blue Transformer to bank a blue shot into the high wind-vane switch, flipping the wind corridor 90 degrees north to carry your updraft glide onto the north canopy girder.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Reversing a wind-vane corridor via prism bank to bend an updraft Wings glide 90 degrees north",
+    "decisions": 10,
+    "expert_s": 70,
+    "reward": "c4_r15_open",
+    "why": "Signature Upper Glass Canopy vertical-rafter showcase.",
+    "exit": "exit_c4_r15_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          440,
+          200
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          328,
+          200
+        ],
+        "tol": 14
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_c4_r15",
+        "angle": 135
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          168
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "target": "mirror_c4_r15"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r15_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          200
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          200,
+          72
+        ],
+        "tol": 16
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r15_north"
+      }
+    ]
+  }
+}

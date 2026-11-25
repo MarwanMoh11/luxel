@@ -48,15 +48,16 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        336,
-        1104
+        704,
+        128
       ],
       "requires_moves": [],
       "requires_flags": [
         "great_lamp_7"
       ],
       "locked_door_id": "bridge_of_light_spire",
-      "to_island": 8
+      "to_island": 7,
+      "one_way": true
     }
   ],
   "enemies": [
@@ -215,6 +216,69 @@
         "lit_by_default": true,
         "lit": true
       }
+    },
+    {
+      "id": "pool_spire_r10",
+      "kind": "moon_pool",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_spire_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        232
+      ],
+      "props": {
+        "zone": "spire_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        232
+      ],
+      "props": {
+        "zone": "spire_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "zone": "spire_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "zone": "spire_r10",
+        "lit": true
+      }
     }
   ],
   "triggers": [
@@ -254,18 +318,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        392,
-        40
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
     },
     {
       "sheet": "island7_scenery",
@@ -364,5 +416,79 @@
       "phase": 0.9
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R10",
+  "music": "island7_boss_p1",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 52,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "rose"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        64
+      ],
+      "radius": 28,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "cream"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Climax Mirror Sanctum duel against HOLLOW WICK UNMASKED, upgraded with a central Moon Pool to shatter his Phase 2 Mirror Clone, Phase 3 Dark Lantern Clash, and Great Lamp #7 returning Wick to the relit Moon Shoals plaza (D43 fixed).",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Synthesizes the full 8-move kit, Moon Pool clone counterplay, and mid-flight Dark Lantern interception.",
+    "decisions": 6,
+    "expert_s": 145,
+    "reward": "great_lamp_7+island_7_relit",
+    "why": "Grand climax of Island 7 returning cleanly to relit Moon Shoals overworld (D43).",
+    "exit": "exit_r10_bridge_8",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          80
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_7"
+      },
+      {
+        "op": "expect",
+        "flag": "great_lamp_7"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_bridge_8"
+      }
+    ]
+  }
 }

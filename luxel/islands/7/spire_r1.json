@@ -109,6 +109,25 @@
         "spire_r5_portal_lit"
       ],
       "locked_door_id": "door_spire_r1_r5_shortcut"
+    },
+    {
+      "id": "exit_spire_r1_portal_r13",
+      "rect": [
+        368,
+        176,
+        32,
+        32
+      ],
+      "to_region": "spire_r13",
+      "to_spawn": [
+        400,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "spire_duchess_seal"
+      ],
+      "locked_door_id": "door_spire_r1_r13_shortcut"
     }
   ],
   "enemies": [],
@@ -184,7 +203,8 @@
         168
       ],
       "props": {
-        "zone": "spire_r1"
+        "zone": "spire_r1",
+        "lit": true
       }
     },
     {
@@ -195,7 +215,80 @@
         112
       ],
       "props": {
-        "zone": "spire_r1"
+        "zone": "spire_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "pool_spire_r1",
+      "kind": "moon_pool",
+      "pos": [
+        216,
+        176
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_spire_r1_r13_shortcut",
+      "kind": "door",
+      "pos": [
+        336,
+        192
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "spire_duchess_seal"
+        ]
+      }
+    },
+    {
+      "id": "portal_spire_r1_from_r13",
+      "kind": "blue_portal",
+      "pos": [
+        384,
+        192
+      ],
+      "props": {
+        "requires_blue": false,
+        "starts_powered": true,
+        "requires_flags": [
+          "spire_duchess_seal"
+        ]
+      }
+    },
+    {
+      "id": "lamp_spire_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        200
+      ],
+      "props": {
+        "zone": "spire_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        64
+      ],
+      "props": {
+        "zone": "spire_r1",
+        "lit": true
       }
     }
   ],
@@ -224,30 +317,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        88,
-        48
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        328,
-        48
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
     },
     {
       "sheet": "island7_scenery",
@@ -322,5 +391,86 @@
       "phase": 0.8
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R1",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 34,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        160
+      ],
+      "size": [
+        64,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Deepened Mirror Spire Hub uniting Silver/Black flips via central Moon Pool, Boss Shortcut North, SW r5 portal, and SE Kaleidoscope Duchess return portal.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Establishes the Mirror Spire atrium waystone, Silver/Black world flip, and 3 returning wing shortcuts.",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "ws_spire+wing_hub",
+    "why": "Central Spire anchor connecting all lower and upper wings.",
+    "optional": true,
+    "exit": "exit_spire_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_spire"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          176
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "pool_spire_r1"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "interact",
+        "target": "pool_spire_r1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r1_west"
+      }
+    ]
+  }
 }

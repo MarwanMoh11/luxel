@@ -325,7 +325,7 @@
   "layers": [
     {
       "id": "sap_high",
-      "when": "oak_sap==high",
+      "when": "dungeon:hollow_oak.oak_sap==high",
       "tiles": [
         [
           17,
@@ -340,7 +340,7 @@
     },
     {
       "id": "sap_low",
-      "when": "oak_sap==low",
+      "when": "dungeon:hollow_oak.oak_sap==low",
       "tiles": [
         [
           6,
@@ -354,7 +354,18 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "oak_r2b_plate_flag",
+      "on": "signal:plate_r2b_sap",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_sap_unlocked"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Introduces the Hollow Oak Sap Clock: flood sap high to float an amber bridge so you can push the crate onto the east pressure plate, then drain sap low and hang your lantern south to slip dark past the shadow gate and unbar Cycle 1 back to oak_r1.",
     "kind": "puzzle",
@@ -367,7 +378,7 @@
     "exit": "exit_oak_r2b_east",
     "start": {
       "vars": {
-        "oak_sap": "low"
+        "dungeon:hollow_oak.oak_sap": "low"
       },
       "moves": [
         "bolt",
@@ -380,8 +391,8 @@
       {
         "op": "goto",
         "to": [
-          208,
-          192
+          216,
+          188
         ],
         "tol": 8.0
       },
@@ -391,7 +402,7 @@
       },
       {
         "op": "expect",
-        "var": "oak_sap==high"
+        "var": "dungeon:hollow_oak.oak_sap==high"
       },
       {
         "op": "push",
@@ -402,14 +413,18 @@
         ]
       },
       {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
         "op": "expect",
         "flag": "oak_sap_unlocked"
       },
       {
         "op": "goto",
         "to": [
-          208,
-          192
+          216,
+          188
         ],
         "tol": 8.0
       },
@@ -419,13 +434,13 @@
       },
       {
         "op": "expect",
-        "var": "oak_sap==low"
+        "var": "dungeon:hollow_oak.oak_sap==low"
       },
       {
         "op": "goto",
         "to": [
-          224,
-          192
+          232,
+          200
         ],
         "tol": 8.0
       },

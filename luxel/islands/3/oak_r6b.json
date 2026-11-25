@@ -158,10 +158,11 @@
         216
       ],
       "props": {
-        "mode": "valve",
+        "mode": "timed",
         "scope": "dungeon:hollow_oak",
         "var": "oak_sap",
-        "shootable": true
+        "shootable": true,
+        "secs": 30.0
       }
     },
     {
@@ -316,7 +317,7 @@
   "layers": [
     {
       "id": "hub_east",
-      "when": "oak_sap==high && hub_rot==1",
+      "when": "dungeon:hollow_oak.oak_sap==high && hub_rot==1",
       "tiles": [
         [
           15,
@@ -331,7 +332,7 @@
     },
     {
       "id": "hub_west",
-      "when": "oak_sap==high && hub_rot==0",
+      "when": "dungeon:hollow_oak.oak_sap==high && hub_rot==0",
       "tiles": [
         [
           6,
@@ -358,7 +359,7 @@
     "exit": "exit_oak_r6b_east_r7b",
     "start": {
       "vars": {
-        "oak_sap": "low",
+        "dungeon:hollow_oak.oak_sap": "low",
         "hub_rot": 0
       },
       "moves": [
@@ -396,7 +397,7 @@
       },
       {
         "op": "expect",
-        "var": "oak_sap==high"
+        "var": "dungeon:hollow_oak.oak_sap==high"
       },
       {
         "op": "goto",

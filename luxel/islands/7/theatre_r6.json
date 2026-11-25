@@ -6,73 +6,153 @@
   "name_key": "ISL7_TH_R6",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [224, 272],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
   "zones": [
     {
       "id": "theatre_greenroom",
       "name_key": "ISL7_TH_R6",
-      "rect": [0, 0, 448, 320],
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r6_south",
-      "rect": [208, 304, 32, 16],
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
       "to_region": "theatre_r5",
-      "to_spawn": [240, 48]
+      "to_spawn": [
+        240,
+        48
+      ]
     },
     {
       "id": "exit_r6_stagedoor",
-      "rect": [352, 304, 48, 16],
+      "rect": [
+        352,
+        304,
+        48,
+        16
+      ],
       "to_island": 7,
       "to_region": "velvet_promenade",
-      "to_spawn": [552, 368],
-      "one_way": true
+      "to_spawn": [
+        552,
+        368
+      ]
     },
     {
       "id": "exit_r6_west_r1",
-      "rect": [0, 224, 16, 48],
+      "rect": [
+        0,
+        224,
+        16,
+        48
+      ],
       "to_region": "theatre_r1",
-      "to_spawn": [48, 88]
+      "to_spawn": [
+        48,
+        88
+      ]
     },
     {
       "id": "exit_r6_wnw_r8",
-      "rect": [0, 80, 16, 48],
+      "rect": [
+        0,
+        80,
+        16,
+        48
+      ],
       "to_region": "theatre_r8",
-      "to_spawn": [48, 224],
-      "requires_flags": ["act3_done"],
+      "to_spawn": [
+        48,
+        224
+      ],
+      "requires_flags": [
+        "act3_done"
+      ],
       "locked_door_id": "door_r6_wnw_r8"
     },
     {
       "id": "exit_r6_nw_r7",
-      "rect": [64, 0, 48, 16],
+      "rect": [
+        64,
+        0,
+        48,
+        16
+      ],
       "to_region": "theatre_r7",
-      "to_spawn": [64, 272],
+      "to_spawn": [
+        64,
+        272
+      ],
       "locked_door_id": "door_r6_nw"
     },
     {
       "id": "exit_r6_north_r11",
-      "rect": [208, 0, 32, 16],
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
       "to_region": "theatre_r11",
-      "to_spawn": [208, 240],
-      "requires_flags": ["act3_done", "act4_done"],
+      "to_spawn": [
+        208,
+        240
+      ],
+      "requires_flags": [
+        "act3_done",
+        "act4_done"
+      ],
       "locked_door_id": "door_r6_north"
     },
     {
       "id": "exit_r6_ne_r9",
-      "rect": [336, 0, 48, 16],
+      "rect": [
+        336,
+        0,
+        48,
+        16
+      ],
       "to_region": "theatre_r9",
-      "to_spawn": [240, 304],
+      "to_spawn": [
+        240,
+        304
+      ],
       "locked_door_id": "door_r6_ne"
     },
     {
       "id": "exit_r6_ene_r10",
-      "rect": [432, 80, 16, 48],
+      "rect": [
+        432,
+        80,
+        16,
+        48
+      ],
       "to_region": "theatre_r10",
-      "to_spawn": [432, 224],
-      "requires_flags": ["act4_done"],
+      "to_spawn": [
+        432,
+        224
+      ],
+      "requires_flags": [
+        "act4_done"
+      ],
       "locked_door_id": "door_r6_ene_r10"
     }
   ],
@@ -80,7 +160,10 @@
     {
       "id": "ws_theatre_greenroom",
       "kind": "waystone",
-      "pos": [224, 248],
+      "pos": [
+        224,
+        248
+      ],
       "props": {
         "zone": "theatre_greenroom",
         "name_key": "ISL7_TH_R6"
@@ -89,7 +172,10 @@
     {
       "id": "lore_r6_backstage",
       "kind": "lore_stone",
-      "pos": [296, 256],
+      "pos": [
+        296,
+        256
+      ],
       "props": {
         "string_id": "ISL7_LORE_BACKSTAGE",
         "icon": "crown"
@@ -98,7 +184,10 @@
     {
       "id": "spot_r6_tut",
       "kind": "mirror",
-      "pos": [168, 168],
+      "pos": [
+        168,
+        168
+      ],
       "props": {
         "cue_spotlight": true,
         "floor_only": true,
@@ -108,16 +197,25 @@
     {
       "id": "curtain_r6_tut",
       "kind": "mirror",
-      "pos": [224, 168],
+      "pos": [
+        224,
+        168
+      ],
       "props": {
         "cue_curtain": true,
-        "size": [16, 32]
+        "size": [
+          16,
+          32
+        ]
       }
     },
     {
       "id": "sw_r6_tut",
       "kind": "switch_eye",
-      "pos": [264, 168],
+      "pos": [
+        264,
+        168
+      ],
       "props": {
         "target_id": "door_r6_chest"
       }
@@ -125,18 +223,29 @@
     {
       "id": "door_r6_chest",
       "kind": "door",
-      "pos": [312, 168],
+      "pos": [
+        312,
+        168
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["sw_r6_tut"],
+        "requires_signals": [
+          "sw_r6_tut"
+        ],
         "persistent": true,
-        "size": [16, 16]
+        "size": [
+          16,
+          16
+        ]
       }
     },
     {
       "id": "chest_r6_props",
       "kind": "chest",
-      "pos": [360, 168],
+      "pos": [
+        360,
+        168
+      ],
       "props": {
         "reward_kind": "shards",
         "amount": 25
@@ -145,94 +254,260 @@
     {
       "id": "door_r6_nw",
       "kind": "door",
-      "pos": [88, 24],
+      "pos": [
+        88,
+        24
+      ],
       "props": {
         "door_kind": "wick_key",
         "dungeon_id": "theatre",
         "key_id": "theatre_key_1",
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "door_r6_ne",
       "kind": "door",
-      "pos": [360, 24],
+      "pos": [
+        360,
+        24
+      ],
       "props": {
         "door_kind": "wick_key",
         "dungeon_id": "theatre",
         "key_id": "theatre_key_2",
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "door_r6_north",
       "kind": "door",
-      "pos": [224, 24],
+      "pos": [
+        224,
+        24
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act3_done", "act4_done"],
-        "size": [32, 16]
+        "requires_flags": [
+          "act3_done",
+          "act4_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "door_r6_wnw_r8",
       "kind": "door",
-      "pos": [24, 104],
+      "pos": [
+        24,
+        104
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act3_done"],
-        "size": [16, 48]
+        "requires_flags": [
+          "act3_done"
+        ],
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "door_r6_ene_r10",
       "kind": "door",
-      "pos": [424, 104],
+      "pos": [
+        424,
+        104
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act4_done"],
-        "size": [16, 48]
+        "requires_flags": [
+          "act4_done"
+        ],
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "lamp_r6_sw",
       "kind": "road_lamp",
-      "pos": [128, 256],
-      "props": { "zone": "theatre_greenroom", "lit": true }
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "zone": "theatre_greenroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r6_se",
       "kind": "road_lamp",
-      "pos": [360, 256],
-      "props": { "zone": "theatre_greenroom", "lit": true }
+      "pos": [
+        360,
+        256
+      ],
+      "props": {
+        "zone": "theatre_greenroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r6_nw",
       "kind": "road_lamp",
-      "pos": [136, 72],
-      "props": { "zone": "theatre_greenroom", "lit": true }
+      "pos": [
+        136,
+        72
+      ],
+      "props": {
+        "zone": "theatre_greenroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r6_ne",
       "kind": "road_lamp",
-      "pos": [312, 72],
-      "props": { "zone": "theatre_greenroom", "lit": true }
+      "pos": [
+        312,
+        72
+      ],
+      "props": {
+        "zone": "theatre_greenroom",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "rug", "rect": [192, 208, 64, 80], "color": "wine", "border": "gold" },
-    { "kind": "rug", "rect": [80, 144, 80, 48], "color": "wine", "border": "apricot" },
-    { "kind": "circle", "pos": [168, 168], "radius": 32, "style": "spotlight", "color": "gold", "secondary": "cream" },
-    { "kind": "inlay", "rect": [192, 40, 64, 56], "color": "gold" }
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        208,
+        64,
+        80
+      ],
+      "color": "wine",
+      "border": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        144,
+        80,
+        48
+      ],
+      "color": "wine",
+      "border": "apricot"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        168,
+        168
+      ],
+      "radius": 32,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        40,
+        64,
+        56
+      ],
+      "color": "gold"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "dressing_vanity_mirror", "pos": [80, 192], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "stage_prop_trunk", "pos": [336, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "playbill_easel_stand", "pos": [144, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "playbill_easel_stand", "pos": [304, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [112, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [224, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        80,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "stage_prop_trunk",
+      "pos": [
+        336,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        144,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        304,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        112,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        224,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
   ],
   "layers": [],
   "events": [
@@ -241,7 +516,9 @@
       "on": "enter",
       "once": true,
       "do": [
-        { "set_flag": "theatre_stagedoor_open" }
+        {
+          "set_flag": "theatre_stagedoor_open"
+        }
       ]
     }
   ],
@@ -257,17 +534,47 @@
     "optional": true,
     "exit": "exit_r6_nw_r7",
     "start": {
-      "flags": ["act2_done", "item_cue_mirror"],
-      "keys": { "wick_key": 2 }
+      "flags": [
+        "act2_done",
+        "item_cue_mirror"
+      ],
+      "keys": {
+        "wick_key": 2
+      }
     },
     "solution": [
-      { "op": "interact", "target": "ws_theatre_greenroom" },
-      { "op": "interact", "target": "lore_r6_backstage" },
-      { "op": "shoot", "from": [168, 168], "target": "sw_r6_tut" },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "interact", "target": "chest_r6_props" },
-      { "op": "interact", "target": "door_r6_nw" },
-      { "op": "expect_exit", "exit": "exit_r6_nw_r7" }
+      {
+        "op": "interact",
+        "target": "ws_theatre_greenroom"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r6_backstage"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          168
+        ],
+        "target": "sw_r6_tut"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "interact",
+        "target": "chest_r6_props"
+      },
+      {
+        "op": "interact",
+        "target": "door_r6_nw"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_nw_r7"
+      }
     ]
   }
 }

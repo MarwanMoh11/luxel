@@ -1,0 +1,59 @@
+{
+  "pack_id": "i5_orrery",
+  "version": 1,
+  "owner": "G5",
+  "comment": "Island 5 Grand Dungeon Deepened: The Starlight Orrery (10 legacy rooms kept/deepened/rebuilt + 6 new rooms r11..r16: Outer Escapement, Parallax Carousel, The Blind Planetarium, Nested Rings Conjunction, Astronomer's Study with Hollow Wick vignette + Key 3 + moth_5_09, and The Syzygy Bridge). All LEGACY_MAP_FIXES.md items applied.",
+  "strings": {
+    "I5_OR_R1": "STARLIGHT RING HUB",
+    "I5_OR_R2": "CHASM AND SWITCH VAULT",
+    "I5_OR_R3": "PENDULUM COMBAT ATRIUM",
+    "I5_OR_R4": "BLUE OPTICS GALLERY",
+    "I5_OR_R5": "STARLIGHT RIFT SANCTUM",
+    "I5_OR_R6": "CLOCKWORK GEAR-RING",
+    "I5_OR_R7": "CLOAKED MIRROR RIFT",
+    "I5_OR_R8": "CONSTELLATION NAVE",
+    "I5_OR_R9": "ASTROLABE KEY VAULT",
+    "I5_OR_R10": "OBSERVATORY CROWN DOME",
+    "I5_OR_R11": "OUTER ESCAPEMENT",
+    "I5_OR_R12": "PARALLAX CAROUSEL",
+    "I5_OR_R13": "THE BLIND PLANETARIUM",
+    "I5_OR_R14": "NESTED RINGS CONJUNCTION",
+    "I5_OR_R15": "THE ASTRONOMERS STUDY",
+    "I5_OR_R16": "THE SYZYGY BRIDGE",
+    "I5_OR_PROMPT_SCOPE": "PEER THROUGH EAST TELESCOPE",
+    "I5_OR_HOLLOW_VISTA": "ON MOON SHOALS A SECOND LANTERN TURNS.",
+    "I5_OR_ESCAPEMENT_LATCH": "ESCAPEMENT LATCHED! HUB BRIDGE EXTENDS!",
+    "I5_OR_BLIND_HINT": "PULSE LENS TO SEE THE UNSEEN CONSTELLATION.",
+    "I5_OR_STUDY_CIPHER": "CARPET STARS ALIGN! RELIQUARY UNSEALED!",
+    "I5_OR_STUDY_RETURN": "STUDY WINCH DROPS THE HUB GALLERY BRIDGE!",
+    "I5_OR_SYZYGY_LIT": "THREE STARS IN SYZYGY! ASCENSION RISES!",
+    "I5_OR_RINGS_LOCKED": "ALL THREE NESTED RINGS LOCK IN ALIGNMENT!"
+  },
+  "interactables": {
+    "o5_hollow_telescope": "res://luxel/islands/5/orrery/o5_hollow_telescope.gd",
+    "o5_syzygy_conduit": "res://luxel/islands/5/orrery/o5_syzygy_conduit.gd"
+  },
+  "regions": {
+    "orrery_r1":  { "name_key": "I5_OR_R1",  "music": "island5_dungeon", "dark": true, "map": [2, 5] },
+    "orrery_r2":  { "name_key": "I5_OR_R2",  "music": "island5_dungeon", "dark": true, "map": [1, 5] },
+    "orrery_r3":  { "name_key": "I5_OR_R3",  "music": "island5_dungeon", "dark": true, "map": [1, 4] },
+    "orrery_r4":  { "name_key": "I5_OR_R4",  "music": "island5_dungeon", "dark": true, "map": [2, 4] },
+    "orrery_r5":  { "name_key": "I5_OR_R5",  "music": "island5_dungeon", "dark": true, "map": [3, 4] },
+    "orrery_r6":  { "name_key": "I5_OR_R6",  "music": "island5_boss_p1", "dark": true, "map": [3, 3] },
+    "orrery_r7":  { "name_key": "I5_OR_R7",  "music": "island5_dungeon", "dark": true, "map": [2, 3] },
+    "orrery_r8":  { "name_key": "I5_OR_R8",  "music": "island5_dungeon", "dark": true, "map": [2, 2] },
+    "orrery_r9":  { "name_key": "I5_OR_R9",  "music": "island5_dungeon", "dark": true, "map": [3, 2] },
+    "orrery_r10": { "name_key": "I5_OR_R10", "music": "island5_boss_p1", "dark": true, "map": [3, 0] },
+    "orrery_r11": { "name_key": "I5_OR_R11", "theme": "meteor_vault", "music": "island5_dungeon", "dark": true, "map": [0, 4] },
+    "orrery_r12": { "name_key": "I5_OR_R12", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [3, 5] },
+    "orrery_r13": { "name_key": "I5_OR_R13", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [4, 3] },
+    "orrery_r14": { "name_key": "I5_OR_R14", "theme": "planetarium",  "music": "island5_dungeon", "dark": true, "map": [1, 2] },
+    "orrery_r15": { "name_key": "I5_OR_R15", "theme": "planetarium",  "music": "isl5_planetarium","dark": true, "map": [1, 1] },
+    "orrery_r16": { "name_key": "I5_OR_R16", "theme": "freefall",     "music": "isl5_setpiece",   "dark": true, "map": [4, 1] }
+  },
+  "sfx": {
+    "o5_ring_latch":   { "id": "clockwork_chime", "pitch": 1.12, "db": -1.0 },
+    "o5_lens_carpet":  { "id": "prop_chime",      "pitch": 1.24, "db": -1.5 },
+    "o5_syzygy_chord": { "id": "great_lamp_bloom","pitch": 1.06, "db": -0.5 }
+  }
+}

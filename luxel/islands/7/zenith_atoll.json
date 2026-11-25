@@ -130,7 +130,8 @@
       ],
       "props": {
         "string_id": "ISL7_LORE_ZENITH",
-        "icon": "spark"
+        "icon": "spark",
+        "radius": 24
       }
     },
     {
@@ -160,8 +161,23 @@
       }
     },
     {
+      "id": "glass_za_lens",
+      "kind": "color_glass",
+      "pos": [
+        436,
+        184
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
       "id": "sw_za_skip",
-      "kind": "switch_eye",
+      "kind": "i7_trial_target",
       "pos": [
         464,
         128
@@ -174,7 +190,7 @@
     },
     {
       "id": "sw_za_lance",
-      "kind": "switch_eye",
+      "kind": "i7_trial_target",
       "pos": [
         464,
         184
@@ -187,7 +203,7 @@
     },
     {
       "id": "sw_za_scatter",
-      "kind": "switch_eye",
+      "kind": "i7_trial_target",
       "pos": [
         448,
         232
@@ -586,8 +602,8 @@
       {
         "op": "shoot",
         "from": [
-          400,
-          144
+          432,
+          128
         ],
         "target": "sw_za_skip"
       },
@@ -606,6 +622,10 @@
           232
         ],
         "target": "sw_za_scatter"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",

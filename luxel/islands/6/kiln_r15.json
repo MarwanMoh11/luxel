@@ -1,0 +1,135 @@
+{
+  "id": "kiln_r15",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "island6_boss_p1",
+  "ambience": ["forge_rumble"],
+  "name_key": "ISL6_KILN_R15",
+  "spawn": [256, 264],
+  "zones": [
+    { "id": "kiln_r15", "name_key": "ISL6_KILN_R15", "rect": [0, 0, 512, 320], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r15_south",
+      "rect": [240, 304, 32, 16],
+      "to_region": "kiln_r14",
+      "to_spawn": [240, 48],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r15_north",
+      "rect": [240, 0, 32, 16],
+      "to_region": "kiln_r16",
+      "to_spawn": [144, 232],
+      "requires_moves": [],
+      "requires_flags": ["crucible_weaver_defeated"],
+      "locked_door_id": "door_kiln_r15_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mini_crucible_weaver",
+      "kind": "crucible_weaver",
+      "boss_id": "crucible_weaver",
+      "pos": [272, 160],
+      "zone": "kiln_r15",
+      "leash": 220
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_kiln_r15",
+      "kind": "room_anchor",
+      "pos": [256, 264],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anvil_kiln_r15_cycle",
+      "kind": "temper_anvil",
+      "pos": [128, 224],
+      "props": { "mode": "cycle" }
+    },
+    {
+      "id": "emit_r15_blue",
+      "kind": "beam_emitter",
+      "pos": [448, 160],
+      "props": { "dir": "w", "color": "blue", "period": 4.2, "duty": 0.65, "range": 380.0, "harms_wick": false }
+    },
+    {
+      "id": "tf_r15_w",
+      "kind": "blue_transformer",
+      "pos": [184, 200],
+      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+    },
+    {
+      "id": "tf_r15_e",
+      "kind": "blue_transformer",
+      "pos": [344, 200],
+      "props": { "angle_deg": 135, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+    },
+    {
+      "id": "kiln_cast_key_2",
+      "kind": "wick_key",
+      "pos": [256, 72],
+      "props": {
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "flag_id": "kiln_cast_key_2",
+        "requires_flag": "crucible_weaver_defeated"
+      }
+    },
+    {
+      "id": "door_kiln_r15_north",
+      "kind": "door",
+      "pos": [256, 24],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [32, 16],
+        "requires_flags": ["crucible_weaver_defeated"]
+      }
+    },
+    { "id": "lamp_kr15_1", "kind": "road_lamp", "pos": [168, 88], "props": { "lit": true } },
+    { "id": "lamp_kr15_2", "kind": "road_lamp", "pos": [344, 88], "props": { "lit": true } },
+    { "id": "lamp_kr15_3", "kind": "road_lamp", "pos": [96, 160], "props": { "lit": true } },
+    { "id": "lamp_kr15_4", "kind": "road_lamp", "pos": [416, 160], "props": { "lit": true } },
+    { "id": "lamp_kr15_5", "kind": "road_lamp", "pos": [256, 248], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "circle", "pos": [256, 160], "radius": 52, "style": "ritual" },
+    { "kind": "grate", "rect": [192, 112, 128, 96], "glow": true }
+  ],
+  "scenery": [
+    { "sheet": "theme_iron_colossus", "prop": "molten_crucible_vat", "pos": [80, 104], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_iron_colossus", "prop": "molten_crucible_vat", "pos": [432, 104], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_iron_colossus", "prop": "colossus_rib_buttress", "pos": [80, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_iron_colossus", "prop": "colossus_rib_buttress", "pos": [432, 216], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_iron_colossus", "prop": "brass_steam_pipe_arch", "pos": [256, 56], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "The Glassblower's Vat mini-boss arena for The Crucible Weaver: bank the east Blue beam off her freshly spun rotatable mirrors to freeze her liquid-glass hull brittle for the comedy teacup stagger, earning Casting Key #2 and opening the Twin-Temper Crucible.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Dynamic optical boss counterplay using live enemy-spun blue_transformers.",
+    "decisions": 9,
+    "expert_s": 100,
+    "reward": "crucible_weaver_defeated+kiln_cast_key_2+open_r16",
+    "why": "Second mini-boss of the deepened Great Kiln anchoring the East Casting Wing.",
+    "exit": "exit_kiln_r15_north",
+    "start": { "flags": ["kiln_r14_cleared"] },
+    "solution": [
+      { "op": "goto", "to": [256, 200], "tol": 8.0 },
+      { "op": "clear", "timeout": 120.0 },
+      { "op": "expect", "flag": "crucible_weaver_defeated" },
+      { "op": "goto", "to": [256, 72], "tol": 6.0 },
+      { "op": "interact", "target": "kiln_cast_key_2" },
+      { "op": "expect_exit", "exit": "exit_kiln_r15_north" }
+    ]
+  }
+}

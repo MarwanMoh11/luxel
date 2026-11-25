@@ -178,8 +178,8 @@
       "id": "rail_party_r5_w",
       "kind": "rail",
       "pos": [
-        82,
-        176
+        50,
+        184
       ],
       "props": {
         "size": [
@@ -206,7 +206,7 @@
       "id": "lamp_pt_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        152,
+        184,
         248
       ],
       "props": {
@@ -217,7 +217,7 @@
       "id": "lamp_pt_r5_se",
       "kind": "road_lamp",
       "pos": [
-        360,
+        344,
         248
       ],
       "props": {
@@ -250,7 +250,7 @@
       "id": "lamp_pt_r5_n",
       "kind": "road_lamp",
       "pos": [
-        264,
+        216,
         104
       ],
       "props": {

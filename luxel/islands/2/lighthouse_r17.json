@@ -563,7 +563,7 @@
       {
         "op": "rotate",
         "target": "raft_lh_r17_ne",
-        "angle": 225.0
+        "steps": 1
       },
       {
         "op": "shoot",

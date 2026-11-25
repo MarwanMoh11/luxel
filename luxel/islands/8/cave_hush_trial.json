@@ -436,25 +436,25 @@
       {
         "op": "goto",
         "to": [
-          144,
-          96
+          128,
+          104
         ],
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_1"
       },
       {
         "op": "goto",
         "to": [
-          112,
+          128,
           152
         ],
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_3"
       },
       {
@@ -466,7 +466,7 @@
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_5"
       },
       {
@@ -478,31 +478,31 @@
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_6"
       },
       {
         "op": "goto",
         "to": [
-          336,
+          312,
           152
         ],
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_4"
       },
       {
         "op": "goto",
         "to": [
-          304,
-          96
+          320,
+          104
         ],
         "tol": 10.0
       },
       {
-        "op": "shoot",
+        "op": "beam",
         "target": "braz_ht_2"
       },
       {

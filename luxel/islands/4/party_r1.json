@@ -153,8 +153,8 @@
       "id": "lamp_pt_r1_nw",
       "kind": "road_lamp",
       "pos": [
-        120,
-        104
+        104,
+        120
       ],
       "props": {
         "lit": true
@@ -164,8 +164,8 @@
       "id": "lamp_pt_r1_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
-        72
+        328,
+        88
       ],
       "props": {
         "lit": true
@@ -288,8 +288,8 @@
       "sheet": "theme_garden_party",
       "prop": "banquet_table_cloth",
       "pos": [
-        344,
-        72
+        352,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -299,8 +299,8 @@
       "sheet": "theme_garden_party",
       "prop": "tea_service_stand",
       "pos": [
-        376,
-        72
+        384,
+        80
       ],
       "layer": "sort",
       "flip_x": false,

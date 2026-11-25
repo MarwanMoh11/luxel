@@ -410,7 +410,7 @@
     "exit": "exit_oak_r7_north",
     "start": {
       "keys": {
-        "wick_key_3_2": 1
+        "hollow_oak:wick_key": 1
       },
       "flags": [
         "wick_key_3_2"
@@ -424,6 +424,18 @@
       ]
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          72,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "door_oak_r7_key"
+      },
       {
         "op": "goto",
         "to": [
@@ -443,7 +455,7 @@
       {
         "op": "rotate",
         "target": "transformer_oak_r7",
-        "angle": 135
+        "angle": 45
       },
       {
         "op": "goto",

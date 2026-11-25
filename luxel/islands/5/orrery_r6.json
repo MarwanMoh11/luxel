@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R6",
+  "music": "island5_boss_p1",
   "spawn": [
     320,
     232
@@ -57,6 +59,27 @@
         "wick_key_5_2"
       ],
       "locked_door_id": "door_o5_r6_west"
+    },
+    {
+      "id": "exit_o5_r6_north",
+      "rect": [
+        144,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r13",
+      "to_spawn": [
+        432,
+        176
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "boss_clockwork_warden_defeated"
+      ],
+      "locked_door_id": "door_o5_r6_north"
     }
   ],
   "enemies": [
@@ -83,6 +106,77 @@
     }
   ],
   "interactables": [
+    {
+      "id": "anc_o5_r6",
+      "kind": "room_anchor",
+      "pos": [
+        320,
+        232
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "phantom_o5_r6_nw",
+      "kind": "phantom_platform",
+      "pos": [
+        104,
+        56
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r6"
+      }
+    },
+    {
+      "id": "phantom_o5_r6_ne",
+      "kind": "phantom_platform",
+      "pos": [
+        392,
+        56
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r6"
+      }
+    },
+    {
+      "id": "phantom_o5_r6_sw",
+      "kind": "phantom_platform",
+      "pos": [
+        104,
+        192
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r6"
+      }
+    },
+    {
+      "id": "phantom_o5_r6_se",
+      "kind": "phantom_platform",
+      "pos": [
+        400,
+        192
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r6"
+      }
+    },
     {
       "id": "wick_key_5_2",
       "kind": "wick_key",
@@ -119,9 +213,94 @@
           "wick_key_5_2"
         ]
       }
+    },
+    {
+      "id": "door_o5_r6_north",
+      "kind": "door",
+      "pos": [
+        160,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "boss_clockwork_warden_defeated"
+        ]
+      }
+    },
+    {
+      "id": "lamp_o5_r6_s",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "zone": "orrery_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "zone": "orrery_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        72
+      ],
+      "props": {
+        "zone": "orrery_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        112
+      ],
+      "props": {
+        "zone": "orrery_r6",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        128
+      ],
+      "radius": 64,
+      "style": "gear"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        248,
+        128
+      ],
+      "radius": 28
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
@@ -151,7 +330,7 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        176,
+        200,
         48
       ],
       "layer": "sort",
@@ -196,5 +375,69 @@
       "phase": 0.65
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [
+    {
+      "id": "o5_r6_dew",
+      "on": "boss_hp:0.5",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    }
+  ],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Clockwork Gear-Ring (deepened): duel the upgraded Clockwork Warden using True Lens spin-pauses, corner phantom flanks, and his central polarity well to curve bolts into his glowing rear astrolabe core.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "True Lens boss counterplay + curved rear-core flanking.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "wick_key_5_2+access_to_blind_planetarium",
+    "why": "Mid-dungeon mini-boss unlocking Key 2 and branching into The Blind Planetarium.",
+    "exit": "exit_o5_r6_west",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          176
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "orrery_r6",
+        "timeout": 90.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_5_2"
+      },
+      {
+        "op": "interact",
+        "target": "door_o5_r6_west"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r6_west"
+      }
+    ]
+  }
 }

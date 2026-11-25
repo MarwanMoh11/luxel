@@ -80,8 +80,11 @@
         136
       ],
       "props": {
-        "target_id": "bridge_c4_r2",
-        "sets_flag": "c4_r2_bridge"
+        "sets_flag": "c4_r2_bridge",
+        "target_ids": [
+          "bridge_c4_r2",
+          "door_c4_r2_vault"
+        ]
       }
     },
     {
@@ -118,154 +121,275 @@
           "dash"
         ]
       }
+    },
+    {
+      "id": "door_c4_r2_vault",
+      "kind": "door",
+      "pos": [
+        320,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          32
+        ],
+        "requires_signals": [
+          "switch_eye_c4_r2"
+        ],
+        "sets_flag": "c4_r2_bridge"
+      }
+    },
+    {
+      "id": "rose_c4_r2",
+      "kind": "echo_rose",
+      "pos": [
+        104,
+        184
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_c4_r2_echo",
+      "kind": "pressure_plate",
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "door_c4_r2_bonus"
+      }
+    },
+    {
+      "id": "door_c4_r2_bonus",
+      "kind": "door",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_c4_r2_echo"
+        ]
+      }
+    },
+    {
+      "id": "chest_c4_r2_echo",
+      "kind": "chest",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lamp_c4_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r2_mid",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
+      "prop": "conservatory_pillar",
       "pos": [
-        360,
-        116
+        136,
+        64
       ],
-      "layer": "ground",
+      "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        124,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        212,
-        56
+        216,
+        64
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        64,
-        100
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        64,
-        180
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        196,
-        188
+        104,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
+      "prop": "mossy_planter_urn",
       "pos": [
-        356,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "glass_cloche_bed",
-      "pos": [
-        360,
-        196
+        376,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        56,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        80,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        252,
-        60
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
+      "prop": "stone_bridge_post",
       "pos": [
         280,
-        76
+        184
       ],
       "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.7
+      "flip_x": false,
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R2",
+  "music": "island4_dungeon",
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        152
+      ],
+      "radius": 24,
+      "style": "moss"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        128,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        184,
+        88
+      ],
+      "size": [
+        52,
+        28
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "design": {
+    "idea": "Curved Reed Basin deepened: slice the overgrown bramble with Solar Beam, trigger the switch eye to raise the canal bridge and unseal the east key vault (preventing Throw+Zip skip), and claim Wick Key 1 (with an Echo Rose bonus vault).",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Solar Beam bramble clearing into switch-gated bridge + sealed vault",
+    "decisions": 6,
+    "expert_s": 45,
+    "reward": "wick_key_4_1, c4_r2_bridge, 30 shards",
+    "why": "First Conservatory key wing deepened with D06 vault seal and optional Echo Rose treasure.",
+    "target": "wick_key_4_1",
+    "exit": "exit_c4_r2_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          120,
+          136
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "bramble_c4_r2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          136
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "target": "switch_eye_c4_r2"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r2_bridge"
+      },
+      {
+        "op": "goto",
+        "to": "wick_key_4_1",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_4_1"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_4_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r2_north"
+      }
+    ]
+  }
 }

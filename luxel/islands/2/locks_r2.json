@@ -73,7 +73,7 @@
     {
       "id": "exit_r2_nw",
       "rect": [
-        160,
+        224,
         0,
         32,
         16
@@ -198,7 +198,7 @@
       "id": "grate_r2_teaser",
       "kind": "grate",
       "pos": [
-        312,
+        296,
         56
       ],
       "props": {
@@ -212,7 +212,7 @@
       "id": "door_r2_nw",
       "kind": "door",
       "pos": [
-        176,
+        240,
         24
       ],
       "props": {
@@ -318,7 +318,7 @@
       "id": "lamp_r2_tease",
       "kind": "road_lamp",
       "pos": [
-        344,
+        328,
         56
       ],
       "props": {
@@ -330,8 +330,8 @@
       "id": "lamp_r2_ne",
       "kind": "road_lamp",
       "pos": [
-        472,
-        56
+        488,
+        88
       ],
       "props": {
         "zone": "lck_r2",
@@ -352,10 +352,10 @@
     {
       "kind": "circle",
       "pos": [
-        360,
+        328,
         56
       ],
-      "radius": 22,
+      "radius": 20,
       "style": "spotlight"
     },
     {
@@ -395,8 +395,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        376,
-        72
+        328,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -479,7 +479,7 @@
       "sheet": "theme_locks",
       "prop": "smuggler_barrel_stack",
       "pos": [
-        200,
+        216,
         344
       ],
       "layer": "sort",
@@ -491,7 +491,7 @@
       "sheet": "theme_locks",
       "prop": "canal_cargo_crate",
       "pos": [
-        360,
+        328,
         344
       ],
       "layer": "sort",
@@ -503,7 +503,7 @@
       "sheet": "theme_locks",
       "prop": "lock_lantern_post",
       "pos": [
-        136,
+        200,
         40
       ],
       "layer": "sort",
@@ -515,8 +515,8 @@
       "sheet": "theme_locks",
       "prop": "lock_lantern_post",
       "pos": [
-        440,
-        40
+        472,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

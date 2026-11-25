@@ -38,8 +38,9 @@ func _toy_setup() -> void:
 	_rot_cd = 0.0
 	_flash_t = 0.0
 	_last_hook_id = ""
-	if Lx.vars != null and str(Lx.vars.get_var(var_scope, var_name, "")).is_empty():
-		Lx.vars.set_var(var_scope, var_name, 0)
+	if Lx.vars != null:
+		if str(Lx.vars.get_var(var_scope, var_name, "")).is_empty() or not LxRegionLoader.check_flag_static("oak_r7b_solved"):
+			Lx.vars.set_var(var_scope, var_name, 0)
 	queue_redraw()
 
 

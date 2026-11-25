@@ -173,7 +173,7 @@
       "kind": "blue_portal",
       "pos": [
         224,
-        112
+        120
       ],
       "props": {
         "target_portal_id": "portal_lh_r16_in",
@@ -185,8 +185,8 @@
       "id": "eye_lh_r16_w",
       "kind": "switch_eye",
       "pos": [
-        192,
-        112
+        194,
+        120
       ],
       "props": {
         "requires_blue": true,
@@ -197,8 +197,8 @@
       "id": "eye_lh_r16_e",
       "kind": "switch_eye",
       "pos": [
-        256,
-        112
+        254,
+        120
       ],
       "props": {
         "requires_blue": true,
@@ -477,9 +477,17 @@
         "angle": 225.0
       },
       {
+        "op": "goto",
+        "to": [
+          184,
+          216
+        ],
+        "tol": 3.0
+      },
+      {
         "op": "shoot",
         "from": [
-          168,
+          184,
           216
         ],
         "target": "mir_lh_r16"
@@ -494,8 +502,15 @@
       {
         "op": "goto",
         "to": [
-          296,
+          272,
           216
+        ]
+      },
+      {
+        "op": "dash",
+        "dir": [
+          1,
+          0
         ]
       },
       {

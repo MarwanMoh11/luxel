@@ -1,0 +1,54 @@
+{
+  "pack_id": "i6_crash",
+  "version": 1,
+  "owner": "G6",
+  "comment": "Island 6 Set Piece: The Iron Collision (crash_r1..r4 — Hollow Wick brake-cut cameo, surfing the runaway locomotive across the kneeling Iron Colossus forearm, Iron Phantom roof duel with Master Throttle Locks, and breaching the Great Kiln Obsidian Dam). Wired live from ow_cinder_overlook.",
+  "interactables": {
+    "crash_hollow_cameo": "res://luxel/islands/6/crash/crash_hollow_cameo.gd",
+    "crash_throttle_hook": "res://luxel/islands/6/crash/crash_throttle_hook.gd",
+    "crash_breach_scene": "res://luxel/islands/6/crash/crash_breach_scene.gd"
+  },
+  "strings": {
+    "ISL6_Z_CRASH": "THE IRON COLLISION",
+    "ISL6_CR_R1": "RUNAWAY VIADUCT",
+    "ISL6_CR_R2": "COLOSSUS FOREARM",
+    "ISL6_CR_R3": "LOCOMOTIVE ROOF DUEL",
+    "ISL6_CR_R4": "THE OBSIDIAN BREACH",
+    "ISL6_CRASH_CUT": "A DARK LANCE SEVERS THE MASTER BRAKE!",
+    "ISL6_CRASH_ARM": "SCATTER RECOIL DRIVES THE CART EAST!",
+    "ISL6_CRASH_LOCK": "THROTTLE LOCKED! ENGINE SURGES FORWARD!",
+    "ISL6_CRASH_BREACH": "THE EXPRESS SHATTERS THE KILN WALL!"
+  },
+  "dungeons": [
+    {
+      "id": "iron_collision",
+      "name_key": "ISL6_Z_CRASH",
+      "island": 6,
+      "entry": "crash_r1",
+      "regions": [
+        "crash_r1",
+        "crash_r2",
+        "crash_r3",
+        "crash_r4"
+      ],
+      "mini_boss": "hollow_ram_phantom",
+      "boss": "",
+      "theme": "ember_express_roof",
+      "music": "isl6_setpiece",
+      "requires_flags": [
+        "beacon_6_1",
+        "beacon_6_2",
+        "beacon_6_3",
+        "express_cleared",
+        "colossus_cleared"
+      ],
+      "done_flag": "crash_done"
+    }
+  ],
+  "regions": {
+    "crash_r1": { "name_key": "ISL6_CR_R1", "theme": "ember_express_roof", "music": "isl6_setpiece",   "dark": true, "map": [0, 0] },
+    "crash_r2": { "name_key": "ISL6_CR_R2", "theme": "iron_colossus",      "music": "isl6_setpiece",   "dark": true, "map": [1, 0] },
+    "crash_r3": { "name_key": "ISL6_CR_R3", "theme": "ember_express_roof", "music": "island6_boss_p1", "dark": true, "map": [2, 0] },
+    "crash_r4": { "name_key": "ISL6_CR_R4", "theme": "forge_deep",         "music": "isl6_setpiece",   "dark": true, "map": [3, 0] }
+  }
+}

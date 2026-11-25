@@ -1,0 +1,368 @@
+{
+  "id": "spire_r16",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R16",
+  "theme": "inverted_palace_black",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    368,
+    184
+  ],
+  "zones": [
+    {
+      "id": "spire_r16",
+      "name_key": "ISL7_SP_R16",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r16_east",
+      "rect": [
+        400,
+        160,
+        16,
+        48
+      ],
+      "to_region": "spire_r9",
+      "to_spawn": [
+        48,
+        120
+      ]
+    },
+    {
+      "id": "exit_spire_r16_ne",
+      "rect": [
+        400,
+        64,
+        16,
+        48
+      ],
+      "to_region": "spire_r17",
+      "to_spawn": [
+        56,
+        160
+      ]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "ws_spire_upper",
+      "kind": "waystone",
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "zone": "spire_r16",
+        "name_key": "ISL7_SP_R16"
+      }
+    },
+    {
+      "id": "brazier_r16_rest",
+      "kind": "brazier",
+      "pos": [
+        360,
+        224
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    },
+    {
+      "id": "parry_r16",
+      "kind": "spire_parry_pedestal",
+      "pos": [
+        296,
+        232
+      ],
+      "props": {
+        "sets_flag": "spire_r16_parry_done"
+      }
+    },
+    {
+      "id": "pool_r16",
+      "kind": "moon_pool",
+      "pos": [
+        264,
+        128
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 14,
+        "persist": true
+      }
+    },
+    {
+      "id": "hook_r16",
+      "kind": "lantern_hook",
+      "pos": [
+        288,
+        192
+      ],
+      "props": {}
+    },
+    {
+      "id": "sg_r16",
+      "kind": "shadow_gate",
+      "pos": [
+        200,
+        96
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.38,
+        "persist": false
+      }
+    },
+    {
+      "id": "pane_mirror_ward",
+      "kind": "pane_pickup",
+      "pos": [
+        56,
+        96
+      ],
+      "props": {
+        "pane": "mirror_ward"
+      }
+    },
+    {
+      "id": "lamp_r16_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        136
+      ],
+      "props": {
+        "zone": "spire_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r16_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        48
+      ],
+      "props": {
+        "zone": "spire_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r16_se",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        240
+      ],
+      "props": {
+        "zone": "spire_r16",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        328,
+        168
+      ],
+      "radius": 28,
+      "style": "mosaic",
+      "color": "ice",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        56,
+        96
+      ],
+      "radius": 24,
+      "style": "mosaic",
+      "color": "rose",
+      "secondary": "cream"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        344,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "obsidian_tall_mirror",
+      "pos": [
+        48,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "black_candelabra",
+      "pos": [
+        368,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "obsidian_palace_bench",
+      "pos": [
+        328,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "silver_world",
+      "when": "world_face==silver",
+      "theme": "inverted_palace_silver",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Pre-boss sanctuary housing the Upper Spire Waystone (6s Hollow Wick retry), a Mirror-Parry Practice Pedestal teaching Phase 3's Dark Lantern Clash, and a dark Shadow-Gate + True Lens vault hiding Pane mirror_ward.",
+    "kind": "secret",
+    "beat": "ketsu",
+    "teaches": "Practices mid-flight dark lantern interception and combines unarmed lantern-hook Shadow Gate passage with True Lens phantom bridges for Pane mirror_ward.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "ws_spire_upper+pane_mirror_ward",
+    "why": "Pre-summit breather, boss practice range, and Island 7's secret Pane reward.",
+    "optional": true,
+    "exit": "exit_spire_r16_east",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_spire_upper"
+      },
+      {
+        "op": "interact",
+        "target": "parry_r16"
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          252
+        ],
+        "target": "parry_r16"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r16"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          96
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          96
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "pane_mirror_ward"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          96
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r16_east"
+      }
+    ]
+  }
+}

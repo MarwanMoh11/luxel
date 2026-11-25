@@ -1,0 +1,191 @@
+{
+  "id": "kiln_r14",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "island6_dungeon",
+  "ambience": ["forge_rumble"],
+  "name_key": "ISL6_KILN_R14",
+  "spawn": [48, 152],
+  "zones": [
+    { "id": "kiln_r14", "name_key": "ISL6_KILN_R14", "rect": [0, 0, 480, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r14_west",
+      "rect": [0, 128, 16, 48],
+      "to_region": "kiln_r11",
+      "to_spawn": [464, 168],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r14_south",
+      "rect": [224, 272, 32, 16],
+      "to_region": "kiln_r7",
+      "to_spawn": [240, 48],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r14_north",
+      "rect": [224, 0, 32, 16],
+      "to_region": "kiln_r15",
+      "to_spawn": [256, 272],
+      "requires_moves": [],
+      "requires_flags": ["kiln_r14_cleared"],
+      "locked_door_id": "door_kiln_r14_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r14_knight",
+      "kind": "piston_knight",
+      "pos": [240, 88],
+      "zone": "kiln_r14",
+      "leash": 130
+    },
+    {
+      "id": "en_r14_stoker",
+      "kind": "stoker",
+      "pos": [368, 144],
+      "zone": "kiln_r14",
+      "leash": 120
+    },
+    {
+      "id": "en_r14_slime1",
+      "kind": "slag_slime",
+      "pos": [152, 88],
+      "zone": "kiln_r14",
+      "leash": 100
+    },
+    {
+      "id": "en_r14_slime2",
+      "kind": "slag_slime",
+      "pos": [344, 88],
+      "zone": "kiln_r14",
+      "leash": 100
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_kiln_r14",
+      "kind": "room_anchor",
+      "pos": [48, 152],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anvil_r14_lance",
+      "kind": "temper_anvil",
+      "pos": [72, 200],
+      "props": { "mode": "lance", "sets_flag": "temper_lance_known" }
+    },
+    {
+      "id": "tf_r14_w",
+      "kind": "blue_transformer",
+      "pos": [96, 88],
+      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+    },
+    {
+      "id": "tf_r14_e",
+      "kind": "blue_transformer",
+      "pos": [392, 88],
+      "props": { "angle_deg": 135, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+    },
+    {
+      "id": "slag_r14_1",
+      "kind": "push_block",
+      "pos": [152, 184],
+      "props": { "variant": "slag", "cooled": false, "size": [16, 16], "persist": true }
+    },
+    {
+      "id": "slag_r14_2",
+      "kind": "push_block",
+      "pos": [344, 184],
+      "props": { "variant": "slag", "cooled": false, "size": [16, 16], "persist": true }
+    },
+    {
+      "id": "plate_r14_1",
+      "kind": "pressure_plate",
+      "pos": [152, 88],
+      "props": { "by": ["block", "enemy"], "latch": true, "target_id": "gate_r14_north", "persist": true }
+    },
+    {
+      "id": "plate_r14_2",
+      "kind": "pressure_plate",
+      "pos": [344, 88],
+      "props": { "by": ["block", "enemy"], "latch": true, "target_id": "gate_r14_north", "persist": true }
+    },
+    {
+      "id": "gate_r14_north",
+      "kind": "logic_gate",
+      "pos": [240, 56],
+      "props": {
+        "op": "all",
+        "inputs": ["plate_r14_1", "plate_r14_2"],
+        "target_id": "door_kiln_r14_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_kiln_r14_north",
+      "kind": "door",
+      "pos": [240, 24],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [32, 16],
+        "requires_signals": ["gate_r14_north"],
+        "sets_flag": "kiln_r14_cleared"
+      }
+    },
+    { "id": "lamp_kr14_1", "kind": "road_lamp", "pos": [64, 112], "props": { "lit": true } },
+    { "id": "lamp_kr14_2", "kind": "road_lamp", "pos": [192, 56], "props": { "lit": true } },
+    { "id": "lamp_kr14_3", "kind": "road_lamp", "pos": [288, 56], "props": { "lit": true } },
+    { "id": "lamp_kr14_4", "kind": "road_lamp", "pos": [416, 152], "props": { "lit": true } },
+    { "id": "lamp_kr14_5", "kind": "road_lamp", "pos": [240, 232], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "grate", "rect": [128, 176, 240, 32], "glow": true },
+    { "kind": "cracks", "pos": [240, 208], "radius": 28, "glow": true }
+  ],
+  "scenery": [
+    { "sheet": "theme_forge_deep", "prop": "molten_slag_crucible", "pos": [96, 224], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_forge_deep", "prop": "iron_weapon_rack", "pos": [400, 216], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [192, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
+    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [288, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "The Slag-Pour Arena: horseshoe combat-puzzle linking kiln_r11, kiln_r7 (Cycle 4), and kiln_r15; crack the Piston Knight and Stoker with Lance/Sunflare, then cool either the Slag Slimes or twin molten slag blocks via Blue Transformers to latch both northern plates.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Combat-as-puzzle: freezing molten slag into plate weights amidst heavy vanguard pressure.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "kiln_r14_cleared+open_r15",
+    "why": "East Casting Wing gateway combining vanguard combat with Blue-cooling block weighting.",
+    "exit": "exit_kiln_r14_north",
+    "start": { "flags": ["forge_warden_defeated"] },
+    "solution": [
+      { "op": "goto", "to": [72, 182], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_r14_lance" },
+      { "op": "clear", "timeout": 45.0 },
+      { "op": "goto", "to": [96, 112], "tol": 4.0 },
+      { "op": "rotate", "target": "tf_r14_w", "angle": 315 },
+      { "op": "goto", "to": [152, 88], "tol": 6.0 },
+      { "op": "shoot", "from": [96, 56], "target": "tf_r14_w", "wait_hit": 0.45 },
+      { "op": "goto", "to": [152, 208], "tol": 6.0 },
+      { "op": "push", "target": "slag_r14_1", "to": [152, 88] },
+      { "op": "goto", "to": [392, 112], "tol": 4.0 },
+      { "op": "rotate", "target": "tf_r14_e", "angle": 225 },
+      { "op": "shoot", "from": [392, 56], "target": "tf_r14_e", "wait_hit": 0.45 },
+      { "op": "goto", "to": [344, 208], "tol": 6.0 },
+      { "op": "push", "target": "slag_r14_2", "to": [344, 88] },
+      { "op": "wait_until", "target": "door_kiln_r14_north", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "expect_exit", "exit": "exit_kiln_r14_north" }
+    ]
+  }
+}

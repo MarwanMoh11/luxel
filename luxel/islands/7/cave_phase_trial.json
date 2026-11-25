@@ -85,13 +85,14 @@
     },
     {
       "id": "braz_pt_1",
-      "kind": "timed_brazier",
+      "kind": "i7_trial_target",
       "pos": [
         168,
         240
       ],
       "props": {
-        "secs": 24.0,
+        "requires_blue": false,
+        "reset_time": 24.0,
         "target_id": "gate_pt_trial"
       }
     },
@@ -103,14 +104,14 @@
         168
       ],
       "props": {
-        "angle_deg": 45,
+        "angle_deg": 135,
         "rotatable": true,
         "movable": false
       }
     },
     {
       "id": "sw_pt_blue_w",
-      "kind": "switch_eye",
+      "kind": "i7_trial_target",
       "pos": [
         240,
         256
@@ -123,13 +124,14 @@
     },
     {
       "id": "braz_pt_2",
-      "kind": "timed_brazier",
+      "kind": "i7_trial_target",
       "pos": [
         328,
         256
       ],
       "props": {
-        "secs": 24.0,
+        "requires_blue": false,
+        "reset_time": 24.0,
         "target_id": "gate_pt_trial"
       }
     },
@@ -141,14 +143,14 @@
         168
       ],
       "props": {
-        "angle_deg": 45,
+        "angle_deg": 135,
         "rotatable": true,
         "movable": false
       }
     },
     {
       "id": "sw_pt_blue_e",
-      "kind": "switch_eye",
+      "kind": "i7_trial_target",
       "pos": [
         384,
         240
@@ -406,6 +408,20 @@
     }
   ],
   "events": [
+    {
+      "id": "cpt_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
     {
       "id": "cpt_start_phase_trial",
       "on": "trial_start:trial_gate_phase",

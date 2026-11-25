@@ -287,7 +287,7 @@
       "id": "lamp_pt_r2_s",
       "kind": "road_lamp",
       "pos": [
-        184,
+        152,
         232
       ],
       "props": {
@@ -331,8 +331,8 @@
       "id": "lamp_pt_r2_nw",
       "kind": "road_lamp",
       "pos": [
-        72,
-        88
+        88,
+        104
       ],
       "props": {
         "lit": true
@@ -497,8 +497,8 @@
       "sheet": "theme_garden_party",
       "prop": "rose_flower_urn",
       "pos": [
-        408,
-        160
+        419,
+        168
       ],
       "layer": "sort",
       "flip_x": false,

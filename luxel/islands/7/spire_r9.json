@@ -75,6 +75,23 @@
         "keepers_flame_7"
       ],
       "locked_door_id": "door_boss_7"
+    },
+    {
+      "id": "exit_spire_r9_west",
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
+      "to_region": "spire_r16",
+      "to_spawn": [
+        368,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -187,6 +204,75 @@
         "requires_flags": [
           "keepers_flame_7"
         ]
+      }
+    },
+    {
+      "id": "crest_plinth_r9",
+      "kind": "spire_crest_plinth",
+      "pos": [
+        136,
+        72
+      ],
+      "props": {}
+    },
+    {
+      "id": "lore_spire_r9_truth",
+      "kind": "lore_stone",
+      "pos": [
+        400,
+        80
+      ],
+      "props": {
+        "string_id": "ISL7_LORE_HOLLOW_TRUTH",
+        "icon": "mirror"
+      }
+    },
+    {
+      "id": "lamp_spire_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        120
+      ],
+      "props": {
+        "zone": "spire_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r9_c",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        120
+      ],
+      "props": {
+        "zone": "spire_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "zone": "spire_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        64
+      ],
+      "props": {
+        "zone": "spire_r9",
+        "lit": true
       }
     }
   ],
@@ -337,5 +423,115 @@
       "phase": 0.9
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R9",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        88
+      ],
+      "radius": 28,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "ice"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Keeper's Reliquary uniting Beam bramble clearing, Sunflare obsidian shattering, Keeper's Flame #7, the Twin Reflection Crests plinth, Hollow Wick's origin lore, and the West arch to spire_r16's Upper Waystone.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Combines Beam + Sunflare to claim Keeper's Flame #7, links the r1 shortcut and r16 sanctuary, and unseals Hollow Wick's sanctum.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "keepers_flame_7+r1_short+lore",
+    "why": "Final Spire staging hub keeping island_check's boss-door flow intact while rewarding both deepened Spire Crests.",
+    "exit": "exit_spire_r9_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          264,
+          120
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          264,
+          120
+        ],
+        "target": "bramble_spire_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          120
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          120
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_7"
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          92
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "crest_plinth_r9"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          48
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_7"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r9_north"
+      }
+    ]
+  }
 }

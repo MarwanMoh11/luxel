@@ -1,0 +1,31 @@
+# Iron Collision r1 - Runaway Viaduct (36x16)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+____________________________________
+____##########_______##############_
+_####........#OOOOOOO#............#_
+_#.....##....#OOOOOOO#............#_
+_#.....##....#OOOOOOO#....##......#_
+_#...........OOOOOOOOO....##......##
+,,,..........OOOOOOOOO.............,
+,,,..........OOOOOOOOO.............,
+,,,..........OOOOOOOOO.............,
+_#...........OOOOOOOOO............##
+_#...........OOOOOOOOO....##......#_
+_#...........#OOOOOOO#....##......#_
+_###........##OOOOOOO#............#_
+___##########_OOOOOOO##############_
+____________________________________
+____________________________________

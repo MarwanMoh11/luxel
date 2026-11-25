@@ -84,22 +84,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        288,
-        72
+        304,
+        144
       ],
       "route": [],
       "perches": [
         [
-          184,
-          56
+          304,
+          144
         ],
         [
-          288,
-          72
+          184,
+          136
         ],
         [
           248,
-          152
+          176
         ]
       ],
       "zone": "spire_r3",
@@ -130,6 +130,27 @@
       ],
       "zone": "spire_r3",
       "leash": 140
+    },
+    {
+      "id": "ref_spire_r3_0",
+      "kind": "reflection",
+      "pos": [
+        296,
+        176
+      ],
+      "route": [
+        [
+          256,
+          176
+        ],
+        [
+          320,
+          176
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r3",
+      "leash": 135
     }
   ],
   "interactables": [
@@ -186,6 +207,57 @@
         ],
         "clear_zone": "spire_r3",
         "sets_flag": "spire_r3_cleared"
+      }
+    },
+    {
+      "id": "pool_spire_r3",
+      "kind": "moon_pool",
+      "pos": [
+        216,
+        128
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_spire_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "zone": "spire_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r3_c",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        168
+      ],
+      "props": {
+        "zone": "spire_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        64
+      ],
+      "props": {
+        "zone": "spire_r3",
+        "lit": true
       }
     }
   ],
@@ -310,19 +382,58 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.1
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "floating_prism_totem",
-      "pos": [
-        344,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R3",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        128
+      ],
+      "radius": 32,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Escalated Moonshade garrison combining Warden, Owl, Snatcher, and a mirrored Reflection around twin Blue Transformers and a central Moon Pool.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Combines Blue-bank shield breaking with sidestepping mirrored Reflection volleys.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "spire_r3_cleared+open_r4",
+    "why": "Spire entry combat gauntlet deepened with Island 7's Reflection trickster and D25b owl spawn fix.",
+    "exit": "exit_spire_r3_north",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "expect",
+        "flag": "spire_r3_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r3_north"
+      }
+    ]
+  }
 }

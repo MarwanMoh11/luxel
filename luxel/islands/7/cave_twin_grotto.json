@@ -74,12 +74,12 @@
       "id": "mimic_ctg_1",
       "kind": "mimic_statue",
       "pos": [
-        344,
+        376,
         88
       ],
       "props": {
         "mirror": "y",
-        "range": 360.0
+        "range": 380.0
       }
     },
     {
@@ -380,7 +380,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ctg_enter_black",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "black"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "T-split twin ice grotto where Wick walks across a glass partition to steer a Y-mirrored Mimic Statue around asymmetric ice pillars onto a northern pressure plate while banking a Blue Bolt.",
     "kind": "puzzle",
@@ -392,7 +407,7 @@
     "why": "Key optional quest cave rewarding Tailor Spider's Silver Mask and Moth 04.",
     "start": {
       "vars": {
-        "world_face": "black"
+        "island:7:world_face": "black"
       }
     },
     "target": "item_qi_silver_mask",
@@ -400,16 +415,18 @@
       {
         "op": "goto",
         "to": [
-          344,
+          392,
           184
-        ]
+        ],
+        "tol": 4
       },
       {
         "op": "goto",
         "to": [
-          264,
+          256,
           184
-        ]
+        ],
+        "tol": 4
       },
       {
         "op": "lens"
@@ -417,27 +434,28 @@
       {
         "op": "goto",
         "to": [
-          168,
-          200
-        ]
-      },
-      {
-        "op": "goto",
-        "to": [
-          168,
-          216
-        ]
+          184,
+          184
+        ],
+        "tol": 4
       },
       {
         "op": "wait",
-        "secs": 0.4
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "plate_ctg_north",
+        "prop": "pressed",
+        "value": true
       },
       {
         "op": "goto",
         "to": [
           264,
           168
-        ]
+        ],
+        "tol": 6
       },
       {
         "op": "shoot",
@@ -449,7 +467,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.4
+        "secs": 0.35
       },
       {
         "op": "lens"

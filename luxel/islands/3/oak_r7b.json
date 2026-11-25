@@ -586,7 +586,7 @@
       {
         "op": "rotate",
         "target": "t_r7b_prism",
-        "angle": 315
+        "angle": 225
       },
       {
         "op": "goto",
@@ -594,7 +594,7 @@
           104,
           144
         ],
-        "tol": 8.0
+        "tol": 3.0
       },
       {
         "op": "beam",

@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R3",
+  "music": "island5_dungeon",
   "spawn": [
     176,
     216
@@ -39,6 +41,23 @@
       "locked_door_id": ""
     },
     {
+      "id": "exit_o5_r3_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "orrery_r11",
+      "to_spawn": [
+        224,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
       "id": "exit_o5_r3_east",
       "rect": [
         416,
@@ -68,7 +87,7 @@
       ],
       "route": [
         [
-          152,
+          160,
           104
         ],
         [
@@ -84,25 +103,70 @@
       "id": "echo_moth_o5_r3",
       "kind": "echo_moth",
       "pos": [
-        344,
-        104
+        288,
+        152
       ],
       "route": [
         [
-          328,
-          72
+          272,
+          128
         ],
         [
-          360,
-          136
+          320,
+          160
         ]
       ],
       "perches": [],
       "zone": "orrery_r3",
-      "leash": 150
+      "leash": 140
+    },
+    {
+      "id": "sat_o5_r3",
+      "kind": "satellite_eye",
+      "pos": [
+        280,
+        64
+      ],
+      "route": [
+        [
+          264,
+          64
+        ],
+        [
+          304,
+          64
+        ]
+      ],
+      "perches": [],
+      "zone": "orrery_r3",
+      "leash": 130
     }
   ],
   "interactables": [
+    {
+      "id": "anc_o5_r3",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "well_o5_r3",
+      "kind": "gravity_well",
+      "pos": [
+        216,
+        128
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 52.0,
+        "strength": 360.0
+      }
+    },
     {
       "id": "door_o5_r3_combat",
       "kind": "door",
@@ -122,16 +186,72 @@
           "o5_r3_cleared"
         ]
       }
+    },
+    {
+      "id": "lamp_o5_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        200
+      ],
+      "props": {
+        "zone": "orrery_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "zone": "orrery_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "orrery_r3",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        128
+      ],
+      "radius": 38,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        88,
+        112,
+        64
+      ]
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
       "prop": "astro_floor_compass",
       "pos": [
-        200,
-        120
+        216,
+        128
       ],
       "layer": "ground",
       "flip_x": false,
@@ -212,18 +332,6 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        88,
-        96
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
         112,
@@ -233,18 +341,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "celestial_globe",
-      "pos": [
-        288,
-        64
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.75
     },
     {
       "sheet": "island5_scenery",
@@ -259,5 +355,36 @@
       "phase": 0.2
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Pendulum Combat Atrium (deepened + D25b fixed): triad battle against Orrery Sentinel, Satellite Eye, and Echo Moth around a central gravity well and twin basalt cover piers.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Curving bolts through a central well behind front shields while using piers against Echo Moth dashes.",
+    "decisions": 5,
+    "expert_s": 46,
+    "reward": "o5_r3_cleared+access_to_r4",
+    "why": "First Orrery combat crucible testing curved flanking shots.",
+    "exit": "exit_o5_r3_east",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "orrery_r3",
+        "timeout": 55.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r3_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r3_east"
+      }
+    ]
+  }
 }

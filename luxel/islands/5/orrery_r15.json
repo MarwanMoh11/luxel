@@ -1,0 +1,582 @@
+{
+  "id": "orrery_r15",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "isl5_planetarium",
+  "name_key": "I5_OR_R15",
+  "spawn": [
+    176,
+    240
+  ],
+  "zones": [
+    {
+      "id": "o5_r15",
+      "name_key": "I5_OR_R15",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r15_s",
+      "rect": [
+        160,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r14",
+      "to_spawn": [
+        256,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r15_e",
+      "rect": [
+        432,
+        144,
+        16,
+        32
+      ],
+      "to_region": "orrery_r1",
+      "to_spawn": [
+        368,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r15_return_open"
+      ],
+      "locked_door_id": "door_o5_r15_hub"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_o5_r15",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "scope_o5_r15_hollow",
+      "kind": "o5_hollow_telescope",
+      "pos": [
+        248,
+        64
+      ],
+      "props": {
+        "prompt_key": "I5_OR_PROMPT_SCOPE",
+        "sets_flag": "o5_r15_telescope_seen"
+      }
+    },
+    {
+      "id": "lore_o5_r15_hollow",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        64
+      ],
+      "props": {
+        "string_id": "I5_LORE_HOLLOW_2",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "sn_o5_r15_1",
+      "kind": "star_node",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "lens_only": true,
+        "pinned": true,
+        "target_id": "gate_o5_r15_cipher"
+      }
+    },
+    {
+      "id": "sn_o5_r15_2",
+      "kind": "star_node",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "lens_only": true,
+        "pinned": true,
+        "target_id": "gate_o5_r15_cipher"
+      }
+    },
+    {
+      "id": "sn_o5_r15_3",
+      "kind": "star_node",
+      "pos": [
+        216,
+        168
+      ],
+      "props": {
+        "lens_only": true,
+        "pinned": true,
+        "target_id": "gate_o5_r15_cipher"
+      }
+    },
+    {
+      "id": "sn_o5_r15_4",
+      "kind": "star_node",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "lens_only": true,
+        "pinned": true,
+        "target_id": "gate_o5_r15_cipher"
+      }
+    },
+    {
+      "id": "gate_o5_r15_cipher",
+      "kind": "logic_gate",
+      "pos": [
+        168,
+        144
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sn_o5_r15_1",
+          "sn_o5_r15_2",
+          "sn_o5_r15_3",
+          "sn_o5_r15_4"
+        ],
+        "target_id": "door_o5_r15_reliquary"
+      }
+    },
+    {
+      "id": "door_o5_r15_reliquary",
+      "kind": "door",
+      "pos": [
+        120,
+        64
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_o5_r15_cipher"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_5_3",
+      "kind": "wick_key",
+      "pos": [
+        64,
+        56
+      ],
+      "props": {
+        "dungeon_id": "orrery",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_5_3"
+      }
+    },
+    {
+      "id": "moth_5_09",
+      "kind": "moth",
+      "pos": [
+        88,
+        72
+      ],
+      "props": {
+        "id": "moth_5_09"
+      }
+    },
+    {
+      "id": "eye_o5_r15_winch",
+      "kind": "switch_eye",
+      "pos": [
+        376,
+        128
+      ],
+      "props": {
+        "target_ids": [
+          "bridge_o5_r15_hub",
+          "door_o5_r15_hub"
+        ],
+        "sets_flag": "o5_r15_return_open"
+      }
+    },
+    {
+      "id": "bridge_o5_r15_hub",
+      "kind": "door",
+      "pos": [
+        336,
+        160
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_o5_r15_winch"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r15_hub",
+      "kind": "door",
+      "pos": [
+        424,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "eye_o5_r15_winch"
+        ],
+        "sets_flag": "o5_r15_return_open"
+      }
+    },
+    {
+      "id": "lamp_o5_r15_s",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        216
+      ],
+      "props": {
+        "zone": "o5_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r15_n",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        64
+      ],
+      "props": {
+        "zone": "o5_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r15_e",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        128
+      ],
+      "props": {
+        "zone": "o5_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r15_b",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        184
+      ],
+      "props": {
+        "zone": "o5_r15",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        104,
+        144,
+        80
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        168,
+        144
+      ],
+      "radius": 34,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        72
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        40,
+        56,
+        48
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        220,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        284,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        64,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        64,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        288,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        216,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "o5_r15_cipher_msg",
+      "on": "signal:gate_o5_r15_cipher",
+      "once": true,
+      "do": [
+        {
+          "sfx": "o5_lens_carpet"
+        },
+        {
+          "narrate": "I5_OR_STUDY_CIPHER"
+        }
+      ]
+    },
+    {
+      "id": "o5_r15_winch_msg",
+      "on": "signal:eye_o5_r15_winch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "o5_r15_return_open"
+        },
+        {
+          "sfx": "o5_ring_latch"
+        },
+        {
+          "narrate": "I5_OR_STUDY_RETURN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Astronomer's Study (NEW, STORY REST BEAT): peer through the east brass telescope to witness Hollow Wick carrying a cold blue lantern on Moon Shoals, pulse True Lens over the woven carpet to ignite all 4 hidden star nodes unlocking Key 3 and Lost Moth #9, then shoot the east winch to drop Cycle 4's bridge directly back to the Starlight Hub!",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "Story rest pacing, Hollow Wick arc foreshadowing, and Lens-carpet cipher unlocking Key 3 + Moth 9.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "wick_key_5_3+moth_5_09+hub_shortcut_4",
+    "why": "Crucial narrative rest chamber revealing why Echo Moths mimic Wick and yielding Key 3.",
+    "exit": "exit_o5_r15_e",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          84
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "scope_o5_r15_hollow"
+      },
+      {
+        "op": "interact",
+        "target": "lore_o5_r15_hollow"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          144
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r15_1",
+        "wait_hit": 0.35
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r15_2",
+        "wait_hit": 0.35
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r15_3",
+        "wait_hit": 0.35
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r15_4",
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r15_reliquary",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          56
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_5_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          72
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          128
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_o5_r15_winch",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r15_hub",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r15_e"
+      }
+    ]
+  }
+}

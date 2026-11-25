@@ -3,9 +3,11 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R1",
+  "music": "island5_dungeon",
   "spawn": [
     176,
-    224
+    200
   ],
   "zones": [
     {
@@ -48,12 +50,52 @@
       ],
       "to_region": "orrery_r2",
       "to_spawn": [
-        368,
+        400,
         136
       ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r1_north",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r11",
+      "to_spawn": [
+        96,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r11_latch"
+      ],
+      "locked_door_id": "door_o5_r1_north"
+    },
+    {
+      "id": "exit_o5_r1_study",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r15",
+      "to_spawn": [
+        392,
+        152
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "o5_r15_return_open"
+      ],
+      "locked_door_id": "door_o5_r1_study"
     },
     {
       "id": "exit_o5_r1_east",
@@ -65,7 +107,7 @@
       ],
       "to_region": "orrery_r9",
       "to_spawn": [
-        424,
+        456,
         56
       ],
       "requires_moves": [
@@ -80,6 +122,17 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "anc_o5_r1",
+      "kind": "room_anchor",
+      "pos": [
+        176,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
       "id": "ws_orrery",
       "kind": "waystone",
       "pos": [
@@ -89,6 +142,20 @@
       "props": {
         "zone": "orrery_r1",
         "name_key": "DUNGEON_5_NAME"
+      }
+    },
+    {
+      "id": "bell_o5_r1_hub",
+      "kind": "star_bell",
+      "pos": [
+        128,
+        120
+      ],
+      "props": {
+        "scope": "dungeon:orrery",
+        "var_name": "orrery_ring",
+        "allow_ccw_blue": true,
+        "cooldown": 0.65
       }
     },
     {
@@ -138,6 +205,44 @@
       }
     },
     {
+      "id": "door_o5_r1_north",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r1",
+        "requires_flags": [
+          "o5_r11_latch"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r1_study",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "orrery_r1",
+        "requires_flags": [
+          "o5_r15_return_open"
+        ]
+      }
+    },
+    {
       "id": "door_o5_r1_return",
       "kind": "door",
       "pos": [
@@ -178,7 +283,8 @@
         176
       ],
       "props": {
-        "zone": "orrery_r1"
+        "zone": "orrery_r1",
+        "lit": true
       }
     },
     {
@@ -189,7 +295,20 @@
         72
       ],
       "props": {
-        "zone": "orrery_r1"
+        "zone": "orrery_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "zone": "orrery_r1",
+        "lit": true
       }
     }
   ],
@@ -204,6 +323,34 @@
       ],
       "string_id": "DUNGEON_5_NAME",
       "once": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        152
+      ],
+      "radius": 44,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        176,
+        152
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        352,
+        64,
+        56,
+        48
+      ]
     }
   ],
   "scenery": [
@@ -247,8 +394,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        192,
-        56
+        144,
+        60
       ],
       "layer": "sort",
       "flip_x": false,
@@ -259,8 +406,8 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        224,
-        56
+        216,
+        60
       ],
       "layer": "sort",
       "flip_x": true,
@@ -271,7 +418,7 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        264,
+        240,
         176
       ],
       "layer": "sort",
@@ -283,8 +430,8 @@
       "sheet": "island5_scenery",
       "prop": "moon_phase_obelisk",
       "pos": [
-        364,
-        48
+        344,
+        52
       ],
       "layer": "sort",
       "flip_x": false,
@@ -296,7 +443,7 @@
       "prop": "moon_phase_obelisk",
       "pos": [
         404,
-        48
+        52
       ],
       "layer": "sort",
       "flip_x": true,
@@ -304,5 +451,42 @@
       "phase": 0.7
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Three-ring Starlight Hub teasing all three later shortcuts (North Escapement, Upper Study, East Boss-Key Gallery) alongside the hub Star Bell and an optional blue-portal shard vault.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Hub orientation, Orrery Ring Star Bell rotation, and blue-portal recall from earlier islands.",
+    "decisions": 4,
+    "expert_s": 45,
+    "reward": "ws_orrery+chest_o5_r1_gallery",
+    "why": "Central cyclic hub of the Grand Orrery anchoring all 5 dungeon cycles.",
+    "optional": true,
+    "exit": "exit_o5_r1_west",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_orrery"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          144,
+          152
+        ],
+        "target": "bell_o5_r1_hub",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r1_west"
+      }
+    ]
+  }
 }

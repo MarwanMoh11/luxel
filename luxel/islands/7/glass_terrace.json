@@ -124,11 +124,12 @@
       "kind": "lore_stone",
       "pos": [
         248,
-        136
+        144
       ],
       "props": {
         "string_id": "ISL7_LORE_TERRACE",
-        "icon": "crown"
+        "icon": "crown",
+        "radius": 24
       }
     },
     {
@@ -507,8 +508,8 @@
   "events": [
     {
       "id": "gt_sync_twin_mask_gate",
-      "on": "flag:palace_cleared",
-      "if": "flag:beacon_7_1 && flag:beacon_7_2 && flag:beacon_7_3",
+      "on": "enter",
+      "if": "flag:palace_cleared && flag:theatre_cleared && flag:beacon_7_1 && flag:beacon_7_2 && flag:beacon_7_3",
       "once": false,
       "do": [
         {
@@ -535,7 +536,11 @@
       },
       {
         "op": "interact",
-        "target": "lore_gt_twin_masks"
+        "target": "pool_gt_east"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "interact",
@@ -543,7 +548,15 @@
       },
       {
         "op": "expect",
-        "var": "world_face==black"
+        "var": "world_face==silver"
+      },
+      {
+        "op": "interact",
+        "target": "lore_gt_twin_masks"
+      },
+      {
+        "op": "wait",
+        "secs": 0.1
       },
       {
         "op": "expect_exit",

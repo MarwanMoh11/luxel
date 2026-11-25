@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R7",
+  "music": "island5_dungeon",
   "spawn": [
     416,
     120
@@ -39,6 +41,25 @@
       "locked_door_id": ""
     },
     {
+      "id": "exit_o5_r7_se",
+      "rect": [
+        384,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r13",
+      "to_spawn": [
+        240,
+        48
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
       "id": "exit_o5_r7_north",
       "rect": [
         176,
@@ -61,6 +82,17 @@
   "enemies": [],
   "interactables": [
     {
+      "id": "anc_o5_r7",
+      "kind": "room_anchor",
+      "pos": [
+        416,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
       "id": "phantom_o5_r7_ne",
       "kind": "phantom_platform",
       "pos": [
@@ -80,7 +112,7 @@
       "kind": "phantom_platform",
       "pos": [
         152,
-        248
+        232
       ],
       "props": {
         "size": [
@@ -88,6 +120,33 @@
           16
         ],
         "zone": "orrery_r7"
+      }
+    },
+    {
+      "id": "well_o5_r7",
+      "kind": "polarity_well",
+      "pos": [
+        256,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 52.0,
+        "strength": 420.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0
+      }
+    },
+    {
+      "id": "sn_o5_r7_mid",
+      "kind": "star_node",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lens_only": true,
+        "link_range": 84.0
       }
     },
     {
@@ -126,13 +185,25 @@
       "kind": "chest",
       "pos": [
         64,
-        240
+        224
       ],
       "props": {
         "reward_kind": "shards",
         "reward": "shards",
         "amount": 55,
         "zone": "orrery_r7"
+      }
+    },
+    {
+      "id": "lamp_o5_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        168
+      ],
+      "props": {
+        "zone": "orrery_r7",
+        "lit": true
       }
     },
     {
@@ -143,29 +214,71 @@
         184
       ],
       "props": {
-        "zone": "orrery_r7"
+        "zone": "orrery_r7",
+        "lit": true
       }
     },
     {
       "id": "lamp_o5_r7_p2",
       "kind": "road_lamp",
       "pos": [
-        152,
-        112
+        168,
+        120
       ],
       "props": {
-        "zone": "orrery_r7"
+        "zone": "orrery_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        72
+      ],
+      "props": {
+        "zone": "orrery_r7",
+        "lit": true
       }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        120
+      ],
+      "radius": 24,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        64,
+        224
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        376,
+        96,
+        48,
+        48
+      ]
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
         416,
-        80
+        88
       ],
       "layer": "sort",
       "flip_x": true,
@@ -174,22 +287,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        416,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
         72,
-        212
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -200,8 +301,8 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        100,
-        44
+        96,
+        48
       ],
       "layer": "sort",
       "flip_x": true,
@@ -210,22 +311,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "observatory_brazier_stand",
-      "pos": [
-        124,
-        104
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        284,
-        168
+        296,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -234,22 +323,10 @@
     },
     {
       "sheet": "island5_scenery",
-      "prop": "celestial_globe",
-      "pos": [
-        232,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island5_scenery",
       "prop": "brass_orrery_stand",
       "pos": [
         384,
-        152
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -261,37 +338,88 @@
       "prop": "clockwork_gear_pillar",
       "pos": [
         384,
-        84
+        96
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        120,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island5_scenery",
-      "prop": "starlight_lantern_post",
-      "pos": [
-        324,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "The Cloaked Mirror Rift (REBUILT + D25a fixed): split-terrace Lens rift spanning a central gravity well and hidden star node; pulse True Lens across the branching phantom spans to trigger the west eye shutter and raid the south shard vault.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Branching True Lens rift navigation paired with orbiting lantern anchor and hidden star stepping stones.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "o5_r7_shutter_open+chest_o5_r7_shards",
+    "why": "Rebuilt post-Warden Lens labyrinth replacing the linear snake with an open multi-fork rift.",
+    "exit": "exit_o5_r7_north",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          184
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          120
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "switch_eye_o5_r7",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r7_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r7_north"
+      }
+    ]
+  }
 }

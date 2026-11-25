@@ -3,6 +3,8 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R4",
+  "music": "island5_dungeon",
   "spawn": [
     48,
     104
@@ -56,10 +58,38 @@
         "o5_r4_shutter_open"
       ],
       "locked_door_id": "door_o5_r4_shutter"
+    },
+    {
+      "id": "exit_o5_r4_south",
+      "rect": [
+        256,
+        224,
+        32,
+        16
+      ],
+      "to_region": "orrery_r12",
+      "to_spawn": [
+        48,
+        144
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_o5_r4",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "door_o5_r4_key",
       "kind": "door",
@@ -144,6 +174,19 @@
       }
     },
     {
+      "id": "well_o5_r4_se",
+      "kind": "gravity_well",
+      "pos": [
+        320,
+        196
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 34.0,
+        "strength": 240.0
+      }
+    },
+    {
       "id": "portal_o5_r4_in",
       "kind": "blue_portal",
       "pos": [
@@ -204,9 +247,65 @@
         "required_count": 2,
         "sets_flag": "o5_r4_shutter_open"
       }
+    },
+    {
+      "id": "lamp_o5_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "zone": "orrery_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r4_c",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "zone": "orrery_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        136
+      ],
+      "props": {
+        "zone": "orrery_r4",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        112,
+        128,
+        48
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        56
+      ],
+      "radius": 22,
+      "style": "astrolabe"
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
@@ -281,5 +380,87 @@
       "phase": 0.75
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Blue Optics Gallery (deepened): unlock the Key-1 door, align both Blue Transformers to strike the twin blue eye switches (and optional portal vault), and branch south into the Parallax Carousel.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Dual Blue Transformer reflections paired with optical portals and SE pit gravity curve.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "o5_r4_shutter_open+chest_o5_r4_optics",
+    "why": "Pre-Lens optics showcase connecting to both the True Lens sanctum and Parallax Carousel.",
+    "exit": "exit_o5_r4_east",
+    "start": {
+      "flags": [
+        "wick_key_5_1"
+      ],
+      "keys": {
+        "orrery:wick_key": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "door_o5_r4_key"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          88
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "transformer_o5_r4_n",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "switch_eye_o5_r4_n",
+        "prop": "activated",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "push",
+        "target": "transformer_o5_r4_s",
+        "to": [
+          264,
+          168
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_o5_r4_s",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          128
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "transformer_o5_r4_s",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r4_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r4_east"
+      }
+    ]
+  }
 }

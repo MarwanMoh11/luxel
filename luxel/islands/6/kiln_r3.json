@@ -3,54 +3,28 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [
-    40,
-    152
-  ],
+  "theme": "forge_deep",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_KILN_R3",
+  "spawn": [40, 144],
   "zones": [
-    {
-      "id": "kiln_r3",
-      "name_key": "DUNGEON_6_NAME",
-      "rect": [
-        0,
-        0,
-        448,
-        240
-      ],
-      "dark": true
-    }
+    { "id": "kiln_r3", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 448, 240], "dark": true }
   ],
   "exits": [
     {
       "id": "exit_kiln_r3_west",
-      "rect": [
-        0,
-        128,
-        16,
-        48
-      ],
+      "rect": [0, 128, 16, 48],
       "to_region": "kiln_r1",
-      "to_spawn": [
-        408,
-        152
-      ],
+      "to_spawn": [408, 152],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r3_north",
-      "rect": [
-        256,
-        0,
-        32,
-        16
-      ],
+      "rect": [256, 0, 32, 16],
       "to_region": "kiln_r4",
-      "to_spawn": [
-        120,
-        216
-      ],
+      "to_spawn": [120, 208],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_kiln_r3_north"
@@ -60,20 +34,8 @@
     {
       "id": "golem_kiln_r3_0",
       "kind": "cinder_golem",
-      "pos": [
-        248,
-        120
-      ],
-      "route": [
-        [
-          200,
-          120
-        ],
-        [
-          296,
-          120
-        ]
-      ],
+      "pos": [248, 152],
+      "route": [[208, 152], [304, 152]],
       "perches": [],
       "zone": "kiln_r3",
       "leash": 130
@@ -81,20 +43,8 @@
     {
       "id": "bellows_kiln_r3_0",
       "kind": "bellows_imp",
-      "pos": [
-        184,
-        56
-      ],
-      "route": [
-        [
-          152,
-          56
-        ],
-        [
-          248,
-          56
-        ]
-      ],
+      "pos": [168, 96],
+      "route": [[152, 88], [216, 96]],
       "perches": [],
       "zone": "kiln_r3",
       "leash": 120
@@ -102,215 +52,87 @@
     {
       "id": "mole_kiln_r3_0",
       "kind": "ash_mole",
-      "pos": [
-        296,
-        184
-      ],
+      "pos": [312, 192],
       "route": [],
-      "perches": [
-        [
-          296,
-          184
-        ],
-        [
-          376,
-          168
-        ],
-        [
-          232,
-          168
-        ]
-      ],
+      "perches": [[312, 192], [376, 176], [232, 176]],
       "zone": "kiln_r3",
       "leash": 135
     },
     {
       "id": "bellows_kiln_r3_1",
       "kind": "bellows_imp",
-      "pos": [
-        376,
-        136
-      ],
-      "route": [
-        [
-          344,
-          120
-        ],
-        [
-          408,
-          152
-        ]
-      ],
+      "pos": [376, 136],
+      "route": [[344, 120], [408, 152]],
       "perches": [],
       "zone": "kiln_r3",
       "leash": 120
+    },
+    {
+      "id": "slime_kiln_r3_0",
+      "kind": "slag_slime",
+      "pos": [352, 192],
+      "zone": "kiln_r3",
+      "leash": 110
     }
   ],
   "interactables": [
     {
+      "id": "anvil_kiln_r3_lance",
+      "kind": "temper_anvil",
+      "pos": [80, 120],
+      "props": { "mode": "lance", "sets_flag": "temper_lance_known" }
+    },
+    {
+      "id": "tf_kiln_r3",
+      "kind": "blue_transformer",
+      "pos": [168, 168],
+      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+    },
+    {
       "id": "door_kiln_r3_north",
       "kind": "door",
-      "pos": [
-        272,
-        24
-      ],
-      "props": {
-        "door_kind": "combat_gate",
-        "size": [
-          32,
-          16
-        ],
-        "clear_zone": "kiln_r3",
-        "sets_flag": "kiln_r3_cleared"
-      }
-    }
+      "pos": [272, 24],
+      "props": { "door_kind": "combat_gate", "size": [32, 16], "clear_zone": "kiln_r3", "sets_flag": "kiln_r3_cleared" }
+    },
+    { "id": "lamp_kr3_1", "kind": "road_lamp", "pos": [64, 152], "props": { "lit": true } },
+    { "id": "lamp_kr3_2", "kind": "road_lamp", "pos": [232, 56], "props": { "lit": true } },
+    { "id": "lamp_kr3_3", "kind": "road_lamp", "pos": [368, 160], "props": { "lit": true } }
   ],
   "triggers": [],
-  "scenery": [
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        264,
-        104
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ember_grate_vent",
-      "pos": [
-        264,
-        152
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        224,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        320,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "bellows_frame",
-      "pos": [
-        376,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "ash_urn_cluster",
-      "pos": [
-        416,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        80,
-        116
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "slag_crucible",
-      "pos": [
-        156,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        392,
-        180
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "cooled_magma_vent",
-      "pos": [
-        344,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
-      "pos": [
-        232,
-        128
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "coal_hopper",
-      "pos": [
-        416,
-        124
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
-    }
+  "decor": [
+    { "kind": "grate", "rect": [224, 96, 80, 64], "glow": true }
   ],
-  "is_2x2_room": true
+  "scenery": [
+    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [264, 104], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.15 },
+    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [264, 152], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.65 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [224, 52], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [320, 52], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 },
+    { "sheet": "island6_scenery", "prop": "bellows_frame", "pos": [376, 196], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
+    { "sheet": "island6_scenery", "prop": "ash_urn_cluster", "pos": [416, 196], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [80, 116], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.25 },
+    { "sheet": "island6_scenery", "prop": "slag_crucible", "pos": [156, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.6 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [392, 180], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.35 },
+    { "sheet": "island6_scenery", "prop": "cooled_magma_vent", "pos": [344, 168], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.5 },
+    { "sheet": "island6_scenery", "prop": "crucible_floor_seal", "pos": [232, 128], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.2 },
+    { "sheet": "island6_scenery", "prop": "coal_hopper", "pos": [416, 124], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.8 }
+  ],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Deepened Smelting Floor combat hall: forge Lance at the entry anvil to crack the Cinder Golem pre-Sunflare while a Slag Slime and Blue Transformer offer coolable cover against twin Bellows Imps and a burrowing Ash Mole.",
+    "kind": "combat",
+    "beat": "ki",
+    "teaches": "Lance armor-cracking and coolable slag cover in mixed foundry skirmishes.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "kiln_r3_cleared+open_r4",
+    "why": "First combat gate in the Great Kiln leading to the Caldera Lip Phantom Arch.",
+    "exit": "exit_kiln_r3_north",
+    "solution": [
+      { "op": "goto", "to": [80, 138], "tol": 6.0 },
+      { "op": "interact", "target": "anvil_kiln_r3_lance" },
+      { "op": "clear", "timeout": 55.0 },
+      { "op": "wait_until", "target": "door_kiln_r3_north", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "expect_exit", "exit": "exit_kiln_r3_north" }
+    ]
+  }
 }

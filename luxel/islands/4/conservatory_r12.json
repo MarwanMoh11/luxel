@@ -1,0 +1,502 @@
+{
+  "id": "conservatory_r12",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_C4_R12",
+  "music": "island4_dungeon",
+  "spawn": [
+    56,
+    152
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r12",
+      "name_key": "ISL4_C4_R12",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r12_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r7",
+      "to_spawn": [
+        360,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r12_south",
+      "rect": [
+        240,
+        272,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r11",
+      "to_spawn": [
+        296,
+        56
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r12_aqueduct_open"
+      ],
+      "locked_door_id": "door_c4_r12_south"
+    },
+    {
+      "id": "exit_c4_r12_north",
+      "rect": [
+        400,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r13",
+      "to_spawn": [
+        216,
+        216
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r12_open"
+      ],
+      "locked_door_id": "door_c4_r12_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anchor_c4_r12_w",
+      "kind": "room_anchor",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "anchor_c4_r12_mid",
+      "kind": "room_anchor",
+      "pos": [
+        248,
+        152
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "xtal_c4_r12_1",
+      "kind": "crystal_toggle",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "group": "c4_r12_steam",
+        "phase": 0,
+        "target_id": "updraft_c4_r12_a1"
+      }
+    },
+    {
+      "id": "xtal_c4_r12_2",
+      "kind": "crystal_toggle",
+      "pos": [
+        248,
+        120
+      ],
+      "props": {
+        "group": "c4_r12_steam",
+        "phase": 0,
+        "target_ids": [
+          "updraft_c4_r12_b1",
+          "updraft_c4_r12_b2"
+        ]
+      }
+    },
+    {
+      "id": "updraft_c4_r12_a1",
+      "kind": "updraft_vent",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r12_b1",
+      "kind": "updraft_vent",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "radius": 24,
+        "on": false,
+        "requires_signals": [
+          "xtal_c4_r12_2"
+        ],
+        "dir": [
+          1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r12_b2",
+      "kind": "updraft_vent",
+      "pos": [
+        248,
+        216
+      ],
+      "props": {
+        "radius": 22,
+        "on": false,
+        "requires_signals": [
+          "xtal_c4_r12_2"
+        ],
+        "dir": [
+          0,
+          1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "sw_c4_r12_exit",
+      "kind": "switch_eye",
+      "pos": [
+        440,
+        120
+      ],
+      "props": {
+        "target_ids": [
+          "door_c4_r12_north",
+          "door_c4_r12_south",
+          "bridge_c4_r12_ret"
+        ],
+        "sets_flag": "c4_r12_open"
+      }
+    },
+    {
+      "id": "bridge_c4_r12_ret",
+      "kind": "door",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          80,
+          32
+        ],
+        "requires_signals": [
+          "sw_c4_r12_exit"
+        ]
+      }
+    },
+    {
+      "id": "door_c4_r12_north",
+      "kind": "door",
+      "pos": [
+        416,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_c4_r12_exit"
+        ],
+        "sets_flag": "c4_r12_open"
+      }
+    },
+    {
+      "id": "door_c4_r12_south",
+      "kind": "door",
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_c4_r12_exit"
+        ],
+        "sets_flag": "c4_r12_aqueduct_open"
+      }
+    },
+    {
+      "id": "lamp_c4_r12_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r12_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r12_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r12_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r12_open",
+      "on": "signal:sw_c4_r12_exit",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_r12_open"
+        },
+        {
+          "set_flag": "c4_r12_aqueduct_open"
+        },
+        {
+          "sfx": "c4_thermal_valve"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        224,
+        112,
+        48,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        152
+      ],
+      "radius": 24,
+      "style": "gear"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        408,
+        104
+      ],
+      "size": [
+        52,
+        30
+      ],
+      "tint": "cool",
+      "shear": 0.42
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weather_vane_spire",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        216,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        384,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        232,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "The Thermal Conservatory: glide east across the Phase-A steam plume to the central valve pad, strike the steam crystal to erupt Phase-B updrafts, ride east to the sanctuary terrace, and open both the Clockwork Greenhouse (north) and Dew-Drop Aqueduct shortcut (south).",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Routing crystal-toggled steam updraft plumes across a multi-island cistern",
+    "decisions": 7,
+    "expert_s": 55,
+    "reward": "c4_r12_open, c4_r12_aqueduct_open",
+    "why": "Entry puzzle of the optional Thermal Conservatory wing establishing crystal-driven updraft routing.",
+    "exit": "exit_c4_r12_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          152
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          232,
+          152
+        ],
+        "tol": 14
+      },
+      {
+        "op": "shoot",
+        "target": "xtal_c4_r12_2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          120
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          392,
+          120
+        ],
+        "tol": 14
+      },
+      {
+        "op": "shoot",
+        "target": "sw_c4_r12_exit"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r12_open"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r12_aqueduct_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r12_north"
+      }
+    ]
+  }
+}

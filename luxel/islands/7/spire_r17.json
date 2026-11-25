@@ -1,0 +1,599 @@
+{
+  "id": "spire_r17",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R17",
+  "theme": "inverted_palace_black",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    368,
+    272
+  ],
+  "zones": [
+    {
+      "id": "spire_r17",
+      "name_key": "ISL7_SP_R17",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r17_south",
+      "rect": [
+        336,
+        304,
+        64,
+        16
+      ],
+      "to_region": "spire_r8",
+      "to_spawn": [
+        352,
+        48
+      ]
+    },
+    {
+      "id": "exit_spire_r17_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "spire_r16",
+      "to_spawn": [
+        368,
+        88
+      ],
+      "locked_door_id": "door_spire_r17_west"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_r17_s",
+      "kind": "room_anchor",
+      "pos": [
+        368,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anvil_spire_r17",
+      "kind": "temper_anvil",
+      "pos": [
+        224,
+        168
+      ],
+      "props": {
+        "mode": "cycle",
+        "prompt_key": "ISL7_PROMPT_ANVIL",
+        "hit_to_swap": true
+      }
+    },
+    {
+      "id": "mirror_r17_skip",
+      "kind": "blue_transformer",
+      "pos": [
+        56,
+        96
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sw_r17_skip",
+      "kind": "switch_eye",
+      "pos": [
+        56,
+        48
+      ],
+      "props": {
+        "requires_prism": true,
+        "requires_blue": true,
+        "target_id": "gate_r17_mastery"
+      }
+    },
+    {
+      "id": "glass_r17_1",
+      "kind": "color_glass",
+      "pos": [
+        336,
+        56
+      ],
+      "props": {
+        "color": "blue",
+        "solid": true
+      }
+    },
+    {
+      "id": "glass_r17_2",
+      "kind": "color_glass",
+      "pos": [
+        368,
+        56
+      ],
+      "props": {
+        "color": "rose",
+        "solid": true
+      }
+    },
+    {
+      "id": "sw_r17_lance",
+      "kind": "switch_eye",
+      "pos": [
+        400,
+        56
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "gate_r17_mastery"
+      }
+    },
+    {
+      "id": "orbs_r17_scatter",
+      "kind": "sequence_orbs",
+      "pos": [
+        96,
+        264
+      ],
+      "props": {
+        "count": 3,
+        "order": [
+          0,
+          1,
+          2
+        ],
+        "spacing": 24.0,
+        "persist": true,
+        "target_id": "gate_r17_mastery"
+      }
+    },
+    {
+      "id": "gate_r17_mastery",
+      "kind": "logic_gate",
+      "pos": [
+        224,
+        112
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_r17_skip",
+          "sw_r17_lance",
+          "orbs_r17_scatter"
+        ],
+        "sets_flag": "spire_r17_solved",
+        "persist": true,
+        "target_ids": [
+          "door_spire_r17_west",
+          "door_r17_vault"
+        ]
+      }
+    },
+    {
+      "id": "door_r17_vault",
+      "kind": "door",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r17_mastery"
+        ]
+      }
+    },
+    {
+      "id": "chest_ember_7_temper",
+      "kind": "chest",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "ember_id": "ember_7_temper",
+        "zone": "spire_r17"
+      }
+    },
+    {
+      "id": "door_spire_r17_west",
+      "kind": "door",
+      "pos": [
+        32,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r17_mastery"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r17_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        200
+      ],
+      "props": {
+        "zone": "spire_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        56
+      ],
+      "props": {
+        "zone": "spire_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        96
+      ],
+      "props": {
+        "zone": "spire_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_sw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "zone": "spire_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r17_se",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        240
+      ],
+      "props": {
+        "zone": "spire_r17",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        168
+      ],
+      "radius": 34,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        32,
+        112,
+        80
+      ],
+      "color": "deep",
+      "border": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        296,
+        32,
+        120,
+        64
+      ],
+      "color": "wine",
+      "border": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        40,
+        232,
+        120,
+        56
+      ],
+      "color": "plum",
+      "border": "apricot"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        168,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dark_inverted_pillar",
+      "pos": [
+        280,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "eclipse_brazier_bowl",
+      "pos": [
+        168,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "eclipse_brazier_bowl",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "obsidian_tall_mirror",
+      "pos": [
+        384,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "rose_thorn_glass_arch",
+      "pos": [
+        224,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r17_done",
+      "on": "signal:gate_r17_mastery",
+      "once": true,
+      "do": [
+        {
+          "sfx": "spire_nave_chord"
+        },
+        {
+          "narrate": "ISL7_SP_TEMPER_DONE"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Three-wing optical mastery vault housing a Moon-Anvil\u2014chain Skip (ricochet), Lance (double-glass pierce), and Scatter (3-orb triad) to unlock Ember Piece ember_7_temper and the catwalk into spire_r16.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Swaps bolt tempering at the Moon-Anvil to master Skip, Lance, and Scatter across three optical test bays.",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "ember_7_temper+r16_catwalk",
+    "why": "Optional upper-Spire mastery loop connecting r8 directly into the r16 pre-boss antechamber.",
+    "exit": "exit_spire_r17_west",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_spire_r17"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          96
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          96
+        ],
+        "target": "mirror_r17_skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_spire_r17"
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          56
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          304,
+          56
+        ],
+        "target": "sw_r17_lance"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_spire_r17"
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          232
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          72,
+          232
+        ],
+        "target": [
+          72,
+          264
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          232
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          96,
+          232
+        ],
+        "target": [
+          96,
+          264
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          232
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          232
+        ],
+        "target": [
+          120,
+          264
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          48
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_7_temper"
+      },
+      {
+        "op": "expect",
+        "flag": "spire_r17_solved"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r17_west"
+      }
+    ]
+  }
+}

@@ -117,7 +117,7 @@
       "id": "portal_r8_e",
       "kind": "blue_portal",
       "pos": [
-        296,
+        232,
         200
       ],
       "props": {
@@ -235,8 +235,8 @@
       "id": "mine_r8_w",
       "kind": "buoy_mine",
       "pos": [
-        56,
-        200
+        280,
+        152
       ],
       "zone": "lck_r8"
     },
@@ -377,7 +377,7 @@
       "prop": "lock_lantern_post",
       "pos": [
         232,
-        216
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -487,23 +487,15 @@
         "timeout": 3.0
       },
       {
-        "op": "throw",
-        "from": [
-          168,
-          232
-        ],
-        "target": "mine_r8_w",
-        "hold": 0.3
-      },
-      {
-        "op": "recall"
-      },
-      {
         "op": "goto",
         "to": [
-          168,
+          152,
           200
         ]
+      },
+      {
+        "op": "dash",
+        "dir": "e"
       },
       {
         "op": "wait",

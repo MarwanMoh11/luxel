@@ -57,6 +57,23 @@
       ],
       "requires_flags": [],
       "locked_door_id": "door_spire_r7_west"
+    },
+    {
+      "id": "exit_spire_r7_north",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_region": "spire_r14",
+      "to_spawn": [
+        192,
+        304
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r7_north"
     }
   ],
   "enemies": [],
@@ -136,7 +153,10 @@
       "props": {
         "requires_prism": true,
         "requires_blue": true,
-        "target_id": "door_spire_r7_west"
+        "target_ids": [
+          "door_spire_r7_west",
+          "door_spire_r7_north"
+        ]
       }
     },
     {
@@ -155,6 +175,75 @@
         "requires_signals": [
           "switch_eye_spire_r7_a"
         ]
+      }
+    },
+    {
+      "id": "door_spire_r7_north",
+      "kind": "door",
+      "pos": [
+        216,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_spire_r7_a"
+        ]
+      }
+    },
+    {
+      "id": "pool_spire_r7",
+      "kind": "moon_pool",
+      "pos": [
+        144,
+        136
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 14,
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_spire_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        208
+      ],
+      "props": {
+        "zone": "spire_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "zone": "spire_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        64
+      ],
+      "props": {
+        "zone": "spire_r7",
+        "lit": true
       }
     }
   ],
@@ -236,8 +325,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        88,
-        200
+        168,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -248,8 +337,8 @@
       "sheet": "island7_scenery",
       "prop": "shattered_mirror_shard",
       "pos": [
-        344,
-        120
+        296,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -281,5 +370,149 @@
       "phase": 0.7
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R7",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        184,
+        168
+      ],
+      "radius": 20,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Lunar Lens & Portal Terrace chaining True Lens phantom crossing, Blue Portal warp onto the upper ledge, and Blue-bank switch unlocking both spire_r8 (W) and the Twin-Control Nave (N).",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Synthesizes True Lens anchoring, paired Blue Portals, and dual-terrace Blue banking to open upper-Spire branches.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "open_r8+r14_arch",
+    "why": "Gateway to both the Twin-Control Nave (r14) and Crystal Choir (r8), with D38 shard fixes.",
+    "exit": "exit_spire_r7_west",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          200
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          184
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_spire_r7_a",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          144
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          144
+        ],
+        "target": "transformer_spire_r7_a"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          104
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "portal_spire_r7_in"
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          72
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_spire_r7_b",
+        "angle": 45
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          48
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          232,
+          48
+        ],
+        "target": "transformer_spire_r7_b"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          40
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "portal_spire_r7_north"
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r7_west"
+      }
+    ]
+  }
 }

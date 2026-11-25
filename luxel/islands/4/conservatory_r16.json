@@ -1,0 +1,522 @@
+{
+  "id": "conservatory_r16",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_C4_R16",
+  "music": "island4_dungeon",
+  "spawn": [
+    216,
+    248
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r16",
+      "name_key": "ISL4_C4_R16",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r16_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r15",
+      "to_spawn": [
+        200,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r16_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r17",
+      "to_spawn": [
+        248,
+        280
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r16_cleared"
+      ],
+      "locked_door_id": "door_c4_r16_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_c4_r16_w",
+      "kind": "rain_frog",
+      "pos": [
+        136,
+        136
+      ],
+      "route": [
+        [
+          104,
+          136
+        ],
+        [
+          168,
+          136
+        ]
+      ],
+      "zone": "conservatory_r16",
+      "leash": 125
+    },
+    {
+      "id": "rf_c4_r16_e",
+      "kind": "rain_frog",
+      "pos": [
+        312,
+        136
+      ],
+      "route": [
+        [
+          280,
+          136
+        ],
+        [
+          344,
+          136
+        ]
+      ],
+      "zone": "conservatory_r16",
+      "leash": 125
+    },
+    {
+      "id": "tk_c4_r16_w",
+      "kind": "topiary_knight",
+      "pos": [
+        152,
+        168
+      ],
+      "route": [
+        [
+          120,
+          168
+        ],
+        [
+          184,
+          168
+        ]
+      ],
+      "zone": "conservatory_r16",
+      "leash": 130
+    },
+    {
+      "id": "tk_c4_r16_e",
+      "kind": "topiary_knight",
+      "pos": [
+        296,
+        168
+      ],
+      "route": [
+        [
+          264,
+          168
+        ],
+        [
+          328,
+          168
+        ]
+      ],
+      "zone": "conservatory_r16",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "wheel_c4_r16",
+      "kind": "weather_wheel",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "scope": "room:4:conservatory_r16",
+        "start": "rain",
+        "reset_on_enter": true
+      }
+    },
+    {
+      "id": "rose_c4_r16",
+      "kind": "echo_rose",
+      "pos": [
+        216,
+        184
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "bramble_c4_r16_1",
+      "kind": "bramble",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "bramble_c4_r16_2",
+      "kind": "bramble",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_c4_r16_1",
+      "kind": "pressure_plate",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "by": [
+          "enemy",
+          "wick"
+        ],
+        "latch": true,
+        "target_id": "gate_c4_r16"
+      }
+    },
+    {
+      "id": "plate_c4_r16_2",
+      "kind": "pressure_plate",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "by": [
+          "enemy",
+          "wick"
+        ],
+        "latch": true,
+        "target_id": "gate_c4_r16"
+      }
+    },
+    {
+      "id": "gate_c4_r16",
+      "kind": "logic_gate",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_c4_r16_1",
+          "plate_c4_r16_2"
+        ],
+        "target_id": "door_c4_r16_north"
+      }
+    },
+    {
+      "id": "door_c4_r16_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_c4_r16"
+        ],
+        "sets_flag": "c4_r16_cleared"
+      }
+    },
+    {
+      "id": "lamp_c4_r16_sw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r16_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r16_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r16_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r16_gate",
+      "on": "signal:gate_c4_r16",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_r16_cleared"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 45
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 32,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        88
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        88
+      ],
+      "radius": 18,
+      "style": "moss"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        136
+      ],
+      "size": [
+        68,
+        36
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        64,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "clipped_topiary_cone",
+      "pos": [
+        384,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        184,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        264,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        168,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Briar & Rain Vault: turn the Weather Wheel from RAIN to SUN to shrink the Rain Frogs, clear the squad, burn both bramble cages with Solar Beam, and latch the twin topiary plates (accepting frozen knights or Wick/Echo for zero softlocks).",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Combining Weather Wheel SUN shifts with Beam bramble clearing and dual-plate latching",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "c4_r16_cleared, 45 shards",
+    "why": "Synthesis combat-puzzle chamber before the Sundial Chandelier finale.",
+    "exit": "exit_c4_r16_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          216,
+          200
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "wheel_c4_r16"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "shoot",
+        "target": "wheel_c4_r16"
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          136
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "bramble_c4_r16_1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_c4_r16_1",
+        "secs": 0.3
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          136
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "bramble_c4_r16_2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_c4_r16_2",
+        "secs": 0.3
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r16_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r16_north"
+      }
+    ]
+  }
+}

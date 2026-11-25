@@ -368,19 +368,19 @@
         "target": "transformer_lh_r2",
         "to": [
           136,
-          136
+          72
         ]
       },
       {
         "op": "rotate",
         "target": "transformer_lh_r2",
-        "angle": 315.0
+        "angle": 45.0
       },
       {
         "op": "shoot",
         "from": [
           136,
-          72
+          120
         ],
         "target": "transformer_lh_r2"
       },

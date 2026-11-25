@@ -1,0 +1,58 @@
+{
+  "pack_id": "i5_fall",
+  "version": 1,
+  "owner": "G5",
+  "comment": "Island 5 Set Piece: The Fall (fall_r1..r4: free-fall between tumbling marble debris islands, zips off orbiting lanterns around gravity wells, Terminal Orbit, and The Counterweight boss). Debug-only on dungeon & region entries ONLY until overworld exit_to_orrery routes !flag:fall_done -> fall_r1.",
+  "strings": {
+    "I5_DNG_FALL": "THE FALL",
+    "I5_FL_R1": "THE SNAPPED CHAINS",
+    "I5_FL_R2": "FALLING DEBRIS DECK",
+    "I5_FL_R3": "TERMINAL ORBIT",
+    "I5_FL_R4": "THE COUNTERWEIGHT ROOF",
+    "I5_CUE_FALL_LOCK": "THE GRAND ORRERY LOCKS INTO ZENITH!",
+    "I5_FL_R1_HINT": "THE PLAZA BREAKS LOOSE! ZIP THE HOOKS!",
+    "I5_FL_R2_HINT": "CURVE THROUGH THE EDDY TO DROP THE ANCHORS.",
+    "I5_FL_R3_HINT": "ORBIT THE WELL TO BRIDGE PAST THE ARCH!",
+    "I5_FL_R4_ENTER": "SNAP ITS CHAINS TO LOCK THE DOME HOME!"
+  },
+  "interactables": {
+    "fall_wind_rig": "res://luxel/islands/5/fall/fall_wind_rig.gd"
+  },
+  "dungeons": [
+    {
+      "id": "fall",
+      "name_key": "I5_DNG_FALL",
+      "island": 5,
+      "entry": "fall_r1",
+      "debug_only": true,
+      "regions": [
+        "fall_r1",
+        "fall_r2",
+        "fall_r3",
+        "fall_r4"
+      ],
+      "mini_boss": "",
+      "boss": "the_counterweight",
+      "theme": "freefall",
+      "music": "isl5_setpiece",
+      "requires_flags": [
+        "beacon_5_1",
+        "beacon_5_2",
+        "beacon_5_3",
+        "meteor_done",
+        "planetarium_done"
+      ],
+      "done_flag": "fall_done"
+    }
+  ],
+  "regions": {
+    "fall_r1": { "name_key": "I5_FL_R1", "theme": "freefall", "music": "isl5_setpiece",   "dark": true, "debug_only": true, "map": [0, 1] },
+    "fall_r2": { "name_key": "I5_FL_R2", "theme": "freefall", "music": "isl5_setpiece",   "dark": true, "debug_only": true, "map": [1, 1] },
+    "fall_r3": { "name_key": "I5_FL_R3", "theme": "freefall", "music": "isl5_setpiece",   "dark": true, "debug_only": true, "map": [2, 1] },
+    "fall_r4": { "name_key": "I5_FL_R4", "theme": "freefall", "music": "island5_boss_p1", "dark": true, "debug_only": true, "map": [3, 1] }
+  },
+  "sfx": {
+    "fl_chain_whip": { "id": "harbor_creak",     "pitch": 0.88, "db": -1.5 },
+    "fl_dome_lock":  { "id": "great_lamp_bloom", "pitch": 0.94, "db": 0.0 }
+  }
+}

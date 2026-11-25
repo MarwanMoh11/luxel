@@ -394,7 +394,7 @@
     "exit": "exit_oak_r4_east",
     "start": {
       "keys": {
-        "wick_key_3_1": 1
+        "hollow_oak:wick_key": 1
       },
       "flags": [
         "wick_key_3_1"
@@ -407,6 +407,18 @@
       ]
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          72,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "door_oak_r4_key"
+      },
       {
         "op": "goto",
         "to": [

@@ -1,0 +1,596 @@
+{
+  "id": "masq_r3",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_MASQ_R3",
+  "theme": "masquerade",
+  "music": "isl7_setpiece",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    272,
+    304
+  ],
+  "zones": [
+    {
+      "id": "masq_r3",
+      "name_key": "ISL7_MASQ_R3",
+      "rect": [
+        0,
+        0,
+        544,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_masq_r3_south",
+      "rect": [
+        240,
+        336,
+        64,
+        16
+      ],
+      "to_region": "masq_r2",
+      "to_spawn": [
+        256,
+        56
+      ]
+    },
+    {
+      "id": "exit_masq_r3_north",
+      "rect": [
+        240,
+        0,
+        64,
+        16
+      ],
+      "to_region": "masq_r4",
+      "to_spawn": [
+        272,
+        304
+      ],
+      "locked_door_id": "door_masq_r3_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_masq_r3",
+      "kind": "room_anchor",
+      "pos": [
+        272,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "cotillion_r3_ring",
+      "kind": "masq_cotillion_ring",
+      "pos": [
+        272,
+        176
+      ],
+      "props": {
+        "swap_group": "cotillion",
+        "hollow_id": "dancer_r3_hollow",
+        "shuffle_secs": 9.0,
+        "radii": [
+          44.0,
+          76.0,
+          108.0
+        ]
+      }
+    },
+    {
+      "id": "door_masq_r3_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "dancer_r3_hollow"
+        ]
+      }
+    },
+    {
+      "id": "lamp_m3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        96
+      ],
+      "props": {
+        "zone": "masq_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        96
+      ],
+      "props": {
+        "zone": "masq_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m3_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        256
+      ],
+      "props": {
+        "zone": "masq_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m3_se",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        256
+      ],
+      "props": {
+        "zone": "masq_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "dancer_r3_1",
+      "kind": "masquerade_dancer",
+      "pos": [
+        380,
+        176
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 108.0,
+        "rotor_speed": 0.42
+      }
+    },
+    {
+      "id": "dancer_r3_2",
+      "kind": "masquerade_dancer",
+      "pos": [
+        164,
+        176
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 108.0,
+        "rotor_speed": 0.42
+      }
+    },
+    {
+      "id": "dancer_r3_3",
+      "kind": "masquerade_dancer",
+      "pos": [
+        272,
+        68
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 108.0,
+        "rotor_speed": 0.42
+      }
+    },
+    {
+      "id": "dancer_r3_4",
+      "kind": "masquerade_dancer",
+      "pos": [
+        348,
+        164
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 76.0,
+        "rotor_speed": -0.52
+      }
+    },
+    {
+      "id": "dancer_r3_5",
+      "kind": "masquerade_dancer",
+      "pos": [
+        196,
+        188
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 76.0,
+        "rotor_speed": -0.52
+      }
+    },
+    {
+      "id": "dancer_r3_6",
+      "kind": "masquerade_dancer",
+      "pos": [
+        316,
+        176
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 44.0,
+        "rotor_speed": 0.64
+      }
+    },
+    {
+      "id": "dancer_r3_7",
+      "kind": "masquerade_dancer",
+      "pos": [
+        228,
+        176
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 44.0,
+        "rotor_speed": 0.64
+      }
+    },
+    {
+      "id": "dancer_r3_hollow",
+      "kind": "masquerade_dancer",
+      "pos": [
+        272,
+        252
+      ],
+      "props": {
+        "role": "hollow",
+        "shadow_mode": "black_lantern",
+        "rounds": 3,
+        "swap_group": "cotillion",
+        "rotor_center": [
+          272,
+          176
+        ],
+        "rotor_radius": 76.0,
+        "rotor_speed": -0.52,
+        "reveal_flag": "masq_r3_done",
+        "persist": true,
+        "target_id": "door_masq_r3_north"
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        176
+      ],
+      "radius": 112,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "plum"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        176
+      ],
+      "radius": 78,
+      "style": "mosaic",
+      "color": "ice",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        176
+      ],
+      "radius": 46,
+      "style": "mosaic",
+      "color": "rose",
+      "secondary": "cream"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        128
+      ],
+      "size": [
+        48,
+        96
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_masquerade",
+      "prop": "velvet_rosette_arch",
+      "pos": [
+        272,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_floor_crest",
+      "pos": [
+        272,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        120,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        424,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        120,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        424,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        72,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        472,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "ballroom_curtain_drape",
+      "pos": [
+        72,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "ballroom_curtain_drape",
+      "pos": [
+        472,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "silver_chime_mobile",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "silver_chime_mobile",
+      "pos": [
+        336,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.75
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_m3_unmask",
+      "on": "signal:dancer_r3_hollow",
+      "once": true,
+      "do": [
+        {
+          "shake": 0.3
+        },
+        {
+          "sfx": "masq_glass_crack"
+        },
+        {
+          "narrate": "ISL7_MASQ_R3_UNMASK"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Three nested counter-rotating Cotillion rings spin seven masked decoys and Hollow Wick; every 9s the chandelier dims and shuffles everyone\u2014unmask the ONE shadow holding a Black Lantern three times.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Tracks Hollow Wick's black-lantern shadow across three rotating rings and 0.8s blackout shuffles while dashing clear of his telegraphed riposte waves.",
+    "decisions": 9,
+    "expert_s": 75,
+    "reward": "masq_r3_done+cotillion_unmask",
+    "why": "Signature astonishing set-piece climax of The Masquerade unmasking Hollow Wick onstage.",
+    "exit": "exit_masq_r3_north",
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          272,
+          288
+        ],
+        "target": "dancer_r3_hollow"
+      },
+      {
+        "op": "wait",
+        "secs": 1.1
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          256
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "shoot",
+        "target": "dancer_r3_hollow"
+      },
+      {
+        "op": "wait",
+        "secs": 1.1
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          240
+        ],
+        "tol": 20.0
+      },
+      {
+        "op": "shoot",
+        "target": "dancer_r3_hollow"
+      },
+      {
+        "op": "expect",
+        "flag": "masq_r3_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_masq_r3_north"
+      }
+    ]
+  }
+}

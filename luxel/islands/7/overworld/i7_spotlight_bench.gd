@@ -40,7 +40,6 @@ func interact(_actor: Node = null) -> bool:
 		var emax: float = w.move_sunflare.get_ember_max() if w.move_sunflare != null else 100.0
 		w.ember = maxf(w.ember, emax)
 	if Lx.state != null:
-		Lx.state.ember = maxf(Lx.state.ember, Lx.state.max_ember)
 		Lx.state.hearts = minf(Lx.state.max_hearts, Lx.state.hearts + 1.0)
 	_emit_sfx("shrine_unlock")
 	_emit_gust(48.0, 36.0)

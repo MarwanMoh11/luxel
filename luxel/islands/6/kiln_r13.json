@@ -1,0 +1,226 @@
+{
+  "id": "kiln_r13",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "island6_dungeon",
+  "ambience": ["forge_rumble", "wind_howl"],
+  "name_key": "ISL6_KILN_R13",
+  "spawn": [112, 240],
+  "zones": [
+    { "id": "kiln_r13", "name_key": "ISL6_KILN_R13", "rect": [0, 0, 480, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r13_south",
+      "rect": [96, 272, 32, 16],
+      "to_region": "kiln_r12",
+      "to_spawn": [224, 48],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r13_chute",
+      "rect": [400, 272, 32, 16],
+      "to_region": "kiln_r11",
+      "to_spawn": [352, 88],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": ["kiln_cast_west"],
+      "locked_door_id": "door_kiln_r13_chute"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_kiln_r13_wasp1",
+      "kind": "smelter_wasp",
+      "pos": [168, 88],
+      "zone": "kiln_r13",
+      "leash": 120
+    },
+    {
+      "id": "en_kiln_r13_wasp2",
+      "kind": "smelter_wasp",
+      "pos": [304, 200],
+      "zone": "kiln_r13",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_kiln_r13",
+      "kind": "room_anchor",
+      "pos": [80, 224],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anvil_kiln_r13_skip",
+      "kind": "temper_anvil",
+      "pos": [56, 144],
+      "props": { "mode": "skip", "sets_flag": "temper_skip_known" }
+    },
+    {
+      "id": "gauge_kiln_r13",
+      "kind": "kiln_damper_gauge",
+      "pos": [56, 80],
+      "props": {}
+    },
+    {
+      "id": "wind_r13_w",
+      "kind": "wind_zone",
+      "pos": [160, 144],
+      "props": { "size": [96, 48], "dir": "e", "strength": 48.0, "needs_var": "kiln_heat==surge" }
+    },
+    {
+      "id": "wind_r13_e",
+      "kind": "wind_zone",
+      "pos": [304, 144],
+      "props": { "size": [96, 48], "dir": "e", "strength": 48.0, "needs_var": "kiln_heat==surge" }
+    },
+    {
+      "id": "grate_r13_n",
+      "kind": "grate",
+      "pos": [400, 48],
+      "props": { "size": [16, 32] }
+    },
+    {
+      "id": "coupler_r13_n",
+      "kind": "car_coupler",
+      "pos": [424, 56],
+      "props": { "lock_type": "bank", "target_id": "gate_r13_clamp", "persist": true }
+    },
+    {
+      "id": "grate_r13_s",
+      "kind": "grate",
+      "pos": [400, 232],
+      "props": { "size": [16, 32] }
+    },
+    {
+      "id": "coupler_r13_s",
+      "kind": "car_coupler",
+      "pos": [424, 224],
+      "props": { "lock_type": "bank", "target_id": "gate_r13_clamp", "persist": true }
+    },
+    {
+      "id": "gate_r13_clamp",
+      "kind": "logic_gate",
+      "pos": [432, 104],
+      "props": {
+        "op": "all",
+        "inputs": ["coupler_r13_n", "coupler_r13_s"],
+        "target_id": "door_kiln_r13_clamp",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_kiln_r13_clamp",
+      "kind": "door",
+      "pos": [392, 144],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [16, 64],
+        "requires_signals": ["gate_r13_clamp"]
+      }
+    },
+    {
+      "id": "pull_r13_clamp_w",
+      "kind": "pull_ring",
+      "pos": [432, 144],
+      "props": { "axis": "w", "dist": 24.0, "latch": true, "target_id": "door_kiln_r13_chute", "persist": true }
+    },
+    {
+      "id": "kiln_cast_key_1",
+      "kind": "wick_key",
+      "pos": [432, 184],
+      "props": { "dungeon_id": "great_kiln", "key_kind": "wick_key", "flag_id": "kiln_cast_key_1" }
+    },
+    {
+      "id": "door_kiln_r13_chute",
+      "kind": "door",
+      "pos": [416, 256],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [32, 16],
+        "requires_signals": ["pull_r13_clamp_w"],
+        "sets_flag": "kiln_cast_west"
+      }
+    },
+    { "id": "lamp_kr13_1", "kind": "road_lamp", "pos": [48, 224], "props": { "lit": true } },
+    { "id": "lamp_kr13_2", "kind": "road_lamp", "pos": [232, 112], "props": { "lit": true } },
+    { "id": "lamp_kr13_3", "kind": "road_lamp", "pos": [232, 176], "props": { "lit": true } },
+    { "id": "lamp_kr13_4", "kind": "road_lamp", "pos": [368, 104], "props": { "lit": true } },
+    { "id": "lamp_kr13_5", "kind": "road_lamp", "pos": [368, 192], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "grate", "rect": [32, 112, 64, 64], "glow": true },
+    { "kind": "grate", "rect": [208, 112, 48, 64], "glow": true },
+    { "kind": "inlay", "rect": [368, 112, 80, 80] }
+  ],
+  "scenery": [
+    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [48, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_forge_deep", "prop": "great_forge_anvil", "pos": [80, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_forge_deep", "prop": "slag_chimney_vent", "pos": [232, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
+    { "sheet": "theme_forge_deep", "prop": "chained_slag_cauldron", "pos": [232, 240], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
+    { "sheet": "theme_forge_deep", "prop": "foundry_crane_hook", "pos": [432, 104], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.2 }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "heat_surge",
+      "when": "kiln_heat==surge",
+      "tiles": [
+        [7, 8, 6, 2, "bridge"],
+        [16, 8, 6, 2, "bridge"]
+      ],
+      "enable": ["wind_r13_w", "wind_r13_e"],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r13_clamp_w",
+      "on": "signal:pull_r13_clamp_w",
+      "once": true,
+      "do": [
+        { "set_flag": "kiln_cast_west" },
+        { "set_flag": "kiln_r13_chute" },
+        { "narrate": "ISL6_KILN_CLAMP_W" },
+        { "shake": 0.18 }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Thermal Bridge Foundry: under kiln_heat==surge, ride thermal updraft bridges across twin lava canyons, clear two Smelter Wasps, bank twin Skip bolts off the north and south crucible hoods to unlock the West Casting Clamp, claim kiln_cast_key_1, and drop straight back to kiln_r11 via Cycle 5.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Surge thermal updraft crossing + dual Skip wall-bank uncoupling + West Casting Clamp release.",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "kiln_cast_west+kiln_cast_key_1+chute_r11",
+    "why": "West Casting Wing climax releasing the West Casting Clamp and awarding Casting Key #1.",
+    "exit": "exit_kiln_r13_chute",
+    "start": { "vars": { "kiln_heat": "surge" }, "flags": ["kiln_r12_cast"] },
+    "solution": [
+      { "op": "goto", "to": [56, 162], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_kiln_r13_skip" },
+      { "op": "expect", "var": "wick_temper==skip" },
+      { "op": "goto", "to": [232, 144], "tol": 8.0 },
+      { "op": "clear", "timeout": 30.0 },
+      { "op": "goto", "to": [368, 56], "tol": 4.0 },
+      { "op": "shoot", "target": [396, 16], "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "coupler_r13_n", "prop": "uncoupled", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [368, 224], "tol": 4.0 },
+      { "op": "shoot", "target": [396, 272], "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "door_kiln_r13_clamp", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [392, 144], "tol": 6.0 },
+      { "op": "throw", "target": "pull_r13_clamp_w", "hold": 0.35 },
+      { "op": "recall" },
+      { "op": "wait_until", "target": "door_kiln_r13_chute", "prop": "opened", "value": true, "timeout": 3.0 },
+      { "op": "goto", "to": [432, 184], "tol": 6.0 },
+      { "op": "interact", "target": "kiln_cast_key_1" },
+      { "op": "expect", "flag": "kiln_cast_west" },
+      { "op": "expect_exit", "exit": "exit_kiln_r13_chute" }
+    ]
+  }
+}

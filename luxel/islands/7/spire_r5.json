@@ -31,7 +31,7 @@
       ],
       "to_region": "spire_r4",
       "to_spawn": [
-        344,
+        336,
         136
       ],
       "requires_moves": [],
@@ -68,7 +68,7 @@
       ],
       "to_region": "spire_r1",
       "to_spawn": [
-        136,
+        144,
         192
       ],
       "requires_moves": [],
@@ -76,6 +76,23 @@
         "spire_r5_portal_lit"
       ],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r5_south",
+      "rect": [
+        304,
+        240,
+        48,
+        16
+      ],
+      "to_region": "spire_r12",
+      "to_spawn": [
+        240,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r5_south"
     }
   ],
   "enemies": [],
@@ -204,6 +221,76 @@
           "switch_eye_spire_r5_east"
         ]
       }
+    },
+    {
+      "id": "pool_spire_r5",
+      "kind": "moon_pool",
+      "pos": [
+        288,
+        192
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 15,
+        "persist": true,
+        "target_id": "door_spire_r5_south"
+      }
+    },
+    {
+      "id": "door_spire_r5_south",
+      "kind": "door",
+      "pos": [
+        328,
+        232
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "pool_spire_r5"
+        ]
+      }
+    },
+    {
+      "id": "lamp_spire_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "zone": "spire_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r5_c",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        104
+      ],
+      "props": {
+        "zone": "spire_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r5_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        120
+      ],
+      "props": {
+        "zone": "spire_r5",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -329,5 +416,85 @@
       "phase": 0.65
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R5",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        192
+      ],
+      "radius": 24,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "rose"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Grand Refraction Hall combining Solar Beam bramble clearing, Sunflare obsidian shattering, dual Blue-Transformer eye banks, r1 portal shortcut, and a Moon Pool unsealing the South Black Stair to spire_r12.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Synthesizes Beam, Sunflare, Blue Transformation, and Silver/Black branching toward either Moonshade Warden (E) or Kaleidoscope Duchess (S).",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "r1_portal_short+open_r6+r12_stair",
+    "why": "Central mid-Spire crossroads with D25a spawn fixes and Rehearsal Vault branch.",
+    "start": {
+      "vars": {
+        "world_face": "silver"
+      }
+    },
+    "exit": "exit_spire_r5_south",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          136
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          176,
+          136
+        ],
+        "target": "bramble_spire_r5_baffle"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          192
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "pool_spire_r5"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r5_south"
+      }
+    ]
+  }
 }

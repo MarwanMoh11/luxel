@@ -1,0 +1,612 @@
+{
+  "id": "spire_r12",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R12",
+  "theme": "doppel_theatre",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    48
+  ],
+  "zones": [
+    {
+      "id": "spire_r12",
+      "name_key": "ISL7_SP_R12",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r12_north",
+      "rect": [
+        208,
+        0,
+        64,
+        16
+      ],
+      "to_region": "spire_r5",
+      "to_spawn": [
+        320,
+        200
+      ]
+    },
+    {
+      "id": "exit_spire_r12_east",
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
+      "to_region": "spire_r13",
+      "to_spawn": [
+        56,
+        176
+      ],
+      "requires_flags": [
+        "wick_key_7_3"
+      ],
+      "locked_door_id": "door_spire_r12_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "pup_r12_1",
+      "kind": "puppet",
+      "pos": [
+        104,
+        144
+      ],
+      "route": [
+        [
+          88,
+          144
+        ],
+        [
+          136,
+          144
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r12",
+      "leash": 130
+    },
+    {
+      "id": "pup_r12_2",
+      "kind": "puppet",
+      "pos": [
+        352,
+        240
+      ],
+      "route": [
+        [
+          320,
+          240
+        ],
+        [
+          384,
+          240
+        ]
+      ],
+      "perches": [],
+      "zone": "spire_r12",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_n",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        48
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mask_r12_dash",
+      "kind": "mask_plinth",
+      "pos": [
+        240,
+        152
+      ],
+      "props": {
+        "act": 2,
+        "steals": [
+          "dash"
+        ],
+        "mask_icon": "dash",
+        "release_flag": "spire_r12_solved",
+        "hp": 2.5,
+        "auto_steal": true,
+        "breakable": true,
+        "interact_reclaim": true,
+        "persist": true,
+        "target_id": "gate_r12_vault"
+      }
+    },
+    {
+      "id": "emit_r12_blue",
+      "kind": "beam_emitter",
+      "pos": [
+        56,
+        80
+      ],
+      "props": {
+        "dir": [
+          1,
+          0
+        ],
+        "color": "gold"
+      }
+    },
+    {
+      "id": "glass_r12_blue",
+      "kind": "color_glass",
+      "pos": [
+        112,
+        80
+      ],
+      "props": {
+        "color": "gold",
+        "cycles_color": true,
+        "solid": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "bs_r12_blue",
+      "kind": "beam_sensor",
+      "pos": [
+        400,
+        80
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r12_vault"
+      }
+    },
+    {
+      "id": "emit_r12_rose",
+      "kind": "beam_emitter",
+      "pos": [
+        56,
+        232
+      ],
+      "props": {
+        "dir": [
+          1,
+          0
+        ],
+        "color": "gold"
+      }
+    },
+    {
+      "id": "glass_r12_rose",
+      "kind": "color_glass",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "color": "gold",
+        "cycles_color": true,
+        "solid": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "bs_r12_rose",
+      "kind": "beam_sensor",
+      "pos": [
+        400,
+        232
+      ],
+      "props": {
+        "color": "rose",
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r12_vault"
+      }
+    },
+    {
+      "id": "rose_r12_echo",
+      "kind": "echo_rose",
+      "pos": [
+        208,
+        256
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "plate_r12_stage",
+      "kind": "pressure_plate",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "block",
+          "lantern"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r12_vault"
+      }
+    },
+    {
+      "id": "gate_r12_vault",
+      "kind": "logic_gate",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bs_r12_blue",
+          "bs_r12_rose",
+          "plate_r12_stage",
+          "mask_r12_dash"
+        ],
+        "sets_flag": "spire_r12_solved",
+        "persist": true,
+        "target_id": "door_r12_key_vault"
+      }
+    },
+    {
+      "id": "door_r12_key_vault",
+      "kind": "door",
+      "pos": [
+        368,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r12_vault"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_7_3",
+      "kind": "wick_key",
+      "pos": [
+        396,
+        152
+      ],
+      "props": {
+        "dungeon_id": "mirror_spire",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_7_3"
+      }
+    },
+    {
+      "id": "door_spire_r12_east",
+      "kind": "door",
+      "pos": [
+        440,
+        152
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "mirror_spire",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_7_3"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_n",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        56
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        112
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        200
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        256
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r12_c",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        192
+      ],
+      "props": {
+        "zone": "spire_r12",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        216,
+        24,
+        48,
+        256
+      ],
+      "color": "wine",
+      "border": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 32,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "rose"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "proscenium_mask_arch",
+      "pos": [
+        240,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        64,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        48,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        432,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        160,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        320,
+        288
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        424,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "design": {
+    "idea": "Rehearsal Vault fusing Theatre and Spire: a room-only Mask Plinth steals Dash while you clear Puppets, tune twin Blue and Rose stained-glass beams, and shatter the Mask for Spire Key 3.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combines dash-less puppet cord cutting, dual chromatic glass filtering, Echo Rose stage staging, and Mask Plinth reclamation for wick_key_7_3.",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "wick_key_7_3+open_duchess",
+    "why": "Escalates Doppel Theatre move-theft inside the Mirror Spire before Mini-Boss #2 Kaleidoscope Duchess.",
+    "exit": "exit_spire_r12_east",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          100
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "glass_r12_blue"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          212
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "glass_r12_rose"
+      },
+      {
+        "op": "interact",
+        "target": "glass_r12_rose"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          272
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_r12_stage",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          176
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "mask_r12_dash"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          396,
+          152
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_7_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          152
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "door_spire_r12_east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r12_east"
+      }
+    ]
+  }
+}

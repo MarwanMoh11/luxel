@@ -66,6 +66,7 @@
         "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": true,
+        "step_flip": true,
         "carry_bridge": true,
         "radius_px": 16,
         "persist": false
@@ -354,7 +355,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "cmt_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Curved tidal sea-cave where carrying a Silver Light Orb across the central Moon Pool raises the Black obsidian bridge to latch the West vault socket.",
     "kind": "puzzle",
@@ -365,9 +381,6 @@
     "reward": "ember_7_tide+moth_7_03",
     "why": "Signature overworld Moon Pool + Carry Orb cave off Silver Quay.",
     "start": {
-      "vars": {
-        "world_face": "silver"
-      },
       "flags": [
         "item_moon_pocket"
       ]
@@ -380,8 +393,16 @@
         "action": "pickup"
       },
       {
-        "op": "interact",
-        "target": "pool_cmt_center"
+        "op": "goto",
+        "to": [
+          216,
+          152
+        ],
+        "tol": 6
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",
@@ -412,8 +433,16 @@
         "target": "chest_ember_7_tide"
       },
       {
-        "op": "interact",
-        "target": "pool_cmt_center"
+        "op": "goto",
+        "to": [
+          216,
+          152
+        ],
+        "tol": 6
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",

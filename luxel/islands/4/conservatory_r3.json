@@ -64,46 +64,66 @@
       "kind": "lily_hopper",
       "pos": [
         200,
-        104
+        96
       ],
       "route": [
         [
-          184,
-          104
+          168,
+          96
         ],
         [
-          248,
-          120
+          232,
+          96
         ]
       ],
       "perches": [],
       "zone": "conservatory_r3",
-      "leash": 140
+      "leash": 135
     },
     {
       "id": "mire_snuffer_c4_r3",
       "kind": "mire_snuffer",
       "pos": [
-        328,
-        88
+        232,
+        48
       ],
       "route": [],
       "perches": [
         [
-          328,
-          88
-        ],
-        [
           232,
-          56
+          48
         ],
         [
-          360,
-          136
+          168,
+          48
+        ],
+        [
+          208,
+          120
         ]
       ],
       "zone": "conservatory_r3",
-      "leash": 150
+      "leash": 145
+    },
+    {
+      "id": "petal_duelist_c4_r3",
+      "kind": "petal_duelist",
+      "pos": [
+        112,
+        88
+      ],
+      "route": [
+        [
+          96,
+          88
+        ],
+        [
+          136,
+          120
+        ]
+      ],
+      "zone": "conservatory_r3",
+      "leash": 130
     }
   ],
   "interactables": [
@@ -126,178 +146,190 @@
           "c4_r3_cleared"
         ]
       }
+    },
+    {
+      "id": "lamp_c4_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
-      "pos": [
-        200,
-        128
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        348,
-        72
+        168,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        348,
+        288,
         144
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        132,
-        196
+        144,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        216,
-        196
+        336,
+        112
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
+      "prop": "mossy_planter_urn",
       "pos": [
-        48,
-        36
+        200,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        84,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        272,
-        68
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        40,
-        204
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        248,
-        180
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        252,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.9
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        368,
-        204
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        376,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        368,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.75
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R3",
+  "music": "island4_dungeon",
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r3_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_r3_cleared"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        216,
+        120
+      ],
+      "radius": 28,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        136,
+        152
+      ],
+      "radius": 18,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        104
+      ],
+      "size": [
+        60,
+        32
+      ],
+      "tint": "cool",
+      "shear": 0.45
+    }
+  ],
+  "design": {
+    "idea": "Diagonal Trench Combat Court deepened: 3-role arena pairing a Petal Duelist, Lily Hopper, and Mire Snuffer across a central cover bridge.",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Managing a parrying Petal Duelist alongside a lantern-snuffing Mire Snuffer and Lily Hopper",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "c4_r3_cleared, 30 shards",
+    "why": "Escalates Conservatory combat with Island 4's new Petal Duelist while fixing D25b spawn safety.",
+    "exit": "exit_c4_r3_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          152
+        ],
+        "tol": 12
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r3_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r3_east"
+      }
+    ]
+  }
 }

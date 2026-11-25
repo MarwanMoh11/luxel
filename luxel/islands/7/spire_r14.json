@@ -1,0 +1,625 @@
+{
+  "id": "spire_r14",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R14",
+  "theme": "inverted_palace_silver",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    192,
+    304
+  ],
+  "zones": [
+    {
+      "id": "spire_r14",
+      "name_key": "ISL7_SP_R14",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r14_south",
+      "rect": [
+        160,
+        336,
+        64,
+        16
+      ],
+      "to_region": "spire_r7",
+      "to_spawn": [
+        208,
+        48
+      ]
+    },
+    {
+      "id": "exit_spire_r14_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "spire_r15",
+      "to_spawn": [
+        432,
+        160
+      ],
+      "locked_door_id": "door_spire_r14_west"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_r14_s",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "avatar_r14",
+      "kind": "mirror_avatar",
+      "pos": [
+        304,
+        304
+      ],
+      "props": {
+        "axis": "x",
+        "pivot": [
+          248,
+          176
+        ],
+        "fires_mirror_bolts": true,
+        "mirror_world": "opposite",
+        "range": 480
+      }
+    },
+    {
+      "id": "pool_r14",
+      "kind": "moon_pool",
+      "pos": [
+        192,
+        176
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "rose_r14",
+      "kind": "echo_rose",
+      "pos": [
+        104,
+        176
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "portal_r14_w",
+      "kind": "blue_portal",
+      "pos": [
+        192,
+        224
+      ],
+      "props": {
+        "target_portal_id": "portal_r14_e",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r14_e",
+      "kind": "blue_portal",
+      "pos": [
+        304,
+        224
+      ],
+      "props": {
+        "target_portal_id": "portal_r14_w",
+        "requires_blue": false,
+        "starts_powered": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "sw_r14_q1",
+      "kind": "switch_eye",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "gate_r14_nave"
+      }
+    },
+    {
+      "id": "sw_r14_q2",
+      "kind": "switch_eye",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "requires_prism": true,
+        "requires_blue": true,
+        "target_id": "gate_r14_nave"
+      }
+    },
+    {
+      "id": "glass_r14_sw",
+      "kind": "color_glass",
+      "pos": [
+        136,
+        272
+      ],
+      "props": {
+        "color": "blue",
+        "solid": true
+      }
+    },
+    {
+      "id": "sw_r14_q3",
+      "kind": "switch_eye",
+      "pos": [
+        88,
+        272
+      ],
+      "props": {
+        "requires_prism": true,
+        "requires_blue": true,
+        "target_id": "gate_r14_nave"
+      }
+    },
+    {
+      "id": "mirror_r14_se",
+      "kind": "blue_transformer",
+      "pos": [
+        392,
+        232
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sw_r14_q4",
+      "kind": "switch_eye",
+      "pos": [
+        392,
+        280
+      ],
+      "props": {
+        "requires_prism": true,
+        "requires_blue": true,
+        "target_id": "gate_r14_nave"
+      }
+    },
+    {
+      "id": "gate_r14_nave",
+      "kind": "logic_gate",
+      "pos": [
+        128,
+        176
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_r14_q1",
+          "sw_r14_q2",
+          "sw_r14_q3",
+          "sw_r14_q4"
+        ],
+        "sets_flag": "spire_r14_solved",
+        "persist": true,
+        "target_id": "door_spire_r14_west"
+      }
+    },
+    {
+      "id": "door_spire_r14_west",
+      "kind": "door",
+      "pos": [
+        32,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_r14_nave"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r14_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_ne",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        56
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        240
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_se",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        240
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_cw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r14_ce",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "zone": "spire_r14",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        176
+      ],
+      "radius": 28,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        176
+      ],
+      "radius": 28,
+      "style": "mosaic",
+      "color": "rose",
+      "secondary": "ice"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        168,
+        256,
+        48,
+        72
+      ],
+      "color": "deep",
+      "border": "ice"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        80,
+        144
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        328,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        192,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        304,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        48,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        464,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        48,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        464,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r14_chord",
+      "on": "signal:gate_r14_nave",
+      "once": true,
+      "do": [
+        {
+          "sfx": "spire_nave_chord"
+        },
+        {
+          "narrate": "ISL7_SP_NAVE_CHORD"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Grand vertical glass cathedral where Wick walks in SILVER (west) and Mirror Avatar walks in BLACK (east); invert BOTH worlds mid-chord via the Moon Pool to chime all four cross-world harmonic switches.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Synchronizes opposite-world Mirror Avatar shooting, Moon Pool double-inversion, Blue Glass tinting, and mirrored transformer banking.",
+    "decisions": 12,
+    "expert_s": 65,
+    "reward": "spire_r14_solved+open_fake_bell_isle",
+    "why": "Grand Dungeon astonishing signature puzzle leading into The Counterfeit Bell Isle.",
+    "start": {
+      "vars": {
+        "world_face": "silver"
+      }
+    },
+    "exit": "exit_spire_r14_west",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          136,
+          136
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          136
+        ],
+        "target": "sw_r14_q1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          136
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          88,
+          136
+        ],
+        "target": [
+          88,
+          48
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          176
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "interact",
+        "target": "pool_r14"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          272
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          272
+        ],
+        "target": "sw_r14_q3"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          232
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          160,
+          232
+        ],
+        "target": [
+          64,
+          232
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.55
+      },
+      {
+        "op": "expect",
+        "flag": "spire_r14_solved"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r14_west"
+      }
+    ]
+  }
+}

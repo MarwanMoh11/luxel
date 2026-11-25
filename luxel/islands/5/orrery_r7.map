@@ -1,4 +1,4 @@
-# The Orrery r7 - Sho: Starlight Labyrinth (29x18)
+# orrery_r7 - Cloaked Mirror Rift (29x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -14,20 +14,20 @@ LEGEND + bridge
 LEGEND G mirror
 MAP
 ###########,,################
-#__OOOOPPP#,,####OOOOOOOO___#
-#O.....POP#,,####OOOOOOOO___#
-#O.....OOP.,,..##OOOOOOOO___#
-#O.....OOOOOOOO##OOOOOO.....#
-#OOPOOOOOOOOOOOOOOOOPPP.....#
-#OOPPPO....OOOO##OOOPOO.,,,,,
-#OOOOPP.,,.OOOO##OOPPOO.,,,,,
-#OOOOO#....OOOO##OOPO##.,,,,,
-#OOOOO#OOPOOOOO##OOPO##.....#
-#OOOOOOOPPOOOOOOO....##.....#
-#OOOOOOPPOOOOOOPP.,,.##.....#
-#OOOOPPPOOOO..OPO....##.....#
-#O....OOOOOO..PPOOOOOOOOOOOO#
-#O.,,.OOOOPP..OOOOOOOOOO____#
-#O.,,.OOPPPOOOOOOOOOOOOO____#
-#O....PPPOOOOOOOOOOOOOOO____#
-#############################
+#__OOOOOOO#,,##OOOOOOOOOO___#
+#O.....OOO#,,##OOOOOOOOOO___#
+#O.....PPP.,,..OOOOOOOOOO___#
+#O.....OOO.,,..OOOOOOOOOO___#
+#O.....OOO.PP..OOOOOPPP.....#
+#O.....PP..PPOOOOOOOPOO.,,,,,
+#OOPPOOPP.,,.OOOOOOOPOO.,,,,,
+#OOPPOOOO....OOOOOOOPOO.,,,,,
+#OOPPOOOOOOOPPOOOOOOPOO.....#
+#OOPPOOOOOOOPPOOO....OO.....#
+#OOPPOOOOOOOOPPPP.,,.OO.....#
+#O.....OOOOPOOOOO....OO.....#
+#O.,,..OOOOPOOOOOOOOOOO.....#
+#O.,,..PPPPPOOOOOOOOOOO.,,..#
+#O.....OOOOOOOOOOOOOOOO.,,..#
+#OOOOOOOOOOOOOOOOOOOOOOO,,__#
+########################,,###

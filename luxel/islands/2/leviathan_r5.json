@@ -459,7 +459,7 @@
       {
         "op": "rotate",
         "target": "raft_lev_r5_1",
-        "angle": 45.0
+        "steps": 1
       },
       {
         "op": "goto",
@@ -471,7 +471,7 @@
       {
         "op": "rotate",
         "target": "raft_lev_r5_2",
-        "angle": 225.0
+        "steps": 1
       },
       {
         "op": "shoot",

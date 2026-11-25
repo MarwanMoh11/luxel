@@ -31,7 +31,7 @@
       ],
       "to_region": "spire_r7",
       "to_spawn": [
-        72,
+        80,
         120
       ],
       "requires_moves": [],
@@ -54,6 +54,40 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_spire_r8_west"
+    },
+    {
+      "id": "exit_spire_r8_north",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_region": "spire_r15",
+      "to_spawn": [
+        240,
+        264
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_spire_r8_ne",
+      "rect": [
+        336,
+        0,
+        48,
+        16
+      ],
+      "to_region": "spire_r17",
+      "to_spawn": [
+        368,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_spire_r8_ne"
     }
   ],
   "enemies": [
@@ -63,16 +97,16 @@
       "variant": "moonshade_warden",
       "pos": [
         216,
-        120
+        152
       ],
       "route": [
         [
-          160,
-          120
+          168,
+          152
         ],
         [
-          280,
-          120
+          264,
+          152
         ]
       ],
       "perches": [],
@@ -84,22 +118,22 @@
       "kind": "moonshade_snatcher",
       "variant": "moonshade_snatcher",
       "pos": [
-        152,
-        168
+        168,
+        184
       ],
       "route": [],
       "perches": [
         [
-          152,
-          168
-        ],
-        [
           168,
-          72
+          184
         ],
         [
-          312,
-          168
+          248,
+          184
+        ],
+        [
+          192,
+          136
         ]
       ],
       "zone": "spire_r8",
@@ -110,22 +144,22 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        312,
-        104
+        296,
+        144
       ],
       "route": [],
       "perches": [
         [
-          312,
-          104
-        ],
-        [
-          144,
-          152
+          296,
+          144
         ],
         [
           232,
-          88
+          168
+        ],
+        [
+          312,
+          176
         ]
       ],
       "zone": "spire_r8",
@@ -187,34 +221,78 @@
         "clear_zone": "spire_r8",
         "sets_flag": "spire_r8_cleared"
       }
+    },
+    {
+      "id": "pool_spire_r8",
+      "kind": "moon_pool",
+      "pos": [
+        216,
+        120
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "door_spire_r8_ne",
+      "kind": "door",
+      "pos": [
+        360,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          48,
+          16
+        ],
+        "clear_zone": "spire_r8",
+        "sets_flag": "spire_r8_cleared"
+      }
+    },
+    {
+      "id": "lamp_spire_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "zone": "spire_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r8_c",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        88
+      ],
+      "props": {
+        "zone": "spire_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        120
+      ],
+      "props": {
+        "zone": "spire_r8",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        328,
-        40
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        104,
-        192
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
     {
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
@@ -336,5 +414,56 @@
       "phase": 0.15
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R8",
+  "music": "island7_dungeon",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        120
+      ],
+      "radius": 32,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "rose"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Upper Spire garrison uniting Moonshade Warden, Snatcher, and Owl around a central Moon Pool, receiving the Counterfeit Bell Isle descent (N) and unlocking both Keeper's Reliquary (W) and the Optical Tempering Vault (NE).",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "High-tempo 3-role arena using Blue-bank cover and Moon Pool sightlines.",
+    "decisions": 6,
+    "expert_s": 55,
+    "reward": "spire_r8_cleared+r17_arch",
+    "why": "Penultimate Spire combat convergence with D25a spawn fix and r15/r17 loop links.",
+    "exit": "exit_spire_r8_west",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "expect",
+        "flag": "spire_r8_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r8_west"
+      }
+    ]
+  }
 }

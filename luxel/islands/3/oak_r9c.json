@@ -172,8 +172,8 @@
       "id": "lamp_r9c_e",
       "kind": "road_lamp",
       "pos": [
-        312,
-        112
+        320,
+        128
       ],
       "props": {
         "lit": true
@@ -206,7 +206,7 @@
       "prop": "glow_spore_cluster",
       "pos": [
         64,
-        80
+        128
       ],
       "layer": "sort",
       "shadow": true

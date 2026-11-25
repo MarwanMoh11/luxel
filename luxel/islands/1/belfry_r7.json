@@ -334,6 +334,15 @@
     "reward": "great_lamp_1+full_heart_1",
     "why": "Climax of Island 1's Grand Belfry and relighting of Bell Isle.",
     "optional": true,
+    "start": {
+      "hearts": 8,
+      "flags": [
+        "item_echo_clapper",
+        "item_shutter_hood",
+        "undercroft_cleared",
+        "manor_cleared"
+      ]
+    },
     "exit": "exit_r7_south",
     "solution": [
       {

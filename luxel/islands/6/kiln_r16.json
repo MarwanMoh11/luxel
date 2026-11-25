@@ -1,0 +1,281 @@
+{
+  "id": "kiln_r16",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "island6_dungeon",
+  "ambience": ["forge_rumble"],
+  "name_key": "ISL6_KILN_R16",
+  "spawn": [144, 232],
+  "zones": [
+    { "id": "kiln_r16", "name_key": "ISL6_KILN_R16", "rect": [0, 0, 512, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r16_south",
+      "rect": [128, 272, 32, 16],
+      "to_region": "kiln_r15",
+      "to_spawn": [256, 48],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r16_sw",
+      "rect": [64, 272, 32, 16],
+      "to_region": "kiln_r11",
+      "to_spawn": [384, 48],
+      "requires_moves": [],
+      "requires_flags": ["kiln_cast_east"],
+      "locked_door_id": "door_kiln_r16_short"
+    },
+    {
+      "id": "exit_kiln_r16_west",
+      "rect": [0, 48, 16, 48],
+      "to_region": "kiln_r17",
+      "to_spawn": [432, 144],
+      "requires_moves": ["lens", "sunflare"],
+      "requires_flags": ["kiln_cast_east", "kiln_cast_key_2"],
+      "locked_door_id": "door_kiln_r16_west"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_kiln_r16",
+      "kind": "room_anchor",
+      "pos": [120, 232],
+      "props": { "auto": true }
+    },
+    {
+      "id": "lever_r16_damper",
+      "kind": "state_lever",
+      "pos": [64, 192],
+      "props": {
+        "scope": "dungeon:great_kiln",
+        "var": "kiln_heat",
+        "values": ["low", "surge"],
+        "shootable": true,
+        "persist": true,
+        "prompt_key": "ISL6_PROMPT_DAMPER"
+      }
+    },
+    {
+      "id": "gauge_kiln_r16",
+      "kind": "kiln_damper_gauge",
+      "pos": [120, 176],
+      "props": {}
+    },
+    {
+      "id": "door_kiln_r16_short",
+      "kind": "door",
+      "pos": [80, 256],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [32, 16],
+        "requires_flags": ["kiln_cast_east"]
+      }
+    },
+    {
+      "id": "anvil_r16_scat",
+      "kind": "temper_anvil",
+      "pos": [328, 240],
+      "props": { "mode": "scatter", "sets_flag": "temper_scatter_known" }
+    },
+    {
+      "id": "tb_r16_1",
+      "kind": "timed_brazier",
+      "pos": [440, 184],
+      "props": { "secs": 4.5, "target_id": "gate_r16_q2" }
+    },
+    {
+      "id": "tb_r16_2",
+      "kind": "timed_brazier",
+      "pos": [448, 208],
+      "props": { "secs": 4.5, "target_id": "gate_r16_q2" }
+    },
+    {
+      "id": "tb_r16_3",
+      "kind": "timed_brazier",
+      "pos": [440, 232],
+      "props": { "secs": 4.5, "target_id": "gate_r16_q2" }
+    },
+    {
+      "id": "gate_r16_q2",
+      "kind": "logic_gate",
+      "pos": [472, 248],
+      "props": { "op": "all", "inputs": ["tb_r16_1", "tb_r16_2", "tb_r16_3"], "target_id": "door_r16_q2", "persist": true }
+    },
+    {
+      "id": "door_r16_q2",
+      "kind": "door",
+      "pos": [392, 152],
+      "props": { "door_kind": "switch_door", "size": [48, 16], "requires_signals": ["gate_r16_q2"] }
+    },
+    {
+      "id": "anvil_r16_lance",
+      "kind": "temper_anvil",
+      "pos": [456, 112],
+      "props": { "mode": "lance", "sets_flag": "temper_lance_known" }
+    },
+    {
+      "id": "coupler_r16_arm1",
+      "kind": "car_coupler",
+      "pos": [360, 72],
+      "props": { "lock_type": "armoured", "target_id": "gate_r16_q3", "persist": true }
+    },
+    {
+      "id": "coupler_r16_arm2",
+      "kind": "car_coupler",
+      "pos": [328, 72],
+      "props": { "lock_type": "armoured", "target_id": "gate_r16_q3", "persist": true }
+    },
+    {
+      "id": "gate_r16_q3",
+      "kind": "logic_gate",
+      "pos": [344, 40],
+      "props": { "op": "all", "inputs": ["coupler_r16_arm1", "coupler_r16_arm2"], "target_id": "door_r16_q3", "persist": true }
+    },
+    {
+      "id": "door_r16_q3",
+      "kind": "door",
+      "pos": [280, 72],
+      "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["gate_r16_q3"] }
+    },
+    {
+      "id": "anvil_r16_skip",
+      "kind": "temper_anvil",
+      "pos": [248, 112],
+      "props": { "mode": "skip", "sets_flag": "temper_skip_known" }
+    },
+    {
+      "id": "grate_r16_q4",
+      "kind": "grate",
+      "pos": [208, 40],
+      "props": { "size": [16, 48] }
+    },
+    {
+      "id": "coupler_r16_bank",
+      "kind": "car_coupler",
+      "pos": [184, 56],
+      "props": { "lock_type": "bank", "target_id": "door_r16_q4", "persist": true }
+    },
+    {
+      "id": "door_r16_q4",
+      "kind": "door",
+      "pos": [152, 72],
+      "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["coupler_r16_bank"] }
+    },
+    {
+      "id": "seal_kiln_r16_clamp",
+      "kind": "obsidian_seal",
+      "pos": [112, 72],
+      "props": { "size": [16, 48], "zone": "kiln_r16" }
+    },
+    {
+      "id": "pull_r16_clamp_e",
+      "kind": "pull_ring",
+      "pos": [72, 112],
+      "props": { "axis": "n", "dist": 24.0, "latch": true, "persist": true }
+    },
+    {
+      "id": "door_kiln_r16_west",
+      "kind": "door",
+      "pos": [24, 72],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "size": [16, 48],
+        "requires_flags": ["kiln_cast_east", "kiln_cast_key_2"]
+      }
+    },
+    { "id": "lamp_kr16_1", "kind": "road_lamp", "pos": [80, 224], "props": { "lit": true } },
+    { "id": "lamp_kr16_2", "kind": "road_lamp", "pos": [368, 224], "props": { "lit": true } },
+    { "id": "lamp_kr16_3", "kind": "road_lamp", "pos": [432, 72], "props": { "lit": true } },
+    { "id": "lamp_kr16_4", "kind": "road_lamp", "pos": [240, 72], "props": { "lit": true } },
+    { "id": "lamp_kr16_5", "kind": "road_lamp", "pos": [72, 48], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "grate", "rect": [320, 176, 144, 80], "glow": true },
+    { "kind": "inlay", "rect": [304, 32, 176, 96] },
+    { "kind": "inlay", "rect": [32, 32, 104, 96] },
+    { "kind": "cracks", "pos": [112, 72], "radius": 24, "glow": true }
+  ],
+  "scenery": [
+    { "sheet": "theme_iron_colossus", "prop": "pressure_gauge_dial", "pos": [48, 176], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_iron_colossus", "prop": "riveted_console_desk", "pos": [328, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_iron_colossus", "prop": "hydraulic_piston_pillar", "pos": [464, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_iron_colossus", "prop": "iron_chain_hoist", "pos": [48, 112], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "heat_low",
+      "when": "kiln_heat==low",
+      "tiles": [
+        [10, 12, 8, 3, "phantom"]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r16_clamp_e",
+      "on": "signal:pull_r16_clamp_e",
+      "once": true,
+      "do": [
+        { "set_flag": "kiln_cast_east" },
+        { "narrate": "ISL6_KILN_CLAMP_E" },
+        { "shake": 0.18 }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Twin-Temper Crucible magnum-opus 4-quadrant puzzle: flip kiln_heat to low to expose the 8-tile phantom trench (Lens), light 3 clustered timed braziers in one Scatter fan, pierce twin armoured couplers with Lance, bank a Skip shot off the north wall to drop the inner gate, shatter the obsidian seal with Sunflare, and yank the East Casting Clamp.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Full Island 6 synthesis: Heat Flow + Lens + Scatter + Lance + Skip + Sunflare in one spiral.",
+    "decisions": 12,
+    "expert_s": 60,
+    "reward": "kiln_cast_east+shortcut_r11+open_r17",
+    "why": "Climax puzzle of the Heat-Flow Casting Wing releasing the East Casting Clamp.",
+    "exit": "exit_kiln_r16_west",
+    "start": { "vars": { "kiln_heat": "surge" }, "flags": ["crucible_weaver_defeated", "kiln_cast_key_2"], "keys": { "wick_key": 1 } },
+    "solution": [
+      { "op": "goto", "to": [80, 192], "tol": 4.0 },
+      { "op": "interact", "target": "lever_r16_damper" },
+      { "op": "expect", "var": "kiln_heat==low" },
+      { "op": "goto", "to": [144, 216], "tol": 4.0 },
+      { "op": "lens" },
+      { "op": "goto", "to": [320, 216], "tol": 8.0 },
+      { "op": "goto", "to": [328, 222], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_r16_scat" },
+      { "op": "expect", "var": "wick_temper==scatter" },
+      { "op": "goto", "to": [392, 208], "tol": 4.0 },
+      { "op": "shoot", "target": [448, 208], "count": 2, "wait_hit": 0.30 },
+      { "op": "wait_until", "target": "door_r16_q2", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "goto", "to": [456, 94], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_r16_lance" },
+      { "op": "expect", "var": "wick_temper==lance" },
+      { "op": "goto", "to": [400, 72], "tol": 4.0 },
+      { "op": "shoot", "target": [328, 72], "wait_hit": 0.75 },
+      { "op": "wait_until", "target": "door_r16_q3", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "goto", "to": [248, 94], "tol": 4.0 },
+      { "op": "interact", "target": "anvil_r16_skip" },
+      { "op": "expect", "var": "wick_temper==skip" },
+      { "op": "goto", "to": [240, 56], "tol": 4.0 },
+      { "op": "shoot", "target": [212, 16], "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "door_r16_q4", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "goto", "to": [132, 72], "tol": 6.0 },
+      { "op": "sunflare" },
+      { "op": "wait", "secs": 0.35 },
+      { "op": "goto", "to": [72, 80], "tol": 6.0 },
+      { "op": "throw", "target": "pull_r16_clamp_e", "hold": 0.35 },
+      { "op": "recall" },
+      { "op": "expect", "flag": "kiln_cast_east" },
+      { "op": "expect_exit", "exit": "exit_kiln_r16_west" }
+    ]
+  }
+}

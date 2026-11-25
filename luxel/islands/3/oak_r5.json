@@ -260,7 +260,7 @@
         36
       ],
       "props": {
-        "angle_deg": 135,
+        "angle_deg": 45,
         "rotatable": true,
         "movable": false,
         "angle_step_deg": 45,

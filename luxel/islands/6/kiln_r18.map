@@ -1,0 +1,31 @@
+# Great Kiln r18 - Tempering Sanctuary (28x16)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+############,,,,############
+####OOOOOOOO,,,,OOOOOOOO####
+##OOOOOOOOO,,,,,,OOOOOOOOO##
+#OOOOOOOO..........OOOOOOOO#
+#OOOOOO..............OOOOOO#
+#OOOOO.......,,.......OOOOO#
+#OOOO........,,........OOOO#
+#OOOO....,,,,,,,,,,....OOOO#
+#OOOO....,,,,,,,,,,....OOOO#
+#OOOO........,,........OOOO#
+#OOOOO.......,,.......OOOOO#
+#OOOOOO..............OOOOOO#
+#OOOOOOOO..........OOOOOOOO#
+##OOOOOOOOO,,,,,,OOOOOOOOO##
+####OOOOOOOO,,,,OOOOOOOO####
+############,,,,############

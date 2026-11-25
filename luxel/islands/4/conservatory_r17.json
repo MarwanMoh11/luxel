@@ -1,0 +1,541 @@
+{
+  "id": "conservatory_r17",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_C4_R17",
+  "music": "island4_dungeon",
+  "spawn": [
+    248,
+    280
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r17",
+      "name_key": "ISL4_C4_R17",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r17_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r16",
+      "to_spawn": [
+        216,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r17_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r18",
+      "to_spawn": [
+        200,
+        216
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_canopy_seal"
+      ],
+      "locked_door_id": "door_c4_r17_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anchor_c4_r17",
+      "kind": "room_anchor",
+      "pos": [
+        232,
+        248
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "wheel_c4_r17",
+      "kind": "weather_wheel",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "scope": "room:4:conservatory_r17",
+        "start": "rain",
+        "reset_on_enter": true
+      }
+    },
+    {
+      "id": "updraft_c4_r17_1",
+      "kind": "updraft_vent",
+      "pos": [
+        296,
+        232
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "weather_req": "wind",
+        "dir": [
+          1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r17_2",
+      "kind": "updraft_vent",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "weather_req": "wind",
+        "dir": [
+          0,
+          -1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "rose_c4_r17",
+      "kind": "echo_rose",
+      "pos": [
+        408,
+        232
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "hook_c4_r17",
+      "kind": "lantern_hook",
+      "pos": [
+        72,
+        248
+      ],
+      "props": {
+        "light_radius": 40
+      }
+    },
+    {
+      "id": "emitter_c4_r17",
+      "kind": "beam_emitter",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 0.0,
+        "duty": 1.0,
+        "range": 320,
+        "harms_wick": false
+      }
+    },
+    {
+      "id": "mirror_c4_r17",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "sgate_c4_r17",
+      "kind": "shadow_gate",
+      "pos": [
+        256,
+        96
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "sensor_c4_r17_seal",
+      "kind": "beam_sensor",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "target_ids": [
+          "door_c4_r17_north",
+          "bridge_c4_r17_seal"
+        ],
+        "sets_flag": "c4_canopy_seal"
+      }
+    },
+    {
+      "id": "bridge_c4_r17_seal",
+      "kind": "door",
+      "pos": [
+        408,
+        152
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          48
+        ],
+        "requires_signals": [
+          "sensor_c4_r17_seal"
+        ]
+      }
+    },
+    {
+      "id": "door_c4_r17_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sensor_c4_r17_seal"
+        ],
+        "sets_flag": "c4_canopy_seal"
+      }
+    },
+    {
+      "id": "lamp_c4_r17_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r17_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r17_se",
+      "kind": "road_lamp",
+      "pos": [
+        440,
+        248
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r17_ne",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "sun_skylight",
+      "when": "weather==sun",
+      "tiles": [],
+      "enable": [
+        "emitter_c4_r17"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_c4_r17_seal",
+      "on": "signal:sensor_c4_r17_seal",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_canopy_seal"
+        },
+        {
+          "sfx": "c4_canopy_chime"
+        },
+        {
+          "narrate": "ISL4_C4_CANOPY_SEAL_DONE"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        200,
+        216
+      ],
+      "radius": 26
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        328,
+        88
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        48,
+        176,
+        80
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        168,
+        72
+      ],
+      "size": [
+        52,
+        34
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "brass_sundial_pedestal",
+      "pos": [
+        144,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "echo_rose_trellis",
+      "pos": [
+        440,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        72,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "garden_clock_arch",
+      "pos": [
+        368,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        320,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "The Sundial Chandelier (Grand Island 4 Synthesis): turn the Weather Wheel to WIND to wake the updrafts, glide across, aim the Blue Transformer east through the Shadow Gate into the Canopy Seal sensor, hang your lantern behind the west baffle so the Shadow Gate opens dark, and turn the wheel to SUN so the skylight beam bounces blue through the dark gate and shatters the Canopy Seal!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Synthesizing Weather Wheel, Blue Transformer, Shadow Gate, Lantern Hook, Updraft Vent, and Moth Wings in one grand optical contraption",
+    "decisions": 12,
+    "expert_s": 75,
+    "reward": "c4_canopy_seal",
+    "why": "Grand Island 4 synthesis climax puzzle guarding the Bellfry Loft vista.",
+    "exit": "exit_c4_r17_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          120
+        ],
+        "tol": 12
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_c4_r17",
+        "angle": 315
+      },
+      {
+        "op": "goto",
+        "to": "wheel_c4_r17",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "wheel_c4_r17"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "wheel_c4_r17"
+      },
+      {
+        "op": "expect",
+        "var": "weather==sun"
+      },
+      {
+        "op": "goto",
+        "to": "hook_c4_r17",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "hook_c4_r17"
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "expect",
+        "flag": "c4_canopy_seal"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": "wheel_c4_r17",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "wheel_c4_r17"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "wheel_c4_r17"
+      },
+      {
+        "op": "expect",
+        "var": "weather==wind"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          232
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          392,
+          232
+        ],
+        "tol": 16
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r17_north"
+      }
+    ]
+  }
+}

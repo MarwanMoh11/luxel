@@ -1,0 +1,315 @@
+{
+  "id": "conservatory_r18",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "hourglass_maze",
+  "name_key": "ISL4_C4_R18",
+  "music": "island4_dungeon",
+  "spawn": [
+    200,
+    216
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r18",
+      "name_key": "ISL4_C4_R18",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r18_south",
+      "rect": [
+        192,
+        240,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r17",
+      "to_spawn": [
+        360,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r18_r9",
+      "rect": [
+        400,
+        144,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r9",
+      "to_spawn": [
+        376,
+        168
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r18_r1",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r1",
+      "to_spawn": [
+        352,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "vista_c4_r18_abbess",
+      "kind": "c4_abbess_vista",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "persist": true
+      }
+    },
+    {
+      "id": "lore_c4_r18",
+      "kind": "lore_stone",
+      "pos": [
+        136,
+        120
+      ],
+      "props": {
+        "string_id": "ISL4_LORE_ABBESS",
+        "icon": "book",
+        "persist": true,
+        "sets_flag": "lore_4_abbess"
+      }
+    },
+    {
+      "id": "shrine_c4_r18_dew",
+      "kind": "rest_shrine",
+      "pos": [
+        296,
+        120
+      ],
+      "props": {}
+    },
+    {
+      "id": "lamp_c4_r18_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r18_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r18_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r18_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r18_enter",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_loft_shortcut"
+        }
+      ]
+    },
+    {
+      "id": "ev_c4_r18_lore",
+      "on": "signal:lore_c4_r18",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_4_abbess"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 30,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        80,
+        128,
+        80
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        88
+      ],
+      "size": [
+        72,
+        34
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        104,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "tall_hourglass_pillar",
+      "pos": [
+        312,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "stone_hedge_bench",
+      "pos": [
+        160,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "amber_lantern_post",
+      "pos": [
+        256,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_hourglass_maze",
+      "prop": "topiary_bird_statue",
+      "pos": [
+        336,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "The Bellfry Loft (Wordless Scene #3): peer through the stained-glass bay window down at the Heron Abbess folding her wet wings below, read Hollow Wick's feather lore for Scribe Bookworm, heal at the dew shrine, and drop back into r9 (Cycle 4) or r1 (Cycle 5).",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Emotional rest & foreshadowing vista before the Heron Abbess climax",
+    "decisions": 2,
+    "expert_s": 30,
+    "reward": "c4_loft_shortcut, lore_4_abbess, full heal",
+    "why": "Pacing rest beat, Hollow Wick narrative foreshadowing, and twin return chutes.",
+    "optional": true,
+    "exit": "exit_c4_r18_r9",
+    "solution": [
+      {
+        "op": "goto",
+        "to": "vista_c4_r18_abbess",
+        "tol": 18
+      },
+      {
+        "op": "interact",
+        "target": "vista_c4_r18_abbess"
+      },
+      {
+        "op": "goto",
+        "to": "lore_c4_r18",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "lore_c4_r18"
+      },
+      {
+        "op": "expect",
+        "flag": "lore_4_abbess"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r18_r9"
+      }
+    ]
+  }
+}

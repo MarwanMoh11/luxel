@@ -461,20 +461,36 @@
         "op": "push",
         "target": "transformer_lh_r9",
         "to": [
-          168,
+          200,
+          184
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r9",
+        "to": [
+          136,
+          184
+        ]
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r9",
+        "to": [
+          136,
           168
         ]
       },
       {
         "op": "rotate",
         "target": "transformer_lh_r9",
-        "angle": 135.0
+        "angle": 45.0
       },
       {
         "op": "shoot",
         "from": [
-          168,
-          112
+          136,
+          120
         ],
         "target": "transformer_lh_r9"
       },

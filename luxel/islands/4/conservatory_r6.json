@@ -32,7 +32,7 @@
       "to_region": "conservatory_r5",
       "to_spawn": [
         352,
-        40
+        48
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -119,6 +119,102 @@
           "wick_key_4_2"
         ]
       }
+    },
+    {
+      "id": "updraft_c4_r6_nw",
+      "kind": "updraft_vent",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r6_ne",
+      "kind": "updraft_vent",
+      "pos": [
+        328,
+        72
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r6_sw",
+      "kind": "updraft_vent",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r6_se",
+      "kind": "updraft_vent",
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "lamp_c4_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -127,25 +223,23 @@
       "sheet": "island4_scenery",
       "prop": "stone_bridge_post",
       "pos": [
-        204,
-        212
+        205,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "stone_bridge_post",
       "pos": [
-        276,
-        212
+        275,
+        208
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
@@ -156,8 +250,7 @@
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
@@ -168,140 +261,7 @@
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        92,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        52,
-        96
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        88,
-        92
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        376,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        464,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        464,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        144,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        152,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        376,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        404,
-        172
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        432,
-        164
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.7
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
@@ -312,8 +272,7 @@
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
@@ -324,8 +283,7 @@
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.55
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
@@ -336,9 +294,121 @@
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.85
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R6",
+  "music": "island4_boss_p1",
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r6_p2_dew",
+      "on": "boss_hp:0.52",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        112
+      ],
+      "radius": 44,
+      "style": "mosaic"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        240,
+        112
+      ],
+      "radius": 52,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        96
+      ],
+      "size": [
+        72,
+        40
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "design": {
+    "idea": "Great Lily Hopper Reed Sanctuary deepened: soar via 4 corner thermal updraft plumes over twin water shockwaves and air-intercept leaps for 1.55x stagger, claiming Wick Key 2.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Using Moth Wings + thermal updrafts to clear boss shockwaves and mid-air intercept leaps",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "wick_key_4_2, boss_great_lily_hopper_defeated",
+    "why": "Mid-dungeon Wings skill test mini-boss arena upgraded with 4 corner updrafts and D25a spawn fix.",
+    "exit": "exit_c4_r6_east",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          160
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_great_lily_hopper_defeated"
+      },
+      {
+        "op": "goto",
+        "to": "wick_key_4_2",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_4_2"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_4_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          456,
+          120
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "door_c4_r6_east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r6_east"
+      }
+    ]
+  }
 }

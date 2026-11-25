@@ -1,0 +1,528 @@
+{
+  "id": "fall_r2",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "music": "isl5_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_FL_R2",
+  "spawn": [
+    48,
+    176
+  ],
+  "zones": [
+    {
+      "id": "fl_r2",
+      "name_key": "I5_FL_R2",
+      "rect": [
+        0,
+        0,
+        544,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_fl_r2_w",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "fall_r1",
+      "to_spawn": [
+        456,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_fl_r2_e",
+      "rect": [
+        528,
+        160,
+        16,
+        32
+      ],
+      "to_region": "fall_r3",
+      "to_spawn": [
+        48,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "fall_r2_anchors"
+      ],
+      "locked_door_id": "door_fl_r2_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_fl_r2_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_fl_r2_e",
+      "kind": "room_anchor",
+      "pos": [
+        360,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wind_fl_r2",
+      "kind": "fall_wind_rig",
+      "pos": [
+        272,
+        160
+      ],
+      "props": {
+        "width": 512,
+        "height": 288,
+        "speed": 125.0
+      }
+    },
+    {
+      "id": "lore_fl_r2",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "string_id": "I5_FL_R2_HINT",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "well_fl_r2",
+      "kind": "polarity_well",
+      "pos": [
+        244,
+        136
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 560.0,
+        "orbit_capture": true,
+        "orbit_r": 34.0
+      }
+    },
+    {
+      "id": "eye_fl_r2_a",
+      "kind": "switch_eye",
+      "pos": [
+        280,
+        96
+      ],
+      "props": {
+        "target_ids": [
+          "bridge_fl_r2_mid",
+          "gate_fl_r2_chute"
+        ]
+      }
+    },
+    {
+      "id": "bridge_fl_r2_mid",
+      "kind": "door",
+      "pos": [
+        272,
+        176
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_fl_r2_a"
+        ]
+      }
+    },
+    {
+      "id": "eye_fl_r2_b",
+      "kind": "switch_eye",
+      "pos": [
+        472,
+        96
+      ],
+      "props": {
+        "target_id": "gate_fl_r2_chute"
+      }
+    },
+    {
+      "id": "gate_fl_r2_chute",
+      "kind": "logic_gate",
+      "pos": [
+        272,
+        296
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "eye_fl_r2_a",
+          "eye_fl_r2_b"
+        ],
+        "target_id": "door_fl_r2_chute"
+      }
+    },
+    {
+      "id": "door_fl_r2_chute",
+      "kind": "door",
+      "pos": [
+        520,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_fl_r2_chute"
+        ],
+        "sets_flag": "fall_r2_anchors"
+      }
+    },
+    {
+      "id": "lamp_fl_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        232
+      ],
+      "props": {
+        "zone": "fl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r2_wn",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        120
+      ],
+      "props": {
+        "zone": "fl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r2_e1",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "zone": "fl_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r2_e2",
+      "kind": "road_lamp",
+      "pos": [
+        464,
+        200
+      ],
+      "props": {
+        "zone": "fl_r2",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hound_fl_r2_w",
+      "kind": "comet_hound",
+      "pos": [
+        160,
+        176
+      ],
+      "route": [
+        [
+          144,
+          144
+        ],
+        [
+          168,
+          224
+        ]
+      ],
+      "zone": "fl_r2_w",
+      "leash": 130
+    },
+    {
+      "id": "hound_fl_r2_e",
+      "kind": "comet_hound",
+      "pos": [
+        392,
+        96
+      ],
+      "route": [
+        [
+          376,
+          72
+        ],
+        [
+          432,
+          96
+        ]
+      ],
+      "zone": "fl_r2_e",
+      "leash": 140
+    },
+    {
+      "id": "moth_fl_r2_e",
+      "kind": "echo_moth",
+      "pos": [
+        384,
+        200
+      ],
+      "route": [
+        [
+          368,
+          192
+        ],
+        [
+          424,
+          208
+        ]
+      ],
+      "zone": "fl_r2_e",
+      "leash": 140
+    }
+  ],
+  "decor": [
+    {
+      "kind": "cracks",
+      "pos": [
+        152,
+        184
+      ],
+      "radius": 26,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        168,
+        128,
+        24,
+        32
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        432,
+        152
+      ],
+      "radius": 36,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        376,
+        176
+      ],
+      "radius": 24,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        104,
+        116
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "fallen_telescope_tube",
+      "pos": [
+        120,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        496,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        488,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "star_chime_crystal",
+      "pos": [
+        384,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "fl_r2_anchors_flag",
+      "on": "signal:gate_fl_r2_chute",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "fall_r2_anchors"
+        },
+        {
+          "sfx": "fl_chain_whip"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Falling Debris Deck: fight a Comet Hound on the west marble slab, curve a bolt around the howling central gravity eddy behind a falling stone fin to snap Drop-Anchor 1 and bridge the chasm, then clear the east deck and pop Drop-Anchor 2.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Curved shots around a gravity eddy during mid-air debris combat.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "fall_r2_anchors+momentum",
+    "why": "Escalates Fall from pure kinetic traversal to gravity-bent combat across drifting decks.",
+    "exit": "exit_fl_r2_e",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_fl_r2"
+      },
+      {
+        "op": "clear",
+        "zone": "fl_r2_w"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          152
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          264,
+          168
+        ],
+        "wait_hit": 0.9
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_fl_r2_mid",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          176
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "fl_r2_e"
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          128
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_fl_r2_b",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_fl_r2_chute",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_fl_r2_e"
+      }
+    ]
+  }
+}

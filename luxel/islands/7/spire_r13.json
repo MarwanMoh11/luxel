@@ -1,0 +1,412 @@
+{
+  "id": "spire_r13",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R13",
+  "theme": "masquerade",
+  "music": "island7_boss_p1",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    56,
+    176
+  ],
+  "zones": [
+    {
+      "id": "spire_r13",
+      "name_key": "ISL7_SP_R13",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r13_west",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "spire_r12",
+      "to_spawn": [
+        424,
+        152
+      ]
+    },
+    {
+      "id": "exit_spire_r13_portal_r1",
+      "rect": [
+        464,
+        160,
+        16,
+        48
+      ],
+      "to_region": "spire_r1",
+      "to_spawn": [
+        352,
+        192
+      ],
+      "requires_flags": [
+        "spire_duchess_seal"
+      ],
+      "locked_door_id": "door_spire_r13_portal"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "mini_kaleidoscope_duchess",
+      "kind": "kaleidoscope_duchess",
+      "boss_id": "kaleidoscope_duchess",
+      "is_boss": true,
+      "pos": [
+        240,
+        176
+      ],
+      "route": [],
+      "perches": [],
+      "zone": "spire_r13",
+      "leash": 220
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r13_w",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mirror_r13_nw",
+      "kind": "blue_transformer",
+      "pos": [
+        120,
+        88
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "mirror_r13_ne",
+      "kind": "blue_transformer",
+      "pos": [
+        360,
+        88
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "mirror_r13_sw",
+      "kind": "blue_transformer",
+      "pos": [
+        120,
+        264
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "mirror_r13_se",
+      "kind": "blue_transformer",
+      "pos": [
+        360,
+        264
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "portal_r13_to_r1",
+      "kind": "blue_portal",
+      "pos": [
+        440,
+        184
+      ],
+      "props": {
+        "requires_blue": false,
+        "starts_powered": true,
+        "requires_flags": [
+          "spire_duchess_seal"
+        ]
+      }
+    },
+    {
+      "id": "door_spire_r13_portal",
+      "kind": "door",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "spire_duchess_seal"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r13_nw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        128
+      ],
+      "props": {
+        "zone": "spire_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "zone": "spire_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        224
+      ],
+      "props": {
+        "zone": "spire_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_se",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        224
+      ],
+      "props": {
+        "zone": "spire_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r13_c",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        176
+      ],
+      "props": {
+        "zone": "spire_r13",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 84,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "rose",
+      "secondary": "ice"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        128
+      ],
+      "size": [
+        48,
+        96
+      ],
+      "tint": "cool",
+      "shear": 0.1
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_floor_crest",
+      "pos": [
+        240,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        168,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        168,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        312,
+        304
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        240,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r13_win",
+      "on": "cleared",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "kaleidoscope_duchess_defeated"
+        },
+        {
+          "set_flag": "spire_duchess_seal"
+        },
+        {
+          "unlock": [
+            "door_spire_r13_portal"
+          ]
+        },
+        {
+          "sfx": "spire_nave_chord"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Octagonal prism rotunda housing Mini-Boss #2 THE KALEIDOSCOPE DUCHESS, splitting into 4 chromatic copies where only the true Duchess casts a warm SE shadow.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Combat stress-test of Shadow-Truth reading and corner Blue-Transformer banking to stagger her spinning Prism Carousel and win Boss Crest #1.",
+    "decisions": 6,
+    "expert_s": 105,
+    "reward": "spire_duchess_seal+r1_portal",
+    "why": "Spire Mini-Boss #2 and SE return portal shortcut back to spire_r1.",
+    "exit": "exit_spire_r13_portal_r1",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "spire_duchess_seal"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r13_portal_r1"
+      }
+    ]
+  }
+}

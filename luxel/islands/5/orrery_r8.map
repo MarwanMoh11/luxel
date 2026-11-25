@@ -1,4 +1,4 @@
-# The Orrery r8 - Asymmetric Constellation Combat Nave (27x17)
+# orrery_r8 - Constellation Combat Nave (27x17)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -13,9 +13,9 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-###########################
-#_________________________#
-#______............_______#
+###########,,##############
+#_________.,,.____________#
+#______....,,......_______#
 #______............_______#
 #______.........##._______#
 #__.....##......##.OOO....#

@@ -1,0 +1,85 @@
+{
+  "pack_id": "i7_masq",
+  "owner": "G7",
+  "comment": "Island 7 Set Piece: The Masquerade (masq_r1..masq_r4 — eight waltzing Wicks, under-glass impostor floor, Midnight Cotillion blackout rings, and Shattering Pursuit rose-window breach into spire_r1). Marked debug_only in fragment ONLY until INT7 wires glass_terrace -> masq_r1.",
+  "interactables": {
+    "masq_floor_reflection": "res://luxel/islands/7/masq/masq_floor_reflection.gd",
+    "masq_cotillion_ring": "res://luxel/islands/7/masq/masq_cotillion_ring.gd"
+  },
+  "dungeons": [
+    {
+      "id": "masquerade",
+      "name_key": "ISL7_Z_MASQ",
+      "island": 7,
+      "entry": "masq_r1",
+      "debug_only": true,
+      "regions": [
+        "masq_r1",
+        "masq_r2",
+        "masq_r3",
+        "masq_r4"
+      ],
+      "mini_boss": "",
+      "boss": "",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "requires_flags": [
+        "palace_cleared",
+        "theatre_cleared"
+      ],
+      "done_flag": "masquerade_done"
+    }
+  ],
+  "regions": {
+    "masq_r1": {
+      "name_key": "ISL7_MASQ_R1",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "dark": true,
+      "debug_only": true,
+      "map": [0, 3]
+    },
+    "masq_r2": {
+      "name_key": "ISL7_MASQ_R2",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "dark": true,
+      "debug_only": true,
+      "map": [0, 2]
+    },
+    "masq_r3": {
+      "name_key": "ISL7_MASQ_R3",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "dark": true,
+      "debug_only": true,
+      "map": [0, 1]
+    },
+    "masq_r4": {
+      "name_key": "ISL7_MASQ_R4",
+      "theme": "masquerade",
+      "music": "isl7_setpiece",
+      "dark": true,
+      "debug_only": true,
+      "map": [0, 0]
+    }
+  },
+  "strings": {
+    "ISL7_Z_MASQ": "THE MASQUERADE",
+    "ISL7_MASQ_RULE": "WATCH THE SHADOWS. ONLY ONE TELLS TRUTH.",
+    "ISL7_MASQ_R1": "THE MASKED RECEPTION",
+    "ISL7_MASQ_R2": "THE GLASS-FLOOR GALLERY",
+    "ISL7_MASQ_R3": "THE MIDNIGHT COTILLION",
+    "ISL7_MASQ_R4": "THE SHATTERING PURSUIT",
+    "ISL7_MASQ_LORE_R1": "EIGHT WALTZ IN GOLD. TRUTH FALLS SOUTHEAST.",
+    "ISL7_MASQ_R1_CLEAR": "THE TRUE GUEST BOWS. BALLROOM UNSEALS!",
+    "ISL7_MASQ_R2_CLEAR": "THREE CRIMSON MASKS EXPOSED!",
+    "ISL7_MASQ_R3_SHUFFLE": "CHANDELIER DIMS! THE WALTZ SHUFFLES!",
+    "ISL7_MASQ_R3_UNMASK": "HOLLOW WICK UNMASKED! CHASE HIM NORTH!",
+    "ISL7_MASQ_R4_BREACH": "THE ROSE WINDOW SHATTERS INTO THE SPIRE!"
+  },
+  "sfx": {
+    "masq_glass_crack": { "id": "hush_shatter", "pitch": 1.22, "db": -0.5 },
+    "masq_waltz_chime": { "id": "clockwork_chime", "pitch": 1.18, "db": -1.0 }
+  }
+}

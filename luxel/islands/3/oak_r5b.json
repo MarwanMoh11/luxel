@@ -160,8 +160,8 @@
       "id": "pw_r5b_1",
       "kind": "light_plant",
       "pos": [
-        168,
-        120
+        128,
+        136
       ],
       "props": {
         "grow": "wall",
@@ -375,7 +375,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.6
+        "secs": 0.5
       },
       {
         "op": "recall"
@@ -383,15 +383,15 @@
       {
         "op": "rotate",
         "target": "t_r5b_blue",
-        "angle": 135
+        "angle": 45
       },
       {
         "op": "goto",
         "to": [
           128,
-          152
+          168
         ],
-        "tol": 8.0
+        "tol": 4.0
       },
       {
         "op": "beam",

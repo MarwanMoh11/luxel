@@ -1,0 +1,317 @@
+{
+  "id": "conservatory_r11",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_C4_R11",
+  "music": "island4_dungeon",
+  "spawn": [
+    184,
+    216
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r11",
+      "name_key": "ISL4_C4_R11",
+      "rect": [
+        0,
+        0,
+        384,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r11_south",
+      "rect": [
+        176,
+        240,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r4",
+      "to_spawn": [
+        216,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r11_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r12",
+      "to_spawn": [
+        248,
+        248
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r12_aqueduct_open"
+      ],
+      "locked_door_id": "door_c4_r11_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anchor_c4_r11",
+      "kind": "room_anchor",
+      "pos": [
+        200,
+        168
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "updraft_c4_r11",
+      "kind": "updraft_vent",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "radius": 24,
+        "on": true,
+        "dir": [
+          1,
+          -1
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "wind_c4_r11",
+      "kind": "wind_zone",
+      "pos": [
+        240,
+        96
+      ],
+      "props": {
+        "size": [
+          64,
+          48
+        ],
+        "dir": "e",
+        "strength": 1200
+      }
+    },
+    {
+      "id": "moth_4_07",
+      "kind": "moth",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "id": "moth_4_07"
+      }
+    },
+    {
+      "id": "door_c4_r11_north",
+      "kind": "door",
+      "pos": [
+        304,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "c4_r12_aqueduct_open"
+        ]
+      }
+    },
+    {
+      "id": "lamp_c4_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        64,
+        96,
+        80,
+        48
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        184
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        88
+      ],
+      "size": [
+        48,
+        28
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        72,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        216,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        104,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "chime_rain_rod",
+      "pos": [
+        328,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "flood_gauge_marker",
+      "pos": [
+        264,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Dew-Drop Aqueduct: peer through the cistern grate down toward r7's lagoon, then ride a wind-bent updraft thermal northeast to catch Lost Moth #7 and connect Cycle 3 back from r12.",
+    "kind": "traversal",
+    "beat": "sho",
+    "teaches": "Using an updraft vent inside an east wind current to curve Wings flight onto a high moth perch",
+    "decisions": 5,
+    "expert_s": 40,
+    "reward": "moth_4_07",
+    "why": "Optional aqueduct vista & Moth #7 perch linking r4 to r12 (Cycle 3).",
+    "optional": true,
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          200,
+          152
+        ],
+        "tol": 10
+      },
+      {
+        "op": "glide",
+        "to": [
+          296,
+          88
+        ],
+        "tol": 16
+      },
+      {
+        "op": "goto",
+        "to": "moth_4_07",
+        "tol": 12
+      },
+      {
+        "op": "wait",
+        "secs": 0.8
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_4_07"
+      }
+    ]
+  }
+}

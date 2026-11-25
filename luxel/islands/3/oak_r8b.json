@@ -163,10 +163,11 @@
         200
       ],
       "props": {
-        "mode": "valve",
+        "mode": "timed",
         "scope": "dungeon:hollow_oak",
         "var": "oak_sap",
-        "shootable": true
+        "shootable": true,
+        "secs": 30.0
       }
     },
     {
@@ -425,10 +426,10 @@
     "exit": "exit_oak_r8b_north_r9",
     "start": {
       "vars": {
-        "oak_sap": "low"
+        "dungeon:hollow_oak.oak_sap": "low"
       },
       "keys": {
-        "wick_key_3_3": 1
+        "hollow_oak:wick_key": 1
       },
       "flags": [
         "wick_key_3_3"
@@ -476,7 +477,7 @@
       },
       {
         "op": "expect",
-        "var": "oak_sap==high"
+        "var": "dungeon:hollow_oak.oak_sap==high"
       },
       {
         "op": "goto",
@@ -521,7 +522,7 @@
           216,
           104
         ],
-        "tol": 8.0
+        "tol": 3.0
       },
       {
         "op": "beam",
@@ -530,6 +531,18 @@
       {
         "op": "expect",
         "flag": "oak_r8b_pinhole_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          40
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "door_oak_r8b_key"
       },
       {
         "op": "expect_exit",

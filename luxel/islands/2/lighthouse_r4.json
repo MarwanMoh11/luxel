@@ -260,8 +260,8 @@
       "id": "lamp_lh_r4_w",
       "kind": "road_lamp",
       "pos": [
-        104,
-        104
+        56,
+        72
       ],
       "props": {
         "zone": "lighthouse_r4",
@@ -441,19 +441,19 @@
         "target": "transformer_lh_r4",
         "to": [
           104,
-          104
+          40
         ]
       },
       {
         "op": "rotate",
         "target": "transformer_lh_r4",
-        "angle": 315.0
+        "angle": 45.0
       },
       {
         "op": "shoot",
         "from": [
           104,
-          40
+          88
         ],
         "target": "transformer_lh_r4"
       },
@@ -467,8 +467,15 @@
       {
         "op": "goto",
         "to": [
-          136,
+          112,
           40
+        ]
+      },
+      {
+        "op": "dash",
+        "dir": [
+          1,
+          0
         ]
       },
       {

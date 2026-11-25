@@ -1,0 +1,33 @@
+# Iron Collision r2 - Colossus Forearm (36x18)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G mirror
+MAP
+____________________________________
+_________________________##########_
+________######___#####___#........#_
+_########....#####...#####........#_
+_#........#..#...#...#............#_
+_#........#..#####...#####........#_
+_#.........OOOOOOOOOOOOOO.........##
+_#.........OOOOOOOOOOOOOO..........#
+,,,........OOOOOOOOOOOOOO..........,
+,,,........OOOOOOOOOOOOOO..........,
+,,,........OOOOOOOOOOOOOO..........,
+_#.........OOOOOOOOOOOOOO..........#
+_#.........OOOOOOOOOOOOOO.........##
+_#........#OOOOOOOOOOOOOO#........#_
+_###......#OOOOOOOOOOOOOO#........#_
+___########OOOOOO__OOOOOO#........#_
+_________________________##########_
+____________________________________

@@ -475,6 +475,10 @@
         "target": "great_lamp_3"
       },
       {
+        "op": "wait",
+        "secs": 0.5
+      },
+      {
         "op": "expect",
         "flag": "island_3_relit"
       },

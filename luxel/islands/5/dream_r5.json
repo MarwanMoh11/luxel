@@ -186,12 +186,12 @@
       "kind": "phantom_owl",
       "pos": [
         240,
-        128
+        144
       ],
       "perches": [
         [
           240,
-          128
+          144
         ],
         [
           320,
@@ -199,27 +199,27 @@
         ]
       ],
       "zone": "dream_r5",
-      "leash": 160
+      "leash": 135
     },
     {
       "id": "en_dr5_owl2",
       "kind": "phantom_owl",
       "pos": [
-        384,
+        352,
         168
       ],
       "perches": [
         [
-          384,
+          352,
           168
         ],
         [
-          192,
+          208,
           184
         ]
       ],
       "zone": "dream_r5",
-      "leash": 160
+      "leash": 135
     }
   ],
   "layers": [],

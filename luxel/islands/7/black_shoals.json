@@ -147,21 +147,21 @@
       "id": "bs_reflection_1",
       "kind": "reflection",
       "pos": [
-        552,
-        240
+        408,
+        224
       ],
       "route": [
         [
-          544,
-          240
+          392,
+          224
         ],
         [
-          584,
-          240
+          432,
+          224
         ]
       ],
       "zone": "black_shoals",
-      "leash": 128
+      "leash": 112
     }
   ],
   "interactables": [
@@ -212,11 +212,12 @@
       "kind": "lore_stone",
       "pos": [
         424,
-        88
+        96
       ],
       "props": {
         "string_id": "ISL7_LORE_SHOALS",
-        "icon": "wave"
+        "icon": "wave",
+        "radius": 24
       }
     },
     {
@@ -582,11 +583,12 @@
     "why": "Western wild reef district linking Silver Quay, Overworld SW Black pier, Palace backdoor, Twin Grotto, and Lunar Phase Trial.",
     "optional": true,
     "exit": "exit_bs_phase",
+    "start": {
+      "vars": {
+        "island:7:world_face": "black"
+      }
+    },
     "solution": [
-      {
-        "op": "interact",
-        "target": "pool_bs_north"
-      },
       {
         "op": "expect",
         "var": "world_face==black"

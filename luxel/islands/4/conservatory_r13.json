@@ -1,0 +1,425 @@
+{
+  "id": "conservatory_r13",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "rain_mausoleum",
+  "name_key": "ISL4_C4_R13",
+  "music": "island4_dungeon",
+  "spawn": [
+    216,
+    216
+  ],
+  "zones": [
+    {
+      "id": "conservatory_r13",
+      "name_key": "ISL4_C4_R13",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_c4_r13_south",
+      "rect": [
+        208,
+        240,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r12",
+      "to_spawn": [
+        408,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_c4_r13_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "conservatory_r14",
+      "to_spawn": [
+        88,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "c4_r13_cleared"
+      ],
+      "locked_door_id": "door_c4_r13_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hh_c4_r13_w",
+      "kind": "hour_heron",
+      "pos": [
+        104,
+        120
+      ],
+      "route": [
+        [
+          88,
+          88
+        ],
+        [
+          120,
+          168
+        ]
+      ],
+      "zone": "conservatory_r13",
+      "leash": 135
+    },
+    {
+      "id": "hh_c4_r13_e",
+      "kind": "hour_heron",
+      "pos": [
+        344,
+        120
+      ],
+      "route": [
+        [
+          328,
+          88
+        ],
+        [
+          360,
+          168
+        ]
+      ],
+      "zone": "conservatory_r13",
+      "leash": 135
+    },
+    {
+      "id": "eel_c4_r13_w",
+      "kind": "mist_eel",
+      "pos": [
+        120,
+        168
+      ],
+      "route": [
+        [
+          120,
+          168
+        ],
+        [
+          168,
+          168
+        ]
+      ],
+      "zone": "conservatory_r13",
+      "leash": 135
+    },
+    {
+      "id": "eel_c4_r13_e",
+      "kind": "mist_eel",
+      "pos": [
+        328,
+        88
+      ],
+      "route": [
+        [
+          296,
+          88
+        ],
+        [
+          344,
+          88
+        ]
+      ],
+      "zone": "conservatory_r13",
+      "leash": 135
+    }
+  ],
+  "interactables": [
+    {
+      "id": "updraft_c4_r13_1",
+      "kind": "updraft_vent",
+      "pos": [
+        184,
+        72
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "period": 4.0,
+        "duty": 0.55,
+        "offset": 0.0
+      }
+    },
+    {
+      "id": "updraft_c4_r13_2",
+      "kind": "updraft_vent",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "period": 4.0,
+        "duty": 0.55,
+        "offset": 2.0
+      }
+    },
+    {
+      "id": "updraft_c4_r13_3",
+      "kind": "updraft_vent",
+      "pos": [
+        184,
+        184
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "period": 4.0,
+        "duty": 0.55,
+        "offset": 2.0
+      }
+    },
+    {
+      "id": "updraft_c4_r13_4",
+      "kind": "updraft_vent",
+      "pos": [
+        264,
+        184
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "period": 4.0,
+        "duty": 0.55,
+        "offset": 0.0
+      }
+    },
+    {
+      "id": "door_c4_r13_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "sets_flag": "c4_r13_cleared",
+        "requires_flags": [
+          "c4_r13_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_c4_r13_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r13_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r13_ne",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r13_se",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r13_c",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r13_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_r13_cleared"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 45
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        120
+      ],
+      "radius": 26,
+      "style": "clock"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        120
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        344,
+        120
+      ],
+      "radius": 24,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        64,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        376,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        144,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "bronze_drain_gargoyle",
+      "pos": [
+        304,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        192,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Clockwork Greenhouse: H-bridge arena with 4 rhythmic thermal geysers pulsing against two ticking Hour Herons and two Mist Eels.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Timing rhythmic updraft flanks against metronome Hour Herons and aquatic Mist Eels",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "c4_r13_cleared, 45 shards",
+    "why": "Combat centerpiece of the Thermal Conservatory wing.",
+    "exit": "exit_c4_r13_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          216,
+          136
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r13_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r13_north"
+      }
+    ]
+  }
+}

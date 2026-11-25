@@ -32,7 +32,7 @@
       "to_region": "conservatory_r7",
       "to_spawn": [
         288,
-        56
+        68
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -64,42 +64,42 @@
       "kind": "heron_stalker",
       "pos": [
         152,
-        72
+        64
       ],
       "route": [
         [
-          120,
-          72
+          128,
+          64
         ],
         [
-          216,
-          56
+          184,
+          64
         ]
       ],
       "perches": [],
       "zone": "conservatory_r8",
-      "leash": 140
+      "leash": 145
     },
     {
       "id": "mire_snuffer_c4_r8",
       "kind": "mire_snuffer",
       "pos": [
         312,
-        72
+        112
       ],
       "route": [],
       "perches": [
         [
           312,
-          72
+          112
         ],
         [
-          360,
-          104
+          264,
+          128
         ],
         [
-          232,
-          56
+          328,
+          144
         ]
       ],
       "zone": "conservatory_r8",
@@ -114,15 +114,35 @@
       ],
       "route": [
         [
-          280,
+          272,
           184
         ],
         [
-          376,
+          344,
           184
         ]
       ],
       "perches": [],
+      "zone": "conservatory_r8",
+      "leash": 145
+    },
+    {
+      "id": "topiary_knight_c4_r8",
+      "kind": "topiary_knight",
+      "pos": [
+        216,
+        48
+      ],
+      "route": [
+        [
+          192,
+          48
+        ],
+        [
+          248,
+          48
+        ]
+      ],
       "zone": "conservatory_r8",
       "leash": 135
     }
@@ -147,190 +167,221 @@
           "c4_r8_cleared"
         ]
       }
+    },
+    {
+      "id": "updraft_c4_r8_w",
+      "kind": "updraft_vent",
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "radius": 20,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "updraft_c4_r8_e",
+      "kind": "updraft_vent",
+      "pos": [
+        264,
+        152
+      ],
+      "props": {
+        "radius": 20,
+        "on": true,
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "lamp_c4_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r8_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
-      "pos": [
-        216,
-        120
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        68,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        68,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        356,
+        168,
         88
       ],
       "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
+      "flip_x": false,
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        356,
-        152
+        328,
+        120
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        156,
-        196
+        160,
+        192
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        264,
-        196
+        280,
+        192
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
+      "prop": "mossy_planter_urn",
       "pos": [
-        48,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        352,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        380,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        136,
+        104,
         144
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        40,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        72,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        44,
-        72
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        56,
-        176
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R8",
+  "music": "island4_dungeon",
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r8_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "c4_r8_cleared"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        216,
+        120
+      ],
+      "radius": 30,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        280,
+        168
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        104
+      ],
+      "size": [
+        60,
+        32
+      ],
+      "tint": "cool",
+      "shear": 0.42
+    }
+  ],
+  "design": {
+    "idea": "Heron Flooded Cloister deepened: 4-foe climax skirmish adding a Topiary Knight and twin updraft plumes to glide over shockwaves and flank stalkers (fixing D37 water spawn & D25a return spawn).",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Using updraft vents mid-combat against a 4-role mire squad",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "c4_r8_cleared, 40 shards",
+    "why": "Escalated late-dungeon combat arena fixing D37 water spawn and D25a door overlap.",
+    "exit": "exit_c4_r8_west",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          208,
+          152
+        ],
+        "tol": 12
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r8_cleared"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r8_west"
+      }
+    ]
+  }
 }

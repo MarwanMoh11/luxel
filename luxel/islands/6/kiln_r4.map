@@ -13,9 +13,9 @@ LEGEND P phantom
 LEGEND + bridge
 LEGEND G mirror
 MAP
-##########################
-#OOOOOOOOOOOOOOOOOOOOOOOO#
-#OOOOOOOOOOPPPPPOOOOOOOOO#
+###############,,#########
+#OOOOOOOOOOOOOO,,OOOOOOOO#
+#OOOOOOOOOOPPPP,,OOOOOOOO#
 #OOOOOOOOOPPOOOPPOO..#...#
 #OOOOOOOOOPOOOOOPPO..#...#
 #OOOOOO,,,PO##OOOPP,,,,,,,
@@ -25,7 +25,7 @@ MAP
 #OO....,,.O#####OO#..#...#
 #O.....,,.O#####OO#..#...#
 #O.....,,.O#####OO#OOOOOO#
-#O.....,,.O#####OO#OOOOOO#
-#O.....,,.O#####OO#OOOOOO#
-#OOOOOO,,OO#####OOOOOOOOO#
+#O.....,,,.#####OO#OOOOOO#
+#O.....,,,.#####OO#OOOOOO#
+#OOOO..,,,.#####OOOOOOOOO#
 #######,,#################

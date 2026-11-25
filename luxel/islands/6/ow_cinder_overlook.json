@@ -111,6 +111,29 @@
         "temper_lance_known"
       ],
       "locked_door_id": "door_first_forge"
+    },
+    {
+      "id": "exit_to_crash_r1",
+      "rect": [
+        336,
+        32,
+        32,
+        16
+      ],
+      "to_region": "crash_r1",
+      "to_spawn": [
+        56,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_6_1",
+        "beacon_6_2",
+        "beacon_6_3",
+        "express_cleared",
+        "colossus_cleared"
+      ],
+      "locked_door_id": "door_iron_collision"
     }
   ],
   "enemies": [
@@ -273,6 +296,28 @@
           "temper_skip_known",
           "temper_scatter_known",
           "temper_lance_known"
+        ]
+      }
+    },
+    {
+      "id": "door_iron_collision",
+      "kind": "door",
+      "pos": [
+        352,
+        56
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "beacon_6_1",
+          "beacon_6_2",
+          "beacon_6_3",
+          "express_cleared",
+          "colossus_cleared"
         ]
       }
     },

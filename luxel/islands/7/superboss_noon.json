@@ -111,6 +111,32 @@
       }
     },
     {
+      "id": "mirror_noon_w",
+      "kind": "blue_transformer",
+      "pos": [
+        144,
+        168
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "mirror_noon_e",
+      "kind": "blue_transformer",
+      "pos": [
+        336,
+        168
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
       "id": "lamp_noon_nw",
       "kind": "road_lamp",
       "pos": [
@@ -340,20 +366,32 @@
     "why": "Climax post-relight superboss duel paying off Moon Shoals' Shadow-Truth Law.",
     "optional": true,
     "exit": "exit_noon_zenith",
+    "start": {
+      "hearts": 12,
+      "ember": 100,
+      "flags": [
+        "great_lamp_7",
+        "palace_cleared",
+        "theatre_cleared"
+      ]
+    },
     "solution": [
       {
         "op": "goto",
         "to": [
           240,
-          224
-        ]
+          200
+        ],
+        "tol": 14
       },
       {
-        "op": "clear"
+        "op": "clear",
+        "timeout": 150.0
       },
       {
-        "op": "expect",
-        "flag": "shadow_at_noon_defeated"
+        "op": "wait_until",
+        "flag": "shadow_at_noon_defeated",
+        "timeout": 5.0
       },
       {
         "op": "expect_exit",

@@ -149,67 +149,39 @@
       }
     },
     {
-      "id": "grate_party_r4_1",
-      "kind": "grate",
-      "pos": [
-        152,
-        144
-      ],
-      "props": {
-        "size": [
-          16,
-          32
-        ]
-      }
-    },
-    {
-      "id": "grate_party_r4_2",
-      "kind": "grate",
-      "pos": [
-        296,
-        144
-      ],
-      "props": {
-        "size": [
-          16,
-          32
-        ]
-      }
-    },
-    {
       "id": "bloom_party_r4_1",
       "kind": "bounce_bloom",
       "pos": [
-        120,
+        104,
         104
       ],
       "props": {
         "dir": "e",
-        "dist": 128
+        "dist": 112
       }
     },
     {
       "id": "bloom_party_r4_2",
       "kind": "bounce_bloom",
       "pos": [
-        264,
+        232,
         104
       ],
       "props": {
         "dir": "e",
-        "dist": 128
+        "dist": 160
       }
     },
     {
       "id": "wind_party_r4_1",
       "kind": "wind_zone",
       "pos": [
-        184,
+        160,
         104
       ],
       "props": {
         "size": [
-          80,
+          64,
           48
         ],
         "dir": "e",
@@ -220,12 +192,12 @@
       "id": "wind_party_r4_2",
       "kind": "wind_zone",
       "pos": [
-        328,
+        312,
         104
       ],
       "props": {
         "size": [
-          80,
+          112,
           48
         ],
         "dir": "e",
@@ -236,7 +208,7 @@
       "id": "hook_party_r4_1",
       "kind": "lantern_hook",
       "pos": [
-        248,
+        216,
         72
       ],
       "props": {
@@ -266,13 +238,13 @@
       "id": "bridge_party_r4_return",
       "kind": "door",
       "pos": [
-        304,
+        312,
         216
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          128,
+          112,
           32
         ],
         "requires_signals": [
@@ -346,7 +318,7 @@
       "id": "lamp_pt_r4_mid",
       "kind": "road_lamp",
       "pos": [
-        264,
+        232,
         136
       ],
       "props": {
@@ -474,7 +446,7 @@
       "sheet": "theme_garden_party",
       "prop": "garden_gazebo_pillar",
       "pos": [
-        232,
+        200,
         136
       ],
       "layer": "sort",

@@ -135,11 +135,22 @@
       "id": "hook_cev_gate",
       "kind": "lantern_hook",
       "pos": [
-        248,
-        152
+        368,
+        192
       ],
       "props": {
-        "light_radius": 64
+        "light_radius": 56
+      }
+    },
+    {
+      "id": "hook_cev_west",
+      "kind": "lantern_hook",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "light_radius": 56
       }
     },
     {
@@ -186,7 +197,7 @@
       "id": "lamp_cev_e1",
       "kind": "road_lamp",
       "pos": [
-        344,
+        352,
         104
       ],
       "props": {
@@ -198,20 +209,8 @@
       "id": "lamp_cev_e2",
       "kind": "road_lamp",
       "pos": [
-        344,
+        352,
         200
-      ],
-      "props": {
-        "zone": "cave_echo_vault",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_cev_w1",
-      "kind": "road_lamp",
-      "pos": [
-        128,
-        144
       ],
       "props": {
         "zone": "cave_echo_vault",
@@ -370,7 +369,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "cev_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Twin-alcove velvet vault where flipping Black exposes two Puppets' spools & Moth 05, then hanging your lantern slips through a Shadow Gate into a Three-Chest Shadow-Truth test.",
     "kind": "combat",
@@ -416,9 +430,6 @@
         ]
       },
       {
-        "op": "recall"
-      },
-      {
         "op": "goto",
         "to": [
           72,
@@ -428,6 +439,16 @@
       {
         "op": "interact",
         "target": "chest_ember_7_vault"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          152
+        ]
+      },
+      {
+        "op": "recall"
       },
       {
         "op": "expect_exit",

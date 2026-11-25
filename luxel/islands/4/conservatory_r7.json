@@ -56,6 +56,27 @@
         "c4_r7_shutter_open"
       ],
       "locked_door_id": "door_c4_r7_shutter"
+    },
+    {
+      "id": "exit_c4_r7_east",
+      "rect": [
+        400,
+        112,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r12",
+      "to_spawn": [
+        56,
+        152
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r7_shutter_open"
+      ],
+      "locked_door_id": "door_c4_r7_east"
     }
   ],
   "enemies": [],
@@ -91,7 +112,8 @@
         "requires_prism": true,
         "target_ids": [
           "bridge_c4_r7",
-          "door_c4_r7_shutter"
+          "door_c4_r7_shutter",
+          "door_c4_r7_east"
         ],
         "sets_flag": "c4_r7_bridge"
       }
@@ -147,166 +169,267 @@
         "amount": 40,
         "zone": "conservatory_r7"
       }
+    },
+    {
+      "id": "door_c4_r7_east",
+      "kind": "door",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_c4_r7"
+        ],
+        "sets_flag": "c4_r7_shutter_open"
+      }
+    },
+    {
+      "id": "updraft_c4_r7_mid",
+      "kind": "updraft_vent",
+      "pos": [
+        296,
+        136
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "dir": [
+          1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "hook_c4_r7",
+      "kind": "lantern_hook",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {
+        "light_radius": 44
+      }
+    },
+    {
+      "id": "grate_c4_r7_n",
+      "kind": "grate",
+      "pos": [
+        144,
+        88
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "lamp_c4_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r7_mid",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r7_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
-      "pos": [
-        232,
-        148
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        44,
+        72,
         88
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        108,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        252,
-        56
+        216,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
-      "pos": [
-        324,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
       "pos": [
         336,
-        168
+        192
       ],
       "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
+      "flip_x": true,
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        384,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        132,
-        52
+        264,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        204,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        280,
-        112
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        312,
-        132
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        116,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        156,
-        212
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R7",
+  "music": "island4_dungeon",
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        136
+      ],
+      "radius": 22,
+      "style": "mosaic"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        112,
+        80,
+        48
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        136
+      ],
+      "size": [
+        54,
+        30
+      ],
+      "tint": "cool",
+      "shear": 0.42
+    }
+  ],
+  "design": {
+    "idea": "Twin-Lagoon Glide & Prism deepened: bank a blue prism shot across the west lagoon into the central switch eye to raise the bridge and open both the north cloister shutter and the east Thermal Conservatory wing via the central updraft plume.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Blue Transformer bank shots paired with lagoon updraft Wings crossing",
+    "decisions": 7,
+    "expert_s": 55,
+    "reward": "c4_r7_bridge, c4_r7_shutter_open, 40 shards, Thermal Wing access",
+    "why": "Deepens legacy r7 with D06 anti-cheese grate, central updraft, and Thermal Conservatory fork.",
+    "exit": "exit_c4_r7_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          104,
+          112
+        ],
+        "tol": 10
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_c4_r7",
+        "angle": 135
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          112
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "target": "transformer_c4_r7"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r7_shutter_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          136
+        ],
+        "tol": 12
+      },
+      {
+        "op": "glide",
+        "to": [
+          288,
+          64
+        ],
+        "tol": 14
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r7_north"
+      }
+    ]
+  }
 }

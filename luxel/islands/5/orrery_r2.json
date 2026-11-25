@@ -3,8 +3,10 @@
   "island_id": 5,
   "tile_size": 16,
   "is_dungeon": true,
+  "name_key": "I5_OR_R2",
+  "music": "island5_dungeon",
   "spawn": [
-    368,
+    400,
     136
   ],
   "zones": [
@@ -14,7 +16,7 @@
       "rect": [
         0,
         0,
-        416,
+        448,
         256
       ],
       "dark": true
@@ -24,7 +26,7 @@
     {
       "id": "exit_o5_r2_east",
       "rect": [
-        400,
+        432,
         112,
         16,
         48
@@ -54,10 +56,38 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r2_ne",
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r11",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_o5_r2",
+      "kind": "room_anchor",
+      "pos": [
+        400,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "cracked_o5_r2",
       "kind": "cracked_wall",
@@ -76,7 +106,7 @@
       "id": "switch_eye_o5_r2",
       "kind": "switch_eye",
       "pos": [
-        264,
+        280,
         72
       ],
       "props": {
@@ -88,19 +118,34 @@
       "id": "bridge_o5_r2",
       "kind": "door",
       "pos": [
-        240,
+        256,
         144
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          96,
+          128,
           32
         ],
         "starts_open": false,
         "requires_signals": [
           "switch_eye_o5_r2"
         ]
+      }
+    },
+    {
+      "id": "well_o5_r2",
+      "kind": "polarity_well",
+      "pos": [
+        256,
+        188
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 48.0,
+        "strength": 440.0,
+        "orbit_capture": true,
+        "orbit_r": 30.0
       }
     },
     {
@@ -115,15 +160,67 @@
         "key_kind": "wick_key",
         "flag_id": "wick_key_5_1"
       }
+    },
+    {
+      "id": "lamp_o5_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "zone": "orrery_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "zone": "orrery_r2",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        104,
+        152
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        336,
+        112,
+        48,
+        48
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        176,
+        72
+      ],
+      "radius": 20,
+      "glow": true
+    }
+  ],
   "scenery": [
     {
       "sheet": "island5_scenery",
       "prop": "hanging_pendulum",
       "pos": [
-        324,
+        340,
         68
       ],
       "layer": "sort",
@@ -135,7 +232,7 @@
       "sheet": "island5_scenery",
       "prop": "clockwork_gear_pillar",
       "pos": [
-        364,
+        408,
         68
       ],
       "layer": "sort",
@@ -147,8 +244,8 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        312,
-        112
+        336,
+        108
       ],
       "layer": "sort",
       "flip_x": true,
@@ -159,7 +256,7 @@
       "sheet": "island5_scenery",
       "prop": "observatory_brazier_stand",
       "pos": [
-        312,
+        336,
         176
       ],
       "layer": "sort",
@@ -219,7 +316,7 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        352,
+        376,
         184
       ],
       "layer": "sort",
@@ -240,5 +337,62 @@
       "phase": 0.3
     }
   ],
-  "is_2x2_room": true
+  "layers": [],
+  "events": [],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Chasm & Switch Vault (deepened + D06 fixed): shoot the north eye switch across the widened 128px pit chasm (or curve through the chasm well) to deploy the brass bridge, claim Key 1, and Beam the cracked north bulkhead.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "128px un-zippable chasm bridge deployment, Beam bulkhead shattering, and Outer Escapement branch.",
+    "decisions": 5,
+    "expert_s": 42,
+    "reward": "wick_key_5_1+branch_to_r11",
+    "why": "First puzzle vault of the Orrery yielding Key 1 and branching to Outer Escapement.",
+    "exit": "exit_o5_r2_north",
+    "solution": [
+      {
+        "op": "shoot",
+        "from": [
+          336,
+          72
+        ],
+        "target": "switch_eye_o5_r2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_o5_r2",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          168
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_5_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          96
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "cracked_o5_r2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r2_north"
+      }
+    ]
+  }
 }

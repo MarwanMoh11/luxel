@@ -1,0 +1,509 @@
+{
+  "id": "orrery_r11",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "meteor_vault",
+  "music": "island5_dungeon",
+  "name_key": "I5_OR_R11",
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "o5_r11",
+      "name_key": "I5_OR_R11",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r11_s",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r2",
+      "to_spawn": [
+        384,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r11_sw",
+      "rect": [
+        80,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r1",
+      "to_spawn": [
+        176,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r11_latch"
+      ],
+      "locked_door_id": "door_o5_r11_hub"
+    },
+    {
+      "id": "exit_o5_r11_n",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r3",
+      "to_spawn": [
+        56,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "o5_r11_latch"
+      ],
+      "locked_door_id": "door_o5_r11_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "hound_o5_r11",
+      "kind": "comet_hound",
+      "pos": [
+        352,
+        112
+      ],
+      "route": [
+        [
+          336,
+          96
+        ],
+        [
+          368,
+          168
+        ]
+      ],
+      "zone": "o5_r11",
+      "leash": 140
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_o5_r11",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rotor_o5_r11",
+      "kind": "rotor",
+      "pos": [
+        224,
+        152
+      ],
+      "props": {
+        "size": [
+          96,
+          96
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_o5_r11",
+      "kind": "star_bell",
+      "pos": [
+        200,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:orrery",
+        "var_name": "orrery_ring",
+        "rotors": [
+          "rotor_o5_r11"
+        ],
+        "allow_ccw_blue": true,
+        "cooldown": 0.55
+      }
+    },
+    {
+      "id": "crys_o5_r11",
+      "kind": "crystal_toggle",
+      "pos": [
+        344,
+        192
+      ],
+      "props": {
+        "group": "o5_r11_pol",
+        "phase": 0,
+        "target_id": "well_o5_r11"
+      }
+    },
+    {
+      "id": "well_o5_r11",
+      "kind": "polarity_well",
+      "pos": [
+        152,
+        152
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 56.0,
+        "strength": 480.0,
+        "linked_crystal": "crys_o5_r11"
+      }
+    },
+    {
+      "id": "orb_o5_r11",
+      "kind": "meteor_orb",
+      "pos": [
+        248,
+        112
+      ],
+      "props": {
+        "cradle_pos": [
+          248,
+          112
+        ],
+        "mass": 1.0,
+        "respawn_s": 0.8
+      }
+    },
+    {
+      "id": "eye_o5_r11_latch",
+      "kind": "switch_eye",
+      "pos": [
+        96,
+        112
+      ],
+      "props": {
+        "target_ids": [
+          "door_o5_r11_hub",
+          "door_o5_r11_north"
+        ],
+        "sets_flag": "o5_r11_latch"
+      }
+    },
+    {
+      "id": "door_o5_r11_hub",
+      "kind": "door",
+      "pos": [
+        96,
+        264
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_o5_r11_latch"
+        ],
+        "sets_flag": "o5_r11_latch"
+      }
+    },
+    {
+      "id": "door_o5_r11_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_o5_r11_latch"
+        ],
+        "sets_flag": "o5_r11_latch"
+      }
+    },
+    {
+      "id": "lamp_o5_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        232
+      ],
+      "props": {
+        "zone": "o5_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "zone": "o5_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        232
+      ],
+      "props": {
+        "zone": "o5_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        64
+      ],
+      "props": {
+        "zone": "o5_r11",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 44,
+      "style": "gear"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        128
+      ],
+      "radius": 22,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        72,
+        216,
+        48,
+        32
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_floor_seal",
+      "pos": [
+        224,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "obsidian_vault_arch",
+      "pos": [
+        224,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "orbital_ring_totem",
+      "pos": [
+        376,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        196,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        376,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "meteor_crystal_cluster",
+      "pos": [
+        76,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "layers": [
+    {
+      "id": "r11_ring_90",
+      "when": "orrery_ring!=0",
+      "tiles": [
+        [
+          9,
+          13,
+          2,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "o5_r11_latch_msg",
+      "on": "signal:eye_o5_r11_latch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "o5_r11_latch"
+        },
+        {
+          "sfx": "o5_ring_latch"
+        },
+        {
+          "narrate": "I5_OR_ESCAPEMENT_LATCH"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Outer Escapement (NEW): defeat the brass gear Comet Hound, ring the Orrery Ring Star Bell to extend the SW shortcut span, flip the escapement polarity well, and launch the Meteor Orb into the west escapement latch to pin Cycle 1 back to the Hub AND open the north arch to the Combat Atrium!",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Orrery Ring gear turning combined with Meteor Orb slingshot latching for permanent hub shortcuts.",
+    "decisions": 6,
+    "expert_s": 48,
+    "reward": "o5_r11_latch+hub_shortcut_1",
+    "why": "New Cycle-1 gear wing connecting r2, r3, and the r1 hub.",
+    "exit": "exit_o5_r11_n",
+    "start": {
+      "vars": {
+        "dungeon:orrery:orrery_ring": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "o5_r11",
+        "timeout": 40.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          176
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_o5_r11",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait",
+        "secs": 0.6
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          168
+        ],
+        "target": "crys_o5_r11"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "well_o5_r11",
+        "prop": "is_push",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          112
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "orb_o5_r11"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r11_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r11_n"
+      }
+    ]
+  }
+}

@@ -17,6 +17,7 @@ const WING_DUNGEONS: Array[Dictionary] = [
 ]
 
 var opened: bool = false
+var target_door_id: String = "door_triple_eclipse_seal"
 var _open_t: float = 0.0
 var _rattle_t: float = 0.0
 var _lit_pips: Array[bool] = [false, false, false]
@@ -24,26 +25,42 @@ var _lit_pips: Array[bool] = [false, false, false]
 
 func _toy_setup() -> void:
 	kind = "eclipse_seal_gate"
-	size = LxMapFormat.to_vec2(props.get("size", [48.0, 16.0]), Vector2(48.0, 16.0))
-	radius = maxf(size.x, size.y) * 0.5 + 8.0
+	size = LxMapFormat.to_vec2(props.get("size", [64.0, 16.0]), Vector2(64.0, 16.0))
+	radius = maxf(size.x, size.y) * 0.5 + 12.0
 	persist = bool(props.get("persist", true))
+	target_door_id = str(props.get("target_door_id", "door_triple_eclipse_seal"))
 	opened = bool(props.get("opened", false))
 	if Lx.state != null and not id.is_empty() and (Lx.state.opened_doors.has(id) or Lx.state.broken_seals.has(id)):
 		opened = true
+	_sync_door_policy()
 	_evaluate(false)
 	queue_redraw()
 
 
-func is_solid() -> bool:
-	return active and not opened
+func _find_target_door() -> Node:
+	if region == null or target_door_id.is_empty():
+		return null
+	if region.has_method("get_interactable"):
+		var found: Variant = region.call("get_interactable", target_door_id)
+		if found is Node:
+			return found as Node
+	return null
 
 
-func is_solid_blocker() -> bool:
-	return is_solid()
-
-
-func get_solid_rect() -> Rect2:
-	return Rect2(pos - size * 0.5, size) if is_solid() else Rect2()
+func _sync_door_policy() -> void:
+	var door: Node = _find_target_door()
+	if door == null:
+		return
+	if _is_legacy_passed() or opened:
+		if door.has_method("_open") and not bool(door.get("opened")):
+			door.call("_open", persist)
+		return
+	if _all_three_wings_live():
+		var reqs: Array[String] = ["toll_cleared", "archive_cleared", "stair_cleared"]
+		door.set("required_flags", reqs)
+	else:
+		var fallback: Array[String] = ["beacon_8_1", "beacon_8_2", "beacon_8_3"]
+		door.set("required_flags", fallback)
 
 
 func tick(dt: float) -> void:
@@ -168,6 +185,9 @@ func _shatter_seal(play_fx: bool) -> void:
 				Lx.state.opened_doors.append(id)
 			if not Lx.state.broken_seals.has(id):
 				Lx.state.broken_seals.append(id)
+	var door: Node = _find_target_door()
+	if door != null and door.has_method("_open") and not bool(door.get("opened")):
+		door.call("_open", persist)
 	emit_power(true)
 	if play_fx:
 		_emit_sfx("seal_break")

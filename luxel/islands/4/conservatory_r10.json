@@ -46,17 +46,17 @@
         16,
         48
       ],
-      "to_island": 5,
       "to_region": "overworld",
       "to_spawn": [
-        152,
-        544
+        544,
+        192
       ],
       "requires_moves": [],
       "requires_flags": [
         "island_4_relit"
       ],
-      "locked_door_id": "bridge_of_light_4_dome"
+      "locked_door_id": "bridge_of_light_4_dome",
+      "one_way": true
     }
   ],
   "enemies": [
@@ -149,6 +149,106 @@
       "props": {
         "lit_by_default": true
       }
+    },
+    {
+      "id": "rail_c4_r10_w1",
+      "kind": "rail",
+      "pos": [
+        84,
+        112
+      ],
+      "props": {
+        "size": [
+          6,
+          48
+        ]
+      }
+    },
+    {
+      "id": "rail_c4_r10_w2",
+      "kind": "rail",
+      "pos": [
+        84,
+        168
+      ],
+      "props": {
+        "size": [
+          6,
+          48
+        ]
+      }
+    },
+    {
+      "id": "rail_c4_r10_e1",
+      "kind": "rail",
+      "pos": [
+        378,
+        96
+      ],
+      "props": {
+        "size": [
+          6,
+          32
+        ]
+      }
+    },
+    {
+      "id": "rail_c4_r10_e2",
+      "kind": "rail",
+      "pos": [
+        378,
+        176
+      ],
+      "props": {
+        "size": [
+          6,
+          32
+        ]
+      }
+    },
+    {
+      "id": "lamp_c4_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [
@@ -174,201 +274,167 @@
       ],
       "layer": "ground",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
+      "shadow": false
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        196,
+        195,
         56
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        284,
+        285,
         56
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        196,
-        244
+        195,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.1
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        284,
-        244
+        285,
+        232
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        112,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        368,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
       "prop": "broken_glass_dome",
       "pos": [
-        124,
-        72
+        128,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": true,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "mossy_planter_urn",
-      "pos": [
-        68,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        52,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        88,
-        28
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        428,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        460,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "flooded_statue",
-      "pos": [
-        424,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        424,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        384,
-        244
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        456,
-        248
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.8
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R10",
+  "music": "island4_boss_p1",
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_c4_r10_p2_dew",
+      "on": "boss_hp:0.68",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_c4_r10_p3_dew",
+      "on": "boss_hp:0.38",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        128
+      ],
+      "radius": 52,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        104
+      ],
+      "size": [
+        88,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    }
+  ],
+  "design": {
+    "idea": "Glass Dome Sanctum deepened: duel the upgraded 3-phase Heron Abbess with railed water flanks (Feel #9), shatter skylights to summon updraft columns against Wing Gust and Double Ripples, relight Great Lamp 4, and return to relit Mirefen (D43).",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Aerial Wings mastery, skylight updraft positioning, and Great Lamp relighting",
+    "decisions": 8,
+    "expert_s": 150,
+    "reward": "boss_heron_abbess_defeated, great_lamp_4, island_4_relit, Full Heart",
+    "why": "Grand Keeper Boss climax with Feel #9 safety rails and D43 relit-overworld return.",
+    "exit": "exit_c4_r10_bridge",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          176
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_heron_abbess_defeated"
+      },
+      {
+        "op": "goto",
+        "to": "great_lamp_4",
+        "tol": 18
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_4"
+      },
+      {
+        "op": "expect",
+        "flag": "island_4_relit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r10_bridge"
+      }
+    ]
+  }
 }

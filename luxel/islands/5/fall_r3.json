@@ -1,0 +1,609 @@
+{
+  "id": "fall_r3",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "music": "isl5_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_FL_R3",
+  "spawn": [
+    48,
+    184
+  ],
+  "zones": [
+    {
+      "id": "fl_r3",
+      "name_key": "I5_FL_R3",
+      "rect": [
+        0,
+        0,
+        576,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_fl_r3_w",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_region": "fall_r2",
+      "to_spawn": [
+        496,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_fl_r3_e",
+      "rect": [
+        560,
+        160,
+        16,
+        32
+      ],
+      "to_region": "fall_r4",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "fall_r3_latch"
+      ],
+      "locked_door_id": "door_fl_r3_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_fl_r3_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_fl_r3_mid",
+      "kind": "room_anchor",
+      "pos": [
+        296,
+        184
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wind_fl_r3",
+      "kind": "fall_wind_rig",
+      "pos": [
+        288,
+        176
+      ],
+      "props": {
+        "width": 544,
+        "height": 320,
+        "speed": 145.0
+      }
+    },
+    {
+      "id": "lore_fl_r3",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "string_id": "I5_FL_R3_HINT",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "sn_fl_r3_1",
+      "kind": "star_node",
+      "pos": [
+        144,
+        184
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "well_fl_r3_1",
+      "kind": "polarity_well",
+      "pos": [
+        188,
+        224
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 64.0,
+        "strength": 560.0,
+        "orbit_capture": true,
+        "orbit_r": 32.0
+      }
+    },
+    {
+      "id": "sn_fl_r3_2",
+      "kind": "star_node",
+      "pos": [
+        236,
+        184
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "crys_fl_r3_w2",
+      "kind": "crystal_toggle",
+      "pos": [
+        344,
+        224
+      ],
+      "props": {
+        "group": "fl_r3_pol",
+        "phase": 0,
+        "target_id": "well_fl_r3_2"
+      }
+    },
+    {
+      "id": "well_fl_r3_2",
+      "kind": "polarity_well",
+      "pos": [
+        408,
+        176
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 72.0,
+        "strength": 580.0,
+        "linked_crystal": "crys_fl_r3_w2"
+      }
+    },
+    {
+      "id": "sn_fl_r3_3",
+      "kind": "star_node",
+      "pos": [
+        400,
+        120
+      ],
+      "props": {
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "bell_fl_r3",
+      "kind": "star_bell",
+      "pos": [
+        448,
+        128
+      ],
+      "props": {
+        "scope": "room:5:fall_r3",
+        "var_name": "fall_latch",
+        "allow_ccw_blue": false,
+        "allow_interact": true,
+        "cooldown": 0.6,
+        "target_id": "door_fl_r3_chute"
+      }
+    },
+    {
+      "id": "crumble_fl_r3_end",
+      "kind": "crumble_floor",
+      "pos": [
+        488,
+        176
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "delay": 1.3,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "door_fl_r3_chute",
+      "kind": "door",
+      "pos": [
+        552,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "bell_fl_r3"
+        ],
+        "sets_flag": "fall_r3_latch"
+      }
+    },
+    {
+      "id": "lamp_fl_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        216
+      ],
+      "props": {
+        "zone": "fl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r3_m1",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        136
+      ],
+      "props": {
+        "zone": "fl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r3_m2",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        232
+      ],
+      "props": {
+        "zone": "fl_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        520,
+        144
+      ],
+      "props": {
+        "zone": "fl_r3",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "eye_fl_r3_mid",
+      "kind": "satellite_eye",
+      "pos": [
+        312,
+        184
+      ],
+      "route": [
+        [
+          296,
+          160
+        ],
+        [
+          328,
+          200
+        ]
+      ],
+      "zone": "fl_r3_mid",
+      "leash": 130
+    }
+  ],
+  "decor": [
+    {
+      "kind": "cracks",
+      "pos": [
+        80,
+        184
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        184
+      ],
+      "radius": 32,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        328,
+        144,
+        24,
+        32
+      ]
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        512,
+        176
+      ],
+      "radius": 20
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        44,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        96,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        288,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "fallen_telescope_tube",
+      "pos": [
+        288,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        344,
+        140
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        532,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        520,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    }
+  ],
+  "triggers": [],
+  "layers": [
+    {
+      "id": "r3_bridge_locked",
+      "when": "fall_latch!=0",
+      "tiles": [
+        [
+          23,
+          10,
+          7,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "fl_r3_reset_latch",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "room:5:fall_r3",
+            "name": "fall_latch",
+            "value": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "fl_r3_latch_flag",
+      "on": "signal:bell_fl_r3",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "fall_r3_latch"
+        },
+        {
+          "sfx": "star_bell_turn"
+        },
+        {
+          "shake": 0.22
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Terminal Orbit (ASTONISHING): light Star 1 on the abyss lip, throw your lantern tangentially into Well 1 (Apogee Clasp + Starlight Sextant!) to bridge around the tumbling stone arch to Star 2, cross to the center slab, clear the Satellite Eye, flip Well 2 to Push, and curve a shot around Well 2 to light Star 3 and ring the far Star Bell locking the final bridge.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Full mid-fall synthesis of Apogee Clasp orbiting lantern, Starlight Sextant portable star vertex, polarity flip, and Star Bell bridge locking.",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "fall_r3_latch+roof_descent",
+    "why": "Astonishing climax traversal room of the Fall set piece fusing Dungeon A + B powers.",
+    "exit": "exit_fl_r3_e",
+    "start": {
+      "flags": [
+        "power_orbit_ring",
+        "power_sextant"
+      ],
+      "vars": {
+        "room:5:fall_r3:fall_latch": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_fl_r3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          184
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_fl_r3_1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          184
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_fl_r3_2",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "throw",
+        "target": [
+          188,
+          192
+        ],
+        "hold": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          184
+        ]
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "clear",
+        "zone": "fl_r3_mid"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          200
+        ],
+        "target": "crys_fl_r3_w2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "well_fl_r3_2",
+        "prop": "is_push",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          128
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": "sn_fl_r3_3",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          352,
+          136
+        ],
+        "target": [
+          448,
+          128
+        ],
+        "wait_hit": 0.8
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_fl_r3_chute",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_fl_r3_e"
+      }
+    ]
+  }
+}

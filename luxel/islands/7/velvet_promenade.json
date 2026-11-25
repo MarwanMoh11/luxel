@@ -68,6 +68,38 @@
         360,
         144
       ]
+    },
+    {
+      "id": "exit_vp_theatre",
+      "rect": [
+        752,
+        128,
+        16,
+        48
+      ],
+      "to_region": "theatre_r1",
+      "to_spawn": [
+        240,
+        272
+      ]
+    },
+    {
+      "id": "exit_vp_stagedoor",
+      "rect": [
+        528,
+        464,
+        64,
+        16
+      ],
+      "to_region": "theatre_r6",
+      "to_spawn": [
+        376,
+        272
+      ],
+      "requires_flags": [
+        "theatre_stagedoor_open"
+      ],
+      "locked_door_id": "door_vp_stagedoor"
     }
   ],
   "enemies": [
@@ -75,41 +107,41 @@
       "id": "vp_puppet_1",
       "kind": "puppet",
       "pos": [
-        552,
-        312
+        208,
+        352
       ],
       "route": [
         [
-          528,
-          312
+          192,
+          352
         ],
         [
-          584,
-          312
+          232,
+          352
         ]
       ],
       "zone": "velvet_promenade",
-      "leash": 124
+      "leash": 108
     },
     {
       "id": "vp_reflection_1",
       "kind": "reflection",
       "pos": [
-        488,
-        344
+        248,
+        376
       ],
       "route": [
         [
-          456,
-          344
+          224,
+          376
         ],
         [
-          528,
-          344
+          272,
+          376
         ]
       ],
       "zone": "velvet_promenade",
-      "leash": 124
+      "leash": 108
     }
   ],
   "interactables": [
@@ -186,11 +218,30 @@
       "kind": "lore_stone",
       "pos": [
         616,
-        152
+        112
       ],
       "props": {
         "string_id": "ISL7_LORE_PROM",
-        "icon": "crown"
+        "icon": "crown",
+        "radius": 24
+      }
+    },
+    {
+      "id": "door_vp_stagedoor",
+      "kind": "door",
+      "pos": [
+        560,
+        416
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "theatre_stagedoor_open"
+        ]
       }
     },
     {
@@ -217,7 +268,8 @@
         "reveal_flag": "vp_waltz_d1",
         "decoy_style": "lantern",
         "truth": false,
-        "silent": true
+        "silent": true,
+        "persist": false
       }
     },
     {
@@ -231,7 +283,8 @@
         "reveal_flag": "vp_waltz_d2",
         "decoy_style": "mirror",
         "truth": false,
-        "silent": true
+        "silent": true,
+        "persist": false
       }
     },
     {
@@ -245,7 +298,8 @@
         "reveal_flag": "q7_decoy_promenade",
         "decoy_style": "bust",
         "truth": false,
-        "silent": false
+        "silent": false,
+        "persist": false
       }
     },
     {
@@ -432,8 +486,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "proscenium_mask_arch",
       "pos": [
-        648,
-        152
+        712,
+        144
       ],
       "layer": "sort",
       "flip_x": false,

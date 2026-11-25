@@ -1,0 +1,506 @@
+{
+  "id": "orrery_r14",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "island5_dungeon",
+  "name_key": "I5_OR_R14",
+  "spawn": [
+    48,
+    160
+  ],
+  "zones": [
+    {
+      "id": "o5_r14",
+      "name_key": "I5_OR_R14",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r14_w",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_region": "orrery_r8",
+      "to_spawn": [
+        192,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r14_n",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r15",
+      "to_spawn": [
+        176,
+        240
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r14_e",
+      "rect": [
+        496,
+        144,
+        16,
+        32
+      ],
+      "to_region": "orrery_r9",
+      "to_spawn": [
+        128,
+        224
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "wick_key_5_3"
+      ],
+      "locked_door_id": "door_o5_r14_k3"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "sat_o5_r14",
+      "kind": "satellite_eye",
+      "pos": [
+        168,
+        240
+      ],
+      "route": [
+        [
+          152,
+          240
+        ],
+        [
+          312,
+          240
+        ]
+      ],
+      "zone": "o5_r14",
+      "leash": 160
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_o5_r14",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rotor_o5_r14",
+      "kind": "rotor",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "size": [
+          96,
+          80
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_o5_r14_outer",
+      "kind": "star_bell",
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:orrery",
+        "var_name": "orrery_ring",
+        "rotors": [
+          "rotor_o5_r14"
+        ],
+        "allow_ccw_blue": true,
+        "cooldown": 0.55
+      }
+    },
+    {
+      "id": "well_o5_r14_1",
+      "kind": "polarity_well",
+      "pos": [
+        196,
+        112
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 44.0,
+        "strength": 360.0
+      }
+    },
+    {
+      "id": "well_o5_r14_2",
+      "kind": "polarity_well",
+      "pos": [
+        308,
+        112
+      ],
+      "props": {
+        "mode": "push",
+        "radius": 44.0,
+        "strength": 360.0
+      }
+    },
+    {
+      "id": "trans_o5_r14",
+      "kind": "blue_transformer",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "angle_deg": 180,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "eye_o5_r14_pin",
+      "kind": "switch_eye",
+      "pos": [
+        352,
+        96
+      ],
+      "props": {
+        "target_id": "bridge_o5_r14_east",
+        "sets_flag": "o5_r14_rings"
+      }
+    },
+    {
+      "id": "bridge_o5_r14_east",
+      "kind": "door",
+      "pos": [
+        392,
+        160
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "eye_o5_r14_pin"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r14_k3",
+      "kind": "door",
+      "pos": [
+        488,
+        160
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "orrery",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_5_3",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "wick_key_5_3"
+        ]
+      }
+    },
+    {
+      "id": "lamp_o5_r14_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "o5_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r14_c",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "zone": "o5_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r14_s",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        240
+      ],
+      "props": {
+        "zone": "o5_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r14_e",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        136
+      ],
+      "props": {
+        "zone": "o5_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r14_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        40
+      ],
+      "props": {
+        "zone": "o5_r14",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 84,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 44,
+      "style": "gear"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 24
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        256,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        256,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        152,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        152,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "hanging_orrery_pendulum",
+      "pos": [
+        432,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "r14_north_align",
+      "when": "orrery_ring==90 || flag:o5_r14_rings",
+      "tiles": [
+        [
+          15,
+          4,
+          2,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r14_east_align",
+      "when": "orrery_ring==180 || flag:o5_r14_rings",
+      "tiles": [
+        [
+          19,
+          9,
+          1,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "o5_r14_rings_msg",
+      "on": "signal:eye_o5_r14_pin",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "o5_r14_rings"
+        },
+        {
+          "sfx": "o5_ring_latch"
+        },
+        {
+          "narrate": "I5_OR_RINGS_LOCKED"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Nested Rings Conjunction (NEW): clear the patrolling Satellite Eye, rotate the nested Orrery Rings to 90 degrees to open the North bridge to the Astronomer's Study, then rotate to 180 degrees, latch the permanent ring pin, and unlock the East Key-3 vault door into the Boss Key chamber!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Multi-ring quarter-turn conjunction linking the upper Study and Boss Key vault.",
+    "decisions": 10,
+    "expert_s": 58,
+    "reward": "o5_r14_rings+access_to_study_and_r9",
+    "why": "Signature nested-rings mechanical puzzle fulfilling the Orrery's turning-rings fantasy.",
+    "exit": "exit_o5_r14_n",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ],
+      "vars": {
+        "dungeon:orrery:orrery_ring": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "o5_r14",
+        "timeout": 40.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          168
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_o5_r14_outer",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "expect",
+        "var": "orrery_ring==90"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r14_n"
+      }
+    ]
+  }
+}

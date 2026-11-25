@@ -1,0 +1,124 @@
+{
+  "id": "crash_r3",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "ember_express_roof",
+  "music": "island6_boss_p1",
+  "ambience": ["forge_rumble", "wind_howl"],
+  "name_key": "ISL6_CR_R3",
+  "spawn": [56, 144],
+  "zones": [
+    { "id": "crash_r3", "name_key": "ISL6_CR_R3", "rect": [0, 0, 544, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_crash_r3_west",
+      "rect": [0, 112, 16, 64],
+      "to_region": "crash_r2",
+      "to_spawn": [520, 152],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_crash_r3_east",
+      "rect": [528, 112, 16, 64],
+      "to_region": "crash_r4",
+      "to_spawn": [56, 144],
+      "requires_moves": [],
+      "requires_flags": ["crash_throttle_locked"],
+      "locked_door_id": "door_crash_r3_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_hollow_ram_phantom",
+      "kind": "hollow_ram_phantom",
+      "boss_id": "hollow_ram_phantom",
+      "pos": [320, 144],
+      "zone": "crash_r3",
+      "leash": 220
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_crash_r3",
+      "kind": "room_anchor",
+      "pos": [56, 144],
+      "props": { "auto": true }
+    },
+    {
+      "id": "anvil_crash_r3_cycle",
+      "kind": "temper_anvil",
+      "pos": [88, 200],
+      "props": { "mode": "cycle" }
+    },
+    {
+      "id": "pull_crash_r3_1",
+      "kind": "pull_ring",
+      "pos": [288, 88],
+      "props": { "axis": "w", "dist": 24.0, "latch": true, "target_id": "throttle_hook_r3", "persist": true }
+    },
+    {
+      "id": "pull_crash_r3_2",
+      "kind": "pull_ring",
+      "pos": [288, 200],
+      "props": { "axis": "w", "dist": 24.0, "latch": true, "target_id": "throttle_hook_r3", "persist": true }
+    },
+    {
+      "id": "throttle_hook_r3",
+      "kind": "crash_throttle_hook",
+      "pos": [424, 144],
+      "props": { "ring_ids": ["pull_crash_r3_1", "pull_crash_r3_2"], "persist": true }
+    },
+    {
+      "id": "door_crash_r3_east",
+      "kind": "door",
+      "pos": [520, 144],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [16, 64],
+        "requires_flags": ["crash_throttle_locked"]
+      }
+    },
+    { "id": "lamp_cr3_1", "kind": "road_lamp", "pos": [80, 96], "props": { "lit": true } },
+    { "id": "lamp_cr3_2", "kind": "road_lamp", "pos": [224, 80], "props": { "lit": true } },
+    { "id": "lamp_cr3_3", "kind": "road_lamp", "pos": [224, 208], "props": { "lit": true } },
+    { "id": "lamp_cr3_4", "kind": "road_lamp", "pos": [384, 96], "props": { "lit": true } },
+    { "id": "lamp_cr3_5", "kind": "road_lamp", "pos": [384, 192], "props": { "lit": true } },
+    { "id": "lamp_cr3_6", "kind": "road_lamp", "pos": [472, 144], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "grate", "rect": [128, 96, 256, 96], "glow": true },
+    { "kind": "inlay", "rect": [256, 112, 128, 64] }
+  ],
+  "scenery": [
+    { "sheet": "theme_ember_express_roof", "prop": "loco_smokestack", "pos": [448, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
+    { "sheet": "theme_ember_express_roof", "prop": "brass_steam_whistle", "pos": [448, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_ember_express_roof", "prop": "roof_vent_cowling", "pos": [144, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_ember_express_roof", "prop": "roof_vent_cowling", "pos": [144, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "theme_ember_express_roof", "prop": "cinder_brazier_cage", "pos": [352, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_ember_express_roof", "prop": "cinder_brazier_cage", "pos": [352, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "Locomotive Roof Duel against Hollow Wick's Iron Phantom: counter its mirrored Temper volleys while yanking twin Master Throttle Locks (pull_ring) to stagger the Phantom and lock the runaway locomotive at ramming speed.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Temper counterplay against mirrored attacks and Coupler Hook throttle-stagger synergy.",
+    "decisions": 9,
+    "expert_s": 70,
+    "reward": "crash_throttle_locked+open_crash_r4",
+    "why": "Climax skirmish of The Iron Collision set piece before smashing the Obsidian Dam.",
+    "exit": "exit_crash_r3_east",
+    "start": { "flags": ["crash_arm_crossed", "item_coupler_hook", "temper_skip_known", "temper_scatter_known", "temper_lance_known"] },
+    "solution": [
+      { "op": "goto", "to": [160, 144], "tol": 8.0 },
+      { "op": "clear", "timeout": 120.0 },
+      { "op": "expect", "flag": "crash_throttle_locked" },
+      { "op": "expect_exit", "exit": "exit_crash_r3_east" }
+    ]
+  }
+}

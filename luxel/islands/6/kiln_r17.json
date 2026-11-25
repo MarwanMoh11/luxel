@@ -1,0 +1,160 @@
+{
+  "id": "kiln_r17",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "iron_colossus",
+  "music": "island6_dungeon",
+  "ambience": ["forge_rumble"],
+  "name_key": "ISL6_KILN_R17",
+  "spawn": [432, 152],
+  "zones": [
+    { "id": "kiln_r17", "name_key": "ISL6_KILN_R17", "rect": [0, 0, 480, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_kiln_r17_east",
+      "rect": [464, 128, 16, 48],
+      "to_region": "kiln_r16",
+      "to_spawn": [48, 72],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_kiln_r17_south",
+      "rect": [160, 272, 32, 16],
+      "to_region": "kiln_r9",
+      "to_spawn": [384, 208],
+      "requires_moves": [],
+      "requires_flags": ["kiln_r17_bridge"],
+      "locked_door_id": "door_kiln_r17_south"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_kiln_r17",
+      "kind": "room_anchor",
+      "pos": [432, 152],
+      "props": { "auto": true }
+    },
+    {
+      "id": "emit_r17_gold",
+      "kind": "beam_emitter",
+      "pos": [368, 40],
+      "props": { "dir": "s", "color": "gold", "period": 0.0, "duty": 1.0, "range": 224.0, "harms_wick": false }
+    },
+    {
+      "id": "glass_r17_blue",
+      "kind": "color_glass",
+      "pos": [328, 136],
+      "props": { "color": "blue", "size": [16, 16], "solid": true, "movable": true, "cycles_color": false, "persist": true }
+    },
+    {
+      "id": "sensor_r17_blue",
+      "kind": "beam_sensor",
+      "pos": [368, 240],
+      "props": { "color": "blue", "latch": true, "target_id": "door_kiln_r17_mid", "persist": true }
+    },
+    {
+      "id": "door_kiln_r17_mid",
+      "kind": "door",
+      "pos": [280, 152],
+      "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["sensor_r17_blue"] }
+    },
+    {
+      "id": "mimic_r17",
+      "kind": "mimic_statue",
+      "pos": [88, 152],
+      "props": { "mirror": "x", "size": [14, 14], "range": 240.0, "persist": true }
+    },
+    {
+      "id": "plate_r17_statue",
+      "kind": "pressure_plate",
+      "pos": [56, 72],
+      "props": {
+        "by": ["block"],
+        "latch": true,
+        "target_ids": ["door_kiln_r17_south", "door_kiln_r17_ember"],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_kiln_r17_ember",
+      "kind": "door",
+      "pos": [240, 56],
+      "props": { "door_kind": "switch_door", "size": [48, 16], "requires_signals": ["plate_r17_statue"] }
+    },
+    {
+      "id": "chest_ember_6_kiln",
+      "kind": "chest",
+      "pos": [240, 32],
+      "props": { "reward_kind": "ember_piece", "reward": "ember_piece", "amount": 1, "secret_id": "ember_6_kiln", "zone": "kiln_r17" }
+    },
+    {
+      "id": "door_kiln_r17_south",
+      "kind": "door",
+      "pos": [176, 264],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [32, 16],
+        "requires_signals": ["plate_r17_statue"],
+        "sets_flag": "kiln_r17_bridge"
+      }
+    },
+    { "id": "lamp_kr17_1", "kind": "road_lamp", "pos": [416, 88], "props": { "lit": true } },
+    { "id": "lamp_kr17_2", "kind": "road_lamp", "pos": [416, 216], "props": { "lit": true } },
+    { "id": "lamp_kr17_3", "kind": "road_lamp", "pos": [216, 152], "props": { "lit": true } },
+    { "id": "lamp_kr17_4", "kind": "road_lamp", "pos": [184, 224], "props": { "lit": true } },
+    { "id": "lamp_kr17_5", "kind": "road_lamp", "pos": [56, 224], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "grate", "rect": [352, 64, 32, 160], "glow": false },
+    { "kind": "inlay", "rect": [32, 48, 80, 176] },
+    { "kind": "inlay", "rect": [176, 64, 80, 160] }
+  ],
+  "scenery": [
+    { "sheet": "theme_iron_colossus", "prop": "giant_foundry_gear", "pos": [312, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_iron_colossus", "prop": "slag_ingot_stack", "pos": [432, 240], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_iron_colossus", "prop": "colossus_lantern_post", "pos": [200, 96], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
+    { "sheet": "theme_iron_colossus", "prop": "steam_valve_wheel", "pos": [40, 248], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.5 }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r17_bridge_msg",
+      "on": "signal:plate_r17_statue",
+      "once": true,
+      "do": [
+        { "set_flag": "kiln_r17_bridge" },
+        { "narrate": "ISL6_KILN_BRIDGE_R9" },
+        { "shake": 0.14 }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The High Slag Balcony: push the movable Blue color_glass into the vertical gold emitter ray to tint it Blue for the sensor, then steer the X-mirrored mimic_statue across the lava trench around the basalt bump onto the counterweight plate, extending the Cycle 7 bridge straight to kiln_r9 and unlocking ember_6_kiln.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Color-glass beam tinting + X-mirrored mimic_statue spatial steering.",
+    "decisions": 9,
+    "expert_s": 55,
+    "reward": "ember_6_kiln+kiln_r17_bridge",
+    "why": "High balcony synthesis loop returning directly to kiln_r9 with the Great Kiln Ember Piece.",
+    "exit": "exit_kiln_r17_south",
+    "start": { "flags": ["kiln_cast_east"] },
+    "solution": [
+      { "op": "goto", "to": [304, 136], "tol": 4.0 },
+      { "op": "push", "target": "glass_r17_blue", "to": [368, 136] },
+      { "op": "wait_until", "target": "door_kiln_r17_mid", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "goto", "to": [216, 152], "tol": 4.0 },
+      { "op": "goto", "to": [248, 152], "tol": 4.0 },
+      { "op": "goto", "to": [248, 72], "tol": 4.0 },
+      { "op": "wait_until", "target": "door_kiln_r17_south", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "goto", "to": [240, 32], "tol": 6.0 },
+      { "op": "interact", "target": "chest_ember_6_kiln" },
+      { "op": "expect_exit", "exit": "exit_kiln_r17_south" }
+    ]
+  }
+}

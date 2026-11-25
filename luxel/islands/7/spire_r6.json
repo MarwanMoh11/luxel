@@ -31,7 +31,7 @@
       ],
       "to_region": "spire_r5",
       "to_spawn": [
-        456,
+        448,
         120
       ],
       "requires_moves": [],
@@ -65,7 +65,6 @@
       "boss_id": "moonshade_warden",
       "variant": "moonshade_warden",
       "is_boss": true,
-      "max_hp": 7.5,
       "shard_drop": 14,
       "pos": [
         256,
@@ -159,6 +158,72 @@
           "wick_key_7_2"
         ]
       }
+    },
+    {
+      "id": "pool_spire_r6_w",
+      "kind": "moon_pool",
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "pool_spire_r6_e",
+      "kind": "moon_pool",
+      "pos": [
+        368,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": true,
+        "radius_px": 15,
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_spire_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "zone": "spire_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r6_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        64
+      ],
+      "props": {
+        "zone": "spire_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_spire_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "zone": "spire_r6",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -174,30 +239,6 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        104,
-        48
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island7_scenery",
-      "prop": "reflection_ripple_ring",
-      "pos": [
-        392,
-        48
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.75
     },
     {
       "sheet": "island7_scenery",
@@ -260,5 +301,76 @@
       "phase": 0.45
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL7_SP_R6",
+  "music": "island7_boss_p1",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        136
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "sky",
+      "secondary": "ice"
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "design": {
+    "idea": "Moonshade Dueling Court pitting Wick against the upgraded Moonshade Warden, with twin Blue Transformers and dual Moon Pools to erase his Phase 2 Silver Blink-Ghost.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Banks Blue Bolts to shatter the prismatic buckler and flips Moon Pools to dispel the Phase 2 cross-world blink-ghost.",
+    "decisions": 6,
+    "expert_s": 95,
+    "reward": "wick_key_7_2+open_r7",
+    "why": "Spire Mini-Boss #1 upgraded with dual-world counterplay and D25a spawn fix.",
+    "exit": "exit_spire_r6_north",
+    "solution": [
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          120
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_7_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          48
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "door_spire_r6_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r6_north"
+      }
+    ]
+  }
 }

@@ -103,7 +103,7 @@
       "id": "mir_r10_s",
       "kind": "blue_transformer",
       "pos": [
-        232,
+        184,
         360
       ],
       "props": {
@@ -120,7 +120,7 @@
       "kind": "blue_transformer",
       "pos": [
         488,
-        216
+        184
       ],
       "props": {
         "normal": [
@@ -135,7 +135,7 @@
       "id": "portal_r10_n",
       "kind": "blue_portal",
       "pos": [
-        328,
+        360,
         88
       ],
       "props": {
@@ -151,7 +151,7 @@
       "id": "portal_r10_s",
       "kind": "blue_portal",
       "pos": [
-        232,
+        184,
         328
       ],
       "props": {
@@ -167,7 +167,7 @@
       "kind": "blue_portal",
       "pos": [
         456,
-        216
+        184
       ],
       "props": {
         "target_portal_id": "portal_r10_w",
@@ -182,7 +182,7 @@
       "kind": "blue_portal",
       "pos": [
         88,
-        216
+        232
       ],
       "props": {
         "target_portal_id": "portal_r10_e",
@@ -197,7 +197,7 @@
       "id": "raft_r10_ne",
       "kind": "tide_raft",
       "pos": [
-        408,
+        424,
         88
       ],
       "props": {
@@ -218,7 +218,7 @@
       "id": "raft_r10_sw",
       "kind": "tide_raft",
       "pos": [
-        136,
+        120,
         328
       ],
       "props": {
@@ -240,7 +240,7 @@
       "kind": "locks_orbit_capacitor",
       "pos": [
         456,
-        152
+        136
       ],
       "props": {
         "hold_secs": 4.0,
@@ -251,7 +251,7 @@
       "id": "cap_r10_s",
       "kind": "locks_orbit_capacitor",
       "pos": [
-        168,
+        152,
         328
       ],
       "props": {
@@ -721,7 +721,7 @@
       {
         "op": "shoot",
         "from": [
-          184,
+          136,
           360
         ],
         "target": "mir_r10_s"
@@ -737,7 +737,7 @@
         "op": "shoot",
         "from": [
           488,
-          264
+          232
         ],
         "target": "mir_r10_e"
       },
@@ -758,7 +758,7 @@
       {
         "op": "throw",
         "target": "raft_r10_ne",
-        "hold": 0.45
+        "hold": 0.22
       },
       {
         "op": "recall"
@@ -777,7 +777,7 @@
       {
         "op": "throw",
         "target": "raft_r10_sw",
-        "hold": 0.45
+        "hold": 0.22
       },
       {
         "op": "recall"
@@ -789,7 +789,7 @@
       {
         "op": "shoot",
         "from": [
-          184,
+          136,
           360
         ],
         "target": "mir_r10_s"

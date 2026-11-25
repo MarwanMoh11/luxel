@@ -1,0 +1,743 @@
+{
+  "id": "masq_r1",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_MASQ_R1",
+  "theme": "masquerade",
+  "music": "isl7_setpiece",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "masq_r1",
+      "name_key": "ISL7_MASQ_R1",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_masq_r1_south",
+      "rect": [
+        208,
+        304,
+        64,
+        16
+      ],
+      "to_region": "glass_terrace",
+      "to_spawn": [
+        320,
+        80
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_masq_r1_north",
+      "rect": [
+        208,
+        0,
+        64,
+        16
+      ],
+      "to_region": "masq_r2",
+      "to_spawn": [
+        256,
+        272
+      ],
+      "locked_door_id": "door_masq_r1_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_masq_r1",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_masq_r1",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        256
+      ],
+      "props": {
+        "string_id": "ISL7_MASQ_LORE_R1",
+        "icon": "eye"
+      }
+    },
+    {
+      "id": "door_masq_r1_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "dancer_r1_truth"
+        ]
+      }
+    },
+    {
+      "id": "lamp_m1_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "masq_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "zone": "masq_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "zone": "masq_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m1_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        232
+      ],
+      "props": {
+        "zone": "masq_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_m1_c",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "zone": "masq_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "dancer_r1_1",
+      "kind": "masquerade_dancer",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "path": [
+          [
+            128,
+            128
+          ],
+          [
+            184,
+            104
+          ],
+          [
+            200,
+            160
+          ],
+          [
+            184,
+            216
+          ],
+          [
+            128,
+            192
+          ],
+          [
+            112,
+            160
+          ]
+        ],
+        "speed": 34.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_2",
+      "kind": "masquerade_dancer",
+      "pos": [
+        184,
+        104
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "path": [
+          [
+            184,
+            104
+          ],
+          [
+            200,
+            160
+          ],
+          [
+            184,
+            216
+          ],
+          [
+            128,
+            192
+          ],
+          [
+            112,
+            160
+          ],
+          [
+            128,
+            128
+          ]
+        ],
+        "speed": 34.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_3",
+      "kind": "masquerade_dancer",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "path": [
+          [
+            184,
+            216
+          ],
+          [
+            128,
+            192
+          ],
+          [
+            112,
+            160
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            184,
+            104
+          ],
+          [
+            200,
+            160
+          ]
+        ],
+        "speed": 34.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_4",
+      "kind": "masquerade_dancer",
+      "pos": [
+        112,
+        160
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "path": [
+          [
+            112,
+            160
+          ],
+          [
+            128,
+            128
+          ],
+          [
+            184,
+            104
+          ],
+          [
+            200,
+            160
+          ],
+          [
+            184,
+            216
+          ],
+          [
+            128,
+            192
+          ]
+        ],
+        "speed": 34.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_5",
+      "kind": "masquerade_dancer",
+      "pos": [
+        352,
+        128
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "path": [
+          [
+            352,
+            128
+          ],
+          [
+            296,
+            104
+          ],
+          [
+            280,
+            160
+          ],
+          [
+            296,
+            216
+          ],
+          [
+            352,
+            192
+          ],
+          [
+            368,
+            160
+          ]
+        ],
+        "speed": 36.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_6",
+      "kind": "masquerade_dancer",
+      "pos": [
+        280,
+        160
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "none",
+        "path": [
+          [
+            280,
+            160
+          ],
+          [
+            296,
+            216
+          ],
+          [
+            352,
+            192
+          ],
+          [
+            368,
+            160
+          ],
+          [
+            352,
+            128
+          ],
+          [
+            296,
+            104
+          ]
+        ],
+        "speed": 36.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_7",
+      "kind": "masquerade_dancer",
+      "pos": [
+        352,
+        192
+      ],
+      "props": {
+        "role": "liar",
+        "shadow_mode": "nw_wrong",
+        "path": [
+          [
+            352,
+            192
+          ],
+          [
+            368,
+            160
+          ],
+          [
+            352,
+            128
+          ],
+          [
+            296,
+            104
+          ],
+          [
+            280,
+            160
+          ],
+          [
+            296,
+            216
+          ]
+        ],
+        "speed": 36.0,
+        "spawns_enemy": "reflection"
+      }
+    },
+    {
+      "id": "dancer_r1_truth",
+      "kind": "masquerade_dancer",
+      "pos": [
+        296,
+        104
+      ],
+      "props": {
+        "role": "truth",
+        "shadow_mode": "se_gold",
+        "path": [
+          [
+            296,
+            104
+          ],
+          [
+            280,
+            160
+          ],
+          [
+            296,
+            216
+          ],
+          [
+            352,
+            192
+          ],
+          [
+            368,
+            160
+          ],
+          [
+            352,
+            128
+          ]
+        ],
+        "speed": 32.0,
+        "reveal_flag": "masq_r1_done",
+        "persist": true,
+        "target_id": "door_masq_r1_north"
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        160,
+        160
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "ice"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        320,
+        160
+      ],
+      "radius": 44,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "ice"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        216,
+        40,
+        48,
+        248
+      ],
+      "color": "plum",
+      "border": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        48
+      ],
+      "size": [
+        48,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_masquerade",
+      "prop": "velvet_rosette_arch",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_floor_crest",
+      "pos": [
+        240,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        120,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "crystal_candelabra",
+      "pos": [
+        360,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        56,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "masquerade_mirror_tall",
+      "pos": [
+        424,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "string_music_stand",
+      "pos": [
+        72,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "champagne_fountain",
+      "pos": [
+        392,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "domino_mask_pedestal",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "domino_mask_pedestal",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_m1_intro",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL7_MASQ_RULE"
+        }
+      ]
+    },
+    {
+      "id": "ev_m1_clear",
+      "on": "signal:dancer_r1_truth",
+      "once": true,
+      "do": [
+        {
+          "sfx": "masq_waltz_chime"
+        },
+        {
+          "narrate": "ISL7_MASQ_R1_CLEAR"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Eight masked Wicks waltz in twin ovals beneath gilded chandeliers; read their cast shadows to unmask the ONE truthful guest casting a warm SE shadow.",
+    "kind": "setpiece",
+    "beat": "ki",
+    "teaches": "Compares SE truth shadows against NW/absent liar shadows under chandelier light without resetting on a wrong unmask.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "masq_r1_done+ballroom_seal",
+    "why": "Theatrical opening beat of The Masquerade turning Island 7's Shadow-Truth law into a live waltz puzzle.",
+    "exit": "exit_masq_r1_north",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_masq_r1"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": "dancer_r1_truth",
+        "tol": 26.0
+      },
+      {
+        "op": "interact",
+        "target": "dancer_r1_truth"
+      },
+      {
+        "op": "expect",
+        "flag": "masq_r1_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_masq_r1_north"
+      }
+    ]
+  }
+}

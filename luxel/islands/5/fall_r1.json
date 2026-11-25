@@ -1,0 +1,518 @@
+{
+  "id": "fall_r1",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "music": "isl5_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "name_key": "I5_FL_R1",
+  "spawn": [
+    48,
+    176
+  ],
+  "zones": [
+    {
+      "id": "fl_r1",
+      "name_key": "I5_FL_R1",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_fl_r1_w",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        496,
+        528
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_fl_r1_e",
+      "rect": [
+        496,
+        160,
+        16,
+        32
+      ],
+      "to_region": "fall_r2",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "fall_r1_cross"
+      ],
+      "locked_door_id": "door_fl_r1_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_fl_r1_w",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_fl_r1_mid",
+      "kind": "room_anchor",
+      "pos": [
+        208,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_fl_r1_n",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wind_fl_r1",
+      "kind": "fall_wind_rig",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "width": 480,
+        "height": 288,
+        "speed": 105.0
+      }
+    },
+    {
+      "id": "lore_fl_r1",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "string_id": "I5_FL_R1_HINT",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "crumble_fl_r1_1",
+      "kind": "crumble_floor",
+      "pos": [
+        136,
+        176
+      ],
+      "props": {
+        "size": [
+          48,
+          32
+        ],
+        "delay": 1.3,
+        "respawn": 2.4
+      }
+    },
+    {
+      "id": "hook_fl_r1_n",
+      "kind": "lantern_hook",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "zone": "fl_r1"
+      }
+    },
+    {
+      "id": "eye_fl_r1_chain2",
+      "kind": "switch_eye",
+      "pos": [
+        328,
+        248
+      ],
+      "props": {
+        "target_id": "gate_fl_r1_chains"
+      }
+    },
+    {
+      "id": "eye_fl_r1_chain1",
+      "kind": "switch_eye",
+      "pos": [
+        344,
+        64
+      ],
+      "props": {
+        "target_id": "gate_fl_r1_chains"
+      }
+    },
+    {
+      "id": "gate_fl_r1_chains",
+      "kind": "logic_gate",
+      "pos": [
+        256,
+        288
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "eye_fl_r1_chain1",
+          "eye_fl_r1_chain2"
+        ],
+        "target_ids": [
+          "bridge_fl_r1_east",
+          "door_fl_r1_chute"
+        ]
+      }
+    },
+    {
+      "id": "bridge_fl_r1_east",
+      "kind": "door",
+      "pos": [
+        336,
+        176
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "gate_fl_r1_chains"
+        ]
+      }
+    },
+    {
+      "id": "door_fl_r1_chute",
+      "kind": "door",
+      "pos": [
+        488,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_fl_r1_chains"
+        ],
+        "sets_flag": "fall_r1_cross"
+      }
+    },
+    {
+      "id": "lamp_fl_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        196
+      ],
+      "props": {
+        "zone": "fl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r1_m",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "zone": "fl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "zone": "fl_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_fl_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        208
+      ],
+      "props": {
+        "zone": "fl_r1",
+        "lit": true
+      }
+    }
+  ],
+  "enemies": [],
+  "decor": [
+    {
+      "kind": "cracks",
+      "pos": [
+        72,
+        176
+      ],
+      "radius": 24,
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        72
+      ],
+      "radius": 24,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        216,
+        200
+      ],
+      "radius": 28,
+      "glow": true
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        448,
+        176
+      ],
+      "radius": 22
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        40,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "shattered_balustrade",
+      "pos": [
+        84,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tether_anchor_post",
+      "pos": [
+        196,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tilted_marble_column",
+      "pos": [
+        264,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        248,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        424,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        464,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [
+    {
+      "id": "fl_r1_open_flag",
+      "on": "signal:gate_fl_r1_chains",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "fall_r1_cross"
+        },
+        {
+          "sfx": "fl_chain_whip"
+        },
+        {
+          "shake": 0.18
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Snapped Chains: sprint off the fracturing plaza across a crumbling brass arch, snipe the lower chain anchor, Throw+Zip north onto the drifting upper pier to snap the second anchor, then sprint across the lowered bridge into the plunging wind chute.",
+    "kind": "setpiece",
+    "beat": "ki",
+    "teaches": "Kinetic free-fall traversal: crumble timing, lantern_hook Throw+Zip over abyss, and snapping dual chain anchors.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "fall_r1_cross+descent_momentum",
+    "why": "Opening kinetic drop of Fall set piece immediately after the Orrery chains break.",
+    "exit": "exit_fl_r1_e",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_fl_r1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_fl_r1_chain2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          176
+        ]
+      },
+      {
+        "op": "throw",
+        "target": [
+          224,
+          88
+        ],
+        "hold": 0.12
+      },
+      {
+        "op": "zip"
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          64
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_fl_r1_chain1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_fl_r1_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          88
+        ]
+      },
+      {
+        "op": "glide",
+        "to": [
+          224,
+          176
+        ]
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_fl_r1_e"
+      }
+    ]
+  }
+}

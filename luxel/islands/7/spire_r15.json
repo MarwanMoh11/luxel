@@ -1,0 +1,500 @@
+{
+  "id": "spire_r15",
+  "island_id": 7,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL7_SP_R15",
+  "theme": "inverted_palace_silver",
+  "music": "island7_dungeon",
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    432,
+    160
+  ],
+  "zones": [
+    {
+      "id": "spire_r15",
+      "name_key": "ISL7_SP_R15",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_spire_r15_east",
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
+      "to_region": "spire_r14",
+      "to_spawn": [
+        56,
+        168
+      ]
+    },
+    {
+      "id": "exit_spire_r15_south",
+      "rect": [
+        208,
+        304,
+        64,
+        16
+      ],
+      "to_region": "spire_r8",
+      "to_spawn": [
+        208,
+        48
+      ],
+      "requires_flags": [
+        "spire_false_lamp_broken"
+      ],
+      "locked_door_id": "door_spire_r15_south"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_r15_e",
+      "kind": "room_anchor",
+      "pos": [
+        432,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "fake_lamp_r15",
+      "kind": "spire_fake_lamp",
+      "pos": [
+        240,
+        152
+      ],
+      "props": {
+        "shatter_flag": "spire_false_lamp_shattered",
+        "persist": true
+      }
+    },
+    {
+      "id": "pool_r15",
+      "kind": "moon_pool",
+      "pos": [
+        328,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:spire",
+        "var": "world_face",
+        "allow_bolt_flip": false,
+        "radius_px": 16,
+        "persist": true
+      }
+    },
+    {
+      "id": "moth_7_09",
+      "kind": "moth",
+      "pos": [
+        240,
+        96
+      ],
+      "props": {
+        "id": "moth_7_09"
+      }
+    },
+    {
+      "id": "door_spire_r15_south",
+      "kind": "door",
+      "pos": [
+        240,
+        296
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          64,
+          16
+        ],
+        "requires_flags": [
+          "spire_false_lamp_broken"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r15_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "spire_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_ne",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "zone": "spire_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "zone": "spire_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        232
+      ],
+      "props": {
+        "zone": "spire_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r15_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        160
+      ],
+      "props": {
+        "zone": "spire_r15",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 52,
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 68,
+      "style": "clock",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        368,
+        112
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "warm",
+      "shear": -0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "island7_scenery",
+      "prop": "inverted_bell_statue",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "inverted_bell_statue",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        80,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "glass_colonade_pillar",
+      "pos": [
+        80,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        192,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "silver_brazier_stand",
+      "pos": [
+        288,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "standing_mirror_tall",
+      "pos": [
+        400,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "black_world",
+      "when": "flag:spire_false_lamp_shattered || world_face==black",
+      "theme": "inverted_palace_black",
+      "full_frame": true,
+      "tiles": [],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r15_shatter",
+      "on": "signal:fake_lamp_r15",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL7_SP_FAKE_SHATTER"
+        },
+        {
+          "wave": [
+            {
+              "id": "r15_w1_pup1",
+              "kind": "puppet",
+              "pos": [
+                112,
+                128
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_w1_pup2",
+              "kind": "puppet",
+              "pos": [
+                112,
+                208
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_w1_mimic",
+              "kind": "false_chest",
+              "pos": [
+                352,
+                224
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ev_r15_wave2",
+      "on": "cleared",
+      "if": "flag:spire_false_lamp_shattered && !flag:spire_r15_wave2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "spire_r15_wave2"
+        },
+        {
+          "shake": 0.22
+        },
+        {
+          "wave": [
+            {
+              "id": "r15_w2_gk",
+              "kind": "glass_knight",
+              "pos": [
+                112,
+                160
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_w2_ref",
+              "kind": "reflection",
+              "pos": [
+                368,
+                120
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            },
+            {
+              "id": "r15_w2_jel",
+              "kind": "moon_jelly",
+              "pos": [
+                368,
+                224
+              ],
+              "zone": "spire_r15",
+              "leash": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ev_r15_done",
+      "on": "cleared",
+      "if": "flag:spire_r15_wave2",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "spire_false_lamp_broken"
+        },
+        {
+          "unlock": [
+            "door_spire_r15_south"
+          ]
+        },
+        {
+          "sfx": "spire_nave_chord"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Counterfeit mirror-flipped replica of Island 1's sunlit Sundial Plaza with the sun in the East and a fake Great Lamp casting a NW shadow; shattering the lie cracks the painted sky into obsidian and triggers a 2-wave Mirror-Court ambush.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Exposes the counterfeit dawn via shadow-reading or True Lens, clears a 2-wave Black-world ambush for Boss Crest #2, and rescues Lost Moth 09.",
+    "decisions": 8,
+    "expert_s": 65,
+    "reward": "spire_false_lamp_broken+moth_7_09",
+    "why": "Emotional horror twist before the Spire summit and Boss Crest #2.",
+    "exit": "exit_spire_r15_south",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          272,
+          152
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "fake_lamp_r15"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          96
+        ],
+        "tol": 18.0
+      },
+      {
+        "op": "interact",
+        "target": "moth_7_09"
+      },
+      {
+        "op": "expect",
+        "flag": "spire_false_lamp_broken"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_spire_r15_south"
+      }
+    ]
+  }
+}

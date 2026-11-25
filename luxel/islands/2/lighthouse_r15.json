@@ -441,7 +441,7 @@
       {
         "op": "rotate",
         "target": "raft_lh_r15",
-        "angle": 45.0
+        "steps": 1
       },
       {
         "op": "goto",

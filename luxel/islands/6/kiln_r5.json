@@ -3,77 +3,39 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": true,
-  "spawn": [
-    40,
-    104
-  ],
+  "theme": "forge_deep",
+  "music": "island6_dungeon",
+  "name_key": "ISL6_KILN_R5",
+  "spawn": [40, 104],
   "zones": [
-    {
-      "id": "kiln_r5",
-      "name_key": "DUNGEON_6_NAME",
-      "rect": [
-        0,
-        0,
-        480,
-        256
-      ],
-      "dark": true
-    }
+    { "id": "kiln_r5", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 480, 256], "dark": true }
   ],
   "exits": [
     {
       "id": "exit_kiln_r5_west",
-      "rect": [
-        0,
-        80,
-        16,
-        48
-      ],
+      "rect": [0, 80, 16, 48],
       "to_region": "kiln_r4",
-      "to_spawn": [
-        376,
-        104
-      ],
+      "to_spawn": [376, 104],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r5_east",
-      "rect": [
-        464,
-        96,
-        16,
-        48
-      ],
+      "rect": [464, 96, 16, 48],
       "to_region": "kiln_r6",
-      "to_spawn": [
-        40,
-        128
-      ],
-      "requires_moves": [
-        "sunflare"
-      ],
+      "to_spawn": [40, 128],
+      "requires_moves": ["sunflare"],
       "requires_flags": [],
       "locked_door_id": "door_kiln_r5_east"
     },
     {
       "id": "exit_kiln_r5_shortcut_r1",
-      "rect": [
-        352,
-        240,
-        32,
-        16
-      ],
+      "rect": [352, 240, 32, 16],
       "to_region": "kiln_r1",
-      "to_spawn": [
-        384,
-        208
-      ],
+      "to_spawn": [384, 208],
       "requires_moves": [],
-      "requires_flags": [
-        "seal_kiln_r5"
-      ],
+      "requires_flags": ["seal_kiln_r5"],
       "locked_door_id": ""
     }
   ],
@@ -82,270 +44,118 @@
     {
       "id": "shrine_sunflare",
       "kind": "shrine",
-      "pos": [
-        200,
-        104
-      ],
-      "props": {
-        "move_id": "sunflare",
-        "zone": "kiln_r5",
-        "name_key": "MOVE_SUNFLARE_NAME"
-      }
+      "pos": [200, 104],
+      "props": { "move_id": "sunflare", "zone": "kiln_r5", "name_key": "MOVE_SUNFLARE_NAME" }
     },
     {
       "id": "seal_kiln_r5",
       "kind": "obsidian_seal",
-      "pos": [
-        312,
-        120
-      ],
-      "props": {
-        "size": [
-          16,
-          48
-        ],
-        "zone": "kiln_r5"
-      }
+      "pos": [312, 120],
+      "props": { "size": [16, 48], "zone": "kiln_r5" }
     },
     {
       "id": "brazier_kiln_r5_a",
       "kind": "brazier",
-      "pos": [
-        264,
-        56
-      ],
-      "props": {
-        "target_id": "door_kiln_r5_east"
-      }
+      "pos": [272, 72],
+      "props": { "target_id": "door_kiln_r5_east" }
     },
     {
       "id": "brazier_kiln_r5_b",
       "kind": "brazier",
-      "pos": [
-        360,
-        168
-      ],
-      "props": {
-        "target_id": "door_kiln_r5_east"
-      }
+      "pos": [352, 168],
+      "props": { "target_id": "door_kiln_r5_east" }
+    },
+    {
+      "id": "brazier_kiln_r5_c",
+      "kind": "brazier",
+      "pos": [352, 72],
+      "props": { "target_id": "door_kiln_r5_east" }
+    },
+    {
+      "id": "brazier_kiln_r5_d",
+      "kind": "brazier",
+      "pos": [272, 168],
+      "props": { "target_id": "door_kiln_r5_east" }
     },
     {
       "id": "door_kiln_r5_east",
       "kind": "door",
-      "pos": [
-        456,
-        120
-      ],
+      "pos": [456, 120],
       "props": {
         "door_kind": "switch_door",
-        "size": [
-          16,
-          48
-        ],
-        "requires_signals": [
-          "brazier_kiln_r5_a",
-          "brazier_kiln_r5_b"
-        ]
+        "size": [16, 48],
+        "requires_signals": ["brazier_kiln_r5_a", "brazier_kiln_r5_b", "brazier_kiln_r5_c", "brazier_kiln_r5_d"]
       }
     },
     {
       "id": "cracked_wall_kiln_r5",
       "kind": "cracked_wall",
-      "pos": [
-        152,
-        200
-      ],
-      "props": {
-        "size": [
-          16,
-          16
-        ],
-        "zone": "kiln_r5"
-      }
+      "pos": [152, 200],
+      "props": { "size": [16, 16], "zone": "kiln_r5" }
     },
     {
       "id": "tf_kiln_r5",
       "kind": "blue_transformer",
-      "pos": [
-        152,
-        168
-      ],
-      "props": {
-        "angle_deg": 135,
-        "rotatable": true,
-        "movable": true,
-        "angle_step_deg": 45,
-        "transforms_to": "blue",
-        "size": [
-          16,
-          16
-        ]
-      }
+      "pos": [152, 168],
+      "props": { "angle_deg": 135, "rotatable": true, "movable": true, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
     },
     {
       "id": "portal_kiln_r5_in",
       "kind": "blue_portal",
-      "pos": [
-        200,
-        216
-      ],
-      "props": {
-        "target_portal_id": "portal_kiln_r5_out",
-        "requires_blue": true,
-        "pair_sync": true,
-        "sets_flag": "kiln_r5_crucible_portal_lit"
-      }
+      "pos": [200, 216],
+      "props": { "target_portal_id": "portal_kiln_r5_out", "requires_blue": true, "pair_sync": true, "sets_flag": "kiln_r5_crucible_portal_lit" }
     },
     {
       "id": "portal_kiln_r5_out",
       "kind": "blue_portal",
-      "pos": [
-        72,
-        216
-      ],
-      "props": {
-        "target_portal_id": "portal_kiln_r5_in",
-        "requires_blue": true,
-        "pair_sync": true
-      }
+      "pos": [72, 216],
+      "props": { "target_portal_id": "portal_kiln_r5_in", "requires_blue": true, "pair_sync": true }
     },
     {
       "id": "chest_kiln_r5_crucible",
       "kind": "chest",
-      "pos": [
-        56,
-        200
-      ],
-      "props": {
-        "reward_kind": "shards",
-        "reward": "shards",
-        "amount": 50,
-        "zone": "kiln_r5"
-      }
-    }
+      "pos": [56, 200],
+      "props": { "reward_kind": "shards", "reward": "shards", "amount": 50, "zone": "kiln_r5" }
+    },
+    { "id": "lamp_kr5_1", "kind": "road_lamp", "pos": [128, 104], "props": { "lit": true } },
+    { "id": "lamp_kr5_2", "kind": "road_lamp", "pos": [392, 120], "props": { "lit": true } }
   ],
   "triggers": [],
-  "scenery": [
-    {
-      "sheet": "island6_scenery",
-      "prop": "crucible_floor_seal",
-      "pos": [
-        200,
-        104
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        160,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "iron_chain_pillar",
-      "pos": [
-        240,
-        44
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        420,
-        76
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        420,
-        164
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.65
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        84,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "slag_crucible",
-      "pos": [
-        124,
-        228
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "forge_anvil_stand",
-      "pos": [
-        44,
-        184
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "bellows_frame",
-      "pos": [
-        120,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island6_scenery",
-      "prop": "hearth_brazier_tall",
-      "pos": [
-        176,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.45
-    }
+  "decor": [
+    { "kind": "circle", "pos": [200, 104], "radius": 36, "style": "ritual" },
+    { "kind": "circle", "pos": [312, 120], "radius": 52, "style": "gear" }
   ],
-  "is_2x2_room": true
+  "scenery": [
+    { "sheet": "island6_scenery", "prop": "crucible_floor_seal", "pos": [200, 104], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.3 },
+    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [160, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [240, 44], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [420, 76], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.15 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [420, 164], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.65 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [84, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "island6_scenery", "prop": "slag_crucible", "pos": [124, 228], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.55 },
+    { "sheet": "island6_scenery", "prop": "forge_anvil_stand", "pos": [44, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "island6_scenery", "prop": "bellows_frame", "pos": [120, 152], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.35 },
+    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [176, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.45 }
+  ],
+  "is_2x2_room": true,
+  "design": {
+    "idea": "Deepened Sunflare Crucible: claim the 8th global move (Sunflare), stand beside the central Obsidian Seal ringed by 4 corner braziers, and unleash one 76px radial Sunflare burst shattering the seal and lighting all 4 braziers simultaneously to open east to Forge Warden and the Cycle 8 shortcut back to kiln_r1.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Sunflare radial AoE obsidian shattering and 4-corner simultaneous ignition.",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "move_sunflare+shortcut_r1+open_r6",
+    "why": "Sacred move-teaching chamber unlocking Sunflare.",
+    "exit": "exit_kiln_r5_east",
+    "solution": [
+      { "op": "goto", "to": [200, 104], "tol": 6.0 },
+      { "op": "interact", "target": "shrine_sunflare" },
+      { "op": "expect", "move": "sunflare" },
+      { "op": "goto", "to": [288, 120], "tol": 6.0 },
+      { "op": "sunflare" },
+      { "op": "wait_until", "target": "door_kiln_r5_east", "prop": "opened", "value": true, "timeout": 3.5 },
+      { "op": "expect_exit", "exit": "exit_kiln_r5_east" }
+    ]
+  }
 }

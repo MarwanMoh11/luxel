@@ -1,0 +1,110 @@
+{
+  "id": "crash_r4",
+  "island_id": 6,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "forge_deep",
+  "music": "isl6_setpiece",
+  "ambience": ["forge_rumble"],
+  "name_key": "ISL6_CR_R4",
+  "spawn": [56, 144],
+  "zones": [
+    { "id": "crash_r4", "name_key": "ISL6_CR_R4", "rect": [0, 0, 480, 288], "dark": true }
+  ],
+  "exits": [
+    {
+      "id": "exit_crash_r4_west",
+      "rect": [0, 128, 16, 48],
+      "to_region": "crash_r3",
+      "to_spawn": [488, 144],
+      "requires_moves": [],
+      "requires_flags": []
+    },
+    {
+      "id": "exit_crash_r4_north",
+      "rect": [192, 0, 64, 16],
+      "to_region": "kiln_r1",
+      "to_spawn": [248, 216],
+      "requires_moves": [],
+      "requires_flags": ["crash_done"]
+    },
+    {
+      "id": "exit_crash_r4_east",
+      "rect": [464, 128, 16, 48],
+      "to_region": "overworld",
+      "to_spawn": [1312, 200],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": ["crash_done"]
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_crash_r4",
+      "kind": "room_anchor",
+      "pos": [56, 144],
+      "props": { "auto": true }
+    },
+    {
+      "id": "bloom_crash_r4",
+      "kind": "bounce_bloom",
+      "pos": [96, 152],
+      "props": { "dir": "e", "dist": 80.0 }
+    },
+    {
+      "id": "breach_scene_r4",
+      "kind": "crash_breach_scene",
+      "pos": [224, 104],
+      "props": { "sets_flag": "crash_done" }
+    },
+    {
+      "id": "moth_6_09",
+      "kind": "moth",
+      "pos": [352, 184],
+      "props": { "id": "moth_6_09" }
+    },
+    { "id": "lamp_cr4_1", "kind": "road_lamp", "pos": [64, 96], "props": { "lit": true } },
+    { "id": "lamp_cr4_2", "kind": "road_lamp", "pos": [184, 56], "props": { "lit": true } },
+    { "id": "lamp_cr4_3", "kind": "road_lamp", "pos": [272, 56], "props": { "lit": true } },
+    { "id": "lamp_cr4_4", "kind": "road_lamp", "pos": [368, 112], "props": { "lit": true } },
+    { "id": "lamp_cr4_5", "kind": "road_lamp", "pos": [224, 216], "props": { "lit": true } }
+  ],
+  "decor": [
+    { "kind": "cracks", "pos": [224, 112], "radius": 44, "glow": true },
+    { "kind": "cracks", "pos": [328, 160], "radius": 28, "glow": true },
+    { "kind": "stain", "pos": [224, 168], "radius": 32, "style": "soot" }
+  ],
+  "scenery": [
+    { "sheet": "theme_forge_deep", "prop": "basalt_forge_arch", "pos": [224, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
+    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [168, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
+    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [280, 88], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 },
+    { "sheet": "theme_forge_deep", "prop": "slag_chimney_vent", "pos": [392, 104], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
+    { "sheet": "theme_forge_deep", "prop": "quench_barrel_tub", "pos": [320, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+  ],
+  "triggers": [],
+  "layers": [],
+  "events": [],
+  "design": {
+    "idea": "The Obsidian Breach cathartic aftermath: the Ember Express smashes clean through the Great Kiln Obsidian Dam, freeing Lost Moth #9 (moth_6_09) and permanently breaching the Great Kiln threshold.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Reward transition opening the Great Kiln and permanent overworld shortcut.",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "crash_done+moth_6_09+open_great_kiln",
+    "why": "Cathartic payoff of The Iron Collision connecting directly into kiln_r1.",
+    "optional": true,
+    "exit": "exit_crash_r4_north",
+    "start": { "flags": ["crash_throttle_locked"] },
+    "solution": [
+      { "op": "wait", "secs": 0.7 },
+      { "op": "expect", "flag": "crash_done" },
+      { "op": "goto", "to": [96, 152], "tol": 6.0 },
+      { "op": "wait", "secs": 0.6 },
+      { "op": "goto", "to": [352, 184], "tol": 8.0 },
+      { "op": "interact", "target": "moth_6_09" },
+      { "op": "expect_exit", "exit": "exit_crash_r4_north" }
+    ]
+  }
+}

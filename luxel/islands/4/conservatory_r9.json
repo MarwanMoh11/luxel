@@ -31,7 +31,7 @@
       ],
       "to_region": "conservatory_r8",
       "to_spawn": [
-        40,
+        48,
         104
       ],
       "requires_moves": [],
@@ -58,6 +58,25 @@
         "keepers_flame_4"
       ],
       "locked_door_id": "door_boss_4"
+    },
+    {
+      "id": "exit_c4_r9_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "conservatory_r15",
+      "to_spawn": [
+        488,
+        200
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -183,202 +202,317 @@
           "keepers_flame_4"
         ]
       }
+    },
+    {
+      "id": "updraft_c4_r9_west",
+      "kind": "updraft_vent",
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "radius": 22,
+        "on": true,
+        "dir": [
+          -1,
+          0
+        ],
+        "boost_mult": 1.25
+      }
+    },
+    {
+      "id": "plinth_c4_r9_canopy",
+      "kind": "c4_canopy_plinth",
+      "pos": [
+        248,
+        72
+      ],
+      "props": {
+        "grant_blessing": true,
+        "seal_flag": "c4_canopy_seal"
+      }
+    },
+    {
+      "id": "rose_c4_r9",
+      "kind": "echo_rose",
+      "pos": [
+        232,
+        168
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "lamp_c4_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r9_mid",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r9_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_c4_r9_nw",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
     }
   ],
   "triggers": [],
   "scenery": [
     {
       "sheet": "island4_scenery",
-      "prop": "stained_floor_pool",
+      "prop": "conservatory_pillar",
+      "pos": [
+        208,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        280,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         240,
-        120
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        200,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        252,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        344,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "conservatory_pillar",
-      "pos": [
-        344,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        392,
-        84
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "heron_lantern_post",
-      "pos": [
-        392,
-        168
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        172,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        276,
         48
       ],
       "layer": "sort",
       "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
+      "shadow": true
     },
     {
       "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
+      "prop": "mossy_planter_urn",
       "pos": [
-        148,
-        180
+        368,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        168,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        224,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "floating_lantern_lily",
-      "pos": [
-        384,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "giant_lotus_pad",
-      "pos": [
-        416,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "blooming_lotus",
-      "pos": [
-        384,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island4_scenery",
-      "prop": "cattail_reeds",
-      "pos": [
-        416,
-        204
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
+      "shadow": true
     }
   ],
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "name_key": "ISL4_C4_R9",
+  "music": "island4_dungeon",
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        120
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        16,
+        32,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        72
+      ],
+      "size": [
+        52,
+        32
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "design": {
+    "idea": "Upper Vault Nexus deepened: breach the cracked masonry with Solar Beam, glide across the lagoon to ignite the high brazier and trigger the south switch eye for Keepers Flame 4, and branch west via updraft into the Upper Glass Canopy wing.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Combining Solar Beam, Moth Wings lagoon glide, lantern throw, and boss-vault unsealing",
+    "decisions": 8,
+    "expert_s": 60,
+    "reward": "keepers_flame_4, c4_r9_vault_open, Upper Canopy wing access",
+    "why": "Pre-boss nexus linking the main vault to the Upper Glass Canopy loop while fixing D06 & D25a.",
+    "exit": "exit_c4_r9_north",
+    "start": {
+      "moves": [
+        "wings"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          336,
+          120
+        ],
+        "tol": 10
+      },
+      {
+        "op": "beam",
+        "target": "cracked_c4_r9"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          120
+        ],
+        "tol": 12
+      },
+      {
+        "op": "glide",
+        "to": [
+          112,
+          136
+        ],
+        "tol": 14
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          136
+        ],
+        "tol": 10
+      },
+      {
+        "op": "throw",
+        "target": "brazier_c4_r9"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          184
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "target": "switch_eye_c4_r9"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r9_vault_open"
+      },
+      {
+        "op": "goto",
+        "to": "keepers_flame_4",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_4"
+      },
+      {
+        "op": "expect",
+        "flag": "keepers_flame_4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          136
+        ],
+        "tol": 12
+      },
+      {
+        "op": "glide",
+        "to": [
+          216,
+          120
+        ],
+        "tol": 14
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          48
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_4"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r9_north"
+      }
+    ]
+  }
 }

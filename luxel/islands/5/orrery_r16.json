@@ -1,0 +1,520 @@
+{
+  "id": "orrery_r16",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "freefall",
+  "music": "isl5_setpiece",
+  "name_key": "I5_OR_R16",
+  "spawn": [
+    240,
+    240
+  ],
+  "zones": [
+    {
+      "id": "o5_r16",
+      "name_key": "I5_OR_R16",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r16_s",
+      "rect": [
+        224,
+        272,
+        32,
+        16
+      ],
+      "to_region": "orrery_r9",
+      "to_spawn": [
+        416,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r16_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r10",
+      "to_spawn": [
+        56,
+        168
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "o5_r16_syzygy"
+      ],
+      "locked_door_id": "door_o5_r16_ascend"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "carrier_o5_r16",
+      "kind": "meteor_carrier",
+      "pos": [
+        72,
+        160
+      ],
+      "route": [
+        [
+          56,
+          120
+        ],
+        [
+          88,
+          176
+        ]
+      ],
+      "zone": "o5_r16",
+      "leash": 160
+    },
+    {
+      "id": "owl_o5_r16",
+      "kind": "phantom_owl",
+      "pos": [
+        240,
+        144
+      ],
+      "route": [],
+      "perches": [
+        [
+          240,
+          144
+        ],
+        [
+          144,
+          144
+        ],
+        [
+          336,
+          144
+        ]
+      ],
+      "zone": "o5_r16",
+      "leash": 180
+    },
+    {
+      "id": "sat_o5_r16",
+      "kind": "satellite_eye",
+      "pos": [
+        400,
+        152
+      ],
+      "route": [
+        [
+          384,
+          120
+        ],
+        [
+          416,
+          176
+        ]
+      ],
+      "zone": "o5_r16",
+      "leash": 160
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_o5_r16",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "wind_o5_r16",
+      "kind": "fall_wind_rig",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "width": 448,
+        "height": 256,
+        "speed": 95.0
+      }
+    },
+    {
+      "id": "well_o5_r16",
+      "kind": "polarity_well",
+      "pos": [
+        240,
+        160
+      ],
+      "props": {
+        "mode": "pull",
+        "radius": 46.0,
+        "strength": 360.0
+      }
+    },
+    {
+      "id": "sn_o5_r16_1",
+      "kind": "star_node",
+      "pos": [
+        168,
+        92
+      ],
+      "props": {
+        "pinned": true,
+        "links": [
+          "sn_o5_r16_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r16_2",
+      "kind": "star_node",
+      "pos": [
+        312,
+        92
+      ],
+      "props": {
+        "pinned": true,
+        "links": [
+          "sn_o5_r16_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r16_3",
+      "kind": "star_node",
+      "pos": [
+        240,
+        92
+      ],
+      "props": {
+        "lens_only": true,
+        "pinned": true,
+        "links": [
+          "sn_o5_r16_1",
+          "sn_o5_r16_2"
+        ]
+      }
+    },
+    {
+      "id": "syzygy_o5_r16",
+      "kind": "o5_syzygy_conduit",
+      "pos": [
+        240,
+        124
+      ],
+      "props": {
+        "stars": [
+          "sn_o5_r16_1",
+          "sn_o5_r16_2",
+          "sn_o5_r16_3"
+        ],
+        "sets_flag": "o5_r16_syzygy",
+        "target_ids": [
+          "bridge_o5_r16_ascend",
+          "door_o5_r16_ascend"
+        ]
+      }
+    },
+    {
+      "id": "bridge_o5_r16_ascend",
+      "kind": "door",
+      "pos": [
+        240,
+        96
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          64
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "syzygy_o5_r16"
+        ]
+      }
+    },
+    {
+      "id": "door_o5_r16_ascend",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "syzygy_o5_r16"
+        ],
+        "sets_flag": "o5_r16_syzygy"
+      }
+    },
+    {
+      "id": "lamp_o5_r16_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        224
+      ],
+      "props": {
+        "zone": "o5_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r16_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        144
+      ],
+      "props": {
+        "zone": "o5_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r16_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        144
+      ],
+      "props": {
+        "zone": "o5_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r16_n",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        40
+      ],
+      "props": {
+        "zone": "o5_r16",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 44,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        224
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        80,
+        144
+      ],
+      "radius": 22,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        400,
+        144
+      ],
+      "radius": 22,
+      "glow": true
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_freefall",
+      "prop": "cracked_dome_arch",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        56,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "broken_orrery_ring",
+      "pos": [
+        424,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        180,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        300,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "o5_r16_heal_clear",
+      "on": "cleared",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Syzygy Bridge (NEW): pre-boss zenith gauntlet across three floating star-decks; defeat the eclipse honor guard (Meteor Carrier, Phantom Owl, Satellite Eye), then pulse True Lens and ignite all three stars in syzygy to raise the golden ascension bridge into the Crown Dome!",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Full-kit pre-boss crescendo uniting combat, True Lens, and 3-star syzygy alignment.",
+    "decisions": 8,
+    "expert_s": 54,
+    "reward": "o5_r16_syzygy+crown_ascension+heal",
+    "why": "Exhilarating Cycle-5 climax wing ascending directly to The Astronomer.",
+    "exit": "exit_o5_r16_n",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ]
+    },
+    "solution": [
+      {
+        "op": "lens"
+      },
+      {
+        "op": "clear",
+        "zone": "o5_r16",
+        "timeout": 60.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          144
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r16_1",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          304,
+          144
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r16_2",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          144
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r16_3",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r16_ascend",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r16_n"
+      }
+    ]
+  }
+}

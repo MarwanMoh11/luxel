@@ -1,0 +1,589 @@
+{
+  "id": "orrery_r13",
+  "island_id": 5,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "planetarium",
+  "music": "island5_dungeon",
+  "name_key": "I5_OR_R13",
+  "spawn": [
+    432,
+    176
+  ],
+  "zones": [
+    {
+      "id": "o5_r13",
+      "name_key": "I5_OR_R13",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_o5_r13_e",
+      "rect": [
+        464,
+        160,
+        16,
+        32
+      ],
+      "to_region": "orrery_r6",
+      "to_spawn": [
+        160,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_o5_r13_n",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "orrery_r7",
+      "to_spawn": [
+        400,
+        232
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "o5_r13_open"
+      ],
+      "locked_door_id": "door_o5_r13_north"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_o5_r13_e",
+      "kind": "room_anchor",
+      "pos": [
+        432,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_o5_r13_c",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_o5_r13",
+      "kind": "lore_stone",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "string_id": "I5_OR_BLIND_HINT",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "sn_o5_r13_1",
+      "kind": "star_node",
+      "pos": [
+        380,
+        176
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_2"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_2",
+      "kind": "star_node",
+      "pos": [
+        336,
+        176
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_1",
+          "sn_o5_r13_3"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_3",
+      "kind": "star_node",
+      "pos": [
+        292,
+        176
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_2"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_4",
+      "kind": "star_node",
+      "pos": [
+        184,
+        168
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_5"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_5",
+      "kind": "star_node",
+      "pos": [
+        132,
+        168
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_4"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_6",
+      "kind": "star_node",
+      "pos": [
+        240,
+        108
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_7"
+        ]
+      }
+    },
+    {
+      "id": "sn_o5_r13_7",
+      "kind": "star_node",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "lens_only": true,
+        "cap_group": "o5_r13",
+        "max_lit": 4,
+        "links": [
+          "sn_o5_r13_6"
+        ]
+      }
+    },
+    {
+      "id": "rotor_o5_r13",
+      "kind": "rotor",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "size": [
+          80,
+          80
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "bell_o5_r13",
+      "kind": "star_bell",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {
+        "scope": "dungeon:orrery",
+        "var_name": "orrery_ring",
+        "rotors": [
+          "rotor_o5_r13"
+        ],
+        "allow_ccw_blue": true,
+        "cooldown": 0.55
+      }
+    },
+    {
+      "id": "plate_o5_r13_rotor",
+      "kind": "pressure_plate",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "by": [
+          "lantern",
+          "wick"
+        ],
+        "size": [
+          24,
+          24
+        ],
+        "latch": true,
+        "target_id": "door_o5_r13_north"
+      }
+    },
+    {
+      "id": "door_o5_r13_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_o5_r13_rotor"
+        ],
+        "sets_flag": "o5_r13_open"
+      }
+    },
+    {
+      "id": "chest_o5_r13_blind",
+      "kind": "chest",
+      "pos": [
+        64,
+        168
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 65,
+        "zone": "o5_r13"
+      }
+    },
+    {
+      "id": "lamp_o5_r13_e",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        196
+      ],
+      "props": {
+        "zone": "o5_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r13_c",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        144
+      ],
+      "props": {
+        "zone": "o5_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r13_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        144
+      ],
+      "props": {
+        "zone": "o5_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_o5_r13_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        40
+      ],
+      "props": {
+        "zone": "o5_r13",
+        "lit": true
+      }
+    }
+  ],
+  "triggers": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        168
+      ],
+      "radius": 38,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        64,
+        168
+      ],
+      "radius": 20
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        168
+      ],
+      "size": [
+        48,
+        56
+      ],
+      "tint": "rose",
+      "shear": 0.25
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_floor_dial",
+      "pos": [
+        240,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "dome_arch_rib",
+      "pos": [
+        240,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        440,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        48,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        440,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "layers": [
+    {
+      "id": "r13_sky_90",
+      "when": "orrery_ring!=0",
+      "tiles": [
+        [
+          14,
+          4,
+          2,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "o5_r13_reset_ring",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:orrery",
+            "name": "orrery_ring",
+            "value": 0
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "The Blind Planetarium (NEW, ASTONISHING): pitch-black void dome with zero visible ground; pulse True Lens to materialize invisible 4-cap constellation stars, shoot 3 to cross onto the central rotor, plant your lantern to anchor both Lens and rotor plate, rotate the unseen sky 90 degrees, and cross north to the Cloaked Mirror Rift!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Peak Island 5 epiphany: True Lens reveals invisible constellations AND thrown lantern anchors both Lens and Sextant simultaneously.",
+    "decisions": 10,
+    "expert_s": 65,
+    "reward": "o5_r13_open+chest_o5_r13_blind",
+    "why": "Astonishing centerpiece puzzle of the deepened Grand Orrery.",
+    "exit": "exit_o5_r13_n",
+    "start": {
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism",
+        "beam",
+        "wings",
+        "lens"
+      ],
+      "flags": [
+        "power_sextant"
+      ],
+      "vars": {
+        "dungeon:orrery:orrery_ring": 0
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_o5_r13"
+      },
+      {
+        "op": "goto",
+        "to": [
+          412,
+          176
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r13_1",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r13_2",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          348,
+          176
+        ]
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r13_3",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          184
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "plate_o5_r13_rotor",
+        "hold": 0.45
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_o5_r13_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "shoot",
+        "target": "bell_o5_r13",
+        "wait_hit": 0.55
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "shoot",
+        "target": "sn_o5_r13_6",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_o5_r13_n"
+      }
+    ]
+  }
+}

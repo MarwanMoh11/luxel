@@ -437,7 +437,7 @@
       {
         "op": "rotate",
         "target": "raft_lh_r12",
-        "angle": 135.0
+        "steps": 3
       },
       {
         "op": "wait_until",

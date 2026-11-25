@@ -253,11 +253,12 @@
       "kind": "lore_stone",
       "pos": [
         296,
-        136
+        144
       ],
       "props": {
         "string_id": "ISL7_LORE_QUAY",
-        "icon": "mirror"
+        "icon": "mirror",
+        "radius": 24
       }
     },
     {
@@ -269,7 +270,8 @@
       ],
       "props": {
         "string_id": "ISL7_LORE_DAWN_LANTERN",
-        "icon": "lantern"
+        "icon": "lantern",
+        "radius": 24
       }
     },
     {
@@ -665,23 +667,11 @@
       },
       {
         "op": "interact",
-        "target": "lore_sq_truth"
-      },
-      {
-        "op": "interact",
         "target": "pool_sq_center"
-      },
-      {
-        "op": "expect",
-        "var": "world_face==black"
       },
       {
         "op": "interact",
         "target": "vista_sq_moon_pool"
-      },
-      {
-        "op": "expect",
-        "flag": "quest:view:moon_pool"
       },
       {
         "op": "interact",
@@ -690,6 +680,14 @@
       {
         "op": "expect",
         "var": "world_face==silver"
+      },
+      {
+        "op": "interact",
+        "target": "lore_sq_truth"
+      },
+      {
+        "op": "expect",
+        "flag": "quest:view:moon_pool"
       },
       {
         "op": "expect_exit",

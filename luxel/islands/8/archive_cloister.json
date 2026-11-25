@@ -74,6 +74,21 @@
       ]
     },
     {
+      "id": "exit_to_archive_r1",
+      "rect": [
+        688,
+        208,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        256,
+        304
+      ]
+    },
+    {
       "id": "exit_archive_to_forecourt",
       "rect": [
         224,
