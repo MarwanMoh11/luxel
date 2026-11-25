@@ -96,7 +96,10 @@
       "requires_flags": [
         "beacon_2_1",
         "beacon_2_2",
-        "beacon_2_3"
+        "beacon_2_3",
+        "galleon_done",
+        "locks_done",
+        "leviathan_done"
       ],
       "locked_door_id": "door_dungeon_2"
     },
@@ -788,7 +791,10 @@
         "requires_flags": [
           "beacon_2_1",
           "beacon_2_2",
-          "beacon_2_3"
+          "beacon_2_3",
+          "galleon_done",
+          "locks_done",
+          "leviathan_done"
         ]
       }
     },

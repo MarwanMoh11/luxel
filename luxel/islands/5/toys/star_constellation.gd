@@ -108,6 +108,7 @@ class ConstellationCanvas:
 
 
 static var _region_cache: Dictionary = {} # region_instance_id -> {cells, canvas, sig}
+static var _leaders: Dictionary = {}
 
 
 static func collect_stars(reg: Node) -> Array[LxI5StarNode]:
@@ -140,6 +141,19 @@ static func _stars_can_link(a: LxI5StarNode, b: LxI5StarNode) -> bool:
 	if has_explicit:
 		return false
 	return a.pos.distance_to(b.pos) <= minf(a.link_range, b.link_range)
+
+
+## Called by every star each tick: one star per region leads, the others would only repeat the same scan.
+static func tick_sync(reg: Node, star: Node, dt: float) -> void:
+	if reg == null or not is_instance_valid(reg):
+		return
+	var rid: int = reg.get_instance_id()
+	var lead_v: Variant = _leaders.get(rid, null)
+	if not is_instance_valid(lead_v) or (lead_v as Node).get("region") != reg or (lead_v as Node).is_queued_for_deletion():
+		_leaders[rid] = star
+		lead_v = star
+	if lead_v == star:
+		sync(reg, dt, false)
 
 
 static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:

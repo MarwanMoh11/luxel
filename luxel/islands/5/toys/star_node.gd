@@ -276,7 +276,7 @@ func tick(dt: float) -> void:
 				LxI5Constellation.sync(region, dt, true)
 	if lit or _ignite_fx_t > 0.0 or star_state == StarState.WARN:
 		dirty = true
-	LxI5Constellation.sync(region, dt, false)
+	LxI5Constellation.tick_sync(region, self, dt)
 	if dirty:
 		queue_redraw()
 

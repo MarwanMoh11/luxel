@@ -92,10 +92,8 @@
         192
       ],
       "requires_moves": [],
-      "requires_flags": [
-        "keepers_flame_8"
-      ],
-      "locked_door_id": "door_r14_boss"
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -234,25 +232,6 @@
       "props": {
         "zone": "sanctum_r14",
         "lit": true
-      }
-    },
-    {
-      "id": "door_r14_boss",
-      "kind": "door",
-      "pos": [
-        208,
-        24
-      ],
-      "props": {
-        "door_kind": "ward_barrier",
-        "size": [
-          32,
-          16
-        ],
-        "zone": "sanctum_r14",
-        "requires_flags": [
-          "keepers_flame_8"
-        ]
       }
     }
   ],
@@ -476,12 +455,7 @@
         "exit": "exit_sanctum_r14_north"
       }
     ],
-    "start": {
-      "flags": [
-        "keepers_flame_8",
-        "sanctum_bell_rung"
-      ]
-    }
+    "start": {}
   },
   "theme": "bell_sanctum"
 }

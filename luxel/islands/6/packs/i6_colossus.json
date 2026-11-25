@@ -65,7 +65,7 @@
         "colossus_r12"
       ],
       "mini_boss": "piston_marshal",
-      "boss": "colossus_heart",
+      "boss": "",
       "theme": "iron_colossus",
       "music": "isl6_colossus",
       "requires_flags": [],

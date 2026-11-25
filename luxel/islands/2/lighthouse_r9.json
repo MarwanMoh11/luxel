@@ -57,7 +57,9 @@
         "throw"
       ],
       "requires_flags": [
-        "keepers_flame_2"
+        "keepers_flame_2",
+        "relay_f2",
+        "relay_f3"
       ],
       "locked_door_id": "door_boss_2"
     },
@@ -223,7 +225,9 @@
           16
         ],
         "requires_flags": [
-          "keepers_flame_2"
+          "keepers_flame_2",
+          "relay_f2",
+          "relay_f3"
         ]
       }
     },

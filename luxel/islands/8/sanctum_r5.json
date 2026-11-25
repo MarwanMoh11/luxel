@@ -593,7 +593,7 @@
     "start": {
       "ember": 100
     },
-    "exit": "exit_sanctum_r5_west",
+    "exit": "exit_sanctum_r5_north",
     "solution": [
       {
         "op": "goto",

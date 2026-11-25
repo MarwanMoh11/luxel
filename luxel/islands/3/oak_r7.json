@@ -205,8 +205,8 @@
       "id": "spool_oak_r7_hoist",
       "kind": "silk_loom_spool",
       "pos": [
-        216,
-        152
+        280,
+        168
       ],
       "props": {
         "linked_to": [
@@ -219,8 +219,8 @@
       "id": "spool_oak_r7_top",
       "kind": "silk_loom_spool",
       "pos": [
-        216,
-        104
+        248,
+        168
       ],
       "props": {
         "linked_to": [
@@ -255,8 +255,8 @@
       "id": "lamp_oak_r7_se",
       "kind": "road_lamp",
       "pos": [
-        264,
-        184
+        280,
+        200
       ],
       "props": {
         "lit": true

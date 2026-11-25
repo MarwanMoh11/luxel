@@ -1056,7 +1056,7 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 64.0,
+        "radius": 40.0,
         "strength": 980.0,
         "zone": "brass_terrace"
       }

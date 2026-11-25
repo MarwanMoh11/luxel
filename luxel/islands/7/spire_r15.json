@@ -82,6 +82,7 @@
       ],
       "props": {
         "shatter_flag": "spire_false_lamp_shattered",
+        "sets_flag": "spire_false_lamp_shattered",
         "persist": true
       }
     },

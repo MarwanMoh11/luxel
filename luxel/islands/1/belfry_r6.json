@@ -180,7 +180,8 @@
         "requires_moves": [
           "dash",
           "throw"
-        ]
+        ],
+        "requires_flag": "belfry_vault_unsealed"
       }
     },
     {
@@ -423,6 +424,21 @@
     }
   ],
   "events": [
+    {
+      "id": "ev_r6_sealed_hint",
+      "on": "enter",
+      "if": "!flag:belfry_vault_unsealed",
+      "once": true,
+      "do": [
+        {
+          "narrate": {
+            "id": "ISL1_BF_FLAME_SEALED",
+            "style": "narration",
+            "duration": 3.0
+          }
+        }
+      ]
+    },
     {
       "id": "ev_r6_unseal",
       "on": "enter",

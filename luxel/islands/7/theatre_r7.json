@@ -270,7 +270,7 @@
       { "op": "goto", "to": [216, 256], "tol": 10 },
       { "op": "interact", "target": "echo_r7_mid" },
       { "op": "goto", "to": [240, 280], "tol": 6 },
-      { "op": "wait", "secs": 1.6 },
+      { "op": "wait", "secs": 3.0 },
       { "op": "interact", "target": "echo_r7_mid" },
       { "op": "wait_until", "target": "plate_r7_echo", "prop": "powered", "value": true, "timeout": 6.0 },
       { "op": "shoot", "from": [208, 168], "target": "block_r7_ice2" },

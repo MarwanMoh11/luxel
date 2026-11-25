@@ -93,7 +93,10 @@
       "requires_flags": [
         "beacon_6_1",
         "beacon_6_2",
-        "beacon_6_3"
+        "beacon_6_3",
+        "express_cleared",
+        "colossus_cleared",
+        "crash_done"
       ],
       "locked_door_id": "door_dungeon_6"
     },
@@ -673,7 +676,10 @@
         "requires_flags": [
           "beacon_6_1",
           "beacon_6_2",
-          "beacon_6_3"
+          "beacon_6_3",
+          "express_cleared",
+          "colossus_cleared",
+          "crash_done"
         ]
       }
     },

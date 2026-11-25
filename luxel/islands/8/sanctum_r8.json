@@ -94,7 +94,8 @@
       "props": {
         "group": "r8_glass",
         "phase": 0,
-        "target_id": "conv_r8"
+        "target_id": "conv_r8",
+        "persist": false
       }
     },
     {
@@ -111,7 +112,8 @@
         "size": [
           16,
           16
-        ]
+        ],
+        "persist": false
       }
     },
     {
@@ -128,7 +130,8 @@
         ],
         "dir": "w",
         "speed": 42.0,
-        "flip_on_signal": true
+        "flip_on_signal": true,
+        "persist": false
       }
     },
     {
@@ -143,7 +146,8 @@
         "size": [
           16,
           16
-        ]
+        ],
+        "persist": false
       }
     },
     {
@@ -173,7 +177,8 @@
         "size": [
           16,
           16
-        ]
+        ],
+        "persist": false
       }
     },
     {
@@ -217,7 +222,8 @@
         "size": [
           16,
           16
-        ]
+        ],
+        "persist": false
       }
     },
     {
@@ -261,7 +267,8 @@
         "size": [
           16,
           16
-        ]
+        ],
+        "persist": false
       }
     },
     {
