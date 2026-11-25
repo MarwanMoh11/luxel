@@ -221,7 +221,7 @@ func _on_boss_tick(dt: float, target: Vector2) -> void:
 		shield_gone_t = maxf(0.0, shield_gone_t - dt)
 		if shield_gone_t <= 0.0:
 			shield_hp = P1_SHIELD_MAX
-	if arena != null:
+	if arena != null and not (finale_stage in [FinaleStage.SWELL, FinaleStage.CHOICE]):
 		arena.tick(dt, target, _on_p4_mirror_shattered)
 
 	if finale_stage == FinaleStage.SWELL:

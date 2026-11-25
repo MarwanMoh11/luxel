@@ -25,8 +25,8 @@ func _init() -> void:
 	island_id = 7
 	is_miniboss = true
 	reward_heart = "none"
-	music_cue = "island7_boss_p1"
-	music_p2_cue = "island7_boss_p2"
+	music_cue = "isl7_boss_minor_p1"
+	music_p2_cue = "isl7_boss_minor_p2"
 	max_hp = 136.0
 	hp = 136.0
 	body_radius = 12.0
@@ -206,7 +206,10 @@ func _on_wick_fired(_dir: Vector2, fire_kind: String) -> void:
 func _is_black_world() -> bool:
 	if Lx.vars == null:
 		return false
-	return Lx.vars.eval("world_face==black", island_id, "")
+	var reg_id: String = Lx.state.region_id if Lx.state != null else ""
+	if reg_id.is_empty() and Lx.world != null:
+		reg_id = str(Lx.world.get("current_region_id"))
+	return Lx.vars.eval("world_face==black", island_id, reg_id)
 
 
 func _has_active_shield() -> bool:

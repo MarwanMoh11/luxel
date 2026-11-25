@@ -146,8 +146,33 @@
         88
       ],
       "props": {
-        "secs": 5.5,
+        "secs": 6.5,
         "target_id": "gate_hg_r2_all"
+      }
+    },
+    {
+      "id": "brazier_hg_r2_w2",
+      "kind": "timed_brazier",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "secs": 6.5,
+        "target_id": "gate_hg_r2_all"
+      }
+    },
+    {
+      "id": "chest_hg_r2_s",
+      "kind": "chest",
+      "pos": [
+        168,
+        248
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
       }
     },
     {
@@ -162,7 +187,8 @@
         "inputs": [
           "plate_hg_r2_a",
           "sw_hg_r2_eye",
-          "brazier_hg_r2_t"
+          "brazier_hg_r2_t",
+          "brazier_hg_r2_w2"
         ],
         "persist": true,
         "target_id": "door_hg_r2_north",
@@ -238,7 +264,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "snuffer_hg_r2_s",
+      "kind": "mire_snuffer",
+      "pos": [
+        200,
+        232
+      ],
+      "route": [
+        [
+          168,
+          232
+        ],
+        [
+          248,
+          232
+        ]
+      ],
+      "zone": "hg_r2_arbor",
+      "leash": 120
+    }
+  ],
   "decor": [
     {
       "kind": "inlay",
@@ -396,12 +443,24 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Echoes replay your exact bolts through iron grates while Wick holds a distant shutter plate.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
-    "reward": "hg_r2_open",
-    "why": "Escalates Echo Rose from passive plate-holding to active firing synchronization.",
+    "reward": "hg_r2_open+30_shards",
+    "why": "Escalates Echo Rose from passive plate-holding to active firing synchronization with dual timed braziers and a patrolling Mire Snuffer.",
     "exit": "exit_hg_r2_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          200
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
       {
         "op": "interact",
         "target": "rose_hg_r2"
@@ -434,6 +493,10 @@
       {
         "op": "shoot",
         "target": "brazier_hg_r2_t"
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_hg_r2_w2"
       },
       {
         "op": "wait_until",

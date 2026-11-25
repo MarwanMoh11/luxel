@@ -77,17 +77,35 @@
         64,
         16
       ],
+      "to_region": "masq_r1",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "requires_flags": [
+        "beacon_7_1",
+        "beacon_7_2",
+        "beacon_7_3",
+        "twin_mask_gate_open"
+      ],
+      "locked_door_id": "door_twin_mask_gate"
+    },
+    {
+      "id": "exit_gt_spire_direct",
+      "rect": [
+        384,
+        80,
+        32,
+        32
+      ],
       "to_region": "spire_r1",
       "to_spawn": [
         224,
         200
       ],
       "requires_flags": [
-        "beacon_7_1",
-        "beacon_7_2",
-        "beacon_7_3"
-      ],
-      "locked_door_id": "door_twin_mask_gate"
+        "masquerade_done"
+      ]
     }
   ],
   "enemies": [],
@@ -152,6 +170,21 @@
         ],
         "requires_flags": [
           "twin_mask_gate_open"
+        ]
+      }
+    },
+    {
+      "id": "portal_gt_spire_direct",
+      "kind": "blue_portal",
+      "pos": [
+        400,
+        96
+      ],
+      "props": {
+        "requires_blue": false,
+        "starts_powered": true,
+        "requires_flags": [
+          "masquerade_done"
         ]
       }
     },

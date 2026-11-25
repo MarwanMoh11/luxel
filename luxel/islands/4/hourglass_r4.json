@@ -165,6 +165,31 @@
       }
     },
     {
+      "id": "chest_hg_r4_mid",
+      "kind": "chest",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "brazier_hg_r4_e",
+      "kind": "timed_brazier",
+      "pos": [
+        408,
+        104
+      ],
+      "props": {
+        "secs": 8.0,
+        "target_id": "gate_hg_r4_north"
+      }
+    },
+    {
       "id": "plate_hg_r4_latch",
       "kind": "pressure_plate",
       "pos": [
@@ -178,10 +203,27 @@
         "latch": true,
         "persist": true,
         "target_ids": [
-          "door_hg_r4_north",
+          "gate_hg_r4_north",
           "cgate_hg_r4_1",
           "cgate_hg_r4_2"
+        ]
+      }
+    },
+    {
+      "id": "gate_hg_r4_north",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_hg_r4_latch",
+          "brazier_hg_r4_e"
         ],
+        "persist": true,
+        "target_id": "door_hg_r4_north",
         "sets_flag": "hg_r4_open"
       }
     },
@@ -199,7 +241,7 @@
           16
         ],
         "requires_signals": [
-          "plate_hg_r4_latch"
+          "gate_hg_r4_north"
         ],
         "persistent": true,
         "sets_flag": "hg_r4_open"
@@ -272,7 +314,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "tk_hg_r4_mid",
+      "kind": "topiary_knight",
+      "pos": [
+        248,
+        168
+      ],
+      "route": [
+        [
+          224,
+          168
+        ],
+        [
+          272,
+          168
+        ]
+      ],
+      "zone": "hg_r4_hedges",
+      "leash": 100
+    }
+  ],
   "decor": [
     {
       "kind": "circle",
@@ -449,10 +512,10 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Alternating clock_gate hedges rotate on hg_room_hour; Echoes can turn the room clock after you cross the first gate.",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 50,
-    "reward": "hg_r4_open",
-    "why": "Marries the Hourglass Maze's turning hedges with delayed Echo Rose causal timing.",
+    "reward": "hg_r4_open+35_shards",
+    "why": "Marries the Hourglass Maze's turning hedges with delayed Echo Rose causal timing and a mid-hedge Topiary Knight encounter.",
     "exit": "exit_hg_r4_north",
     "start": {
       "vars": {
@@ -497,6 +560,10 @@
         "tol": 8.0
       },
       {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
         "op": "wait_until",
         "interactable": "cgate_hg_r4_2",
         "prop": "powered",
@@ -507,6 +574,14 @@
         "op": "stand_on",
         "target": "plate_hg_r4_latch",
         "secs": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "brazier_hg_r4_e"
+      },
+      {
+        "op": "expect",
+        "flag": "hg_r4_open"
       },
       {
         "op": "expect_exit",

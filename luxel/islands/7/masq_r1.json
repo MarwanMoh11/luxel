@@ -39,8 +39,7 @@
       "to_spawn": [
         320,
         80
-      ],
-      "one_way": true
+      ]
     },
     {
       "id": "exit_masq_r1_north",

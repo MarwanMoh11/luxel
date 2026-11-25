@@ -144,8 +144,8 @@ func _spawn_shift_burst() -> void:
 func _emit_ambient_puffs() -> void:
 	match region_id:
 		"overworld":
-			var tx: float = fposmod(_clock * (40.0 if _relit else 68.0) + 64.0, _bounds.size.x + 220.0) - 110.0
-			_add_puff(Vector2(tx + 16.0, 198.0), Vector2(-16.0, -10.0), 0.65, "cream" if _relit else "apricot", 2.0)
+			var tx: float = fposmod(_clock * (40.0 if _relit else 68.0) + 265.0, _bounds.size.x + 220.0) - 110.0
+			_add_puff(Vector2(tx + 16.0, 202.0), Vector2(-16.0, -10.0), 0.65, "cream" if _relit else "apricot", 2.0)
 		"ow_rail_yard":
 			if _shift == "station_a":
 				_add_puff(Vector2(344.0, 96.0), Vector2(-14.0, -18.0), 0.90, "cream", 2.5)
@@ -188,11 +188,11 @@ func _draw() -> void:
 
 func _draw_overworld_horizon() -> void:
 	var spd: float = 40.0 if _relit else 68.0
-	# 1. Opening-vista elevated viaduct Express (y=200: visible right in Wick's landing frame!)
-	var open_tx: float = fposmod(_clock * spd + 64.0, _bounds.size.x + 220.0) - 110.0
-	var open_ty: float = 200.0
+	# 1. Opening-vista elevated viaduct Express (y=204: centered right in Wick's landing frame on frame 0!)
+	var open_tx: float = fposmod(_clock * spd + 265.0, _bounds.size.x + 220.0) - 110.0
+	var open_ty: float = 204.0
 	draw_line(Vector2(24.0, open_ty + 8.0), Vector2(360.0, open_ty + 8.0), Color(PAL["dusk"] as Color, 0.55), 1.0)
-	_draw_mini_train(Vector2(roundf(open_tx), open_ty), _relit, 0.82)
+	_draw_mini_train(Vector2(roundf(open_tx), open_ty), _relit, 0.88)
 
 	# 2. Colossal striding shadow sweeping across the arrival caldera floor (y=326, visible from spawn!)
 	var sh_x: float = 176.0 + sin(_clock * 0.95) * 44.0

@@ -277,7 +277,7 @@ static func resolve_face_scope(region_id: String, explicit_scope: String = "") -
 		if exp_s == "room": return "room:%d:%s" % [ISLAND_ID, region_id]
 		return exp_s
 	if region_id.begins_with("palace_"): return SCOPE_PALACE
-	if region_id.begins_with("spire_"): return SCOPE_SPIRE
+	if region_id.begins_with("spire_"): return SCOPE_ISLAND
 	return SCOPE_ISLAND
 
 func get_world_face(scope: String = SCOPE_ISLAND) -> String:

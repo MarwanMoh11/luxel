@@ -38,6 +38,7 @@ func _init() -> void:
 	move_speed = 44.0
 	stagger_threshold = 10.0
 	stagger_duration = 1.55
+	punish_dmg_mult = 1.65
 	post_recover_cd = 0.36
 	intro_duration = 0.55
 	phase_shift_duration = 0.65
@@ -263,7 +264,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		var rel: Vector2 = (h["origin"] as Vector2) - pos
 		if rel.length() > 1.0 and absf(angle_difference(facing, rel.angle())) < 1.15:
 			clank_t = 0.08
-			return dmg * 0.70
+			return dmg * 0.85
 	return dmg
 
 

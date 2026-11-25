@@ -110,43 +110,43 @@
       "id": "moth_toll_r1_n",
       "kind": "toll_moth",
       "pos": [
-        192,
-        72
+        224,
+        96
       ],
       "route": [],
       "perches": [
         [
           168,
-          72
+          96
         ],
         [
-          224,
-          72
+          232,
+          96
         ]
       ],
       "zone": "toll_rigging",
-      "leash": 145
+      "leash": 96
     },
     {
       "id": "owl_toll_r1_w",
       "kind": "owl",
       "pos": [
-        104,
-        72
+        152,
+        88
       ],
       "route": [],
       "perches": [
         [
-          104,
-          72
+          152,
+          88
         ],
         [
-          152,
-          72
+          232,
+          88
         ]
       ],
       "zone": "toll_rigging",
-      "leash": 145
+      "leash": 96
     }
   ],
   "interactables": [

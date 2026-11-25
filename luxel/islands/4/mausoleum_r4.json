@@ -171,6 +171,48 @@
         "color": "blue",
         "latch": true,
         "persist": true,
+        "target_id": "gate_ms_r4_north"
+      }
+    },
+    {
+      "id": "brazier_r4_north",
+      "kind": "timed_brazier",
+      "pos": [
+        200,
+        120
+      ],
+      "props": {
+        "secs": 8.0,
+        "target_id": "gate_ms_r4_north"
+      }
+    },
+    {
+      "id": "chest_ms_r4_e",
+      "kind": "chest",
+      "pos": [
+        408,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "gate_ms_r4_north",
+      "kind": "logic_gate",
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sensor_r4_high",
+          "brazier_r4_north"
+        ],
+        "persist": true,
         "target_id": "door_ms_r4_north",
         "sets_flag": "ms_r4_open"
       }
@@ -189,7 +231,7 @@
           16
         ],
         "requires_signals": [
-          "sensor_r4_high"
+          "gate_ms_r4_north"
         ],
         "persistent": true,
         "sets_flag": "ms_r4_open"
@@ -256,7 +298,18 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "rf_ms_r4_e",
+      "kind": "rain_frog",
+      "pos": [
+        392,
+        184
+      ],
+      "zone": "ms_r4_apse",
+      "leash": 110
+    }
+  ],
   "layers": [
     {
       "id": "sun_low_beam",
@@ -448,12 +501,24 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "SUN -> RAIN -> SUN optical chain: buoy buoyancy elevates a mirror into a skylight beam.",
-    "decisions": 7,
+    "decisions": 10,
     "expert_s": 50,
-    "reward": "ms_r4_open",
-    "why": "West Wing optical showpiece preparing players for the 3-season contraption in r8.",
+    "reward": "ms_r4_open+35_shards",
+    "why": "West Wing optical showpiece preparing players for the 3-season contraption in r8, with an apse Rain Frog guard and final SUN ignition latch.",
     "exit": "exit_ms_r4_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          312,
+          200
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
       {
         "op": "push",
         "target": "mirror_r4",
@@ -527,6 +592,21 @@
       {
         "op": "expect",
         "var": "weather==sun"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "sensor_r4_high",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          120
+        ],
+        "target": "brazier_r4_north"
       },
       {
         "op": "wait_until",

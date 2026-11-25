@@ -10,8 +10,8 @@ extends LxBossBase
 class SingularityField:
 	extends RefCounted
 	var pos: Vector2 = Vector2.ZERO
-	var radius: float = 112.0
-	var strength: float = 640.0
+	var radius: float = 120.0
+	var strength: float = 680.0
 	var is_push: bool = false # P1/P2 Black Hole PULL -> P3 White Hole PUSH!
 	var active: bool = true
 
@@ -27,8 +27,8 @@ class SingularityField:
 			return Vector2.ZERO
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
-		var falloff: float = (0.35 + 0.65 * u) * (1.0 - exp(-dist / 12.0))
-		var mult: float = 1.35 if what in ["bolt", "beam"] else (1.0 if what == "lantern" else (0.14 if what == "wick" else 0.25))
+		var falloff: float = (0.40 + 0.60 * u) * (1.0 - exp(-dist / 12.0))
+		var mult: float = 2.15 if what in ["bolt", "beam"] else (1.15 if what == "lantern" else (0.12 if what == "wick" else 0.25))
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
@@ -38,8 +38,8 @@ class SingularityField:
 class AccretionLensWell:
 	extends RefCounted
 	var pos: Vector2 = Vector2.ZERO
-	var radius: float = 52.0
-	var strength: float = 780.0
+	var radius: float = 64.0
+	var strength: float = 620.0
 	var is_push: bool = false
 	var active: bool = true
 
@@ -56,14 +56,14 @@ class AccretionLensWell:
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / radius, 0.0, 1.0)
 		var falloff: float = (0.45 + 0.55 * u) * (1.0 - exp(-dist / 8.0))
-		var mult: float = 1.45 if what in ["bolt", "beam"] else 0.90
+		var mult: float = 2.35 if what in ["bolt", "beam"] else 1.05
 		var dn: Vector2 = delta / dist
 		if is_push:
 			dn = -dn
 		return dn * (strength * falloff * mult)
 
 
-const CURVE_CRIT_DEG: float = 28.0
+const CURVE_CRIT_DEG: float = 20.0
 const STRAIGHT_HEAL_HP: float = 0.50
 
 var _singularity: SingularityField = null
@@ -88,8 +88,8 @@ func _init() -> void:
 	island_id = 5
 	is_miniboss = false
 	reward_heart = "full"
-	music_cue = "island5_boss_p1"
-	music_p2_cue = "island5_boss_p2"
+	music_cue = "superboss_b"
+	music_p2_cue = "superboss_b"
 	max_hp = 175.0
 	hp = 175.0
 	body_radius = 13.5
@@ -259,7 +259,7 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	if _singularity != null:
 		_singularity.pos = pos
 		_singularity.is_push = phase >= 3
-	var lens_r: float = 48.0
+	var lens_r: float = 52.0
 	if _lens_a != null:
 		_lens_a.pos = c + Vector2.from_angle(_lens_ang) * lens_r
 	if _lens_b != null:
@@ -274,6 +274,8 @@ func _step_boss_reposition(dt: float, target: Vector2) -> void:
 
 
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
+	if dmg >= max_hp * 0.25:
+		return dmg
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])
 	var curve_deg: float = hit.curve_angle_deg if hit != null else 0.0
@@ -288,21 +290,21 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		stage.play_sfx("horizon_swallow", pos)
 		return 0.0
 
-	# Curved shots grazing the Photon Ring / Accretion Wells -> 1.5x PERIAPSIS CRIT!
+	# Curved shots grazing the Photon Ring / Accretion Wells -> 1.25x PERIAPSIS CRIT during openings (0.80x outside)!
 	if is_curved:
 		curved_hits_landed += 1
 		_periapsis_flash_t = 0.28
 		stage.play_sfx("i5b_gravity_curve", pos)
-		return dmg * 1.50
+		return dmg * (1.25 if is_punishable() else 0.80)
 
-	# Mirror-banked Prism / armor-cracking Beams / Reflected bolts -> 1.35x in punish, 0.85x outside!
+	# Mirror-banked Prism / armor-cracking Beams / Reflected bolts -> 1.20x in punish, 0.72x outside!
 	if src == LxHit.SOURCE_PRISM or bool(h["cracks_armour"]):
 		curved_hits_landed += 1
 		_periapsis_flash_t = 0.24
-		return dmg * (1.35 if is_punishable() else 0.85)
+		return dmg * (1.20 if is_punishable() else 0.72)
 
 	# Lantern Throw / Recall / Zip / Sunflare strikes pierce the event horizon rim (curved shots stay king!)
-	return dmg * (0.70 if is_punishable() else 0.45)
+	return dmg * (0.58 if is_punishable() else 0.36)
 
 
 func _ensure_fields() -> void:
@@ -358,9 +360,10 @@ func _draw_boss_extra(off: Vector2) -> void:
 	var ring_c: Color = (PAL["gold"] if is_wh else PAL["plum"]) as Color
 	var hi_c: Color = (PAL["cream"] if is_wh else PAL["ice"]) as Color
 
-	# Live Singularity gravitational pull / White Hole push ripples
+	# Live Singularity gravitational pull / White Hole push ripples + Photon Ring aim guide
 	if _singularity != null and _fields_reg:
-		draw_arc(c, _singularity.radius, 0.0, TAU, 36, Color(ring_c, 0.22), 1.0)
+		draw_arc(c, _singularity.radius, 0.0, TAU, 36, Color(ring_c, 0.25), 1.0)
+		draw_arc(c, 34.0, 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.42 if is_wh else 0.52), 1.2)
 		for k: int in range(3):
 			var ph: float = fposmod(_ripple_t + float(k) / 3.0, 1.0)
 			var u: float = ph if is_wh else (1.0 - ph)
@@ -371,9 +374,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 		if lw != null and _fields_reg:
 			var lp: Vector2 = (lw.pos - pos + off).round()
 			var lc: Color = (PAL["gold"] if lw.is_push else PAL["sky"]) as Color
-			draw_arc(lp, lw.radius * 0.55, 0.0, TAU, 18, Color(lc, 0.30), 1.0)
-			draw_circle(lp, 4.5, PAL["void"] as Color)
-			draw_arc(lp, 4.5, 0.0, TAU, 12, lc, 1.2)
+			draw_arc(lp, lw.radius * 0.58, 0.0, TAU, 20, Color(lc, 0.42), 1.2)
+			draw_circle(lp, 5.5, PAL["void"] as Color)
+			draw_arc(lp, 5.5, 0.0, TAU, 12, lc, 1.4)
 			draw_rect(Rect2(lp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
 	# Straight-shot SWALLOW / HEAL visual feedback (dark imploding ring + plum cross!)

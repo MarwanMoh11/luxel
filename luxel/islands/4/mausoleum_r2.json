@@ -152,6 +152,37 @@
         72
       ],
       "props": {
+        "target_id": "gate_ms_r2_north"
+      }
+    },
+    {
+      "id": "brazier_r2_ne_roofed",
+      "kind": "ms_roofed_brazier",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "secs": 0.0,
+        "allow_interact": true,
+        "persist": true,
+        "target_id": "gate_ms_r2_north"
+      }
+    },
+    {
+      "id": "gate_ms_r2_north",
+      "kind": "logic_gate",
+      "pos": [
+        312,
+        48
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "sw_r2_exit",
+          "brazier_r2_ne_roofed"
+        ],
+        "persist": true,
         "target_id": "door_ms_r2_north",
         "sets_flag": "ms_r2_open"
       }
@@ -170,7 +201,7 @@
           16
         ],
         "requires_signals": [
-          "sw_r2_exit"
+          "gate_ms_r2_north"
         ],
         "persistent": true,
         "sets_flag": "ms_r2_open"
@@ -225,7 +256,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "rf_ms_r2_sw",
+      "kind": "rain_frog",
+      "pos": [
+        104,
+        248
+      ],
+      "zone": "ms_r2_cloister",
+      "leash": 115
+    },
+    {
+      "id": "rf_ms_r2_mid",
+      "kind": "rain_frog",
+      "pos": [
+        200,
+        184
+      ],
+      "zone": "ms_r2_cloister",
+      "leash": 115
+    }
+  ],
   "layers": [
     {
       "id": "rain_raft_bridge",
@@ -424,12 +476,24 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Sheltered roofed flames survive RAIN while open braziers hiss out; RAIN floats cistern rafts.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 45,
     "reward": "ms_r2_open+25_shards",
-    "why": "First West Flood Wing puzzle pairing SUN flame shelter with RAIN buoyancy.",
+    "why": "First West Flood Wing puzzle pairing SUN flame shelter, Rain Frog shrinkage, and RAIN buoyancy.",
     "exit": "exit_ms_r2_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          232,
+          200
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
       {
         "op": "shoot",
         "from": [
@@ -477,6 +541,14 @@
           88
         ],
         "target": "sw_r2_exit"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          344,
+          88
+        ],
+        "target": "brazier_r2_ne_roofed"
       },
       {
         "op": "expect",

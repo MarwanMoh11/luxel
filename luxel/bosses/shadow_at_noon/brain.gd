@@ -28,8 +28,8 @@ func _init() -> void:
 	island_id = 7
 	is_miniboss = false
 	reward_heart = "none"
-	music_cue = "island7_boss_p1"
-	music_p2_cue = "island7_boss_p2"
+	music_cue = "superboss_b"
+	music_p2_cue = "superboss_b"
 	max_hp = 180.0
 	hp = 180.0
 	body_radius = 9.5

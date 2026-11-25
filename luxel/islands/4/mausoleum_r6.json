@@ -179,9 +179,52 @@
         ],
         "target_ids": [
           "bridge_r6_main",
-          "door_ms_r6_north",
-          "door_ms_r6_east",
+          "gate_r6_north",
           "wind_r6_gale"
+        ]
+      }
+    },
+    {
+      "id": "sw_r6_latch",
+      "kind": "switch_eye",
+      "pos": [
+        440,
+        104
+      ],
+      "props": {
+        "target_id": "gate_r6_north"
+      }
+    },
+    {
+      "id": "chest_ms_r6_e",
+      "kind": "chest",
+      "pos": [
+        424,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "gate_r6_north",
+      "kind": "logic_gate",
+      "pos": [
+        400,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r6_east",
+          "sw_r6_latch"
+        ],
+        "persist": true,
+        "target_ids": [
+          "door_ms_r6_north",
+          "door_ms_r6_east"
         ],
         "sets_flag": "ms_r6_open"
       }
@@ -203,8 +246,7 @@
         "requires_signals": [
           "plate_r6_east"
         ],
-        "persistent": true,
-        "sets_flag": "ms_r6_open"
+        "persistent": true
       }
     },
     {
@@ -221,7 +263,7 @@
           16
         ],
         "requires_signals": [
-          "plate_r6_east"
+          "gate_r6_north"
         ],
         "persistent": true,
         "sets_flag": "ms_r6_open"
@@ -241,7 +283,7 @@
           32
         ],
         "requires_signals": [
-          "plate_r6_east"
+          "gate_r6_north"
         ],
         "persistent": true
       }
@@ -295,7 +337,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "pd_ms_r6_e",
+      "kind": "petal_duelist",
+      "pos": [
+        344,
+        216
+      ],
+      "route": [
+        [
+          328,
+          216
+        ],
+        [
+          376,
+          216
+        ]
+      ],
+      "zone": "ms_r6_transept",
+      "leash": 110
+    }
+  ],
   "layers": [
     {
       "id": "wind_gale_active",
@@ -455,10 +518,10 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "WIND wakes gale wind_zones and bounce_blooms to ferry carry_orbs across un-zippable chasms.",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 50,
-    "reward": "ms_r6_open",
-    "why": "East Gale Wing opening puzzle establishing WIND physics mastery.",
+    "reward": "ms_r6_open+35_shards",
+    "why": "East Gale Wing opening puzzle establishing WIND physics mastery and an east-rim duelist skirmish.",
     "exit": "exit_ms_r6_north",
     "solution": [
       {
@@ -509,8 +572,34 @@
       },
       {
         "op": "wait_until",
-        "flag": "ms_r6_open",
+        "interactable": "bridge_r6_main",
+        "prop": "opened",
+        "value": true,
         "timeout": 5.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          168
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          400,
+          104
+        ],
+        "target": "sw_r6_latch"
+      },
+      {
+        "op": "expect",
+        "flag": "ms_r6_open"
       },
       {
         "op": "expect_exit",

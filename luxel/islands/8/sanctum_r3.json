@@ -453,6 +453,13 @@
         "timeout": 45.0
       },
       {
+        "op": "wait_until",
+        "target": "door_sanctum_r3_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_sanctum_r3_north"
       }

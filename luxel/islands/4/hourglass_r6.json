@@ -322,7 +322,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "snuffer_hg_r6_s",
+      "kind": "mire_snuffer",
+      "pos": [
+        168,
+        248
+      ],
+      "route": [
+        [
+          136,
+          248
+        ],
+        [
+          216,
+          248
+        ]
+      ],
+      "zone": "hg_r6_parterre",
+      "leash": 120
+    }
+  ],
   "decor": [
     {
       "kind": "inlay",
@@ -459,12 +480,24 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Echo Rose bolts reflect off blue_transformer mirrors into blue prism bolts, holding distant prism eyes while Wick works elsewhere.",
-    "decisions": 7,
+    "decisions": 9,
     "expert_s": 50,
     "reward": "hg_r6_open+35_shards_opt",
-    "why": "Introduces the East Wing's signature Echo + Prism Mirror synthesis and branches to optional r10.",
+    "why": "Introduces the East Wing's signature Echo + Prism Mirror synthesis with a patrolling Mire Snuffer and branches to optional r10.",
     "exit": "exit_hg_r6_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          216
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
       {
         "op": "rotate",
         "target": "mirror_hg_r6",

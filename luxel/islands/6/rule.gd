@@ -173,8 +173,7 @@ func _on_kiln_shift_changed(station: String) -> void:
 		var cue: String = "ISL6_SHIFT_A" if station == "station_a" else ("ISL6_SHIFT_B" if station == "station_b" else "ISL6_SHIFT_C")
 		if LxStrings.has_id(cue):
 			_events.narration_requested.emit(cue, "narration", 2.8)
-	if _hud_node != null and is_instance_valid(_hud_node):
-		_hud_node.queue_redraw()
+	_request_hud_redraw()
 
 
 func _on_kiln_heat_changed(heat_val: String) -> void:
@@ -318,8 +317,7 @@ static func apply_temper(mode: String, world_pos: Vector2 = Vector2.ZERO, play_c
 		wick.temper = m
 	if active_instance != null:
 		active_instance._temper_pop_t = 0.55
-		if active_instance._hud_node != null and is_instance_valid(active_instance._hud_node):
-			active_instance._hud_node.queue_redraw()
+		active_instance._request_hud_redraw()
 	if play_ceremony:
 		_play_anvil_ceremony(m, world_pos, first_time, wick)
 	if Lx.events != null:

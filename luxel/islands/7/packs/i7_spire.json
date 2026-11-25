@@ -20,7 +20,7 @@
     "spire_r10": { "name_key": "ISL7_SP_R10", "music": "island7_boss_p1", "dark": true, "map": [2, 1] },
     "spire_r11": { "name_key": "ISL7_SP_R11", "theme": "inverted_palace_silver", "music": "island7_dungeon", "dark": true, "map": [1, 4] },
     "spire_r12": { "name_key": "ISL7_SP_R12", "theme": "doppel_theatre",         "music": "island7_dungeon", "dark": true, "map": [4, 5] },
-    "spire_r13": { "name_key": "ISL7_SP_R13", "theme": "masquerade",             "music": "island7_boss_p1", "dark": true, "map": [5, 5] },
+    "spire_r13": { "name_key": "ISL7_SP_R13", "theme": "masquerade",             "music": "isl7_boss_minor_p1", "dark": true, "map": [5, 5] },
     "spire_r14": { "name_key": "ISL7_SP_R14", "theme": "inverted_palace_silver", "music": "island7_dungeon", "dark": true, "map": [5, 2] },
     "spire_r15": { "name_key": "ISL7_SP_R15", "theme": "inverted_palace_silver", "music": "island7_dungeon", "dark": true, "map": [4, 2] },
     "spire_r16": { "name_key": "ISL7_SP_R16", "theme": "inverted_palace_black",  "music": "island7_dungeon", "dark": true, "map": [1, 2] },

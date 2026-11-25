@@ -87,23 +87,32 @@ class RuleRuntime:
 	func _draw() -> void:
 		var fr: bool = LxHudFx.flash_reduced()
 		if _preview_pts.size() >= 2:
-			var strong_curve: bool = _preview_deg >= 25.0
-			var base_a: float = 0.58 if fr else 0.78
+			var strong_curve: bool = _preview_deg >= 20.0
+			var base_a: float = 0.72 if fr else 0.92
 			for i: int in range(1, _preview_pts.size()):
 				var pt: Vector2 = (_preview_pts[i] + Vector2(0.0, -5.0)).round()
 				var frac: float = float(i) / float(_preview_pts.size())
+				var is_end: bool = (i == _preview_pts.size() - 1)
 				var col: Color = (PAL["gold"] if strong_curve else PAL["sky"]) as Color
-				if i == _preview_pts.size() - 1:
-					col = (PAL["coral"] if _preview_hit_wall else PAL["cream"]) as Color
+				if is_end:
+					col = (PAL["coral"] if _preview_hit_wall else (PAL["cream"] if strong_curve else PAL["ice"])) as Color
 				elif i % 2 == 0:
 					col = (PAL["cream"] if strong_curve else PAL["ice"]) as Color
-				var a: float = base_a * (1.0 - frac * 0.55)
-				draw_rect(Rect2(pt + Vector2(0.0, 1.0), Vector2.ONE), Color(PAL["void"] as Color, a * 0.65))
-				draw_rect(Rect2(pt, Vector2(2.0, 2.0) if (i == _preview_pts.size() - 1) else Vector2.ONE), Color(col, a))
+				var a: float = base_a * (1.0 - frac * 0.42)
+				if is_end:
+					draw_rect(Rect2(pt - Vector2(2.0, 2.0), Vector2(5.0, 5.0)), Color(PAL["void"] as Color, a * 0.85))
+					if _preview_hit_wall:
+						draw_line(pt + Vector2(-1.0, -1.0), pt + Vector2(2.0, 2.0), Color(col, a), 1.0)
+						draw_line(pt + Vector2(1.0, -1.0), pt + Vector2(-2.0, 2.0), Color(col, a), 1.0)
+					else:
+						draw_rect(Rect2(pt - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), Color(col, a))
+				else:
+					draw_rect(Rect2(pt - Vector2(1.0, 1.0), Vector2(4.0, 4.0)), Color(PAL["void"] as Color, a * 0.72))
+					draw_rect(Rect2(pt, Vector2(2.0, 2.0)), Color(col, a))
 
 		if _tangent_lock_well.is_finite():
-			var c_orb := Color(PAL["gold"] as Color, 0.45 if fr else 0.65)
-			draw_arc(_tangent_lock_well.round(), _tangent_lock_r, 0.0, TAU, 24, c_orb, 1.0)
+			var c_orb := Color(PAL["gold"] as Color, 0.55 if fr else 0.78)
+			draw_arc(_tangent_lock_well.round(), _tangent_lock_r, 0.0, TAU, 24, c_orb, 1.2)
 
 
 class RuleHudBadge:
@@ -336,6 +345,9 @@ func _on_var_changed(_scope: String, vname: String, _val: Variant) -> void:
 func _region_has_i5_toys(reg: LxRegionLoader) -> bool:
 	for it: LxInteractable in reg.get_interactables():
 		if it != null and it.kind in I5_TOY_KINDS:
+			return true
+	for en: LxEnemyBrain in reg.get_enemies():
+		if en != null and en.kind in ["twin_moons", "the_counterweight", "event_horizon", "clockwork_warden", "astronomer", "the_zodiac", "apogee_hound"]:
 			return true
 	return false
 

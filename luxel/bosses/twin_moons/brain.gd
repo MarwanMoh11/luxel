@@ -57,8 +57,8 @@ func _init() -> void:
 	island_id = 5
 	is_miniboss = false
 	reward_heart = "half"
-	music_cue = "island5_boss_p1"
-	music_p2_cue = "island5_boss_p2"
+	music_cue = "isl5_boss_minor_p1"
+	music_p2_cue = "isl5_boss_minor_p2"
 	max_hp = 116.0
 	hp = 116.0
 	body_radius = 12.0

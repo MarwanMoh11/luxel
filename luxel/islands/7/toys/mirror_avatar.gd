@@ -346,7 +346,7 @@ func _fire_mirror_beam(dir: Vector2) -> void:
 					hit_ids[it.get_instance_id()] = true
 					var ihit: LxHit = LxHit.make(LxHit.SOURCE_BEAM, MIRROR_BEAM_DMG, cur_dir, cur, 2.0, true, true, self, false, col_name)
 					if it.has_method("receive_beam"):
-						it.call("receive_beam", LxToyDraw.normalize_light_color(col_name), cur_dir)
+						it.call("receive_beam", LxToyDraw.normalize_light_color(col_name), id)
 					else:
 						it.on_hit(ihit)
 					if it.blocks_sight() and not (it.kind in ["bramble", "web", "cracked_wall"]):

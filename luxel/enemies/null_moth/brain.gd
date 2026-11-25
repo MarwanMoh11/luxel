@@ -6,7 +6,7 @@ extends LxEnemyBrain
 ## during Recover (when its halo drops!) shatter the cloak and stagger it for 0.80 s!
 
 const HALO_RADIUS: float = 22.0
-const CURVE_PIERCE_DEG: float = 25.0
+const CURVE_PIERCE_DEG: float = 20.0
 const NOTICE_TIME: float = 0.24
 const COMMIT_TIME: float = 0.30
 const BOLT_SPEED: float = 210.0

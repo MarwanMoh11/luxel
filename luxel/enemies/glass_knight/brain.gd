@@ -73,7 +73,10 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 func _is_black_world() -> bool:
 	if Lx.vars == null:
 		return false
-	return Lx.vars.eval("world_face==black", island_id, "")
+	var reg_id: String = Lx.state.region_id if Lx.state != null else ""
+	if reg_id.is_empty() and Lx.world != null:
+		reg_id = str(Lx.world.get("current_region_id"))
+	return Lx.vars.eval("world_face==black", island_id, reg_id)
 
 
 func _has_active_shield() -> bool:

@@ -223,6 +223,19 @@
       }
     },
     {
+      "id": "chest_ms_r9_ne",
+      "kind": "chest",
+      "pos": [
+        424,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
       "id": "lamp_r9_nw",
       "kind": "road_lamp",
       "pos": [
@@ -283,7 +296,18 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "rf_ms_r9_w",
+      "kind": "rain_frog",
+      "pos": [
+        88,
+        184
+      ],
+      "zone": "ms_r9_tuning",
+      "leash": 110
+    }
+  ],
   "layers": [],
   "events": [
     {
@@ -482,12 +506,24 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Silencing weather-gated choral voices in Roman numeral order (direct preparation for The Drowned Choir).",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
-    "reward": "ms_r9_open+lore_4_choir",
-    "why": "Choir Wing tutorial puzzle teaching the final boss's exact weather-stanza mechanic.",
+    "reward": "ms_r9_open+lore_4_choir+40_shards",
+    "why": "Choir Wing tutorial puzzle teaching the final boss's exact weather-stanza mechanic while defending the wheel from a Rain Frog.",
     "exit": "exit_ms_r9_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          184
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
       {
         "op": "goto",
         "to": [

@@ -191,8 +191,8 @@
       "mini": true,
       "dungeon": "palace",
       "region": "palace_r5",
-      "music": "island7_boss_p1",
-      "music_p2": "island7_boss_p2",
+      "music": "isl7_boss_minor_p1",
+      "music_p2": "isl7_boss_minor_p2",
       "heart": "none",
       "flag": "palace_miniboss_done",
       "island": 7
@@ -206,8 +206,8 @@
       "mini": false,
       "dungeon": "palace",
       "region": "palace_r12",
-      "music": "island7_boss_p1",
-      "music_p2": "island7_boss_p2",
+      "music": "isl7_boss_minor_p1",
+      "music_p2": "isl7_boss_minor_p2",
       "heart": "half",
       "flag": "palace_cleared",
       "island": 7

@@ -73,8 +73,8 @@ func _init() -> void:
 	move_speed = 42.0
 	stagger_threshold = 14.0
 	stagger_duration = 1.70
-	punish_dmg_mult = 1.05
-	post_recover_cd = 0.36
+	punish_dmg_mult = 1.15
+	post_recover_cd = 0.50
 	intro_duration = 0.50
 	phase_shift_duration = 0.75
 	death_duration = 2.0
@@ -158,22 +158,22 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 4 (P2, P3): Carillon Rain — bronze toll rings on Wick & nearest perimeter corners
 	register_attack("carillon_rain", {
-		"phases": [2, 3], "weight": 2.00, "tell": 0.56, "commit": 0.34, "recover": 1.15, "cooldown": 1.4,
+		"phases": [2, 3], "weight": 2.00, "tell": 0.62, "commit": 0.34, "recover": 1.25, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var spots: Array[Vector2] = _perimeter_targets(tgt, 4 if phase >= 3 else 3)
-			patterns.emit_rain(ground, spots, last_tell_duration, 22.0, 1.0, "coral", "gold")
+			var spots: Array[Vector2] = _perimeter_targets(tgt, 3)
+			patterns.emit_rain(ground, spots, last_tell_duration, 20.0, 1.0, "coral", "gold")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else _aim_dir
-			patterns.emit_fan(pos, d, 5, 0.82, 124.0, {"color": _tone_color_key(), "source": "bellkeeper_carillon", "reflectable": true})
+			patterns.emit_fan(pos, d, 4, 0.82, 94.0, {"color": _tone_color_key(), "source": "bellkeeper_carillon", "reflectable": true})
 			stage.shake(0.16)
 			stage.play_sfx("bellkeeper_slam_fire", pos),
 	})
 
 	# Attack 5 (P3): Three-Tone Chorus — Gold/Ice/Coral crown aura duel wave (counterable by matching rim bell!)
 	register_attack("three_tone_chorus", {
-		"phases": [3], "weight": 5.50, "tell": 0.60, "commit": 0.52, "recover": 1.15, "cooldown": 0.5,
+		"phases": [3], "weight": 3.20, "tell": 0.64, "commit": 0.52, "recover": 1.30, "cooldown": 1.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_toll_tone = TONE_CYCLE[_tone_idx % TONE_CYCLE.size()]
 			_tone_idx += 1
@@ -185,7 +185,7 @@ func _configure_boss(spec: Dictionary) -> void:
 			stage.play_sfx("bellkeeper_phase3_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_emit_chime_bolts(false)
-			patterns.emit_fan(pos, _aim_dir, 5, 0.70, 134.0, {"color": _tone_color_key(), "source": "bellkeeper_chorus", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 4, 0.70, 96.0, {"color": _tone_color_key(), "source": "bellkeeper_chorus", "reflectable": true})
 			stage.shake(0.18)
 			stage.play_sfx("bellkeeper_double_toll", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
@@ -193,7 +193,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				_chorus_wave2_done = true
 				_emit_chime_bolts(true)
 				var d2: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else _aim_dir
-				patterns.emit_fan(pos, d2, 3, 0.45, 132.0, {"color": _tone_color_key(), "source": "bellkeeper_chorus", "reflectable": true})
+				patterns.emit_fan(pos, d2, 2, 0.45, 92.0, {"color": _tone_color_key(), "source": "bellkeeper_chorus", "reflectable": true})
 				stage.play_sfx("clockwork_chime", pos),
 	})
 
@@ -324,10 +324,10 @@ func _step_bell_slam_commit(dt: float) -> void:
 func _emit_chime_bolts(is_second_ring: bool) -> void:
 	var aim_a: float = (_get_wick_pos() - pos).angle() if _has_player() else facing
 	var col_k: String = _tone_color_key() if phase >= 3 else "gold"
-	var cnt: int = 7 if phase >= 3 else (6 if phase >= 2 else 5)
-	var spd: float = 108.0 if phase >= 3 else (100.0 if phase >= 2 else 94.0)
+	var cnt: int = 6 if phase >= 3 else (5 if phase >= 2 else 5)
+	var spd: float = 94.0 if phase >= 3 else (88.0 if phase >= 2 else 84.0)
 	var gap_off: float = PI * (0.35 if is_second_ring else 0.50)
-	patterns.emit_gap_ring(pos, cnt, spd, aim_a + gap_off, 0.90, {"color": col_k, "source": "bellkeeper_chime", "reflectable": true})
+	patterns.emit_gap_ring(pos, cnt, spd, aim_a + gap_off, 1.12, {"color": col_k, "source": "bellkeeper_chime", "reflectable": true})
 
 
 func on_ring(tone: String, _dir: Vector2) -> void:
@@ -399,13 +399,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		if src == LxHit.SOURCE_BOLT:
 			_wear_shield(0.22)
 			stage.play_sfx("warden_clank", pos)
-			return dmg * 0.12
-		return dmg * 0.42
+			return dmg * 0.15
+		return dmg * 0.44
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("warden_clank", pos)
-		return dmg * 0.21
-	return dmg * 0.48
+		return dmg * 0.26
+	return dmg * 0.52
 
 
 func _on_phase_enter(new_phase: int) -> void:

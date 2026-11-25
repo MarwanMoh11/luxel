@@ -99,6 +99,11 @@ static func seed_registry(reg: LxPackRegistry) -> void:
 				var extra_r6: String = "kiln_r%d" % n
 				if not regs.has(extra_r6):
 					regs.append(extra_r6)
+		elif isl == 7 and did == "mirror_spire":
+			for n: int in range(11, 18):
+				var extra_r7: String = "spire_r%d" % n
+				if not regs.has(extra_r7):
+					regs.append(extra_r7)
 		elif isl == 8 and did == "bell_sanctum":
 			for n: int in range(7, 15):
 				var extra_r8: String = "sanctum_r%d" % n

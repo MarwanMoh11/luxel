@@ -132,6 +132,6 @@
     "cave_phase_trial": { "name_key": "ISL7_Z_CAVE_PHASE",  "theme": "cave_7",                 "music": "island7_combat",  "dark": true,  "map": [-1, 2] },
     "cave_echo_vault":  { "name_key": "ISL7_Z_CAVE_ECHO",   "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [1, 2] },
     "cave_glass_crypt": { "name_key": "ISL7_Z_CAVE_CRYPT",  "theme": "cave_7",                 "music": "island7_dungeon", "dark": true,  "map": [0, 0] },
-    "superboss_noon":   { "name_key": "ISL7_Z_NOON",        "theme": "inverted_palace_silver", "music": "superboss_a",     "dark": false, "map": [1, -2] }
+    "superboss_noon":   { "name_key": "ISL7_Z_NOON",        "theme": "inverted_palace_silver", "music": "superboss_b",     "dark": false, "map": [1, -2] }
   }
 }

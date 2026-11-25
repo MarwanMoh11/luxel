@@ -283,9 +283,9 @@ func _is_spire_black() -> bool:
 
 func _set_spire_face(face_s: String) -> void:
 	if LxIsland7Rule.active_rule != null:
-		LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_SPIRE, face_s, true, pos)
+		LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_ISLAND, face_s, true, pos)
 	elif Lx.vars != null:
-		Lx.vars.set_var("dungeon:spire", "world_face", face_s)
+		Lx.vars.set_var("island:7", "world_face", face_s)
 
 
 func _has_active_shield() -> bool:

@@ -221,6 +221,19 @@
       }
     },
     {
+      "id": "chest_hg_r8_nw",
+      "kind": "chest",
+      "pos": [
+        120,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40
+      }
+    },
+    {
       "id": "lamp_r8_s",
       "kind": "road_lamp",
       "pos": [
@@ -269,7 +282,28 @@
       }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "snuffer_hg_r8_e",
+      "kind": "mire_snuffer",
+      "pos": [
+        408,
+        136
+      ],
+      "route": [
+        [
+          376,
+          136
+        ],
+        [
+          424,
+          136
+        ]
+      ],
+      "zone": "hg_r8_pergola",
+      "leash": 110
+    }
+  ],
   "decor": [
     {
       "kind": "inlay",
@@ -414,12 +448,24 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Shadow Gates close under both Wick's lantern AND Echo light; opaque walls let you hide both light sources.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 60,
-    "reward": "hg_r8_open",
-    "why": "Signature ten-beat inversion turning your main tool (light & echoes) into a hazard to hide.",
+    "reward": "hg_r8_open+40_shards",
+    "why": "Signature ten-beat inversion turning your main tool (light & echoes) into a hazard to hide, with a Mire Snuffer guarding the East Echo Rose and a dark-alcove reward chest.",
     "exit": "exit_hg_r8_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          360,
+          184
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
+      },
       {
         "op": "interact",
         "target": "lore_hg_r8_shadow"

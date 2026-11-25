@@ -127,8 +127,7 @@
           ]
         ],
         "speed": 120.0,
-        "on_signal": "move",
-        "persist": true
+        "on_signal": "move"
       }
     },
     {
