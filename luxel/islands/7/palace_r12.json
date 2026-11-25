@@ -373,6 +373,27 @@
   ],
   "events": [
     {
+      "id": "r12_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        },
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
+    {
       "id": "r12_sync_black",
       "on": "var:world_face==black",
       "once": false,

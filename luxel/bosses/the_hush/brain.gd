@@ -35,7 +35,7 @@ const BEAM_ARC: float = 1.42
 const BEAM_DUR: float = 0.58
 const UNBROKEN_STAND_SECS: float = 25.0
 const SANCTUM_R6_CORE := Rect2(224.0, 126.0, 112.0, 58.0)
-const SANCTUM_R6_ENGAGE := Rect2(144.0, 112.0, 240.0, 116.0)
+const SANCTUM_R6_ENGAGE := Rect2(128.0, 108.0, 256.0, 144.0)
 
 # Compat & VFX fields read by visuals.gd, biome_boss_synergy.gd, boss_qa_capture.gd
 var active_move: int = HushMove.VOLLEY

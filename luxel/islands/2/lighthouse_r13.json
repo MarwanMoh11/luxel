@@ -1,0 +1,498 @@
+{
+  "id": "lighthouse_r13",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R13_NAME",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "lh_r13",
+      "name_key": "LH2_R13_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r13_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r4",
+      "to_spawn": [
+        304,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r13_east",
+      "rect": [
+        432,
+        112,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r5",
+      "to_spawn": [
+        112,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r13_east"
+    },
+    {
+      "id": "exit_lh_r13_chute",
+      "rect": [
+        336,
+        272,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r12",
+      "to_spawn": [
+        368,
+        248
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [
+    {
+      "id": "anchor_lh_r13_1",
+      "kind": "anchor_drowned",
+      "pos": [
+        120,
+        128
+      ],
+      "route": [
+        [
+          104,
+          128
+        ],
+        [
+          168,
+          128
+        ]
+      ],
+      "zone": "lh_r13",
+      "leash": 136
+    },
+    {
+      "id": "gull_lh_r13_1",
+      "kind": "gull_thief",
+      "pos": [
+        104,
+        184
+      ],
+      "route": [],
+      "perches": [
+        [
+          104,
+          184
+        ],
+        [
+          184,
+          88
+        ]
+      ],
+      "zone": "lh_r13",
+      "leash": 144
+    },
+    {
+      "id": "gull_lh_r13_2",
+      "kind": "gull_thief",
+      "pos": [
+        264,
+        120
+      ],
+      "route": [],
+      "perches": [
+        [
+          264,
+          120
+        ],
+        [
+          168,
+          88
+        ]
+      ],
+      "zone": "lh_r13",
+      "leash": 144
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lh_r13",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "scale_lh_r13",
+      "kind": "scale",
+      "pos": [
+        184,
+        120
+      ],
+      "props": {
+        "left": [
+          -24,
+          0
+        ],
+        "right": [
+          24,
+          0
+        ],
+        "pan_radius": 18,
+        "mode": "left_heavy",
+        "need_weight": 1.0,
+        "persist": true,
+        "target_id": "door_lh_r13_east"
+      }
+    },
+    {
+      "id": "blk_lh_r13_backup",
+      "kind": "push_block",
+      "pos": [
+        120,
+        168
+      ],
+      "props": {
+        "variant": "crate",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mir_lh_r13",
+      "kind": "blue_transformer",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "glass_lh_r13",
+      "kind": "color_glass",
+      "pos": [
+        312,
+        72
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "solid": false
+      }
+    },
+    {
+      "id": "eye_lh_r13_brake",
+      "kind": "switch_eye",
+      "pos": [
+        368,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_lh_r13_east"
+      }
+    },
+    {
+      "id": "door_lh_r13_east",
+      "kind": "door",
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "scale_lh_r13",
+          "eye_lh_r13_brake"
+        ],
+        "sets_flag": "lh_r13_shaft_open"
+      }
+    },
+    {
+      "id": "lamp_lh_r13_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "zone": "lh_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r13_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "zone": "lh_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r13_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "zone": "lh_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r13_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "zone": "lh_r13",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r13_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        216
+      ],
+      "props": {
+        "zone": "lh_r13",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        104,
+        80,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        248,
+        56,
+        32,
+        32
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        216
+      ],
+      "radius": 22,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        120,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        280,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        56,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        88,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        376,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Counterweight Shaft: clear two Gull Thieves and an Anchor Drowned around a giant brass Scale, push the counterweight crate onto the west pan to hoist the mechanism, and bank a blue bolt through the Sea-Glass slit to latch the brake switch opening the upper Rotunda (r5) while revealing a drop chute back to r12.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Combining brass Scale counterweights with blue optical brakes and vertical dungeon drop-chutes.",
+    "decisions": 7,
+    "expert_s": 52,
+    "reward": "vertical_loop_to_r12+alternate_r5_entry",
+    "why": "Wing 2 vertical counterweight shaft linking Glass Atrium (r4), Optical Rotunda (r5), and Relay F1 (r12).",
+    "exit": "exit_lh_r13_east",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          184
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lh_r13",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "blk_lh_r13_backup",
+        "to": [
+          160,
+          120
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "scale_lh_r13",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          96
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r13",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          264,
+          128
+        ],
+        "target": "mir_lh_r13"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r13_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r13_east"
+      }
+    ]
+  }
+}

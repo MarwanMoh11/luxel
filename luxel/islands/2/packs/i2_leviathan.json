@@ -1,0 +1,64 @@
+{
+  "pack_id": "i2_leviathan",
+  "owner": "G2",
+  "comment": "Island 2 Set Piece: The Leviathan (leviathan_r1..r5: flooded rooftop skiff chase, breakwater swallow, rib-cage bilge, Gullet Lamprey boss, 3-tier blowhole sky-launch). Debug-only on dungeon/regions meta until ow_open_sound hooks leviathan_r1.",
+  "interactables": {
+    "lev_wave_chaser": "res://luxel/islands/2/leviathan/lev_wave_chaser.gd",
+    "lev_maw_swallow": "res://luxel/islands/2/leviathan/lev_maw_swallow.gd",
+    "lev_heartbeat_driver": "res://luxel/islands/2/leviathan/lev_heartbeat_driver.gd",
+    "lev_blowhole_geyser": "res://luxel/islands/2/leviathan/lev_blowhole_geyser.gd"
+  },
+  "state_vars": {
+    "belly_tide": {
+      "scope": "room:2:leviathan_r3",
+      "values": ["low", "high"],
+      "default": "low"
+    }
+  },
+  "strings": {
+    "LEV_NAME": "THE LEVIATHAN",
+    "LEV_SWALLOW": "SWALLOWED WHOLE BY THE DEEP.",
+    "ISL2_LEV_CALM": "THE WHALE BREATHES FREE. RIDE IT UP!",
+    "LEV_R1_NAME": "FLOODED HARBOR ROOFTOPS",
+    "LEV_R2_NAME": "BREAKWATER MAW",
+    "LEV_R3_NAME": "RIB-CAGE BILGE",
+    "LEV_R4_NAME": "HEART-BUOY SANCTUM",
+    "LEV_R5_NAME": "BLOWHOLE ASCENT",
+    "LEV_CHASE_HINT": "OUTRUN THE WAVE! SNAP CHAINS AND ZIP!",
+    "LEV_BELL_HINT": "RING THE CHUM BELL TO PART THE JAWS!",
+    "LEV_HEART_HINT": "CLAMP THE SCHOONER RAFT BEFORE EXHALE!",
+    "LEV_LAUNCH_HINT": "BANK THROUGH BOTH RAFTS TO OPEN THE VENT!"
+  },
+  "dungeons": [
+    {
+      "id": "leviathan",
+      "name_key": "LEV_NAME",
+      "island": 2,
+      "entry": "leviathan_r1",
+      "regions": [
+        "leviathan_r1",
+        "leviathan_r2",
+        "leviathan_r3",
+        "leviathan_r4",
+        "leviathan_r5"
+      ],
+      "mini_boss": "gullet_lamprey",
+      "boss": "",
+      "theme": "leviathan_belly",
+      "music": "isl2_setpiece",
+      "requires_flags": [
+        "galleon_done",
+        "locks_done"
+      ],
+      "done_flag": "leviathan_done",
+      "debug_only": true
+    }
+  ],
+  "regions": {
+    "leviathan_r1": { "name_key": "LEV_R1_NAME", "theme": "locks",           "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [0, 1] },
+    "leviathan_r2": { "name_key": "LEV_R2_NAME", "theme": "locks",           "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [1, 1] },
+    "leviathan_r3": { "name_key": "LEV_R3_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [2, 1] },
+    "leviathan_r4": { "name_key": "LEV_R4_NAME", "theme": "leviathan_belly", "music": "island2_boss_p1", "dark": true, "debug_only": true, "map": [3, 1] },
+    "leviathan_r5": { "name_key": "LEV_R5_NAME", "theme": "leviathan_belly", "music": "isl2_setpiece",   "dark": true, "debug_only": true, "map": [2, 0] }
+  }
+}

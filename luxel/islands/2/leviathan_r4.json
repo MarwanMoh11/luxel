@@ -1,0 +1,365 @@
+{
+  "id": "leviathan_r4",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LEV_R4_NAME",
+  "theme": "leviathan_belly",
+  "music": "island2_boss_p1",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    256,
+    336
+  ],
+  "zones": [
+    {
+      "id": "lev_r4",
+      "name_key": "LEV_R4_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lev_r4_south",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r3",
+      "to_spawn": [
+        424,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r4_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r5",
+      "to_spawn": [
+        224,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lev_r4_combat"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_gullet_lamprey",
+      "kind": "gullet_lamprey",
+      "pos": [
+        256,
+        176
+      ],
+      "route": [],
+      "zone": "lev_r4",
+      "leash": 0
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lev_r4",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "post_lev_r4_w",
+      "kind": "mooring_post",
+      "pos": [
+        104,
+        192
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_lev_r4_e",
+      "kind": "mooring_post",
+      "pos": [
+        408,
+        192
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "door_lev_r4_combat",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lev_r4",
+        "clear_zone": "lev_r4",
+        "sets_flag": "lev_parasite_dead"
+      }
+    },
+    {
+      "id": "lamp_lev_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        328
+      ],
+      "props": {
+        "zone": "lev_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "zone": "lev_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "zone": "lev_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        296
+      ],
+      "props": {
+        "zone": "lev_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        296
+      ],
+      "props": {
+        "zone": "lev_r4",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 44,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        120
+      ],
+      "radius": 24,
+      "style": "acid"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        392,
+        264
+      ],
+      "radius": 24,
+      "style": "acid"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        256,
+        88
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "ivory_rib_arch",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        376,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        120,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        360,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        328,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_anchor",
+      "pos": [
+        72,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Circular rib-ring sanctum around the Leviathan's glowing Heart-Buoy: orbit the 6-segment Gullet Lamprey, ignite its 3 swallowed Ship-Lanterns to stun it belly-up off the Heart-Buoy, and calm the whale across 2 heartbeat phases.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Lighting arena Ship-Lanterns and shooting open tells while riding circular heartbeat fields.",
+    "decisions": 8,
+    "expert_s": 95,
+    "reward": "lev_parasite_dead+blowhole_unlocked",
+    "why": "Set-piece boss climax freeing the Leviathan so it can launch Wick onto Lighthouse Promontory.",
+    "exit": "exit_lev_r4_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          264
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lev_r4",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r4_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lev_r4_north"
+      }
+    ]
+  }
+}

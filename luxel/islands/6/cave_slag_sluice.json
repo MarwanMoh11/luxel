@@ -2,7 +2,7 @@
   "id": "cave_slag_sluice",
   "island_id": 6,
   "tile_size": 16,
-  "is_dungeon": true,
+  "is_dungeon": false,
   "theme": "cave_6",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_SLUICE",
@@ -94,12 +94,12 @@
       "id": "conv_sluice_1",
       "kind": "conveyor",
       "pos": [
-        232,
+        213,
         136
       ],
       "props": {
         "size": [
-          96,
+          138,
           16
         ],
         "dir": "e",
@@ -110,12 +110,12 @@
       "id": "conv_sluice_2",
       "kind": "conveyor",
       "pos": [
-        232,
+        213,
         168
       ],
       "props": {
         "size": [
-          96,
+          138,
           16
         ],
         "dir": "e",
@@ -126,7 +126,7 @@
       "id": "plate_sluice_1",
       "kind": "pressure_plate",
       "pos": [
-        288,
+        284,
         136
       ],
       "props": {
@@ -142,7 +142,7 @@
       "id": "plate_sluice_2",
       "kind": "pressure_plate",
       "pos": [
-        288,
+        284,
         168
       ],
       "props": {
@@ -335,7 +335,7 @@
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Cool two molten slag blocks using a Blue Transformer, then push both onto twin eastbound conveyors to latch the sluice plates and claim pure Slag Coal + moth_6_04.",
+    "idea": "Cool two molten slag blocks using a Blue Transformer so they break free and ride twin eastbound conveyors onto the sluice plates to claim pure Slag Coal + moth_6_04.",
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Slag cooling via Blue reflection + conveyor block delivery.",
@@ -369,17 +369,11 @@
         "timeout": 3.0
       },
       {
-        "op": "push",
-        "target": "slag_s1",
-        "dir": "e",
-        "dist": 48.0
-      },
-      {
         "op": "wait_until",
         "target": "plate_sluice_1",
         "prop": "powered",
         "value": true,
-        "timeout": 4.0
+        "timeout": 5.0
       },
       {
         "op": "goto",
@@ -405,17 +399,11 @@
         "timeout": 3.0
       },
       {
-        "op": "push",
-        "target": "slag_s2",
-        "dir": "e",
-        "dist": 48.0
-      },
-      {
         "op": "wait_until",
         "target": "door_sluice_vault",
         "prop": "opened",
         "value": true,
-        "timeout": 4.0
+        "timeout": 5.0
       },
       {
         "op": "goto",

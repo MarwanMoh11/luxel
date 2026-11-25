@@ -1,0 +1,435 @@
+{
+  "id": "lighthouse_r18",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R18_NAME",
+  "theme": "galleon",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "lh_r18",
+      "name_key": "LH2_R18_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r18_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r17",
+      "to_spawn": [
+        272,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r18_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r9",
+      "to_spawn": [
+        408,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r18_west"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "lamprey_lh_r18_1",
+      "kind": "brine_lamprey",
+      "pos": [
+        168,
+        88
+      ],
+      "route": [
+        [
+          152,
+          88
+        ],
+        [
+          216,
+          88
+        ]
+      ],
+      "zone": "lh_r18",
+      "leash": 130
+    },
+    {
+      "id": "shrimp_lh_r18_1",
+      "kind": "pistol_shrimp",
+      "pos": [
+        136,
+        184
+      ],
+      "route": [],
+      "zone": "lh_r18",
+      "leash": 136
+    },
+    {
+      "id": "shrimp_lh_r18_2",
+      "kind": "pistol_shrimp",
+      "pos": [
+        344,
+        104
+      ],
+      "route": [],
+      "zone": "lh_r18",
+      "leash": 136
+    },
+    {
+      "id": "anchor_lh_r18_1",
+      "kind": "anchor_drowned",
+      "pos": [
+        296,
+        152
+      ],
+      "route": [
+        [
+          264,
+          152
+        ],
+        [
+          328,
+          152
+        ]
+      ],
+      "zone": "lh_r18",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lh_r18",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "beam_lh_r18",
+      "kind": "beam_emitter",
+      "pos": [
+        248,
+        56
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 0.0,
+        "duty": 1.0,
+        "range": 260.0,
+        "max_bounces": 2,
+        "harms_wick": false
+      }
+    },
+    {
+      "id": "mir_lh_r18",
+      "kind": "blue_transformer",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "sensor_lh_r18_dome",
+      "kind": "beam_sensor",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "door_lh_r18_west"
+      }
+    },
+    {
+      "id": "door_lh_r18_west",
+      "kind": "door",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sensor_lh_r18_dome"
+        ],
+        "sets_flag": "lh_flame_unshielded"
+      }
+    },
+    {
+      "id": "lamp_lh_r18_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        232
+      ],
+      "props": {
+        "zone": "lh_r18",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r18_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "zone": "lh_r18",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r18_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        72
+      ],
+      "props": {
+        "zone": "lh_r18",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r18_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "zone": "lh_r18",
+        "lit": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r18_unshield",
+      "on": "signal:sensor_lh_r18_dome",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lh_flame_unshielded"
+        },
+        {
+          "narrate": "LH2_LOFT_UNSHIELD"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        248,
+        136
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        128,
+        120,
+        96,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        328,
+        208
+      ],
+      "radius": 22,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_galleon",
+      "prop": "brass_capstan",
+      "pos": [
+        168,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "oak_ship_barrel",
+      "pos": [
+        88,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "rope_coil_crate",
+      "pos": [
+        120,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "mast_stump_pillar",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "hanging_ship_lantern",
+      "pos": [
+        296,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_galleon",
+      "prop": "bilge_grate_hatch",
+      "pos": [
+        200,
+        200
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Lens-Grinder's Loft: defeat the coastal ambush around the live Lighthouse beam, then push the movable Blue Transformer into the vertical beam at (248, 136) and angle it 225 deg to bounce a steady blue ray west into the crystal conduit \u2014 shattering the dome over Upper Nave's Boss Key and opening Cycle 5 to r9!",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Redirecting a live Lighthouse Beam through a pushed Blue Transformer into a blue Beam Sensor mid-loft.",
+    "decisions": 9,
+    "expert_s": 50,
+    "reward": "lh_flame_unshielded+cycle_5_to_r9",
+    "why": "Penultimate upper-loft fight synthesizing combat and beam redirection before the Upper Prism Nave.",
+    "exit": "exit_lh_r18_west",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          200,
+          184
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lh_r18",
+        "timeout": 40.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "mir_lh_r18",
+        "to": [
+          248,
+          136
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r18",
+        "angle": 225.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r18_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "lh_flame_unshielded"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r18_west"
+      }
+    ]
+  }
+}

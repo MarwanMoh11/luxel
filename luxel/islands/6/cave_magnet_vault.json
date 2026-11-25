@@ -2,7 +2,7 @@
   "id": "cave_magnet_vault",
   "island_id": 6,
   "tile_size": 16,
-  "is_dungeon": true,
+  "is_dungeon": false,
   "theme": "cave_6",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_MAGNET",

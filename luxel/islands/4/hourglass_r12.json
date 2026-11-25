@@ -47,10 +47,10 @@
         16
       ],
       "to_island": 4,
-      "to_region": "overworld",
+      "to_region": "ow_weeping_orchard",
       "to_spawn": [
-        216,
-        560
+        128,
+        64
       ],
       "one_way": true,
       "requires_flags": [

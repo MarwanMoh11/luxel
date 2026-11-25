@@ -258,24 +258,24 @@
     },
     {
       "id": "brazier_pin_orchard",
-      "kind": "brazier",
+      "kind": "timed_brazier",
       "pos": [
         96,
         272
       ],
       "props": {
-        "sets_flag": "orchard_terrace_pinned"
+        "secs": 12.0
       }
     },
     {
       "id": "brazier_pin_cloister",
-      "kind": "brazier",
+      "kind": "timed_brazier",
       "pos": [
         448,
         344
       ],
       "props": {
-        "sets_flag": "cloister_terrace_pinned"
+        "secs": 12.0
       }
     },
     {

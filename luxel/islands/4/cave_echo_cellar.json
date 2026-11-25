@@ -46,16 +46,16 @@
       "id": "tk_cellar_1",
       "kind": "topiary_knight",
       "pos": [
-        200,
+        224,
         72
       ],
       "route": [
         [
-          184,
+          216,
           72
         ],
         [
-          232,
+          248,
           72
         ]
       ],
@@ -66,16 +66,16 @@
       "id": "tk_cellar_2",
       "kind": "topiary_knight",
       "pos": [
-        200,
+        224,
         184
       ],
       "route": [
         [
-          184,
+          216,
           184
         ],
         [
-          232,
+          248,
           184
         ]
       ],
@@ -86,13 +86,13 @@
   "interactables": [
     {
       "id": "brazier_cellar_pin",
-      "kind": "brazier",
+      "kind": "timed_brazier",
       "pos": [
         312,
         184
       ],
       "props": {
-        "sets_flag": "cellar_pinned"
+        "secs": 12.0
       }
     },
     {
@@ -395,12 +395,6 @@
       {
         "op": "expect",
         "flag": "cellar_pinned"
-      },
-      {
-        "op": "clear"
-      },
-      {
-        "op": "recall"
       },
       {
         "op": "goto",

@@ -33,12 +33,11 @@
         16
       ],
       "to_island": 4,
-      "to_region": "overworld",
+      "to_region": "ow_weeping_orchard",
       "to_spawn": [
-        216,
-        560
-      ],
-      "one_way": true
+        128,
+        64
+      ]
     },
     {
       "id": "exit_hg_r1_west",

@@ -91,6 +91,22 @@
       "requires_flags": [
         "island_4_relit"
       ]
+    },
+    {
+      "id": "exit_to_mausoleum",
+      "rect": [
+        272,
+        432,
+        48,
+        16
+      ],
+      "to_region": "mausoleum_r1",
+      "to_spawn": [
+        272,
+        296
+      ],
+      "requires_moves": [],
+      "requires_flags": []
     }
   ],
   "enemies": [
@@ -227,7 +243,7 @@
       "id": "lore_cloister_ms",
       "kind": "lore_stone",
       "pos": [
-        296,
+        248,
         368
       ],
       "props": {
@@ -587,6 +603,14 @@
       }
     },
     "solution": [
+      {
+        "op": "beam",
+        "target": "sundial_cloister"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
       {
         "op": "interact",
         "target": "sundial_cloister"

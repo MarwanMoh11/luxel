@@ -105,7 +105,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_dive_from = pos
 			_dive_to = clamp_to_arena(tgt)
 			_dive_landed = false
-			ground.warn_ring(_dive_to, 26.0, last_tell_duration + 0.16, 1.0, "sky", "gold")
+			ground.warn_ring(_dive_to, 20.0, last_tell_duration + 0.16, 0.5, "sky", "gold")
 			stage.play_sfx("astronomer_constellation_tell", pos),
 		"on_tell": func(_b: LxBossBase, _tgt: Vector2, dt: float, _prog: float) -> void:
 			altitude = move_toward(altitude, ALT_DIVE, 52.0 * dt),
@@ -121,7 +121,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			elif not _dive_landed:
 				_dive_landed = true
 				var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-				patterns.emit_fan(pos, d, 5 if phase >= 3 else 3, 0.85, 138.0, {"color": "ice", "source": "owl_dive_stars", "field_scale": 0.90})
+				patterns.emit_fan(pos, d, 5 if phase >= 3 else 3, 0.85, 118.0, {"color": "ice", "source": "owl_dive_stars", "field_scale": 0.90, "damage": 0.5})
 				stage.shake(0.16)
 				stage.play_sfx("astronomer_constellation_fire", pos),
 	})
@@ -196,7 +196,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.88, {"color": "ice", "source": "constellation_ring", "field_scale": 1.05, "damage": 0.5})
 			for i: int in range(rays):
 				var rd: Vector2 = Vector2.from_angle(star_base_ang + float(i) * (TAU / float(rays)))
-				patterns.emit_lane(pos, rd, 2, 132.0, 0.10, {"color": "gold", "source": "constellation_ray", "field_scale": 1.05, "damage": 0.5})
+				patterns.emit_lane(pos, rd, 2, 116.0, 0.10, {"color": "gold", "source": "constellation_ray", "field_scale": 1.05, "damage": 0.5})
 			stage.shake(0.22)
 			stage.play_sfx("astronomer_constellation_fire", pos),
 	})
@@ -211,7 +211,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_ring(pos, 34.0, last_tell_duration, 0.0, "gold", "ice")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 5, 110.0, star_base_ang, 0.34, 3, 0.16, {"color": "gold", "source": "syzygy_spiral", "field_scale": 1.25, "damage": 0.5})
+			patterns.emit_spiral(pos, 5, 108.0, star_base_ang, 0.34, 2, 0.18, {"color": "gold", "source": "syzygy_spiral", "field_scale": 1.25, "damage": 0.5})
 			stage.shake(0.22)
 			stage.play_sfx("eclipse_wave", pos),
 	})
@@ -330,13 +330,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var lens_mult: float = 1.35 if true_core_lit_t > 0.0 else 1.0
 
 	if boss_state == BossState.STAGGER:
-		return dmg * (1.80 if heavy else 1.45) * lens_mult
+		return dmg * (2.00 if heavy else 1.45) * lens_mult
 	if is_curved:
 		return dmg * 1.35 * lens_mult
 	if is_punishable():
-		return dmg * (1.70 if heavy else 1.0) * lens_mult
+		return dmg * (1.90 if heavy else 1.0) * lens_mult
 	if heavy:
-		return dmg * 1.65 * lens_mult
+		return dmg * 1.85 * lens_mult
 
 	# Spectral starlight veil outside punish windows: reduced plain bolt chip + astrolabe glint!
 	clank_t = 0.12

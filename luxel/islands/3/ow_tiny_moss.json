@@ -68,8 +68,8 @@
       ],
       "to_region": "overworld",
       "to_spawn": [
-        200,
-        728
+        80,
+        712
       ]
     }
   ],
@@ -96,8 +96,8 @@
       "props": {
         "to_region": "overworld",
         "to_spawn": [
-          200,
-          728
+          80,
+          712
         ],
         "target_size": "normal"
       }
@@ -423,8 +423,8 @@
         "tol": 8.0
       },
       {
-        "op": "interact",
-        "target": "sun_seed_3"
+        "op": "wait",
+        "secs": 0.45
       },
       {
         "op": "expect",

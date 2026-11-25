@@ -237,8 +237,23 @@
           "rotor_pl_r1"
         ],
         "allow_ccw_blue": true,
-        "cooldown": 0.6,
-        "target_id": "door_pl_r1_west"
+        "cooldown": 0.6
+      }
+    },
+    {
+      "id": "plate_pl_r1_west",
+      "kind": "pressure_plate",
+      "pos": [
+        212,
+        192
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "target_id": "door_pl_r1_west",
+        "sets_flag": "pl_r1_west_open"
       }
     },
     {
@@ -251,7 +266,7 @@
       "props": {
         "door_kind": "switch_door",
         "requires_signals": [
-          "bell_pl_r1"
+          "plate_pl_r1_west"
         ],
         "sets_flag": "pl_r1_west_open",
         "size": [
@@ -632,10 +647,24 @@
           "set_flag": "pl_entered"
         }
       ]
+    },
+    {
+      "id": "pl_r1_reset_sky",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:planetarium",
+            "name": "sky_turn",
+            "value": 0
+          }
+        }
+      ]
     }
   ],
   "design": {
-    "idea": "Pitch-dark rotating Planetarium dome hub teasing the N Boss Door, E Key-1 door, and 3 shortcut balconies; shoot twin star nodes to bridge onto the central rotor and ring the Star Bell 90 degrees to swing the West Star-Bridge and unlock the West Wing.",
+    "idea": "Pitch-dark rotating Planetarium dome hub teasing the N Boss Door, E Key-1 door, and 3 shortcut balconies; shoot twin star nodes to bridge onto the central rotor, step on the turntable glyph, and ring the Star Bell 90 degrees to swing the West Star-Bridge and unlock the West Wing.",
     "kind": "story",
     "beat": "ki",
     "teaches": "Lighting star_nodes as solid void bridges and ringing the Star Bell to rotate the dome 90 degrees.",
@@ -674,9 +703,16 @@
       {
         "op": "goto",
         "to": [
-          240,
-          196
+          212,
+          192
         ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_pl_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
       },
       {
         "op": "interact",
@@ -689,13 +725,6 @@
       {
         "op": "wait",
         "secs": 0.6
-      },
-      {
-        "op": "wait_until",
-        "interactable": "door_pl_r1_west",
-        "prop": "opened",
-        "value": true,
-        "timeout": 2.5
       },
       {
         "op": "expect_exit",

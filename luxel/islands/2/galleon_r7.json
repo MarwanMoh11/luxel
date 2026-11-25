@@ -114,7 +114,7 @@
         "index": 0,
         "style": "pedal",
         "step_trigger": true,
-        "shootable": true,
+        "shootable": false,
         "persist": false
       }
     },
@@ -134,7 +134,9 @@
         "rail_max_x": 264.0,
         "rail_gap": 24.0,
         "speed": 160.0,
-        "surge_secs": 1.0
+        "surge_secs": 1.0,
+        "entry_list": "port",
+        "skip_if_solved_id": "door_r7_ne"
       }
     },
     {

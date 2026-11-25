@@ -127,7 +127,7 @@
       ],
       "props": {
         "kind": "light",
-        "persist": true
+        "persist": false
       }
     },
     {
@@ -495,6 +495,20 @@
     }
   ],
   "events": [
+    {
+      "id": "r6_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
     {
       "id": "r6_orb_flag",
       "on": "signal:gate_r6",

@@ -32,7 +32,7 @@
       ],
       "to_region": "lighthouse_r7",
       "to_spawn": [
-        192,
+        176,
         64
       ],
       "requires_moves": [],
@@ -55,64 +55,112 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_lh_r8_combat"
+    },
+    {
+      "id": "exit_lh_r8_east",
+      "rect": [
+        400,
+        144,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r15",
+      "to_spawn": [
+        112,
+        296
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r8_ne",
+      "rect": [
+        400,
+        64,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r16",
+      "to_spawn": [
+        48,
+        216
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
     {
-      "id": "barnacle_sentry_lh_r8",
-      "kind": "barnacle_sentry",
+      "id": "gull_lh_r8_1",
+      "kind": "gull_thief",
       "pos": [
         120,
         72
       ],
       "route": [],
-      "perches": [],
-      "zone": "lighthouse_r8",
-      "leash": 120
-    },
-    {
-      "id": "gull_thief_lh_r8",
-      "kind": "gull_thief",
-      "pos": [
-        312,
-        72
-      ],
-      "route": [],
       "perches": [
         [
-          312,
+          120,
           72
         ],
         [
-          216,
-          88
-        ],
-        [
-          120,
-          168
+          184,
+          120
         ]
       ],
       "zone": "lighthouse_r8",
       "leash": 144
     },
     {
-      "id": "crab_warden_lh_r8",
-      "kind": "crab_warden",
+      "id": "net_lh_r8_1",
+      "kind": "net_caster",
       "pos": [
-        216,
-        120
+        120,
+        112
       ],
       "route": [
         [
-          168,
-          120
+          112,
+          112
         ],
         [
-          280,
-          120
+          160,
+          112
         ]
       ],
-      "perches": [],
+      "zone": "lighthouse_r8",
+      "leash": 136
+    },
+    {
+      "id": "crab_lh_r8_1",
+      "kind": "crab_warden",
+      "pos": [
+        120,
+        144
+      ],
+      "route": [
+        [
+          120,
+          136
+        ],
+        [
+          152,
+          136
+        ]
+      ],
+      "zone": "lighthouse_r8",
+      "leash": 136
+    },
+    {
+      "id": "shrimp_lh_r8_1",
+      "kind": "pistol_shrimp",
+      "pos": [
+        152,
+        128
+      ],
+      "route": [],
       "zone": "lighthouse_r8",
       "leash": 136
     }
@@ -172,6 +220,53 @@
         "zone": "lighthouse_r8",
         "clear_zone": "lighthouse_r8",
         "sets_flag": "lh_r8_cleared"
+      }
+    },
+    {
+      "id": "anc_lh_r8",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        216
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_lh_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        200
+      ],
+      "props": {
+        "zone": "lighthouse_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        56
+      ],
+      "props": {
+        "zone": "lighthouse_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "zone": "lighthouse_r8",
+        "lit": true
       }
     }
   ],
@@ -239,18 +334,6 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        72,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "buoy_bobbing",
       "pos": [
         376,
@@ -287,18 +370,6 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "mooring_bollard",
-      "pos": [
-        328,
-        136
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
         368,
@@ -309,5 +380,69 @@
       "shadow": false,
       "phase": 0.6
     }
-  ]
+  ],
+  "name_key": "LH2_R8_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        104
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "design": {
+    "idea": "Deepened Gull's Belfry Tower: anti-snatch Prism-Split arena pairing Gull Thief, Net Caster, Crab Warden, and rim-perched Pistol Shrimp around twin movable Blue Transformers, linking East to r15 and NE to r16.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Prioritizing Net Casters & Gull Thieves while banking Prism Split fans around Crab Warden shields.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "lh_r8_cleared+cycle_4+nave_entry",
+    "why": "Wing 3 high-tower combat convergence connecting r7, r15, r16, and the Upper Prism Nave (r9).",
+    "exit": "exit_lh_r8_north",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          216,
+          168
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lighthouse_r8",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r8_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r8_north"
+      }
+    ]
+  }
 }

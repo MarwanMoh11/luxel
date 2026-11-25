@@ -366,18 +366,26 @@
       {
         "op": "goto",
         "to": [
-          264,
+          260,
           128
         ],
-        "tol": 14
+        "tol": 8
       },
       {
         "op": "shoot",
         "target": "wheel_cistern"
       },
       {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
         "op": "shoot",
         "target": "wheel_cistern"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "expect",

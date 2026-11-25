@@ -154,17 +154,17 @@
       "id": "shift_e_archer",
       "kind": "thorn_archer",
       "pos": [
-        184,
-        240
+        200,
+        264
       ],
       "route": [
         [
-          168,
-          240
+          184,
+          264
         ],
         [
-          224,
-          240
+          240,
+          264
         ]
       ],
       "zone": "silkwood",
@@ -463,9 +463,9 @@
     "optional": true,
     "start": {
       "vars": {
-        "wood_turn": 0,
-        "eff_turn_e": 0,
-        "pin_e": 0
+        "island:3:wood_turn": 0,
+        "island:3:eff_turn_e": 0,
+        "island:3:pin_e": 0
       }
     },
     "solution": [

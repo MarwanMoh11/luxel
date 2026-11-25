@@ -1,0 +1,459 @@
+{
+  "id": "lighthouse_r12",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R12_NAME",
+  "theme": "seabed",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    48,
+    152
+  ],
+  "zones": [
+    {
+      "id": "lh_r12",
+      "name_key": "LH2_R12_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r12_west",
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r11",
+      "to_spawn": [
+        368,
+        224
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r12_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r3",
+      "to_spawn": [
+        208,
+        192
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r12_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_lh_r12_1",
+      "kind": "barnacle_sentry",
+      "pos": [
+        344,
+        136
+      ],
+      "route": [],
+      "zone": "lh_r12",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lh_r12",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "beam_lh_r12",
+      "kind": "beam_emitter",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "dir": "e",
+        "color": "gold",
+        "period": 0.0,
+        "duty": 1.0,
+        "range": 320.0,
+        "max_bounces": 3,
+        "harms_wick": false
+      }
+    },
+    {
+      "id": "raft_lh_r12",
+      "kind": "tide_raft",
+      "pos": [
+        216,
+        136
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "tower_tide",
+        "tide_min": "mid",
+        "angle_deg": 0,
+        "rotatable": true,
+        "reflect_only_floating": false
+      }
+    },
+    {
+      "id": "lever_lh_r12_tide",
+      "kind": "state_lever",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "style": "pedal",
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "well_lh_r12_f1",
+      "kind": "optic_well",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "var_name": "relay_f1",
+        "scope": "dungeon:lighthouse",
+        "role": "receiver",
+        "requires_blue": true,
+        "persist": true,
+        "target_id": "door_lh_r12_north"
+      }
+    },
+    {
+      "id": "door_lh_r12_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "well_lh_r12_f1"
+        ],
+        "sets_flag": "relay_f1"
+      }
+    },
+    {
+      "id": "lamp_lh_r12_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        112
+      ],
+      "props": {
+        "zone": "lh_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r12_n",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        64
+      ],
+      "props": {
+        "zone": "lh_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r12_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        112
+      ],
+      "props": {
+        "zone": "lh_r12",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r12_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        264
+      ],
+      "props": {
+        "zone": "lh_r12",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "r12_tide_low",
+      "when": "tower_tide==low",
+      "theme": "seabed",
+      "tiles": [
+        [
+          11,
+          5,
+          5,
+          5,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r12_tide_mid",
+      "when": "tower_tide==mid || tower_tide==high",
+      "theme": "seabed",
+      "tiles": [
+        [
+          11,
+          5,
+          5,
+          5,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r12_relay",
+      "on": "signal:well_lh_r12_f1",
+      "once": true,
+      "do": [
+        {
+          "narrate": "LH2_RELAY_F1"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        264
+      ],
+      "radius": 24,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        248
+      ],
+      "radius": 22,
+      "style": "water"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        312,
+        96,
+        80,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_bell_relic",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        392,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "barnacle_boulder",
+      "pos": [
+        392,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sea_anemone_glow",
+      "pos": [
+        152,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_amphora_urn",
+      "pos": [
+        40,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "First Optical Relay: cross the north gallery to defeat the Barnacle Sentry guarding the East Tide-Wheel pedal, drop tower_tide to low so the floating mirror-raft seats onto its brass cradle, and rotate it to 135 deg so the horizontal golden beam transforms blue straight into Floor Optic Well W1 (lighting relay_f1 and opening the North stair to r3).",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Powering Lighthouse Optic Wells (relay_f1..f3) by redirecting continuous beams through blue mirror-rafts.",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "relay_f1+cycle_2_to_r3",
+    "why": "First vertical relay shaft lighting the floor Fresnel lens back in r1 and unlocking the Pier Ward stair.",
+    "exit": "exit_lh_r12_north",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "mid"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          328,
+          120
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lh_r12",
+        "timeout": 24.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          136
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r12_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r12_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          112
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lh_r12",
+        "angle": 135.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r12_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect",
+        "flag": "relay_f1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r12_north"
+      }
+    ]
+  }
+}

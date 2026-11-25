@@ -170,14 +170,13 @@
       }
     },
     {
-      "id": "sn_r3_short",
-      "kind": "star_node",
+      "id": "eye_pl_r3_short",
+      "kind": "switch_eye",
       "pos": [
         396,
         200
       ],
       "props": {
-        "pinned": true,
         "target_id": "door_pl_r3_short",
         "sets_flag": "pl_r3_short"
       }
@@ -192,7 +191,7 @@
       "props": {
         "door_kind": "switch_door",
         "requires_signals": [
-          "sn_r3_short"
+          "eye_pl_r3_short"
         ],
         "sets_flag": "pl_r3_short",
         "size": [
@@ -421,7 +420,7 @@
           352,
           200
         ],
-        "target": "sn_r3_short",
+        "target": "eye_pl_r3_short",
         "wait_hit": 0.45
       },
       {

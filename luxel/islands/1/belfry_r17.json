@@ -85,8 +85,8 @@
       "id": "sensor_r17_perch",
       "kind": "light_sensor",
       "pos": [
-        280,
-        72
+        248,
+        80
       ],
       "props": {
         "need_secs": 0.35,
@@ -365,7 +365,7 @@
         "op": "goto",
         "to": [
           176,
-          104
+          80
         ]
       },
       {
@@ -374,14 +374,14 @@
       {
         "op": "throw",
         "from": [
-          184,
-          88
+          180,
+          80
         ],
         "target": "sensor_r17_perch"
       },
       {
         "op": "wait",
-        "secs": 0.8
+        "secs": 1.0
       },
       {
         "op": "recall"

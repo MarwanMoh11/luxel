@@ -1,0 +1,490 @@
+{
+  "id": "lighthouse_r15",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R15_NAME",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    176
+  ],
+  "zones": [
+    {
+      "id": "lh_r15",
+      "name_key": "LH2_R15_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r15_west",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r7",
+      "to_spawn": [
+        448,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r15_sw",
+      "rect": [
+        96,
+        336,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r8",
+      "to_spawn": [
+        368,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r15_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r16",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r15_north"
+    },
+    {
+      "id": "exit_lh_r15_east",
+      "rect": [
+        464,
+        160,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r17",
+      "to_spawn": [
+        48,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "wick_key_2_3"
+      ],
+      "locked_door_id": "door_lh_r15_key"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lh_r15",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        176
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lever_lh_r15_tide",
+      "kind": "state_lever",
+      "pos": [
+        184,
+        176
+      ],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_lh_r15",
+      "kind": "tide_raft",
+      "pos": [
+        152,
+        120
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "tower_tide",
+        "tide_min": "high",
+        "angle_deg": 0,
+        "rotatable": true,
+        "reflect_only_floating": true
+      }
+    },
+    {
+      "id": "eye_lh_r15_north",
+      "kind": "switch_eye",
+      "pos": [
+        256,
+        120
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_lh_r15_north",
+        "sets_flag": "lh_r15_north_open"
+      }
+    },
+    {
+      "id": "door_lh_r15_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_lh_r15_north"
+        ],
+        "sets_flag": "lh_r15_north_open"
+      }
+    },
+    {
+      "id": "door_lh_r15_key",
+      "kind": "door",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "lighthouse",
+        "key_kind": "wick_key",
+        "key_id": "wick_key_2_3",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_2_3"
+        ]
+      }
+    },
+    {
+      "id": "lamp_lh_r15_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        144
+      ],
+      "props": {
+        "zone": "lh_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r15_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        272
+      ],
+      "props": {
+        "zone": "lh_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r15_n",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        64
+      ],
+      "props": {
+        "zone": "lh_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r15_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "zone": "lh_r15",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r15_s",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        256
+      ],
+      "props": {
+        "zone": "lh_r15",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "r15_low_mid",
+      "when": "tower_tide==low || tower_tide==mid",
+      "theme": "locks",
+      "tiles": [
+        [
+          8,
+          4,
+          3,
+          2,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r15_high",
+      "when": "tower_tide==high",
+      "theme": "locks",
+      "tiles": [
+        [
+          8,
+          4,
+          3,
+          2,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 36
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        144,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        176
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.4
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        112,
+        240
+      ],
+      "radius": 24,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        208,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        88,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        360,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        160,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        392,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        288,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Third-Story Tide Gallery Hub: peer through the central glass skylight toward r1 below and r17 above, raise tower_tide to high so the west mirror-raft floats onto the optical plane, rotate it to 45 deg, and bank a blue bolt across the basin to unlock the Dark-Glass Gallery (r16) for Key #3.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Multi-entrance upper tower hub using high tower_tide to activate reflect_only_floating mirror-rafts.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "upper_hub+r16_access+r17_key_door",
+    "why": "Converging upper hub connecting r7, r8, r16 (Hollow Wick), and r17 (Catoptric Mirror-Drum).",
+    "exit": "exit_lh_r15_north",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "low"
+      },
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          148
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lh_r15",
+        "angle": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          200
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r15_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r15_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          152,
+          184
+        ],
+        "target": "raft_lh_r15"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r15_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r15_north"
+      }
+    ]
+  }
+}

@@ -6,29 +6,58 @@
   "name_key": "ISL7_PL_R5",
   "theme": "inverted_palace_silver",
   "music": "isl7_palace",
-  "ambience": ["night_breeze"],
-  "spawn": [240, 272],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
   "zones": [
     {
       "id": "palace_treasury",
       "name_key": "ISL7_PL_R5",
-      "rect": [0, 0, 480, 320],
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r5_south",
-      "rect": [224, 304, 32, 16],
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
       "to_region": "palace_r4",
-      "to_spawn": [216, 48]
+      "to_spawn": [
+        216,
+        48
+      ]
     },
     {
       "id": "exit_r5_east_short",
-      "rect": [464, 128, 16, 48],
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
       "to_region": "palace_r1",
-      "to_spawn": [48, 88],
-      "requires_flags": ["palace_miniboss_done", "palace_west_short"],
+      "to_spawn": [
+        48,
+        88
+      ],
+      "requires_flags": [
+        "palace_miniboss_done",
+        "palace_west_short"
+      ],
       "locked_door_id": "door_r5_short"
     }
   ],
@@ -36,13 +65,21 @@
     {
       "id": "anc_r5_south",
       "kind": "room_anchor",
-      "pos": [240, 272],
-      "props": { "auto": true }
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "pool_r5_center",
       "kind": "moon_pool",
-      "pos": [240, 216],
+      "pos": [
+        240,
+        216
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": true,
@@ -53,7 +90,10 @@
     {
       "id": "mirror_r5_west",
       "kind": "blue_transformer",
-      "pos": [128, 112],
+      "pos": [
+        128,
+        112
+      ],
       "props": {
         "angle_deg": 45,
         "rotatable": true,
@@ -63,7 +103,10 @@
     {
       "id": "mirror_r5_east",
       "kind": "blue_transformer",
-      "pos": [352, 112],
+      "pos": [
+        352,
+        112
+      ],
       "props": {
         "angle_deg": 135,
         "rotatable": true,
@@ -73,7 +116,10 @@
     {
       "id": "altar_r5_pocket",
       "kind": "palace_moon_pocket_altar",
-      "pos": [184, 88],
+      "pos": [
+        184,
+        88
+      ],
       "props": {
         "requires_flag": "palace_miniboss_done"
       }
@@ -81,7 +127,10 @@
     {
       "id": "palace_key_1",
       "kind": "wick_key",
-      "pos": [296, 88],
+      "pos": [
+        296,
+        88
+      ],
       "props": {
         "dungeon_id": "palace",
         "key_kind": "wick_key",
@@ -92,7 +141,10 @@
     {
       "id": "sw_r5_short",
       "kind": "switch_eye",
-      "pos": [408, 200],
+      "pos": [
+        408,
+        200
+      ],
       "props": {
         "target_id": "door_r5_short",
         "sets_flag": "palace_west_short"
@@ -101,63 +153,204 @@
     {
       "id": "door_r5_short",
       "kind": "door",
-      "pos": [456, 152],
+      "pos": [
+        456,
+        152
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["sw_r5_short"],
-        "requires_flags": ["palace_miniboss_done"],
+        "requires_signals": [
+          "sw_r5_short"
+        ],
+        "requires_flags": [
+          "palace_miniboss_done"
+        ],
         "sets_flag": "palace_west_short",
         "persistent": true,
-        "size": [16, 48]
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "lamp_r5_sw",
       "kind": "road_lamp",
-      "pos": [168, 272],
-      "props": { "zone": "palace_treasury", "lit": true }
+      "pos": [
+        168,
+        272
+      ],
+      "props": {
+        "zone": "palace_treasury",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_se",
       "kind": "road_lamp",
-      "pos": [312, 272],
-      "props": { "zone": "palace_treasury", "lit": true }
+      "pos": [
+        312,
+        272
+      ],
+      "props": {
+        "zone": "palace_treasury",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_nw",
       "kind": "road_lamp",
-      "pos": [144, 56],
-      "props": { "zone": "palace_treasury", "lit": true }
+      "pos": [
+        144,
+        56
+      ],
+      "props": {
+        "zone": "palace_treasury",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_ne",
       "kind": "road_lamp",
-      "pos": [336, 56],
-      "props": { "zone": "palace_treasury", "lit": true }
+      "pos": [
+        336,
+        56
+      ],
+      "props": {
+        "zone": "palace_treasury",
+        "lit": true
+      }
     }
   ],
   "enemies": [
     {
       "id": "boss_silver_tide_mimic",
       "kind": "silver_tide_mimic",
-      "pos": [240, 144],
+      "pos": [
+        240,
+        144
+      ],
       "zone": "palace_treasury"
     }
   ],
   "decor": [
-    { "kind": "circle", "x": 240, "y": 144, "r": 46, "col": "sky", "ring": "ice" },
-    { "kind": "inlay", "x": 168, "y": 64, "w": 144, "h": 40, "col": "ice", "border": "sky" },
-    { "kind": "cracks", "x": 120, "y": 184, "r": 22, "col": "deep" },
-    { "kind": "cracks", "x": 360, "y": 184, "r": 22, "col": "deep" }
+    {
+      "kind": "circle",
+      "x": 240,
+      "y": 144,
+      "r": 46,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "inlay",
+      "x": 168,
+      "y": 64,
+      "w": 144,
+      "h": 40,
+      "col": "ice",
+      "border": "sky"
+    },
+    {
+      "kind": "cracks",
+      "x": 120,
+      "y": 184,
+      "r": 22,
+      "col": "deep"
+    },
+    {
+      "kind": "cracks",
+      "x": 360,
+      "y": 184,
+      "r": 22,
+      "col": "deep"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_inverted_palace_silver", "prop": "crystal_chandelier_arch", "pos": [240, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [112, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [368, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [64, 168], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [416, 168], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [112, 260], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [368, 260], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        240,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        112,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        368,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        64,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        416,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        112,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        368,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
   ],
   "layers": [
     {
@@ -173,11 +366,38 @@
   ],
   "events": [
     {
+      "id": "r5_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        },
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
+    {
       "id": "r5_sync_black",
       "on": "var:world_face==black",
       "once": false,
       "do": [
-        { "set_var": { "scope": "island:7", "name": "world_face", "value": "black" } }
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "black"
+          }
+        }
       ]
     },
     {
@@ -185,7 +405,13 @@
       "on": "var:world_face==silver",
       "once": false,
       "do": [
-        { "set_var": { "scope": "island:7", "name": "world_face", "value": "silver" } }
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
       ]
     },
     {
@@ -193,7 +419,13 @@
       "on": "signal:sw_r5_short",
       "once": true,
       "do": [
-        { "narrate": { "id": "ISL7_PL_SHORTCUT", "style": "narration", "duration": 2.6 } }
+        {
+          "narrate": {
+            "id": "ISL7_PL_SHORTCUT",
+            "style": "narration",
+            "duration": 2.6
+          }
+        }
       ]
     }
   ],
@@ -208,15 +440,51 @@
     "why": "West Wing climax awarding the dungeon's signature power (Moon-Glass Pocket) and closing Cycle 1 back to the foyer.",
     "exit": "exit_r5_east_short",
     "solution": [
-      { "op": "goto", "to": [240, 216], "tol": 14 },
-      { "op": "interact", "target": "pool_r5_center" },
-      { "op": "clear", "timeout": 110.0 },
-      { "op": "wait_until", "flag": "palace_miniboss_done", "timeout": 5.0 },
-      { "op": "interact", "target": "altar_r5_pocket" },
-      { "op": "interact", "target": "palace_key_1" },
-      { "op": "shoot", "from": [368, 200], "target": "sw_r5_short" },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "expect_exit", "exit": "exit_r5_east_short" }
+      {
+        "op": "goto",
+        "to": [
+          240,
+          216
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "pool_r5_center"
+      },
+      {
+        "op": "clear",
+        "timeout": 110.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "palace_miniboss_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_r5_pocket"
+      },
+      {
+        "op": "interact",
+        "target": "palace_key_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          368,
+          200
+        ],
+        "target": "sw_r5_short"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_east_short"
+      }
     ]
   }
 }

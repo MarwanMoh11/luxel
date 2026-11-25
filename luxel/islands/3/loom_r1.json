@@ -176,7 +176,7 @@
       "id": "pw_r1_thorn",
       "kind": "light_plant",
       "pos": [
-        264,
+        280,
         104
       ],
       "props": {
@@ -194,7 +194,7 @@
       "id": "spool_r1_k1",
       "kind": "silk_loom_spool",
       "pos": [
-        304,
+        296,
         120
       ],
       "props": {
@@ -618,7 +618,7 @@
       {
         "op": "goto",
         "to": [
-          196,
+          188,
           120
         ]
       },
@@ -632,7 +632,7 @@
       {
         "op": "shoot",
         "from": [
-          196,
+          188,
           120
         ],
         "target": "spool_r1_k1"

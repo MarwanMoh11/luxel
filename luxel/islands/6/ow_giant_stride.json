@@ -55,6 +55,22 @@
       ],
       "requires_moves": [],
       "requires_flags": []
+    },
+    {
+      "id": "exit_to_colossus_r1",
+      "rect": [
+        400,
+        336,
+        48,
+        16
+      ],
+      "to_region": "colossus_r1",
+      "to_spawn": [
+        136,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": []
     }
   ],
   "enemies": [
@@ -236,25 +252,12 @@
       "id": "lore_colossus_dock",
       "kind": "lore_stone",
       "pos": [
-        416,
+        368,
         328
       ],
       "props": {
         "string_id": "ISL6_LORE_COLOSSUS",
         "icon": "gear"
-      }
-    },
-    {
-      "id": "trial_stride_balance",
-      "kind": "trial_gate",
-      "pos": [
-        616,
-        168
-      ],
-      "props": {
-        "challenge": "stride_balance_trial",
-        "once": true,
-        "persist": true
       }
     },
     {
@@ -271,7 +274,8 @@
         "size": [
           144,
           112
-        ]
+        ],
+        "slide_enemies": false
       }
     },
     {
@@ -600,7 +604,9 @@
           "bridge"
         ]
       ],
-      "enable": [],
+      "enable": [
+        "exit_to_colossus_r1"
+      ],
       "disable": []
     },
     {
@@ -650,39 +656,6 @@
           "narrate": "ISL6_TRIAL_STRIDE_WIN"
         }
       ]
-    },
-    {
-      "id": "start_stride_trial",
-      "on": "trial_start:trial_stride_balance",
-      "once": false,
-      "do": [
-        {
-          "challenge": {
-            "id": "stride_balance_trial",
-            "kind": "light_all",
-            "time": 35.0,
-            "targets": [
-              "plate_sb_1",
-              "plate_sb_2",
-              "plate_sb_3"
-            ],
-            "ok": [
-              {
-                "set_flag": "stride_trial_done"
-              },
-              {
-                "reward": {
-                  "kind": "shards",
-                  "amount": 50
-                }
-              },
-              {
-                "narrate": "ISL6_TRIAL_STRIDE_WIN"
-              }
-            ]
-          }
-        }
-      ]
     }
   ],
   "design": {
@@ -700,9 +673,9 @@
         "op": "goto",
         "to": [
           368,
-          224
+          214
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -716,9 +689,9 @@
         "op": "goto",
         "to": [
           464,
-          224
+          214
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -731,14 +704,14 @@
       {
         "op": "goto",
         "to": [
-          160,
+          144,
           192
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
-        "op": "interact",
-        "target": "spark_hide_1"
+        "op": "wait",
+        "secs": 0.2
       },
       {
         "op": "expect",

@@ -1,0 +1,593 @@
+{
+  "id": "lighthouse_r17",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R17_NAME",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    208
+  ],
+  "zones": [
+    {
+      "id": "lh_r17",
+      "name_key": "LH2_R17_NAME",
+      "rect": [
+        0,
+        0,
+        544,
+        416
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r17_west",
+      "rect": [
+        0,
+        192,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r15",
+      "to_spawn": [
+        416,
+        184
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r17_north",
+      "rect": [
+        256,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r18",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r17_north"
+    },
+    {
+      "id": "exit_lh_r17_nw",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r9",
+      "to_spawn": [
+        392,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r17_nw"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lh_r17",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lh_r17",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "string_id": "LH2_PRISM_HINT",
+        "icon": "mirror"
+      }
+    },
+    {
+      "id": "skiff_lh_r17",
+      "kind": "vehicle_skiff",
+      "pos": [
+        128,
+        280
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "portal_lh_r17_in",
+      "kind": "blue_portal",
+      "pos": [
+        136,
+        128
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r17_out",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_lh_r17_out",
+      "kind": "blue_portal",
+      "pos": [
+        408,
+        280
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r17_in",
+        "requires_blue": true,
+        "allows_skiff": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "mir_lh_r17_m1",
+      "kind": "blue_transformer",
+      "pos": [
+        272,
+        248
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "mir_lh_r17_n",
+      "kind": "blue_transformer",
+      "pos": [
+        272,
+        168
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "raft_lh_r17_ne",
+      "kind": "tide_raft",
+      "pos": [
+        360,
+        168
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "low",
+        "angle_deg": 0,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "eye_lh_r17_w",
+      "kind": "switch_eye",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "triad_lh_r17"
+      }
+    },
+    {
+      "id": "eye_lh_r17_e",
+      "kind": "switch_eye",
+      "pos": [
+        304,
+        144
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "triad_lh_r17"
+      }
+    },
+    {
+      "id": "eye_lh_r17_n",
+      "kind": "switch_eye",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "triad_lh_r17"
+      }
+    },
+    {
+      "id": "triad_lh_r17",
+      "kind": "lh_prism_triad",
+      "pos": [
+        272,
+        208
+      ],
+      "props": {
+        "inputs": [
+          "eye_lh_r17_w",
+          "eye_lh_r17_e",
+          "eye_lh_r17_n"
+        ],
+        "window_s": 1.35,
+        "target_ids": [
+          "well_lh_r17_f3",
+          "door_lh_r17_north",
+          "door_lh_r17_nw"
+        ],
+        "sets_flag": "relay_f3"
+      }
+    },
+    {
+      "id": "well_lh_r17_f3",
+      "kind": "optic_well",
+      "pos": [
+        272,
+        112
+      ],
+      "props": {
+        "var_name": "relay_f3",
+        "scope": "dungeon:lighthouse",
+        "role": "receiver",
+        "requires_blue": true,
+        "persist": true,
+        "target_ids": [
+          "door_lh_r17_north",
+          "door_lh_r17_nw"
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r17_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "triad_lh_r17"
+        ],
+        "sets_flag": "relay_f3"
+      }
+    },
+    {
+      "id": "door_lh_r17_nw",
+      "kind": "door",
+      "pos": [
+        128,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "triad_lh_r17"
+        ]
+      }
+    },
+    {
+      "id": "lamp_lh_r17_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        184
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r17_c1",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        160
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r17_c2",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        248
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r17_n1",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        56
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r17_n2",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        56
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r17_s",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        344
+      ],
+      "props": {
+        "zone": "lh_r17",
+        "lit": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r17_relay",
+      "on": "signal:triad_lh_r17",
+      "once": true,
+      "do": [
+        {
+          "narrate": "LH2_RELAY_F3"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        272,
+        208
+      ],
+      "radius": 44
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        208
+      ],
+      "radius": 64,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        248,
+        232,
+        48,
+        32
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        112
+      ],
+      "size": [
+        48,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        200,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        344,
+        352
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        88,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        456,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        424,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING \u2014 THE CATOPTRIC MIRROR-DRUM: align Focal Mirror M1 (225 deg), Relay Mirror M2 (45 deg), and floating East Moat Raft R1 (225 deg), then fire ONE yellow bolt into M1 so the 3-way Prism Split cascades simultaneously into West Eye (-18 deg), East Eye (+18 deg), and through M2 -> R1 -> North Eye (0 deg 3-bounce chain!), igniting Optic Well W3 (relay_f3)!",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Synthesizing Prism Split 3-way fans with multi-bounce mirror-raft relays in a single simultaneous optical circuit.",
+    "decisions": 12,
+    "expert_s": 66,
+    "reward": "relay_f3+lens_loft_and_nave_access",
+    "why": "Grand astonishing optical puzzle centerpiece of The Lighthouse.",
+    "exit": "exit_lh_r17_north",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "mid"
+      },
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ],
+      "flags": [
+        "power_ballast_clamp",
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_lh_r17"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          224
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r17_m1",
+        "angle": 225.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          192
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r17_n",
+        "angle": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          360,
+          198
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lh_r17_ne",
+        "angle": 225.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          216,
+          248
+        ],
+        "target": "mir_lh_r17_m1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r17_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect",
+        "flag": "relay_f3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r17_north"
+      }
+    ]
+  }
+}

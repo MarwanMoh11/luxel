@@ -82,6 +82,21 @@
       }
     },
     {
+      "id": "drv_r9",
+      "kind": "gal_list_driver",
+      "pos": [
+        88,
+        264
+      ],
+      "props": {
+        "targets": [],
+        "entry_var_scope": "room:2:galleon_r9",
+        "entry_var_name": "capsize",
+        "entry_var_value": "upright",
+        "skip_if_solved_id": "door_r9_shutter"
+      }
+    },
+    {
       "id": "valve_r9_capsize",
       "kind": "state_lever",
       "pos": [

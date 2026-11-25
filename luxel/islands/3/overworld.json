@@ -138,7 +138,7 @@
     {
       "id": "exit_to_tiny_moss",
       "rect": [
-        160,
+        32,
         704,
         16,
         16
@@ -834,7 +834,7 @@
       "id": "stump_3_spore",
       "kind": "stump_shrink",
       "pos": [
-        168,
+        56,
         712
       ],
       "props": {

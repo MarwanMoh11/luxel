@@ -66,8 +66,8 @@
       ],
       "to_region": "lighthouse_r5",
       "to_spawn": [
-        400,
-        192
+        464,
+        208
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -95,6 +95,23 @@
         "keepers_flame_2"
       ],
       "locked_door_id": "door_lh_r1_shortcut_r9"
+    },
+    {
+      "id": "exit_lh_r1_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r11",
+      "to_spawn": [
+        408,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -157,7 +174,8 @@
         136
       ],
       "props": {
-        "zone": "lighthouse_r1"
+        "zone": "lighthouse_r1",
+        "lit": true
       }
     },
     {
@@ -168,7 +186,80 @@
         120
       ],
       "props": {
-        "zone": "lighthouse_r1"
+        "zone": "lighthouse_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "anc_lh_r1",
+      "kind": "room_anchor",
+      "pos": [
+        184,
+        200
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lever_lh_r1_tide",
+      "kind": "state_lever",
+      "pos": [
+        232,
+        136
+      ],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "shootable": true,
+        "persist": true
+      }
+    },
+    {
+      "id": "well_lh_r1_f1",
+      "kind": "optic_well",
+      "pos": [
+        128,
+        136
+      ],
+      "props": {
+        "var_name": "relay_f1",
+        "scope": "dungeon:lighthouse",
+        "role": "emitter",
+        "emit_dir": [
+          0,
+          0
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_lh_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        208
+      ],
+      "props": {
+        "zone": "lighthouse_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r1_w2",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "lighthouse_r1",
+        "lit": true
       }
     }
   ],
@@ -281,18 +372,109 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.3
+    }
+  ],
+  "name_key": "LH2_R1_NAME",
+  "music": "island2_dungeon",
+  "layers": [
+    {
+      "id": "r1_west_high",
+      "when": "tower_tide==high",
+      "tiles": [
+        [
+          2,
+          7,
+          3,
+          3,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "exit_lh_r1_west"
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        184,
+        136
+      ],
+      "radius": 32
     },
     {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
+      "kind": "inlay",
+      "rect": [
+        112,
+        112,
+        32,
+        48
+      ]
+    },
+    {
+      "kind": "stain",
       "pos": [
-        328,
-        212
+        72,
+        136
       ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
+      "radius": 20,
+      "style": "water"
     }
-  ]
+  ],
+  "design": {
+    "idea": "Four-story Tidal Stair Hub anchoring Waystone, Brass Tower Tide-Wheel (low/mid/high), floor Optic Well W1 glowing when relay_f1 ignites, West stair to Lens-Well (r11), East path to r2, and twin North return shortcuts from r5 and r9.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Establishes the vertical 4-floor Lighthouse hub, tower_tide wheel, and vertical optic relay shafts.",
+    "decisions": 4,
+    "expert_s": 36,
+    "reward": "waystone+4_story_tidal_hub",
+    "why": "Central Lighthouse hub connecting Wing 1 seabed stairs and both major return shortcuts.",
+    "optional": true,
+    "exit": "exit_lh_r1_east",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "low"
+      }
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_lighthouse"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          152
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r1_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r1_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r1_tide"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r1_east"
+      }
+    ]
+  }
 }

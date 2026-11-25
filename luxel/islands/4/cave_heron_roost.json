@@ -372,6 +372,30 @@
     },
     "solution": [
       {
+        "op": "beam",
+        "target": "sundial_roost"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "interact",
+        "target": "sundial_roost"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "interact",
+        "target": "sundial_roost"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
         "op": "interact",
         "target": "sundial_roost"
       },

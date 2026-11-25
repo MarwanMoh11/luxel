@@ -36,6 +36,7 @@ const MIRROR_ARC_DUR: float = 0.28
 const PHASE2_THRESHOLD: float = 0.52
 const CP_FLAG: String = "night_harbinger_phase_cp"
 const SANCTUM_R4_CORE := Rect2(128.0, 96.0, 176.0, 96.0)
+const SANCTUM_R4_ENGAGE := Rect2(96.0, 80.0, 256.0, 156.0)
 
 # Compat fields queried by luxel/world/miniboss_synergy.gd
 var blink_slash_attack: bool = false
@@ -103,12 +104,20 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	_apply_retry_checkpoint_if_needed()
 
 
+func _is_sanctum_r4() -> bool:
+	if world_ctx == null or not is_instance_valid(world_ctx): return false
+	var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
+	return reg == "sanctum_r4"
+
+
 func _infer_arena_rect() -> Rect2:
-	if world_ctx != null and is_instance_valid(world_ctx):
-		var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
-		if reg == "sanctum_r4":
-			return SANCTUM_R4_CORE
-	return super._infer_arena_rect()
+	return SANCTUM_R4_CORE if _is_sanctum_r4() else super._infer_arena_rect()
+
+
+func take_hit(hit: LxHit) -> int:
+	if not engaged and hit != null and _is_sanctum_r4() and SANCTUM_R4_ENGAGE.has_point(_get_wick_pos()):
+		engage()
+	return super.take_hit(hit)
 
 
 func _configure_boss(spec: Dictionary) -> void:

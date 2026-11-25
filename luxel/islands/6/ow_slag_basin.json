@@ -304,7 +304,7 @@
         184
       ],
       "props": {
-        "angle_deg": 270,
+        "angle_deg": 225,
         "rotatable": true,
         "movable": false,
         "transforms_to": "blue"
@@ -624,9 +624,9 @@
         "op": "goto",
         "to": [
           296,
-          232
+          194
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -639,10 +639,33 @@
       {
         "op": "goto",
         "to": [
-          424,
-          232
+          128,
+          184
         ],
-        "tol": 6.0
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          168,
+          184
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_basin_plug",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          194
+        ],
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -653,8 +676,16 @@
         "var": "kiln_shift==station_b"
       },
       {
-        "op": "interact",
-        "target": "lever_timetable_3"
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "shoot",
+        "target": [
+          424,
+          208
+        ],
+        "wait_hit": 0.45
       },
       {
         "op": "expect",

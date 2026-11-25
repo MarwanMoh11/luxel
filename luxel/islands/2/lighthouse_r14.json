@@ -1,0 +1,422 @@
+{
+  "id": "lighthouse_r14",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R14_NAME",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    112,
+    240
+  ],
+  "zones": [
+    {
+      "id": "lh_r14",
+      "name_key": "LH2_R14_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r14_sw",
+      "rect": [
+        96,
+        272,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r5",
+      "to_spawn": [
+        400,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r14_east",
+      "rect": [
+        432,
+        112,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r6",
+      "to_spawn": [
+        144,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r14_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "barnacle_lh_r14_w",
+      "kind": "barnacle_sentry",
+      "pos": [
+        176,
+        80
+      ],
+      "route": [],
+      "zone": "lh_r14",
+      "leash": 80
+    },
+    {
+      "id": "barnacle_lh_r14_c",
+      "kind": "barnacle_sentry",
+      "pos": [
+        208,
+        72
+      ],
+      "route": [],
+      "zone": "lh_r14",
+      "leash": 80
+    },
+    {
+      "id": "barnacle_lh_r14_e",
+      "kind": "barnacle_sentry",
+      "pos": [
+        240,
+        80
+      ],
+      "route": [],
+      "zone": "lh_r14",
+      "leash": 80
+    },
+    {
+      "id": "crab_lh_r14_1",
+      "kind": "crab_warden",
+      "pos": [
+        280,
+        152
+      ],
+      "route": [
+        [
+          248,
+          152
+        ],
+        [
+          328,
+          152
+        ]
+      ],
+      "zone": "lh_r14",
+      "leash": 136
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lh_r14",
+      "kind": "room_anchor",
+      "pos": [
+        112,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "grate_lh_r14_n",
+      "kind": "grate",
+      "pos": [
+        216,
+        104
+      ],
+      "props": {
+        "size": [
+          144,
+          16
+        ]
+      }
+    },
+    {
+      "id": "mir_lh_r14_focus",
+      "kind": "blue_transformer",
+      "pos": [
+        208,
+        176
+      ],
+      "props": {
+        "angle_deg": 225,
+        "rotatable": true,
+        "movable": true,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_lh_r14_skiff",
+      "kind": "switch_eye",
+      "pos": [
+        344,
+        128
+      ],
+      "props": {
+        "requires_blue": false,
+        "sets_flag": "lh_r6_skiff_released"
+      }
+    },
+    {
+      "id": "door_lh_r14_east",
+      "kind": "door",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "zone": "lh_r14",
+        "clear_zone": "lh_r14",
+        "sets_flag": "lh_r14_cleared"
+      }
+    },
+    {
+      "id": "lamp_lh_r14_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        216
+      ],
+      "props": {
+        "zone": "lh_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r14_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "lh_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r14_mid",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        216
+      ],
+      "props": {
+        "zone": "lh_r14",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r14_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        168
+      ],
+      "props": {
+        "zone": "lh_r14",
+        "lit": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r14_skiff",
+      "on": "signal:eye_lh_r14_skiff",
+      "once": true,
+      "do": [
+        {
+          "narrate": "LH2_SKIFF_RELEASE"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        208,
+        176
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        128,
+        128,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        80,
+        184
+      ],
+      "radius": 24,
+      "style": "water"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        360,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        88,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        160,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        312,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Tri-Ray Sluice: first combat exam of PRISM SPLIT \u2014 defeat the patrolling Crab Warden, stand west of the brass focal mirror (225 deg), and fire east so 3-way Prism Split fans slice through the north iron grate cracking all three Barnacle Sentries at once, then trip the Drydock Skiff Valve for Tide Captain (r6)!",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Using Prism Split 3-way blue fans off a focal mirror to hit multiple shielded enemies behind grates simultaneously.",
+    "decisions": 8,
+    "expert_s": 48,
+    "reward": "lh_r6_skiff_released+cycle_3",
+    "why": "Dedicated combat showcase immediately after claiming PRISM SPLIT in r5, rewarding a combat edge in r6.",
+    "exit": "exit_lh_r14_east",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          152,
+          176
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          152,
+          176
+        ],
+        "target": "mir_lh_r14_focus",
+        "count": 4
+      },
+      {
+        "op": "clear",
+        "zone": "lh_r14",
+        "timeout": 35.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          296,
+          128
+        ],
+        "target": "eye_lh_r14_skiff"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r14_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "lh_r6_skiff_released"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r14_east"
+      }
+    ]
+  }
+}

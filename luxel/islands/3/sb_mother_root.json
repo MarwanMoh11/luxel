@@ -28,9 +28,9 @@
       "kind": "circle",
       "pos": [
         256,
-        152
+        168
       ],
-      "radius": 84,
+      "radius": 80,
       "style": "ritual",
       "color": "pine",
       "secondary": "lime"
@@ -39,7 +39,7 @@
       "kind": "circle",
       "pos": [
         256,
-        152
+        168
       ],
       "radius": 44,
       "style": "mosaic",
@@ -82,7 +82,7 @@
       "kind": "mother_root",
       "pos": [
         256,
-        128
+        152
       ],
       "route": [],
       "zone": "heartwood_sanctum",
@@ -102,11 +102,29 @@
       }
     },
     {
+      "id": "door_mother_sanctum",
+      "kind": "door",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "mother_root_defeated"
+        ]
+      }
+    },
+    {
       "id": "moth_3_10",
       "kind": "moth",
       "pos": [
         224,
-        96
+        40
       ],
       "props": {
         "id": "moth_3_10"
@@ -117,7 +135,7 @@
       "kind": "chest",
       "pos": [
         288,
-        96
+        40
       ],
       "props": {
         "reward_kind": "shards",
@@ -132,7 +150,7 @@
       "kind": "road_lamp",
       "pos": [
         128,
-        72
+        96
       ],
       "props": {
         "lit": true
@@ -143,7 +161,7 @@
       "kind": "road_lamp",
       "pos": [
         384,
-        72
+        96
       ],
       "props": {
         "lit": true
@@ -190,7 +208,7 @@
       "prop": "rose_thorn_arch",
       "pos": [
         256,
-        48
+        60
       ],
       "layer": "sort",
       "flip_x": false,
@@ -201,8 +219,8 @@
       "sheet": "theme_briar_court",
       "prop": "thorn_hedge_brazier",
       "pos": [
-        176,
-        56
+        160,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -213,8 +231,8 @@
       "sheet": "theme_briar_court",
       "prop": "thorn_hedge_brazier",
       "pos": [
-        336,
-        56
+        352,
+        80
       ],
       "layer": "sort",
       "flip_x": true,
@@ -298,7 +316,7 @@
       "prop": "petal_drift_floor",
       "pos": [
         256,
-        152
+        168
       ],
       "layer": "ground",
       "flip_x": false,
@@ -306,24 +324,18 @@
       "phase": 0.0
     }
   ],
-  "layers": [
-    {
-      "id": "mother_rewards_locked",
-      "when": "!flag:mother_root_defeated",
-      "tiles": [],
-      "enable": [],
-      "disable": [
-        "moth_3_10",
-        "chest_mother_trophy"
-      ]
-    }
-  ],
+  "layers": [],
   "events": [
     {
       "id": "ev_mother_victory",
       "on": "flag:mother_root_defeated",
       "once": true,
       "do": [
+        {
+          "unlock": [
+            "door_mother_sanctum"
+          ]
+        },
         {
           "sfx": "great_lamp_bloom"
         },
@@ -338,7 +350,7 @@
     }
   ],
   "design": {
-    "idea": "Superboss Heartwood Sanctum for The Mother Root synthesizing Seedlight thorn-wall beam cover, P2/P3 Growth-Ring currents, and mid-fight Shrink-Dive taproot heart staggers; defeating her flowers the canopy for Moth #10 and 100 shards.",
+    "idea": "Superboss Heartwood Sanctum for The Mother Root synthesizing Seedlight thorn-wall beam cover, P2/P3 Growth-Ring currents, and mid-fight Shrink-Dive taproot heart staggers; defeating her unseals the north Briar Sanctum for Moth #10 and 100 shards.",
     "kind": "boss",
     "beat": "ketsu",
     "teaches": "Seedlight cover vs beam sweep, Growth-Ring current dodge, Shrink-Dive bark shatter",
@@ -366,10 +378,20 @@
         "flag": "mother_root_defeated"
       },
       {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "expect",
+        "target": "door_mother_sanctum",
+        "prop": "opened",
+        "value": true
+      },
+      {
         "op": "goto",
         "to": [
           288,
-          112
+          48
         ],
         "tol": 12.0
       },

@@ -195,6 +195,26 @@
       }
     },
     {
+      "id": "valve_r2_west",
+      "kind": "state_lever",
+      "pos": [
+        56,
+        248
+      ],
+      "props": {
+        "scope": "dungeon:galleon",
+        "var": "list",
+        "values": [
+          "starboard",
+          "port"
+        ],
+        "index": 0,
+        "shootable": true,
+        "persist": false,
+        "target_id": "bridge_r2_west"
+      }
+    },
+    {
       "id": "drv_r2",
       "kind": "gal_list_driver",
       "pos": [
@@ -202,7 +222,8 @@
         280
       ],
       "props": {
-        "targets": []
+        "targets": [],
+        "entry_list": "starboard"
       }
     },
     {

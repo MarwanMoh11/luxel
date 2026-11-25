@@ -123,7 +123,7 @@
       "kind": "push_block",
       "pos": [
         248,
-        112
+        128
       ],
       "props": {
         "variant": "stone",
@@ -138,7 +138,7 @@
       "kind": "pressure_plate",
       "pos": [
         296,
-        112
+        128
       ],
       "props": {
         "by": [
@@ -146,7 +146,10 @@
           "lantern"
         ],
         "latch": true,
-        "target_id": "mover_r10_shutter"
+        "persist": true,
+        "target_ids": [
+          "mover_r10_shutter"
+        ]
       }
     },
     {
@@ -168,11 +171,12 @@
           ],
           [
             376,
-            208
+            224
           ]
         ],
         "speed": 96,
-        "on_signal": "move"
+        "on_signal": "move",
+        "persist": true
       }
     },
     {
@@ -184,7 +188,7 @@
       ],
       "props": {
         "tone": "dusk",
-        "wave_radius": 208
+        "wave_radius": 144
       }
     },
     {
@@ -196,7 +200,7 @@
       ],
       "props": {
         "tone": "dawn",
-        "wave_radius": 184
+        "wave_radius": 208
       }
     },
     {
@@ -429,7 +433,7 @@
         "target": "blk_r10_drum",
         "to": [
           296,
-          112
+          128
         ]
       },
       {
@@ -448,11 +452,7 @@
         "flag": "belfry_rope_shortcut"
       },
       {
-        "op": "shoot",
-        "from": [
-          296,
-          152
-        ],
+        "op": "interact",
         "target": "bell_r10_dawn"
       },
       {

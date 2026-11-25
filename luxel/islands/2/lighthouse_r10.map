@@ -1,4 +1,4 @@
-# Lighthouse r10 - Ketsu Circular Fresnel Crown (28x18)
+# Lighthouse r10 - Circular Fresnel Crown Boss (28x18)
 TILE_SIZE 16
 LEGEND . ground
 LEGEND # wall
@@ -29,5 +29,5 @@ MAP
 #~~~~~~~~....,,,,,,,,.######
 #~~~~~~~~....,,.......######
 #~~~~~~~~....,,.......######
-#~~~~~~~~~~~~,,~~~~~~~######
+#~~~~~~~~~~..,,..~~~~~######
 #############,,#############

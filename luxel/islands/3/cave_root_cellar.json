@@ -17,7 +17,7 @@
       "rect": [
         0,
         0,
-        384,
+        416,
         256
       ],
       "dark": true
@@ -46,7 +46,7 @@
     {
       "kind": "light_shaft",
       "pos": [
-        344,
+        376,
         128
       ],
       "size": [
@@ -202,12 +202,12 @@
       "id": "wind_cellar_east",
       "kind": "wind_zone",
       "pos": [
-        264,
+        280,
         128
       ],
       "props": {
         "size": [
-          96,
+          128,
           48
         ],
         "dir": [
@@ -221,7 +221,7 @@
       "id": "chest_cellar_wings_ember",
       "kind": "chest",
       "pos": [
-        344,
+        376,
         128
       ],
       "props": {
@@ -260,7 +260,7 @@
       "id": "lamp_cellar_e",
       "kind": "road_lamp",
       "pos": [
-        344,
+        376,
         104
       ],
       "props": {
@@ -334,7 +334,7 @@
       "sheet": "theme_cave_3",
       "prop": "rock_cairn_marker",
       "pos": [
-        344,
+        376,
         160
       ],
       "layer": "sort",

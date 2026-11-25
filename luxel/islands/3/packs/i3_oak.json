@@ -1,0 +1,63 @@
+{
+  "pack_id": "i3_oak",
+  "version": 1,
+  "owner": "G3",
+  "comment": "Island 3 Grand Dungeon Deepened: The Hollow Oak (10 legacy rooms deepened/rebuilt + 8 new rooms r2b/r4b/r5b/r6b/r7b/r8b/r9b/r9c, Sap Clocks, Growth Rings, The Moving Chamber, Hollow Seed wordless scene).",
+  "interactables": {
+    "oak_moving_chamber": "res://luxel/islands/3/oak/oak_moving_chamber.gd",
+    "oak_hollow_effigy": "res://luxel/islands/3/oak/oak_hollow_effigy.gd",
+    "oak_sap_rotor_ctrl": "res://luxel/islands/3/oak/oak_sap_rotor_ctrl.gd"
+  },
+  "state_vars": {
+    "ring_rot": { "scope": "room:3:oak_r7b", "values": [0, 1, 2, 3], "default": 0 },
+    "hub_rot": { "scope": "room:3:oak_r6b", "values": [0, 1], "default": 0 }
+  },
+  "strings": {
+    "OAK3_R1_NAME": "HEARTWOOD ROOT HUB",
+    "OAK3_R2_NAME": "KNOTWORK ROOT CAVERN",
+    "OAK3_R2B_NAME": "SAP SLUICE BASIN",
+    "OAK3_R3_NAME": "SPORE GALLERY",
+    "OAK3_R4_NAME": "SUNSHAFT LAGOON",
+    "OAK3_R4B_NAME": "BARK CRAWLSPACE",
+    "OAK3_R5_NAME": "HEARTWOOD BEAM SHRINE",
+    "OAK3_R5B_NAME": "THORN-PRISM SLUICE",
+    "OAK3_R6_NAME": "SPORE CROWN",
+    "OAK3_R6B_NAME": "INNER TRUNK SAP HUB",
+    "OAK3_R7_NAME": "SAP-SILK LOOM",
+    "OAK3_R7B_NAME": "THE MOVING CHAMBER",
+    "OAK3_R8_NAME": "BRAMBLE BASTION",
+    "OAK3_R8B_NAME": "THE CANOPY SPLIT",
+    "OAK3_R9_NAME": "KEEPERS AMBER VAULT",
+    "OAK3_R9B_NAME": "HEARTWOOD CRUCIBLE",
+    "OAK3_R9C_NAME": "HOLLOW SEED ALCOVE",
+    "OAK3_R10_NAME": "THE HOLLOW CROWN",
+    "ISL3_LORE_RUB_3": "THE SAP KEEPS HIS SHAPE. TWO WINGS - NO SUN.",
+    "ISL3_PROMPT_TURN_RING": "TURN GROWTH RING",
+    "ISL3_PROMPT_TURN_ROTOR": "SPIN SAP ROTOR",
+    "ISL3_OAK_DRY_ROTOR": "THE RING GROANS DRY. FLOOD THE SAP FIRST.",
+    "ISL3_OAK_CHAMBER_NOTE": "DARK WALLS TURN BEHIND YOUR BACK.",
+    "ISL3_OAK_LIFT_OPEN": "THE HEARTWOOD LIFT DROPS TO THE ROOT HUB!",
+    "ISL3_OAK_EFFIGY_NOTE": "TWO WINGS SHADOW THE AMBER SEED."
+  },
+  "regions": {
+    "oak_r1":  { "name_key": "OAK3_R1_NAME",  "music": "island3_dungeon", "dark": true, "map": [2, 6] },
+    "oak_r2":  { "name_key": "OAK3_R2_NAME",  "music": "island3_dungeon", "dark": true, "map": [3, 6] },
+    "oak_r2b": { "name_key": "OAK3_R2B_NAME", "theme": "cave_3",     "music": "island3_dungeon", "dark": true, "map": [3, 5] },
+    "oak_r3":  { "name_key": "OAK3_R3_NAME",  "music": "island3_dungeon", "dark": true, "map": [4, 6] },
+    "oak_r4":  { "name_key": "OAK3_R4_NAME",  "music": "island3_dungeon", "dark": true, "map": [4, 5] },
+    "oak_r4b": { "name_key": "OAK3_R4B_NAME", "theme": "under_root", "music": "isl3_underroot",  "dark": true, "map": [5, 5] },
+    "oak_r5":  { "name_key": "OAK3_R5_NAME",  "music": "island3_dungeon", "dark": true, "map": [4, 4] },
+    "oak_r5b": { "name_key": "OAK3_R5B_NAME", "theme": "cave_3",     "music": "island3_dungeon", "dark": true, "map": [5, 4] },
+    "oak_r6":  { "name_key": "OAK3_R6_NAME",  "music": "island3_boss_p1", "dark": true, "map": [4, 3] },
+    "oak_r6b": { "name_key": "OAK3_R6B_NAME", "theme": "under_root", "music": "island3_dungeon", "dark": true, "map": [3, 3] },
+    "oak_r7":  { "name_key": "OAK3_R7_NAME",  "music": "island3_dungeon", "dark": true, "map": [2, 3] },
+    "oak_r7b": { "name_key": "OAK3_R7B_NAME", "theme": "briar_court","music": "island3_dungeon", "dark": true, "map": [4, 2] },
+    "oak_r8":  { "name_key": "OAK3_R8_NAME",  "music": "island3_dungeon", "dark": true, "map": [2, 2] },
+    "oak_r8b": { "name_key": "OAK3_R8B_NAME", "theme": "under_root", "music": "island3_dungeon", "dark": true, "map": [3, 2] },
+    "oak_r9":  { "name_key": "OAK3_R9_NAME",  "music": "island3_dungeon", "dark": true, "map": [2, 1] },
+    "oak_r9b": { "name_key": "OAK3_R9B_NAME", "theme": "briar_court","music": "island3_combat",  "dark": true, "map": [3, 1] },
+    "oak_r9c": { "name_key": "OAK3_R9C_NAME", "theme": "under_root", "music": "island3_dungeon", "dark": true, "map": [1, 1] },
+    "oak_r10": { "name_key": "OAK3_R10_NAME", "music": "island3_boss_p1", "dark": true, "map": [2, 0] }
+  },
+  "sfx": {}
+}

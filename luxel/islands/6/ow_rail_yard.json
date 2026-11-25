@@ -226,12 +226,12 @@
       "kind": "grate",
       "pos": [
         568,
-        216
+        208
       ],
       "props": {
         "size": [
           16,
-          48
+          64
         ]
       }
     },
@@ -336,19 +336,6 @@
             "line": "ISL6_Q2_HINT"
           }
         ]
-      }
-    },
-    {
-      "id": "trial_yard_range",
-      "kind": "trial_gate",
-      "pos": [
-        520,
-        352
-      ],
-      "props": {
-        "challenge": "yard_bank_range",
-        "once": true,
-        "persist": true
       }
     },
     {
@@ -751,50 +738,6 @@
           "narrate": "ISL6_TRIAL_RANGE_WIN"
         }
       ]
-    },
-    {
-      "id": "start_yard_range",
-      "on": "trial_start:trial_yard_range",
-      "once": false,
-      "do": [
-        {
-          "challenge": {
-            "id": "yard_bank_range",
-            "kind": "light_all",
-            "time": 22.0,
-            "targets": [
-              "rb_1",
-              "rb_2",
-              "rb_3",
-              "rb_4",
-              "rb_5"
-            ],
-            "ok": [
-              {
-                "set_flag": "ember_6_range"
-              },
-              {
-                "set_flag": "trial6:yard_range:gold"
-              },
-              {
-                "reward": {
-                  "kind": "ember_piece",
-                  "amount": 1
-                }
-              },
-              {
-                "reward": {
-                  "kind": "shards",
-                  "amount": 45
-                }
-              },
-              {
-                "narrate": "ISL6_TRIAL_RANGE_WIN"
-              }
-            ]
-          }
-        }
-      ]
     }
   ],
   "design": {
@@ -812,9 +755,9 @@
         "op": "goto",
         "to": [
           480,
-          272
+          270
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -827,16 +770,16 @@
       {
         "op": "goto",
         "to": [
-          512,
+          520,
           208
         ],
-        "tol": 4.0
+        "tol": 3.0
       },
       {
         "op": "shoot",
         "target": [
-          560,
-          172
+          568,
+          176
         ],
         "wait_hit": 0.7
       },
@@ -851,9 +794,9 @@
         "op": "goto",
         "to": [
           248,
-          224
+          214
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",

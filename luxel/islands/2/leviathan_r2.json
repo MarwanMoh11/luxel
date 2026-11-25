@@ -1,0 +1,483 @@
+{
+  "id": "leviathan_r2",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LEV_R2_NAME",
+  "theme": "locks",
+  "music": "isl2_setpiece",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    168
+  ],
+  "zones": [
+    {
+      "id": "lev_r2",
+      "name_key": "LEV_R2_NAME",
+      "rect": [
+        0,
+        0,
+        576,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lev_r2_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "leviathan_r1",
+      "to_spawn": [
+        616,
+        120
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r2_maw",
+      "rect": [
+        560,
+        128,
+        16,
+        64
+      ],
+      "to_region": "leviathan_r3",
+      "to_spawn": [
+        56,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lev_r2_maw"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lev_r2",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lev_r2",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "string_id": "LEV_BELL_HINT",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "keg_lev_r2_n1",
+      "kind": "ballast_keg",
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "blast_r": 40,
+        "obey_list": false,
+        "respawn_s": 4.0
+      }
+    },
+    {
+      "id": "crack_lev_r2_n1",
+      "kind": "cracked_wall",
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "post_lev_r2_s1",
+      "kind": "mooring_post",
+      "pos": [
+        200,
+        264
+      ],
+      "props": {
+        "orbit_r": 40,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "post_lev_r2_s2",
+      "kind": "mooring_post",
+      "pos": [
+        296,
+        264
+      ],
+      "props": {
+        "orbit_r": 40,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "mir_lev_r2_s",
+      "kind": "blue_transformer",
+      "pos": [
+        248,
+        224
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_lev_r2_s",
+      "kind": "switch_eye",
+      "pos": [
+        328,
+        224
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_lev_r2_south"
+      }
+    },
+    {
+      "id": "door_lev_r2_south",
+      "kind": "door",
+      "pos": [
+        360,
+        224
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "eye_lev_r2_s"
+        ]
+      }
+    },
+    {
+      "id": "bell_lev_r2_chum",
+      "kind": "switch_eye",
+      "pos": [
+        448,
+        120
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "maw_lev_r2"
+      }
+    },
+    {
+      "id": "maw_lev_r2",
+      "kind": "lev_maw_swallow",
+      "pos": [
+        504,
+        160
+      ],
+      "props": {
+        "size": [
+          40,
+          64
+        ],
+        "target_id": "door_lev_r2_maw",
+        "sets_flag": "lev_maw_open"
+      }
+    },
+    {
+      "id": "door_lev_r2_maw",
+      "kind": "door",
+      "pos": [
+        520,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          64
+        ],
+        "requires_signals": [
+          "maw_lev_r2"
+        ],
+        "sets_flag": "lev_maw_open"
+      }
+    },
+    {
+      "id": "lamp_lev_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r2_n1",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        56
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r2_n2",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        56
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r2_s1",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        224
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r2_e1",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        104
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r2_e2",
+      "kind": "road_lamp",
+      "pos": [
+        432,
+        216
+      ],
+      "props": {
+        "zone": "lev_r2",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "cracks",
+      "pos": [
+        264,
+        72
+      ],
+      "radius": 22,
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        184
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        448,
+        160
+      ],
+      "radius": 28
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        416,
+        128,
+        64,
+        64
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        40,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        136,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        128,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        416,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        472,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "mooring_ring_floor",
+      "pos": [
+        448,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Forked collapsing breakwater with two distinct routes (North Ballast-Keg demolition vs South Mirror-Bank & Mooring Posts) converging on the glowing Chum Bell that parts the Leviathan's jaws to swallow Wick whole.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Detonating Ballast Kegs against driftwood dams and ringing the Chum Bell to intentionally enter the whale's maw.",
+    "decisions": 6,
+    "expert_s": 44,
+    "reward": "swallowed_whole_into_belly",
+    "why": "Unforgettable reverse-instinct climax of the storm chase delivering Wick inside the Leviathan.",
+    "exit": "exit_lev_r2_maw",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_lev_r2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          72
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "keg_lev_r2_n1"
+      },
+      {
+        "op": "wait",
+        "secs": 0.75
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          120
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "bell_lev_r2_chum"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r2_maw",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lev_r2_maw"
+      }
+    ]
+  }
+}

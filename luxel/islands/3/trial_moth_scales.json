@@ -177,6 +177,24 @@
       }
     },
     {
+      "id": "gate_scales_all",
+      "kind": "logic_gate",
+      "pos": [
+        144,
+        128
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "tb_scale_1",
+          "tb_scale_2",
+          "tb_scale_3"
+        ],
+        "persist": true,
+        "target_id": "door_scales_prize"
+      }
+    },
+    {
       "id": "door_scales_prize",
       "kind": "door",
       "pos": [
@@ -184,13 +202,13 @@
         88
       ],
       "props": {
-        "door_kind": "ward_barrier",
+        "door_kind": "switch_door",
         "size": [
           32,
           16
         ],
-        "requires_flags": [
-          "trial_moth_scales_done"
+        "requires_signals": [
+          "gate_scales_all"
         ]
       }
     },
@@ -353,26 +371,21 @@
         {
           "challenge": {
             "id": "moth_scales_light",
-            "kind": "light_all",
+            "kind": "race",
             "time": 60.0,
             "start_pos": [
               288,
               128
             ],
-            "targets": [
-              "tb_scale_1",
-              "tb_scale_2",
-              "tb_scale_3"
+            "goal": [
+              80,
+              56
             ],
+            "goal_radius": 28.0,
             "instant_retry": true,
             "ok": [
               {
                 "set_flag": "trial_moth_scales_done"
-              },
-              {
-                "unlock": [
-                  "door_scales_prize"
-                ]
               },
               {
                 "narrate": "ISL3_TRIAL_SCALES_WIN"
@@ -414,10 +427,10 @@
     }
   ],
   "design": {
-    "idea": "60-second Moth Scales shadow-gate trial: hang your lantern on the east hook to darken and open twin north/south shadow gates, sprint through in shadow to light all 3 shrine braziers, and claim an Ember Piece + Moth #7.",
+    "idea": "60-second Moth Scales shadow-gate trial: hang your lantern on the east hook to darken and open twin north/south shadow gates, sprint through in shadow to light all 3 shrine braziers and unseal the NW sanctuary before the timer expires.",
     "kind": "puzzle",
     "beat": "sho",
-    "teaches": "trial_gate light_all, lantern_hook + shadow_gate darkness routing",
+    "teaches": "trial_gate race, lantern_hook + shadow_gate darkness routing, logic_gate AND",
     "decisions": 6,
     "expert_s": 44,
     "reward": "ember_piece, moth_3_07, Moth Scales medal flag",
@@ -490,14 +503,28 @@
       },
       {
         "op": "wait",
-        "secs": 0.3
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "door_scales_prize",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          56
+        ],
+        "tol": 10.0
       },
       {
         "op": "expect",
         "flag": "trial_moth_scales_done"
-      },
-      {
-        "op": "recall"
       },
       {
         "op": "goto",

@@ -2,7 +2,7 @@
   "id": "cave_temper_foundry",
   "island_id": 6,
   "tile_size": 16,
-  "is_dungeon": true,
+  "is_dungeon": false,
   "theme": "cave_6",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_FOUNDRY",
@@ -121,7 +121,7 @@
       "id": "braz_tf_2",
       "kind": "timed_brazier",
       "pos": [
-        192,
+        184,
         80
       ],
       "props": {
@@ -434,9 +434,9 @@
         "op": "goto",
         "to": [
           296,
-          184
+          194
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -452,7 +452,7 @@
           216,
           208
         ],
-        "tol": 4.0
+        "tol": 3.0
       },
       {
         "op": "shoot",
@@ -473,9 +473,9 @@
         "op": "goto",
         "to": [
           296,
-          104
+          94
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -488,15 +488,15 @@
       {
         "op": "goto",
         "to": [
-          248,
+          244,
           80
         ],
-        "tol": 4.0
+        "tol": 3.0
       },
       {
         "op": "shoot",
         "target": [
-          192,
+          184,
           80
         ],
         "wait_hit": 0.5
@@ -511,10 +511,10 @@
       {
         "op": "goto",
         "to": [
-          144,
+          134,
           80
         ],
-        "tol": 6.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -528,9 +528,9 @@
         "op": "goto",
         "to": [
           120,
-          104
+          100
         ],
-        "tol": 4.0
+        "tol": 3.0
       },
       {
         "op": "shoot",
@@ -553,7 +553,7 @@
           56,
           128
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
         "op": "interact",

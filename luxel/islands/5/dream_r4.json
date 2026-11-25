@@ -133,10 +133,7 @@
           48,
           16
         ],
-        "clear_zone": "dream_r4",
-        "requires_moves": [
-          "lens"
-        ]
+        "clear_zone": "dream_r4"
       }
     },
     {
@@ -209,17 +206,17 @@
       "id": "en_dr4_s2",
       "kind": "orrery_sentinel",
       "pos": [
-        368,
-        192
+        336,
+        208
       ],
       "route": [
         [
-          352,
-          192
+          304,
+          208
         ],
         [
-          400,
-          216
+          384,
+          208
         ]
       ],
       "zone": "dream_r4",
@@ -341,6 +338,13 @@
       {
         "op": "clear",
         "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_dr4_next",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
       },
       {
         "op": "expect_exit",

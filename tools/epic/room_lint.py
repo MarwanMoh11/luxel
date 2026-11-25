@@ -310,6 +310,7 @@ def load_engine_catalog() -> Dict[str, Any]:
     inter_kinds: Set[str] = set(CONTRACT_INTERACTABLES)
     inter_scripts: Dict[str, Path] = {}
     enemy_kinds: Set[str] = set()
+    enemy_scripts: Dict[str, Path] = {}
     strings: Set[str] = set()
     dungeons: Dict[str, Dict[str, Any]] = {}
     toy_meta: Dict[str, Dict[str, Any]] = load_toy_meta()
@@ -380,10 +381,18 @@ def load_engine_catalog() -> Dict[str, Any]:
             sp = v if isinstance(v, str) else (v.get("script", "") if isinstance(v, dict) else "")
             if sp:
                 inter_scripts[kl] = REPO_ROOT / str(sp).replace("res://", "")
-        for k in (pd.get("enemies") or {}).keys():
-            enemy_kinds.add(str(k).lower())
-        for k in (pd.get("bosses") or {}).keys():
-            enemy_kinds.add(str(k).lower())
+        for k, v in (pd.get("enemies") or {}).items():
+            kl = str(k).lower()
+            enemy_kinds.add(kl)
+            sp = v if isinstance(v, str) else (v.get("script", "") if isinstance(v, dict) else "")
+            if sp:
+                enemy_scripts[kl] = REPO_ROOT / str(sp).replace("res://", "")
+        for k, v in (pd.get("bosses") or {}).items():
+            kl = str(k).lower()
+            enemy_kinds.add(kl)
+            sp = v if isinstance(v, str) else (v.get("script", "") if isinstance(v, dict) else "")
+            if sp:
+                enemy_scripts[kl] = REPO_ROOT / str(sp).replace("res://", "")
         for k in (pd.get("strings") or {}).keys():
             strings.add(str(k))
         d_raw = pd.get("dungeons")
@@ -391,6 +400,36 @@ def load_engine_catalog() -> Dict[str, Any]:
         for d in d_items:
             if isinstance(d, dict) and d.get("id"):
                 dungeons[str(d["id"])] = d
+
+    # Auto-detect flying enemies from built-in LxEnemyFactory / luxel/enemies/* + pack scripts
+    flying_enemies: Set[str] = set(FLYING_ENEMIES)
+    for k, gd_p in enemy_scripts.items():
+        if not gd_p.is_file():
+            continue
+        try:
+            txt = gd_p.read_text(encoding="utf-8", errors="ignore")
+        except Exception:
+            continue
+        if (
+            re.search(r"func\s+is_flying\s*\([^)]*\)\s*(?:->\s*bool)?\s*:\s*(?:\n\s+)?return\s+true\b", txt)
+            or re.search(r"\b(?:is_flying|flying|airborne|can_fly)\s*[:=]\s*true\b", txt)
+        ):
+            flying_enemies.add(k)
+    for edir in (REPO_ROOT / "luxel" / "enemies").glob("*"):
+        if not edir.is_dir():
+            continue
+        ek = edir.name.lower()
+        bgd = edir / "brain.gd"
+        if bgd.is_file():
+            try:
+                txt = bgd.read_text(encoding="utf-8", errors="ignore")
+            except Exception:
+                continue
+            if (
+                re.search(r"func\s+is_flying\s*\([^)]*\)\s*(?:->\s*bool)?\s*:\s*(?:\n\s+)?return\s+true\b", txt)
+                or re.search(r"\b(?:is_flying|flying|airborne|can_fly)\s*[:=]\s*true\b", txt)
+            ):
+                flying_enemies.add(ek)
 
     # Merge toy metadata kinds and scripts
     for tk, tmeta in toy_meta.items():
@@ -413,6 +452,7 @@ def load_engine_catalog() -> Dict[str, Any]:
     return {
         "interactables": inter_kinds,
         "enemies": enemy_kinds,
+        "flying_enemies": flying_enemies,
         "strings": strings,
         "islands": islands_data,
         "dungeons": dungeons,
@@ -1243,7 +1283,7 @@ def lint_region(
             err("ENEMY_OOB", f"enemy '{eid}' ({ex},{ey}) out of bounds")
             continue
         ett = _tile_at(reg, ex, ey)
-        if ek not in FLYING_ENEMIES and ett not in WALKABLE_BASE:
+        if ek not in catalog.get("flying_enemies", FLYING_ENEMIES) and ett not in WALKABLE_BASE:
             err("ENEMY_UNWALKABLE", f"ground enemy '{eid}' ({ek}) at ({ex:.0f},{ey:.0f}) on '{ett}'")
         for spx, spy in entry_points:
             d = math.hypot(ex - spx, ey - spy)

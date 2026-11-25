@@ -144,7 +144,7 @@
       "steps": [
         {
           "icons": ["book", "clock", "arrow_s"],
-          "need": "lore_4_cellar",
+          "need": "lore_4_cellar && lore_4_gardener && lore_4_choir",
           "flag": "shadow_bridge_marked"
         },
         {

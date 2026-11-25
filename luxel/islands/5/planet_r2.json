@@ -105,8 +105,8 @@
       "id": "sn_r2_3",
       "kind": "star_node",
       "pos": [
-        180,
-        148
+        220,
+        136
       ],
       "props": {
         "cap_group": "pl_r2",
@@ -121,7 +121,7 @@
       "id": "sn_r2_4",
       "kind": "star_node",
       "pos": [
-        132,
+        168,
         136
       ],
       "props": {
@@ -138,7 +138,7 @@
       "kind": "star_node",
       "pos": [
         112,
-        104
+        136
       ],
       "props": {
         "cap_group": "pl_r2",
@@ -161,7 +161,21 @@
         "max_lit": 4,
         "links": [
           "sn_r2_5"
+        ]
+      }
+    },
+    {
+      "id": "plate_pl_r2_n",
+      "kind": "pressure_plate",
+      "pos": [
+        112,
+        52
+      ],
+      "props": {
+        "by": [
+          "wick"
         ],
+        "latch": true,
         "target_id": "door_pl_r2_n",
         "sets_flag": "pl_r2_open"
       }
@@ -176,7 +190,7 @@
       "props": {
         "door_kind": "switch_door",
         "requires_signals": [
-          "sn_r2_6"
+          "plate_pl_r2_n"
         ],
         "sets_flag": "pl_r2_open",
         "size": [
@@ -364,8 +378,8 @@
       {
         "op": "goto",
         "to": [
-          200,
-          170
+          220,
+          164
         ]
       },
       {
@@ -376,26 +390,32 @@
       {
         "op": "goto",
         "to": [
-          156,
-          142
+          194,
+          136
         ]
       },
       {
-        "op": "shoot",
-        "target": "sn_r2_5",
-        "wait_hit": 0.55
+        "op": "beam",
+        "target": "sn_r2_5"
       },
       {
         "op": "goto",
         "to": [
-          122,
-          116
+          140,
+          136
         ]
       },
       {
         "op": "shoot",
         "target": "sn_r2_6",
         "wait_hit": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          52
+        ]
       },
       {
         "op": "wait_until",

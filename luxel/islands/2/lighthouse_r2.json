@@ -55,6 +55,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r2_sw",
+      "rect": [
+        64,
+        240,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r11",
+      "to_spawn": [
+        112,
+        48
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -123,7 +140,8 @@
           16
         ],
         "requires_signals": [
-          "switch_eye_lh_r2"
+          "switch_eye_lh_r2",
+          "switch_eye_lh_r2_sunken"
         ],
         "sets_flag": "lh_r2_lock_open"
       }
@@ -139,6 +157,55 @@
         "dungeon_id": "lighthouse",
         "key_kind": "wick_key",
         "flag_id": "wick_key_2_1"
+      }
+    },
+    {
+      "id": "switch_eye_lh_r2_sunken",
+      "kind": "switch_eye",
+      "pos": [
+        152,
+        216
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "door_lh_r2_vault"
+      }
+    },
+    {
+      "id": "lamp_lh_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "zone": "lighthouse_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r2_sw",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        216
+      ],
+      "props": {
+        "zone": "lighthouse_r2",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "zone": "lighthouse_r2",
+        "lit": true
       }
     }
   ],
@@ -227,18 +294,118 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    }
+  ],
+  "name_key": "LH2_R2_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        216
+      ],
+      "radius": 20,
+      "style": "water"
     },
     {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        192,
-        52
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
+      "kind": "inlay",
+      "rect": [
+        288,
+        48,
+        48,
+        48
+      ]
     }
-  ]
+  ],
+  "design": {
+    "idea": "Deepened Tide-Lock Basin (L_min 2->6): push and rotate the movable Blue Transformer twice to bank blue bolts into BOTH the sunken SW tide-eye and the NE canal eye, unsealing Key #1 vault while opening the SW canal arch to Lens-Well (r11).",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Repositioning and re-angling a single movable Blue Transformer to satisfy twin blue switches across tidal water.",
+    "decisions": 6,
+    "expert_s": 46,
+    "reward": "wick_key_2_1+cycle_1_to_r11",
+    "why": "Deepened Wing 1 opener establishing dual-angle blue reflection and connecting directly to r11.",
+    "optional": true,
+    "exit": "exit_lh_r2_east",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "low"
+      }
+    },
+    "solution": [
+      {
+        "op": "push",
+        "target": "transformer_lh_r2",
+        "to": [
+          104,
+          216
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r2",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          168
+        ],
+        "target": "transformer_lh_r2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "switch_eye_lh_r2_sunken",
+        "prop": "activated",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r2",
+        "to": [
+          136,
+          136
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r2",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          136,
+          72
+        ],
+        "target": "transformer_lh_r2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r2_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          72
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_2_1"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_2_1"
+      }
+    ]
+  }
 }

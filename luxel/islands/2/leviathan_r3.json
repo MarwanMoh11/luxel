@@ -1,0 +1,599 @@
+{
+  "id": "leviathan_r3",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LEV_R3_NAME",
+  "theme": "leviathan_belly",
+  "music": "isl2_setpiece",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    56,
+    168
+  ],
+  "zones": [
+    {
+      "id": "lev_r3",
+      "name_key": "LEV_R3_NAME",
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lev_r3_west",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_region": "leviathan_r2",
+      "to_spawn": [
+        472,
+        160
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r3_escape",
+      "rect": [
+        64,
+        336,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r1",
+      "to_spawn": [
+        176,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "lev_belly_portal"
+      ],
+      "locked_door_id": "door_lev_r3_escape"
+    },
+    {
+      "id": "exit_lev_r3_nw",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r5",
+      "to_spawn": [
+        392,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "lev_parasite_dead"
+      ],
+      "locked_door_id": "door_lev_r3_blowhole"
+    },
+    {
+      "id": "exit_lev_r3_ne",
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
+      "to_region": "leviathan_r4",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lev_r3_esoph"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "lamprey_lev_r3_1",
+      "kind": "brine_lamprey",
+      "pos": [
+        296,
+        72
+      ],
+      "route": [
+        [
+          264,
+          72
+        ],
+        [
+          360,
+          72
+        ]
+      ],
+      "zone": "lev_r3",
+      "leash": 130
+    },
+    {
+      "id": "lamprey_lev_r3_2",
+      "kind": "brine_lamprey",
+      "pos": [
+        248,
+        280
+      ],
+      "route": [
+        [
+          184,
+          280
+        ],
+        [
+          304,
+          280
+        ]
+      ],
+      "zone": "lev_r3",
+      "leash": 130
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lev_r3",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lev_r3",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        120
+      ],
+      "props": {
+        "string_id": "LEV_HEART_HINT",
+        "icon": "wave"
+      }
+    },
+    {
+      "id": "heart_lev_r3",
+      "kind": "lev_heartbeat_driver",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "scope": "room:2:leviathan_r3",
+        "var": "belly_tide",
+        "period_s": 8.0,
+        "auto_cycle": false
+      }
+    },
+    {
+      "id": "lever_lev_r3_tide",
+      "kind": "state_lever",
+      "pos": [
+        104,
+        200
+      ],
+      "props": {
+        "scope": "room:2:leviathan_r3",
+        "var": "belly_tide",
+        "values": [
+          "low",
+          "high"
+        ],
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_lev_r3_schooner",
+      "kind": "tide_raft",
+      "pos": [
+        216,
+        184
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "belly_tide",
+        "tide_min": "high",
+        "angle_deg": 0,
+        "rotatable": true,
+        "reflect_only_floating": true
+      }
+    },
+    {
+      "id": "eye_lev_r3_esoph",
+      "kind": "switch_eye",
+      "pos": [
+        312,
+        184
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_lev_r3_esoph",
+        "sets_flag": "lev_belly_portal"
+      }
+    },
+    {
+      "id": "door_lev_r3_esoph",
+      "kind": "door",
+      "pos": [
+        392,
+        168
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "eye_lev_r3_esoph"
+        ],
+        "sets_flag": "lev_belly_portal"
+      }
+    },
+    {
+      "id": "door_lev_r3_blowhole",
+      "kind": "door",
+      "pos": [
+        144,
+        40
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "lev_parasite_dead"
+        ]
+      }
+    },
+    {
+      "id": "door_lev_r3_escape",
+      "kind": "door",
+      "pos": [
+        80,
+        312
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "lev_belly_portal"
+        ]
+      }
+    },
+    {
+      "id": "lamp_lev_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "zone": "lev_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        56
+      ],
+      "props": {
+        "zone": "lev_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        296
+      ],
+      "props": {
+        "zone": "lev_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        120
+      ],
+      "props": {
+        "zone": "lev_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r3_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        280
+      ],
+      "props": {
+        "zone": "lev_r3",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "belly_low",
+      "when": "belly_tide==low",
+      "theme": "leviathan_belly",
+      "tiles": [
+        [
+          8,
+          10,
+          7,
+          3,
+          "ground"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "belly_high",
+      "when": "belly_tide==high",
+      "theme": "leviathan_belly",
+      "tiles": [
+        [
+          8,
+          10,
+          7,
+          3,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        216
+      ],
+      "radius": 24,
+      "style": "acid"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        312,
+        248
+      ],
+      "radius": 22,
+      "style": "acid"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        144,
+        72
+      ],
+      "radius": 20,
+      "glow": false
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        56
+      ],
+      "radius": 20,
+      "style": "ritual"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "ivory_rib_arch",
+      "pos": [
+        144,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        88,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        344,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_anchor",
+      "pos": [
+        56,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_ship_crate",
+      "pos": [
+        120,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        312,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        368,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "cartilage_mound",
+      "pos": [
+        368,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Inside the glowing Rib-Cage Bilge: clear two Brine Lampreys, rotate the grounded schooner mirror-raft at low exhale, raise the heartbeat tide to float it onto the beam plane, and bank a blue bolt into the Esophagus Valve (opening the Gullet & lighting the escape portal to r1).",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Using belly_tide to ground a Tide Raft mirror for rotation, then floating it to reflect across acid bilge.",
+    "decisions": 6,
+    "expert_s": 52,
+    "reward": "belly_hub+escape_portal+esophagus_open",
+    "why": "Atmospheric organic belly hub teasing the Blowhole Arch above and grounding Wick inside the whale.",
+    "exit": "exit_lev_r3_ne",
+    "start": {
+      "vars": {
+        "room:2:leviathan_r3:belly_tide": "low"
+      },
+      "flags": [
+        "power_ballast_clamp",
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_lev_r3"
+      },
+      {
+        "op": "clear",
+        "zone": "lev_r3",
+        "timeout": 28.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          196,
+          184
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lev_r3_schooner",
+        "angle": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          176
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lever_lev_r3_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          272
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "raft_lev_r3_schooner"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r3_esoph",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lev_r3_ne"
+      }
+    ]
+  }
+}

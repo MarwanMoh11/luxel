@@ -2,7 +2,7 @@
   "id": "cave_sunflare_crypt",
   "island_id": 6,
   "tile_size": 16,
-  "is_dungeon": true,
+  "is_dungeon": false,
   "theme": "forge_deep",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_CRYPT",
@@ -72,8 +72,8 @@
       "id": "slag_sc_1",
       "kind": "push_block",
       "pos": [
-        80,
-        160
+        112,
+        156
       ],
       "props": {
         "variant": "slag"
@@ -83,8 +83,8 @@
       "id": "plate_sc_1",
       "kind": "pressure_plate",
       "pos": [
-        128,
-        160
+        152,
+        156
       ],
       "props": {
         "by": [
@@ -395,7 +395,8 @@
         "wings",
         "lens",
         "sunflare"
-      ]
+      ],
+      "ember": 100.0
     },
     "solution": [
       {
@@ -424,8 +425,11 @@
       {
         "op": "push",
         "target": "slag_sc_1",
-        "dir": "e",
-        "dist": 48.0
+        "to": [
+          152,
+          156
+        ],
+        "tol": 8.0
       },
       {
         "op": "wait_until",
@@ -438,7 +442,7 @@
         "op": "goto",
         "to": [
           208,
-          128
+          124
         ],
         "tol": 4.0
       },
@@ -458,7 +462,7 @@
           208,
           240
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
         "op": "interact",

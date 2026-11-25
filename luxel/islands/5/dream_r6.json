@@ -61,7 +61,7 @@
         176
       ],
       "props": {
-        "mode": "push",
+        "mode": "pull",
         "radius": 72.0,
         "strength": 540.0
       }
@@ -397,6 +397,13 @@
       {
         "op": "clear",
         "timeout": 55.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_dr6_trophy",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
       },
       {
         "op": "goto",

@@ -40,6 +40,21 @@
       ]
     },
     {
+      "id": "ex_apron_meteor",
+      "rect": [
+        272,
+        32,
+        48,
+        16
+      ],
+      "to_island": 5,
+      "to_region": "meteor_r1",
+      "to_spawn": [
+        240,
+        296
+      ]
+    },
+    {
       "id": "ex_apron_trial",
       "rect": [
         16,
@@ -102,13 +117,13 @@
       "id": "well_apron_1",
       "kind": "polarity_well",
       "pos": [
-        392,
-        208
+        400,
+        272
       ],
       "props": {
         "mode": "pull",
-        "radius": 80.0,
-        "strength": 600.0,
+        "radius": 96.0,
+        "strength": 1600.0,
         "orbit_capture": true,
         "orbit_r": 32.0
       }
@@ -117,7 +132,7 @@
       "id": "eye_apron_plug",
       "kind": "switch_eye",
       "pos": [
-        456,
+        424,
         248
       ],
       "props": {
@@ -129,7 +144,7 @@
       "id": "bridge_apron_tablet",
       "kind": "door",
       "pos": [
-        416,
+        400,
         304
       ],
       "props": {
@@ -254,8 +269,8 @@
       "id": "lore_apron_vault",
       "kind": "lore_stone",
       "pos": [
-        296,
-        64
+        256,
+        80
       ],
       "props": {
         "string_id": "I5_OW_METEOR_GATE",
@@ -355,17 +370,17 @@
       "id": "en_apron_carrier",
       "kind": "meteor_carrier",
       "pos": [
-        312,
-        136
+        208,
+        296
       ],
       "route": [
         [
-          264,
-          136
+          192,
+          296
         ],
         [
-          360,
-          136
+          240,
+          288
         ]
       ],
       "zone": "meteor_apron",
@@ -532,15 +547,16 @@
       {
         "op": "goto",
         "to": [
-          352,
+          360,
           248
-        ]
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
           432,
-          192
+          213
         ],
         "wait_hit": 0.7
       },

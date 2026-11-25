@@ -531,9 +531,9 @@
         "op": "goto",
         "to": [
           352,
-          224
+          214
         ],
-        "tol": 8.0
+        "tol": 4.0
       },
       {
         "op": "interact",
@@ -542,14 +542,14 @@
       {
         "op": "goto",
         "to": [
-          144,
+          128,
           168
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
-        "op": "interact",
-        "target": "spark_hide_3"
+        "op": "wait",
+        "secs": 0.2
       },
       {
         "op": "expect",
@@ -559,9 +559,9 @@
         "op": "goto",
         "to": [
           352,
-          136
+          126
         ],
-        "tol": 8.0
+        "tol": 4.0
       },
       {
         "op": "interact",

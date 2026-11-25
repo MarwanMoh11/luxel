@@ -39,8 +39,8 @@
       "to_island": 2,
       "to_region": "ow_shoals_west",
       "to_spawn": [
-        56,
-        264
+        72,
+        272
       ]
     },
     {
@@ -149,7 +149,9 @@
         184
       ],
       "props": {
-        "targets": []
+        "targets": [],
+        "entry_list": "port",
+        "skip_if_solved_id": "door_r1_north"
       }
     },
     {

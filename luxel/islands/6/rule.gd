@@ -401,6 +401,7 @@ func _sync_heat_flow_wind_zones() -> void:
 
 func _setup_train_fx(region_id: String) -> void:
 	if _train_fx != null and is_instance_valid(_train_fx):
+		_train_fx.visible = false
 		_train_fx.queue_free()
 	_train_fx = null
 	_train_mode = ""
@@ -414,13 +415,18 @@ func _setup_train_fx(region_id: String) -> void:
 		_train_mode = "interior"
 	if _train_mode.is_empty():
 		return
-	_train_fx = Node2D.new()
-	_train_fx.name = "Island6TrainFx"
-	_train_fx.z_index = 4 if _train_mode == "roof" else -3
-	_train_fx.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_train_fx.draw.connect(func() -> void: LxIsland6RuleFx.draw_train_fx(_train_fx, _train_mode, _train_scroll))
-	Lx.world.add_child(_train_fx)
-	_train_fx.queue_redraw()
+	var fx := Node2D.new()
+	fx.name = "Island6TrainFx"
+	fx.z_index = 4 if _train_mode == "roof" else -3
+	fx.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var mode_snap: String = _train_mode
+	fx.draw.connect(func() -> void:
+		if fx == _train_fx and is_instance_valid(fx) and not fx.is_queued_for_deletion():
+			LxIsland6RuleFx.draw_train_fx(fx, mode_snap, _train_scroll)
+	)
+	_train_fx = fx
+	Lx.world.add_child(fx)
+	fx.queue_redraw()
 
 
 func _mount_hud_overlay() -> void:
@@ -431,14 +437,16 @@ func _mount_hud_overlay() -> void:
 	var parent_hud: Node = Lx.ui.get("hud") as Node if Lx.ui.get("hud") is Node else Lx.ui
 	if parent_hud == null or not is_instance_valid(parent_hud):
 		return
-	_hud_node = Node2D.new()
-	_hud_node.name = "Island6HudMark"
-	_hud_node.z_index = 2
-	_hud_node.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-	_hud_node.draw.connect(func() -> void:
-		LxIsland6RuleFx.draw_hud_mark(_hud_node, _clock, _temper_pop_t, _shift_flash_t, _stride_active, _stride_side, _stride_warn, _stride_stabilized)
+	var hud := Node2D.new()
+	hud.name = "Island6HudMark"
+	hud.z_index = 2
+	hud.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	hud.draw.connect(func() -> void:
+		if hud == _hud_node and is_instance_valid(hud) and not hud.is_queued_for_deletion():
+			LxIsland6RuleFx.draw_hud_mark(hud, _clock, _temper_pop_t, _shift_flash_t, _stride_active, _stride_side, _stride_warn, _stride_stabilized)
 	)
-	parent_hud.add_child(_hud_node)
+	_hud_node = hud
+	parent_hud.add_child(hud)
 
 
 func _mount_tick_driver() -> void:
@@ -461,9 +469,11 @@ func _unmount_nodes() -> void:
 		_tick_driver.queue_free()
 	_tick_driver = null
 	if _train_fx != null and is_instance_valid(_train_fx):
+		_train_fx.visible = false
 		_train_fx.queue_free()
 	_train_fx = null
 	if _hud_node != null and is_instance_valid(_hud_node):
+		_hud_node.visible = false
 		_hud_node.queue_free()
 	_hud_node = null
 

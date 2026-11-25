@@ -79,6 +79,40 @@
         "keepers_flame_2"
       ],
       "locked_door_id": "door_lh_r9_vault"
+    },
+    {
+      "id": "exit_lh_r9_east",
+      "rect": [
+        432,
+        96,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r18",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r9_ne",
+      "rect": [
+        384,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r17",
+      "to_spawn": [
+        128,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [],
@@ -192,6 +226,60 @@
           "keepers_flame_2"
         ]
       }
+    },
+    {
+      "id": "well_lh_r9_f3",
+      "kind": "optic_well",
+      "pos": [
+        232,
+        120
+      ],
+      "props": {
+        "var_name": "relay_f3",
+        "scope": "dungeon:lighthouse",
+        "role": "emitter",
+        "emit_dir": [
+          0,
+          0
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_lh_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        200
+      ],
+      "props": {
+        "zone": "lighthouse_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "zone": "lighthouse_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        88
+      ],
+      "props": {
+        "zone": "lighthouse_r9",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -291,18 +379,138 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.6
+    }
+  ],
+  "name_key": "LH2_R9_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        232,
+        120
+      ],
+      "radius": 28
     },
     {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
+      "kind": "inlay",
+      "rect": [
+        352,
+        88,
+        64,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
       "pos": [
-        288,
-        56
+        232,
+        120
       ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
+      "size": [
+        48,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.35
     }
-  ]
+  ],
+  "design": {
+    "idea": "Deepened Upper Prism Nave: keep the signature chasm-brazier + blue-transformer vault puzzle for Keeper's Flame 2 while converging the Catoptric Drum (r17) and Lens-Grinder's Loft (r18) around central Optic Well W3 (relay_f3) before unlocking the Fresnel Crown Boss Door.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Synthesizing Lantern Throw + Blue Transformer banking across an abyss alongside the vertical relay_f3 optic shaft.",
+    "decisions": 10,
+    "expert_s": 56,
+    "reward": "keepers_flame_2+r1_shortcut+boss_door_open",
+    "why": "Penultimate Lighthouse convergence vault tying all four floors together ahead of the Lighthouse Hermit.",
+    "exit": "exit_lh_r9_north",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ],
+      "flags": [
+        "relay_f1",
+        "relay_f2",
+        "relay_f3",
+        "lh_flame_unshielded"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_lighthouse_upper"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          88
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "brazier_lh_r9"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r9",
+        "to": [
+          168,
+          168
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r9",
+        "angle": 135.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          112
+        ],
+        "target": "transformer_lh_r9"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r9_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          120
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          48
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r9_north"
+      }
+    ]
+  }
 }

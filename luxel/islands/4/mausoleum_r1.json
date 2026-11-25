@@ -33,12 +33,11 @@
         16
       ],
       "to_island": 4,
-      "to_region": "overworld",
+      "to_region": "ow_drowned_cloister",
       "to_spawn": [
-        216,
-        560
-      ],
-      "one_way": true
+        296,
+        392
+      ]
     },
     {
       "id": "exit_ms_r1_west",

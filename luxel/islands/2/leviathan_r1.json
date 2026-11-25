@@ -1,0 +1,548 @@
+{
+  "id": "leviathan_r1",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LEV_R1_NAME",
+  "theme": "locks",
+  "music": "isl2_setpiece",
+  "ambience": [
+    "harbor_tide",
+    "harbor_rigging"
+  ],
+  "spawn": [
+    48,
+    136
+  ],
+  "zones": [
+    {
+      "id": "lev_r1",
+      "name_key": "LEV_R1_NAME",
+      "rect": [
+        0,
+        0,
+        704,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lev_r1_west",
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
+      "to_region": "ow_open_sound",
+      "to_spawn": [
+        72,
+        296
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r1_east",
+      "rect": [
+        688,
+        96,
+        16,
+        48
+      ],
+      "to_region": "leviathan_r2",
+      "to_spawn": [
+        48,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lev_r1_arch"
+    },
+    {
+      "id": "exit_lev_r1_belly",
+      "rect": [
+        160,
+        272,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r3",
+      "to_spawn": [
+        56,
+        168
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "lev_belly_portal"
+      ],
+      "locked_door_id": "door_lev_r1_belly"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lev_r1",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lev_r1",
+      "kind": "lore_stone",
+      "pos": [
+        80,
+        104
+      ],
+      "props": {
+        "string_id": "LEV_CHASE_HINT",
+        "icon": "wave"
+      }
+    },
+    {
+      "id": "wave_lev_r1",
+      "kind": "lev_wave_chaser",
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "start_x": 24,
+        "stop_x": 624,
+        "safe_x": 584,
+        "speed": 34.0,
+        "grace_s": 6.0,
+        "band_h": 224
+      }
+    },
+    {
+      "id": "skiff_lev_r1",
+      "kind": "vehicle_skiff",
+      "pos": [
+        136,
+        168
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "eye_lev_r1_c1",
+      "kind": "switch_eye",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "door_lev_r1_chain1"
+      }
+    },
+    {
+      "id": "door_lev_r1_chain1",
+      "kind": "door",
+      "pos": [
+        280,
+        136
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "eye_lev_r1_c1"
+        ],
+        "persistent": false
+      }
+    },
+    {
+      "id": "eye_lev_r1_c2",
+      "kind": "switch_eye",
+      "pos": [
+        440,
+        104
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_id": "door_lev_r1_chain2"
+      }
+    },
+    {
+      "id": "door_lev_r1_chain2",
+      "kind": "door",
+      "pos": [
+        472,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "eye_lev_r1_c2"
+        ],
+        "persistent": false
+      }
+    },
+    {
+      "id": "post_lev_r1_chimney",
+      "kind": "mooring_post",
+      "pos": [
+        536,
+        104
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "eye_lev_r1_arch",
+      "kind": "switch_eye",
+      "pos": [
+        616,
+        120
+      ],
+      "props": {
+        "requires_blue": false,
+        "target_ids": [
+          "door_lev_r1_arch",
+          "wave_lev_r1"
+        ]
+      }
+    },
+    {
+      "id": "door_lev_r1_arch",
+      "kind": "door",
+      "pos": [
+        648,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "eye_lev_r1_arch"
+        ],
+        "sets_flag": "lev_r1_escaped"
+      }
+    },
+    {
+      "id": "door_lev_r1_belly",
+      "kind": "door",
+      "pos": [
+        176,
+        264
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "lev_belly_portal"
+        ]
+      }
+    },
+    {
+      "id": "lamp_lev_r1_1",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r1_2",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        216
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r1_3",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        120
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r1_4",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        152
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r1_5",
+      "kind": "road_lamp",
+      "pos": [
+        568,
+        152
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r1_6",
+      "kind": "road_lamp",
+      "pos": [
+        664,
+        120
+      ],
+      "props": {
+        "zone": "lev_r1",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        72,
+        136
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        152,
+        208,
+        64,
+        48
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        304,
+        120,
+        48,
+        32
+      ],
+      "glow": false
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        592,
+        136
+      ],
+      "radius": 24
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        40,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        200,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        168,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        344,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "sluice_wheel_post",
+      "pos": [
+        328,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        504,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "harbor_crane_arm",
+      "pos": [
+        584,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "High-speed flooded rooftop sprint ahead of the Leviathan's bow-wave: snap twin flood-chain switches, pass the chimney Mooring Post, and unbar the NE rooftop arch while teasing the swallowed return portal south.",
+    "kind": "setpiece",
+    "beat": "ki",
+    "teaches": "Outrunning a storm swell by shooting chain switches mid-sprint and anchoring off chimney Mooring Posts.",
+    "decisions": 5,
+    "expert_s": 48,
+    "reward": "storm_chase_escape+belly_return_teaser",
+    "why": "Opening adrenaline set-piece of The Leviathan launching Wick into the flooded breakwater.",
+    "exit": "exit_lev_r1_east",
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_lev_r1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          136
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_lev_r1_c1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r1_chain1",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          376,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_lev_r1_c2"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r1_chain2",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          552,
+          152
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "eye_lev_r1_arch"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r1_arch",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lev_r1_east"
+      }
+    ]
+  }
+}

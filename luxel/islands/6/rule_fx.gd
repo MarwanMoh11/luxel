@@ -8,7 +8,7 @@ const PAL: Dictionary = LxPalette.PAL
 
 
 static func draw_train_fx(canvas: Node2D, train_mode: String, train_scroll: float) -> void:
-	if canvas == null or Lx.world == null:
+	if canvas == null or not is_instance_valid(canvas) or canvas.is_queued_for_deletion() or not canvas.is_visible_in_tree() or Lx.world == null:
 		return
 	var b: Rect2 = Lx.world.get("bounds") as Rect2 if Lx.world.get("bounds") is Rect2 else Rect2(0, 0, 384, 224)
 	if not b.has_area():

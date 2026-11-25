@@ -1,0 +1,501 @@
+{
+  "id": "leviathan_r5",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LEV_R5_NAME",
+  "theme": "leviathan_belly",
+  "music": "isl2_setpiece",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    224,
+    336
+  ],
+  "zones": [
+    {
+      "id": "lev_r5",
+      "name_key": "LEV_R5_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lev_r5_south",
+      "rect": [
+        208,
+        368,
+        32,
+        16
+      ],
+      "to_region": "leviathan_r4",
+      "to_spawn": [
+        256,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r5_chute",
+      "rect": [
+        432,
+        208,
+        16,
+        48
+      ],
+      "to_region": "leviathan_r3",
+      "to_spawn": [
+        144,
+        64
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lev_r5_launch",
+      "rect": [
+        192,
+        0,
+        64,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        1040,
+        216
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [
+        "leviathan_done"
+      ],
+      "locked_door_id": "door_lev_r5_launch"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lev_r5",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lev_r5",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        312
+      ],
+      "props": {
+        "string_id": "LEV_LAUNCH_HINT",
+        "icon": "mirror"
+      }
+    },
+    {
+      "id": "wind_lev_r5_1",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "size": [
+          64,
+          32
+        ],
+        "dir": "n",
+        "strength": 64
+      }
+    },
+    {
+      "id": "wind_lev_r5_2",
+      "kind": "wind_zone",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "size": [
+          32,
+          48
+        ],
+        "dir": "n",
+        "strength": 72
+      }
+    },
+    {
+      "id": "wind_lev_r5_3",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        104
+      ],
+      "props": {
+        "size": [
+          64,
+          48
+        ],
+        "dir": "n",
+        "strength": 80
+      }
+    },
+    {
+      "id": "raft_lev_r5_1",
+      "kind": "tide_raft",
+      "pos": [
+        168,
+        200
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "low",
+        "angle_deg": 0,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "raft_lev_r5_2",
+      "kind": "tide_raft",
+      "pos": [
+        264,
+        200
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_min": "low",
+        "angle_deg": 0,
+        "rotatable": true
+      }
+    },
+    {
+      "id": "eye_lev_r5_grate",
+      "kind": "switch_eye",
+      "pos": [
+        264,
+        112
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "geyser_lev_r5"
+      }
+    },
+    {
+      "id": "geyser_lev_r5",
+      "kind": "lev_blowhole_geyser",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "target_id": "door_lev_r5_launch",
+        "sets_flag": "leviathan_done"
+      }
+    },
+    {
+      "id": "door_lev_r5_launch",
+      "kind": "door",
+      "pos": [
+        224,
+        40
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          64,
+          16
+        ],
+        "requires_signals": [
+          "geyser_lev_r5"
+        ],
+        "sets_flag": "leviathan_done"
+      }
+    },
+    {
+      "id": "lamp_lev_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        312
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        312
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r5_mw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        232
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r5_me",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r5_n1",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        88
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lev_r5_n2",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        88
+      ],
+      "props": {
+        "zone": "lev_r5",
+        "lit": true
+      }
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        88
+      ],
+      "radius": 32,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        152,
+        96,
+        96
+      ]
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        120,
+        312
+      ],
+      "radius": 24,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        344,
+        296
+      ],
+      "radius": 20,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "ivory_rib_arch",
+      "pos": [
+        224,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        88,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "curled_rib_pillar",
+      "pos": [
+        360,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        152,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "whale_lantern_jar",
+      "pos": [
+        312,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "digestive_spore_bulb",
+      "pos": [
+        392,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_leviathan_belly",
+      "prop": "swallowed_ship_crate",
+      "pos": [
+        56,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING: Ascend three roaring blowhole water-geysers tier-by-tier, align both floating buoy-mirror rafts and the center rib-prism (raft_1 -> mir_mid -> raft_2 -> overhead brass grate), and erupt through Breath #3 onto Lighthouse Promontory!",
+    "kind": "setpiece",
+    "beat": "ketsu",
+    "teaches": "Multi-mirror blue optical chaining across floating Tide Rafts in vertical geyser chambers.",
+    "decisions": 8,
+    "expert_s": 50,
+    "reward": "leviathan_done+lighthouse_seal_shattered",
+    "why": "Climactic sky-launch payoff of The Leviathan depositing Wick directly onto Lighthouse Promontory.",
+    "exit": "exit_lev_r5_launch",
+    "start": {
+      "flags": [
+        "lev_parasite_dead",
+        "power_ballast_clamp",
+        "power_sluice_harpoon"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "lore_lev_r5"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          230
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lev_r5_1",
+        "angle": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          230
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "raft_lev_r5_2",
+        "angle": 225.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          264
+        ],
+        "target": "raft_lev_r5_1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lev_r5_launch",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "expect",
+        "flag": "leviathan_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lev_r5_launch"
+      }
+    ]
+  }
+}

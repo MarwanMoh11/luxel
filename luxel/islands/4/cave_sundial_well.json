@@ -45,13 +45,13 @@
   "interactables": [
     {
       "id": "brazier_well_pin",
-      "kind": "brazier",
+      "kind": "timed_brazier",
       "pos": [
         128,
         192
       ],
       "props": {
-        "sets_flag": "well_pinned"
+        "secs": 12.0
       }
     },
     {
@@ -100,7 +100,7 @@
         64
       ],
       "props": {
-        "secs": 6.0,
+        "secs": 10.0,
         "target_id": "gate_well_vault"
       }
     },
@@ -112,7 +112,7 @@
         80
       ],
       "props": {
-        "secs": 6.0,
+        "secs": 10.0,
         "target_id": "gate_well_vault"
       }
     },
@@ -386,7 +386,7 @@
       {
         "op": "stand_on",
         "target": "plate_well_1",
-        "secs": 2.4
+        "secs": 8.2
       },
       {
         "op": "goto",

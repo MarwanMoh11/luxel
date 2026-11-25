@@ -55,6 +55,22 @@
       ],
       "requires_moves": [],
       "requires_flags": []
+    },
+    {
+      "id": "exit_to_hourglass",
+      "rect": [
+        112,
+        0,
+        32,
+        16
+      ],
+      "to_region": "hourglass_r1",
+      "to_spawn": [
+        256,
+        296
+      ],
+      "requires_moves": [],
+      "requires_flags": []
     }
   ],
   "enemies": [
@@ -286,8 +302,8 @@
       "id": "lore_orchard_hg",
       "kind": "lore_stone",
       "pos": [
-        128,
-        72
+        160,
+        88
       ],
       "props": {
         "string_id": "ISL4_ORCHARD_GATE_HINT",
@@ -672,6 +688,14 @@
     },
     "solution": [
       {
+        "op": "beam",
+        "target": "sundial_orchard"
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
         "op": "interact",
         "target": "sundial_orchard"
       },
@@ -694,12 +718,12 @@
       {
         "op": "stand_on",
         "target": "plate_orchard_a",
-        "secs": 1.6
+        "secs": 8.2
       },
       {
         "op": "stand_on",
         "target": "plate_orchard_b",
-        "secs": 1.2
+        "secs": 1.8
       },
       {
         "op": "expect",

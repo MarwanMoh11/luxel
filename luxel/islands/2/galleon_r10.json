@@ -155,7 +155,9 @@
           48
         ],
         "speed": 145.0,
-        "surge_secs": 2.2
+        "surge_secs": 2.2,
+        "entry_list": "starboard",
+        "skip_if_solved_id": "plate_r10"
       }
     },
     {

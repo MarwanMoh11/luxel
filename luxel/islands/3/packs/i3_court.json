@@ -1,0 +1,57 @@
+{
+  "pack_id": "i3_court",
+  "version": 1,
+  "owner": "G3",
+  "comment": "Island 3 Set Piece: The Briar Court (court_r1..r4: three knight jousts, Mercy vs Fire verdicts mutating each next arena, theme briar_court). Debug-only on dungeon/regions meta until ow_shift_n hooks exit_shift_n_court -> court_r1.",
+  "interactables": {
+    "court_relic_pedestal": "res://luxel/islands/3/court/court_pedestal.gd",
+    "court_verdict_brazier": "res://luxel/islands/3/court/court_verdict_brazier.gd",
+    "court_seed_arch": "res://luxel/islands/3/court/court_seed_arch.gd"
+  },
+  "strings": {
+    "ISL3_DNG_COURT": "THE BRIAR COURT",
+    "ISL3_COURT_R1_NAME": "AMPHITHEATER BENCH",
+    "ISL3_COURT_R2_NAME": "TAPROOT TILT-YARD",
+    "ISL3_COURT_R3_NAME": "SPINDLE GALLERIES",
+    "ISL3_COURT_R4_NAME": "SCALES OF THE ARBITER",
+    "ISL3_COURT_OPEN": "THE BRIAR COURT CALLS THE LAMP TO TRIAL.",
+    "ISL3_VERDICT_MERCY": "VERDICT: MERCY. THE ROOTS GROW KIND.",
+    "ISL3_VERDICT_FIRE": "VERDICT: FIRE. THE BRIARS CLEAR WIDE.",
+    "ISL3_COURT_PASS": "THE ARBITER PLANTS A SEED. THE OAK OPENS.",
+    "ISL3_PROMPT_ACORN": "SET HEARTWOOD ACORN",
+    "ISL3_PROMPT_SHUTTLE_STAND": "SET GILDED SHUTTLE",
+    "ISL3_PROMPT_MERCY": "IGNITE VERDICT: MERCY",
+    "ISL3_PROMPT_FIRE": "IGNITE VERDICT: FIRE"
+  },
+  "dungeons": [
+    {
+      "id": "briar_court",
+      "name_key": "ISL3_DNG_COURT",
+      "island": 3,
+      "entry": "court_r1",
+      "debug_only": true,
+      "regions": [
+        "court_r1",
+        "court_r2",
+        "court_r3",
+        "court_r4"
+      ],
+      "mini_boss": "knight_taproot",
+      "boss": "briar_arbiter",
+      "theme": "briar_court",
+      "music": "isl3_setpiece",
+      "requires_flags": [
+        "underroot_done",
+        "loom_done"
+      ],
+      "done_flag": "briar_court_done"
+    }
+  ],
+  "regions": {
+    "court_r1": { "name_key": "ISL3_COURT_R1_NAME", "theme": "briar_court", "music": "isl3_setpiece", "dark": true, "debug_only": true, "map": [0, 2] },
+    "court_r2": { "name_key": "ISL3_COURT_R2_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [0, 1] },
+    "court_r3": { "name_key": "ISL3_COURT_R3_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [1, 1] },
+    "court_r4": { "name_key": "ISL3_COURT_R4_NAME", "theme": "briar_court", "music": "island3_boss_p1", "dark": true, "debug_only": true, "map": [1, 0] }
+  },
+  "sfx": {}
+}

@@ -109,8 +109,8 @@
       ],
       "props": {
         "hand": "bridge",
-        "length": 144,
-        "width": 28,
+        "length": 204,
+        "width": 32,
         "start_deg": 270,
         "dusk_freezable": false,
         "dawn_step_deg": 90,
@@ -129,7 +129,27 @@
       ],
       "props": {
         "tone": "dawn",
-        "wave_radius": 184
+        "wave_radius": 184,
+        "target_id": "bridge_r11_east"
+      }
+    },
+    {
+      "id": "bridge_r11_east",
+      "kind": "door",
+      "pos": [
+        440,
+        208
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          112,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "bell_r11_dawn"
+        ]
       }
     },
     {
@@ -399,7 +419,7 @@
     "why": "Multi-level Clockwork Hub #2 connecting F1 Lift (r5), West Drum (r10), East Pendulum Wing (r12/r13), and F3 Shaft (r14).",
     "start": {
       "vars": {
-        "belfry_clock_hand": "north"
+        "island:1:belfry_clock_hand": "north"
       }
     },
     "exit": "exit_r11_east",
@@ -424,20 +444,12 @@
         "secs": 0.2
       },
       {
-        "op": "shoot",
-        "from": [
-          280,
-          232
-        ],
+        "op": "interact",
         "target": "bell_r11_dawn"
       },
       {
         "op": "wait",
-        "secs": 1.0
-      },
-      {
-        "op": "expect",
-        "var": "belfry_clock_hand==east"
+        "secs": 1.1
       },
       {
         "op": "expect_exit",

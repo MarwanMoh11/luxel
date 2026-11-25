@@ -1,0 +1,530 @@
+{
+  "id": "lighthouse_r16",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R16_NAME",
+  "theme": "locks",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_rigging"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "lh_r16",
+      "name_key": "LH2_R16_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r16_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r15",
+      "to_spawn": [
+        240,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r16_west",
+      "rect": [
+        0,
+        192,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r8",
+      "to_spawn": [
+        368,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "anc_lh_r16",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "grate_lh_r16_div",
+      "kind": "grate",
+      "pos": [
+        216,
+        160
+      ],
+      "props": {
+        "size": [
+          352,
+          16
+        ]
+      }
+    },
+    {
+      "id": "hollow_lh_r16",
+      "kind": "lh_hollow_echo",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "lamp_pos": [
+          288,
+          88
+        ],
+        "portal_pos": [
+          224,
+          112
+        ],
+        "sets_flag": "lh_r16_hollow_seen"
+      }
+    },
+    {
+      "id": "mimic_lh_r16",
+      "kind": "mimic_statue",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "mirror": "x",
+        "size": [
+          16,
+          16
+        ],
+        "range": 140
+      }
+    },
+    {
+      "id": "plate_lh_r16",
+      "kind": "pressure_plate",
+      "pos": [
+        112,
+        232
+      ],
+      "props": {
+        "by": [
+          "block",
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_lh_r16_vault"
+      }
+    },
+    {
+      "id": "mir_lh_r16",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        216
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "portal_lh_r16_in",
+      "kind": "blue_portal",
+      "pos": [
+        296,
+        216
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r16_out",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_lh_r16_out",
+      "kind": "blue_portal",
+      "pos": [
+        224,
+        112
+      ],
+      "props": {
+        "target_portal_id": "portal_lh_r16_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "eye_lh_r16_w",
+      "kind": "switch_eye",
+      "pos": [
+        192,
+        112
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "triad_lh_r16"
+      }
+    },
+    {
+      "id": "eye_lh_r16_e",
+      "kind": "switch_eye",
+      "pos": [
+        256,
+        112
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "triad_lh_r16"
+      }
+    },
+    {
+      "id": "triad_lh_r16",
+      "kind": "lh_prism_triad",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "inputs": [
+          "eye_lh_r16_w",
+          "eye_lh_r16_e"
+        ],
+        "window_s": 0.55,
+        "target_id": "door_lh_r16_vault",
+        "sets_flag": "lh_r16_triad_open"
+      }
+    },
+    {
+      "id": "door_lh_r16_vault",
+      "kind": "door",
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "plate_lh_r16",
+          "triad_lh_r16"
+        ]
+      }
+    },
+    {
+      "id": "wick_key_2_3",
+      "kind": "wick_key",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "dungeon_id": "lighthouse",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_2_3"
+      }
+    },
+    {
+      "id": "lore_lh_r16_log4",
+      "kind": "lore_stone",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "string_id": "ISL2_LOG_4",
+        "icon": "book",
+        "persist": true
+      }
+    },
+    {
+      "id": "lamp_lh_r16_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "lh_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r16_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        216
+      ],
+      "props": {
+        "zone": "lh_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r16_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "zone": "lh_r16",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r16_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        64
+      ],
+      "props": {
+        "zone": "lh_r16",
+        "lit": true
+      }
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r16_log4",
+      "on": "signal:lore_lh_r16_log4",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "ship_log_4"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        224,
+        216
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        344,
+        56,
+        48,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        88
+      ],
+      "size": [
+        64,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        288,
+        88
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_locks",
+      "prop": "tide_gauge_pillar",
+      "pos": [
+        88,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "canal_cargo_crate",
+      "pos": [
+        88,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "smuggler_barrel_stack",
+      "pos": [
+        328,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "iron_mooring_bollard",
+      "pos": [
+        168,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_locks",
+      "prop": "coil_of_hawser",
+      "pos": [
+        312,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Dark-Glass Gallery: watch the wordless Hollow Wick silhouette shatter a lamp behind the glass and vanish into a dark-blue portal; latch the pressure plate with the Mirror-Twin, rotate the focal mirror to 225 deg, fire ONE Prism Split fan that simultaneously powers the portal AND strikes both flanking eyes within 0.55s, then warp across to claim Key #3 and Ship Log 4.",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "Using one Prism Split 3-way fan to power a center Blue Portal while triggering flanking triad eyes simultaneously.",
+    "decisions": 8,
+    "expert_s": 52,
+    "reward": "wick_key_2_3+ship_log_4+hollow_wick_reveal",
+    "why": "Key #3 story room delivering Island 2's unforgettable Hollow Wick foreshadowing beat.",
+    "optional": true,
+    "exit": "exit_lh_r16_west",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          112,
+          232
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_lh_r16",
+        "prop": "powered",
+        "value": true,
+        "timeout": 2.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          240
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r16",
+        "angle": 225.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          216
+        ],
+        "target": "mir_lh_r16"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r16_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          216
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "interact",
+        "target": "lore_lh_r16_log4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          88
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_2_3"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_2_3"
+      },
+      {
+        "op": "expect",
+        "flag": "ship_log_4"
+      }
+    ]
+  }
+}

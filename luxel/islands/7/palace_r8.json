@@ -6,28 +6,54 @@
   "name_key": "ISL7_PL_R8",
   "theme": "inverted_palace_silver",
   "music": "isl7_palace",
-  "ambience": ["night_breeze"],
-  "spawn": [48, 168],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    48,
+    168
+  ],
   "zones": [
     {
       "id": "palace_scales",
       "name_key": "ISL7_PL_R8",
-      "rect": [0, 0, 448, 320],
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r8_west",
-      "rect": [0, 144, 16, 48],
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
       "to_region": "palace_r6",
-      "to_spawn": [432, 176]
+      "to_spawn": [
+        432,
+        176
+      ]
     },
     {
       "id": "exit_r8_north",
-      "rect": [208, 0, 48, 16],
+      "rect": [
+        208,
+        0,
+        48,
+        16
+      ],
       "to_region": "palace_r9",
-      "to_spawn": [368, 272],
+      "to_spawn": [
+        368,
+        272
+      ],
       "locked_door_id": "door_r8_north"
     }
   ],
@@ -35,13 +61,21 @@
     {
       "id": "anc_r8_west",
       "kind": "room_anchor",
-      "pos": [48, 168],
-      "props": { "auto": true }
+      "pos": [
+        48,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "pool_r8_center",
       "kind": "moon_pool",
-      "pos": [224, 272],
+      "pos": [
+        224,
+        272
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": true,
@@ -53,7 +87,10 @@
     {
       "id": "scale_r8_twin",
       "kind": "scale",
-      "pos": [224, 104],
+      "pos": [
+        224,
+        104
+      ],
       "props": {
         "left": "plate_r8_silver",
         "right": "plate_r8_black",
@@ -67,56 +104,84 @@
     {
       "id": "plate_r8_silver",
       "kind": "pressure_plate",
-      "pos": [152, 104],
+      "pos": [
+        152,
+        104
+      ],
       "props": {
-        "by": ["block"],
+        "by": [
+          "block"
+        ],
         "hold": true,
-        "size": [36, 36],
+        "size": [
+          36,
+          36
+        ],
         "target_id": "scale_r8_twin"
       }
     },
     {
       "id": "plate_r8_black",
       "kind": "pressure_plate",
-      "pos": [336, 104],
+      "pos": [
+        336,
+        104
+      ],
       "props": {
-        "by": ["block"],
+        "by": [
+          "block"
+        ],
         "hold": true,
-        "size": [36, 36],
+        "size": [
+          36,
+          36
+        ],
         "target_id": "scale_r8_twin"
       }
     },
     {
       "id": "block_r8_stone",
       "kind": "push_block",
-      "pos": [96, 104],
+      "pos": [
+        96,
+        104
+      ],
       "props": {
         "variant": "stone",
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "orb_r8_silver",
       "kind": "carry_orb",
-      "pos": [88, 216],
+      "pos": [
+        88,
+        216
+      ],
       "props": {
         "kind": "stone",
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "orb_r8_smuggle",
       "kind": "carry_orb",
-      "pos": [152, 248],
+      "pos": [
+        152,
+        248
+      ],
       "props": {
         "kind": "light",
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "mimic_r8_black",
       "kind": "mimic_statue",
-      "pos": [336, 168],
+      "pos": [
+        336,
+        168
+      ],
       "props": {
         "mirror": "y",
         "range": 380
@@ -125,7 +190,10 @@
     {
       "id": "reset_r8_brazier",
       "kind": "timed_brazier",
-      "pos": [168, 192],
+      "pos": [
+        168,
+        192
+      ],
       "props": {
         "secs": 2.0,
         "reset": true,
@@ -136,7 +204,10 @@
     {
       "id": "palace_key_2",
       "kind": "wick_key",
-      "pos": [88, 56],
+      "pos": [
+        88,
+        56
+      ],
       "props": {
         "dungeon_id": "palace",
         "key_kind": "wick_key",
@@ -147,13 +218,21 @@
     {
       "id": "cracked_r8_ember",
       "kind": "cracked_wall",
-      "pos": [408, 248],
-      "props": { "from_map_tile": true }
+      "pos": [
+        408,
+        248
+      ],
+      "props": {
+        "from_map_tile": true
+      }
     },
     {
       "id": "chest_r8_ember",
       "kind": "chest",
-      "pos": [408, 280],
+      "pos": [
+        408,
+        280
+      ],
       "props": {
         "reward_kind": "ember_piece",
         "flag_id": "ember_7_palace"
@@ -162,46 +241,161 @@
     {
       "id": "door_r8_north",
       "kind": "door",
-      "pos": [232, 24],
+      "pos": [
+        232,
+        24
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["palace_r8_solved"],
+        "requires_flags": [
+          "palace_r8_solved"
+        ],
         "persistent": true,
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "lamp_r8_w",
       "kind": "road_lamp",
-      "pos": [56, 128],
-      "props": { "zone": "palace_scales", "lit": true }
+      "pos": [
+        56,
+        128
+      ],
+      "props": {
+        "zone": "palace_scales",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r8_s",
       "kind": "road_lamp",
-      "pos": [184, 264],
-      "props": { "zone": "palace_scales", "lit": true }
+      "pos": [
+        184,
+        264
+      ],
+      "props": {
+        "zone": "palace_scales",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r8_e",
       "kind": "road_lamp",
-      "pos": [384, 128],
-      "props": { "zone": "palace_scales", "lit": true }
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "zone": "palace_scales",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "circle", "x": 224, "y": 272, "r": 26, "col": "sky", "ring": "ice" },
-    { "kind": "inlay", "x": 80, "y": 80, "w": 96, "h": 96, "col": "stone", "border": "sky" },
-    { "kind": "inlay", "x": 288, "y": 80, "w": 96, "h": 112, "col": "ice", "border": "sky" }
+    {
+      "kind": "circle",
+      "x": 224,
+      "y": 272,
+      "r": 26,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "inlay",
+      "x": 80,
+      "y": 80,
+      "w": 96,
+      "h": 96,
+      "col": "stone",
+      "border": "sky"
+    },
+    {
+      "kind": "inlay",
+      "x": 288,
+      "y": 80,
+      "w": 96,
+      "h": 112,
+      "col": "ice",
+      "border": "sky"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [168, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "lunar_brazier_bowl", "pos": [288, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_bell_pedestal", "pos": [48, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [392, 64], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [288, 256], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [64, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        168,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_bell_pedestal",
+      "pos": [
+        48,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        392,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        288,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        64,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
   ],
   "layers": [
     {
@@ -211,20 +405,48 @@
       "overlay": "res://luxel/art/islands/7/palace_r8__black_world.png",
       "full_frame": true,
       "tiles": [
-        [13, 12, 3, 3, "bridge"]
+        [
+          13,
+          12,
+          3,
+          3,
+          "bridge"
+        ]
       ],
-      "enable": ["mimic_r8_black"],
+      "enable": [
+        "mimic_r8_black"
+      ],
       "disable": []
     }
   ],
   "events": [
     {
+      "id": "r8_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
+    {
       "id": "r8_scale_flag",
       "on": "signal:scale_r8_twin",
       "once": false,
       "do": [
-        { "set_flag": "palace_r8_solved" },
-        { "unlock": ["door_r8_north"] }
+        {
+          "set_flag": "palace_r8_solved"
+        },
+        {
+          "unlock": [
+            "door_r8_north"
+          ]
+        }
       ]
     }
   ],
@@ -239,24 +461,105 @@
     "why": "Signature East Wing logic puzzle rewarding Small Key #2 and the dungeon's Ember Piece.",
     "exit": "exit_r8_north",
     "start": {
-      "flags": ["item_moon_pocket"]
+      "flags": [
+        "item_moon_pocket"
+      ]
     },
     "solution": [
-      { "op": "goto", "to": [74, 104], "tol": 8 },
-      { "op": "push", "target": "block_r8_stone", "to": [152, 104] },
-      { "op": "carry", "target": "orb_r8_silver", "action": "pickup" },
-      { "op": "carry", "target": "orb_r8_silver", "action": "drop", "to": [152, 120] },
-      { "op": "carry", "target": "orb_r8_smuggle", "action": "pickup" },
-      { "op": "goto", "to": [224, 272], "tol": 6 },
-      { "op": "wait", "secs": 0.30 },
-      { "op": "expect", "var": "world_face==black" },
-      { "op": "carry", "target": "orb_r8_smuggle", "action": "drop", "to": [336, 104] },
-      { "op": "goto", "to": [288, 128], "tol": 8 },
-      { "op": "goto", "to": [288, 224], "tol": 8 },
-      { "op": "wait", "secs": 0.30 },
-      { "op": "expect", "target": "scale_r8_twin", "prop": "powered", "value": true },
-      { "op": "interact", "target": "palace_key_2" },
-      { "op": "expect_exit", "exit": "exit_r8_north" }
+      {
+        "op": "goto",
+        "to": [
+          74,
+          104
+        ],
+        "tol": 8
+      },
+      {
+        "op": "push",
+        "target": "block_r8_stone",
+        "to": [
+          152,
+          104
+        ]
+      },
+      {
+        "op": "carry",
+        "target": "orb_r8_silver",
+        "action": "pickup"
+      },
+      {
+        "op": "carry",
+        "target": "orb_r8_silver",
+        "action": "drop",
+        "to": [
+          152,
+          120
+        ]
+      },
+      {
+        "op": "carry",
+        "target": "orb_r8_smuggle",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          272
+        ],
+        "tol": 6
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "carry",
+        "target": "orb_r8_smuggle",
+        "action": "drop",
+        "to": [
+          336,
+          104
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          128
+        ],
+        "tol": 8
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          224
+        ],
+        "tol": 8
+      },
+      {
+        "op": "wait",
+        "secs": 0.3
+      },
+      {
+        "op": "expect",
+        "target": "scale_r8_twin",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "interact",
+        "target": "palace_key_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
     ]
   }
 }

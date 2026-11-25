@@ -47,10 +47,10 @@
         16
       ],
       "to_island": 4,
-      "to_region": "overworld",
+      "to_region": "ow_drowned_cloister",
       "to_spawn": [
-        216,
-        560
+        296,
+        392
       ],
       "one_way": true,
       "requires_flags": [

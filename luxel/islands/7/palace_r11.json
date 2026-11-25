@@ -6,35 +6,61 @@
   "name_key": "ISL7_PL_R11",
   "theme": "inverted_palace_silver",
   "music": "isl7_palace",
-  "ambience": ["night_breeze"],
-  "spawn": [208, 240],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    208,
+    240
+  ],
   "zones": [
     {
       "id": "palace_false_throne",
       "name_key": "ISL7_PL_R11",
-      "rect": [0, 0, 416, 288],
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r11_south",
-      "rect": [192, 272, 32, 16],
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
       "to_region": "palace_r9",
-      "to_spawn": [232, 48]
+      "to_spawn": [
+        232,
+        48
+      ]
     }
   ],
   "interactables": [
     {
       "id": "anc_r11_south",
       "kind": "room_anchor",
-      "pos": [208, 240],
-      "props": { "auto": true }
+      "pos": [
+        208,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "fake_key_r11",
       "kind": "palace_false_key",
-      "pos": [208, 72],
+      "pos": [
+        208,
+        72
+      ],
       "props": {
         "sets_flag": "palace_false_throne_broken",
         "target_id": "pool_r11_rug"
@@ -43,7 +69,10 @@
     {
       "id": "pool_r11_rug",
       "kind": "moon_pool",
-      "pos": [208, 144],
+      "pos": [
+        208,
+        144
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": false,
@@ -55,7 +84,10 @@
     {
       "id": "palace_boss_key",
       "kind": "keepers_flame",
-      "pos": [208, 196],
+      "pos": [
+        208,
+        196
+      ],
       "props": {
         "dungeon_id": "palace",
         "key_kind": "keepers_flame",
@@ -65,7 +97,10 @@
     {
       "id": "lore_r11_queen",
       "kind": "lore_stone",
-      "pos": [312, 144],
+      "pos": [
+        312,
+        144
+      ],
       "props": {
         "string_id": "ISL7_LORE_QUEEN",
         "icon": "mirror"
@@ -74,35 +109,142 @@
     {
       "id": "lamp_r11_s",
       "kind": "road_lamp",
-      "pos": [168, 224],
-      "props": { "zone": "palace_false_throne", "lit": true }
+      "pos": [
+        168,
+        224
+      ],
+      "props": {
+        "zone": "palace_false_throne",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r11_nw",
       "kind": "road_lamp",
-      "pos": [144, 64],
-      "props": { "zone": "palace_false_throne", "lit": true }
+      "pos": [
+        144,
+        64
+      ],
+      "props": {
+        "zone": "palace_false_throne",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r11_ne",
       "kind": "road_lamp",
-      "pos": [272, 64],
-      "props": { "zone": "palace_false_throne", "lit": true }
+      "pos": [
+        272,
+        64
+      ],
+      "props": {
+        "zone": "palace_false_throne",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "circle", "x": 208, "y": 144, "r": 26, "col": "sky", "ring": "ice" },
-    { "kind": "inlay", "x": 160, "y": 48, "w": 96, "h": 64, "col": "ice", "border": "sky" },
-    { "kind": "inlay", "x": 176, "y": 176, "w": 64, "h": 64, "col": "stone", "border": "sky" }
+    {
+      "kind": "circle",
+      "x": 208,
+      "y": 144,
+      "r": 26,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "inlay",
+      "x": 160,
+      "y": 48,
+      "w": 96,
+      "h": 64,
+      "col": "ice",
+      "border": "sky"
+    },
+    {
+      "kind": "inlay",
+      "x": 176,
+      "y": 176,
+      "w": 64,
+      "h": 64,
+      "col": "stone",
+      "border": "sky"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_inverted_palace_silver", "prop": "crystal_chandelier_arch", "pos": [208, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [128, 60], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [296, 60], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [56, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [360, 136], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "gilded_statue_bust", "pos": [104, 172], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        208,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        128,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        296,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        56,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        360,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        104,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
   ],
   "layers": [
     {
@@ -112,24 +254,76 @@
       "overlay": "res://luxel/art/islands/7/palace_r11__black_world.png",
       "full_frame": true,
       "tiles": [
-        [10, 3, 6, 3, "pit"]
+        [
+          10,
+          3,
+          6,
+          3,
+          "pit"
+        ]
       ],
-      "enable": ["palace_boss_key"],
-      "disable": ["fake_key_r11"]
+      "enable": [
+        "palace_boss_key"
+      ],
+      "disable": [
+        "fake_key_r11"
+      ]
     }
   ],
   "events": [
+    {
+      "id": "r11_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
     {
       "id": "r11_false_crown_ambush",
       "on": "signal:fake_key_r11",
       "once": true,
       "do": [
-        { "lock": ["exit_r11_south"] },
+        {
+          "lock": [
+            "exit_r11_south"
+          ]
+        },
         {
           "wave": [
-            { "id": "ref_r11_w", "kind": "reflection", "pos": [128, 128], "zone": "palace_false_throne" },
-            { "id": "ref_r11_e", "kind": "reflection", "pos": [288, 128], "zone": "palace_false_throne" },
-            { "id": "mimic_r11_n", "kind": "false_chest", "pos": [208, 104], "zone": "palace_false_throne" }
+            {
+              "id": "ref_r11_w",
+              "kind": "reflection",
+              "pos": [
+                128,
+                128
+              ],
+              "zone": "palace_false_throne"
+            },
+            {
+              "id": "ref_r11_e",
+              "kind": "reflection",
+              "pos": [
+                288,
+                128
+              ],
+              "zone": "palace_false_throne"
+            },
+            {
+              "id": "mimic_r11_n",
+              "kind": "false_chest",
+              "pos": [
+                208,
+                104
+              ],
+              "zone": "palace_false_throne"
+            }
           ]
         }
       ]
@@ -139,7 +333,11 @@
       "on": "cleared",
       "once": true,
       "do": [
-        { "unlock": ["exit_r11_south"] }
+        {
+          "unlock": [
+            "exit_r11_south"
+          ]
+        }
       ]
     }
   ],
@@ -155,20 +353,64 @@
     "optional": true,
     "exit": "exit_r11_south",
     "start": {
-      "flags": ["item_moon_pocket", "palace_mirror_chord"]
+      "flags": [
+        "item_moon_pocket",
+        "palace_mirror_chord"
+      ]
     },
     "solution": [
-      { "op": "goto", "to": [208, 88], "tol": 10 },
-      { "op": "interact", "target": "fake_key_r11" },
-      { "op": "wait", "secs": 0.90 },
-      { "op": "clear", "timeout": 45.0 },
-      { "op": "goto", "to": [208, 144], "tol": 12 },
-      { "op": "interact", "target": "pool_r11_rug" },
-      { "op": "expect", "var": "world_face==black" },
-      { "op": "interact", "target": "lore_r11_queen" },
-      { "op": "interact", "target": "palace_boss_key" },
-      { "op": "expect", "flag": "palace_boss_key" },
-      { "op": "expect_exit", "exit": "exit_r11_south" }
+      {
+        "op": "goto",
+        "to": [
+          208,
+          88
+        ],
+        "tol": 10
+      },
+      {
+        "op": "interact",
+        "target": "fake_key_r11"
+      },
+      {
+        "op": "wait",
+        "secs": 0.9
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          208,
+          144
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "pool_r11_rug"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r11_queen"
+      },
+      {
+        "op": "interact",
+        "target": "palace_boss_key"
+      },
+      {
+        "op": "expect",
+        "flag": "palace_boss_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_south"
+      }
     ]
   }
 }

@@ -545,9 +545,9 @@
     "optional": true,
     "start": {
       "vars": {
-        "wood_turn": 2,
-        "eff_turn_n": 2,
-        "pin_n": 0
+        "island:3:wood_turn": 2,
+        "island:3:eff_turn_n": 2,
+        "island:3:pin_n": 0
       },
       "moves": [
         "bolt",

@@ -68,7 +68,7 @@
       "id": "sn_sp_1",
       "kind": "star_node",
       "pos": [
-        128,
+        112,
         144
       ],
       "props": {
@@ -81,8 +81,8 @@
       "id": "sn_sp_2",
       "kind": "star_node",
       "pos": [
-        168,
-        184
+        160,
+        160
       ],
       "props": {
         "cap_group": "sprint",
@@ -108,7 +108,7 @@
       "kind": "star_node",
       "pos": [
         288,
-        136
+        152
       ],
       "props": {
         "cap_group": "sprint",
@@ -121,7 +121,7 @@
       "kind": "star_node",
       "pos": [
         328,
-        104
+        136
       ],
       "props": {
         "cap_group": "sprint",

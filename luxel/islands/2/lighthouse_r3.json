@@ -55,6 +55,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_lh_r3_combat"
+    },
+    {
+      "id": "exit_lh_r3_south",
+      "rect": [
+        192,
+        224,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r12",
+      "to_spawn": [
+        224,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
@@ -62,59 +79,74 @@
       "id": "barnacle_sentry_lh_r3",
       "kind": "barnacle_sentry",
       "pos": [
-        328,
+        264,
+        48
+      ],
+      "route": [],
+      "zone": "lighthouse_r3",
+      "leash": 120
+    },
+    {
+      "id": "pistol_shrimp_lh_r3",
+      "kind": "pistol_shrimp",
+      "pos": [
+        224,
         56
       ],
       "route": [],
-      "perches": [],
       "zone": "lighthouse_r3",
-      "leash": 120
+      "leash": 136
     },
     {
       "id": "crab_warden_lh_r3",
       "kind": "crab_warden",
       "pos": [
-        200,
-        168
+        152,
+        80
       ],
       "route": [
         [
-          152,
-          168
+          136,
+          80
         ],
         [
           200,
-          168
+          80
         ]
       ],
-      "perches": [],
       "zone": "lighthouse_r3",
       "leash": 136
     },
     {
-      "id": "gull_thief_lh_r3",
-      "kind": "gull_thief",
+      "id": "reef_skate_lh_r3",
+      "kind": "reef_skate",
       "pos": [
-        248,
-        104
+        232,
+        88
       ],
-      "route": [],
-      "perches": [
+      "route": [
         [
-          248,
-          104
+          200,
+          88
         ],
         [
-          296,
-          56
-        ],
-        [
-          136,
-          168
+          264,
+          88
         ]
       ],
       "zone": "lighthouse_r3",
-      "leash": 148
+      "leash": 136
+    },
+    {
+      "id": "buoy_mine_lh_r3",
+      "kind": "buoy_mine",
+      "pos": [
+        200,
+        88
+      ],
+      "route": [],
+      "zone": "lighthouse_r3",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -153,6 +185,61 @@
         "zone": "lighthouse_r3",
         "clear_zone": "lighthouse_r3",
         "sets_flag": "lh_r3_cleared"
+      }
+    },
+    {
+      "id": "lever_lh_r3_tide",
+      "kind": "state_lever",
+      "pos": [
+        136,
+        152
+      ],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "lamp_lh_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        120
+      ],
+      "props": {
+        "zone": "lighthouse_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        184
+      ],
+      "props": {
+        "zone": "lighthouse_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        120
+      ],
+      "props": {
+        "zone": "lighthouse_r3",
+        "lit": true
       }
     }
   ],
@@ -220,54 +307,6 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        96,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        160,
-        36
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        336,
-        154
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        320,
-        194
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
         80,
@@ -302,5 +341,67 @@
       "shadow": true,
       "phase": 0.2
     }
-  ]
+  ],
+  "name_key": "LH2_R3_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        200,
+        120
+      ],
+      "radius": 24
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        264,
+        88
+      ],
+      "radius": 24,
+      "style": "water"
+    }
+  ],
+  "design": {
+    "idea": "Deepened Pier Ward Gallery coupling tower_tide to combat: bat a Buoy Mine into the Crab Warden, exploit low tide to strand the Reef Skate dry, bank blue bolts off the central mirror to crack the Barnacle Sentry & Pistol Shrimp, and connect the South stair from Relay F1 (r12).",
+    "kind": "combat",
+    "beat": "sho",
+    "teaches": "Coastal combat synergy: Buoy Mine billiards + Reef Skate low-tide stranding + Blue Transformer banks.",
+    "decisions": 6,
+    "expert_s": 46,
+    "reward": "lh_r3_cleared+r12_cycle_link",
+    "why": "Wing 2 combat gallery upgraded from legacy flat room into a tidal coastal squad showcase.",
+    "exit": "exit_lh_r3_east",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "low"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          136,
+          120
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lighthouse_r3",
+        "timeout": 40.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r3_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r3_east"
+      }
+    ]
+  }
 }

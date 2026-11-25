@@ -90,7 +90,7 @@
       "kind": "star_node",
       "pos": [
         412,
-        160
+        184
       ],
       "props": {
         "cap_group": "pl_r9",
@@ -187,6 +187,10 @@
         "by": [
           "lantern",
           "wick"
+        ],
+        "size": [
+          28,
+          28
         ],
         "latch": true,
         "target_id": "door_pl_r9_vault"
@@ -486,7 +490,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "pl_r9_reset_sky",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:planetarium",
+            "name": "sky_turn",
+            "value": 0
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "The Sky Turns Under Your Feet: light 3 stars to reach the central rotor, turn 90 degrees onto the lone SW star-perch, light the 4th star, plant your lantern onto the rotor's glyph as a live Star Vertex, and ring the Star Bell from your tiny island so the entire dome turns 90 degrees swinging the Boss Key vault flush to your feet!",
     "kind": "puzzle",
@@ -514,7 +533,7 @@
         "op": "shoot",
         "from": [
           432,
-          160
+          184
         ],
         "target": "sn_r9_1",
         "wait_hit": 0.45
@@ -523,7 +542,7 @@
         "op": "shoot",
         "from": [
           432,
-          188
+          152
         ],
         "target": "sn_r9_2",
         "wait_hit": 0.55
@@ -532,24 +551,24 @@
         "op": "goto",
         "to": [
           388,
-          172
+          184
         ]
       },
       {
-        "op": "shoot",
-        "target": "sn_r9_3",
-        "wait_hit": 0.55
+        "op": "beam",
+        "target": "sn_r9_3"
       },
       {
         "op": "goto",
         "to": [
-          264,
-          208
+          256,
+          212
         ]
       },
       {
-        "op": "interact",
-        "target": "bell_pl_r9"
+        "op": "shoot",
+        "target": "bell_pl_r9",
+        "wait_hit": 0.55
       },
       {
         "op": "expect",
@@ -562,8 +581,8 @@
       {
         "op": "goto",
         "to": [
-          156,
-          196
+          144,
+          200
         ]
       },
       {
@@ -574,7 +593,7 @@
       {
         "op": "throw",
         "target": "plate_pl_r9_rotor",
-        "hold": 0.55
+        "hold": 0.65
       },
       {
         "op": "wait_until",
@@ -586,11 +605,11 @@
       {
         "op": "shoot",
         "from": [
-          160,
+          164,
           196
         ],
         "target": "bell_pl_r9",
-        "wait_hit": 0.65
+        "wait_hit": 0.7
       },
       {
         "op": "expect",

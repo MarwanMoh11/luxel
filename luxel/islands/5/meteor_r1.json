@@ -37,12 +37,11 @@
         16
       ],
       "to_island": 5,
-      "to_region": "overworld",
+      "to_region": "ow_meteor_apron",
       "to_spawn": [
-        152,
-        544
-      ],
-      "one_way": true
+        296,
+        80
+      ]
     },
     {
       "id": "exit_mv_r1_w",

@@ -32,7 +32,7 @@
       ],
       "to_region": "lighthouse_r5",
       "to_spawn": [
-        392,
+        440,
         136
       ],
       "requires_moves": [],
@@ -55,6 +55,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_lh_r6_combat"
+    },
+    {
+      "id": "exit_lh_r6_nw",
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r14",
+      "to_spawn": [
+        392,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
     }
   ],
   "enemies": [
@@ -150,6 +167,76 @@
         "clear_zone": "lighthouse_r6",
         "sets_flag": "lh_r6_cleared"
       }
+    },
+    {
+      "id": "anc_lh_r6",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        128
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "skiff_lh_r6_drydock",
+      "kind": "vehicle_skiff",
+      "pos": [
+        64,
+        216
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "lamp_lh_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        104
+      ],
+      "props": {
+        "zone": "lighthouse_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r6_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "zone": "lighthouse_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r6_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        200
+      ],
+      "props": {
+        "zone": "lighthouse_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        120
+      ],
+      "props": {
+        "zone": "lighthouse_r6",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -237,30 +324,105 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        112,
-        48
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.1
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        392,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.8
     }
-  ]
+  ],
+  "name_key": "LH2_R6_NAME",
+  "music": "island2_boss_p1",
+  "layers": [
+    {
+      "id": "r6_skiff_docked",
+      "when": "!flag:lh_r6_skiff_released",
+      "tiles": [],
+      "enable": [],
+      "disable": [
+        "skiff_lh_r6_drydock"
+      ]
+    },
+    {
+      "id": "r6_skiff_live",
+      "when": "flag:lh_r6_skiff_released",
+      "tiles": [],
+      "enable": [
+        "skiff_lh_r6_drydock"
+      ],
+      "disable": []
+    }
+  ],
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        240,
+        128
+      ],
+      "radius": 36
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        88,
+        176,
+        80
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Rebuilt Flooded Drydock Basin for upgraded 2-phase Tide Captain: crack his brass claw guard with Prism Split off the twin basin mirrors, survive his P2 sluice flood (tower_tide -> mid) & Double Cross-Surge with optional Drydock Skiff from r14, and claim Key #2.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Using Prism Split blue reflections to shatter armored boss guards across a P2 tidal arena shift.",
+    "decisions": 9,
+    "expert_s": 92,
+    "reward": "boss_tide_captain_defeated+wick_key_2_2",
+    "why": "Lighthouse grand mini-boss battle awarding Key #2 to unlock the upper mirror galleries.",
+    "exit": "exit_lh_r6_east",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          128
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lighthouse_r6",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r6_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          128
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_2_2"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_2_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r6_east"
+      }
+    ]
+  }
 }

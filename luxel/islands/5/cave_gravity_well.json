@@ -43,21 +43,21 @@
       "id": "well_cg_1",
       "kind": "polarity_well",
       "pos": [
-        256,
-        96
+        224,
+        144
       ],
       "props": {
         "mode": "pull",
-        "radius": 80.0,
-        "strength": 620.0
+        "radius": 96.0,
+        "strength": 1600.0
       }
     },
     {
       "id": "eye_cg_1",
       "kind": "switch_eye",
       "pos": [
-        208,
-        104
+        200,
+        120
       ],
       "props": {
         "target_id": "door_cg_1"
@@ -86,21 +86,21 @@
       "id": "well_cg_2",
       "kind": "polarity_well",
       "pos": [
-        144,
-        80
+        112,
+        128
       ],
       "props": {
         "mode": "pull",
-        "radius": 82.0,
-        "strength": 640.0
+        "radius": 96.0,
+        "strength": 1600.0
       }
     },
     {
       "id": "eye_cg_2",
       "kind": "switch_eye",
       "pos": [
-        80,
-        96
+        88,
+        104
       ],
       "props": {
         "target_id": "door_cg_vault",
@@ -301,15 +301,16 @@
       {
         "op": "goto",
         "to": [
-          264,
-          176
-        ]
+          272,
+          120
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
-          288,
-          88
+          199,
+          87
         ],
         "wait_hit": 0.75
       },
@@ -323,14 +324,15 @@
         "op": "goto",
         "to": [
           160,
-          168
-        ]
+          104
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
-          176,
-          72
+          87,
+          71
         ],
         "wait_hit": 0.75
       },

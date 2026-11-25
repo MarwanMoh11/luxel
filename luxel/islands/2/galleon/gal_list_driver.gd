@@ -29,6 +29,7 @@ var current_list: String = "port"
 var surge_left: float = 0.0
 var _rail_ys: Array[float] = []
 var _last_dir_x: float = -1.0
+var _entry_applied: bool = false
 
 
 func _toy_setup() -> void:
@@ -55,6 +56,7 @@ func _toy_setup() -> void:
 	if tr is Array and (tr as Array).size() >= 4:
 		var a: Array = tr as Array
 		table_rect = Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
+	_entry_applied = false
 	current_list = _read_list_var()
 	_last_dir_x = -1.0 if current_list == "port" else 1.0
 	surge_left = surge_secs if bool(props.get("initial_surge", false)) else 0.0
@@ -136,10 +138,62 @@ func _cache_rail_ys() -> void:
 	queue_redraw()
 
 
+func _is_solved_guard_met() -> bool:
+	var sid: String = str(props.get("skip_if_solved_id", "")).strip_edges()
+	if sid.is_empty() or region == null or not region.has_method("find_interactable"):
+		return false
+	var it: LxInteractable = region.call("find_interactable", sid) as LxInteractable
+	if it == null or not is_instance_valid(it):
+		return false
+	if it.get("opened") is bool and bool(it.get("opened")):
+		return true
+	if it.get("pressed") is bool and bool(it.get("pressed")):
+		return true
+	if it.get("latched") is bool and bool(it.get("latched")):
+		return true
+	if it.get("powered") is bool and bool(it.get("powered")):
+		return true
+	return false
+
+
+func _apply_entry_state() -> void:
+	_entry_applied = true
+	if Lx.vars == null or _is_solved_guard_met():
+		return
+	var changed: bool = false
+	var entry_list: String = str(props.get("entry_list", "")).strip_edges().to_lower()
+	if entry_list == "port" or entry_list == "starboard":
+		if _read_list_var() != entry_list:
+			Lx.vars.set_var("dungeon:galleon", "list", entry_list)
+			changed = true
+		current_list = entry_list
+		_last_dir_x = -1.0 if current_list == "port" else 1.0
+		surge_left = 0.0
+	var ev_scope: String = str(props.get("entry_var_scope", "")).strip_edges()
+	var ev_name: String = str(props.get("entry_var_name", "")).strip_edges()
+	var ev_val: String = str(props.get("entry_var_value", "")).strip_edges()
+	if not ev_scope.is_empty() and not ev_name.is_empty() and not ev_val.is_empty():
+		if str(Lx.vars.get_var(ev_scope, ev_name, "")) != ev_val:
+			Lx.vars.set_var(ev_scope, ev_name, ev_val)
+			changed = true
+	if changed and region != null and is_instance_valid(region):
+		if region.has_method("apply_layers"):
+			region.call("apply_layers", false)
+		if region.has_method("get_interactables"):
+			for it_v: Variant in region.call("get_interactables") as Array:
+				if it_v is LxInteractable and is_instance_valid(it_v as Object):
+					var it: LxInteractable = it_v as LxInteractable
+					if it.kind == "state_lever" and it.has_method("_sync_from_world_var"):
+						it.call("_sync_from_world_var")
+						it.queue_redraw()
+
+
 func tick(dt: float) -> void:
 	super.tick(dt)
 	if not active or region == null or not is_instance_valid(region):
 		return
+	if not _entry_applied:
+		_apply_entry_state()
 	_cache_rail_ys()
 
 	var lv: String = _read_list_var()

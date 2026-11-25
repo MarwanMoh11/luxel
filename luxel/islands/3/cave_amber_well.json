@@ -404,8 +404,8 @@
         "tol": 8.0
       },
       {
-        "op": "interact",
-        "target": "sun_seed_2"
+        "op": "wait",
+        "secs": 0.45
       },
       {
         "op": "expect",

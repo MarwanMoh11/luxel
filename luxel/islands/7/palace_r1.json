@@ -499,6 +499,20 @@
   ],
   "events": [
     {
+      "id": "r1_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
+    {
       "id": "palace_enter_flag",
       "on": "enter",
       "once": true,

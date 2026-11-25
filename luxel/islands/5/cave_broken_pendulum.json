@@ -398,8 +398,13 @@
         "target": "cw_pend_gear"
       },
       {
-        "op": "beam",
-        "target": "eye_pend_gear"
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "shoot",
+        "target": "eye_pend_gear",
+        "wait_hit": 0.6
       },
       {
         "op": "expect",

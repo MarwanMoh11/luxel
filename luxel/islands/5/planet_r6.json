@@ -325,7 +325,18 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
+  "events": [
+    {
+      "id": "pl_r6_miniboss_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "pl_miniboss_done"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Octagonal brass compass mini-boss arena against The Meridian Weaver, which strides across an 8-star dome ring extinguishing stars behind its feet; shoot corner Star Bells during its Divider Slice tell to rotate the dome 90 degrees and stagger it.",
     "kind": "boss",

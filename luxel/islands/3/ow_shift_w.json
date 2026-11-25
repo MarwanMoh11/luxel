@@ -135,8 +135,7 @@
       "to_spawn": [
         192,
         216
-      ],
-      "one_way": true
+      ]
     }
   ],
   "enemies": [
@@ -484,9 +483,9 @@
     "optional": true,
     "start": {
       "vars": {
-        "wood_turn": 1,
-        "eff_turn_w": 1,
-        "pin_w": 0
+        "island:3:wood_turn": 1,
+        "island:3:eff_turn_w": 1,
+        "island:3:pin_w": 0
       }
     },
     "solution": [

@@ -214,13 +214,13 @@
         104
       ],
       "props": {
-        "door_kind": "shutter",
+        "door_kind": "ward_barrier",
         "size": [
           32,
           16
         ],
-        "requires_signals": [
-          "trial_wing_gate"
+        "requires_flags": [
+          "trial_wing_spire_done"
         ]
       }
     },
@@ -329,10 +329,55 @@
   "layers": [],
   "events": [
     {
-      "id": "ev_spire_init",
-      "on": "enter",
+      "id": "ev_spire_start",
+      "on": "trial_start:trial_wing_gate",
       "once": false,
-      "do": []
+      "do": [
+        {
+          "challenge": {
+            "id": "wing_spire",
+            "kind": "race",
+            "time": 48.0,
+            "goal_radius": 36.0,
+            "instant_retry": true,
+            "checkpoints": [
+              [
+                176,
+                80
+              ],
+              [
+                320,
+                80
+              ],
+              [
+                352,
+                224
+              ],
+              [
+                192,
+                240
+              ]
+            ],
+            "goal": [
+              80,
+              160
+            ],
+            "ok": [
+              {
+                "set_flag": "trial_wing_spire_done"
+              },
+              {
+                "unlock": [
+                  "door_spire_vault"
+                ]
+              },
+              {
+                "narrate": "ISL4_TRIAL_SPIRE_WIN"
+              }
+            ]
+          }
+        }
+      ]
     }
   ],
   "decor": [
@@ -564,6 +609,10 @@
           160
         ],
         "tol": 20
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
       },
       {
         "op": "expect",

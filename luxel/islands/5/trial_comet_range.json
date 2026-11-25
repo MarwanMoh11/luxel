@@ -69,33 +69,33 @@
       "id": "well_tr_n",
       "kind": "polarity_well",
       "pos": [
-        240,
-        88
+        256,
+        120
       ],
       "props": {
         "mode": "pull",
-        "radius": 82.0,
-        "strength": 620.0
+        "radius": 88.0,
+        "strength": 1600.0
       }
     },
     {
       "id": "well_tr_s",
       "kind": "polarity_well",
       "pos": [
-        200,
-        176
+        192,
+        240
       ],
       "props": {
         "mode": "pull",
-        "radius": 82.0,
-        "strength": 620.0
+        "radius": 88.0,
+        "strength": 1600.0
       }
     },
     {
       "id": "trans_tr_s",
       "kind": "blue_transformer",
       "pos": [
-        256,
+        248,
         232
       ],
       "props": {
@@ -110,8 +110,8 @@
       "id": "eye_tr_1",
       "kind": "switch_eye",
       "pos": [
-        168,
-        64
+        232,
+        88
       ],
       "props": {
         "target_id": "gate_tr_comet"
@@ -121,8 +121,8 @@
       "id": "eye_tr_2",
       "kind": "switch_eye",
       "pos": [
-        192,
-        128
+        232,
+        152
       ],
       "props": {
         "target_id": "gate_tr_comet"
@@ -132,8 +132,8 @@
       "id": "eye_tr_3",
       "kind": "switch_eye",
       "pos": [
-        128,
-        208
+        168,
+        216
       ],
       "props": {
         "target_id": "gate_tr_comet"
@@ -344,13 +344,14 @@
         "to": [
           304,
           88
-        ]
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
-          208,
-          40
+          231,
+          54
         ],
         "wait_hit": 0.75
       },
@@ -364,14 +365,15 @@
         "op": "goto",
         "to": [
           304,
-          136
-        ]
+          152
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
-          224,
-          80
+          231,
+          185
         ],
         "wait_hit": 0.75
       },
@@ -385,14 +387,15 @@
         "op": "goto",
         "to": [
           240,
-          224
-        ]
+          216
+        ],
+        "tol": 4.0
       },
       {
         "op": "shoot",
         "target": [
-          160,
-          160
+          166,
+          186
         ],
         "wait_hit": 0.75
       },

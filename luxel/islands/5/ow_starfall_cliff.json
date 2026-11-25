@@ -197,13 +197,13 @@
       "id": "well_cliff_1",
       "kind": "gravity_well",
       "pos": [
-        384,
-        216
+        416,
+        224
       ],
       "props": {
         "mode": "pull",
-        "radius": 64.0,
-        "strength": 760.0
+        "radius": 52.0,
+        "strength": 560.0
       }
     },
     {

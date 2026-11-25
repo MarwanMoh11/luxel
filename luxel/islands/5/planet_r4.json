@@ -115,7 +115,7 @@
       "id": "bell_pl_r4",
       "kind": "star_bell",
       "pos": [
-        368,
+        336,
         160
       ],
       "props": {
@@ -319,13 +319,6 @@
           12,
           13,
           4,
-          4,
-          "bridge"
-        ],
-        [
-          16,
-          15,
-          3,
           2,
           "bridge"
         ]
@@ -349,7 +342,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "pl_r4_reset_sky",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:planetarium",
+            "name": "sky_turn",
+            "value": 0
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Split-glass clover rotunda where shooting the East wall Star Bell turns the central rotor and star-bridges 90 degrees around glass dividers: turn to 90 to reach the SE latch plate unlocking the north arch, then turn to 270 to bridge straight north.",
     "kind": "puzzle",
@@ -394,7 +402,7 @@
       {
         "op": "shoot",
         "target": "bell_pl_r4",
-        "wait_hit": 0.55
+        "wait_hit": 0.7
       },
       {
         "op": "expect",
@@ -428,7 +436,7 @@
       {
         "op": "shoot",
         "target": "bell_pl_r4",
-        "wait_hit": 0.6
+        "wait_hit": 0.7
       },
       {
         "op": "wait",
@@ -437,7 +445,7 @@
       {
         "op": "shoot",
         "target": "bell_pl_r4",
-        "wait_hit": 0.6
+        "wait_hit": 0.7
       },
       {
         "op": "expect",

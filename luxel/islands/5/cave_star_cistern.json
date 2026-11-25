@@ -43,7 +43,7 @@
       "id": "sn_cist_1",
       "kind": "star_node",
       "pos": [
-        328,
+        344,
         152
       ],
       "props": {
@@ -56,8 +56,8 @@
       "id": "sn_cist_2",
       "kind": "star_node",
       "pos": [
-        296,
-        104
+        304,
+        152
       ],
       "props": {
         "cap_group": "cist",
@@ -70,7 +70,7 @@
       "kind": "star_node",
       "pos": [
         240,
-        96
+        88
       ],
       "props": {
         "cap_group": "cist",
@@ -82,7 +82,7 @@
       "id": "sn_cist_4",
       "kind": "star_node",
       "pos": [
-        168,
+        192,
         152
       ],
       "props": {
@@ -95,7 +95,7 @@
       "id": "sn_cist_5",
       "kind": "star_node",
       "pos": [
-        144,
+        152,
         152
       ],
       "props": {
@@ -109,7 +109,7 @@
       "kind": "blue_transformer",
       "pos": [
         224,
-        64
+        56
       ],
       "props": {
         "angle_deg": 45,
@@ -124,12 +124,12 @@
       "kind": "polarity_well",
       "pos": [
         160,
-        80
+        96
       ],
       "props": {
         "mode": "pull",
-        "radius": 68.0,
-        "strength": 480.0
+        "radius": 52.0,
+        "strength": 320.0
       }
     },
     {
@@ -137,7 +137,7 @@
       "kind": "switch_eye",
       "pos": [
         144,
-        64
+        56
       ],
       "props": {
         "requires_blue": true,
@@ -376,14 +376,14 @@
       {
         "op": "goto",
         "to": [
-          240,
-          64
+          224,
+          72
         ]
       },
       {
         "op": "rotate",
         "target": "trans_cist",
-        "angle": 180
+        "angle": 135
       },
       {
         "op": "shoot",
@@ -406,6 +406,11 @@
       {
         "op": "shoot",
         "target": "sn_cist_4",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "target": "sn_cist_5",
         "wait_hit": 0.4
       },
       {

@@ -143,8 +143,8 @@
       "id": "bell_r7_war",
       "kind": "bell",
       "pos": [
-        224,
-        96
+        152,
+        168
       ],
       "props": {
         "tone": "war",
@@ -339,8 +339,8 @@
       {
         "op": "shoot",
         "from": [
-          224,
-          192
+          200,
+          232
         ],
         "target": "bell_r7_war"
       },

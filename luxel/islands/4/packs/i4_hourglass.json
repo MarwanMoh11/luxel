@@ -53,23 +53,22 @@
       "theme": "hourglass_maze",
       "music": "isl4_hourglass",
       "requires_flags": [],
-      "done_flag": "dungeon_hourglass_done",
-      "debug_only": true
+      "done_flag": "dungeon_hourglass_done"
     }
   ],
   "regions": {
-    "hourglass_r1":  { "name_key": "ISL4_HG_R1",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 3], "debug_only": true },
-    "hourglass_r2":  { "name_key": "ISL4_HG_R2",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 3], "debug_only": true },
-    "hourglass_r3":  { "name_key": "ISL4_HG_R3",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 3], "debug_only": true },
-    "hourglass_r4":  { "name_key": "ISL4_HG_R4",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 2], "debug_only": true },
-    "hourglass_r5":  { "name_key": "ISL4_HG_R5",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 2], "debug_only": true },
-    "hourglass_r6":  { "name_key": "ISL4_HG_R6",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 3], "debug_only": true },
-    "hourglass_r7":  { "name_key": "ISL4_HG_R7",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 2], "debug_only": true },
-    "hourglass_r8":  { "name_key": "ISL4_HG_R8",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 2], "debug_only": true },
-    "hourglass_r9":  { "name_key": "ISL4_HG_R9",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 1], "debug_only": true },
-    "hourglass_r10": { "name_key": "ISL4_HG_R10", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 3], "debug_only": true },
-    "hourglass_r11": { "name_key": "ISL4_HG_R11", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 2], "debug_only": true },
-    "hourglass_r12": { "name_key": "ISL4_HG_R12", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 1], "debug_only": true }
+    "hourglass_r1":  { "name_key": "ISL4_HG_R1",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 3] },
+    "hourglass_r2":  { "name_key": "ISL4_HG_R2",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 3] },
+    "hourglass_r3":  { "name_key": "ISL4_HG_R3",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 3] },
+    "hourglass_r4":  { "name_key": "ISL4_HG_R4",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [0, 2] },
+    "hourglass_r5":  { "name_key": "ISL4_HG_R5",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [1, 2] },
+    "hourglass_r6":  { "name_key": "ISL4_HG_R6",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 3] },
+    "hourglass_r7":  { "name_key": "ISL4_HG_R7",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 2] },
+    "hourglass_r8":  { "name_key": "ISL4_HG_R8",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 2] },
+    "hourglass_r9":  { "name_key": "ISL4_HG_R9",  "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [3, 1] },
+    "hourglass_r10": { "name_key": "ISL4_HG_R10", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [4, 3] },
+    "hourglass_r11": { "name_key": "ISL4_HG_R11", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 2] },
+    "hourglass_r12": { "name_key": "ISL4_HG_R12", "theme": "hourglass_maze", "music": "isl4_hourglass", "dark": true, "map": [2, 1] }
   },
   "sfx": {
     "hg_echo_bud_bloom": { "id": "lens_reveal", "pitch": 1.18, "db": -1.0 },

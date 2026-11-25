@@ -55,6 +55,23 @@
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_lh_r4_shutter"
+    },
+    {
+      "id": "exit_lh_r4_north",
+      "rect": [
+        288,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r13",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r4_north"
     }
   ],
   "enemies": [],
@@ -181,6 +198,87 @@
         "amount": 35,
         "zone": "lighthouse_r4"
       }
+    },
+    {
+      "id": "lore_lh_r4_shadow",
+      "kind": "lore_stone",
+      "pos": [
+        120,
+        72
+      ],
+      "props": {
+        "string_id": "LH2_SHADOW_HINT",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "tbrazier_lh_r4_arch",
+      "kind": "timed_brazier",
+      "pos": [
+        280,
+        120
+      ],
+      "props": {
+        "secs": 6.5,
+        "target_id": "door_lh_r4_north"
+      }
+    },
+    {
+      "id": "gate_lh_r4_shadow",
+      "kind": "shadow_gate",
+      "pos": [
+        304,
+        56
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.45
+      }
+    },
+    {
+      "id": "door_lh_r4_north",
+      "kind": "door",
+      "pos": [
+        304,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "tbrazier_lh_r4_arch"
+        ]
+      }
+    },
+    {
+      "id": "lamp_lh_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        104
+      ],
+      "props": {
+        "zone": "lighthouse_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "zone": "lighthouse_r4",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -256,18 +354,131 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
+    }
+  ],
+  "name_key": "LH2_R4_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        272,
+        48,
+        64,
+        32
+      ]
     },
     {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
+      "kind": "stain",
       "pos": [
-        256,
-        184
+        120,
+        168
       ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.5
+      "radius": 20,
+      "style": "water"
     }
-  ]
+  ],
+  "design": {
+    "idea": "Deepened Sea-Glass Atrium: unlock Key Door #1, throw lantern across the 3-tile glass chasm to ignite both braziers opening East Rotunda (r5), and power the Blue Portal to reach the east vault + North Counterweight Shaft (r13) guarded by a Shy Shadow-Gate and 6.5s Timed Brazier.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Chasm lantern-throw braziers, Blue Portal warping, and leaving the lantern behind to slip dark past a Shadow-Gate.",
+    "decisions": 7,
+    "expert_s": 52,
+    "reward": "lh_r4_shutter_open+r13_shaft_access",
+    "why": "Wing 2 signature atrium preserving the 3-tile pit while branching upward to Counterweight Shaft (r13).",
+    "exit": "exit_lh_r4_east",
+    "start": {
+      "keys": {
+        "wick_key": 1
+      },
+      "flags": [
+        "wick_key_2_1"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "door_lh_r4_key"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          72
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "brazier_lh_r4_n"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          136
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "brazier_lh_r4_s"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r4_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r4",
+        "to": [
+          104,
+          104
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r4",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          40
+        ],
+        "target": "transformer_lh_r4"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_lh_r4_in",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          40
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r4_east"
+      }
+    ]
+  }
 }

@@ -40,19 +40,19 @@
       "locked_door_id": ""
     },
     {
-      "id": "exit_lh_r10_island3",
+      "id": "exit_lh_r10_overworld",
       "rect": [
         432,
         112,
         16,
         48
       ],
-      "to_island": 3,
       "to_region": "overworld",
       "to_spawn": [
-        352,
-        912
+        1040,
+        216
       ],
+      "one_way": true,
       "requires_moves": [],
       "requires_flags": [
         "island_2_relit"
@@ -192,6 +192,65 @@
           "island_2_relit"
         ]
       }
+    },
+    {
+      "id": "anc_lh_r10",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lamp_lh_r10_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        88
+      ],
+      "props": {
+        "zone": "lighthouse_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r10_ne",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "zone": "lighthouse_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r10_sw",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        224
+      ],
+      "props": {
+        "zone": "lighthouse_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r10_se",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "zone": "lighthouse_r10",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -279,42 +338,91 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        152,
-        24
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        56,
-        232
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.3
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        328,
-        264
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.8
     }
-  ]
+  ],
+  "name_key": "LH2_R10_NAME",
+  "music": "island2_boss_p1",
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 44
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 64,
+      "style": "astrolabe"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        56
+      ],
+      "size": [
+        64,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "design": {
+    "idea": "Rebuilt Circular Fresnel Crown for 3-phase Lighthouse Hermit: self-reflect his Sweeping Lamp Beam off the four cupola mirrors for 1.5x crack windows, Ballast Clamp drifting mirrors during P2 Tower Tide flood, survive P3 Storm Eclipse Counter-Spin + Whirlpool Pull, then relight Great Lamp 2 and return to relit Tidewater Harbor (D43 fixed).",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Full Island 2 mastery: optical self-reflection, Prism Split banks, Ballast Clamp stabilization, and Great Lamp 2 relighting.",
+    "decisions": 12,
+    "expert_s": 145,
+    "reward": "great_lamp_2+island_2_relit+full_heart",
+    "why": "Grand boss climax of Tidewater Harbor relighting Great Lamp 2.",
+    "optional": true,
+    "exit": "exit_lh_r10_overworld",
+    "start": {
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ],
+      "flags": [
+        "keepers_flame_2"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lighthouse_r10",
+        "timeout": 180.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          72
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_2"
+      },
+      {
+        "op": "expect",
+        "flag": "island_2_relit"
+      }
+    ]
+  }
 }

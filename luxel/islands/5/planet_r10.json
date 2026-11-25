@@ -120,7 +120,17 @@
       "props": {
         "links": [
           "sn_r10_ram_b"
-        ],
+        ]
+      }
+    },
+    {
+      "id": "eye_r10_ram",
+      "kind": "switch_eye",
+      "pos": [
+        48,
+        192
+      ],
+      "props": {
         "target_id": "door_pl_r10_n"
       }
     },
@@ -147,7 +157,17 @@
       "props": {
         "links": [
           "sn_r10_scales_a"
-        ],
+        ]
+      }
+    },
+    {
+      "id": "eye_r10_scales",
+      "kind": "switch_eye",
+      "pos": [
+        424,
+        188
+      ],
+      "props": {
         "target_id": "door_pl_r10_n"
       }
     },
@@ -174,7 +194,17 @@
       "props": {
         "links": [
           "sn_r10_arch_a"
-        ],
+        ]
+      }
+    },
+    {
+      "id": "eye_r10_archer",
+      "kind": "switch_eye",
+      "pos": [
+        56,
+        44
+      ],
+      "props": {
         "target_id": "door_pl_r10_n"
       }
     },
@@ -215,7 +245,17 @@
       "props": {
         "links": [
           "sn_r10_serp_b"
-        ],
+        ]
+      }
+    },
+    {
+      "id": "eye_r10_serpent",
+      "kind": "switch_eye",
+      "pos": [
+        428,
+        68
+      ],
+      "props": {
         "target_id": "door_pl_r10_n"
       }
     },
@@ -229,10 +269,10 @@
       "props": {
         "door_kind": "switch_door",
         "requires_signals": [
-          "sn_r10_ram",
-          "sn_r10_scales",
-          "sn_r10_archer",
-          "sn_r10_serpent"
+          "eye_r10_ram",
+          "eye_r10_scales",
+          "eye_r10_archer",
+          "eye_r10_serpent"
         ],
         "sets_flag": "pl_r10_open",
         "size": [
@@ -419,8 +459,8 @@
       "sheet": "theme_planetarium",
       "prop": "brass_star_globe",
       "pos": [
-        392,
-        232
+        360,
+        240
       ],
       "layer": "sort",
       "flip_x": true,
@@ -474,6 +514,10 @@
         ]
       },
       {
+        "op": "beam",
+        "target": "eye_r10_ram"
+      },
+      {
         "op": "shoot",
         "target": "sn_r10_ram",
         "wait_hit": 0.45
@@ -484,6 +528,10 @@
           392,
           208
         ]
+      },
+      {
+        "op": "beam",
+        "target": "eye_r10_scales"
       },
       {
         "op": "shoot",
@@ -498,6 +546,10 @@
         ]
       },
       {
+        "op": "beam",
+        "target": "eye_r10_archer"
+      },
+      {
         "op": "shoot",
         "target": "sn_r10_archer",
         "wait_hit": 0.45
@@ -508,6 +560,10 @@
           396,
           84
         ]
+      },
+      {
+        "op": "beam",
+        "target": "eye_r10_serpent"
       },
       {
         "op": "shoot",

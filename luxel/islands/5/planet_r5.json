@@ -372,23 +372,27 @@
         "wait_hit": 0.45
       },
       {
+        "op": "beam",
+        "from": [
+          224,
+          208
+        ],
+        "target": "sn_r5_n"
+      },
+      {
         "op": "goto",
         "to": [
           224,
-          184
+          240
         ]
-      },
-      {
-        "op": "beam",
-        "target": "sn_r5_n"
       },
       {
         "op": "throw",
         "target": [
           224,
-          128
+          84
         ],
-        "hold": 0.55
+        "hold": 0.65
       },
       {
         "op": "goto",

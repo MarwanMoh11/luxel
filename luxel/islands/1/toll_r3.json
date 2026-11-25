@@ -51,25 +51,25 @@
       "kind": "owl",
       "pos": [
         224,
-        96
+        176
       ],
       "route": [],
       "perches": [
         [
           224,
-          96
+          176
         ],
         [
           192,
-          128
+          192
         ],
         [
           256,
-          128
+          192
         ]
       ],
       "zone": "toll_snag",
-      "leash": 180
+      "leash": 96
     },
     {
       "id": "moth_toll_r3_w",
@@ -136,11 +136,11 @@
       "kind": "spinner",
       "pos": [
         224,
-        144
+        104
       ],
       "props": {
-        "length": 24,
-        "speed": 1.2,
+        "length": 20,
+        "speed": 1.15,
         "arms": 2
       }
     },

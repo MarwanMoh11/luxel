@@ -10,6 +10,19 @@
     72,
     208
   ],
+  "zones": [
+    {
+      "id": "superboss_horizon",
+      "name_key": "I5_ZONE_HORIZON",
+      "rect": [
+        0,
+        0,
+        544,
+        416
+      ],
+      "dark": true
+    }
+  ],
   "exits": [
     {
       "id": "ex_horizon_out",
@@ -127,14 +140,12 @@
         248
       ],
       "props": {
-        "door_kind": "ward_barrier",
+        "door_kind": "combat_gate",
         "size": [
           16,
           48
         ],
-        "requires_flags": [
-          "superboss_5_defeated"
-        ]
+        "clear_zone": "superboss_horizon"
       }
     },
     {
@@ -224,11 +235,43 @@
         272,
         208
       ],
-      "zone": "superboss_horizon"
+      "zone": "superboss_horizon",
+      "arena": [
+        144,
+        96,
+        256,
+        224
+      ]
     }
   ],
   "layers": [],
   "events": [
+    {
+      "id": "ev_hor_p2_dew",
+      "on": "boss_hp:0.66",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 3.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_hor_p3_dew",
+      "on": "boss_hp:0.33",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 3.0
+          }
+        }
+      ]
+    },
     {
       "id": "ev_hor_win",
       "on": "flag:superboss_5_defeated",
@@ -332,6 +375,8 @@
         72,
         208
       ],
+      "hearts": 12,
+      "ember": 100,
       "moves": [
         "bolt",
         "dash",
@@ -339,7 +384,8 @@
         "prism",
         "beam",
         "wings",
-        "lens"
+        "lens",
+        "sunflare"
       ],
       "flags": [
         "island_5_relit",
@@ -357,7 +403,15 @@
       },
       {
         "op": "clear",
-        "timeout": 120.0
+        "zone": "superboss_horizon",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_hor_trophy",
+        "prop": "opened",
+        "value": true,
+        "timeout": 5.0
       },
       {
         "op": "goto",

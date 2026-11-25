@@ -6,28 +6,54 @@
   "name_key": "ISL7_PL_R2",
   "theme": "inverted_palace_silver",
   "music": "isl7_palace",
-  "ambience": ["night_breeze"],
-  "spawn": [368, 168],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    368,
+    168
+  ],
   "zones": [
     {
       "id": "palace_basin",
       "name_key": "ISL7_PL_R2",
-      "rect": [0, 0, 416, 288],
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r2_east",
-      "rect": [400, 128, 16, 48],
+      "rect": [
+        400,
+        128,
+        16,
+        48
+      ],
       "to_region": "palace_r1",
-      "to_spawn": [48, 200]
+      "to_spawn": [
+        48,
+        200
+      ]
     },
     {
       "id": "exit_r2_north",
-      "rect": [80, 0, 48, 16],
+      "rect": [
+        80,
+        0,
+        48,
+        16
+      ],
       "to_region": "palace_r3",
-      "to_spawn": [104, 272],
+      "to_spawn": [
+        104,
+        272
+      ],
       "locked_door_id": "door_r2_north"
     }
   ],
@@ -35,13 +61,21 @@
     {
       "id": "anc_r2_east",
       "kind": "room_anchor",
-      "pos": [368, 168],
-      "props": { "auto": true }
+      "pos": [
+        368,
+        168
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "pool_r2_east",
       "kind": "moon_pool",
-      "pos": [288, 152],
+      "pos": [
+        288,
+        152
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": true,
@@ -52,7 +86,10 @@
     {
       "id": "pool_r2_west",
       "kind": "moon_pool",
-      "pos": [56, 200],
+      "pos": [
+        56,
+        200
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": true,
@@ -63,7 +100,10 @@
     {
       "id": "block_r2_weight",
       "kind": "push_block",
-      "pos": [96, 152],
+      "pos": [
+        96,
+        152
+      ],
       "props": {
         "variant": "stone",
         "persist": true
@@ -72,11 +112,19 @@
     {
       "id": "plate_r2_black",
       "kind": "pressure_plate",
-      "pos": [96, 104],
+      "pos": [
+        96,
+        104
+      ],
       "props": {
-        "by": ["block"],
+        "by": [
+          "block"
+        ],
         "latch": true,
-        "size": [24, 24],
+        "size": [
+          24,
+          24
+        ],
         "persist": true,
         "target_id": "door_r2_north",
         "sets_flag": "palace_r2_solved"
@@ -85,18 +133,29 @@
     {
       "id": "door_r2_north",
       "kind": "door",
-      "pos": [104, 24],
+      "pos": [
+        104,
+        24
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["plate_r2_black"],
+        "requires_signals": [
+          "plate_r2_black"
+        ],
         "persistent": true,
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "chest_r2_shards",
       "kind": "chest",
-      "pos": [296, 48],
+      "pos": [
+        296,
+        48
+      ],
       "props": {
         "reward_kind": "shards",
         "amount": 15
@@ -105,45 +164,181 @@
     {
       "id": "lamp_r2_e",
       "kind": "road_lamp",
-      "pos": [352, 120],
-      "props": { "zone": "palace_basin", "lit": true }
+      "pos": [
+        352,
+        120
+      ],
+      "props": {
+        "zone": "palace_basin",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r2_w",
       "kind": "road_lamp",
-      "pos": [48, 96],
-      "props": { "zone": "palace_basin", "lit": true }
+      "pos": [
+        48,
+        96
+      ],
+      "props": {
+        "zone": "palace_basin",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r2_n",
       "kind": "road_lamp",
-      "pos": [136, 48],
-      "props": { "zone": "palace_basin", "lit": true }
+      "pos": [
+        136,
+        48
+      ],
+      "props": {
+        "zone": "palace_basin",
+        "lit": true
+      }
     }
   ],
   "enemies": [
     {
       "id": "mimic_r2_ne",
       "kind": "false_chest",
-      "pos": [264, 72],
+      "pos": [
+        264,
+        72
+      ],
       "zone": "palace_basin"
     }
   ],
   "decor": [
-    { "kind": "inlay", "x": 160, "y": 56, "w": 48, "h": 16, "col": "ice", "border": "sky" },
-    { "kind": "inlay", "x": 160, "y": 216, "w": 48, "h": 16, "col": "ice", "border": "sky" },
-    { "kind": "circle", "x": 288, "y": 152, "r": 26, "col": "sky", "ring": "ice" },
-    { "kind": "circle", "x": 56, "y": 200, "r": 24, "col": "sky", "ring": "ice" },
-    { "kind": "inlay", "x": 80, "y": 88, "w": 32, "h": 80, "col": "stone", "border": "sky" }
+    {
+      "kind": "inlay",
+      "x": 160,
+      "y": 56,
+      "w": 48,
+      "h": 16,
+      "col": "ice",
+      "border": "sky"
+    },
+    {
+      "kind": "inlay",
+      "x": 160,
+      "y": 216,
+      "w": 48,
+      "h": 16,
+      "col": "ice",
+      "border": "sky"
+    },
+    {
+      "kind": "circle",
+      "x": 288,
+      "y": 152,
+      "r": 26,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "circle",
+      "x": 56,
+      "y": 200,
+      "r": 24,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "inlay",
+      "x": 80,
+      "y": 88,
+      "w": 32,
+      "h": 80,
+      "col": "stone",
+      "border": "sky"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [248, 128], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [248, 200], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "alabaster_fluted_pillar", "pos": [344, 68], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [232, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [48, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [328, 232], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [128, 244], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "floating_mirror_shard",
+      "pos": [
+        248,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "floating_mirror_shard",
+      "pos": [
+        248,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        344,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        232,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        48,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        328,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        128,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
   ],
   "layers": [
     {
@@ -153,14 +348,43 @@
       "overlay": "res://luxel/art/islands/7/palace_r2__black_world.png",
       "full_frame": true,
       "tiles": [
-        [10, 8, 3, 3, "bridge"],
-        [5, 2, 3, 1, "wall"]
+        [
+          10,
+          8,
+          3,
+          3,
+          "bridge"
+        ],
+        [
+          5,
+          2,
+          3,
+          1,
+          "wall"
+        ]
       ],
-      "enable": ["plate_r2_black"],
+      "enable": [
+        "plate_r2_black"
+      ],
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "r2_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Flooded mirror basin where the true central bridge and weight plate exist only in Black World, while the North exit unseals only when flipped back to Silver.",
     "kind": "puzzle",
@@ -172,16 +396,60 @@
     "why": "First pure Silver/Black spatial puzzle introducing two-phase flip-cross-push-flip mastery plus a NW-shadow false_chest decoy.",
     "exit": "exit_r2_north",
     "solution": [
-      { "op": "interact", "target": "pool_r2_east" },
-      { "op": "expect", "var": "world_face==black" },
-      { "op": "goto", "to": [96, 172], "tol": 8 },
-      { "op": "push", "target": "block_r2_weight", "to": [96, 104] },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "expect", "target": "plate_r2_black", "prop": "pressed", "value": true },
-      { "op": "goto", "to": [56, 200], "tol": 10 },
-      { "op": "interact", "target": "pool_r2_west" },
-      { "op": "expect", "var": "world_face==silver" },
-      { "op": "expect_exit", "exit": "exit_r2_north" }
+      {
+        "op": "interact",
+        "target": "pool_r2_east"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          96,
+          172
+        ],
+        "tol": 8
+      },
+      {
+        "op": "push",
+        "target": "block_r2_weight",
+        "to": [
+          96,
+          104
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "expect",
+        "target": "plate_r2_black",
+        "prop": "pressed",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          56,
+          200
+        ],
+        "tol": 10
+      },
+      {
+        "op": "interact",
+        "target": "pool_r2_west"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==silver"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_north"
+      }
     ]
   }
 }

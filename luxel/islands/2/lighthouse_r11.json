@@ -1,0 +1,510 @@
+{
+  "id": "lighthouse_r11",
+  "island_id": 2,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "LH2_R11_NAME",
+  "theme": "seabed",
+  "music": "island2_dungeon",
+  "ambience": [
+    "harbor_tide"
+  ],
+  "spawn": [
+    408,
+    136
+  ],
+  "zones": [
+    {
+      "id": "lh_r11",
+      "name_key": "LH2_R11_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_lh_r11_east_r1",
+      "rect": [
+        432,
+        112,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r1",
+      "to_spawn": [
+        48,
+        136
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r11_north_r2",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r2",
+      "to_spawn": [
+        80,
+        208
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_lh_r11_south_r12",
+      "rect": [
+        352,
+        272,
+        32,
+        16
+      ],
+      "to_region": "lighthouse_r12",
+      "to_spawn": [
+        48,
+        152
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r11_well"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "skate_lh_r11_1",
+      "kind": "reef_skate",
+      "pos": [
+        120,
+        184
+      ],
+      "route": [
+        [
+          88,
+          184
+        ],
+        [
+          144,
+          184
+        ]
+      ],
+      "zone": "lh_r11",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_lh_r11",
+      "kind": "room_anchor",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_lh_r11",
+      "kind": "lore_stone",
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "string_id": "LH2_TIDE_HINT",
+        "icon": "wave"
+      }
+    },
+    {
+      "id": "lever_lh_r11_tide",
+      "kind": "state_lever",
+      "pos": [
+        88,
+        120
+      ],
+      "props": {
+        "scope": "dungeon:lighthouse",
+        "var": "tower_tide",
+        "values": [
+          "low",
+          "mid",
+          "high"
+        ],
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "skiff_lh_r11",
+      "kind": "vehicle_skiff",
+      "pos": [
+        184,
+        200
+      ],
+      "props": {
+        "dir": "e"
+      }
+    },
+    {
+      "id": "post_lh_r11_mid",
+      "kind": "mooring_post",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "orbit_r": 44,
+        "allow_dismount": true
+      }
+    },
+    {
+      "id": "mir_lh_r11_sunken",
+      "kind": "blue_transformer",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "eye_lh_r11_well",
+      "kind": "switch_eye",
+      "pos": [
+        304,
+        136
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_lh_r11_well",
+        "sets_flag": "lh_r11_well_open"
+      }
+    },
+    {
+      "id": "door_lh_r11_well",
+      "kind": "door",
+      "pos": [
+        312,
+        240
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "eye_lh_r11_well"
+        ],
+        "sets_flag": "lh_r11_well_open"
+      }
+    },
+    {
+      "id": "lamp_lh_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        104
+      ],
+      "props": {
+        "zone": "lh_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        56
+      ],
+      "props": {
+        "zone": "lh_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "zone": "lh_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        216
+      ],
+      "props": {
+        "zone": "lh_r11",
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "r11_tide_low",
+      "when": "tower_tide==low",
+      "theme": "seabed",
+      "tiles": [
+        [
+          10,
+          7,
+          4,
+          4,
+          "ground"
+        ],
+        [
+          10,
+          14,
+          8,
+          2,
+          "water"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    },
+    {
+      "id": "r11_tide_mid",
+      "when": "tower_tide==mid || tower_tide==high",
+      "theme": "seabed",
+      "tiles": [
+        [
+          10,
+          7,
+          4,
+          4,
+          "water"
+        ],
+        [
+          10,
+          14,
+          8,
+          2,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "decor": [
+    {
+      "kind": "stain",
+      "pos": [
+        88,
+        168
+      ],
+      "radius": 28,
+      "style": "water"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        200,
+        136
+      ],
+      "radius": 20,
+      "style": "ritual"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        368,
+        216
+      ],
+      "radius": 22,
+      "style": "moss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_seabed",
+      "prop": "coral_fan_cluster",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "giant_clam_shell",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sunken_amphora_urn",
+      "pos": [
+        56,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "shipwreck_rib_beam",
+      "pos": [
+        88,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "sea_anemone_glow",
+      "pos": [
+        312,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "pearl_lantern_post",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_seabed",
+      "prop": "tidepool_starfish",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
+  ],
+  "design": {
+    "idea": "Submerged Lens-Well foundation: cross the north ledge to clear a stranded Reef Skate at low tide, rotate the sunken mirror dry on its sandbar, then spin the Brass Tide-Wheel to mid to flood the shaft, float the indoor Skiff & tide bridge, and bank a blue bolt into the well shutter to reach Relay F1 (r12).",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Switching tower_tide between low (exposing sunken mirrors) and mid (floating tidal causeways and indoor Skiffs).",
+    "decisions": 6,
+    "expert_s": 48,
+    "reward": "tower_skiff_well+relay_f1_access",
+    "why": "Wing 1 seabed foundation chamber teaching Lighthouse tower_tide transformations.",
+    "exit": "exit_lh_r11_south_r12",
+    "start": {
+      "vars": {
+        "dungeon:lighthouse:tower_tide": "low"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          120,
+          136
+        ]
+      },
+      {
+        "op": "clear",
+        "zone": "lh_r11",
+        "timeout": 20.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          136
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "mir_lh_r11_sunken",
+        "angle": 45.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          144
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lever_lh_r11_tide"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          232
+        ]
+      },
+      {
+        "op": "shoot",
+        "target": "mir_lh_r11_sunken"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r11_well",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r11_south_r12"
+      }
+    ]
+  }
+}

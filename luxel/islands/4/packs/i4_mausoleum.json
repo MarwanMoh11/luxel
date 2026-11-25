@@ -55,23 +55,22 @@
       "theme": "rain_mausoleum",
       "music": "isl4_mausoleum",
       "requires_flags": [],
-      "done_flag": "dungeon_mausoleum_done",
-      "debug_only": true
+      "done_flag": "dungeon_mausoleum_done"
     }
   ],
   "regions": {
-    "mausoleum_r1":  { "name_key": "ISL4_MS_R1",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 4], "debug_only": true },
-    "mausoleum_r2":  { "name_key": "ISL4_MS_R2",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 4], "debug_only": true },
-    "mausoleum_r3":  { "name_key": "ISL4_MS_R3",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 3], "debug_only": true },
-    "mausoleum_r4":  { "name_key": "ISL4_MS_R4",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 2], "debug_only": true },
-    "mausoleum_r5":  { "name_key": "ISL4_MS_R5",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 2], "debug_only": true },
-    "mausoleum_r6":  { "name_key": "ISL4_MS_R6",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 4], "debug_only": true },
-    "mausoleum_r7":  { "name_key": "ISL4_MS_R7",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 3], "debug_only": true },
-    "mausoleum_r8":  { "name_key": "ISL4_MS_R8",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 2], "debug_only": true },
-    "mausoleum_r9":  { "name_key": "ISL4_MS_R9",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 2], "debug_only": true },
-    "mausoleum_r10": { "name_key": "ISL4_MS_R10", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [4, 3], "debug_only": true },
-    "mausoleum_r11": { "name_key": "ISL4_MS_R11", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 1], "debug_only": true },
-    "mausoleum_r12": { "name_key": "ISL4_MS_R12", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 0], "debug_only": true }
+    "mausoleum_r1":  { "name_key": "ISL4_MS_R1",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 4] },
+    "mausoleum_r2":  { "name_key": "ISL4_MS_R2",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 4] },
+    "mausoleum_r3":  { "name_key": "ISL4_MS_R3",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 3] },
+    "mausoleum_r4":  { "name_key": "ISL4_MS_R4",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [0, 2] },
+    "mausoleum_r5":  { "name_key": "ISL4_MS_R5",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [1, 2] },
+    "mausoleum_r6":  { "name_key": "ISL4_MS_R6",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 4] },
+    "mausoleum_r7":  { "name_key": "ISL4_MS_R7",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 3] },
+    "mausoleum_r8":  { "name_key": "ISL4_MS_R8",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [3, 2] },
+    "mausoleum_r9":  { "name_key": "ISL4_MS_R9",  "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 2] },
+    "mausoleum_r10": { "name_key": "ISL4_MS_R10", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [4, 3] },
+    "mausoleum_r11": { "name_key": "ISL4_MS_R11", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 1] },
+    "mausoleum_r12": { "name_key": "ISL4_MS_R12", "theme": "rain_mausoleum", "music": "isl4_mausoleum", "dark": true, "map": [2, 0] }
   },
   "sfx": {
     "ms_vane_chime": { "id": "clockwork_chime", "pitch": 1.16, "db": -1.0 },

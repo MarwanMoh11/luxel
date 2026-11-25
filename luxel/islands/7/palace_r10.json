@@ -6,35 +6,71 @@
   "name_key": "ISL7_PL_R10",
   "theme": "inverted_palace_silver",
   "music": "isl7_palace",
-  "ambience": ["night_breeze"],
-  "spawn": [48, 248],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    48,
+    248
+  ],
   "zones": [
     {
       "id": "palace_ballroom",
       "name_key": "ISL7_PL_R10",
-      "rect": [0, 0, 512, 352],
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r10_west",
-      "rect": [0, 224, 16, 48],
+      "rect": [
+        0,
+        224,
+        16,
+        48
+      ],
       "to_region": "palace_r9",
-      "to_spawn": [432, 168]
+      "to_spawn": [
+        432,
+        168
+      ]
     },
     {
       "id": "exit_r10_south",
-      "rect": [240, 336, 48, 16],
+      "rect": [
+        240,
+        336,
+        48,
+        16
+      ],
       "to_region": "palace_r7",
-      "to_spawn": [400, 152]
+      "to_spawn": [
+        400,
+        152
+      ]
     },
     {
       "id": "exit_r10_balc",
-      "rect": [432, 0, 48, 16],
+      "rect": [
+        432,
+        0,
+        48,
+        16
+      ],
       "to_region": "palace_r1",
-      "to_spawn": [448, 104],
-      "requires_flags": ["palace_balcony_short"],
+      "to_spawn": [
+        448,
+        104
+      ],
+      "requires_flags": [
+        "palace_balcony_short"
+      ],
       "locked_door_id": "door_r10_balc"
     }
   ],
@@ -42,16 +78,27 @@
     {
       "id": "anc_r10_west",
       "kind": "room_anchor",
-      "pos": [48, 248],
-      "props": { "auto": true }
+      "pos": [
+        48,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "avatar_r10",
       "kind": "mirror_avatar",
-      "pos": [256, 136],
+      "pos": [
+        256,
+        136
+      ],
       "props": {
         "axis": "y",
-        "pivot": [256, 184],
+        "pivot": [
+          256,
+          184
+        ],
         "fires_mirror_bolts": true,
         "mirror_world": "opposite",
         "range": 480
@@ -60,7 +107,10 @@
     {
       "id": "pool_r10_s",
       "kind": "moon_pool",
-      "pos": [280, 296],
+      "pos": [
+        280,
+        296
+      ],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": false,
@@ -71,7 +121,10 @@
     {
       "id": "mirror_r10_s",
       "kind": "blue_transformer",
-      "pos": [168, 272],
+      "pos": [
+        168,
+        272
+      ],
       "props": {
         "angle_deg": 135,
         "rotatable": true,
@@ -81,7 +134,10 @@
     {
       "id": "portal_r10_s",
       "kind": "blue_portal",
-      "pos": [232, 272],
+      "pos": [
+        232,
+        272
+      ],
       "props": {
         "target_portal_id": "portal_r10_n",
         "requires_blue": true,
@@ -91,7 +147,10 @@
     {
       "id": "portal_r10_n",
       "kind": "blue_portal",
-      "pos": [232, 104],
+      "pos": [
+        232,
+        104
+      ],
       "props": {
         "target_portal_id": "portal_r10_s",
         "requires_blue": true,
@@ -101,20 +160,31 @@
     {
       "id": "orb_r10_primer",
       "kind": "carry_orb",
-      "pos": [384, 72],
+      "pos": [
+        384,
+        72
+      ],
       "props": {
         "kind": "light",
-        "persist": true
+        "persist": false
       }
     },
     {
       "id": "plate_r10_primer",
       "kind": "pressure_plate",
-      "pos": [96, 288],
+      "pos": [
+        96,
+        288
+      ],
       "props": {
-        "by": ["block"],
+        "by": [
+          "block"
+        ],
         "latch": true,
-        "size": [26, 26],
+        "size": [
+          34,
+          34
+        ],
         "persist": true,
         "target_id": "gate_r10_chord"
       }
@@ -122,7 +192,10 @@
     {
       "id": "mirror_r10_n",
       "kind": "blue_transformer",
-      "pos": [168, 136],
+      "pos": [
+        168,
+        136
+      ],
       "props": {
         "angle_deg": 135,
         "rotatable": false,
@@ -131,19 +204,23 @@
     },
     {
       "id": "s1_r10_north",
-      "kind": "beam_sensor",
-      "pos": [168, 72],
+      "kind": "switch_eye",
+      "pos": [
+        168,
+        72
+      ],
       "props": {
-        "color": "blue",
-        "latch": true,
-        "persist": true,
+        "requires_blue": true,
         "target_id": "gate_r10_chord"
       }
     },
     {
       "id": "s2_r10_south",
       "kind": "beam_sensor",
-      "pos": [168, 232],
+      "pos": [
+        168,
+        232
+      ],
       "props": {
         "color": "gold",
         "latch": true,
@@ -154,10 +231,17 @@
     {
       "id": "gate_r10_chord",
       "kind": "logic_gate",
-      "pos": [400, 104],
+      "pos": [
+        400,
+        104
+      ],
       "props": {
         "op": "all",
-        "inputs": ["plate_r10_primer", "s1_r10_north", "s2_r10_south"],
+        "inputs": [
+          "plate_r10_primer",
+          "s1_r10_north",
+          "s2_r10_south"
+        ],
         "target_id": "door_r10_balc",
         "sets_flag": "palace_mirror_chord",
         "persist": true
@@ -166,67 +250,217 @@
     {
       "id": "door_r10_balc",
       "kind": "door",
-      "pos": [456, 24],
+      "pos": [
+        456,
+        24
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["gate_r10_chord"],
+        "requires_signals": [
+          "gate_r10_chord"
+        ],
         "sets_flag": "palace_balcony_short",
         "persistent": true,
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "cracked_r10_moth",
       "kind": "cracked_wall",
-      "pos": [88, 56],
-      "props": { "from_map_tile": true }
+      "pos": [
+        88,
+        56
+      ],
+      "props": {
+        "from_map_tile": true
+      }
     },
     {
       "id": "moth_r10_06",
       "kind": "moth",
-      "pos": [56, 72],
-      "props": { "id": "moth_7_06" }
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "id": "moth_7_06"
+      }
     },
     {
       "id": "lamp_r10_sw",
       "kind": "road_lamp",
-      "pos": [80, 224],
-      "props": { "zone": "palace_ballroom", "lit": true }
+      "pos": [
+        80,
+        224
+      ],
+      "props": {
+        "zone": "palace_ballroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r10_se",
       "kind": "road_lamp",
-      "pos": [424, 248],
-      "props": { "zone": "palace_ballroom", "lit": true }
+      "pos": [
+        424,
+        248
+      ],
+      "props": {
+        "zone": "palace_ballroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r10_nw",
       "kind": "road_lamp",
-      "pos": [128, 72],
-      "props": { "zone": "palace_ballroom", "lit": true }
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "zone": "palace_ballroom",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r10_ne",
       "kind": "road_lamp",
-      "pos": [416, 64],
-      "props": { "zone": "palace_ballroom", "lit": true }
+      "pos": [
+        416,
+        64
+      ],
+      "props": {
+        "zone": "palace_ballroom",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "circle", "x": 304, "y": 272, "r": 26, "col": "sky", "ring": "ice" },
-    { "kind": "inlay", "x": 160, "y": 64, "w": 80, "h": 96, "col": "ice", "border": "sky" },
-    { "kind": "inlay", "x": 160, "y": 208, "w": 80, "h": 96, "col": "stone", "border": "sky" },
-    { "kind": "inlay", "x": 336, "y": 208, "w": 96, "h": 48, "col": "ice", "border": "sky" }
+    {
+      "kind": "circle",
+      "x": 304,
+      "y": 272,
+      "r": 26,
+      "col": "sky",
+      "ring": "ice"
+    },
+    {
+      "kind": "inlay",
+      "x": 160,
+      "y": 64,
+      "w": 80,
+      "h": 96,
+      "col": "ice",
+      "border": "sky"
+    },
+    {
+      "kind": "inlay",
+      "x": 160,
+      "y": 208,
+      "w": 80,
+      "h": 96,
+      "col": "stone",
+      "border": "sky"
+    },
+    {
+      "kind": "inlay",
+      "x": 336,
+      "y": 208,
+      "w": 96,
+      "h": 48,
+      "col": "ice",
+      "border": "sky"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_inverted_palace_silver", "prop": "crystal_chandelier_arch", "pos": [256, 56], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "tall_silver_mirror", "pos": [352, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [128, 128], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "silver_candelabra", "pos": [128, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "moon_glass_urn", "pos": [456, 260], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "velvet_palace_bench", "pos": [416, 120], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_inverted_palace_silver", "prop": "floating_mirror_shard", "pos": [456, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 }
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "crystal_chandelier_arch",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        352,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        128,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "silver_candelabra",
+      "pos": [
+        128,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        456,
+        260
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        416,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "floating_mirror_shard",
+      "pos": [
+        456,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
   ],
   "layers": [
     {
@@ -236,22 +470,56 @@
       "overlay": "res://luxel/art/islands/7/palace_r10__black_world.png",
       "full_frame": true,
       "tiles": [
-        [21, 5, 1, 5, "ground"]
+        [
+          21,
+          5,
+          1,
+          5,
+          "ground"
+        ]
       ],
-      "enable": ["orb_r10_primer"],
+      "enable": [
+        "orb_r10_primer"
+      ],
       "disable": []
     }
   ],
   "events": [
     {
+      "id": "r10_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    },
+    {
       "id": "r10_chord_fanfare",
       "on": "signal:gate_r10_chord",
       "once": true,
       "do": [
-        { "set_flag": "palace_balcony_short" },
-        { "sfx": "palace_chord_chime" },
-        { "shake": 0.18 },
-        { "narrate": { "id": "ISL7_PL_CHORD", "style": "title", "duration": 3.2 } }
+        {
+          "set_flag": "palace_balcony_short"
+        },
+        {
+          "sfx": "palace_chord_chime"
+        },
+        {
+          "shake": 0.18
+        },
+        {
+          "narrate": {
+            "id": "ISL7_PL_CHORD",
+            "style": "title",
+            "duration": 3.2
+          }
+        }
       ]
     }
   ],
@@ -266,39 +534,220 @@
     "why": "Signature astonishing room of The Inverted Palace unlocking the False Throne vault, NE Foyer balcony shortcut, and Lost Moth 6.",
     "exit": "exit_r10_balc",
     "start": {
-      "flags": ["item_moon_pocket"]
+      "flags": [
+        "item_moon_pocket"
+      ]
     },
     "solution": [
-      { "op": "rotate", "target": "mirror_r10_s", "steps": 2 },
-      { "op": "shoot", "from": [168, 304], "at": [168, 272], "wait_hit": 0.50 },
-      { "op": "wait", "secs": 0.35 },
-      { "op": "expect", "target": "portal_r10_s", "prop": "powered", "value": true },
-      { "op": "goto", "to": [280, 296], "tol": 12 },
-      { "op": "interact", "target": "pool_r10_s" },
-      { "op": "expect", "var": "world_face==black" },
-      { "op": "goto", "to": [252, 272], "tol": 3 },
-      { "op": "dash", "dir": [-1, 0] },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "carry", "target": "orb_r10_primer", "action": "pickup" },
-      { "op": "goto", "to": [252, 104], "tol": 3 },
-      { "op": "dash", "dir": [-1, 0] },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "carry", "target": "orb_r10_primer", "action": "drop", "to": [96, 288] },
-      { "op": "goto", "to": [280, 296], "tol": 12 },
-      { "op": "interact", "target": "pool_r10_s" },
-      { "op": "expect", "var": "world_face==silver" },
-      { "op": "goto", "to": [352, 200], "tol": 6 },
-      { "op": "goto", "to": [352, 232], "tol": 6 },
-      { "op": "beam", "from": [352, 232], "at": [168, 232] },
-      { "op": "wait", "secs": 0.45 },
-      { "op": "expect", "target": "gate_r10_chord", "prop": "powered", "value": true },
-      { "op": "goto", "to": [280, 296], "tol": 12 },
-      { "op": "interact", "target": "pool_r10_s" },
-      { "op": "expect", "var": "world_face==black" },
-      { "op": "goto", "to": [252, 272], "tol": 3 },
-      { "op": "dash", "dir": [-1, 0] },
-      { "op": "wait", "secs": 0.25 },
-      { "op": "expect_exit", "exit": "exit_r10_balc" }
+      {
+        "op": "rotate",
+        "target": "mirror_r10_s",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          168,
+          304
+        ],
+        "at": [
+          168,
+          272
+        ],
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "portal_r10_s",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          296
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "pool_r10_s"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          292
+        ],
+        "tol": 3
+      },
+      {
+        "op": "dash",
+        "dir": [
+          0,
+          -1
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "carry",
+        "target": "orb_r10_primer",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          252,
+          104
+        ],
+        "tol": 3
+      },
+      {
+        "op": "dash",
+        "dir": [
+          -1,
+          0
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "carry",
+        "target": "orb_r10_primer",
+        "action": "drop",
+        "to": [
+          96,
+          288
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.2
+      },
+      {
+        "op": "expect",
+        "target": "plate_r10_primer",
+        "prop": "pressed",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          296
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "pool_r10_s"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==silver"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          200
+        ],
+        "tol": 6
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          232
+        ],
+        "tol": 6
+      },
+      {
+        "op": "beam",
+        "from": [
+          352,
+          232
+        ],
+        "at": [
+          168,
+          232
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "expect",
+        "target": "s2_r10_south",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "target": "s1_r10_north",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "target": "gate_r10_chord",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "goto",
+        "to": [
+          280,
+          296
+        ],
+        "tol": 12
+      },
+      {
+        "op": "interact",
+        "target": "pool_r10_s"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          292
+        ],
+        "tol": 3
+      },
+      {
+        "op": "dash",
+        "dir": [
+          0,
+          -1
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_balc"
+      }
     ]
   }
 }

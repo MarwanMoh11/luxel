@@ -74,8 +74,8 @@
       "id": "sn_r7_1",
       "kind": "star_node",
       "pos": [
-        100,
-        224
+        104,
+        256
       ],
       "props": {
         "cap_group": "pl_r7",
@@ -89,7 +89,7 @@
       "id": "sn_r7_2",
       "kind": "star_node",
       "pos": [
-        144,
+        160,
         256
       ],
       "props": {
@@ -105,7 +105,7 @@
       "id": "sn_r7_3",
       "kind": "star_node",
       "pos": [
-        196,
+        216,
         256
       ],
       "props": {
@@ -121,8 +121,8 @@
       "id": "sn_r7_4",
       "kind": "star_node",
       "pos": [
-        224,
-        216
+        216,
+        212
       ],
       "props": {
         "cap_group": "pl_r7",
@@ -419,7 +419,22 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "pl_r7_reset_sky",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "dungeon:planetarium",
+            "name": "sky_turn",
+            "value": 0
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Navigate a 4-star FIFO spiral onto the central rotor, rotate the Blue Transformer 45 degrees to bank a Blue Prism CCW shot into the Star Bell (270 degrees) swinging open the East Key-2 bridge around glass walls, then spend the remaining star budget northward to exit.",
     "kind": "puzzle",
@@ -443,7 +458,7 @@
         "op": "shoot",
         "from": [
           80,
-          224
+          256
         ],
         "target": "sn_r7_1",
         "wait_hit": 0.45
@@ -452,27 +467,26 @@
         "op": "shoot",
         "from": [
           80,
-          256
+          224
         ],
         "target": "sn_r7_2",
-        "wait_hit": 0.5
-      },
-      {
-        "op": "goto",
-        "to": [
-          122,
-          240
-        ]
-      },
-      {
-        "op": "shoot",
-        "target": "sn_r7_3",
         "wait_hit": 0.55
       },
       {
         "op": "goto",
         "to": [
-          170,
+          132,
+          256
+        ]
+      },
+      {
+        "op": "beam",
+        "target": "sn_r7_3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          188,
           256
         ]
       },
@@ -484,14 +498,14 @@
       {
         "op": "goto",
         "to": [
-          240,
-          176
+          216,
+          170
         ]
       },
       {
         "op": "rotate",
         "target": "trans_pl_r7",
-        "steps": 1
+        "angle": 45
       },
       {
         "op": "shoot",

@@ -15,8 +15,8 @@
       "rect": [
         0,
         0,
-        448,
-        240
+        512,
+        256
       ],
       "dark": true
     }
@@ -42,7 +42,7 @@
     {
       "id": "exit_lh_r7_north",
       "rect": [
-        176,
+        160,
         0,
         32,
         16
@@ -57,10 +57,40 @@
       ],
       "requires_flags": [],
       "locked_door_id": "door_lh_r7_shutter"
+    },
+    {
+      "id": "exit_lh_r7_east",
+      "rect": [
+        496,
+        96,
+        16,
+        48
+      ],
+      "to_region": "lighthouse_r15",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [
+        "prism"
+      ],
+      "requires_flags": [],
+      "locked_door_id": "door_lh_r7_east"
     }
   ],
   "enemies": [],
   "interactables": [
+    {
+      "id": "anc_lh_r7",
+      "kind": "room_anchor",
+      "pos": [
+        40,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
+    },
     {
       "id": "door_lh_r7_key",
       "kind": "door",
@@ -87,7 +117,7 @@
       "kind": "blue_transformer",
       "pos": [
         120,
-        184
+        168
       ],
       "props": {
         "angle_deg": 0,
@@ -106,7 +136,7 @@
       "kind": "blue_portal",
       "pos": [
         184,
-        72
+        88
       ],
       "props": {
         "target_portal_id": "portal_lh_r7_out",
@@ -119,8 +149,8 @@
       "id": "portal_lh_r7_out",
       "kind": "blue_portal",
       "pos": [
-        280,
-        152
+        352,
+        168
       ],
       "props": {
         "target_portal_id": "portal_lh_r7_in",
@@ -132,8 +162,8 @@
       "id": "transformer_lh_r7_b",
       "kind": "blue_transformer",
       "pos": [
-        296,
-        168
+        368,
+        120
       ],
       "props": {
         "angle_deg": 0,
@@ -151,30 +181,75 @@
       "id": "switch_eye_lh_r7",
       "kind": "switch_eye",
       "pos": [
-        392,
-        104
+        456,
+        120
       ],
       "props": {
         "requires_blue": true,
         "requires_prism": true,
         "target_ids": [
           "door_lh_r7_shutter",
-          "bridge_lh_r7"
+          "bridge_lh_r7",
+          "triad_lh_r7"
         ],
         "sets_flag": "lh_r7_gallery_open"
+      }
+    },
+    {
+      "id": "switch_eye_lh_r7_n",
+      "kind": "switch_eye",
+      "pos": [
+        456,
+        88
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "triad_lh_r7"
+      }
+    },
+    {
+      "id": "switch_eye_lh_r7_s",
+      "kind": "switch_eye",
+      "pos": [
+        456,
+        152
+      ],
+      "props": {
+        "requires_blue": true,
+        "requires_prism": true,
+        "target_id": "triad_lh_r7"
+      }
+    },
+    {
+      "id": "triad_lh_r7",
+      "kind": "lh_prism_triad",
+      "pos": [
+        424,
+        72
+      ],
+      "props": {
+        "inputs": [
+          "switch_eye_lh_r7_n",
+          "switch_eye_lh_r7",
+          "switch_eye_lh_r7_s"
+        ],
+        "window_s": 0.45,
+        "target_id": "door_lh_r7_east",
+        "sets_flag": "lh_r7_triad_open"
       }
     },
     {
       "id": "bridge_lh_r7",
       "kind": "door",
       "pos": [
-        232,
+        272,
         112
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
-          48,
+          128,
           32
         ],
         "zone": "lighthouse_r7",
@@ -188,7 +263,7 @@
       "id": "door_lh_r7_shutter",
       "kind": "door",
       "pos": [
-        192,
+        176,
         40
       ],
       "props": {
@@ -202,6 +277,73 @@
         ],
         "sets_flag": "lh_r7_gallery_open"
       }
+    },
+    {
+      "id": "door_lh_r7_east",
+      "kind": "door",
+      "pos": [
+        472,
+        120
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "triad_lh_r7"
+        ],
+        "sets_flag": "lh_r7_triad_open"
+      }
+    },
+    {
+      "id": "lamp_lh_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "zone": "lighthouse_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r7_w2",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        168
+      ],
+      "props": {
+        "zone": "lighthouse_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r7_e1",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        72
+      ],
+      "props": {
+        "zone": "lighthouse_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_lh_r7_e2",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        184
+      ],
+      "props": {
+        "zone": "lighthouse_r7",
+        "lit": true
+      }
     }
   ],
   "triggers": [],
@@ -210,8 +352,8 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        150,
-        56
+        144,
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -220,22 +362,10 @@
     },
     {
       "sheet": "island2_scenery",
-      "prop": "fresnel_pedestal",
-      "pos": [
-        234,
-        56
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island2_scenery",
       "prop": "coastal_lantern_post",
       "pos": [
         104,
-        88
+        112
       ],
       "layer": "sort",
       "flip_x": false,
@@ -246,61 +376,138 @@
       "sheet": "island2_scenery",
       "prop": "mooring_bollard",
       "pos": [
-        264,
-        184
+        352,
+        196
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "buoy_bobbing",
-      "pos": [
-        232,
-        200
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.4
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "barnacle_piling",
-      "pos": [
-        352,
-        152
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.7
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "coastal_lantern_post",
-      "pos": [
-        312,
-        92
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island2_scenery",
-      "prop": "fresnel_pedestal",
-      "pos": [
-        376,
-        88
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.6
     }
-  ]
+  ],
+  "name_key": "LH2_R7_NAME",
+  "music": "island2_dungeon",
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        368,
+        120
+      ],
+      "radius": 22
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        440,
+        72,
+        32,
+        96
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Deepened Brass Mirror & Portal Gallery (D06 8-tile un-zippable chasm): unlock Key Door #2, bank off Mirror A to power the Blue Portal across the 128px chasm, warp to the east island, rotate Mirror B to 45 deg on the brass focus mark, and fire ONE Prism-Split 3-ray fan hitting all three east eyes simultaneously \u2014 extending the 128px bridge AND opening both Belfry (r8) and Upper Tide Hub (r15)!",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Portal crossing combined with exact focal-distance Prism Split aiming across three simultaneous targets.",
+    "decisions": 9,
+    "expert_s": 54,
+    "reward": "lh_r7_gallery_open+r15_upper_hub_access",
+    "why": "Master optical gallery linking the main ascent (r8) with the upper wing hub (r15).",
+    "exit": "exit_lh_r7_north",
+    "start": {
+      "keys": {
+        "wick_key": 1
+      },
+      "flags": [
+        "wick_key_2_2"
+      ],
+      "moves": [
+        "dash",
+        "throw",
+        "prism"
+      ]
+    },
+    "solution": [
+      {
+        "op": "interact",
+        "target": "door_lh_r7_key"
+      },
+      {
+        "op": "push",
+        "target": "transformer_lh_r7_a",
+        "to": [
+          120,
+          88
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r7_a",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          120,
+          144
+        ],
+        "target": "transformer_lh_r7_a"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "portal_lh_r7_in",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          88
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          144
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "transformer_lh_r7_b",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          368,
+          168
+        ],
+        "target": "transformer_lh_r7_b"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_lh_r7_shutter",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "lh_r7_triad_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_lh_r7_north"
+      }
+    ]
+  }
 }
