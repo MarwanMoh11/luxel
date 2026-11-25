@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "rain_mausoleum",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R14",
   "music": "island4_dungeon",
   "spawn": [
@@ -376,8 +376,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "weeping_stone_urn",
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
       "pos": [
         128,
         224
@@ -387,8 +387,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "storm_brazier_bowl",
+      "sheet": "island4_scenery",
+      "prop": "rain_basin_fountain",
       "pos": [
         432,
         104
@@ -409,8 +409,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "rain_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         152,
         72
@@ -418,6 +418,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "rain_basin_fountain",
+      "pos": [
+        104,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        40,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        458,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        458,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        392,
+        218
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "design": {

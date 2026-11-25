@@ -135,17 +135,17 @@
       "id": "ref_spire_r3_0",
       "kind": "reflection",
       "pos": [
-        296,
-        176
+        264,
+        184
       ],
       "route": [
         [
-          256,
-          176
+          232,
+          184
         ],
         [
-          320,
-          176
+          280,
+          184
         ]
       ],
       "perches": [],
@@ -219,7 +219,7 @@
       "props": {
         "scope": "island:7",
         "var": "world_face",
-        "allow_bolt_flip": true,
+        "allow_bolt_flip": false,
         "radius_px": 15,
         "persist": true
       }
@@ -424,7 +424,7 @@
     "solution": [
       {
         "op": "clear",
-        "timeout": 35.0
+        "timeout": 55.0
       },
       {
         "op": "expect",

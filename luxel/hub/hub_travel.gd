@@ -25,8 +25,19 @@ static func ensure_hub_waystone_unlocked() -> void:
 
 static func fast_travel_to_hub() -> bool:
 	if Lx.state != null and Lx.state.island_id > 0:
-		Lx.state.story_flags[FLAG_RETURN_ISLAND] = Lx.state.island_id
-		Lx.state.story_flags[FLAG_RETURN_WAYSTONE] = Lx.state.last_waystone_id
+		var cur_isl: int = Lx.state.island_id
+		var ret_ws: String = Lx.state.last_waystone_id
+		if ret_ws.is_empty() or LxMapFormat.find_waystone(cur_isl, ret_ws).is_empty():
+			var loc: Dictionary = LxRunPersistence.resolve_overworld_respawn(Lx.state)
+			ret_ws = str(loc.get("waystone_id", Lx.state.last_waystone_id))
+			if ret_ws.is_empty() or LxMapFormat.find_waystone(cur_isl, ret_ws).is_empty():
+				for i: int in range(Lx.state.lit_waystones.size() - 1, -1, -1):
+					var cand: String = Lx.state.lit_waystones[i]
+					if not LxMapFormat.find_waystone(cur_isl, cand).is_empty():
+						ret_ws = cand
+						break
+		Lx.state.story_flags[FLAG_RETURN_ISLAND] = cur_isl
+		Lx.state.story_flags[FLAG_RETURN_WAYSTONE] = ret_ws
 	ensure_hub_waystone_unlocked()
 	if Lx.root != null and Lx.root.has_method("fast_travel_waystone"):
 		return bool(Lx.root.call("fast_travel_waystone", HUB_ISLAND_ID, HUB_WAYSTONE_ID))

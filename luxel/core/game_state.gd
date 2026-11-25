@@ -422,21 +422,21 @@ func get_completion_pct(relit_override: int = -1, embers_override: int = -1) -> 
 		for d: Dictionary in Lx.packs.all_dungeons():
 			if bool(d.get("builtin", false)) or bool(d.get("debug_only", false)): continue
 			side_total += 1
-			if bool(story_flags.get(str(d.get("done_flag", "dungeon_done:" + str(d.get("id", "")))), false)): side_done += 1
+			if bool(story_flags.get(str(d.get("done_flag", "dungeon_done:" + str(d.get("id", "")))), false)) or bool(story_flags.get("dungeon_done:" + str(d.get("id", "")), false)): side_done += 1
 		if side_total > 0: extra_max += 12.0; extra_pts += (float(side_done) / float(side_total)) * 12.0
 		var moths_d: Dictionary = Lx.packs.moths()
 		if not moths_d.is_empty():
 			var mdone: int = 0
 			for mk: Variant in moths_d.keys():
-				if bool(story_flags.get("moth_found:" + str(mk), false)): mdone += 1
+				if bool(story_flags.get("moth:" + str(mk), false)) or bool(story_flags.get("moth_found:" + str(mk), false)): mdone += 1
 			extra_max += 6.0; extra_pts += (float(mdone) / float(moths_d.size())) * 6.0
 		var panes_d: Dictionary = Lx.packs.panes()
 		if not panes_d.is_empty() and Lx.panes != null and Lx.panes.has_method("owned_ids"):
 			var owned: PackedStringArray = Lx.panes.call("owned_ids") as PackedStringArray
 			extra_max += 6.0; extra_pts += clampf(float(owned.size()) / float(panes_d.size()), 0.0, 1.0) * 6.0
-	if extra_max > 0.0:
-		return clampi(roundi(((base_score + extra_pts) / (100.0 + extra_max)) * 100.0), 0, 100)
-	return clampi(roundi(base_score), 0, 100)
+	var tot: float = base_score + extra_pts; var mx: float = 100.0 + extra_max
+	if tot >= mx - 0.0001: return 100
+	return clampi(mini(99, roundi((tot / mx) * 100.0)), 0, 99)
 
 
 func _upgrade_val(upgrade_id: String, base: float) -> float: return _upgrade_field(upgrade_id, "values", base)

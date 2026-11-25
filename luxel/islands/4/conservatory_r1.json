@@ -449,5 +449,6 @@
         "exit": "exit_c4_r1_east"
       }
     ]
-  }
+  },
+  "theme": "conservatory"
 }

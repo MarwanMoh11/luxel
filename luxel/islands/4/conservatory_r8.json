@@ -295,6 +295,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        22,
+        150
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        104,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        152,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
+      "pos": [
+        200,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        248,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "is_2x2_room": true,
@@ -383,5 +443,6 @@
         "exit": "exit_c4_r8_west"
       }
     ]
-  }
+  },
+  "theme": "conservatory"
 }

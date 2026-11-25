@@ -248,6 +248,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "rain_basin_fountain",
+      "pos": [
+        74,
+        150
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        394,
+        150
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        394,
+        58
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        136,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        184,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "is_2x2_room": true,
@@ -331,5 +391,6 @@
         "exit": "exit_c4_r3_east"
       }
     ]
-  }
+  },
+  "theme": "conservatory"
 }

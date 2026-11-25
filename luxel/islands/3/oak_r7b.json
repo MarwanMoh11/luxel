@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "briar_court",
+  "theme": "hollow_oak",
   "name_key": "OAK3_R7B_NAME",
   "music": "island3_dungeon",
   "spawn": [
@@ -332,8 +332,8 @@
   ],
   "scenery": [
     {
-      "sheet": "theme_briar_court",
-      "prop": "heraldic_court_banner",
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
       "pos": [
         192,
         38
@@ -342,8 +342,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "heraldic_court_banner",
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
       "pos": [
         288,
         38
@@ -352,8 +352,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "mossy_shield_plinth",
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
       "pos": [
         56,
         88
@@ -362,14 +362,86 @@
       "shadow": true
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "mossy_shield_plinth",
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
       "pos": [
         424,
         88
       ],
       "layer": "sort",
       "shadow": true
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        86,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        38,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        442,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        182,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        362,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        374,
+        198
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "layers": [

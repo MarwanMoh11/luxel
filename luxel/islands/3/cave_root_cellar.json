@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_3",
+  "theme": "thornwood_cave",
   "name_key": "ISL3_CAVE_CELLAR_NAME",
   "music": "island3_dungeon",
   "spawn": [
@@ -322,6 +322,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        86,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        282,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        38,
+        170
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

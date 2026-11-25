@@ -752,10 +752,10 @@ class ThemePainter:
 
         elif style == "boardwalk":
             # Timber planks (galleon, locks, wick_house, under_root)
-            out = np.where(ly % 4 == 0, dk, out)
-            out = np.where((ly % 4 == 1) & (nb > 0.45), hi, out)
-            out = np.where((lx % 8 == 0) & (ly % 4 == 2), trim, out)
-            out = np.where(is_edge, edge, out)
+            out = np.where((ly % 6 == 0) & (bg < 0.58), dk, out)
+            out = np.where((ly % 6 == 1) & (nb > 0.52) & (bg < 0.42), hi, out)
+            out = np.where((lx % 12 == 0) & (ly % 6 == 3) & (bg < 0.55), trim, out)
+            out = np.where(is_edge & (bg < 0.78), edge, out)
 
         elif style == "inlaid_strip":
             # Ceremonial / astral / marble inlaid walkway (planetarium, meteor_vault, palace, masquerade, briar_court)

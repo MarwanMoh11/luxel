@@ -490,6 +490,24 @@ func _draw_tide_hud(ci: CanvasItem) -> void:
 		bars_max = 2
 		bars_lit = 1 if lw == "west_high" else 2
 		label_id = "HUD_I2_LWEST" if lw == "west_high" else "HUD_I2_LEAST"
+	elif _region_id == "cave_bell_cistern":
+		var ct: String = str(_vars.resolve_var("cistern_tide", ISLAND_ID, _region_id, "half")).to_lower() if _vars != null else "half"
+		bars_lit = 1 if ct == "ebb" else 2
+		label_id = "HUD_I2_EBB" if ct == "ebb" else "HUD_I2_HALF"
+	elif _region_id == "cave_rooftop_belfry":
+		var bt: String = str(_vars.resolve_var("belfry_tide", ISLAND_ID, _region_id, "flood")).to_lower() if _vars != null else "flood"
+		bars_lit = 1 if bt == "ebb" else 3
+		label_id = "HUD_I2_EBB" if bt == "ebb" else "HUD_I2_FLOOD"
+	elif _region_id == "cave_rib_vault":
+		var vw: String = str(_vars.resolve_var("vault_water", ISLAND_ID, _region_id, "low")).to_lower() if _vars != null else "low"
+		bars_max = 2
+		bars_lit = 2 if vw == "high" else 1
+		label_id = "HUD_I2_THIGH" if vw == "high" else "HUD_I2_TLOW"
+	elif _region_id == "leviathan_r3":
+		var bh: String = str(_vars.resolve_var("belly_tide", ISLAND_ID, _region_id, "low")).to_lower() if _vars != null else "low"
+		bars_max = 2
+		bars_lit = 2 if bh == "high" else 1
+		label_id = "HUD_I2_THIGH" if bh == "high" else "HUD_I2_TLOW"
 	else:
 		var td: String = get_tide()
 		bars_lit = 1 if td == "ebb" else (2 if td == "half" else 3)

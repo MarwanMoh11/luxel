@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "cave_4",
+  "theme": "mirefen_cave",
   "name_key": "ISL4_ZONE_RAIN_CISTERN",
   "music": "isl4_mausoleum",
   "spawn": [
@@ -350,6 +350,42 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
+      "pos": [
+        38,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        90,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        378,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "design": {

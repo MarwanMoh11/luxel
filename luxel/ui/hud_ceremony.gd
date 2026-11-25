@@ -201,7 +201,7 @@ func _draw_boss_intro(ci: CanvasItem) -> void:
 	for pi: int in range(ph):
 		ci.draw_rect(Rect2(px0 + float(pi * 6), 88.0, 4.0, 2.0), pal["coral"] as Color)
 	if t >= 0.30:
-		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 6.0, card.end.y - 12.0, pal["mauve"] as Color, 1)
+		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 4.0, card.end.y - 9.0, pal["mauve"] as Color, 1)
 
 
 func _draw_reward_ceremony(ci: CanvasItem) -> void:

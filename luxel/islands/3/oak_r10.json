@@ -466,9 +466,9 @@
         "op": "goto",
         "to": [
           240,
-          68
+          72
         ],
-        "tol": 4.0
+        "tol": 8.0
       },
       {
         "op": "interact",
@@ -487,5 +487,6 @@
         "exit": "exit_oak_r10_island4"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

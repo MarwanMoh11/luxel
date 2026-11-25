@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "rain_mausoleum",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R12",
   "music": "island4_dungeon",
   "spawn": [
@@ -379,8 +379,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "bronze_drain_gargoyle",
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
       "pos": [
         216,
         112
@@ -390,8 +390,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "wet_moss_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         384,
         64
@@ -401,8 +401,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "rain_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         440,
         72
@@ -421,6 +421,30 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
+      "pos": [
+        458,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        22,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "design": {

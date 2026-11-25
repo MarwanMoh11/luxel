@@ -742,5 +742,6 @@
         "exit": "exit_oak_r9_north"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

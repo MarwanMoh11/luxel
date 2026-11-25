@@ -406,12 +406,13 @@
     "exit": "exit_spire_r2_north",
     "solution": [
       {
-        "op": "goto",
+        "op": "push",
+        "target": "transformer_spire_r2_a",
         "to": [
-          280,
-          148
+          216,
+          120
         ],
-        "tol": 14.0
+        "tol": 4.0
       },
       {
         "op": "rotate",
@@ -421,26 +422,37 @@
       {
         "op": "goto",
         "to": [
-          216,
+          256,
           120
         ],
-        "tol": 12.0
+        "tol": 10.0
       },
       {
         "op": "shoot",
         "from": [
-          216,
+          256,
           120
         ],
         "target": "transformer_spire_r2_a"
       },
       {
-        "op": "goto",
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "switch_eye_spire_r2_a",
+        "prop": "activated",
+        "value": true
+      },
+      {
+        "op": "push",
+        "target": "transformer_spire_r2_a",
         "to": [
-          280,
-          148
+          216,
+          184
         ],
-        "tol": 14.0
+        "tol": 4.0
       },
       {
         "op": "rotate",
@@ -450,22 +462,28 @@
       {
         "op": "goto",
         "to": [
-          280,
-          184
+          216,
+          144
         ],
-        "tol": 14.0
+        "tol": 10.0
       },
       {
         "op": "shoot",
         "from": [
-          280,
-          184
+          216,
+          144
         ],
         "target": "transformer_spire_r2_a"
       },
       {
         "op": "wait",
-        "secs": 0.25
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "target": "switch_eye_spire_r2_b",
+        "prop": "activated",
+        "value": true
       },
       {
         "op": "goto",

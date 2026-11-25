@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "under_root",
+  "theme": "hollow_oak",
   "name_key": "OAK3_R8B_NAME",
   "music": "island3_dungeon",
   "spawn": [
@@ -43,7 +43,7 @@
         112,
         96
       ],
-      "color": "sky"
+      "color": "apricot"
     },
     {
       "kind": "stain",
@@ -435,6 +435,66 @@
       ],
       "layer": "sort",
       "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        86,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        362,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        38,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "hanging_spore_lantern",
+      "pos": [
+        266,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        394,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "layers": [],

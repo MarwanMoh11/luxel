@@ -433,7 +433,7 @@
         64,
         64
       ],
-      "color": "sky"
+      "color": "apricot"
     },
     {
       "kind": "stain",
@@ -555,5 +555,6 @@
         "exit": "exit_oak_r2_east"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

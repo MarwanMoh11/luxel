@@ -389,10 +389,10 @@ static func enrich_slot_summary(slot_num: int, base: Dictionary) -> Dictionary:
 	var pct_f: float = (float(mini(relit.size(), 8)) / 8.0) * 35.0 \
 		+ (float(dng_done) / float(maxi(1, dng_tot))) * 30.0 \
 		+ (float(moves_n) / 7.0) * 12.0 \
-		+ (float(mini(embers, 16)) / 16.0) * 10.0 \
+		+ (float(mini(embers, 52)) / 52.0) * 10.0 \
 		+ (float(mini(moths_n, 80)) / 80.0) * 8.0 \
 		+ (float(harm_n) / 8.0) * 5.0
-	out["completion_pct"] = clampi(roundi(pct_f), 0, 100)
+	out["completion_pct"] = 100 if pct_f >= 99.999 else clampi(mini(99, roundi(pct_f)), 0, 99)
 	out["dungeons_done"] = dng_done
 	out["dungeons_total"] = maxi(8, dng_tot)
 	out["moths_caught"] = moths_n

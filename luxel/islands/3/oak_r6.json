@@ -503,5 +503,6 @@
         "exit": "exit_oak_r6_east"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

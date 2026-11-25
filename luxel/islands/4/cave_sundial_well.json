@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "cave_4",
+  "theme": "mirefen_cave",
   "name_key": "ISL4_ZONE_SUNDIAL_WELL",
   "music": "island4_dungeon",
   "spawn": [
@@ -345,6 +345,30 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        86,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        362,
+        70
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "design": {

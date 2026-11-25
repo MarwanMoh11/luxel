@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "hourglass_maze",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R18",
   "music": "island4_dungeon",
   "spawn": [
@@ -217,8 +217,8 @@
   ],
   "scenery": [
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "tall_hourglass_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         104,
         64
@@ -228,8 +228,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "tall_hourglass_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         312,
         64
@@ -239,8 +239,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "stone_hedge_bench",
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
       "pos": [
         160,
         176
@@ -250,8 +250,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "amber_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         256,
         176
@@ -261,8 +261,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "topiary_bird_statue",
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
       "pos": [
         336,
         104
@@ -270,6 +270,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        102,
+        218
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        330,
+        218
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        120,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        168,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
+      "pos": [
+        248,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "design": {

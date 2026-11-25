@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_3",
+  "theme": "thornwood_cave",
   "name_key": "ISL3_CAVE_AMBER_NAME",
   "music": "island3_dungeon",
   "spawn": [
@@ -315,6 +315,30 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.2
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        86,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spore_brazier_stump",
+      "pos": [
+        246,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "layers": [],

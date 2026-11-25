@@ -347,27 +347,34 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 
-	# Draw crisp brass deck tracks for any rail_targets
+	# Draw sturdy timber-and-brass gantry rail tracks under rail_targets (grounds mirrors over water/gaps)
 	for ry: float in _rail_ys:
 		var ly: float = roundf(ry - pos.y)
-		var x0: float = roundf(rail_min_x - pos.x) - 6.0
-		var x1: float = roundf(rail_max_x - pos.x) + 6.0
-		var w: float = maxf(8.0, x1 - x0)
-		draw_rect(Rect2(x0, ly - 5.0, w, 10.0), c_void)
-		draw_rect(Rect2(x0 + 1.0, ly - 4.0, w - 2.0, 8.0), c_night)
-		draw_rect(Rect2(x0 + 1.0, ly - 3.0, w - 2.0, 1.0), PAL["apricot"] as Color)
-		draw_rect(Rect2(x0 + 1.0, ly + 2.0, w - 2.0, 1.0), PAL["apricot"] as Color)
-		var tx: float = x0 + 6.0
+		var x0: float = roundf(rail_min_x - pos.x) - 8.0
+		var x1: float = roundf(rail_max_x - pos.x) + 8.0
+		var w: float = maxf(12.0, x1 - x0)
+		draw_rect(Rect2(x0, ly - 8.0, w, 16.0), c_void)
+		draw_rect(Rect2(x0 + 1.0, ly - 7.0, w - 2.0, 14.0), PAL["wine"] as Color)
+		draw_rect(Rect2(x0 + 1.0, ly - 6.0, w - 2.0, 12.0), c_night)
+		var tx: float = x0 + 4.0
 		while tx < x1 - 4.0:
-			draw_rect(Rect2(tx, ly - 2.0, 2.0, 4.0), PAL["dusk"] as Color)
-			tx += 12.0
+			draw_rect(Rect2(tx, ly - 6.0, 3.0, 12.0), PAL["dusk"] as Color)
+			draw_rect(Rect2(tx, ly - 6.0, 1.0, 12.0), PAL["plum"] as Color)
+			tx += 10.0
+		draw_rect(Rect2(x0 + 1.0, ly - 4.0, w - 2.0, 2.0), PAL["apricot"] as Color)
+		draw_rect(Rect2(x0 + 1.0, ly + 2.0, w - 2.0, 2.0), PAL["apricot"] as Color)
+		draw_rect(Rect2(x0 + 1.0, ly - 4.0, w - 2.0, 1.0), c_gold)
+		draw_rect(Rect2(x0 + 1.0, ly + 2.0, w - 2.0, 1.0), c_gold)
 
-	# Draw recessed brass inclinometer badge at driver pos
+	# Draw recessed circular brass ship inclinometer plate on deck
 	var active_roll: bool = continuous or surge_left > 0.0
-	var badge := Rect2(-12.0, -7.0, 24.0, 14.0)
-	LxPhysDraw.draw_bevel_box(self, badge, c_night, c_gold if active_roll else c_stone, PAL["dusk"] as Color, c_void)
 	var dir_x: float = -1.0 if current_list == "port" else 1.0
-	var bob := Vector2(dir_x * 6.0, 2.0)
+	draw_circle(Vector2.ZERO, 9.0, c_void)
+	draw_circle(Vector2.ZERO, 8.0, PAL["dusk"] as Color)
+	draw_circle(Vector2.ZERO, 6.0, c_night)
+	draw_arc(Vector2.ZERO, 7.5, 0.0, TAU, 16, c_gold if active_roll else PAL["apricot"] as Color, 1.0)
+	draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), c_stone)
+	var bob := Vector2(dir_x * 4.0, 3.0)
 	draw_line(Vector2(0.0, -4.0), bob, c_cream if active_roll else c_gold, 1.0)
 	draw_rect(Rect2(bob - Vector2.ONE, Vector2(2.0, 2.0)), c_ice if current_list == "port" else c_gold)
-	LxPhysDraw.draw_chevron(self, Vector2(dir_x * 8.0, 0.0), Vector2(dir_x, 0.0), c_cream if active_roll else c_gold, c_void, 2.0)
+	LxPhysDraw.draw_chevron(self, Vector2(dir_x * 11.0, 0.0), Vector2(dir_x, 0.0), c_cream if active_roll else c_gold, c_void, 2.0)

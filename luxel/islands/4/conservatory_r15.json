@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "hourglass_maze",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R15",
   "music": "island4_dungeon",
   "spawn": [
@@ -351,8 +351,8 @@
   ],
   "scenery": [
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "tall_hourglass_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         456,
         176
@@ -373,8 +373,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "garden_clock_arch",
+      "sheet": "island4_scenery",
+      "prop": "iron_trellis_arch",
       "pos": [
         208,
         40
@@ -384,8 +384,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "amber_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         336,
         224
@@ -395,8 +395,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "mossy_garden_obelisk",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         248,
         64
@@ -404,6 +404,18 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        522,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "design": {

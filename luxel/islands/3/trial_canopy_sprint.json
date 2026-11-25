@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "briar_court",
+  "theme": "canopy_sprint",
   "name_key": "ISL3_TRIAL_SPRINT_NAME",
   "music": "isl3_setpiece",
   "spawn": [
@@ -242,8 +242,8 @@
   "triggers": [],
   "scenery": [
     {
-      "sheet": "theme_briar_court",
-      "prop": "rose_thorn_arch",
+      "sheet": "island3_scenery",
+      "prop": "thorn_archway",
       "pos": [
         400,
         112
@@ -254,8 +254,8 @@
       "phase": 0.0
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "heraldic_court_banner",
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
       "pos": [
         72,
         160
@@ -266,8 +266,8 @@
       "phase": 0.2
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "briar_lantern_post",
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
       "pos": [
         216,
         48
@@ -278,8 +278,8 @@
       "phase": 0.3
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "briar_lantern_post",
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
       "pos": [
         312,
         200
@@ -290,8 +290,8 @@
       "phase": 0.6
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "clipped_rose_urn",
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
       "pos": [
         432,
         176
@@ -302,8 +302,8 @@
       "phase": 0.4
     },
     {
-      "sheet": "theme_briar_court",
-      "prop": "petal_drift_floor",
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
       "pos": [
         248,
         80
@@ -312,6 +312,42 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.1
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        442,
+        102
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "tiny_shrooms",
+      "pos": [
+        426,
+        218
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "giant_glowshroom_cluster",
+      "pos": [
+        184,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

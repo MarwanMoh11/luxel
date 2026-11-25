@@ -679,5 +679,6 @@
       }
     ]
   },
-  "is_2x2_room": true
+  "is_2x2_room": true,
+  "theme": "conservatory"
 }

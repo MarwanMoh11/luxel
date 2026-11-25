@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "rain_mausoleum",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R13",
   "music": "island4_dungeon",
   "spawn": [
@@ -329,8 +329,8 @@
   ],
   "scenery": [
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "wet_moss_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         64,
         120
@@ -340,8 +340,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "wet_moss_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         376,
         120
@@ -351,8 +351,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "bronze_drain_gargoyle",
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
       "pos": [
         144,
         104
@@ -362,8 +362,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "bronze_drain_gargoyle",
+      "sheet": "island4_scenery",
+      "prop": "flooded_statue",
       "pos": [
         304,
         176
@@ -373,8 +373,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_rain_mausoleum",
-      "prop": "rain_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         192,
         200
@@ -382,6 +382,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        410,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "rain_basin_fountain",
+      "pos": [
+        410,
+        186
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        312,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        360,
+        38
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        104,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "design": {

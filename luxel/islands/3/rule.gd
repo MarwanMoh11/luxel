@@ -197,8 +197,10 @@ func detach() -> void:
 	if _hud != null and is_instance_valid(_hud):
 		_hud.queue_free()
 	_hud = null
-	if _attached and _state != null and not _active_region_id.is_empty():
+	if _attached and _state != null and _state.island_id == ISLAND_ID and not _active_region_id.is_empty():
 		_carry = {"state": _state.get_instance_id(), "region": _active_region_id, "clearing": _active_clearing}
+	else:
+		_carry = {}
 	_active_region_id = ""
 	_active_clearing = ""
 	_attached = false

@@ -7,15 +7,17 @@ extends LxToy
 
 const HULL_RADIUS: float = 8.5
 const MAX_SPEED: float = 172.0
-const SWING_MAX_SPEED: float = 198.0
+const SWING_MAX_SPEED: float = 204.0
 const BOLT_THRUST: float = 96.0
 const BEAM_THRUST: float = 220.0
-const THROW_THRUST: float = 74.0
-const FORWARD_DRAG: float = 1.50
-const LATERAL_DRAG: float = 3.20
+const THROW_THRUST: float = 46.0
+const FORWARD_DRAG: float = 1.48
+const LATERAL_DRAG: float = 2.40
 const ANCHOR_DRAG: float = 7.40
-const RUDDER_CARVE: float = 2.50
-const BUMP_RESTITUTION: float = 0.38
+const RUDDER_TURN_RATE: float = 4.40
+const SCULL_ACCEL: float = 48.0
+const SCULL_MAX_SPEED: float = 24.0
+const BUMP_RESTITUTION: float = 0.34
 const SWING_DUR: float = 0.60
 const DASH_COOLDOWN: float = 0.50
 const DASH_IFRAME_S: float = 0.18
@@ -98,18 +100,38 @@ static func restore_mount_carryover(reg: LxRegionLoader, wick: LxWick, spawn_at:
 		target_skiff = created as LxVehicleSkiff if created is LxVehicleSkiff else null
 	if target_skiff == null:
 		return null
-	if is_water_spawn and target_skiff._can_float_at(reg, spawn_at):
-		target_skiff.pos = spawn_at
-		target_skiff.position = spawn_at.round()
+	if is_water_spawn:
+		var place_p: Vector2 = _find_safe_water_entry(reg, target_skiff, spawn_at, data.get("heading", Vector2.RIGHT) as Vector2)
+		if place_p.is_finite():
+			target_skiff.pos = place_p
+			target_skiff.position = place_p.round()
 	var saved_h: Vector2 = data.get("heading", target_skiff.heading) as Vector2
 	if saved_h.length_squared() > 0.01:
 		target_skiff.heading = saved_h.normalized()
-	target_skiff.vel = (data.get("vel", Vector2.ZERO) as Vector2) * 0.65
+	target_skiff.vel = ((data.get("vel", Vector2.ZERO) as Vector2).limit_length(MAX_SPEED)) * 0.65
 	wick.mount(target_skiff)
 	wick.global_position = target_skiff.pos
 	wick.last_pos = target_skiff.pos
 	target_skiff.queue_redraw()
 	return target_skiff
+
+static func _find_safe_water_entry(reg: LxRegionLoader, sk: LxVehicleSkiff, at_pos: Vector2, pref_dir: Vector2) -> Vector2:
+	if sk._can_float_at(reg, at_pos):
+		return at_pos
+	var p0: Vector2 = at_pos
+	var b_v: Variant = reg.get("bounds")
+	if b_v is Rect2 and (b_v as Rect2).has_area():
+		var inner: Rect2 = (b_v as Rect2).grow(-(HULL_RADIUS + 1.0))
+		p0 = Vector2(clampf(at_pos.x, inner.position.x, inner.end.x), clampf(at_pos.y, inner.position.y, inner.end.y))
+		if sk._can_float_at(reg, p0):
+			return p0
+	var base_ang: float = pref_dir.angle() if pref_dir.length_squared() > 0.01 else 0.0
+	for dist: float in [8.0, 14.0, 22.0, 30.0]:
+		for i: int in range(8):
+			var cand: Vector2 = p0 + Vector2.from_angle(base_ang + TAU * float(i) / 8.0) * dist
+			if sk._can_float_at(reg, cand):
+				return cand
+	return Vector2.INF
 
 static func _find_nearest_skiff(reg: LxRegionLoader, at_pos: Vector2, max_d: float) -> LxVehicleSkiff:
 	var best: LxVehicleSkiff = null
@@ -128,7 +150,7 @@ static func _find_nearest_skiff(reg: LxRegionLoader, at_pos: Vector2, max_d: flo
 func _toy_setup() -> void:
 	kind = "vehicle_skiff"
 	size = Vector2(22.0, 14.0)
-	radius = 15.0
+	radius = 24.0
 	if not props.has("weight"):
 		props["weight"] = 3.0
 	origin_pos = pos
@@ -156,6 +178,7 @@ func on_portal_warped(_from_p: Vector2, _to_p: Vector2, preserved_vel: Vector2) 
 	_swing_t = 0.0; _release_post_whip()
 	if preserved_vel.length() >= SLINGSHOT_LEAP_SPEED:
 		_slingshot_t = SLINGSHOT_LEAP_DUR
+		_nudge_camera_ahead(preserved_vel.normalized(), 48.0, 0.45)
 	_spawn_wake(pos, 7.0); queue_redraw()
 
 func interact(actor: Node = null) -> bool:
@@ -178,6 +201,12 @@ func on_dismounted(w: LxWick) -> void:
 		w.fired.disconnect(_on_rider_fired)
 	if rider == w: rider = null
 	_swing_t = 0.0; _release_post_whip()
+	if not is_instance_valid(w) or w.dead:
+		vel = Vector2.ZERO
+	else:
+		vel *= 0.16
+		if vel.length() < 22.0: vel = Vector2.ZERO
+	_cached_dock_pos = Vector2.INF
 	_emit_sfx("footstep_wood"); queue_redraw()
 
 func _exit_tree() -> void:
@@ -199,7 +228,7 @@ func _find_safe_dock_pos(pref_dir: Vector2 = Vector2.ZERO) -> Vector2:
 	if region == null:
 		return pos + Vector2(0.0, -18.0)
 	var base_ang: float = pref_dir.angle() if pref_dir.length_squared() > 0.01 else heading.angle()
-	for dist: float in [16.0, 22.0, 28.0, 36.0]:
+	for dist: float in [16.0, 22.0, 28.0, 34.0, 40.0]:
 		for i: int in range(16):
 			var step_i: int = (i / 2) * (1 if i % 2 == 0 else -1)
 			var cand: Vector2 = pos + Vector2.from_angle(base_ang + TAU * float(step_i) / 16.0) * dist

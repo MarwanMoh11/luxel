@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_3",
+  "theme": "thornwood_cave",
   "name_key": "ISL3_CAVE_SAP_NAME",
   "music": "island3_dungeon",
   "spawn": [

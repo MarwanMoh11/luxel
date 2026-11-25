@@ -353,6 +353,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "wet_moss_pillar",
+      "pos": [
+        70,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "rain_lantern_post",
+      "pos": [
+        362,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "weeping_stone_urn",
+      "pos": [
+        22,
+        86
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_rain_mausoleum",
+      "prop": "slate_memorial_plinth",
+      "pos": [
+        138,
+        234
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "design": {

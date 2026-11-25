@@ -126,7 +126,13 @@ func _draw() -> void:
 		LxPhysDraw.draw_chevron(self, Vector2(0.0, -24.0), Vector2.UP, c_gold, c_void, 3.0)
 		LxPhysDraw.draw_chevron(self, Vector2(0.0, -10.0), Vector2.UP, c_cream, c_void, 3.0)
 	else:
-		LxPhysDraw.draw_chevron(self, Vector2(0.0, 0.0), Vector2.UP, PAL["stone"] as Color, c_void, 2.0)
+		var pulse_y: float = 0.0 if red else roundf(sin(_clock * 4.5) * 1.5)
+		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, Color(c_sky, 0.55), 1.0)
+		if not red:
+			for di: int in range(3):
+				var du: float = fmod(_clock * 0.9 + float(di) * 0.33, 1.0)
+				draw_rect(Rect2(roundf(sin(float(di) * 2.2) * 5.0), roundf(lerpf(3.0, -14.0, du)), 2.0, 2.0), Color(c_ice, (1.0 - du) * 0.75))
+		LxPhysDraw.draw_chevron(self, Vector2(0.0, -2.0 + pulse_y), Vector2.UP, c_gold, c_void, 2.5)
 	if _erupt_t > 0.0:
 		var u: float = 1.0 - clampf(_erupt_t / 0.80, 0.0, 1.0)
 		draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 38.0, u)), 0.0, TAU, 20, Color(c_cream, 1.0 - u), 2.0)

@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "hourglass_maze",
+  "theme": "conservatory",
   "name_key": "ISL4_C4_R17",
   "music": "island4_dungeon",
   "spawn": [
@@ -428,8 +428,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "tall_hourglass_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         72,
         64
@@ -439,8 +439,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "garden_clock_arch",
+      "sheet": "island4_scenery",
+      "prop": "iron_trellis_arch",
       "pos": [
         368,
         40
@@ -450,8 +450,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_hourglass_maze",
-      "prop": "amber_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
       "pos": [
         320,
         48
@@ -459,6 +459,66 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        120,
+        278
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        392,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
+      "pos": [
+        106,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        234,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        234,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "design": {

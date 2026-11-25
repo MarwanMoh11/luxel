@@ -235,11 +235,11 @@ class BellOuterPainter(ThemePainter):
         z_off = sum(ord(ch) for ch in rid) % 97
         warp_lo = fbm_grid(H, W, 44.0, seed=s.seed + 301 + z_off, octaves=2)
         warp_hi = fbm_grid(H, W, 18.0, seed=s.seed + 317 + z_off, octaves=2)
-        # Asymmetric lateral bias shifts apparent trail centerline off-axis
-        asym_bias = (warp_lo - 0.5) * 9.5 + (warp_hi - 0.5) * 4.5
+        # Asymmetric lateral bias shifts apparent trail centerline off-axis & breaks '+' symmetry in paint
+        asym_bias = (warp_lo - 0.5) * 14.5 + (warp_hi - 0.5) * 6.0
         # Keep doorway approaches (near map border or exits) firmer; meander more in the open interior
         border_d = np.minimum(np.minimum(xs, W - 1 - xs), np.minimum(ys, H - 1 - ys)).astype(np.float32)
-        interior_w = np.clip((border_d - 22.0) / 36.0, 0.15, 1.0)
+        interior_w = np.clip((border_d - 20.0) / 32.0, 0.12, 1.0)
         eff_dist = dist_in + asym_bias * interior_w
 
         # Weathered irregular cobble / stepping-stone pattern
@@ -264,19 +264,18 @@ class BellOuterPainter(ThemePainter):
         joint = ((cx == 0) | (cy == 0)) & (bg < 0.58)
         cobble = np.where(joint, IX["dusk"] if "graveyard" not in rid else IX["night"], cobble)
         # Moss creeping between outer cobbles
-        moss_joint = joint & (eff_dist < 8.5) & (warp_hi < 0.58)
+        moss_joint = joint & (eff_dist < 9.5) & (warp_hi < 0.62)
         cobble = np.where(moss_joint, IX["pine"], cobble)
 
-        # Grass encroachment along path rim (eff_dist < 3.6 -> grass; 3.6..6.8 -> mossy dithered stepping stones)
-        is_grass = eff_dist < 3.4
-        is_step_zone = (eff_dist >= 3.4) & (eff_dist < 7.2)
-        step_stone = (cx >= 2) & (cx <= 7) & (cy >= 1) & (cy <= 5) & (st_h > 0.38)
-        # Organic wear patches inside wider plazas (moss islands break up big square path blocks!)
-        moss_patch = (dist_in > 9.0) & (warp_lo < 0.32) & (warp_hi < 0.52) & (bg < 0.72)
+        # Grass encroachment along path rim + organic mossy tufts breaking up straight arms & square plazas
+        is_grass = eff_dist < 4.4
+        is_step_zone = (eff_dist >= 4.4) & (eff_dist < 8.4)
+        step_stone = (cx >= 2) & (cx <= 7) & (cy >= 1) & (cy <= 5) & (st_h > 0.36)
+        moss_patch = (dist_in > 7.5) & (warp_lo < 0.36) & (warp_hi < 0.55) & (bg < 0.74)
 
         out = np.where(is_grass, grass_buf, cobble)
-        out = np.where(is_step_zone & (~step_stone) & (bg < 0.70), grass_buf, out)
-        out = np.where(moss_patch, np.where(bg < 0.45, IX["teal"], IX["pine"]), out)
+        out = np.where(is_step_zone & (~step_stone) & (bg < 0.72), grass_buf, out)
+        out = np.where(moss_patch, np.where(bg < 0.48, IX["teal"], IX["pine"]), out)
 
         # Subtle zone-specific focal details on paths
         if "manor" in rid:
@@ -381,7 +380,8 @@ class LighthousePainter(ThemePainter):
         s = self.spec
         H, W = ctx["H"], ctx["W"]
         xs, ys = ctx["xs"], ctx["ys"]
-        bg, nb, nf, warm = ctx["bg"], ctx["n_broad"], ctx["n_fine"], ctx["warm"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
 
         # Dressed wet coastal slate slabs (16x10 running bond), mean walkable luma ~74-82
         sh, sw = 10, 16
@@ -393,25 +393,30 @@ class LighthousePainter(ThemePainter):
 
         # Subtle warm central lamp wash radiates gently from room focus
         dist_c = np.hypot((xs - W * 0.5) / max(1.0, W * 0.48), (ys - H * 0.5) / max(1.0, H * 0.52))
-        lamp_wash = np.clip(1.0 - dist_c, 0.0, 1.0) * 0.22
-        field = np.clip(nb * 0.44 + slab_h * 0.30 + warm * 0.08 + lamp_wash + 0.14, 0.0, 0.92)
+        lamp_wash = np.clip(1.0 - dist_c, 0.0, 1.0) * 0.18
+        field = np.clip(nb * 0.42 + slab_h * 0.28 + warm * 0.08 + lamp_wash + 0.08, 0.0, 0.90)
         out = ramp_blend(s.floor_ramp, field, bg)
 
         # Quiet dithered wet-slate mortar seams
-        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.50)
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.48)
         out = np.where(is_seam, IX["night"], out)
-        # Cool sea-spray sheen on damp slate edges next to water (distinct from bright blue water itself)
-        wet_edge = ctx["n_dn_water"] | ctx["n_up_water"] | ctx["n_lt_water"] | ctx["n_rt_water"]
-        out = np.where(wet_edge & (nf < 0.14) & (~is_seam), IX["teal"], out)
+        # Clean 3px damp stone darkening right along water edges (zero green speckle confetti!)
+        damp_rim = (
+            (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_lt_water"] & (lx < 3))
+            | (ctx["n_rt_water"] & (lx >= ts - 3))
+        )
+        out = np.where(damp_rim & (bg < 0.62) & (~is_seam), IX["dusk"], out)
         # Crisp bevel catchlight on select dry flagstones
-        out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.34), IX["stone"], out)
+        out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.30), IX["stone"], out)
 
-        # Subtle inlaid lighthouse brass compass/lens floor strips & corner studs
+        # Subtle inlaid lighthouse brass compass/lens floor ring & sparse brass rivets
         cx, cy = W * 0.5, H * 0.5
         rad = np.hypot(xs - cx, ys - cy)
         brass_ring = (np.abs(rad - 44.0) < 0.75) & (((xs + ys) % 3) != 0) & (nb > 0.35)
         out = np.where(brass_ring, IX["apricot"], out)
-        stud = (sx == 8) & (sy == 5) & (slab_h > 0.90)
+        stud = (sx == 8) & (sy == 5) & (slab_h > 0.92)
         out = np.where(stud, IX["gold"], out)
         buf[mask] = out[mask]
 
@@ -511,60 +516,63 @@ class GalleonPainter(ThemePainter):
         )
 
         if is_hold:
-            # Lower Hold: lifted warm damp oak planking (plum -> mauve, luma ~78-84, clearly brighter than ~42 walls!)
+            # Lower Hold: lifted warm damp oak planking (dusk -> plum -> mauve, luma ~76-82, clearly brighter than ~42 walls!)
             ph = 8
             pr = ys // ph
             py = ys % ph
             butt_off = (pr * 17) % 36
             px_b = (xs + butt_off) % 36
             plank_h = hash01_grid((xs + butt_off) // 36, pr, s.seed + 83)
-            field = np.clip(nb * 0.48 + plank_h * 0.26 + warm * 0.12 + 0.08, 0.0, 0.86)
-            out = ramp_blend(("plum", "mauve"), field, bg)
-            # Soft dithered caulk seams (dusk, never murky black stripes)
+            field = np.clip(nb * 0.44 + plank_h * 0.24 + warm * 0.10 + 0.18, 0.0, 0.88)
+            out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
             is_hseam = (py == 0) & (bg < 0.46)
             is_vseam = (px_b == 0) & (py > 0) & (bg < 0.40)
-            out = np.where(is_hseam | is_vseam, IX["dusk"], out)
-            # Subtle damp teal seepage near bilge water edges
-            wet_edge = ctx["n_dn_water"] | ctx["n_up_water"] | ctx["n_lt_water"] | ctx["n_rt_water"]
-            out = np.where(wet_edge & (nf < 0.14) & (py > 0), IX["teal"], out)
-            # Quiet weathered edge sheen & brass deck pin
-            out = np.where((py == 1) & (plank_h > 0.84) & (bg < 0.28), IX["stone"], out)
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
+            # Clean damp wood darkening along bilge water edges (no speckle confetti)
+            lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+            damp_rim = (
+                (ctx["n_dn_water"] & (ly >= ts - 3))
+                | (ctx["n_up_water"] & (ly < 3))
+                | (ctx["n_lt_water"] & (lx < 3))
+                | (ctx["n_rt_water"] & (lx >= ts - 3))
+            )
+            out = np.where(damp_rim & (bg < 0.55) & (py > 0), IX["dusk"], out)
+            out = np.where((py == 1) & (plank_h > 0.84) & (bg < 0.24), IX["stone"], out)
             out = np.where((px_b == 18) & (py == 4) & (plank_h > 0.90), IX["apricot"], out)
         elif is_cabin:
-            # Captain's Cabin / Boathouse: warm varnished mahogany decking (plum -> wine -> mauve, luma ~82-88)
+            # Captain's Cabin / Boathouse: warm varnished mahogany decking (dusk -> plum -> wine, luma ~78-85)
             ph = 7
             pr = ys // ph
             py = ys % ph
             butt_off = (pr * 19) % 40
             px_b = (xs + butt_off) % 40
             plank_h = hash01_grid((xs + butt_off) // 40, pr, s.seed + 97)
-            field = np.clip(nb * 0.48 + plank_h * 0.26 + warm * 0.16 + 0.10, 0.0, 0.88)
-            out = ramp_blend(("plum", "wine", "mauve"), field, bg)
+            field = np.clip(nb * 0.46 + plank_h * 0.24 + warm * 0.14 + 0.14, 0.0, 0.86)
+            out = ramp_blend(("dusk", "plum", "wine"), field, bg)
             is_hseam = (py == 0) & (bg < 0.48)
             is_vseam = (px_b == 0) & (py > 0) & (bg < 0.40)
-            out = np.where(is_hseam | is_vseam, IX["dusk"], out)
-            out = np.where((py == 1) & (plank_h > 0.82) & (bg < 0.26), IX["apricot"], out)
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
+            out = np.where((py == 1) & (plank_h > 0.82) & (bg < 0.24), IX["mauve"], out)
             stud = (px_b == 20) & (py == 3) & (plank_h > 0.92)
             out = np.where(stud, IX["gold"], out)
         else:
-            # Upper Weather / Gun / Keel / Prow Deck: salt-weathered oak timber (plum -> mauve -> stone, luma ~80-86)
+            # Upper Weather / Gun / Keel / Prow Deck: salt-weathered oak timber (dusk -> plum -> mauve, luma ~78-84)
             ph = 8
             pr = ys // ph
             py = ys % ph
             butt_off = (pr * 15) % 32
             px_b = (xs + butt_off) % 32
             plank_h = hash01_grid((xs + butt_off) // 32, pr, s.seed + 109)
-            field = np.clip(nb * 0.46 + plank_h * 0.26 + warm * 0.10 + 0.08, 0.0, 0.82)
-            out = ramp_blend(("plum", "mauve", "stone"), field, bg)
+            field = np.clip(nb * 0.44 + plank_h * 0.24 + warm * 0.10 + 0.22, 0.0, 0.90)
+            out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
             is_hseam = (py == 0) & (bg < 0.46)
             is_vseam = (px_b == 0) & (py > 0) & (bg < 0.38)
-            out = np.where(is_hseam | is_vseam, IX["dusk"], out)
-            # Subtle transverse ship deck-rib timber line every 48px
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
             rib = (xs % 48 == 0) & (bg < 0.44)
             out = np.where(rib, IX["night"], out)
-            out = np.where((py == 1) & (plank_h > 0.78) & (bg < 0.28), IX["stone"], out)
-            salt = (nb > 0.82) & (nf > 0.93) & (bg < 0.30) & (py > 0)
-            out = np.where(salt, IX["ice"], out)
+            out = np.where((py == 1) & (plank_h > 0.80) & (bg < 0.26), IX["stone"], out)
+            salt = (nb > 0.84) & (nf > 0.94) & (bg < 0.28) & (py > 0)
+            out = np.where(salt, IX["stone"], out)
 
         buf[mask] = out[mask]
 
@@ -711,7 +719,7 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             wall_face="dusk",
             wall_face_hi="mauve",
             wall_base="night",
-            water_style="koi_pond",
+            water_style="rain_water",
             water_deep="deep",
             water_mid="blue",
             water_hi="sky",
@@ -831,7 +839,7 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Tidewater Lighthouse",
             island=2,
             floor_style="quay_masonry",
-            floor_ramp=("dusk", "mauve", "stone"),
+            floor_ramp=("dusk", "plum", "mauve"),
             floor_seam="night",
             floor_bevel="stone",
             floor_accent_a="teal",
@@ -843,7 +851,7 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             path_trim="apricot",
             wall_style="masonry",
             wall_cap=("void", "night", "dusk"),
-            wall_lip="apricot",
+            wall_lip="mauve",
             wall_face="dusk",
             wall_face_hi="mauve",
             wall_base="void",

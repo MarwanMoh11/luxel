@@ -485,7 +485,7 @@
         112,
         48
       ],
-      "color": "sky"
+      "color": "apricot"
     },
     {
       "kind": "light_shaft",
@@ -577,5 +577,6 @@
         "exit": "exit_oak_r5_east"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

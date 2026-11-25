@@ -497,5 +497,6 @@
         "exit": "exit_oak_r4_east"
       }
     ]
-  }
+  },
+  "theme": "hollow_oak"
 }

@@ -3,7 +3,7 @@
   "island_id": 4,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "garden_party",
+  "theme": "wing_spire",
   "name_key": "ISL4_ZONE_WING_SPIRE",
   "music": "isl4_setpiece",
   "spawn": [
@@ -420,8 +420,8 @@
   ],
   "scenery": [
     {
-      "sheet": "theme_garden_party",
-      "prop": "festive_bunting_arch",
+      "sheet": "island4_scenery",
+      "prop": "iron_trellis_arch",
       "pos": [
         96,
         172
@@ -431,8 +431,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "paper_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
       "pos": [
         160,
         64
@@ -442,8 +442,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "paper_lantern_post",
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
       "pos": [
         336,
         64
@@ -453,8 +453,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "rose_flower_urn",
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
       "pos": [
         368,
         224
@@ -464,8 +464,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "rose_flower_urn",
+      "sheet": "island4_scenery",
+      "prop": "mossy_planter_urn",
       "pos": [
         176,
         240
@@ -475,8 +475,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "garden_gazebo_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         32,
         48
@@ -486,8 +486,8 @@
       "shadow": true
     },
     {
-      "sheet": "theme_garden_party",
-      "prop": "garden_gazebo_pillar",
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
       "pos": [
         96,
         48
@@ -495,6 +495,30 @@
       "layer": "sort",
       "flip_x": false,
       "shadow": true
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "glass_cloche_bed",
+      "pos": [
+        22,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stone_bridge_post",
+      "pos": [
+        22,
+        90
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "design": {

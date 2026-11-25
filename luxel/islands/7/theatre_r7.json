@@ -94,7 +94,7 @@
     {
       "id": "echo_r7_mid",
       "kind": "echo_rose",
-      "pos": [240, 224],
+      "pos": [216, 256],
       "props": {
         "secs": 6.0,
         "loop": true
@@ -219,14 +219,14 @@
     {
       "id": "r7_owl",
       "kind": "silvered_owl",
-      "pos": [240, 128],
+      "pos": [240, 112],
       "zone": "theatre_act3_a",
-      "leash": 164
+      "leash": 124
     }
   ],
   "decor": [
     { "kind": "circle", "pos": [112, 264], "radius": 24, "style": "spotlight", "color": "sky", "secondary": "ice" },
-    { "kind": "circle", "pos": [240, 224], "radius": 24, "style": "spotlight", "color": "rose", "secondary": "gold" },
+    { "kind": "circle", "pos": [216, 256], "radius": 24, "style": "spotlight", "color": "rose", "secondary": "gold" },
     { "kind": "rug", "rect": [416, 40, 48, 96], "color": "wine", "border": "ice" },
     { "kind": "inlay", "rect": [56, 160, 88, 48], "color": "ice" }
   ],
@@ -265,9 +265,9 @@
     "solution": [
       { "op": "shoot", "from": [56, 168], "target": "block_r7_ice1" },
       { "op": "wait_until", "target": "plate_r7_1", "prop": "powered", "value": true, "timeout": 4.0 },
-      { "op": "goto", "to": [240, 184], "tol": 10 },
+      { "op": "goto", "to": [240, 160], "tol": 10 },
       { "op": "clear", "timeout": 60.0 },
-      { "op": "goto", "to": [240, 224], "tol": 10 },
+      { "op": "goto", "to": [216, 256], "tol": 10 },
       { "op": "interact", "target": "echo_r7_mid" },
       { "op": "goto", "to": [240, 280], "tol": 6 },
       { "op": "wait", "secs": 1.6 },

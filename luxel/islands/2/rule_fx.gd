@@ -113,7 +113,7 @@ func draw_world(ci: CanvasItem, wick: LxWick, clock: float) -> void:
 
 	# First-ride diegetic recoil thrust guide (opposite aim) for first 4 shots
 	if _recoil_shots_seen < FIRST_RIDE_GUIDE_SHOTS and not sk.grounded:
-		var aim_d: Vector2 = wick.aim_dir.normalized() if wick.aim_dir.length_squared() > 0.01 else Vector2.RIGHT
+		var aim_d: Vector2 = wick.facing.normalized() if wick.facing.length_squared() > 0.01 else Vector2.RIGHT
 		var thrust_d: Vector2 = -aim_d
 		var pulse: float = 0.75 if red else (0.55 + 0.35 * sin(clock * 7.0))
 		var c_g: Color = Color(pal["gold"] as Color, pulse)
@@ -125,16 +125,6 @@ func draw_world(ci: CanvasItem, wick: LxWick, clock: float) -> void:
 		var perp := Vector2(-thrust_d.y, thrust_d.x)
 		ci.draw_line(tip, (tip - thrust_d * 4.0 + perp * 3.0).round(), c_c, 1.0)
 		ci.draw_line(tip, (tip - thrust_d * 4.0 - perp * 3.0).round(), c_c, 1.0)
-
-	# Taut golden hawser + slingshot chevron when lantern is anchored on a mooring_post
-	var lan: LxLantern = wick.lantern
-	if lan != null and is_instance_valid(lan) and lan.is_lure_active():
-		var to_p: Vector2 = lan.pos - sk.pos
-		var d: float = to_p.length()
-		if d >= 12.0 and d <= 132.0:
-			ci.draw_line(sk.pos.round(), lan.pos.round(), Color(pal["gold"] as Color, 0.75), 1.0)
-			var mid: Vector2 = ((sk.pos + lan.pos) * 0.5).round()
-			ci.draw_rect(Rect2(mid - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), pal["cream"] as Color)
 
 
 func draw_hud_sweep(ci: CanvasItem, clock: float) -> void:

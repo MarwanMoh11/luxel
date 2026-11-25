@@ -3,7 +3,7 @@
   "island_id": 3,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "cave_3",
+  "theme": "hollow_oak",
   "name_key": "OAK3_R5B_NAME",
   "music": "island3_dungeon",
   "spawn": [
@@ -32,7 +32,7 @@
         288,
         80
       ],
-      "color": "sky"
+      "color": "apricot"
     },
     {
       "kind": "cracks",
@@ -370,6 +370,78 @@
       ],
       "layer": "sort",
       "shadow": false
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "fern_cluster",
+      "pos": [
+        134,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "mossy_stump",
+      "pos": [
+        426,
+        22
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "root_monolith",
+      "pos": [
+        86,
+        54
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "canopy_vine_post",
+      "pos": [
+        342,
+        202
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "spider_silk_banner",
+      "pos": [
+        410,
+        202
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "island3_scenery",
+      "prop": "heartwood_pillar",
+      "pos": [
+        86,
+        234
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "layers": [],
