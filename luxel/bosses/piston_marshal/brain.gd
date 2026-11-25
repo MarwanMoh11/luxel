@@ -21,6 +21,7 @@ var _stride_warn: bool = false
 var _last_side: int = -1
 var _jammed_rattle_t: float = 0.0
 var _quench_t: float = 0.0
+var _quench_cd: float = 0.0
 var _double_lunge_phase: int = 0
 var _coolant_positions: Array[Vector2] = []
 
@@ -35,8 +36,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 64.0
-	hp = 64.0
+	max_hp = 68.0
+	hp = 68.0
 	body_radius = 11.0
 	move_speed = 38.0
 	stagger_threshold = 13.0
@@ -143,6 +144,7 @@ func _on_reset_encounter() -> void:
 	_last_side = -1
 	_jammed_rattle_t = 0.0
 	_quench_t = 0.0
+	_quench_cd = 0.0
 	_double_lunge_phase = 0
 	_coolant_positions.clear()
 	var c: Vector2 = arena_rect.get_center()
@@ -156,19 +158,21 @@ func _on_reset_encounter() -> void:
 func _fire_coolant_quench(from_p: Vector2) -> void:
 	stage.play_sfx("mirror_ping", from_p)
 	stage.light_burst(from_p, 46.0, 1.15, 0.24)
-	if not engaged or boss_state == BossState.DEATH:
+	if not engaged or boss_state == BossState.DEATH or _quench_cd > 0.0:
 		return
-	# Corner coolant mirror reflects a Blue quench jet straight into Marshal's steam boiler!
+	# Corner coolant mirror reflects a Blue quench jet straight into Marshal's steam boiler (with cooldown so it cannot stunlock)!
 	_trigger_quench_stagger()
 
 
 func _trigger_quench_stagger() -> void:
+	if _quench_cd > 0.0 or boss_state == BossState.STAGGER:
+		return
 	_quench_t = 2.0
+	_quench_cd = 9.5
 	stage.play_sfx("magma_crack", pos)
 	stage.shake(0.20)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		(Lx.player as LxWick).spawn_ring(pos, 4.0, 26.0, 0.28, PAL["ice"] as Color, 1.6)
-	stagger_immunity_t = 0.0
 	add_stagger(stagger_threshold)
 
 
@@ -177,6 +181,8 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 		_jammed_rattle_t = maxf(0.0, _jammed_rattle_t - dt)
 	if _quench_t > 0.0:
 		_quench_t = maxf(0.0, _quench_t - dt)
+	if _quench_cd > 0.0:
+		_quench_cd = maxf(0.0, _quench_cd - dt)
 	if not engaged or boss_state == BossState.DEATH:
 		return
 
@@ -257,9 +263,7 @@ func _downhill_mult(dir: Vector2) -> float:
 
 
 func _build_corner_drops(tgt: Vector2) -> Array[Vector2]:
-	var reach: Rect2 = arena_rect.grow(10.0)
-	var tgt_clamped := Vector2(clampf(tgt.x, reach.position.x, reach.end.x), clampf(tgt.y, reach.position.y, reach.end.y))
-	var out: Array[Vector2] = [tgt_clamped]
+	var out: Array[Vector2] = [tgt]
 	var inset: Rect2 = arena_rect.grow(-16.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),

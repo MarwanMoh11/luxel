@@ -111,7 +111,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("ks_spindle_ring", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_d, 5, 0.78, 120.0, {"color": "gold", "source": "twin_feint"})
+			patterns.emit_fan(pos, aim_d, 4, 0.78, 104.0, {"color": "gold", "source": "twin_feint"})
 			stage.shake(0.18)
 			stage.play_sfx("ks_tether_whip", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _el: float) -> void:
@@ -232,7 +232,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if _tether_active and not is_punishable():
 		# Silk cloak glances light bolts mid-swing; burn spool or cut tether to unhorse!
 		clank_t = 0.08
-		return dmg * 0.52
+		return dmg * 0.68
 	return dmg
 
 

@@ -30,8 +30,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 72.0
-	hp = 72.0
+	max_hp = 78.0
+	hp = 78.0
 	body_radius = 12.5
 	move_speed = 38.0
 	stagger_threshold = 13.0
@@ -287,7 +287,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 			_ignite_spoke(_perched_spoke)
 		return dmg * 1.10
 	if _perched_spoke >= 0 and not is_punishable():
-		return dmg * 0.65
+		return dmg * 0.56
 	return dmg
 
 

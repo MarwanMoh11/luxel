@@ -80,8 +80,8 @@
       "mini": true,
       "dungeon": "planetarium",
       "region": "planet_r6",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "isl5_boss_minor_p1",
+      "music_p2": "isl5_boss_minor_p2",
       "heart": "half",
       "flag": "pl_miniboss_done",
       "arena_lock": true
@@ -96,8 +96,8 @@
       "mini": false,
       "dungeon": "planetarium",
       "region": "planet_r11",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "isl5_boss_minor_p1",
+      "music_p2": "isl5_boss_minor_p2",
       "heart": "half",
       "flag": "planetarium_done",
       "arena_lock": true
@@ -111,8 +111,8 @@
       "mini": false,
       "dungeon": "fall",
       "region": "fall_r4",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "isl5_boss_minor_p1",
+      "music_p2": "isl5_boss_minor_p2",
       "heart": "none",
       "flag": "fall_done",
       "arena_lock": true
@@ -126,8 +126,8 @@
       "mini": false,
       "dungeon": "superboss",
       "region": "superboss_horizon",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "superboss_b",
+      "music_p2": "superboss_b",
       "heart": "full",
       "flag": "superboss_5_defeated",
       "arena_lock": true

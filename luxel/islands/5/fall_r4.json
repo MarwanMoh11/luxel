@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "freefall",
-  "music": "island5_boss_p1",
+  "music": "isl5_boss_minor_p1",
   "ambience": [
     "night_breeze",
     "sanctum_bells"

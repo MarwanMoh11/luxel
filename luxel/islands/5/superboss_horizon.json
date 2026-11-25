@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "theme": "freefall",
   "name_key": "I5_ZONE_HORIZON",
-  "music": "isl5_boss_minor_p1",
+  "music": "superboss_b",
   "spawn": [
     72,
     208
@@ -35,7 +35,7 @@
       "to_island": 5,
       "to_region": "ow_starfall_cliff",
       "to_spawn": [
-        448,
+        432,
         216
       ]
     }

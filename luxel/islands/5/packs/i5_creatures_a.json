@@ -128,8 +128,8 @@
       "mini": true,
       "dungeon": "meteor_vault",
       "region": "meteor_r6",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "isl5_boss_minor_p1",
+      "music_p2": "isl5_boss_minor_p2",
       "heart": "half",
       "flag": "mv_miniboss_done",
       "arena_lock": true
@@ -143,8 +143,8 @@
       "mini": false,
       "dungeon": "meteor_vault",
       "region": "meteor_r11",
-      "music": "island5_boss_p1",
-      "music_p2": "island5_boss_p2",
+      "music": "isl5_boss_minor_p1",
+      "music_p2": "isl5_boss_minor_p2",
       "heart": "half",
       "flag": "meteor_done",
       "arena_lock": true

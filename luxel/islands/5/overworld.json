@@ -77,6 +77,29 @@
   ],
   "exits": [
     {
+      "id": "exit_to_fall",
+      "rect": [
+        480,
+        400,
+        32,
+        24
+      ],
+      "to_region": "fall_r1",
+      "to_spawn": [
+        48,
+        176
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "beacon_5_1",
+        "beacon_5_2",
+        "beacon_5_3",
+        "meteor_done",
+        "planetarium_done"
+      ],
+      "locked_door_id": "door_dungeon_5"
+    },
+    {
       "id": "exit_to_orrery",
       "rect": [
         480,
@@ -93,7 +116,10 @@
       "requires_flags": [
         "beacon_5_1",
         "beacon_5_2",
-        "beacon_5_3"
+        "beacon_5_3",
+        "meteor_done",
+        "planetarium_done",
+        "fall_done"
       ],
       "locked_door_id": "door_dungeon_5"
     },
@@ -642,7 +668,9 @@
         "requires_flags": [
           "beacon_5_1",
           "beacon_5_2",
-          "beacon_5_3"
+          "beacon_5_3",
+          "meteor_done",
+          "planetarium_done"
         ]
       }
     },
@@ -1044,7 +1072,7 @@
         "door_kind": "switch_door",
         "size": [
           16,
-          80
+          96
         ],
         "starts_open": false,
         "requires_signals": [
@@ -2493,6 +2521,28 @@
       ],
       "enable": [],
       "disable": []
+    },
+    {
+      "id": "pre_fall",
+      "when": "!flag:fall_done",
+      "tiles": [],
+      "enable": [
+        "exit_to_fall"
+      ],
+      "disable": [
+        "exit_to_orrery"
+      ]
+    },
+    {
+      "id": "post_fall",
+      "when": "flag:fall_done",
+      "tiles": [],
+      "enable": [
+        "exit_to_orrery"
+      ],
+      "disable": [
+        "exit_to_fall"
+      ]
     }
   ],
   "events": [

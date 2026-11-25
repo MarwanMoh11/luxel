@@ -31,9 +31,9 @@ const TONE_CYCLE: PackedStringArray = ["dawn", "dusk", "war"]
 
 enum SlamStage { NONE, RING_1, TOLL_PAUSE, RING_2 }
 
-var shield_max: float = 3.0
-var shield_hp: float = 3.0
-var shield_gone_duration: float = 5.0
+var shield_max: float = 4.0
+var shield_hp: float = 4.0
+var shield_gone_duration: float = 3.6
 var shield_gone_t: float = 0.0
 
 var double_toll_enabled: bool = false
@@ -67,13 +67,13 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island1_boss_p1"
 	music_p2_cue = "island1_boss_p2"
-	max_hp = 138.0
-	hp = 138.0
+	max_hp = 146.0
+	hp = 146.0
 	body_radius = 8.0
 	move_speed = 42.0
 	stagger_threshold = 14.0
 	stagger_duration = 1.70
-	punish_dmg_mult = 1.30
+	punish_dmg_mult = 1.05
 	post_recover_cd = 0.36
 	intro_duration = 0.50
 	phase_shift_duration = 0.75
@@ -82,7 +82,7 @@ func _init() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	var base_hp: float = 138.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 146.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	boss_id = str(spec.get("boss_id", "bellkeeper"))
@@ -399,13 +399,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		if src == LxHit.SOURCE_BOLT:
 			_wear_shield(0.22)
 			stage.play_sfx("warden_clank", pos)
-			return dmg * 0.15
-		return dmg * 0.44
+			return dmg * 0.12
+		return dmg * 0.42
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("warden_clank", pos)
-		return dmg * 0.26
-	return dmg * 0.52
+		return dmg * 0.21
+	return dmg * 0.48
 
 
 func _on_phase_enter(new_phase: int) -> void:

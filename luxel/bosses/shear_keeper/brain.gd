@@ -13,6 +13,7 @@ const JAM_DMG_MULT: float = 1.60
 var _charge_dir: Vector2 = Vector2.RIGHT
 var _pounce_from: Vector2 = Vector2.ZERO
 var _pounce_to: Vector2 = Vector2.ZERO
+var _pounce_burst_done: bool = false
 var _whirl_spin: float = 0.0
 var _jammed: bool = false
 var _thorn_cages: Array[Dictionary] = []   # [{id, pos, radius, intact}]
@@ -29,8 +30,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 64.0
-	hp = 64.0
+	max_hp = 58.0
+	hp = 58.0
 	body_radius = 11.0
 	move_speed = 46.0
 	stagger_threshold = 14.0
@@ -73,42 +74,44 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, d, cnt, 0.92, 118.0 if phase >= 2 else 108.0, {"color": "lime", "source": "clippings_fan"})
+			patterns.emit_fan(pos, d, cnt, 0.92, 108.0 if phase >= 2 else 98.0, {"color": "lime", "source": "clippings_fan"})
 			if phase >= 2:
-				patterns.emit_lane(pos, d, 2, 134.0, 0.14, {"color": "gold", "source": "clippings_lance"})
+				patterns.emit_lane(pos, d, 1, 114.0, 0.14, {"color": "gold", "source": "clippings_lance"})
 			stage.play_sfx("topiary_cleave", pos),
 	})
 
 	# Attack 3: Snap Pounce — leaps toward Wick + pressures nearest perimeter corner (anti-cheese!)
 	register_attack("snap_pounce", {
-		"weight": 1.10, "tell": 0.54, "commit": 0.34, "recover": 0.96, "cooldown": 1.7,
+		"weight": 1.10, "tell": 0.58, "commit": 0.36, "recover": 1.05, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_pounce_from = pos
 			_pounce_to = clamp_to_arena(tgt)
+			_pounce_burst_done = false
 			var drops: Array[Vector2] = [_pounce_to, _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "gold", "coral")
+			patterns.emit_rain(ground, drops, last_tell_duration, 21.0, 1.0, "gold", "coral")
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.play_sfx("shear_clack", pos),
-		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, elapsed: float) -> void:
-			var u: float = clampf(elapsed / 0.34, 0.0, 1.0)
+		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, elapsed: float) -> void:
+			var u: float = clampf(elapsed / 0.36, 0.0, 1.0)
 			var desired: Vector2 = _pounce_from.lerp(_pounce_to, u)
 			move_boss(desired - pos, true)
 			check_contact_damage(16.0, (_pounce_to - _pounce_from).normalized(), 1.0, "snap_pounce")
-			if u >= 0.95 and not _commit_hit_done:
-				patterns.emit_gap_ring(pos, 8, 96.0, facing + PI * 0.4, 1.05, {"color": "gold", "source": "snap_shards"}),
+			if u >= 0.92 and not _pounce_burst_done:
+				_pounce_burst_done = true
+				patterns.emit_gap_ring(pos, 6, 88.0, facing + PI * 0.4, 1.18, {"color": "gold", "source": "snap_shards"}),
 	})
 
 	# Attack 4 (Phase 2): Whirlwind Trim — sweeping scissor cyclone + leaf spiral
 	register_attack("whirlwind_trim", {
-		"phases": [2], "weight": 1.45, "tell": 0.60, "commit": 0.55, "recover": 1.25, "cooldown": 2.1,
+		"phases": [2], "weight": 1.45, "tell": 0.64, "commit": 0.55, "recover": 1.30, "cooldown": 2.2,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_whirl_spin = facing
-			ground.warn_ring(pos, 38.0, last_tell_duration, 0.0, "coral", "gold")
-			ground.warn_ring(clamp_to_arena(tgt), 20.0, last_tell_duration + 0.08, 1.0, "lime", "gold")
+			ground.warn_ring(pos, 36.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 18.0, last_tell_duration + 0.10, 1.0, "lime", "gold")
 			stage.play_sfx("shear_whirl", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 4, 122.0, _whirl_spin, 0.46, 3, 0.17, {"color": "lime", "source": "whirlwind_trim"})
+			patterns.emit_spiral(pos, 4, 102.0, _whirl_spin, 0.46, 2, 0.20, {"color": "lime", "source": "whirlwind_trim"})
 			stage.shake(0.18)
 			stage.play_sfx("shear_whirl", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _el: float) -> void:

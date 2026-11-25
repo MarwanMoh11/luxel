@@ -32,8 +32,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 54.0
-	hp = 54.0
+	max_hp = 52.0
+	hp = 52.0
 	body_radius = 10.5
 	move_speed = 44.0
 	stagger_threshold = 10.0
@@ -45,7 +45,9 @@ func _init() -> void:
 	shard_drop = 22
 
 
-func _configure_boss(_spec: Dictionary) -> void:
+func _configure_boss(spec: Dictionary) -> void:
+	max_hp = 52.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	hp = max_hp
 	configure_phases([0.50])
 
 	# Attack 1: Warp-Rail Needle Fan (3/5 reflectable silk needles + aimed lane)
@@ -261,7 +263,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		var rel: Vector2 = (h["origin"] as Vector2) - pos
 		if rel.length() > 1.0 and absf(angle_difference(facing, rel.angle())) < 1.15:
 			clank_t = 0.08
-			return dmg * 0.55
+			return dmg * 0.70
 	return dmg
 
 

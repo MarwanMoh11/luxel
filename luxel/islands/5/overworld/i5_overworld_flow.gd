@@ -74,8 +74,7 @@ func on_region_loaded(region_id: String) -> void:
 	elif region_id == "superboss_horizon":
 		if _events != null:
 			if not st.defeated_bosses.has("event_horizon"):
-				_emit_narration("I5_BOSS_HORIZON", "title", 3.4)
-				_events.music_mode_requested.emit("isl5_boss_minor_p1")
+				_events.music_mode_requested.emit("superboss_b")
 			else:
 				_events.music_mode_requested.emit("explore")
 	else:
@@ -148,7 +147,11 @@ func _apply_seal_gating() -> void:
 	if not (door_node is LxDoor):
 		return
 	var door: LxDoor = door_node as LxDoor
-	# Legacy save bypass: keep already-passed seals open.
+	# Legacy save bypass: keep already-passed seals open, and preserve already-past-Fall saves.
+	if st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("isl5_dungeon_entered", false)) or st.has_move("lens"):
+		if not bool(st.story_flags.get("fall_done", false)):
+			st.story_flags["fall_done"] = true
+			reg.apply_layers(false)
 	if st.broken_seals.has(SEAL_ID) or st.opened_doors.has("door_dungeon_5") or st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("seal_broken_5", false)):
 		door.opened = true
 		door.queue_redraw()
@@ -200,10 +203,7 @@ func _on_player_damaged(amount: float, _from: Vector2, _dir: Vector2, _src: Stri
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if boss_id == "event_horizon" and _events != null:
-		if phase == 2:
-			_events.music_mode_requested.emit("isl5_boss_minor_p2")
-		elif phase >= 3:
-			_events.music_mode_requested.emit("isl5_boss_minor_p2")
+		if phase >= 3:
 			_emit_narration("I5_CUE_ECLIPSE", "title", 2.8)
 
 

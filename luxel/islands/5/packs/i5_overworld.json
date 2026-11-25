@@ -313,7 +313,7 @@
     "superboss_horizon": {
       "name_key": "I5_ZONE_HORIZON",
       "theme": "freefall",
-      "music": "isl5_boss_minor_p1",
+      "music": "superboss_b",
       "dark": true,
       "map": [
         4,

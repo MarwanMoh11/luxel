@@ -53,8 +53,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island5_boss_p1"
 	music_p2_cue = "island5_boss_p2"
-	max_hp = 94.0
-	hp = 94.0
+	max_hp = 108.0
+	hp = 108.0
 	body_radius = 12.0
 	move_speed = 46.0
 	phase_shift_duration = 0.90
@@ -68,7 +68,9 @@ func _exit_tree() -> void:
 	_unregister_bow_field()
 
 
-func _configure_boss(_spec: Dictionary) -> void:
+func _configure_boss(spec: Dictionary) -> void:
+	max_hp = 112.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	hp = max_hp
 	configure_phases([0.75, 0.50, 0.25]) # 4 Bodies: Ram(1), Scales(2), Archer(3), Serpent(4)
 
 	# Shared All-Phase Attack: Constellation Flare (star pillars + perimeter pressure across all 8 spots!)

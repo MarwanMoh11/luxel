@@ -482,7 +482,7 @@
       },
       {
         "op": "clear",
-        "timeout": 30.0
+        "timeout": 52.0
       },
       {
         "op": "interact",
