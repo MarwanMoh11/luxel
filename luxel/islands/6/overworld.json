@@ -1824,5 +1824,72 @@
         "exit": "exit_to_rail_yard"
       }
     ]
-  }
+  },
+  "theme": "ashen_kiln",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        152,
+        272
+      ],
+      "radius": 42,
+      "style": "gear"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        1312,
+        224
+      ],
+      "radius": 52,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        1280,
+        160,
+        64,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        440,
+        120
+      ],
+      "radius": 38,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        552,
+        440
+      ],
+      "radius": 38,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        1016,
+        120
+      ],
+      "radius": 38,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        1248,
+        176,
+        128,
+        96
+      ]
+    }
+  ]
 }

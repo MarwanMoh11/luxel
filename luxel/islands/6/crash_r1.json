@@ -5,26 +5,58 @@
   "is_dungeon": true,
   "theme": "ember_express_roof",
   "music": "isl6_setpiece",
-  "ambience": ["forge_rumble", "wind_howl"],
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
   "name_key": "ISL6_CR_R1",
-  "spawn": [56, 120],
+  "spawn": [
+    56,
+    120
+  ],
   "zones": [
-    { "id": "crash_r1", "name_key": "ISL6_CR_R1", "rect": [0, 0, 576, 256], "dark": true }
+    {
+      "id": "crash_r1",
+      "name_key": "ISL6_CR_R1",
+      "rect": [
+        0,
+        0,
+        576,
+        256
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_crash_r1_west",
-      "rect": [0, 96, 16, 48],
+      "rect": [
+        0,
+        96,
+        16,
+        48
+      ],
       "to_region": "ow_cinder_overlook",
-      "to_spawn": [352, 88],
+      "to_spawn": [
+        352,
+        88
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_crash_r1_east",
-      "rect": [560, 96, 16, 48],
+      "rect": [
+        560,
+        96,
+        16,
+        48
+      ],
       "to_region": "crash_r2",
-      "to_spawn": [56, 152],
+      "to_spawn": [
+        56,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_crash_r1_east"
@@ -34,14 +66,20 @@
     {
       "id": "en_crash_r1_hopper1",
       "kind": "rail_hopper",
-      "pos": [392, 64],
+      "pos": [
+        392,
+        64
+      ],
       "zone": "crash_r1",
       "leash": 120
     },
     {
       "id": "en_crash_r1_hopper2",
       "kind": "rail_hopper",
-      "pos": [400, 184],
+      "pos": [
+        400,
+        184
+      ],
       "zone": "crash_r1",
       "leash": 120
     }
@@ -50,40 +88,96 @@
     {
       "id": "anc_crash_r1",
       "kind": "room_anchor",
-      "pos": [56, 120],
-      "props": { "auto": true }
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "cameo_crash_r1",
       "kind": "crash_hollow_cameo",
-      "pos": [144, 104],
-      "props": { "sets_flag": "hollow_cameo_6", "chain_pos": [176, 120] }
+      "pos": [
+        144,
+        104
+      ],
+      "props": {
+        "sets_flag": "hollow_cameo_6",
+        "chain_pos": [
+          176,
+          120
+        ]
+      }
     },
     {
       "id": "anvil_crash_r1_skip",
       "kind": "temper_anvil",
-      "pos": [88, 168],
-      "props": { "mode": "skip", "sets_flag": "temper_skip_known" }
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "mode": "skip",
+        "sets_flag": "temper_skip_known"
+      }
     },
     {
       "id": "grate_crash_r1_w",
       "kind": "grate",
-      "pos": [128, 40],
-      "props": { "size": [32, 16] }
+      "pos": [
+        128,
+        40
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
     },
     {
       "id": "coupler_crash_r1_1",
       "kind": "car_coupler",
-      "pos": [176, 56],
-      "props": { "lock_type": "bank", "target_id": "cart_crash_r1_1", "persist": true }
+      "pos": [
+        176,
+        56
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "cart_crash_r1_1",
+        "persist": true
+      }
     },
     {
       "id": "cart_crash_r1_1",
       "kind": "vehicle_cart",
-      "pos": [192, 128],
+      "pos": [
+        192,
+        128
+      ],
       "props": {
-        "rail": [[192, 128], [240, 128]],
-        "alt_rail": [[192, 128], [376, 128]],
+        "rail": [
+          [
+            192,
+            128
+          ],
+          [
+            240,
+            128
+          ]
+        ],
+        "alt_rail": [
+          [
+            192,
+            128
+          ],
+          [
+            376,
+            128
+          ]
+        ],
         "speed": 120.0,
         "loop": false,
         "auto": false,
@@ -93,62 +187,284 @@
     {
       "id": "wind_crash_r1",
       "kind": "wind_zone",
-      "pos": [280, 104],
-      "props": { "size": [112, 48], "dir": "w", "strength": 38.0 }
+      "pos": [
+        280,
+        104
+      ],
+      "props": {
+        "size": [
+          112,
+          48
+        ],
+        "dir": "w",
+        "strength": 38.0
+      }
     },
     {
       "id": "grate_crash_r1_e",
       "kind": "grate",
-      "pos": [424, 56],
-      "props": { "size": [16, 48] }
+      "pos": [
+        424,
+        56
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
     },
     {
       "id": "coupler_crash_r1_2",
       "kind": "car_coupler",
-      "pos": [488, 56],
+      "pos": [
+        488,
+        56
+      ],
       "props": {
         "lock_type": "bank",
-        "target_ids": ["door_crash_r1_east", "bridge_crash_r1_return"],
+        "target_ids": [
+          "door_crash_r1_east",
+          "bridge_crash_r1_return"
+        ],
         "persist": true
       }
     },
     {
       "id": "bridge_crash_r1_return",
       "kind": "door",
-      "pos": [280, 168],
+      "pos": [
+        280,
+        168
+      ],
       "props": {
         "door_kind": "bridge_platform",
         "starts_open": false,
-        "size": [160, 32],
-        "requires_signals": ["coupler_crash_r1_2"]
+        "size": [
+          160,
+          32
+        ],
+        "requires_signals": [
+          "coupler_crash_r1_2"
+        ]
       }
     },
     {
       "id": "door_crash_r1_east",
       "kind": "door",
-      "pos": [552, 120],
+      "pos": [
+        552,
+        120
+      ],
       "props": {
         "door_kind": "switch_door",
-        "size": [16, 48],
-        "requires_signals": ["coupler_crash_r1_2"]
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "coupler_crash_r1_2"
+        ]
       }
-    },
-    { "id": "lamp_cr1_1", "kind": "road_lamp", "pos": [64, 88], "props": { "lit": true } },
-    { "id": "lamp_cr1_2", "kind": "road_lamp", "pos": [160, 184], "props": { "lit": true } },
-    { "id": "lamp_cr1_3", "kind": "road_lamp", "pos": [384, 88], "props": { "lit": true } },
-    { "id": "lamp_cr1_4", "kind": "road_lamp", "pos": [512, 168], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "grate", "rect": [48, 96, 144, 48], "glow": false },
-    { "kind": "grate", "rect": [368, 96, 160, 48], "glow": true },
-    { "kind": "inlay", "rect": [64, 152, 48, 32] }
+    {
+      "kind": "grate",
+      "rect": [
+        48,
+        96,
+        128,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        384,
+        96,
+        144,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        112,
+        168
+      ],
+      "radius": 32,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        456,
+        168
+      ],
+      "radius": 32,
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "theme_ember_express_roof", "prop": "roof_signal_lantern", "pos": [48, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_ember_express_roof", "prop": "handbrake_wheel_post", "pos": [184, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_ember_express_roof", "prop": "pantograph_spark_arc", "pos": [392, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_ember_express_roof", "prop": "coal_tender_crate", "pos": [520, 192], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_ember_express_roof", "prop": "wind_vane_fin", "pos": [520, 56], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.6 }
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        48,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "handbrake_wheel_post",
+      "pos": [
+        184,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "pantograph_spark_arc",
+      "pos": [
+        392,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        520,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "wind_vane_fin",
+      "pos": [
+        520,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        72,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        152,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        392,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        520,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "loco_smokestack",
+      "pos": [
+        72,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        104,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "handbrake_wheel_post",
+      "pos": [
+        488,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -163,24 +479,122 @@
     "reward": "hollow_cameo_6+open_crash_r2",
     "why": "Opening act of The Iron Collision linking High Trestle to the Colossus forearm.",
     "exit": "exit_crash_r1_east",
-    "start": { "flags": ["express_cleared", "colossus_cleared", "item_coupler_hook"] },
+    "start": {
+      "flags": [
+        "express_cleared",
+        "colossus_cleared",
+        "item_coupler_hook"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [88, 150], "tol": 4.0 },
-      { "op": "interact", "target": "anvil_crash_r1_skip" },
-      { "op": "expect", "var": "wick_temper==skip" },
-      { "op": "goto", "to": [88, 56], "tol": 4.0 },
-      { "op": "shoot", "target": [132, 32], "wait_hit": 0.65 },
-      { "op": "wait_until", "target": "coupler_crash_r1_1", "prop": "uncoupled", "value": true, "timeout": 3.0 },
-      { "op": "goto", "to": [180, 128], "tol": 6.0 },
-      { "op": "mount", "target": "cart_crash_r1_1" },
-      { "op": "shoot", "target": [100, 128], "count": 6, "wait_hit": 0.35 },
-      { "op": "wait_phase", "target": "cart_crash_r1_1", "near": [376, 128], "tol": 10.0, "timeout": 8.0 },
-      { "op": "dismount", "to": [392, 128] },
-      { "op": "clear", "timeout": 30.0 },
-      { "op": "goto", "to": [392, 56], "tol": 4.0 },
-      { "op": "shoot", "target": [440, 32], "wait_hit": 0.65 },
-      { "op": "wait_until", "target": "door_crash_r1_east", "prop": "opened", "value": true, "timeout": 3.0 },
-      { "op": "expect_exit", "exit": "exit_crash_r1_east" }
+      {
+        "op": "goto",
+        "to": [
+          88,
+          150
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_crash_r1_skip"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          88,
+          56
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          132,
+          32
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "coupler_crash_r1_1",
+        "prop": "uncoupled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          180,
+          128
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "mount",
+        "target": "cart_crash_r1_1"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          100,
+          128
+        ],
+        "count": 6,
+        "wait_hit": 0.35
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_crash_r1_1",
+        "near": [
+          376,
+          128
+        ],
+        "tol": 10.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          392,
+          128
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          56
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          440,
+          32
+        ],
+        "wait_hit": 0.65
+      },
+      {
+        "op": "wait_until",
+        "target": "door_crash_r1_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_crash_r1_east"
+      }
     ]
   }
 }

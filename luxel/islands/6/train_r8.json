@@ -229,54 +229,6 @@
           48
         ]
       }
-    },
-    {
-      "id": "lamp_r8_w",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        104
-      ],
-      "props": {
-        "zone": "tr_r8",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r8_n",
-      "kind": "road_lamp",
-      "pos": [
-        208,
-        64
-      ],
-      "props": {
-        "zone": "tr_r8",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r8_e",
-      "kind": "road_lamp",
-      "pos": [
-        384,
-        104
-      ],
-      "props": {
-        "zone": "tr_r8",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r8_cage",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        240
-      ],
-      "props": {
-        "zone": "tr_r8",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -433,6 +385,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        72,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        216,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        280,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

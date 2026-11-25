@@ -3,30 +3,63 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "iron_colossus",
+  "theme": "forge_deep",
   "music": "island6_dungeon",
-  "ambience": ["forge_rumble"],
+  "ambience": [
+    "forge_rumble"
+  ],
   "name_key": "ISL6_KILN_R17",
-  "spawn": [432, 152],
+  "spawn": [
+    432,
+    152
+  ],
   "zones": [
-    { "id": "kiln_r17", "name_key": "ISL6_KILN_R17", "rect": [0, 0, 480, 288], "dark": true }
+    {
+      "id": "kiln_r17",
+      "name_key": "ISL6_KILN_R17",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r17_east",
-      "rect": [464, 128, 16, 48],
+      "rect": [
+        464,
+        128,
+        16,
+        48
+      ],
       "to_region": "kiln_r16",
-      "to_spawn": [48, 72],
+      "to_spawn": [
+        48,
+        72
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r17_south",
-      "rect": [192, 272, 32, 16],
+      "rect": [
+        192,
+        272,
+        32,
+        16
+      ],
       "to_region": "kiln_r9",
-      "to_spawn": [368, 208],
+      "to_spawn": [
+        368,
+        208
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_r17_bridge"],
+      "requires_flags": [
+        "kiln_r17_bridge"
+      ],
       "locked_door_id": "door_kiln_r17_south"
     }
   ],
@@ -35,89 +68,354 @@
     {
       "id": "anc_kiln_r17",
       "kind": "room_anchor",
-      "pos": [432, 152],
-      "props": { "auto": true }
+      "pos": [
+        432,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "emit_r17_gold",
       "kind": "beam_emitter",
-      "pos": [368, 40],
-      "props": { "dir": "s", "color": "gold", "period": 0.0, "duty": 1.0, "range": 224.0, "harms_wick": false }
+      "pos": [
+        368,
+        40
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 0.0,
+        "duty": 1.0,
+        "range": 224.0,
+        "harms_wick": false
+      }
     },
     {
       "id": "glass_r17_blue",
       "kind": "color_glass",
-      "pos": [328, 136],
-      "props": { "color": "blue", "size": [16, 16], "solid": true, "movable": true, "cycles_color": false, "persist": true }
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "solid": true,
+        "movable": true,
+        "cycles_color": false,
+        "persist": true
+      }
     },
     {
       "id": "sensor_r17_blue",
       "kind": "beam_sensor",
-      "pos": [368, 240],
-      "props": { "color": "blue", "latch": true, "target_id": "door_kiln_r17_mid", "persist": true }
+      "pos": [
+        368,
+        240
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "target_id": "door_kiln_r17_mid",
+        "persist": true
+      }
     },
     {
       "id": "door_kiln_r17_mid",
       "kind": "door",
-      "pos": [280, 152],
-      "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["sensor_r17_blue"] }
+      "pos": [
+        280,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "sensor_r17_blue"
+        ]
+      }
     },
     {
       "id": "mimic_r17",
       "kind": "mimic_statue",
-      "pos": [88, 136],
-      "props": { "mirror": "x", "size": [14, 14], "range": 215.0, "persist": true }
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "mirror": "x",
+        "size": [
+          14,
+          14
+        ],
+        "range": 215.0,
+        "persist": true
+      }
     },
     {
       "id": "plate_r17_statue",
       "kind": "pressure_plate",
-      "pos": [64, 72],
+      "pos": [
+        64,
+        72
+      ],
       "props": {
-        "by": ["block"],
+        "by": [
+          "block"
+        ],
         "latch": true,
-        "target_ids": ["door_kiln_r17_south", "door_kiln_r17_ember"],
+        "target_ids": [
+          "door_kiln_r17_south",
+          "door_kiln_r17_ember"
+        ],
         "persist": true
       }
     },
     {
       "id": "door_kiln_r17_ember",
       "kind": "door",
-      "pos": [240, 56],
-      "props": { "door_kind": "switch_door", "size": [48, 16], "requires_signals": ["plate_r17_statue"] }
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "plate_r17_statue"
+        ]
+      }
     },
     {
       "id": "chest_ember_6_kiln",
       "kind": "chest",
-      "pos": [240, 32],
-      "props": { "reward_kind": "ember_piece", "reward": "ember_piece", "amount": 1, "secret_id": "ember_6_kiln", "zone": "kiln_r17" }
+      "pos": [
+        240,
+        32
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_6_kiln",
+        "zone": "kiln_r17"
+      }
     },
     {
       "id": "door_kiln_r17_south",
       "kind": "door",
-      "pos": [208, 264],
+      "pos": [
+        208,
+        264
+      ],
       "props": {
         "door_kind": "switch_door",
-        "size": [32, 16],
-        "requires_signals": ["plate_r17_statue"],
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_r17_statue"
+        ],
         "sets_flag": "kiln_r17_bridge"
       }
-    },
-    { "id": "lamp_kr17_1", "kind": "road_lamp", "pos": [416, 88], "props": { "lit": true } },
-    { "id": "lamp_kr17_2", "kind": "road_lamp", "pos": [416, 216], "props": { "lit": true } },
-    { "id": "lamp_kr17_3", "kind": "road_lamp", "pos": [216, 152], "props": { "lit": true } },
-    { "id": "lamp_kr17_4", "kind": "road_lamp", "pos": [184, 224], "props": { "lit": true } },
-    { "id": "lamp_kr17_5", "kind": "road_lamp", "pos": [56, 224], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "grate", "rect": [352, 64, 32, 160], "glow": false },
-    { "kind": "inlay", "rect": [32, 48, 80, 176] },
-    { "kind": "inlay", "rect": [176, 64, 80, 160] }
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        96,
+        64,
+        80
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        184,
+        136
+      ],
+      "radius": 36,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        360,
+        160
+      ],
+      "radius": 32,
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        304,
+        96,
+        96,
+        96
+      ]
+    }
   ],
   "scenery": [
-    { "sheet": "theme_iron_colossus", "prop": "giant_foundry_gear", "pos": [312, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_iron_colossus", "prop": "slag_ingot_stack", "pos": [432, 240], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_iron_colossus", "prop": "colossus_lantern_post", "pos": [200, 96], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
-    { "sheet": "theme_iron_colossus", "prop": "steam_valve_wheel", "pos": [40, 248], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.5 }
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        432,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        200,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        56,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        408,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        424,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        216,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        184,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        40,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        360,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        392,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -127,9 +425,15 @@
       "on": "signal:plate_r17_statue",
       "once": true,
       "do": [
-        { "set_flag": "kiln_r17_bridge" },
-        { "narrate": "ISL6_KILN_BRIDGE_R9" },
-        { "shake": 0.14 }
+        {
+          "set_flag": "kiln_r17_bridge"
+        },
+        {
+          "narrate": "ISL6_KILN_BRIDGE_R9"
+        },
+        {
+          "shake": 0.14
+        }
       ]
     }
   ],
@@ -143,19 +447,90 @@
     "reward": "ember_6_kiln+kiln_r17_bridge",
     "why": "High balcony synthesis loop returning directly to kiln_r9 with the Great Kiln Ember Piece.",
     "exit": "exit_kiln_r17_south",
-    "start": { "flags": ["kiln_cast_east"] },
+    "start": {
+      "flags": [
+        "kiln_cast_east"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [304, 136], "tol": 4.0 },
-      { "op": "push", "target": "glass_r17_blue", "to": [368, 136] },
-      { "op": "wait_until", "target": "door_kiln_r17_mid", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "goto", "to": [184, 136], "tol": 3.0 },
-      { "op": "goto", "to": [184, 24], "tol": 2.0 },
-      { "op": "goto", "to": [184, 72], "tol": 4.0 },
-      { "op": "goto", "to": [252, 72], "tol": 6.0 },
-      { "op": "wait_until", "target": "door_kiln_r17_south", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "goto", "to": [240, 32], "tol": 6.0 },
-      { "op": "interact", "target": "chest_ember_6_kiln" },
-      { "op": "expect_exit", "exit": "exit_kiln_r17_south" }
+      {
+        "op": "goto",
+        "to": [
+          304,
+          136
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "push",
+        "target": "glass_r17_blue",
+        "to": [
+          368,
+          136
+        ]
+      },
+      {
+        "op": "wait_until",
+        "target": "door_kiln_r17_mid",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          136
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          24
+        ],
+        "tol": 2.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          72
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          252,
+          72
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_kiln_r17_south",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          32
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_6_kiln"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r17_south"
+      }
     ]
   }
 }

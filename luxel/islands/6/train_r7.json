@@ -262,66 +262,6 @@
         ],
         "sets_flag": "train_siding_cleared"
       }
-    },
-    {
-      "id": "lamp_r7_nw",
-      "kind": "road_lamp",
-      "pos": [
-        128,
-        48
-      ],
-      "props": {
-        "zone": "tr_r7",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r7_ne",
-      "kind": "road_lamp",
-      "pos": [
-        400,
-        48
-      ],
-      "props": {
-        "zone": "tr_r7",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r7_sw",
-      "kind": "road_lamp",
-      "pos": [
-        160,
-        248
-      ],
-      "props": {
-        "zone": "tr_r7",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r7_smid",
-      "kind": "road_lamp",
-      "pos": [
-        304,
-        280
-      ],
-      "props": {
-        "zone": "tr_r7",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r7_se",
-      "kind": "road_lamp",
-      "pos": [
-        504,
-        248
-      ],
-      "props": {
-        "zone": "tr_r7",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -340,18 +280,8 @@
       "kind": "grate",
       "rect": [
         96,
-        32,
-        320,
-        32
-      ],
-      "glow": false
-    },
-    {
-      "kind": "grate",
-      "rect": [
-        304,
-        232,
-        112,
+        224,
+        192,
         32
       ],
       "glow": true
@@ -359,19 +289,19 @@
     {
       "kind": "inlay",
       "rect": [
-        104,
+        304,
         224,
-        48,
+        112,
         48
       ]
     },
     {
       "kind": "cracks",
       "pos": [
-        248,
+        208,
         264
       ],
-      "radius": 22,
+      "radius": 28,
       "glow": true
     }
   ],
@@ -447,6 +377,90 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        136,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        408,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        312,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        504,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        184,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        440,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
     }
   ],
   "triggers": [],

@@ -6,25 +6,54 @@
   "theme": "forge_deep",
   "music": "island6_dungeon",
   "name_key": "ISL6_KILN_R8",
-  "spawn": [408, 120],
+  "spawn": [
+    408,
+    120
+  ],
   "zones": [
-    { "id": "kiln_r8", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 448, 240], "dark": true }
+    {
+      "id": "kiln_r8",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        240
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r8_east",
-      "rect": [432, 96, 16, 48],
+      "rect": [
+        432,
+        96,
+        16,
+        48
+      ],
       "to_region": "kiln_r7",
-      "to_spawn": [72, 120],
+      "to_spawn": [
+        72,
+        120
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r8_west",
-      "rect": [0, 112, 16, 48],
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
       "to_region": "kiln_r9",
-      "to_spawn": [408, 152],
+      "to_spawn": [
+        408,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_kiln_r8_west"
@@ -34,8 +63,20 @@
     {
       "id": "golem_kiln_r8_0",
       "kind": "cinder_golem",
-      "pos": [280, 120],
-      "route": [[248, 120], [320, 120]],
+      "pos": [
+        280,
+        120
+      ],
+      "route": [
+        [
+          248,
+          120
+        ],
+        [
+          320,
+          120
+        ]
+      ],
       "perches": [],
       "zone": "kiln_r8",
       "leash": 132
@@ -43,8 +84,20 @@
     {
       "id": "bellows_kiln_r8_0",
       "kind": "bellows_imp",
-      "pos": [264, 96],
-      "route": [[248, 96], [296, 96]],
+      "pos": [
+        264,
+        96
+      ],
+      "route": [
+        [
+          248,
+          96
+        ],
+        [
+          296,
+          96
+        ]
+      ],
       "perches": [],
       "zone": "kiln_r8",
       "leash": 88
@@ -52,17 +105,45 @@
     {
       "id": "mole_kiln_r8_0",
       "kind": "ash_mole",
-      "pos": [168, 184],
+      "pos": [
+        168,
+        184
+      ],
       "route": [],
-      "perches": [[152, 184], [208, 184], [264, 184]],
+      "perches": [
+        [
+          152,
+          184
+        ],
+        [
+          208,
+          184
+        ],
+        [
+          264,
+          184
+        ]
+      ],
       "zone": "kiln_r8",
       "leash": 136
     },
     {
       "id": "bellows_kiln_r8_1",
       "kind": "bellows_imp",
-      "pos": [296, 64],
-      "route": [[272, 64], [328, 72]],
+      "pos": [
+        296,
+        64
+      ],
+      "route": [
+        [
+          272,
+          64
+        ],
+        [
+          328,
+          72
+        ]
+      ],
       "perches": [],
       "zone": "kiln_r8",
       "leash": 88
@@ -70,8 +151,20 @@
     {
       "id": "knight_kiln_r8_0",
       "kind": "piston_knight",
-      "pos": [200, 136],
-      "route": [[176, 136], [240, 136]],
+      "pos": [
+        200,
+        136
+      ],
+      "route": [
+        [
+          176,
+          136
+        ],
+        [
+          240,
+          136
+        ]
+      ],
       "perches": [],
       "zone": "kiln_r8",
       "leash": 130
@@ -81,36 +174,234 @@
     {
       "id": "tf_kiln_r8",
       "kind": "blue_transformer",
-      "pos": [248, 128],
-      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        248,
+        128
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "door_kiln_r8_west",
       "kind": "door",
-      "pos": [24, 136],
-      "props": { "door_kind": "combat_gate", "size": [16, 48], "clear_zone": "kiln_r8", "sets_flag": "kiln_r8_cleared" }
-    },
-    { "id": "lamp_kr8_1", "kind": "road_lamp", "pos": [384, 120], "props": { "lit": true } },
-    { "id": "lamp_kr8_2", "kind": "road_lamp", "pos": [224, 112], "props": { "lit": true } },
-    { "id": "lamp_kr8_3", "kind": "road_lamp", "pos": [72, 136], "props": { "lit": true } }
+      "pos": [
+        24,
+        136
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          48
+        ],
+        "clear_zone": "kiln_r8",
+        "sets_flag": "kiln_r8_cleared"
+      }
+    }
   ],
   "triggers": [],
   "decor": [
-    { "kind": "grate", "rect": [176, 112, 144, 48], "glow": true }
+    {
+      "kind": "grate",
+      "rect": [
+        176,
+        112,
+        144,
+        48
+      ],
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [176, 132], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.1 },
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [312, 132], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.6 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [64, 96], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [64, 172], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.7 },
-    { "sheet": "island6_scenery", "prop": "bellows_frame", "pos": [268, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "slag_crucible", "pos": [312, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.35 },
-    { "sheet": "island6_scenery", "prop": "coal_hopper", "pos": [348, 44], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [392, 84], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.3 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [392, 152], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.8 },
-    { "sheet": "island6_scenery", "prop": "crucible_floor_seal", "pos": [248, 128], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.15 },
-    { "sheet": "island6_scenery", "prop": "ash_urn_cluster", "pos": [232, 212], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
-    { "sheet": "island6_scenery", "prop": "foundry_hook_crane", "pos": [408, 44], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.55 }
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        176,
+        132
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        312,
+        132
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "bellows_frame",
+      "pos": [
+        268,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "slag_crucible",
+      "pos": [
+        312,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.35
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "coal_hopper",
+      "pos": [
+        348,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        392,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        392,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        248,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ash_urn_cluster",
+      "pos": [
+        232,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "foundry_hook_crane",
+      "pos": [
+        408,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.55
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        376,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        216,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        72,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    }
   ],
   "is_2x2_room": true,
   "design": {
@@ -123,12 +414,35 @@
     "reward": "kiln_r8_cleared+open_r9",
     "why": "Escalated late-dungeon foundry brawl guarding the Keeper's Flame Vault.",
     "exit": "exit_kiln_r8_west",
-    "start": { "moves": ["sunflare"] },
+    "start": {
+      "moves": [
+        "sunflare"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [344, 120], "tol": 8.0 },
-      { "op": "clear", "timeout": 60.0 },
-      { "op": "wait_until", "target": "door_kiln_r8_west", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "expect_exit", "exit": "exit_kiln_r8_west" }
+      {
+        "op": "goto",
+        "to": [
+          344,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_kiln_r8_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r8_west"
+      }
     ]
   }
 }

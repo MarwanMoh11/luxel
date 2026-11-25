@@ -6,45 +6,96 @@
   "theme": "forge_deep",
   "music": "island6_dungeon",
   "name_key": "ISL6_KILN_R9",
-  "spawn": [408, 152],
+  "spawn": [
+    408,
+    152
+  ],
   "zones": [
-    { "id": "kiln_r9", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 448, 256], "dark": true }
+    {
+      "id": "kiln_r9",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        448,
+        256
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r9_east",
-      "rect": [432, 128, 16, 48],
+      "rect": [
+        432,
+        128,
+        16,
+        48
+      ],
       "to_region": "kiln_r8",
-      "to_spawn": [48, 136],
+      "to_spawn": [
+        48,
+        136
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r9_south",
-      "rect": [192, 240, 32, 16],
+      "rect": [
+        192,
+        240,
+        32,
+        16
+      ],
       "to_region": "kiln_r1",
-      "to_spawn": [240, 48],
+      "to_spawn": [
+        240,
+        48
+      ],
       "requires_moves": [],
-      "requires_flags": ["keepers_flame_6"],
+      "requires_flags": [
+        "keepers_flame_6"
+      ],
       "locked_door_id": "door_kiln_r9_south"
     },
     {
       "id": "exit_kiln_r9_ne",
-      "rect": [352, 240, 32, 16],
+      "rect": [
+        352,
+        240,
+        32,
+        16
+      ],
       "to_region": "kiln_r17",
-      "to_spawn": [208, 232],
+      "to_spawn": [
+        208,
+        232
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_r17_bridge"],
+      "requires_flags": [
+        "kiln_r17_bridge"
+      ],
       "locked_door_id": "door_kiln_r9_ne"
     },
     {
       "id": "exit_kiln_r9_north",
-      "rect": [208, 0, 32, 16],
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r18",
-      "to_spawn": [224, 216],
+      "to_spawn": [
+        224,
+        216
+      ],
       "requires_moves": [],
-      "requires_flags": ["keepers_flame_6"],
+      "requires_flags": [
+        "keepers_flame_6"
+      ],
       "locked_door_id": "door_boss_6"
     }
   ],
@@ -53,106 +104,375 @@
     {
       "id": "bramble_kiln_r9",
       "kind": "bramble",
-      "pos": [360, 160],
-      "props": { "size": [16, 32], "zone": "kiln_r9" }
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "zone": "kiln_r9"
+      }
     },
     {
       "id": "tf_kiln_r9",
       "kind": "blue_transformer",
-      "pos": [280, 168],
-      "props": { "angle_deg": 315, "rotatable": true, "movable": true, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        280,
+        168
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "switch_eye_kiln_r9",
       "kind": "switch_eye",
-      "pos": [280, 72],
-      "props": { "requires_blue": true, "target_id": "door_kiln_r9_vault", "target_ids": ["door_kiln_r9_vault", "clamps_kiln_r9"] }
+      "pos": [
+        280,
+        72
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_kiln_r9_vault",
+        "target_ids": [
+          "door_kiln_r9_vault",
+          "clamps_kiln_r9"
+        ]
+      }
     },
     {
       "id": "door_kiln_r9_vault",
       "kind": "door",
-      "pos": [168, 152],
-      "props": { "door_kind": "switch_door", "size": [16, 48], "requires_signals": ["switch_eye_kiln_r9"] }
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_eye_kiln_r9"
+        ]
+      }
     },
     {
       "id": "seal_kiln_r9",
       "kind": "obsidian_seal",
-      "pos": [104, 136],
-      "props": { "size": [16, 48], "zone": "kiln_r9" }
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "zone": "kiln_r9"
+      }
     },
     {
       "id": "keepers_flame_6",
       "kind": "keepers_flame",
-      "pos": [72, 136],
-      "props": { "dungeon_id": "great_kiln", "key_kind": "keepers_flame", "flag_id": "keepers_flame_6" }
+      "pos": [
+        72,
+        136
+      ],
+      "props": {
+        "dungeon_id": "great_kiln",
+        "key_kind": "keepers_flame",
+        "flag_id": "keepers_flame_6"
+      }
     },
     {
       "id": "clamps_kiln_r9",
       "kind": "kiln_casting_clamps",
-      "pos": [136, 200],
-      "props": { "grant_blessing": true }
+      "pos": [
+        136,
+        200
+      ],
+      "props": {
+        "grant_blessing": true
+      }
     },
     {
       "id": "portal_kiln_r9_in",
       "kind": "blue_portal",
-      "pos": [232, 72],
-      "props": { "target_portal_id": "portal_kiln_r9_out", "requires_blue": true, "pair_sync": true, "sets_flag": "kiln_r9_vault_portal_lit" }
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r9_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r9_vault_portal_lit"
+      }
     },
     {
       "id": "portal_kiln_r9_out",
       "kind": "blue_portal",
-      "pos": [376, 56],
-      "props": { "target_portal_id": "portal_kiln_r9_in", "requires_blue": true, "pair_sync": true }
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r9_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
     },
     {
       "id": "chest_kiln_r9",
       "kind": "chest",
-      "pos": [392, 56],
-      "props": { "reward_kind": "shards", "reward": "shards", "amount": 55, "zone": "kiln_r9" }
+      "pos": [
+        392,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 55,
+        "zone": "kiln_r9"
+      }
     },
     {
       "id": "door_kiln_r9_south",
       "kind": "door",
-      "pos": [208, 232],
-      "props": { "door_kind": "shortcut_door", "size": [32, 16], "requires_flags": ["keepers_flame_6"] }
+      "pos": [
+        208,
+        232
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_6"
+        ]
+      }
     },
     {
       "id": "door_kiln_r9_ne",
       "kind": "door",
-      "pos": [368, 232],
-      "props": { "door_kind": "shortcut_door", "size": [32, 16], "requires_flags": ["kiln_r17_bridge"] }
+      "pos": [
+        368,
+        232
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "kiln_r17_bridge"
+        ]
+      }
     },
     {
       "id": "door_boss_6",
       "kind": "door",
-      "pos": [224, 24],
+      "pos": [
+        224,
+        24
+      ],
       "props": {
         "door_kind": "boss_door",
         "dungeon_id": "great_kiln",
         "key_kind": "keepers_flame",
-        "size": [32, 16],
-        "requires_flags": ["keepers_flame_6"]
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "keepers_flame_6"
+        ]
       }
-    },
-    { "id": "lamp_kr9_1", "kind": "road_lamp", "pos": [240, 152], "props": { "lit": true } },
-    { "id": "lamp_kr9_2", "kind": "road_lamp", "pos": [72, 104], "props": { "lit": true } },
-    { "id": "lamp_kr9_3", "kind": "road_lamp", "pos": [224, 56], "props": { "lit": true } }
+    }
   ],
   "triggers": [],
   "decor": [
-    { "kind": "inlay", "rect": [48, 104, 56, 72] },
-    { "kind": "grate", "rect": [192, 136, 128, 32], "glow": true }
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        104,
+        56,
+        72
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        192,
+        136,
+        128,
+        32
+      ],
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "island6_scenery", "prop": "iron_arch_rib", "pos": [224, 48], "layer": "over", "flip_x": false, "shadow": false, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [188, 52], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [260, 52], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [184, 204], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [232, 204], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 },
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [208, 152], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [320, 152], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.7 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [64, 96], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.25 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [64, 176], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.75 }
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_arch_rib",
+      "pos": [
+        224,
+        48
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        188,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        260,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        184,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        232,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        208,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        320,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.75
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        248,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        88,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    }
   ],
   "is_2x2_room": true,
   "design": {
@@ -165,24 +485,105 @@
     "reward": "keepers_flame_6+shortcut_r1+clamp_blessing",
     "why": "Grand vault nexus uniting the Legacy Wing, Heat-Flow Casting Wing, and Boss Sanctuary.",
     "exit": "exit_kiln_r9_north",
-    "start": { "moves": ["sunflare"], "ember": 100 },
+    "start": {
+      "moves": [
+        "sunflare"
+      ],
+      "ember": 100
+    },
     "solution": [
-      { "op": "goto", "to": [392, 160], "tol": 6.0 },
-      { "op": "beam", "target": "bramble_kiln_r9" },
-      { "op": "wait", "secs": 0.4 },
-      { "op": "goto", "to": [256, 168], "tol": 4.0 },
-      { "op": "rotate", "target": "tf_kiln_r9", "angle": 225 },
-      { "op": "shoot", "from": [248, 168], "target": "tf_kiln_r9", "wait_hit": 0.5 },
-      { "op": "wait_until", "target": "door_kiln_r9_vault", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "goto", "to": [128, 136], "tol": 6.0 },
-      { "op": "sunflare" },
-      { "op": "wait", "secs": 0.35 },
-      { "op": "goto", "to": [72, 136], "tol": 6.0 },
-      { "op": "interact", "target": "keepers_flame_6" },
-      { "op": "expect", "flag": "keepers_flame_6" },
-      { "op": "goto", "to": [224, 48], "tol": 6.0 },
-      { "op": "interact", "target": "door_boss_6" },
-      { "op": "expect_exit", "exit": "exit_kiln_r9_north" }
+      {
+        "op": "goto",
+        "to": [
+          392,
+          160
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "beam",
+        "target": "bramble_kiln_r9"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          168
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "rotate",
+        "target": "tf_kiln_r9",
+        "angle": 225
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          168
+        ],
+        "target": "tf_kiln_r9",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait_until",
+        "target": "door_kiln_r9_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          128,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          136
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_6"
+      },
+      {
+        "op": "expect",
+        "flag": "keepers_flame_6"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          48
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "door_boss_6"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r9_north"
+      }
     ]
   }
 }

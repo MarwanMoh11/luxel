@@ -208,54 +208,6 @@
           "train_roof_hatch"
         ]
       }
-    },
-    {
-      "id": "lamp_r1_w",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        96
-      ],
-      "props": {
-        "zone": "tr_r1",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r1_mid",
-      "kind": "road_lamp",
-      "pos": [
-        168,
-        104
-      ],
-      "props": {
-        "zone": "tr_r1",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r1_baffle",
-      "kind": "road_lamp",
-      "pos": [
-        272,
-        112
-      ],
-      "props": {
-        "zone": "tr_r1",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r1_e",
-      "kind": "road_lamp",
-      "pos": [
-        384,
-        104
-      ],
-      "props": {
-        "zone": "tr_r1",
-        "lit": true
-      }
     }
   ],
   "enemies": [],
@@ -389,8 +341,8 @@
       "sheet": "theme_ember_express",
       "prop": "conductor_bell_post",
       "pos": [
-        400,
-        176
+        392,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -420,6 +372,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        72,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        168,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        280,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        376,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],
@@ -430,9 +430,15 @@
       "on": "enter",
       "once": true,
       "do": [
-        { "set_flag": "train_entered" },
-        { "sfx": "steam_whistle" },
-        { "shake": 0.14 }
+        {
+          "set_flag": "train_entered"
+        },
+        {
+          "sfx": "steam_whistle"
+        },
+        {
+          "shake": 0.14
+        }
       ]
     }
   ],

@@ -78,7 +78,7 @@
       ],
       "props": {
         "var": "world_face",
-        "allow_bolt_flip": true,
+        "allow_bolt_flip": false,
         "radius_px": 16,
         "persist": true
       }

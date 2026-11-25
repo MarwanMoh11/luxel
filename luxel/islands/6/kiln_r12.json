@@ -5,35 +5,76 @@
   "is_dungeon": true,
   "theme": "forge_deep",
   "music": "island6_dungeon",
-  "ambience": ["forge_rumble"],
+  "ambience": [
+    "forge_rumble"
+  ],
   "name_key": "ISL6_KILN_R12",
-  "spawn": [256, 240],
+  "spawn": [
+    256,
+    240
+  ],
   "zones": [
-    { "id": "kiln_r12", "name_key": "ISL6_KILN_R12", "rect": [0, 0, 480, 288], "dark": true }
+    {
+      "id": "kiln_r12",
+      "name_key": "ISL6_KILN_R12",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r12_south",
-      "rect": [240, 272, 32, 16],
+      "rect": [
+        240,
+        272,
+        32,
+        16
+      ],
       "to_region": "kiln_r11",
-      "to_spawn": [144, 48],
+      "to_spawn": [
+        144,
+        48
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r12_sw",
-      "rect": [0, 208, 16, 48],
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
       "to_region": "kiln_r2",
-      "to_spawn": [288, 48],
+      "to_spawn": [
+        288,
+        48
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_r12_seam"],
+      "requires_flags": [
+        "kiln_r12_seam"
+      ],
       "locked_door_id": "door_kiln_r12_seam"
     },
     {
       "id": "exit_kiln_r12_north",
-      "rect": [208, 0, 32, 16],
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r13",
-      "to_spawn": [64, 232],
+      "to_spawn": [
+        64,
+        232
+      ],
       "requires_moves": [],
       "requires_flags": []
     }
@@ -42,7 +83,10 @@
     {
       "id": "en_kiln_r12_slime",
       "kind": "slag_slime",
-      "pos": [384, 216],
+      "pos": [
+        384,
+        216
+      ],
       "zone": "kiln_r12",
       "leash": 96
     }
@@ -51,52 +95,125 @@
     {
       "id": "anc_kiln_r12",
       "kind": "room_anchor",
-      "pos": [256, 248],
-      "props": { "auto": true }
+      "pos": [
+        256,
+        248
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "gauge_kiln_r12",
       "kind": "kiln_damper_gauge",
-      "pos": [328, 256],
+      "pos": [
+        328,
+        256
+      ],
       "props": {}
     },
     {
       "id": "pour_r12_1",
       "kind": "slag_pourer",
-      "pos": [152, 184],
-      "props": { "spawn_pos": [152, 208], "spawn_kind": "block", "needs_var": "kiln_heat==surge", "pour_warn_secs": 0.45, "auto_pour": true, "max_live": 1 }
+      "pos": [
+        152,
+        184
+      ],
+      "props": {
+        "spawn_pos": [
+          152,
+          208
+        ],
+        "spawn_kind": "block",
+        "needs_var": "kiln_heat==surge",
+        "pour_warn_secs": 0.45,
+        "auto_pour": true,
+        "max_live": 1
+      }
     },
     {
       "id": "pour_r12_2",
       "kind": "slag_pourer",
-      "pos": [328, 184],
-      "props": { "spawn_pos": [328, 208], "spawn_kind": "block", "needs_var": "kiln_heat==surge", "pour_warn_secs": 0.45, "auto_pour": true, "max_live": 1 }
+      "pos": [
+        328,
+        184
+      ],
+      "props": {
+        "spawn_pos": [
+          328,
+          208
+        ],
+        "spawn_kind": "block",
+        "needs_var": "kiln_heat==surge",
+        "pour_warn_secs": 0.45,
+        "auto_pour": true,
+        "max_live": 1
+      }
     },
     {
       "id": "tf_kiln_r12",
       "kind": "blue_transformer",
-      "pos": [240, 208],
-      "props": { "angle_deg": 315, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        240,
+        208
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "plate_r12_1",
       "kind": "pressure_plate",
-      "pos": [152, 168],
-      "props": { "by": ["block"], "latch": true, "target_id": "gate_r12_bridge", "persist": true }
+      "pos": [
+        152,
+        168
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_r12_bridge",
+        "persist": true
+      }
     },
     {
       "id": "plate_r12_2",
       "kind": "pressure_plate",
-      "pos": [328, 168],
-      "props": { "by": ["block"], "latch": true, "target_id": "gate_r12_bridge", "persist": true }
+      "pos": [
+        328,
+        168
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "target_id": "gate_r12_bridge",
+        "persist": true
+      }
     },
     {
       "id": "gate_r12_bridge",
       "kind": "logic_gate",
-      "pos": [240, 172],
+      "pos": [
+        240,
+        172
+      ],
       "props": {
         "op": "all",
-        "inputs": ["plate_r12_1", "plate_r12_2"],
+        "inputs": [
+          "plate_r12_1",
+          "plate_r12_2"
+        ],
         "target_id": "bridge_kiln_r12_cast",
         "persist": true
       }
@@ -104,47 +221,196 @@
     {
       "id": "bridge_kiln_r12_cast",
       "kind": "door",
-      "pos": [224, 96],
+      "pos": [
+        224,
+        96
+      ],
       "props": {
         "door_kind": "bridge_platform",
         "starts_open": false,
-        "size": [48, 144],
-        "requires_signals": ["gate_r12_bridge"],
+        "size": [
+          48,
+          144
+        ],
+        "requires_signals": [
+          "gate_r12_bridge"
+        ],
         "sets_flag": "kiln_r12_cast"
       }
     },
     {
       "id": "seal_kiln_r12_seam",
       "kind": "obsidian_seal",
-      "pos": [56, 232],
-      "props": { "size": [16, 48], "zone": "kiln_r12" }
+      "pos": [
+        56,
+        232
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ],
+        "zone": "kiln_r12"
+      }
     },
     {
       "id": "door_kiln_r12_seam",
       "kind": "door",
-      "pos": [24, 232],
+      "pos": [
+        24,
+        232
+      ],
       "props": {
         "door_kind": "shortcut_door",
-        "size": [16, 48],
-        "requires_flags": ["kiln_r12_seam"]
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "kiln_r12_seam"
+        ]
       }
-    },
-    { "id": "lamp_kr12_1", "kind": "road_lamp", "pos": [112, 240], "props": { "lit": true } },
-    { "id": "lamp_kr12_2", "kind": "road_lamp", "pos": [384, 248], "props": { "lit": true } },
-    { "id": "lamp_kr12_3", "kind": "road_lamp", "pos": [192, 40], "props": { "lit": true } },
-    { "id": "lamp_kr12_4", "kind": "road_lamp", "pos": [288, 40], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "grate", "rect": [128, 192, 224, 48], "glow": true },
-    { "kind": "inlay", "rect": [136, 160, 32, 64] },
-    { "kind": "inlay", "rect": [312, 160, 32, 64] }
+    {
+      "kind": "grate",
+      "rect": [
+        128,
+        192,
+        224,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        136,
+        160,
+        32,
+        64
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        312,
+        160,
+        32,
+        64
+      ]
+    }
   ],
   "scenery": [
-    { "sheet": "theme_forge_deep", "prop": "ingot_mold_trough", "pos": [152, 208], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 },
-    { "sheet": "theme_forge_deep", "prop": "ingot_mold_trough", "pos": [328, 208], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.5 },
-    { "sheet": "theme_forge_deep", "prop": "foundry_crane_hook", "pos": [80, 176], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_forge_deep", "prop": "chained_slag_cauldron", "pos": [424, 176], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.3 },
-    { "sheet": "theme_forge_deep", "prop": "ember_brazier_pillar", "pos": [224, 40], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 }
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        152,
+        208
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        328,
+        208
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "foundry_crane_hook",
+      "pos": [
+        80,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "chained_slag_cauldron",
+      "pos": [
+        424,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        224,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        392,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        200,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        280,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -154,7 +420,9 @@
       "on": "flag:seal_kiln_r12_seam",
       "once": true,
       "do": [
-        { "set_flag": "kiln_r12_seam" }
+        {
+          "set_flag": "kiln_r12_seam"
+        }
       ]
     }
   ],
@@ -168,22 +436,110 @@
     "reward": "kiln_r12_cast+kiln_r12_seam+open_r13",
     "why": "Signature Heat-Flow casting room transforming molten pours into permanent bridge counterweights.",
     "exit": "exit_kiln_r12_north",
-    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "surge" }, "flags": ["forge_warden_defeated"] },
+    "start": {
+      "vars": {
+        "dungeon:great_kiln:kiln_heat": "surge"
+      },
+      "flags": [
+        "forge_warden_defeated"
+      ]
+    },
     "solution": [
-      { "op": "wait", "secs": 0.7 },
-      { "op": "clear", "timeout": 25.0 },
-      { "op": "goto", "to": [240, 232], "tol": 4.0 },
-      { "op": "rotate", "target": "tf_kiln_r12", "angle": 135 },
-      { "op": "shoot", "from": [240, 240], "target": "tf_kiln_r12", "wait_hit": 0.5 },
-      { "op": "goto", "to": [152, 232], "tol": 6.0 },
-      { "op": "push", "target": "pour_r12_1_slag_1", "to": [152, 168] },
-      { "op": "goto", "to": [240, 232], "tol": 4.0 },
-      { "op": "rotate", "target": "tf_kiln_r12", "angle": 45 },
-      { "op": "shoot", "from": [240, 240], "target": "tf_kiln_r12", "wait_hit": 0.5 },
-      { "op": "goto", "to": [328, 232], "tol": 6.0 },
-      { "op": "push", "target": "pour_r12_2_slag_1", "to": [328, 168] },
-      { "op": "wait_until", "target": "bridge_kiln_r12_cast", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "expect_exit", "exit": "exit_kiln_r12_north" }
+      {
+        "op": "wait",
+        "secs": 0.7
+      },
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "rotate",
+        "target": "tf_kiln_r12",
+        "angle": 135
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          240
+        ],
+        "target": "tf_kiln_r12",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          152,
+          232
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "push",
+        "target": "pour_r12_1_slag_1",
+        "to": [
+          152,
+          168
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "rotate",
+        "target": "tf_kiln_r12",
+        "angle": 45
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          240
+        ],
+        "target": "tf_kiln_r12",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          232
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "push",
+        "target": "pour_r12_2_slag_1",
+        "to": [
+          328,
+          168
+        ]
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_kiln_r12_cast",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r12_north"
+      }
     ]
   }
 }

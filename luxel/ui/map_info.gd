@@ -2,6 +2,8 @@ class_name LxMapInfo
 extends RefCounted
 ## Header progress bar, per-island info box, and Waystone fast-travel list for LxMapScreen.
 
+const EMBER_TOTAL: int = 52
+
 const DUNGEON_NAME_KEYS: Dictionary = {
 	1: "ZONE_BELFRY", 2: "DUNGEON_2_NAME", 3: "DUNGEON_3_NAME", 4: "DUNGEON_4_NAME",
 	5: "DUNGEON_5_NAME", 6: "DUNGEON_6_NAME", 7: "DUNGEON_7_NAME", 8: "DUNGEON_8_NAME",
@@ -173,7 +175,7 @@ static func _draw_relic_and_harmony(ci: CanvasItem, box: Rect2, isl_id: int, dat
 static func _draw_footer_counts(ci: CanvasItem, box: Rect2) -> void:
 	var embers: int = Lx.state.ember_pieces if Lx.state != null else 0
 	var moths: int = LxQuests.current().get_moth_count()
-	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["apricot"] if embers >= 16 else LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["apricot"] if embers >= EMBER_TOTAL else LxPalette.PAL["stone"], 1)
 	LxPixelFont.draw_right(ci, LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [moths, 80]), box.end.x - 6.0, box.position.y + 44.0, LxPalette.PAL["gold"] if moths > 0 else LxPalette.PAL["stone"], 1)
 
 

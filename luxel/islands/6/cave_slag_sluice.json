@@ -3,7 +3,7 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_6",
+  "theme": "kiln_cavern",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_SLUICE",
   "spawn": [
@@ -212,50 +212,6 @@
       "props": {
         "id": "moth_6_04"
       }
-    },
-    {
-      "id": "lamp_sl_1",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        112
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sl_2",
-      "kind": "road_lamp",
-      "pos": [
-        200,
-        96
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sl_3",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        96
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sl_4",
-      "kind": "road_lamp",
-      "pos": [
-        384,
-        96
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -325,6 +281,90 @@
       "pos": [
         384,
         192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        200,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        280,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        120,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        312,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        264,
+        40
       ],
       "layer": "sort",
       "flip_x": false,
@@ -422,5 +462,44 @@
         "flag": "quest:item:slag_coal"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        136,
+        124,
+        164,
+        56
+      ]
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        144,
+        192,
+        144,
+        32
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        112,
+        80
+      ],
+      "radius": 30,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        80
+      ],
+      "radius": 28,
+      "glow": true
+    }
+  ]
 }

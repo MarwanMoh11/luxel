@@ -334,94 +334,6 @@
           32
         ]
       }
-    },
-    {
-      "id": "lamp_basin_1",
-      "kind": "road_lamp",
-      "pos": [
-        328,
-        72
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_2",
-      "kind": "road_lamp",
-      "pos": [
-        408,
-        72
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_3",
-      "kind": "road_lamp",
-      "pos": [
-        112,
-        232
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_4",
-      "kind": "road_lamp",
-      "pos": [
-        368,
-        288
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_5",
-      "kind": "road_lamp",
-      "pos": [
-        120,
-        408
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_6",
-      "kind": "road_lamp",
-      "pos": [
-        640,
-        144
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_7",
-      "kind": "road_lamp",
-      "pos": [
-        640,
-        312
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_basin_8",
-      "kind": "road_lamp",
-      "pos": [
-        560,
-        408
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -544,6 +456,138 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        328,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        120,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        376,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        120,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        648,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        648,
+        312
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        568,
+        408
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        264,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        472,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        232,
+        392
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
     }
   ],
   "layers": [
@@ -562,7 +606,8 @@
       "enable": [
         "exit_to_magnet_vault"
       ],
-      "disable": []
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/ow_slag_basin__station_a.png"
     },
     {
       "id": "station_b",
@@ -587,7 +632,8 @@
         "exit_to_slag_sluice",
         "exit_to_overlook_lift"
       ],
-      "disable": []
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/ow_slag_basin__station_c.png"
     },
     {
       "id": "relit",
@@ -696,5 +742,44 @@
         "exit": "exit_to_slag_sluice"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        192
+      ],
+      "radius": 46,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        320,
+        256,
+        96,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        240
+      ],
+      "radius": 38,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        544,
+        240
+      ],
+      "radius": 38,
+      "glow": true
+    }
+  ]
 }

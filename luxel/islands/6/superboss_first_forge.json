@@ -156,61 +156,6 @@
         "reward": "shards",
         "amount": 200
       }
-    },
-    {
-      "id": "lamp_ff_1",
-      "kind": "road_lamp",
-      "pos": [
-        144,
-        192
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ff_2",
-      "kind": "road_lamp",
-      "pos": [
-        368,
-        192
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ff_3",
-      "kind": "road_lamp",
-      "pos": [
-        256,
-        264
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ff_4",
-      "kind": "road_lamp",
-      "pos": [
-        256,
-        128
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ff_5",
-      "kind": "road_lamp",
-      "pos": [
-        256,
-        40
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -309,6 +254,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        152,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        376,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        264,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        264,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        264,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "layers": [],
@@ -390,5 +395,80 @@
         "target": "chest_first_forge_200"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 64,
+      "style": "gear"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 36,
+      "style": "ritual"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        160,
+        96,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        80,
+        256,
+        208
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        128
+      ],
+      "radius": 34,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        352,
+        128
+      ],
+      "radius": 34,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        256
+      ],
+      "radius": 34,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        352,
+        256
+      ],
+      "radius": 34,
+      "glow": true
+    }
+  ]
 }

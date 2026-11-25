@@ -313,90 +313,6 @@
           "col_right_lock"
         ]
       }
-    },
-    {
-      "id": "lamp_r6_s",
-      "kind": "road_lamp",
-      "pos": [
-        232,
-        320
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_mid",
-      "kind": "road_lamp",
-      "pos": [
-        240,
-        148
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_w",
-      "kind": "road_lamp",
-      "pos": [
-        112,
-        168
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_e",
-      "kind": "road_lamp",
-      "pos": [
-        464,
-        168
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_n",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        64
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_se",
-      "kind": "road_lamp",
-      "pos": [
-        384,
-        320
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_crane",
-      "kind": "road_lamp",
-      "pos": [
-        504,
-        280
-      ],
-      "props": {
-        "zone": "col_r6",
-        "lit": true
-      }
     }
   ],
   "enemies": [],
@@ -539,7 +455,7 @@
       "prop": "iron_chain_hoist",
       "pos": [
         472,
-        232
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -552,6 +468,114 @@
       "pos": [
         288,
         184
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        232,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        248,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        120,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        472,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        296,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        392,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        504,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        152,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        288,
+        192
       ],
       "layer": "ground",
       "flip_x": false,

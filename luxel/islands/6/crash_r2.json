@@ -5,26 +5,58 @@
   "is_dungeon": true,
   "theme": "iron_colossus",
   "music": "isl6_setpiece",
-  "ambience": ["forge_rumble", "wind_howl"],
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
   "name_key": "ISL6_CR_R2",
-  "spawn": [56, 152],
+  "spawn": [
+    56,
+    152
+  ],
   "zones": [
-    { "id": "crash_r2", "name_key": "ISL6_CR_R2", "rect": [0, 0, 576, 288], "dark": true }
+    {
+      "id": "crash_r2",
+      "name_key": "ISL6_CR_R2",
+      "rect": [
+        0,
+        0,
+        576,
+        288
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_crash_r2_west",
-      "rect": [0, 128, 16, 48],
+      "rect": [
+        0,
+        128,
+        16,
+        48
+      ],
       "to_region": "crash_r1",
-      "to_spawn": [520, 120],
+      "to_spawn": [
+        520,
+        120
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_crash_r2_east",
-      "rect": [560, 128, 16, 48],
+      "rect": [
+        560,
+        128,
+        16,
+        48
+      ],
       "to_region": "crash_r3",
-      "to_spawn": [56, 144],
+      "to_spawn": [
+        56,
+        144
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_crash_r2_east"
@@ -34,14 +66,20 @@
     {
       "id": "en_crash_r2_wasp1",
       "kind": "smelter_wasp",
-      "pos": [448, 80],
+      "pos": [
+        448,
+        80
+      ],
       "zone": "crash_r2",
       "leash": 124
     },
     {
       "id": "en_crash_r2_wasp2",
       "kind": "smelter_wasp",
-      "pos": [416, 224],
+      "pos": [
+        416,
+        224
+      ],
       "zone": "crash_r2",
       "leash": 124
     }
@@ -50,27 +88,56 @@
     {
       "id": "anc_crash_r2",
       "kind": "room_anchor",
-      "pos": [56, 152],
-      "props": { "auto": true }
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anvil_crash_r2_scat",
       "kind": "temper_anvil",
-      "pos": [96, 96],
-      "props": { "mode": "scatter", "sets_flag": "temper_scatter_known" }
+      "pos": [
+        96,
+        96
+      ],
+      "props": {
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
+      }
     },
     {
       "id": "lore_crash_r2_arm",
       "kind": "lore_stone",
-      "pos": [96, 200],
-      "props": { "string_id": "ISL6_CRASH_ARM", "icon": "gear" }
+      "pos": [
+        96,
+        200
+      ],
+      "props": {
+        "string_id": "ISL6_CRASH_ARM",
+        "icon": "gear"
+      }
     },
     {
       "id": "cart_crash_r2",
       "kind": "vehicle_cart",
-      "pos": [152, 152],
+      "pos": [
+        152,
+        152
+      ],
       "props": {
-        "rail": [[152, 152], [416, 152]],
+        "rail": [
+          [
+            152,
+            152
+          ],
+          [
+            416,
+            152
+          ]
+        ],
         "speed": 135.0,
         "loop": false,
         "auto": false,
@@ -80,89 +147,365 @@
     {
       "id": "emit_crash_r2_1",
       "kind": "beam_emitter",
-      "pos": [232, 72],
-      "props": { "dir": "s", "color": "gold", "period": 3.4, "duty": 0.36, "offset": 0.0, "range": 160.0, "harms_wick": true, "damage": 1.0 }
+      "pos": [
+        232,
+        72
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 3.4,
+        "duty": 0.36,
+        "offset": 0.0,
+        "range": 160.0,
+        "harms_wick": true,
+        "damage": 1.0
+      }
     },
     {
       "id": "emit_crash_r2_2",
       "kind": "beam_emitter",
-      "pos": [328, 72],
-      "props": { "dir": "s", "color": "gold", "period": 3.4, "duty": 0.36, "offset": 1.7, "range": 160.0, "harms_wick": true, "damage": 1.0 }
+      "pos": [
+        328,
+        72
+      ],
+      "props": {
+        "dir": "s",
+        "color": "gold",
+        "period": 3.4,
+        "duty": 0.36,
+        "offset": 1.7,
+        "range": 160.0,
+        "harms_wick": true,
+        "damage": 1.0
+      }
     },
     {
       "id": "tb_crash_r2_1",
       "kind": "timed_brazier",
-      "pos": [488, 128],
-      "props": { "secs": 4.5, "target_id": "gate_crash_r2" }
+      "pos": [
+        488,
+        128
+      ],
+      "props": {
+        "secs": 4.5,
+        "target_id": "gate_crash_r2"
+      }
     },
     {
       "id": "tb_crash_r2_2",
       "kind": "timed_brazier",
-      "pos": [496, 152],
-      "props": { "secs": 4.5, "target_id": "gate_crash_r2" }
+      "pos": [
+        496,
+        152
+      ],
+      "props": {
+        "secs": 4.5,
+        "target_id": "gate_crash_r2"
+      }
     },
     {
       "id": "tb_crash_r2_3",
       "kind": "timed_brazier",
-      "pos": [488, 176],
-      "props": { "secs": 4.5, "target_id": "gate_crash_r2" }
+      "pos": [
+        488,
+        176
+      ],
+      "props": {
+        "secs": 4.5,
+        "target_id": "gate_crash_r2"
+      }
     },
     {
       "id": "gate_crash_r2",
       "kind": "logic_gate",
-      "pos": [520, 200],
+      "pos": [
+        520,
+        200
+      ],
       "props": {
         "op": "all",
-        "inputs": ["tb_crash_r2_1", "tb_crash_r2_2", "tb_crash_r2_3"],
-        "target_ids": ["door_crash_r2_east", "bridge_crash_r2_return"],
+        "inputs": [
+          "tb_crash_r2_1",
+          "tb_crash_r2_2",
+          "tb_crash_r2_3"
+        ],
+        "target_ids": [
+          "door_crash_r2_east",
+          "bridge_crash_r2_return"
+        ],
         "persist": true
       }
     },
     {
       "id": "bloom_crash_r2_elbow",
       "kind": "bounce_bloom",
-      "pos": [448, 224],
-      "props": { "dir": "n", "dist": 64.0 }
+      "pos": [
+        448,
+        224
+      ],
+      "props": {
+        "dir": "n",
+        "dist": 64.0
+      }
     },
     {
       "id": "bridge_crash_r2_return",
       "kind": "door",
-      "pos": [288, 200],
+      "pos": [
+        288,
+        200
+      ],
       "props": {
         "door_kind": "bridge_platform",
         "starts_open": false,
-        "size": [256, 32],
-        "requires_signals": ["gate_crash_r2"]
+        "size": [
+          256,
+          32
+        ],
+        "requires_signals": [
+          "gate_crash_r2"
+        ]
       }
     },
     {
       "id": "door_crash_r2_east",
       "kind": "door",
-      "pos": [552, 152],
+      "pos": [
+        552,
+        152
+      ],
       "props": {
         "door_kind": "switch_door",
-        "size": [16, 48],
-        "requires_signals": ["gate_crash_r2"],
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "gate_crash_r2"
+        ],
         "sets_flag": "crash_arm_crossed"
       }
-    },
-    { "id": "lamp_cr2_1", "kind": "road_lamp", "pos": [56, 96], "props": { "lit": true } },
-    { "id": "lamp_cr2_2", "kind": "road_lamp", "pos": [128, 216], "props": { "lit": true } },
-    { "id": "lamp_cr2_3", "kind": "road_lamp", "pos": [432, 96], "props": { "lit": true } },
-    { "id": "lamp_cr2_4", "kind": "road_lamp", "pos": [520, 104], "props": { "lit": true } },
-    { "id": "lamp_cr2_5", "kind": "road_lamp", "pos": [496, 232], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "grate", "rect": [48, 128, 96, 48], "glow": false },
-    { "kind": "grate", "rect": [416, 112, 96, 80], "glow": true },
-    { "kind": "circle", "pos": [496, 152], "radius": 32, "style": "gear" }
+    {
+      "kind": "grate",
+      "rect": [
+        48,
+        128,
+        96,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        416,
+        112,
+        96,
+        80
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        496,
+        152
+      ],
+      "radius": 36,
+      "style": "gear"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        96
+      ],
+      "radius": 28,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        448,
+        224
+      ],
+      "radius": 30,
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "theme_iron_colossus", "prop": "hydraulic_piston_pillar", "pos": [48, 76], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_iron_colossus", "prop": "slag_ingot_stack", "pos": [128, 80], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_iron_colossus", "prop": "giant_foundry_gear", "pos": [520, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_iron_colossus", "prop": "colossus_rib_buttress", "pos": [432, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_iron_colossus", "prop": "steam_valve_wheel", "pos": [528, 240], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.3 }
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        48,
+        76
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "slag_ingot_stack",
+      "pos": [
+        128,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "giant_foundry_gear",
+      "pos": [
+        520,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        432,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "steam_valve_wheel",
+      "pos": [
+        528,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        56,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        136,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        440,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        520,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        504,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        72,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        488,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        112,
+        224
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -177,21 +520,99 @@
     "reward": "crash_arm_crossed+open_crash_r3",
     "why": "Second act of The Iron Collision bridging the runaway viaduct to the locomotive roof.",
     "exit": "exit_crash_r2_east",
-    "start": { "flags": ["hollow_cameo_6", "item_coupler_hook"] },
+    "start": {
+      "flags": [
+        "hollow_cameo_6",
+        "item_coupler_hook"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [96, 114], "tol": 4.0 },
-      { "op": "interact", "target": "anvil_crash_r2_scat" },
-      { "op": "expect", "var": "wick_temper==scatter" },
-      { "op": "goto", "to": [140, 152], "tol": 6.0 },
-      { "op": "mount", "target": "cart_crash_r2" },
-      { "op": "shoot", "target": [60, 152], "count": 7, "wait_hit": 0.32 },
-      { "op": "wait_phase", "target": "cart_crash_r2", "near": [416, 152], "tol": 10.0, "timeout": 8.0 },
-      { "op": "dismount", "to": [432, 152] },
-      { "op": "clear", "timeout": 30.0 },
-      { "op": "goto", "to": [448, 152], "tol": 4.0 },
-      { "op": "shoot", "target": [496, 152], "count": 2, "wait_hit": 0.30 },
-      { "op": "wait_until", "target": "door_crash_r2_east", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "expect_exit", "exit": "exit_crash_r2_east" }
+      {
+        "op": "goto",
+        "to": [
+          96,
+          114
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_crash_r2_scat"
+      },
+      {
+        "op": "expect",
+        "var": "wick_temper==scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          140,
+          152
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "mount",
+        "target": "cart_crash_r2"
+      },
+      {
+        "op": "shoot",
+        "target": [
+          60,
+          152
+        ],
+        "count": 7,
+        "wait_hit": 0.32
+      },
+      {
+        "op": "wait_phase",
+        "target": "cart_crash_r2",
+        "near": [
+          416,
+          152
+        ],
+        "tol": 10.0,
+        "timeout": 8.0
+      },
+      {
+        "op": "dismount",
+        "to": [
+          432,
+          152
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          448,
+          152
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          496,
+          152
+        ],
+        "count": 2,
+        "wait_hit": 0.3
+      },
+      {
+        "op": "wait_until",
+        "target": "door_crash_r2_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_crash_r2_east"
+      }
     ]
   }
 }

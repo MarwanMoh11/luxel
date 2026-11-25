@@ -71,7 +71,7 @@ static func draw_quests(ci: CanvasItem, area: Rect2, sel: int, scroll: int) -> v
 		for si: int in range(max_steps):
 			LxBubble.draw_icon(ci, step_icons[si], r.position + Vector2(30.0 + float(si * 12), 4.0), 1.0)
 		var place_x: float = r.position.x + 84.0
-		var place_lbl: String = str(place.get("label", "")).substr(0, 14)
+		var place_lbl: String = str(place.get("label", "")).substr(0, 18)
 		LxBubble.draw_icon(ci, "star" if pinned else "arrow_e", Vector2(place_x, r.position.y + 4.0), 1.0)
 		LxPixelFont.draw_left(ci, place_lbl, Vector2(place_x + 12.0, r.position.y + 6.0), LxPalette.PAL["gold"] if pinned else LxPalette.PAL["ice"], 1)
 		# Reward icon + status badge on right

@@ -320,83 +320,6 @@
           "colossus_cleared"
         ]
       }
-    },
-    {
-      "id": "lamp_ov_1",
-      "kind": "road_lamp",
-      "pos": [
-        304,
-        368
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_2",
-      "kind": "road_lamp",
-      "pos": [
-        400,
-        368
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_3",
-      "kind": "road_lamp",
-      "pos": [
-        96,
-        232
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_4",
-      "kind": "road_lamp",
-      "pos": [
-        96,
-        344
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_5",
-      "kind": "road_lamp",
-      "pos": [
-        352,
-        152
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_6",
-      "kind": "road_lamp",
-      "pos": [
-        624,
-        216
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_ov_7",
-      "kind": "road_lamp",
-      "pos": [
-        568,
-        376
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -507,6 +430,114 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        312,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        408,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        104,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        104,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        632,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        568,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "foundry_crane_hook",
+      "pos": [
+        280,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        232,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "layers": [
@@ -532,7 +563,8 @@
       "enable": [
         "exit_to_bellows_trial"
       ],
-      "disable": []
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/ow_cinder_overlook__station_b.png"
     },
     {
       "id": "station_c",
@@ -621,5 +653,53 @@
         "exit": "exit_to_bellows_trial"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        232
+      ],
+      "radius": 48,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        320,
+        144,
+        64,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        200
+      ],
+      "radius": 36,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        160,
+        344
+      ],
+      "radius": 36,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        608,
+        240
+      ],
+      "radius": 32,
+      "glow": true
+    }
+  ]
 }

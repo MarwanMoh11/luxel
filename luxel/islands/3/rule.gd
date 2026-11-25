@@ -30,6 +30,7 @@ const TINY_REGIONS: Dictionary = {
 }
 
 const TURN_KEYS: Array[String] = ["ISL3_HUD_MOSS", "ISL3_HUD_SILK", "ISL3_HUD_CROWN"]
+const TURN_NOTE_KEYS: Array[String] = ["ISL3_WOOD_TURNED_0", "ISL3_WOOD_TURNED_1", "ISL3_WOOD_TURNED_2"]
 
 static var active_instance: LxIsland3Rule = null
 ## The controller is rebuilt on every region load; the clearing Wick just left must survive that or the wood never turns.
@@ -99,7 +100,7 @@ class Island3HudOverlay:
 			var eff_t: int = rule.get_effective_turn(clearing) if not clearing.is_empty() else rule.get_wood_turn()
 			var pinned: bool = (not clearing.is_empty()) and rule.is_clearing_pinned(clearing)
 			var bx: float = 6.0
-			var bw: float = 78.0
+			var bw: float = 86.0
 			var bh: float = 13.0
 			var rim: Color = c_cream if (shift_flash_t > 0.0 and not LxHudFx.flash_reduced()) else (c_gold if pinned else c_dusk)
 			canvas.draw_rect(Rect2(bx, y_cur, bw, bh), c_void)
@@ -120,7 +121,11 @@ class Island3HudOverlay:
 			if pinned:
 				var pk: String = LxStrings.text("ISL3_HUD_PIN") if LxStrings.has_id("ISL3_HUD_PIN") else ""
 				if not pk.is_empty():
-					LxPixelFont.draw(canvas, pk, Vector2(bx + bw - 16.0, y_cur + 4.0), c_lime)
+					LxPixelFont.draw(canvas, pk, Vector2(bx + bw - 18.0, y_cur + 4.0), c_lime)
+			elif not clearing.is_empty():
+				var fk: String = LxStrings.text("ISL3_HUD_FREE") if LxStrings.has_id("ISL3_HUD_FREE") else ""
+				if not fk.is_empty():
+					LxPixelFont.draw(canvas, fk, Vector2(bx + bw - 20.0, y_cur + 4.0), c_apricot)
 			y_cur += bh + 2.0
 
 		if is_tiny:
@@ -377,8 +382,13 @@ func advance_wood_turn(with_tell: bool = true) -> int:
 			_events.sfx_requested.emit("wood_shift", Vector2.ZERO, false)
 			if LxHudFx.shake_enabled():
 				_events.shake_requested.emit(0.08)
+			var note_key: String = TURN_NOTE_KEYS[clampi(nxt, 0, 2)]
+			var st: LxGameState = _state if _state != null else Lx.state
+			var taught: bool = st != null and bool(st.story_flags.get("isl3_pin_taught", false))
+			if not taught and LxStrings.has_id(note_key):
+				_events.narration_requested.emit(note_key, "narration", 3.0)
 		if _hud != null:
-			_hud.shift_flash_t = 1.1
+			_hud.shift_flash_t = 2.4
 			_hud.refresh()
 	return nxt
 

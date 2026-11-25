@@ -106,6 +106,13 @@ func reset_toy() -> void:
 	resync()
 
 
+func sync_wick_origin() -> void:
+	_bind_wick()
+	var wp: Vector2 = wick_pos()
+	if wp.x > -9000.0:
+		_last_wick_pos = wp
+
+
 func resync() -> void:
 	var target: Vector2 = origin_pos
 	var wp: Vector2 = wick_pos()

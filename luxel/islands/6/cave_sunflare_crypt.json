@@ -251,50 +251,6 @@
         "string_id": "ISL6_LORE_HOLLOW",
         "icon": "skull"
       }
-    },
-    {
-      "id": "lamp_sc_1",
-      "kind": "road_lamp",
-      "pos": [
-        192,
-        72
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sc_2",
-      "kind": "road_lamp",
-      "pos": [
-        96,
-        128
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sc_3",
-      "kind": "road_lamp",
-      "pos": [
-        320,
-        144
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_sc_4",
-      "kind": "road_lamp",
-      "pos": [
-        208,
-        232
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -357,6 +313,54 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        88,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        328,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        232,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "layers": [],

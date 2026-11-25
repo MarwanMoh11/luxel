@@ -306,61 +306,6 @@
       "props": {
         "id": "moth_6_08"
       }
-    },
-    {
-      "id": "lamp_bt_1",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        160
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_bt_2",
-      "kind": "road_lamp",
-      "pos": [
-        168,
-        192
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_bt_3",
-      "kind": "road_lamp",
-      "pos": [
-        224,
-        152
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_bt_4",
-      "kind": "road_lamp",
-      "pos": [
-        320,
-        128
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_bt_5",
-      "kind": "road_lamp",
-      "pos": [
-        424,
-        168
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -423,6 +368,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        72,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        168,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        232,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        328,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        440,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "layers": [],

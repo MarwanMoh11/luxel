@@ -182,78 +182,6 @@
           48
         ]
       }
-    },
-    {
-      "id": "lamp_r3_w",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        112
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r3_sw",
-      "kind": "road_lamp",
-      "pos": [
-        168,
-        224
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r3_nw",
-      "kind": "road_lamp",
-      "pos": [
-        168,
-        64
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r3_ne",
-      "kind": "road_lamp",
-      "pos": [
-        360,
-        64
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r3_se",
-      "kind": "road_lamp",
-      "pos": [
-        360,
-        224
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r3_e",
-      "kind": "road_lamp",
-      "pos": [
-        448,
-        144
-      ],
-      "props": {
-        "zone": "col_r3",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -427,8 +355,8 @@
       "sheet": "theme_iron_colossus",
       "prop": "colossus_rib_buttress",
       "pos": [
-        448,
-        240
+        440,
+        232
       ],
       "layer": "sort",
       "flip_x": true,
@@ -458,6 +386,102 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        72,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        168,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        168,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        360,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        456,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        256,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
     }
   ],
   "triggers": [],

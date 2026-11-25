@@ -373,6 +373,22 @@
       "disable": []
     }
   ],
+  "events": [
+    {
+      "id": "spire_r2_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Crescent Prism Gallery preserving the dual Blue-bank key puzzle for wick_key_7_1 while adding a Moon Pool that raises a Black obsidian bridge to a hidden NE vault and unseals the North Black Arch into Spire Cycle 1 (spire_r11).",
     "kind": "puzzle",

@@ -431,6 +431,22 @@
       "disable": []
     }
   ],
+  "events": [
+    {
+      "id": "spire_r1_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Deepened Mirror Spire Hub uniting Silver/Black flips via central Moon Pool, Boss Shortcut North, SW r5 portal, and SE Kaleidoscope Duchess return portal.",
     "kind": "story",

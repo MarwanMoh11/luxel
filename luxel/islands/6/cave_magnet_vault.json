@@ -3,7 +3,7 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_6",
+  "theme": "kiln_cavern",
   "music": "island6_dungeon",
   "name_key": "ISL6_Z_MAGNET",
   "spawn": [
@@ -197,61 +197,6 @@
       "props": {
         "id": "moth_6_05"
       }
-    },
-    {
-      "id": "lamp_mv_1",
-      "kind": "road_lamp",
-      "pos": [
-        176,
-        80
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_mv_2",
-      "kind": "road_lamp",
-      "pos": [
-        256,
-        80
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_mv_3",
-      "kind": "road_lamp",
-      "pos": [
-        112,
-        184
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_mv_4",
-      "kind": "road_lamp",
-      "pos": [
-        208,
-        256
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_mv_5",
-      "kind": "road_lamp",
-      "pos": [
-        352,
-        192
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -314,6 +259,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        264,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        120,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        216,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "layers": [],

@@ -5,28 +5,62 @@
   "is_dungeon": true,
   "theme": "ember_express_roof",
   "music": "isl6_boss_minor_p1",
-  "ambience": ["forge_rumble", "wind_howl"],
+  "ambience": [
+    "forge_rumble",
+    "wind_howl"
+  ],
   "name_key": "ISL6_CR_R3",
-  "spawn": [56, 144],
+  "spawn": [
+    56,
+    144
+  ],
   "zones": [
-    { "id": "crash_r3", "name_key": "ISL6_CR_R3", "rect": [0, 0, 544, 288], "dark": true }
+    {
+      "id": "crash_r3",
+      "name_key": "ISL6_CR_R3",
+      "rect": [
+        0,
+        0,
+        544,
+        288
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_crash_r3_west",
-      "rect": [0, 112, 16, 64],
+      "rect": [
+        0,
+        112,
+        16,
+        64
+      ],
       "to_region": "crash_r2",
-      "to_spawn": [520, 152],
+      "to_spawn": [
+        520,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_crash_r3_east",
-      "rect": [528, 112, 16, 64],
+      "rect": [
+        528,
+        112,
+        16,
+        64
+      ],
       "to_region": "crash_r4",
-      "to_spawn": [56, 144],
+      "to_spawn": [
+        56,
+        144
+      ],
       "requires_moves": [],
-      "requires_flags": ["crash_throttle_locked"],
+      "requires_flags": [
+        "crash_throttle_locked"
+      ],
       "locked_door_id": "door_crash_r3_east"
     }
   ],
@@ -35,7 +69,10 @@
       "id": "boss_hollow_ram_phantom",
       "kind": "hollow_ram_phantom",
       "boss_id": "hollow_ram_phantom",
-      "pos": [320, 144],
+      "pos": [
+        320,
+        144
+      ],
       "zone": "crash_r3",
       "leash": 220
     }
@@ -44,62 +81,359 @@
     {
       "id": "anc_crash_r3",
       "kind": "room_anchor",
-      "pos": [56, 144],
-      "props": { "auto": true }
+      "pos": [
+        56,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anvil_crash_r3_cycle",
       "kind": "temper_anvil",
-      "pos": [88, 200],
-      "props": { "mode": "cycle" }
+      "pos": [
+        88,
+        200
+      ],
+      "props": {
+        "mode": "cycle"
+      }
     },
     {
       "id": "pull_crash_r3_1",
       "kind": "pull_ring",
-      "pos": [288, 88],
-      "props": { "axis": "w", "dist": 24.0, "latch": true, "target_id": "throttle_hook_r3", "persist": true }
+      "pos": [
+        288,
+        88
+      ],
+      "props": {
+        "axis": "w",
+        "dist": 24.0,
+        "latch": true,
+        "target_id": "throttle_hook_r3",
+        "persist": true
+      }
     },
     {
       "id": "pull_crash_r3_2",
       "kind": "pull_ring",
-      "pos": [288, 200],
-      "props": { "axis": "w", "dist": 24.0, "latch": true, "target_id": "throttle_hook_r3", "persist": true }
+      "pos": [
+        288,
+        200
+      ],
+      "props": {
+        "axis": "w",
+        "dist": 24.0,
+        "latch": true,
+        "target_id": "throttle_hook_r3",
+        "persist": true
+      }
     },
     {
       "id": "throttle_hook_r3",
       "kind": "crash_throttle_hook",
-      "pos": [424, 144],
-      "props": { "ring_ids": ["pull_crash_r3_1", "pull_crash_r3_2"], "persist": true }
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "ring_ids": [
+          "pull_crash_r3_1",
+          "pull_crash_r3_2"
+        ],
+        "persist": true
+      }
     },
     {
       "id": "door_crash_r3_east",
       "kind": "door",
-      "pos": [520, 144],
+      "pos": [
+        520,
+        144
+      ],
       "props": {
         "door_kind": "combat_gate",
         "clear_zone": "crash_r3",
-        "size": [16, 64],
+        "size": [
+          16,
+          64
+        ],
         "sets_flag": "crash_throttle_locked"
       }
-    },
-    { "id": "lamp_cr3_1", "kind": "road_lamp", "pos": [80, 96], "props": { "lit": true } },
-    { "id": "lamp_cr3_2", "kind": "road_lamp", "pos": [224, 80], "props": { "lit": true } },
-    { "id": "lamp_cr3_3", "kind": "road_lamp", "pos": [224, 208], "props": { "lit": true } },
-    { "id": "lamp_cr3_4", "kind": "road_lamp", "pos": [384, 96], "props": { "lit": true } },
-    { "id": "lamp_cr3_5", "kind": "road_lamp", "pos": [384, 192], "props": { "lit": true } },
-    { "id": "lamp_cr3_6", "kind": "road_lamp", "pos": [472, 144], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "grate", "rect": [128, 96, 256, 96], "glow": true },
-    { "kind": "inlay", "rect": [256, 112, 128, 64] }
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        112,
+        112,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        144
+      ],
+      "radius": 52,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        88,
+        240,
+        112
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        168,
+        112
+      ],
+      "radius": 34,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        176
+      ],
+      "radius": 34,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        192,
+        192
+      ],
+      "radius": 28,
+      "style": "soot"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        352,
+        96
+      ],
+      "radius": 28,
+      "style": "soot"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_ember_express_roof", "prop": "loco_smokestack", "pos": [448, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_ember_express_roof", "prop": "brass_steam_whistle", "pos": [448, 184], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_ember_express_roof", "prop": "roof_vent_cowling", "pos": [144, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_ember_express_roof", "prop": "roof_vent_cowling", "pos": [144, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_ember_express_roof", "prop": "cinder_brazier_cage", "pos": [352, 72], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_ember_express_roof", "prop": "cinder_brazier_cage", "pos": [352, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "loco_smokestack",
+      "pos": [
+        448,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "brass_steam_whistle",
+      "pos": [
+        448,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_vent_cowling",
+      "pos": [
+        144,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_vent_cowling",
+      "pos": [
+        144,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        352,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        352,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        88,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        232,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        232,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        472,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "loco_smokestack",
+      "pos": [
+        136,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "loco_smokestack",
+      "pos": [
+        392,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "coal_tender_crate",
+      "pos": [
+        152,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        424,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "riveted_hatch_cover",
+      "pos": [
+        160,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -114,13 +448,43 @@
     "reward": "crash_throttle_locked+open_crash_r4",
     "why": "Climax skirmish of The Iron Collision set piece before smashing the Obsidian Dam.",
     "exit": "exit_crash_r3_east",
-    "start": { "flags": ["crash_arm_crossed", "item_coupler_hook", "temper_skip_known", "temper_scatter_known", "temper_lance_known"] },
+    "start": {
+      "flags": [
+        "crash_arm_crossed",
+        "item_coupler_hook",
+        "temper_skip_known",
+        "temper_scatter_known",
+        "temper_lance_known"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [160, 144], "tol": 8.0 },
-      { "op": "clear", "timeout": 120.0 },
-      { "op": "expect", "flag": "crash_throttle_locked" },
-      { "op": "wait_until", "target": "door_crash_r3_east", "prop": "opened", "value": true, "timeout": 3.0 },
-      { "op": "expect_exit", "exit": "exit_crash_r3_east" }
+      {
+        "op": "goto",
+        "to": [
+          160,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "crash_throttle_locked"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_crash_r3_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_crash_r3_east"
+      }
     ]
   }
 }

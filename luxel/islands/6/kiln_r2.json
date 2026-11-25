@@ -6,27 +6,60 @@
   "theme": "forge_deep",
   "music": "island6_dungeon",
   "name_key": "ISL6_KILN_R2",
-  "spawn": [368, 168],
+  "spawn": [
+    368,
+    168
+  ],
   "zones": [
-    { "id": "kiln_r2", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 416, 256], "dark": true }
+    {
+      "id": "kiln_r2",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r2_east",
-      "rect": [400, 144, 16, 48],
+      "rect": [
+        400,
+        144,
+        16,
+        48
+      ],
       "to_region": "kiln_r1",
-      "to_spawn": [40, 152],
+      "to_spawn": [
+        40,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r2_north",
-      "rect": [272, 0, 32, 16],
+      "rect": [
+        272,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r12",
-      "to_spawn": [48, 232],
-      "requires_moves": ["sunflare"],
-      "requires_flags": ["kiln_r12_seam"],
+      "to_spawn": [
+        48,
+        232
+      ],
+      "requires_moves": [
+        "sunflare"
+      ],
+      "requires_flags": [
+        "kiln_r12_seam"
+      ],
       "locked_door_id": "door_kiln_r2_seam"
     }
   ],
@@ -35,87 +68,321 @@
     {
       "id": "brazier_kiln_r2_n",
       "kind": "brazier",
-      "pos": [328, 88],
-      "props": { "target_id": "door_kiln_r2_key" }
+      "pos": [
+        328,
+        88
+      ],
+      "props": {
+        "target_id": "door_kiln_r2_key"
+      }
     },
     {
       "id": "brazier_kiln_r2_s",
       "kind": "brazier",
-      "pos": [264, 200],
-      "props": { "target_id": "door_kiln_r2_key" }
+      "pos": [
+        264,
+        200
+      ],
+      "props": {
+        "target_id": "door_kiln_r2_key"
+      }
     },
     {
       "id": "tf_kiln_r2",
       "kind": "blue_transformer",
-      "pos": [248, 136],
-      "props": { "angle_deg": 315, "rotatable": true, "movable": true, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        248,
+        136
+      ],
+      "props": {
+        "angle_deg": 315,
+        "rotatable": true,
+        "movable": true,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "switch_eye_kiln_r2",
       "kind": "switch_eye",
-      "pos": [152, 136],
-      "props": { "requires_blue": true, "target_id": "door_kiln_r2_key" }
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_kiln_r2_key"
+      }
     },
     {
       "id": "door_kiln_r2_key",
       "kind": "door",
-      "pos": [104, 176],
-      "props": { "door_kind": "switch_door", "size": [16, 32], "requires_signals": ["brazier_kiln_r2_n", "brazier_kiln_r2_s", "switch_eye_kiln_r2"] }
+      "pos": [
+        104,
+        176
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "brazier_kiln_r2_n",
+          "brazier_kiln_r2_s",
+          "switch_eye_kiln_r2"
+        ]
+      }
     },
     {
       "id": "wick_key_6_1",
       "kind": "wick_key",
-      "pos": [72, 168],
-      "props": { "dungeon_id": "great_kiln", "key_kind": "wick_key", "flag_id": "wick_key_6_1" }
+      "pos": [
+        72,
+        168
+      ],
+      "props": {
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "flag_id": "wick_key_6_1"
+      }
     },
     {
       "id": "door_kiln_r2_seam",
       "kind": "door",
-      "pos": [288, 24],
-      "props": { "door_kind": "shortcut_door", "size": [32, 16], "requires_flags": ["kiln_r12_seam"] }
+      "pos": [
+        288,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "kiln_r12_seam"
+        ]
+      }
     },
     {
       "id": "slag_kiln_r2_side",
       "kind": "push_block",
-      "pos": [344, 136],
-      "props": { "variant": "slag", "cooled": false, "size": [16, 16], "persist": true }
+      "pos": [
+        344,
+        136
+      ],
+      "props": {
+        "variant": "slag",
+        "cooled": false,
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
     },
     {
       "id": "portal_kiln_r2_in",
       "kind": "blue_portal",
-      "pos": [360, 72],
-      "props": { "target_portal_id": "portal_kiln_r2_out", "requires_blue": true, "pair_sync": true, "sets_flag": "kiln_r2_sluice_portal_lit" }
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r2_out",
+        "requires_blue": true,
+        "pair_sync": true,
+        "sets_flag": "kiln_r2_sluice_portal_lit"
+      }
     },
     {
       "id": "portal_kiln_r2_out",
       "kind": "blue_portal",
-      "pos": [104, 56],
-      "props": { "target_portal_id": "portal_kiln_r2_in", "requires_blue": true, "pair_sync": true }
+      "pos": [
+        104,
+        56
+      ],
+      "props": {
+        "target_portal_id": "portal_kiln_r2_in",
+        "requires_blue": true,
+        "pair_sync": true
+      }
     },
     {
       "id": "chest_kiln_r2_sluice",
       "kind": "chest",
-      "pos": [56, 56],
-      "props": { "reward_kind": "shards", "reward": "shards", "amount": 45, "zone": "kiln_r2" }
-    },
-    { "id": "lamp_kiln_r2_1", "kind": "road_lamp", "pos": [352, 200], "props": { "lit": true } },
-    { "id": "lamp_kiln_r2_2", "kind": "road_lamp", "pos": [240, 168], "props": { "lit": true } },
-    { "id": "lamp_kiln_r2_3", "kind": "road_lamp", "pos": [72, 144], "props": { "lit": true } }
+      "pos": [
+        56,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "kiln_r2"
+      }
+    }
   ],
   "triggers": [],
   "decor": [
-    { "kind": "grate", "rect": [288, 144, 64, 48], "glow": true },
-    { "kind": "inlay", "rect": [48, 144, 48, 64] }
+    {
+      "kind": "grate",
+      "rect": [
+        288,
+        144,
+        64,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        144,
+        48,
+        64
+      ]
+    }
   ],
   "scenery": [
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [312, 168], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [368, 132], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.1 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [368, 204], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "island6_scenery", "prop": "forge_anvil_stand", "pos": [48, 136], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "coal_hopper", "pos": [80, 136], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "island6_scenery", "prop": "ash_urn_cluster", "pos": [136, 208], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [64, 212], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.25 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [80, 84], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        312,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        368,
+        132
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        368,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "forge_anvil_stand",
+      "pos": [
+        48,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "coal_hopper",
+      "pos": [
+        80,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ash_urn_cluster",
+      "pos": [
+        136,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        64,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.25
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        80,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        344,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        248,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        40,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    }
   ],
   "is_2x2_room": true,
   "design": {
@@ -130,19 +397,83 @@
     "optional": true,
     "target": "wick_key_6_1",
     "solution": [
-      { "op": "goto", "to": [328, 112], "tol": 6.0 },
-      { "op": "throw", "target": "brazier_kiln_r2_n", "hold": 0.30 },
-      { "op": "recall" },
-      { "op": "goto", "to": [264, 216], "tol": 6.0 },
-      { "op": "throw", "target": "brazier_kiln_r2_s", "hold": 0.30 },
-      { "op": "recall" },
-      { "op": "goto", "to": [248, 160], "tol": 4.0 },
-      { "op": "rotate", "target": "tf_kiln_r2", "angle": 135 },
-      { "op": "shoot", "from": [248, 168], "target": "tf_kiln_r2", "wait_hit": 0.5 },
-      { "op": "wait_until", "target": "door_kiln_r2_key", "prop": "opened", "value": true, "timeout": 3.5 },
-      { "op": "goto", "to": [72, 168], "tol": 6.0 },
-      { "op": "interact", "target": "wick_key_6_1" },
-      { "op": "expect", "flag": "wick_key_6_1" }
+      {
+        "op": "goto",
+        "to": [
+          328,
+          112
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "brazier_kiln_r2_n",
+        "hold": 0.3
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          216
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "throw",
+        "target": "brazier_kiln_r2_s",
+        "hold": 0.3
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          160
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "rotate",
+        "target": "tf_kiln_r2",
+        "angle": 135
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          168
+        ],
+        "target": "tf_kiln_r2",
+        "wait_hit": 0.5
+      },
+      {
+        "op": "wait_until",
+        "target": "door_kiln_r2_key",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          168
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_6_1"
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_6_1"
+      }
     ]
   }
 }

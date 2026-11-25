@@ -6,28 +6,59 @@
   "theme": "forge_deep",
   "music": "island6_boss_p1",
   "name_key": "ISL6_KILN_R10",
-  "spawn": [256, 232],
+  "spawn": [
+    256,
+    232
+  ],
   "zones": [
-    { "id": "kiln_r10", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 512, 288], "dark": true }
+    {
+      "id": "kiln_r10",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        512,
+        288
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r10_south",
-      "rect": [240, 272, 32, 16],
+      "rect": [
+        240,
+        272,
+        32,
+        16
+      ],
       "to_region": "kiln_r18",
-      "to_spawn": [224, 48],
+      "to_spawn": [
+        224,
+        48
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_r10_bridge_7",
-      "rect": [240, 0, 32, 16],
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
       "to_region": "overworld",
-      "to_spawn": [1312, 200],
+      "to_spawn": [
+        1312,
+        200
+      ],
       "one_way": true,
       "requires_moves": [],
-      "requires_flags": ["great_lamp_6"],
+      "requires_flags": [
+        "great_lamp_6"
+      ],
       "locked_door_id": "bridge_of_light_kiln"
     }
   ],
@@ -36,8 +67,20 @@
       "id": "boss_kilnmother",
       "kind": "kilnmother",
       "boss_id": "kilnmother",
-      "pos": [256, 136],
-      "route": [[192, 136], [312, 136]],
+      "pos": [
+        256,
+        136
+      ],
+      "route": [
+        [
+          192,
+          136
+        ],
+        [
+          312,
+          136
+        ]
+      ],
       "perches": [],
       "zone": "kiln_r10",
       "leash": 220
@@ -47,76 +90,297 @@
     {
       "id": "great_lamp_6",
       "kind": "great_lamp",
-      "pos": [256, 72],
-      "props": { "island_id": 6, "requires_boss": "kilnmother", "requires_flag": "boss_kilnmother_defeated", "name_key": "ISL6_RELIGHT" }
+      "pos": [
+        256,
+        72
+      ],
+      "props": {
+        "island_id": 6,
+        "requires_boss": "kilnmother",
+        "requires_flag": "boss_kilnmother_defeated",
+        "name_key": "ISL6_RELIGHT"
+      }
     },
     {
       "id": "bridge_of_light_kiln",
       "kind": "door",
-      "pos": [256, 24],
-      "props": { "door_kind": "bridge_of_light", "size": [32, 16], "requires_flags": ["great_lamp_6"] }
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "bridge_of_light",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "great_lamp_6"
+        ]
+      }
     },
     {
       "id": "anvil_kiln_r10_cycle",
       "kind": "temper_anvil",
-      "pos": [224, 240],
-      "props": { "mode": "cycle" }
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "mode": "cycle"
+      }
     },
     {
       "id": "tf_kiln_r10_w",
       "kind": "blue_transformer",
-      "pos": [184, 144],
-      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        184,
+        144
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "tf_kiln_r10_e",
       "kind": "blue_transformer",
-      "pos": [344, 144],
-      "props": { "angle_deg": 135, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        344,
+        144
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "pour_kiln_r10_w",
       "kind": "slag_pourer",
-      "pos": [184, 104],
-      "props": { "spawn_pos": [184, 120], "spawn_kind": "block", "auto_pour": false, "max_live": 1 }
+      "pos": [
+        184,
+        104
+      ],
+      "props": {
+        "spawn_pos": [
+          184,
+          120
+        ],
+        "spawn_kind": "block",
+        "auto_pour": false,
+        "max_live": 1
+      }
     },
     {
       "id": "pour_kiln_r10_e",
       "kind": "slag_pourer",
-      "pos": [344, 104],
-      "props": { "spawn_pos": [344, 120], "spawn_kind": "block", "auto_pour": false, "max_live": 1 }
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "spawn_pos": [
+          344,
+          120
+        ],
+        "spawn_kind": "block",
+        "auto_pour": false,
+        "max_live": 1
+      }
     },
     {
       "id": "brazier_kiln_r10_w",
       "kind": "brazier",
-      "pos": [152, 136],
-      "props": { "lit_by_default": true, "lit": true }
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
     },
     {
       "id": "brazier_kiln_r10_e",
       "kind": "brazier",
-      "pos": [376, 136],
-      "props": { "lit_by_default": true, "lit": true }
-    },
-    { "id": "lamp_kr10_1", "kind": "road_lamp", "pos": [256, 208], "props": { "lit": true } },
-    { "id": "lamp_kr10_2", "kind": "road_lamp", "pos": [208, 72], "props": { "lit": true } },
-    { "id": "lamp_kr10_3", "kind": "road_lamp", "pos": [304, 72], "props": { "lit": true } }
+      "pos": [
+        376,
+        136
+      ],
+      "props": {
+        "lit_by_default": true,
+        "lit": true
+      }
+    }
   ],
   "triggers": [
-    { "id": "trig_boss_kilnmother", "rect": [192, 192, 128, 48], "string_id": "BOSS_KILNMOTHER", "once": true }
+    {
+      "id": "trig_boss_kilnmother",
+      "rect": [
+        192,
+        192,
+        128,
+        48
+      ],
+      "string_id": "BOSS_KILNMOTHER",
+      "once": true
+    }
   ],
   "decor": [
-    { "kind": "circle", "pos": [256, 136], "radius": 64, "style": "ritual" },
-    { "kind": "cracks", "pos": [256, 136], "radius": 44, "glow": true }
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        136
+      ],
+      "radius": 64,
+      "style": "ritual"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        256,
+        136
+      ],
+      "radius": 44,
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "island6_scenery", "prop": "crucible_floor_seal", "pos": [256, 136], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [200, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "island6_scenery", "prop": "iron_chain_pillar", "pos": [312, 64], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [232, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [280, 216], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 },
-    { "sheet": "island6_scenery", "prop": "obsidian_obelisk", "pos": [128, 100], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.15 },
-    { "sheet": "island6_scenery", "prop": "obsidian_obelisk", "pos": [384, 100], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.65 }
+    {
+      "sheet": "island6_scenery",
+      "prop": "crucible_floor_seal",
+      "pos": [
+        256,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        200,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "iron_chain_pillar",
+      "pos": [
+        312,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        232,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        280,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        128,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "obsidian_obelisk",
+      "pos": [
+        384,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        248,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        200,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        296,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    }
   ],
   "is_2x2_room": true,
   "design": {
@@ -129,16 +393,58 @@
     "reward": "boss_kilnmother_defeated+great_lamp_6+island_6_relit",
     "why": "Grand finale Keeper Boss arena relighting Great Lamp 6 and opening Moon Shoals.",
     "exit": "exit_r10_bridge_7",
-    "start": { "moves": ["sunflare"], "flags": ["keepers_flame_6"] },
+    "start": {
+      "moves": [
+        "sunflare"
+      ],
+      "flags": [
+        "keepers_flame_6"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [256, 160], "tol": 8.0 },
-      { "op": "clear", "timeout": 180.0 },
-      { "op": "expect", "flag": "boss_kilnmother_defeated" },
-      { "op": "goto", "to": [256, 88], "tol": 8.0 },
-      { "op": "interact", "target": "great_lamp_6" },
-      { "op": "expect", "flag": "island_6_relit" },
-      { "op": "wait_until", "target": "bridge_of_light_kiln", "prop": "opened", "value": true, "timeout": 2.5 },
-      { "op": "expect_exit", "exit": "exit_r10_bridge_7" }
+      {
+        "op": "goto",
+        "to": [
+          256,
+          160
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_kilnmother_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          88
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "great_lamp_6"
+      },
+      {
+        "op": "expect",
+        "flag": "island_6_relit"
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_of_light_kiln",
+        "prop": "opened",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_bridge_7"
+      }
     ]
   }
 }

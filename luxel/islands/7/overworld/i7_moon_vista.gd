@@ -65,9 +65,9 @@ func _complete_vista() -> bool:
 
 
 func get_interact_prompt() -> String:
-	if not active or viewed or not _face_matches():
+	if not active or not _face_matches():
 		return ""
-	return "PROMPT_IGNITE"
+	return "PROMPT_IGNITE" if not viewed else "PROMPT_READ"
 
 
 func tick(dt: float) -> void:

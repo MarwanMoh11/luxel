@@ -712,6 +712,9 @@
       "once": true,
       "do": [
         {
+          "set_flag": "masq_r1_done"
+        },
+        {
           "sfx": "masq_waltz_chime"
         },
         {
@@ -749,7 +752,7 @@
       {
         "op": "goto",
         "to": "dancer_r1_truth_w",
-        "tol": 26.0
+        "tol": 16.0
       },
       {
         "op": "interact",
@@ -758,7 +761,7 @@
       {
         "op": "goto",
         "to": "dancer_r1_truth",
-        "tol": 26.0
+        "tol": 16.0
       },
       {
         "op": "interact",

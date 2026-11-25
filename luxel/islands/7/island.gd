@@ -89,6 +89,10 @@ func detach() -> void:
 func on_region_loaded(region_id: String) -> void:
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+	if Lx.world != null and Lx.world.has_method("get_interactables"):
+		for it_v: Variant in (Lx.world.call("get_interactables") as Array):
+			if it_v is Object and (it_v as Object).has_method("sync_wick_origin"):
+				(it_v as Object).call("sync_wick_origin")
 	_sync_spire_gate_flag()
 
 

@@ -243,126 +243,55 @@
           32
         ]
       }
-    },
-    {
-      "id": "lamp_r10_s",
-      "kind": "road_lamp",
-      "pos": [
-        240,
-        216
-      ],
-      "props": {
-        "zone": "col_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_w",
-      "kind": "road_lamp",
-      "pos": [
-        72,
-        176
-      ],
-      "props": {
-        "zone": "col_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_nw",
-      "kind": "road_lamp",
-      "pos": [
-        112,
-        72
-      ],
-      "props": {
-        "zone": "col_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_ne",
-      "kind": "road_lamp",
-      "pos": [
-        344,
-        72
-      ],
-      "props": {
-        "zone": "col_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_e",
-      "kind": "road_lamp",
-      "pos": [
-        408,
-        160
-      ],
-      "props": {
-        "zone": "col_r10",
-        "lit": true
-      }
     }
   ],
   "enemies": [],
   "decor": [
     {
-      "kind": "window_strip",
-      "y": 18,
-      "x0": 112,
-      "x1": 216,
-      "style": "slag"
-    },
-    {
-      "kind": "window_strip",
-      "y": 18,
-      "x0": 264,
-      "x1": 368,
-      "style": "slag"
-    },
-    {
-      "kind": "compass",
+      "kind": "circle",
       "pos": [
         240,
-        176
+        144
       ],
-      "radius": 38
+      "radius": 46,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        112,
+        64,
+        64
+      ],
+      "glow": true
     },
     {
       "kind": "inlay",
       "rect": [
-        144,
-        88,
-        192,
-        48
+        176,
+        64,
+        128,
+        144
       ]
     },
     {
-      "kind": "light_shaft",
+      "kind": "cracks",
       "pos": [
-        160,
-        48
+        144,
+        96
       ],
-      "size": [
-        40,
-        72
-      ],
-      "tint": "warm",
-      "shear": 0.2
+      "radius": 30,
+      "glow": true
     },
     {
-      "kind": "light_shaft",
+      "kind": "cracks",
       "pos": [
-        304,
-        48
+        320,
+        176
       ],
-      "size": [
-        40,
-        72
-      ],
-      "tint": "warm",
-      "shear": -0.2
+      "radius": 30,
+      "glow": true
     }
   ],
   "scenery": [
@@ -437,6 +366,162 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        248,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        72,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        104,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        344,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        408,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        232,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "hydraulic_piston_pillar",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "riveted_console_desk",
+      "pos": [
+        184,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "pressure_gauge_dial",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        136,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        144,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        320,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.5
     }
   ],
   "triggers": [],

@@ -206,6 +206,52 @@ def _crop_enemy(kind: str) -> Optional[Tuple[Image.Image, Tuple[int, int]]]:
     return None
 
 
+def _crop_folk(folk_id: str) -> Optional[Tuple[Image.Image, Tuple[int, int]]]:
+    fid = folk_id.strip().lower() or "moth_kid"
+    p = REPO_ROOT / "luxel" / "art" / "folk" / f"{fid}.json"
+    loaded = _load_sheet(p)
+    if not loaded:
+        return None
+    meta, sheet_img = loaded
+    anims = meta.get("animations") or {}
+    anim = anims.get("idle") or (next(iter(anims.values())) if anims else None)
+    if not isinstance(anim, dict):
+        return None
+    dirs = anim.get("dirs") or {}
+    dinfo = dirs.get("front") or dirs.get("side") or (next(iter(dirs.values())) if dirs else None)
+    if not isinstance(dinfo, dict):
+        return None
+    rects = dinfo.get("rects") or []
+    if not rects:
+        return None
+    x, y, w, h = [int(v) for v in rects[0][:4]]
+    crop = sheet_img.crop((x, y, x + w, y + h))
+    anc = anim.get("anchor") or meta.get("anchor") or [w // 2, h - 2]
+    return crop, (int(anc[0]), int(anc[1]))
+
+
+def _resolve_layer_overlay(isl_id: int, reg_id: str, lay: Dict[str, Any]) -> Optional[Path]:
+    """Match luxel/core/region_layers.gd:_load_layer_texture() candidate order exactly."""
+    art_dir = REPO_ROOT / "luxel" / "art" / "islands" / str(isl_id)
+    cands: List[Path] = []
+    ov = str(lay.get("overlay", "")).strip()
+    lid = str(lay.get("id", "")).strip()
+    if ov:
+        if ov.startswith("res://"):
+            cands.append(REPO_ROOT / ov[6:])
+        elif ov.endswith(".png"):
+            cands.append(art_dir / ov)
+        else:
+            cands.append(art_dir / f"{reg_id}__{ov}.png")
+            cands.append(art_dir / f"{ov}.png")
+    if lid:
+        cands.append(art_dir / f"{reg_id}__{lid}.png")
+    for p in cands:
+        if p.exists():
+            return p
+    return None
+
+
 def eval_layer_cond(when: str, state_vars: Dict[str, str]) -> bool:
     expr = when.strip()
     if not expr:
@@ -230,6 +276,8 @@ def eval_layer_cond(when: str, state_vars: Dict[str, str]) -> bool:
                     if op in atom:
                         lhs, rhs = [s.strip() for s in atom.split(op, 1)]
                         cur = state_vars.get(lhs, "")
+                        if not cur and "." in lhs:
+                            cur = state_vars.get(lhs.rsplit(".", 1)[-1], "")
                         if op == "==":
                             matched = (cur == rhs)
                         elif op == "!=":
@@ -352,11 +400,19 @@ def _draw_tiled_sprite(base: Image.Image, spr: Image.Image, cx: float, cy: float
 def _interactable_sprite(it: Dict[str, Any], isl_id: int, theme: str = "") -> Optional[Tuple[Image.Image, Tuple[int, int]]]:
     k = str(it.get("kind", "")).lower()
     props = it.get("props") or {}
+    iid = max(1, min(8, int(isl_id)))
     puz = REPO_ROOT / "luxel" / "art" / "props" / "puzzle_interactables.json"
-    iprop = REPO_ROOT / "luxel" / "art" / "props" / f"island{isl_id}_props.json"
+    iprop = REPO_ROOT / "luxel" / "art" / "props" / f"island{iid}_props.json"
+    iprop_fb = REPO_ROOT / "luxel" / "art" / "props" / "island1_props.json"
     tname = resolve_theme_name(theme) if theme else ""
+    if tname.startswith("archive_"):
+        tname = "archive"
+    elif tname == "ember_express_roof":
+        tname = "ember_express"
     tdoor = REPO_ROOT / "luxel" / "art" / "props" / f"theme_{tname}_doors.json" if tname else None
-    idoor = tdoor if (tdoor is not None and tdoor.exists()) else (REPO_ROOT / "luxel" / "art" / "props" / f"island{isl_id}_doors.json")
+    idoor = tdoor if (tdoor is not None and tdoor.exists()) else (REPO_ROOT / "luxel" / "art" / "props" / f"island{iid}_doors.json")
+    if not idoor.exists():
+        idoor = REPO_ROOT / "luxel" / "art" / "props" / "island1_doors.json"
     # Direct island toy sprite override if present
     toy_png = REPO_ROOT / "luxel" / "art" / "islands" / str(isl_id) / "toys" / f"{k}.png"
     if toy_png.exists():
@@ -366,6 +422,15 @@ def _interactable_sprite(it: Dict[str, Any], isl_id: int, theme: str = "") -> Op
         except Exception:
             pass
 
+    if k in ("npc", "hub_npc"):
+        folk_id = str(props.get("folk", props.get("folk_id", "moth_kid")))
+        return _crop_folk(folk_id)
+    if k == "pane_pickup":
+        panes_j = REPO_ROOT / "luxel" / "art" / "ui" / "panes.json"
+        pid = str(props.get("pane", props.get("pane_id", "bell_clapper")))
+        res = _crop_prop(panes_j, pid)
+        if res:
+            return res[0], (res[0].width // 2, res[0].height // 2 + 4)
     if k in ("mirror", "blue_transformer", "transformer"):
         a = _snap_mirror_angle(props)
         is_blue = k != "mirror" or str(props.get("transforms_to", "blue")).lower() == "blue"
@@ -378,19 +443,20 @@ def _interactable_sprite(it: Dict[str, Any], isl_id: int, theme: str = "") -> Op
     if k in ("brazier", "timed_brazier"):
         return _crop_prop(puz, "brazier_lit" if (props.get("lit") or props.get("lit_by_default")) else "brazier_unlit")
     if k == "chest":
-        return _crop_prop(iprop, "chest")
+        return _crop_prop(iprop, "chest") or _crop_prop(iprop_fb, "chest")
     if k == "shrine":
-        return _crop_prop(iprop, "shrine")
+        return _crop_prop(iprop, "shrine") or _crop_prop(iprop_fb, "shrine")
     if k == "waystone":
-        return _crop_prop(iprop, "waystone") or _crop_prop(iprop, "waystone_dormant")
+        return _crop_prop(iprop, "waystone") or _crop_prop(iprop, "waystone_dormant") or _crop_prop(iprop_fb, "waystone")
     if k == "beacon":
-        return _crop_prop(iprop, "beacon_unlit") or _crop_prop(iprop, "beacon")
+        return _crop_prop(iprop, "beacon" if props.get("lit") else "beacon_unlit") or _crop_prop(iprop, "beacon") or _crop_prop(iprop_fb, "beacon_unlit")
     if k in ("road_lamp", "lamp"):
-        return _crop_prop(iprop, "road_lamp")
+        key = "road_lamp" if props.get("lit", props.get("starts_lit", True)) else "road_lamp_unlit"
+        return _crop_prop(iprop, key) or _crop_prop(iprop, "road_lamp") or _crop_prop(iprop_fb, "road_lamp")
     if k in ("great_lamp", "great_belfry_brazier"):
-        return _crop_prop(iprop, "great_lamp_unlit") or _crop_prop(iprop, "great_lamp")
+        return _crop_prop(iprop, "great_lamp_unlit") or _crop_prop(iprop, "great_lamp") or _crop_prop(iprop_fb, "great_lamp_unlit")
     if k == "rest_shrine":
-        return _crop_prop(iprop, "rest_shrine")
+        return _crop_prop(iprop, "rest_shrine") or _crop_prop(iprop_fb, "rest_shrine")
     if k == "bramble":
         return _crop_prop(puz, "bramble_tile")
     if k in ("cracked_wall", "cracked"):
@@ -421,6 +487,11 @@ def _interactable_sprite(it: Dict[str, Any], isl_id: int, theme: str = "") -> Op
     return None
 
 
+INVISIBLE_INTER_KINDS: Set[str] = {
+    "room_anchor", "gal_list_driver", "lev_heartbeat_driver", "lev_wave_chaser", "lev_maw_swallow", "logic_gate",
+}
+
+
 def _draw_glyph_tag(draw: ImageDraw.ImageDraw, cx: float, cy: float, glyph: str, fg: Tuple[int, int, int]) -> None:
     if not glyph:
         return
@@ -430,8 +501,19 @@ def _draw_glyph_tag(draw: ImageDraw.ImageDraw, cx: float, cy: float, glyph: str,
     draw.text((round(cx - tw * 0.5), round(cy - th * 0.5) - 1), glyph, font=f, fill=fg + (255,))
 
 
-def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any], toy_meta: Optional[Dict[str, Dict[str, Any]]] = None) -> None:
+def _draw_bevel_box(draw: ImageDraw.ImageDraw, x0: float, y0: float, x1: float, y1: float, dark: str, mid: str, hi: str, outline: str = "void") -> None:
+    draw.rectangle([x0, y0, x1, y1], fill=PAL[mid] + (255,), outline=PAL[outline] + (255,), width=1)
+    if x1 - x0 >= 3 and y1 - y0 >= 3:
+        draw.line([(x0 + 1, y0 + 1), (x1 - 1, y0 + 1)], fill=PAL[hi] + (255,))
+        draw.line([(x0 + 1, y0 + 1), (x0 + 1, y1 - 1)], fill=PAL[hi] + (255,))
+        draw.line([(x0 + 1, y1 - 1), (x1 - 1, y1 - 1)], fill=PAL[dark] + (255,))
+        draw.line([(x1 - 1, y0 + 1), (x1 - 1, y1 - 1)], fill=PAL[dark] + (255,))
+
+
+def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any], toy_meta: Optional[Dict[str, Dict[str, Any]]] = None, clean: bool = False) -> None:
     k = str(it.get("kind", "")).lower()
+    if clean and k in INVISIBLE_INTER_KINDS:
+        return
     px, py = float(it["pos"][0]), float(it["pos"][1])
     props = it.get("props") or {}
     sz = props.get("size", [16, 16])
@@ -442,31 +524,182 @@ def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any], toy_
     if k in rl.DOOR_KINDS:
         dk = str(props.get("door_kind", props.get("door_type", k))).lower()
         col = PAL["apricot"] if dk == "bridge_platform" else (PAL["rose"] if dk in ("boss_key", "boss_door") else (PAL["gold"] if dk in ("wick_key", "locked_door") else (PAL["coral"] if dk == "combat_gate" else PAL["sky"])))
-        draw.rectangle([x0, y0, x1, y1], fill=col + (150,), outline=PAL["cream"] + (255,), width=1)
+        draw.rectangle([x0, y0, x1, y1], fill=col + (185,), outline=PAL["cream"] + (255,), width=1)
     elif k == "tone_coffin":
+        # Mirrors luxel/islands/1/toys/tone_coffin.gd:_draw()
         dx, dy = rl._parse_dir_vec(props.get("dir", "e"))
         def_sz = [32, 16] if abs(dx) >= abs(dy) else [16, 32]
         csz = props.get("size", def_sz)
         cw, ch = float(csz[0]), float(csz[1])
         slide_px = float(props.get("slide_tiles", 2.0)) * 16.0
         end_p = (px + dx * slide_px, py + dy * slide_px)
-        _draw_dashed(draw, (px, py), end_p, PAL["gold"] + (220,), width=2, dash=4.0, gap=3.0)
-        _draw_arrow(draw, (px + dx * max(0.0, slide_px - 10.0), py + dy * max(0.0, slide_px - 10.0)), end_p, PAL["gold"] + (230,), width=1, head=4.0)
-        fill_c = PAL["coral"] if props.get("solid_blocker") else PAL["mauve"]
-        draw.rectangle([px - cw * 0.5, py - ch * 0.5, px + cw * 0.5 - 1, py + ch * 0.5 - 1], fill=fill_c + (225,), outline=PAL["cream"] + (255,), width=1)
-        _draw_glyph_tag(draw, px, py, "TC", PAL["cream"])
+        draw.line([(px, py), end_p], fill=PAL["void"] + (255,), width=5)
+        draw.line([(px, py), end_p], fill=PAL["night"] + (255,), width=3)
+        draw.line([(px, py), end_p], fill=PAL["dusk"] + (255,), width=1)
+        cx0, cy0, cx1, cy1 = round(px - cw * 0.5), round(py - ch * 0.5), round(px + cw * 0.5) - 1, round(py + ch * 0.5) - 1
+        _draw_bevel_box(draw, cx0, cy0, cx1, cy1, "dusk", "mauve", "stone", "void")
+        draw.rectangle([cx0 + 3, cy0 + 3, cx1 - 3, cy1 - 3], outline=PAL["night"] + (255,))
+        if cw >= ch:
+            draw.line([(cx0 + 5, round(py)), (cx1 - 5, round(py))], fill=PAL["stone"] + (255,))
+            draw.line([(round(px - 3), cy0 + 4), (round(px - 3), cy1 - 4)], fill=PAL["stone"] + (255,))
+        else:
+            draw.line([(round(px), cy0 + 5), (round(px), cy1 - 5)], fill=PAL["stone"] + (255,))
+            draw.line([(cx0 + 4, round(py - 3)), (cx1 - 4, round(py - 3))], fill=PAL["stone"] + (255,))
+        if not clean:
+            _draw_arrow(draw, (px + dx * max(0.0, slide_px - 10.0), py + dy * max(0.0, slide_px - 10.0)), end_p, PAL["gold"] + (230,), width=1, head=4.0)
+    elif k == "mooring_post":
+        # Mirrors luxel/islands/2/toys/mooring_post.gd:_draw()
+        draw.ellipse([px - 9, py - 3, px + 9, py + 9], outline=PAL["ice"] + (140,), width=1)
+        if props.get("allow_dismount", True):
+            _draw_bevel_box(draw, px - 9, py, px + 9, py + 7, "void", "night", "stone", "void")
+        draw.rectangle([px - 5, py - 14, px + 5, py + 5], fill=PAL["void"] + (255,))
+        draw.rectangle([px - 4, py - 13, px + 4, py + 4], fill=PAL["wine"] + (255,))
+        draw.rectangle([px - 4, py - 13, px - 1, py + 4], fill=PAL["apricot"] + (255,))
+        draw.rectangle([px + 2, py - 13, px + 4, py + 4], fill=PAL["dusk"] + (255,))
+        for ry in (-5, -3, -1):
+            draw.line([(px - 4, py + ry), (px + 3, py + ry)], fill=PAL["stone"] + (255,))
+            draw.line([(px - 4, py + ry + 1), (px + 3, py + ry + 1)], fill=PAL["night"] + (255,))
+        draw.rectangle([px - 6, py - 15, px + 6, py - 11], fill=PAL["void"] + (255,))
+        draw.rectangle([px - 5, py - 14, px + 5, py - 12], fill=PAL["deep"] + (255,))
+        draw.line([(px - 4, py - 14), (px + 4, py - 14)], fill=PAL["stone"] + (255,))
+    elif k == "ballast_keg":
+        # Mirrors luxel/islands/2/toys/ballast_keg.gd:_draw()
+        _draw_bevel_box(draw, px - 7, py - 7, px + 7, py + 7, "night", "wine", "apricot", "void")
+        draw.rectangle([px - 7, py - 4, px + 7, py - 2], fill=PAL["deep"] + (255,))
+        draw.rectangle([px - 7, py + 2, px + 7, py + 4], fill=PAL["deep"] + (255,))
+        draw.line([(px - 6, py - 4), (px - 2, py - 4)], fill=PAL["stone"] + (255,))
+        draw.line([(px - 6, py + 2), (px - 2, py + 2)], fill=PAL["stone"] + (255,))
+        draw.polygon([(px, py - 3), (px + 3, py), (px, py + 3), (px - 3, py)], fill=PAL["gold"] + (255,), outline=PAL["coral"] + (255,))
+    elif k == "lying_portrait":
+        # Mirrors luxel/islands/1/toys/lying_portrait.gd:_draw()
+        pw, ph = float(props.get("size", [22, 26])[0]), float(props.get("size", [22, 26])[1])
+        rx0, ry0, rx1, ry1 = round(px - pw * 0.5), round(py - ph * 0.5), round(px + pw * 0.5) - 1, round(py + ph * 0.5) - 1
+        _draw_bevel_box(draw, rx0, ry0, rx1, ry1, "wine", "apricot", "gold", "void")
+        draw.rectangle([rx0 + 3, ry0 + 3, rx1 - 3, ry1 - 3], fill=PAL["night"] + (255,))
+        susp = str(props.get("suspect", "butler")).lower()
+        coat = PAL["coral"] if susp == "steward" else (PAL["sky"] if susp == "choir" else PAL["plum"])
+        draw.rectangle([px - 5, py + 2, px + 5, py + 9], fill=coat + (255,))
+        draw.rectangle([px - 4, py - 6, px + 4, py + 2], fill=PAL["dusk"] + (255,))
+        draw.rectangle([px - 3, py - 4, px - 1, py - 2], fill=PAL["cream"] + (255,))
+        draw.rectangle([px + 1, py - 4, px + 3, py - 2], fill=PAL["cream"] + (255,))
+    elif k == "hub_curio":
+        # Mirrors luxel/hub/hub_curio.gd:_draw()
+        ck = str(props.get("curio", props.get("curio_kind", "kettle"))).lower()
+        if ck == "hearth_fire":
+            draw.rectangle([px - 12, py - 14, px + 12, py + 2], fill=PAL["void"] + (255,))
+            draw.rectangle([px - 11, py - 13, px + 11, py + 1], fill=PAL["dusk"] + (255,))
+            draw.rectangle([px - 7, py - 9, px + 7, py + 1], fill=PAL["night"] + (255,))
+            draw.rectangle([px - 5, py - 7, px + 5, py - 1], fill=PAL["coral"] + (255,))
+            draw.rectangle([px - 3, py - 6, px + 3, py - 1], fill=PAL["gold"] + (255,))
+            draw.rectangle([px - 1, py - 4, px + 1, py - 2], fill=PAL["cream"] + (255,))
+        elif ck == "telescope":
+            draw.rectangle([px - 2, py - 8, px + 2, py + 1], fill=PAL["dusk"] + (255,))
+            draw.rectangle([px - 7, py - 14, px + 7, py - 9], fill=PAL["blue"] + (255,))
+            draw.rectangle([px - 6, py - 13, px + 6, py - 10], fill=PAL["gold"] + (255,))
+            draw.rectangle([px + 5, py - 14, px + 8, py - 9], fill=PAL["ice"] + (255,))
+        elif ck == "moth_jar":
+            draw.rectangle([px - 5, py - 13, px + 5, py + 1], fill=PAL["void"] + (255,))
+            draw.rectangle([px - 4, py - 12, px + 4, py], fill=PAL["deep"] + (255,))
+            draw.rectangle([px - 4, py - 13, px + 4, py - 11], fill=PAL["apricot"] + (255,))
+            draw.rectangle([px - 2, py - 7, px + 2, py - 5], fill=PAL["gold"] + (255,))
+        elif ck == "herb_pot":
+            draw.rectangle([px - 6, py - 6, px + 6, py + 1], fill=PAL["wine"] + (255,))
+            draw.rectangle([px - 5, py - 5, px + 5, py], fill=PAL["coral"] + (255,))
+            draw.rectangle([px - 5, py - 12, px + 5, py - 6], fill=PAL["jade"] + (255,))
+            draw.rectangle([px - 3, py - 14, px + 3, py - 10], fill=PAL["lime"] + (255,))
+        elif ck == "anvil_spark":
+            draw.rectangle([px - 8, py - 8, px + 8, py + 1], fill=PAL["void"] + (255,))
+            draw.rectangle([px - 7, py - 7, px + 7, py - 3], fill=PAL["stone"] + (255,))
+            draw.rectangle([px - 4, py - 3, px + 4, py + 1], fill=PAL["dusk"] + (255,))
+        elif ck == "trophy_rack":
+            draw.rectangle([px - 10, py - 14, px + 10, py + 1], fill=PAL["void"] + (255,))
+            draw.rectangle([px - 9, py - 13, px + 9, py], fill=PAL["dusk"] + (255,))
+            for i in range(6):
+                draw.rectangle([px - 7 + (i % 3) * 6, py - 11 + (i // 3) * 6, px - 3 + (i % 3) * 6, py - 7 + (i // 3) * 6], fill=PAL["gold" if i < 2 else "night"] + (255,))
+        else:
+            ac = {"ship_bottle": "sky", "star_chart": "sky", "chime_rack": "gold", "porch_bell": "gold", "pond_lantern": "gold", "tally_board": "cream", "old_trunk": "plum", "weathervane": "ice"}.get(ck, "apricot")
+            draw.rectangle([px - 6, py - 12, px + 6, py + 1], fill=PAL["void"] + (255,))
+            draw.rectangle([px - 5, py - 11, px + 5, py], fill=PAL["dusk"] + (255,))
+            draw.rectangle([px - 4, py - 10, px + 4, py - 6], fill=PAL[ac] + (255,))
+            draw.rectangle([px - 2, py - 5, px + 2, py - 2], fill=PAL["cream"] + (255,))
+    elif k in ("hub_station", "hub_door"):
+        # Mirrors luxel/hub/hub_station.gd & hub_door.gd
+        role = str(props.get("role", props.get("station_role", props.get("door_role", "moth_lantern")))).lower()
+        if role == "moth_lantern":
+            draw.rectangle([px - 10, py - 3, px + 10, py + 2], fill=PAL["dusk"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 7, py - 25, px + 7, py - 3], fill=PAL["gold"] + (255,), outline=PAL["night"] + (255,))
+            draw.rectangle([px - 4, py - 22, px + 4, py - 6], fill=PAL["cream"] + (255,))
+            draw.rectangle([px - 8, py - 28, px + 8, py - 25], fill=PAL["apricot"] + (255,))
+        elif role in ("rematch_mirror", "rematch"):
+            draw.rectangle([px - 10, py - 27, px + 10, py + 1], fill=PAL["blue"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 7, py - 24, px + 7, py - 2], fill=PAL["deep"] + (255,))
+            draw.rectangle([px - 6, py - 20, px + 6, py - 18], fill=PAL["ice"] + (255,))
+        elif role == "lead_forge":
+            draw.rectangle([px - 11, py - 11, px + 11, py + 1], fill=PAL["dusk"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 9, py - 9, px - 1, py - 3], fill=PAL["coral"] + (255,))
+            draw.rectangle([px + 2, py - 10, px + 10, py - 3], fill=PAL["stone"] + (255,))
+        elif role == "tailor_loom":
+            draw.rectangle([px - 10, py - 21, px + 10, py + 1], fill=PAL["plum"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 8, py - 19, px + 8, py - 3], fill=PAL["night"] + (255,))
+            for i, c in enumerate(("gold", "coral", "rose", "lime", "sky", "ice")):
+                draw.rectangle([px - 6 + i * 2, py - 17, px - 4 + i * 2, py - 5], fill=PAL[c] + (255,))
+        elif role in ("pane_workbench", "pane_workshop"):
+            draw.rectangle([px - 11, py - 9, px + 11, py + 1], fill=PAL["dusk"] + (255,), outline=PAL["night"] + (255,))
+            draw.rectangle([px - 11, py - 9, px + 11, py - 6], fill=PAL["apricot"] + (255,))
+            for i, c in enumerate(("coral", "gold", "sky")):
+                draw.rectangle([px - 7 + i * 5, py - 15, px - 3 + i * 5, py - 10], fill=PAL[c] + (255,))
+        elif role == "journal_desk":
+            draw.rectangle([px - 8, py - 11, px + 8, py + 1], fill=PAL["plum"] + (255,), outline=PAL["night"] + (255,))
+            draw.rectangle([px - 7, py - 10, px + 7, py - 3], fill=PAL["cream"] + (255,))
+        elif role == "music_box":
+            draw.rectangle([px - 7, py - 11, px + 7, py + 1], fill=PAL["wine"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 6, py - 10, px + 6, py - 6], fill=PAL["gold"] + (255,))
+            draw.rectangle([px + 2, py - 18, px + 7, py - 12], fill=PAL["apricot"] + (255,))
+        else:
+            draw.rectangle([px - 8, py - 17, px + 8, py + 1], fill=PAL["teal"] + (255,), outline=PAL["void"] + (255,))
+            draw.rectangle([px - 6, py - 15, px + 6, py - 1], fill=PAL["night"] + (255,))
+    elif k == "lore_stone":
+        _draw_bevel_box(draw, px - 7, py + 1, px + 7, py + 5, "night", "dusk", "stone", "void")
+        _draw_bevel_box(draw, px - 6, py - 13, px + 6, py + 1, "night", "dusk", "mauve", "void")
+        draw.rectangle([px - 4, py - 14, px + 4, py - 12], fill=PAL["stone"] + (255,))
+        draw.rectangle([px - 2, py - 8, px + 2, py - 4], fill=PAL["gold"] + (255,))
+    elif k == "bell":
+        tone = str(props.get("tone", "dawn")).lower()
+        bc = PAL["coral"] if tone == "war" else (PAL["sky"] if tone == "dusk" else PAL["gold"])
+        draw.rectangle([px - 5, py - 10, px + 5, py - 1], fill=bc + (255,), outline=PAL["void"] + (255,))
+        draw.rectangle([px - 7, py - 2, px + 7, py + 1], fill=PAL["apricot"] + (255,), outline=PAL["void"] + (255,))
+        draw.rectangle([px - 1, py + 1, px + 1, py + 3], fill=PAL["cream"] + (255,))
+    elif k == "moth":
+        draw.polygon([(px - 5, py - 2), (px - 1, py - 5), (px - 1, py + 1)], fill=PAL["cream"] + (255,), outline=PAL["void"] + (255,))
+        draw.polygon([(px + 5, py - 2), (px + 1, py - 5), (px + 1, py + 1)], fill=PAL["cream"] + (255,), outline=PAL["void"] + (255,))
+        draw.rectangle([px - 1, py - 4, px + 1, py + 1], fill=PAL["gold"] + (255,))
+    elif k == "vehicle_skiff":
+        draw.polygon([(px - 10, py), (px - 5, py - 5), (px + 6, py - 5), (px + 11, py), (px + 6, py + 5), (px - 5, py + 5)], fill=PAL["wine"] + (255,), outline=PAL["void"] + (255,))
+        draw.rectangle([px - 5, py - 3, px + 5, py + 3], fill=PAL["apricot"] + (255,))
+        draw.rectangle([px - 1, py - 4, px + 1, py + 4], fill=PAL["gold"] + (255,))
+    elif k == "tide_raft":
+        _draw_bevel_box(draw, x0, y0, x1, y1, "night", "wine", "apricot", "void")
+        for rx_i in range(int(x0) + 4, int(x1), 4):
+            draw.line([(rx_i, y0 + 1), (rx_i, y1 - 1)], fill=PAL["night"] + (255,))
+    elif k == "state_lever":
+        _draw_bevel_box(draw, px - 6, py - 2, px + 6, py + 5, "night", "dusk", "stone", "void")
+        draw.line([(px, py), (px + 4, py - 9)], fill=PAL["apricot"] + (255,), width=2)
+        draw.ellipse([px + 2, py - 11, px + 6, py - 7], fill=PAL["gold"] + (255,), outline=PAL["void"] + (255,))
     elif k == "clock_hand":
         length = float(props.get("length", 64.0))
         ang = math.radians(float(props.get("start_deg", 0.0)))
         tip = (px + math.cos(ang) * length, py + math.sin(ang) * length)
-        draw.ellipse([px - length, py - length, px + length, py + length], outline=PAL["mauve"] + (130,), width=1)
+        if not clean:
+            draw.ellipse([px - length, py - length, px + length, py + length], outline=PAL["mauve"] + (130,), width=1)
         draw.line([(px, py), tip], fill=PAL["gold"] + (235,), width=4)
         draw.ellipse([px - 6, py - 6, px + 6, py + 6], fill=PAL["dusk"] + (240,), outline=PAL["gold"] + (255,))
-        _draw_glyph_tag(draw, px, py, "CH", PAL["cream"])
+        if not clean:
+            _draw_glyph_tag(draw, px, py, "CH", PAL["cream"])
     elif k == "falling_bell_platform":
         rad = float(props.get("radius_px", 52.0))
-        draw.ellipse([px - rad, py - rad, px + rad, py + rad], fill=PAL["dusk"] + (120,), outline=PAL["gold"] + (220,), width=2)
-        _draw_glyph_tag(draw, px, py, "FB", PAL["cream"])
+        draw.ellipse([px - rad, py - rad, px + rad, py + rad], fill=PAL["dusk"] + (160,), outline=PAL["gold"] + (220,), width=2)
+        if not clean:
+            _draw_glyph_tag(draw, px, py, "FB", PAL["cream"])
     elif k in ("mirror", "blue_transformer", "transformer"):
         draw.rectangle([px - 6, py - 6, px + 6, py + 6], fill=PAL["sky"] + (230,), outline=PAL["void"] + (255,))
         ang = math.radians(float(props.get("angle_deg", 45.0)))
@@ -484,42 +717,51 @@ def _draw_interactable_glyph(draw: ImageDraw.ImageDraw, it: Dict[str, Any], toy_
     elif k in ("blue_portal", "portal"):
         draw.ellipse([px - 7, py - 7, px + 7, py + 7], fill=PAL["deep"] + (210,), outline=PAL["ice"] + (255,), width=2)
     elif k in ("tide_gate", "tide", "phantom_platform", "phantom", "moving_platform", "conveyor", "wind_zone", "crumble_floor", "spike_floor"):
-        col = PAL["teal"] if "tide" in k else (PAL["plum"] if "phantom" in k else (PAL["coral"] if "spike" in k else PAL["sky"]))
-        draw.rectangle([x0, y0, x1, y1], fill=col + (115,), outline=PAL["ice"] + (220,), width=1)
-        path = props.get("path")
-        if isinstance(path, list) and len(path) >= 2:
-            pts = [(float(pt[0]), float(pt[1])) for pt in path if isinstance(pt, list) and len(pt) >= 2]
-            for a, b in zip(pts, pts[1:]):
-                _draw_arrow(draw, a, b, PAL["gold"] + (210,), width=1, head=4.0)
+        if clean and k == "wind_zone":
+            # Subtle directional wind chevrons instead of opaque box in clean renders
+            draw.line([(x0 + 4, py), (x1 - 4, py)], fill=PAL["ice"] + (90,), width=1)
+        else:
+            col = PAL["teal"] if "tide" in k else (PAL["plum"] if "phantom" in k else (PAL["coral"] if "spike" in k else PAL["sky"]))
+            draw.rectangle([x0, y0, x1, y1], fill=col + (115,), outline=PAL["ice"] + (220,), width=1)
+            path = props.get("path")
+            if isinstance(path, list) and len(path) >= 2:
+                pts = [(float(pt[0]), float(pt[1])) for pt in path if isinstance(pt, list) and len(pt) >= 2]
+                for a, b in zip(pts, pts[1:]):
+                    _draw_arrow(draw, a, b, PAL["gold"] + (210,), width=1, head=4.0)
     elif k in ("bramble", "cracked_wall", "cracked", "web", "obsidian_seal", "seal"):
         col = PAL["jade"] if k == "bramble" else (PAL["stone"] if k == "web" else (PAL["wine"] if "obsidian" in k else PAL["coral"]))
         draw.rectangle([x0, y0, x1, y1], fill=col + (185,), outline=PAL["void"] + (255,), width=1)
-    elif k in ("chest", "wick_key", "keepers_flame", "key", "pane_pickup", "moth"):
+    elif k in ("chest", "wick_key", "keepers_flame", "key", "pane_pickup"):
         col = PAL["gold"] if k in ("chest", "wick_key", "key") else (PAL["rose"] if k == "keepers_flame" else PAL["lime"])
-        draw.rectangle([px - 5, py - 5, px + 5, py + 5], fill=col + (240,), outline=PAL["void"] + (255,))
-    elif k in ("gravity_well", "bell", "polarity_well", "updraft_vent"):
+        draw.rectangle([px - 4, py - 4, px + 4, py + 4], fill=col + (245,), outline=PAL["void"] + (255,))
+    elif k in ("gravity_well", "polarity_well", "updraft_vent"):
         r = float(props.get("radius", 36.0))
-        col_ring = PAL["sky"] if "well" in k else (PAL["lime"] if "updraft" in k else PAL["gold"])
-        draw.ellipse([px - r, py - r, px + r, py + r], outline=col_ring + (160,), width=1)
-        draw.ellipse([px - 6, py - 6, px + 6, py + 6], fill=col_ring + (235,), outline=PAL["void"] + (255,))
-        if tmeta and tmeta.get("glyph"):
+        col_ring = PAL["sky"] if "well" in k else PAL["lime"]
+        if not clean:
+            draw.ellipse([px - r, py - r, px + r, py + r], outline=col_ring + (140,), width=1)
+        draw.ellipse([px - 5, py - 5, px + 5, py + 5], fill=col_ring + (235,), outline=PAL["void"] + (255,))
+        if not clean and tmeta and tmeta.get("glyph"):
             _draw_glyph_tag(draw, px, py, str(tmeta["glyph"]), PAL["void"])
-    elif k in ("push_block", "pressure_plate", "toggle_block", "crystal_toggle", "logic_gate"):
-        draw.rectangle([px - 6, py - 6, px + 6, py + 6], fill=PAL["mauve"] + (220,), outline=PAL["cream"] + (255,))
+    elif k in ("push_block", "pressure_plate", "toggle_block", "crystal_toggle"):
+        _draw_bevel_box(draw, px - 6, py - 6, px + 6, py + 6, "dusk", "mauve", "stone", "void")
     elif tmeta is not None:
         blocks = str(tmeta.get("blocks", "none"))
         glyph = str(tmeta.get("glyph", k[:2].upper()))
         if blocks == "solid":
-            draw.rectangle([x0, y0, x1, y1], fill=PAL["wine"] + (215,), outline=PAL["cream"] + (255,), width=1)
-            _draw_glyph_tag(draw, px, py, glyph, PAL["cream"])
+            _draw_bevel_box(draw, x0, y0, x1, y1, "night", "dusk", "mauve", "void")
+            if not clean:
+                _draw_glyph_tag(draw, px, py, glyph, PAL["cream"])
         elif blocks == "platform":
-            draw.rectangle([x0, y0, x1, y1], fill=PAL["jade"] + (185,), outline=PAL["gold"] + (245,), width=1)
-            _draw_glyph_tag(draw, px, py, glyph, PAL["void"])
+            _draw_bevel_box(draw, x0, y0, x1, y1, "pine", "teal", "jade", "void")
+            if not clean:
+                _draw_glyph_tag(draw, px, py, glyph, PAL["void"])
         else:
-            draw.rectangle([px - 7, py - 6, px + 7, py + 6], fill=PAL["deep"] + (235,), outline=PAL["gold"] + (255,), width=1)
-            _draw_glyph_tag(draw, px, py, glyph, PAL["gold"])
+            # Compact glyph when the game itself has no sprite
+            draw.rectangle([px - 5, py - 5, px + 5, py + 5], fill=PAL["dusk"] + (235,), outline=PAL["gold"] + (255,), width=1)
+            if not clean:
+                _draw_glyph_tag(draw, px, py, glyph, PAL["gold"])
     else:
-        draw.ellipse([px - 5, py - 5, px + 5, py + 5], fill=PAL["apricot"] + (230,), outline=PAL["void"] + (255,))
+        draw.ellipse([px - 4, py - 4, px + 4, py + 4], fill=PAL["apricot"] + (230,), outline=PAL["void"] + (255,))
 
 
 def render_region_image(
@@ -547,7 +789,7 @@ def render_region_image(
             for tx in range(w):
                 _paint_tile_rect(bdraw, tx, ty, ts, grid[ty][tx], isl_id, reg["is_dungeon"])
 
-    # 2. Apply active layers matching --state
+    # 2. Apply active layers matching --state (matches luxel/core/region_layers.gd)
     disabled_ids: Set[str] = set()
     enabled_ids: Set[str] = set()
     active_layer_names: List[str] = []
@@ -556,6 +798,7 @@ def render_region_image(
             continue
         if eval_layer_cond(str(lay.get("when", "")), state_vars):
             active_layer_names.append(str(lay.get("id", "layer")))
+            ov_p = _resolve_layer_overlay(isl_id, reg["id"], lay)
             bdraw = ImageDraw.Draw(base)
             for trect in lay.get("tiles", []) if isinstance(lay.get("tiles"), list) else []:
                 if isinstance(trect, list) and len(trect) >= 5:
@@ -563,15 +806,13 @@ def render_region_image(
                     for ty in range(max(0, ry), min(h, ry + rh)):
                         for tx in range(max(0, rx), min(w, rx + rw)):
                             grid[ty][tx] = tt
-                            _paint_tile_rect(bdraw, tx, ty, ts, tt, isl_id, reg["is_dungeon"])
-            ov = str(lay.get("overlay", "")).strip()
-            if ov.endswith(".png"):
-                ov_p = REPO_ROOT / ov.replace("res://", "")
-                if ov_p.exists():
-                    ov_img = Image.open(ov_p).convert("RGBA")
-                    if ov_img.size != (px_w, px_h):
-                        ov_img = ov_img.resize((px_w, px_h), Image.Resampling.NEAREST)
-                    base.alpha_composite(ov_img)
+                            if ov_p is None:
+                                _paint_tile_rect(bdraw, tx, ty, ts, tt, isl_id, reg["is_dungeon"])
+            if ov_p is not None:
+                ov_img = Image.open(ov_p).convert("RGBA")
+                if ov_img.size != (px_w, px_h):
+                    ov_img = ov_img.resize((px_w, px_h), Image.Resampling.NEAREST)
+                base.alpha_composite(ov_img)
             for eid in lay.get("disable", []) or []:
                 disabled_ids.add(str(eid))
             for eid in lay.get("enable", []) or []:
@@ -705,7 +946,7 @@ def render_region_image(
                     _draw_arrow(idraw, (px, py), (px + nx * 13, py + ny * 13), PAL["ice"] + (255,), width=1, head=4.0)
             else:
                 iov = Image.new("RGBA", (px_w, px_h), (0, 0, 0, 0))
-                _draw_interactable_glyph(ImageDraw.Draw(iov), obj, toy_meta)
+                _draw_interactable_glyph(ImageDraw.Draw(iov), obj, toy_meta, clean=clean)
                 base = Image.alpha_composite(base, iov)
         elif kind_tag == "enemy":
             ex, ey = float(obj["pos"][0]), float(obj["pos"][1])

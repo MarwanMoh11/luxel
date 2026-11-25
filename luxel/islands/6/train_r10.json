@@ -171,66 +171,6 @@
           48
         ]
       }
-    },
-    {
-      "id": "lamp_r10_w",
-      "kind": "road_lamp",
-      "pos": [
-        64,
-        160
-      ],
-      "props": {
-        "zone": "tr_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_mid",
-      "kind": "road_lamp",
-      "pos": [
-        264,
-        80
-      ],
-      "props": {
-        "zone": "tr_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_mids",
-      "kind": "road_lamp",
-      "pos": [
-        264,
-        176
-      ],
-      "props": {
-        "zone": "tr_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_e",
-      "kind": "road_lamp",
-      "pos": [
-        432,
-        104
-      ],
-      "props": {
-        "zone": "tr_r10",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r10_se",
-      "kind": "road_lamp",
-      "pos": [
-        432,
-        192
-      ],
-      "props": {
-        "zone": "tr_r10",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -365,6 +305,66 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        72,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        280,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        264,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        424,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        424,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "triggers": [],

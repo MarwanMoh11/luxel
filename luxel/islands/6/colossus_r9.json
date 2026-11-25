@@ -269,66 +269,6 @@
         "secret_id": "ember_6_colossus",
         "zone": "col_r9"
       }
-    },
-    {
-      "id": "lamp_r9_nw",
-      "kind": "road_lamp",
-      "pos": [
-        48,
-        72
-      ],
-      "props": {
-        "zone": "col_r9",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r9_sw",
-      "kind": "road_lamp",
-      "pos": [
-        80,
-        216
-      ],
-      "props": {
-        "zone": "col_r9",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r9_mid_n",
-      "kind": "road_lamp",
-      "pos": [
-        304,
-        96
-      ],
-      "props": {
-        "zone": "col_r9",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r9_e_n",
-      "kind": "road_lamp",
-      "pos": [
-        496,
-        72
-      ],
-      "props": {
-        "zone": "col_r9",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r9_e_s",
-      "kind": "road_lamp",
-      "pos": [
-        496,
-        168
-      ],
-      "props": {
-        "zone": "col_r9",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -435,20 +375,104 @@
       "sheet": "theme_iron_colossus",
       "prop": "hydraulic_piston_pillar",
       "pos": [
-        472,
+        488,
         184
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        40,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        88,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        296,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        504,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_lantern_post",
+      "pos": [
+        504,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "furnace_vent_grate",
+      "pos": [
+        288,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
     }
   ],
   "triggers": [],
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Open-air Collarbone Viaduct spanning the giant's neck high above the caldera: hang your lantern on the west hook so Wick runs dark across crumbling Heat-Boots grates through the Shadow Gate to claim the Crown Boss Key, then recall and pull the crane ring to extend the permanent east iron bridge linking both shoulders (Cycle 3) — plus a Skip-banked shadow nook hiding Moth 6-07 and an Ember Piece!",
+    "idea": "Open-air Collarbone Viaduct spanning the giant's neck high above the caldera: hang your lantern on the west hook so Wick runs dark across crumbling Heat-Boots grates through the Shadow Gate to claim the Crown Boss Key, then recall and pull the crane ring to extend the permanent east iron bridge linking both shoulders (Cycle 3) \u2014 plus a Skip-banked shadow nook hiding Moth 6-07 and an Ember Piece!",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "lantern_hook + crumble_floor (Heat-Boots grace) + shadow_gate dark crossing + pull_ring Cycle 3 bridge",

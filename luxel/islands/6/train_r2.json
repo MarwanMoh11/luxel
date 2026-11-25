@@ -293,54 +293,6 @@
           "plate_r2_dolly"
         ]
       }
-    },
-    {
-      "id": "lamp_r2_w",
-      "kind": "road_lamp",
-      "pos": [
-        72,
-        152
-      ],
-      "props": {
-        "zone": "tr_r2",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r2_loft",
-      "kind": "road_lamp",
-      "pos": [
-        128,
-        64
-      ],
-      "props": {
-        "zone": "tr_r2",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r2_mid",
-      "kind": "road_lamp",
-      "pos": [
-        264,
-        152
-      ],
-      "props": {
-        "zone": "tr_r2",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r2_e",
-      "kind": "road_lamp",
-      "pos": [
-        408,
-        144
-      ],
-      "props": {
-        "zone": "tr_r2",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -485,6 +437,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        72,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        264,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

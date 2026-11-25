@@ -141,7 +141,8 @@
       "props": {
         "target_portal_id": "portal_r10_n",
         "requires_blue": true,
-        "pair_sync": true
+        "pair_sync": true,
+        "persist": true
       }
     },
     {
@@ -154,7 +155,8 @@
       "props": {
         "target_portal_id": "portal_r10_s",
         "requires_blue": true,
-        "pair_sync": true
+        "pair_sync": true,
+        "persist": true
       }
     },
     {
@@ -481,6 +483,28 @@
       "enable": [
         "orb_r10_primer"
       ],
+      "disable": []
+    },
+    {
+      "id": "balcony_open",
+      "when": "flag:palace_balcony_short",
+      "tiles": [
+        [
+          21,
+          5,
+          1,
+          5,
+          "ground"
+        ],
+        [
+          27,
+          11,
+          2,
+          1,
+          "ground"
+        ]
+      ],
+      "enable": [],
       "disable": []
     }
   ],

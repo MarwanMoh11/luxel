@@ -103,78 +103,6 @@
           "express_cleared"
         ]
       }
-    },
-    {
-      "id": "lamp_r11_nw",
-      "kind": "road_lamp",
-      "pos": [
-        152,
-        72
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r11_sw",
-      "kind": "road_lamp",
-      "pos": [
-        112,
-        288
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r11_ne",
-      "kind": "road_lamp",
-      "pos": [
-        416,
-        72
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r11_se",
-      "kind": "road_lamp",
-      "pos": [
-        416,
-        264
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r11_mid",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        72
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r11_s",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        288
-      ],
-      "props": {
-        "zone": "tr_r11",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -226,7 +154,7 @@
         144,
         48
       ],
-      "glow": false
+      "glow": true
     },
     {
       "kind": "cracks",
@@ -331,6 +259,78 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        120,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        424,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        424,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        280,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        296,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "triggers": [],
@@ -339,7 +339,8 @@
       "id": "roof_blown",
       "when": "train_roof_blown==yes",
       "theme": "ember_express_roof",
-      "full_frame": true
+      "full_frame": true,
+      "overlay": "res://luxel/art/islands/6/train_r11__roof_blown.png"
     }
   ],
   "events": [

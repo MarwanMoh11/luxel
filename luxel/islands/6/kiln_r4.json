@@ -6,36 +6,79 @@
   "theme": "forge_deep",
   "music": "island6_dungeon",
   "name_key": "ISL6_KILN_R4",
-  "spawn": [120, 208],
+  "spawn": [
+    120,
+    208
+  ],
   "zones": [
-    { "id": "kiln_r4", "name_key": "DUNGEON_6_NAME", "rect": [0, 0, 416, 256], "dark": true }
+    {
+      "id": "kiln_r4",
+      "name_key": "DUNGEON_6_NAME",
+      "rect": [
+        0,
+        0,
+        416,
+        256
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r4_south",
-      "rect": [112, 240, 32, 16],
+      "rect": [
+        112,
+        240,
+        32,
+        16
+      ],
       "to_region": "kiln_r3",
-      "to_spawn": [272, 48],
+      "to_spawn": [
+        272,
+        48
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_kiln_r4_north",
-      "rect": [240, 0, 32, 16],
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r11",
-      "to_spawn": [48, 72],
+      "to_spawn": [
+        48,
+        72
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_r11_grate"],
+      "requires_flags": [
+        "kiln_r11_grate"
+      ],
       "locked_door_id": "door_kiln_r4_grate"
     },
     {
       "id": "exit_kiln_r4_east",
-      "rect": [400, 80, 16, 48],
+      "rect": [
+        400,
+        80,
+        16,
+        48
+      ],
       "to_region": "kiln_r5",
-      "to_spawn": [40, 104],
-      "requires_moves": ["lens"],
-      "requires_flags": ["wick_key_6_1"],
+      "to_spawn": [
+        40,
+        104
+      ],
+      "requires_moves": [
+        "lens"
+      ],
+      "requires_flags": [
+        "wick_key_6_1"
+      ],
       "locked_door_id": "door_kiln_r4_east"
     }
   ],
@@ -43,7 +86,10 @@
     {
       "id": "wasp_kiln_r4_0",
       "kind": "smelter_wasp",
-      "pos": [264, 152],
+      "pos": [
+        264,
+        152
+      ],
       "zone": "kiln_r4",
       "leash": 110
     }
@@ -52,65 +98,222 @@
     {
       "id": "anc_kiln_r4",
       "kind": "room_anchor",
-      "pos": [120, 208],
-      "props": { "auto": true }
+      "pos": [
+        120,
+        208
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "hook_kiln_r4_mid",
       "kind": "lantern_hook",
-      "pos": [200, 40],
-      "props": { "light_radius": 72.0, "persist": false }
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "light_radius": 72.0,
+        "persist": false
+      }
     },
     {
       "id": "toggle_kiln_r4_bridge",
       "kind": "crystal_toggle",
-      "pos": [328, 136],
-      "props": { "group": "kiln_r4_b", "target_id": "bridge_kiln_r4_perm", "persist": true }
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "group": "kiln_r4_b",
+        "target_id": "bridge_kiln_r4_perm",
+        "persist": true
+      }
     },
     {
       "id": "bridge_kiln_r4_perm",
       "kind": "door",
-      "pos": [248, 104],
+      "pos": [
+        248,
+        104
+      ],
       "props": {
         "door_kind": "bridge_platform",
         "starts_open": false,
-        "size": [144, 32],
-        "requires_signals": ["toggle_kiln_r4_bridge"],
+        "size": [
+          144,
+          32
+        ],
+        "requires_signals": [
+          "toggle_kiln_r4_bridge"
+        ],
         "sets_flag": "kiln_r4_bridge"
       }
     },
     {
       "id": "door_kiln_r4_grate",
       "kind": "door",
-      "pos": [256, 24],
-      "props": { "door_kind": "shortcut_door", "size": [32, 16], "requires_flags": ["kiln_r11_grate"] }
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "kiln_r11_grate"
+        ]
+      }
     },
     {
       "id": "door_kiln_r4_east",
       "kind": "door",
-      "pos": [344, 104],
-      "props": { "door_kind": "key_door", "dungeon_id": "great_kiln", "key_kind": "wick_key", "size": [16, 48], "requires_flags": ["wick_key_6_1"] }
+      "pos": [
+        344,
+        104
+      ],
+      "props": {
+        "door_kind": "key_door",
+        "dungeon_id": "great_kiln",
+        "key_kind": "wick_key",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_6_1"
+        ]
+      }
     },
-    { "id": "lamp_kiln_r4_mid", "kind": "road_lamp", "pos": [136, 104], "props": { "zone": "kiln_r4", "lit": true } },
-    { "id": "lamp_kiln_r4_e", "kind": "road_lamp", "pos": [368, 104], "props": { "zone": "kiln_r4", "lit": true } },
     {
       "id": "chest_kiln_r4_shards",
       "kind": "chest",
-      "pos": [56, 200],
-      "props": { "reward_kind": "shards", "reward": "shards", "amount": 30, "zone": "kiln_r4" }
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "zone": "kiln_r4"
+      }
     }
   ],
   "triggers": [],
   "decor": [
-    { "kind": "grate", "rect": [352, 80, 48, 48], "glow": true }
+    {
+      "kind": "grate",
+      "rect": [
+        352,
+        80,
+        48,
+        48
+      ],
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [312, 68], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.15 },
-    { "sheet": "island6_scenery", "prop": "hearth_brazier_tall", "pos": [312, 148], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.65 },
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [104, 128], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.1 },
-    { "sheet": "island6_scenery", "prop": "ember_grate_vent", "pos": [104, 168], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.6 },
-    { "sheet": "island6_scenery", "prop": "cooled_magma_vent", "pos": [56, 112], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "island6_scenery", "prop": "cooled_magma_vent", "pos": [56, 160], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        312,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "hearth_brazier_tall",
+      "pos": [
+        312,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.65
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        104,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "ember_grate_vent",
+      "pos": [
+        104,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "cooled_magma_vent",
+      "pos": [
+        56,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island6_scenery",
+      "prop": "cooled_magma_vent",
+      "pos": [
+        56,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        136,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        376,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    }
   ],
   "is_2x2_room": true,
   "design": {
@@ -123,17 +326,67 @@
     "reward": "kiln_r4_bridge+open_r5",
     "why": "Key-locked Lens traversal gauntlet leading into the Sunflare Crucible.",
     "exit": "exit_kiln_r4_east",
-    "start": { "flags": ["wick_key_6_1"], "keys": { "wick_key": 1 } },
+    "start": {
+      "flags": [
+        "wick_key_6_1"
+      ],
+      "keys": {
+        "wick_key": 1
+      }
+    },
     "solution": [
-      { "op": "goto", "to": [136, 104], "tol": 6.0 },
-      { "op": "clear", "timeout": 25.0 },
-      { "op": "lens" },
-      { "op": "goto", "to": [224, 40], "tol": 8.0 },
-      { "op": "goto", "to": [320, 104], "tol": 8.0 },
-      { "op": "shoot", "target": "toggle_kiln_r4_bridge", "wait_hit": 0.45 },
-      { "op": "goto", "to": [328, 104], "tol": 6.0 },
-      { "op": "interact", "target": "door_kiln_r4_east" },
-      { "op": "expect_exit", "exit": "exit_kiln_r4_east" }
+      {
+        "op": "goto",
+        "to": [
+          136,
+          104
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          40
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          104
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "toggle_kiln_r4_bridge",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          104
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "door_kiln_r4_east"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r4_east"
+      }
     ]
   }
 }

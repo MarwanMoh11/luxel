@@ -423,6 +423,22 @@
       "disable": []
     }
   ],
+  "events": [
+    {
+      "id": "spire_r4_enter_silver",
+      "on": "enter",
+      "once": false,
+      "do": [
+        {
+          "set_var": {
+            "scope": "island:7",
+            "name": "world_face",
+            "value": "silver"
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Lunar Abyss ribbon weaving True Lens phantom-stone crossing, NW Blue Portal Ember Piece vault, Moon Pool flip dissolving the NE Silver wall for a Black vault, and West arrival loop from spire_r11.",
     "kind": "traversal",

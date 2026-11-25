@@ -323,54 +323,6 @@
           "coupler_r6_caboose"
         ]
       }
-    },
-    {
-      "id": "lamp_r6_e",
-      "kind": "road_lamp",
-      "pos": [
-        464,
-        72
-      ],
-      "props": {
-        "zone": "tr_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_m1",
-      "kind": "road_lamp",
-      "pos": [
-        288,
-        176
-      ],
-      "props": {
-        "zone": "tr_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_m2",
-      "kind": "road_lamp",
-      "pos": [
-        208,
-        72
-      ],
-      "props": {
-        "zone": "tr_r6",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r6_w",
-      "kind": "road_lamp",
-      "pos": [
-        88,
-        176
-      ],
-      "props": {
-        "zone": "tr_r6",
-        "lit": true
-      }
     }
   ],
   "enemies": [
@@ -548,6 +500,54 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        472,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        280,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "roof_signal_lantern",
+      "pos": [
+        232,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express_roof",
+      "prop": "cinder_brazier_cage",
+      "pos": [
+        88,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

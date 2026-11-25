@@ -201,66 +201,6 @@
           48
         ]
       }
-    },
-    {
-      "id": "lamp_r4_w",
-      "kind": "road_lamp",
-      "pos": [
-        88,
-        120
-      ],
-      "props": {
-        "zone": "tr_r4",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r4_n",
-      "kind": "road_lamp",
-      "pos": [
-        232,
-        64
-      ],
-      "props": {
-        "zone": "tr_r4",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r4_s",
-      "kind": "road_lamp",
-      "pos": [
-        160,
-        240
-      ],
-      "props": {
-        "zone": "tr_r4",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r4_se",
-      "kind": "road_lamp",
-      "pos": [
-        344,
-        240
-      ],
-      "props": {
-        "zone": "tr_r4",
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_r4_e",
-      "kind": "road_lamp",
-      "pos": [
-        448,
-        88
-      ],
-      "props": {
-        "zone": "tr_r4",
-        "lit": true
-      }
     }
   ],
   "enemies": [],
@@ -417,6 +357,66 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        88,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        232,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        168,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "iron_stove_brazier",
+      "pos": [
+        344,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        440,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "triggers": [],

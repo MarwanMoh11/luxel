@@ -112,9 +112,11 @@ class AshenKilnOverworldPainter(ThemePainter):
         cliff = m_void & n_up_land & (ly < 6)
         buf[cliff & (ly == 0)] = IX["mauve"]
         buf[cliff & (ly == 1)] = IX["plum"]
-        buf[cliff & (ly == 2)] = np.where((xs % 4 == 0) | (bg[cliff & (ly == 2)] < 0.5), IX["dusk"], IX["plum"])
+        c2 = cliff & (ly == 2)
+        buf[c2] = np.where(((xs[c2] % 4) == 0) | (bg[c2] < 0.5), IX["dusk"], IX["plum"])
         buf[cliff & (ly == 3)] = IX["dusk"]
-        buf[cliff & (ly == 4)] = np.where(bg[cliff & (ly == 4)] < 0.65, IX["night"], IX["dusk"])
+        c4 = cliff & (ly == 4)
+        buf[c4] = np.where(bg[c4] < 0.65, IX["night"], IX["dusk"])
         buf[cliff & (ly == 5) & (bg < 0.55)] = IX["night"]
         # Subtle glowing cinder cracks on open volcanic ash terraces
         m_ground = ctx["m_ground"]

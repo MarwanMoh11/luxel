@@ -20,6 +20,7 @@ var lit: bool = false
 var snuff_on_hit: bool = true
 var _debounce_t: float = 0.0
 var _pulse_t: float = 0.0
+var _orbit_t: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -43,6 +44,7 @@ func _toy_setup() -> void:
 	powered = lit
 	_debounce_t = 0.0
 	_pulse_t = 0.0
+	_orbit_t = 0.0
 	queue_redraw()
 
 
@@ -60,6 +62,29 @@ func current_turn() -> int:
 	return posmod(int(LxToyDraw.world_get_var(SCOPE_ISLAND, var_turn, 0)), 3)
 
 
+func _exit_dir_for_turn(turn: int) -> Vector2:
+	# Points toward the clearing exit that opens on `turn` (0=MOSS, 1=SILK, 2=CROWN)
+	match clearing:
+		"w":
+			if turn == 0:
+				return Vector2(-0.82, 0.57).normalized() # SW Great Stump -> underroot_r1
+			elif turn == 1:
+				return Vector2(-1.0, -0.15).normalized() # W -> cave_amber_well
+			return Vector2(0.0, -1.0) # N -> ow_shift_n
+		"e":
+			if turn == 0:
+				return Vector2(0.55, 0.83).normalized() # SE -> cave_burrow_den
+			elif turn == 1:
+				return Vector2(0.92, 0.39).normalized() # ESE Silk Arch -> loom_r1
+			return Vector2(0.45, -0.89).normalized() # N/NE -> ow_shift_n & sprint
+		"n":
+			if turn == 2:
+				return Vector2(0.0, -1.0) # N/NW/S Crown Ring open
+			return Vector2(1.0, 0.0) # E -> overworld
+		_:
+			return Vector2(0.0, -1.0)
+
+
 func tick(dt: float) -> void:
 	super.tick(dt)
 	if not active:
@@ -69,6 +94,9 @@ func tick(dt: float) -> void:
 		_debounce_t = maxf(0.0, _debounce_t - dt)
 	if _pulse_t > 0.0:
 		_pulse_t = maxf(0.0, _pulse_t - dt)
+		dirty = true
+	if not lit and not LxHudFx.flash_reduced():
+		_orbit_t = fmod(_orbit_t + dt * 1.15, TAU)
 		dirty = true
 	var stored_pin: bool = int(LxToyDraw.world_get_var(SCOPE_ISLAND, var_pin, 0)) != 0
 	if stored_pin != lit:
@@ -99,6 +127,10 @@ func set_lit(want_lit: bool, with_fx: bool = true) -> void:
 	if with_fx:
 		_emit_sfx("lamp_lit" if lit else "snuffer_snuff")
 		_emit_gust(48.0, 32.0)
+		if lit and Lx.state != null and not bool(Lx.state.story_flags.get("isl3_pin_taught", false)):
+			Lx.state.story_flags["isl3_pin_taught"] = true
+			if Lx.events != null and LxStrings.has_id("ISL3_WOOD_PINNED"):
+				Lx.events.narration_requested.emit("ISL3_WOOD_PINNED", "narration", 3.2)
 	queue_redraw()
 
 
@@ -175,18 +207,42 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 	var turn: int = current_turn()
 
-	# 1. Ground-inlaid 3-wedge moss compass ring (readable in greyscale via shape + active pointer)
-	draw_circle(Vector2(0.0, 3.0), 13.0, c_void)
-	draw_circle(Vector2(0.0, 3.0), 12.0, c_night)
+	# 1. Ground-inlaid 3-wedge moss compass ring (readable in greyscale via shape + directional arrow)
+	var center := Vector2(0.0, 3.0)
 	var wedge_dirs: Array[Vector2] = [Vector2(-1.0, 0.5).normalized(), Vector2(1.0, 0.5).normalized(), Vector2(0.0, -1.0)]
 	var wedge_cols: Array[Color] = [c_lime, c_rose, c_gold]
 	var wedge_shapes: Array[int] = [2, 1, 5] # 0=triangle (MOSS), 1=diamond (SILK), 2=star (CROWN)
+	var cur_col: Color = wedge_cols[turn]
+	draw_circle(center, 16.0, c_void)
+	draw_circle(center, 15.0, c_night)
+	if lit:
+		# Solid golden lock-ring + 4 cardinal pin-ticks (reads immediately as PINNED)
+		draw_arc(center, 15.0, 0.0, TAU, 24, c_gold, 1.5)
+		draw_arc(center, 12.0, 0.0, TAU, 20, cur_col, 1.0)
+		for k: int in range(4):
+			var ka: float = float(k) * (PI * 0.5)
+			var kp: Vector2 = (center + Vector2(cos(ka), sin(ka)) * 16.0).round()
+			draw_rect(Rect2(kp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_cream)
+	else:
+		# Slowly orbiting 3-arc turn indicator (reads immediately as UNPINNED / WILL ROTATE)
+		draw_arc(center, 14.0, 0.0, TAU, 20, c_dusk, 1.0)
+		for k: int in range(3):
+			var a0: float = _orbit_t + float(k) * (TAU / 3.0)
+			draw_arc(center, 15.0, a0, a0 + 0.85, 8, cur_col, 1.5)
 	for i: int in range(3):
-		var wp: Vector2 = (Vector2(0.0, 3.0) + wedge_dirs[i] * 8.0).round()
+		var wp: Vector2 = (center + wedge_dirs[i] * 9.5).round()
 		var is_cur: bool = i == turn
 		LxToyDraw.draw_shape_glyph(self, wp, wedge_shapes[i], is_cur, wedge_cols[i] if is_cur else c_dusk, c_cream if is_cur else c_pine)
 		if is_cur:
-			draw_line(Vector2(0.0, 3.0), wp, c_cream if lit else wedge_cols[i], 1.5)
+			draw_line(center, wp, c_cream if lit else wedge_cols[i], 1.5)
+	# Crisp outer directional pointer pointing straight toward the currently open exit!
+	var edir: Vector2 = _exit_dir_for_turn(turn)
+	var eperp := Vector2(-edir.y, edir.x)
+	var tip: Vector2 = (center + edir * 22.0).round()
+	var b1: Vector2 = (center + edir * 16.0 + eperp * 4.0).round()
+	var b2: Vector2 = (center + edir * 16.0 - eperp * 4.0).round()
+	draw_colored_polygon(PackedVector2Array([tip + edir, b1 - edir * 0.5 + eperp, b2 - edir * 0.5 - eperp]), c_void)
+	draw_colored_polygon(PackedVector2Array([tip, b1, b2]), c_cream if lit else cur_col)
 
 	# 2. Brass woodland lantern post
 	LxToyDraw.draw_bevel_box(self, Rect2(-5.0, -1.0, 10.0, 6.0), c_night, c_dusk, PAL["stone"] as Color, c_void)

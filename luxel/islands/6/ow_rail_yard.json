@@ -416,94 +416,6 @@
         ],
         "persist": true
       }
-    },
-    {
-      "id": "lamp_yard_1",
-      "kind": "road_lamp",
-      "pos": [
-        352,
-        424
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_2",
-      "kind": "road_lamp",
-      "pos": [
-        416,
-        424
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_3",
-      "kind": "road_lamp",
-      "pos": [
-        248,
-        256
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_4",
-      "kind": "road_lamp",
-      "pos": [
-        128,
-        336
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_5",
-      "kind": "road_lamp",
-      "pos": [
-        520,
-        272
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_6",
-      "kind": "road_lamp",
-      "pos": [
-        648,
-        272
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_7",
-      "kind": "road_lamp",
-      "pos": [
-        560,
-        168
-      ],
-      "props": {
-        "lit": true
-      }
-    },
-    {
-      "id": "lamp_yard_8",
-      "kind": "road_lamp",
-      "pos": [
-        184,
-        368
-      ],
-      "props": {
-        "lit": true
-      }
     }
   ],
   "scenery": [
@@ -650,6 +562,114 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        360,
+        424
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        248,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        136,
+        344
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        520,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        648,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        552,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        184,
+        376
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "great_forge_anvil",
+      "pos": [
+        456,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "layers": [
@@ -668,7 +688,8 @@
       "enable": [
         "exit_to_train_r1"
       ],
-      "disable": []
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/ow_rail_yard__station_a.png"
     },
     {
       "id": "station_b",
@@ -690,7 +711,8 @@
         ]
       ],
       "enable": [],
-      "disable": []
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/ow_rail_yard__station_c.png"
     },
     {
       "id": "relit",
@@ -811,5 +833,44 @@
         "exit": "exit_to_cinder_overlook"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        384,
+        320
+      ],
+      "radius": 48,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        320,
+        224,
+        128,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        144,
+        320
+      ],
+      "radius": 38,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        608,
+        352
+      ],
+      "radius": 38,
+      "glow": true
+    }
+  ]
 }

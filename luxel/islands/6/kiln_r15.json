@@ -3,30 +3,63 @@
   "island_id": 6,
   "tile_size": 16,
   "is_dungeon": true,
-  "theme": "iron_colossus",
+  "theme": "forge_deep",
   "music": "isl6_boss_minor_p1",
-  "ambience": ["forge_rumble"],
+  "ambience": [
+    "forge_rumble"
+  ],
   "name_key": "ISL6_KILN_R15",
-  "spawn": [256, 264],
+  "spawn": [
+    256,
+    264
+  ],
   "zones": [
-    { "id": "kiln_r15", "name_key": "ISL6_KILN_R15", "rect": [0, 0, 512, 320], "dark": true }
+    {
+      "id": "kiln_r15",
+      "name_key": "ISL6_KILN_R15",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r15_south",
-      "rect": [240, 304, 32, 16],
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
       "to_region": "kiln_r14",
-      "to_spawn": [240, 48],
+      "to_spawn": [
+        240,
+        48
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r15_north",
-      "rect": [240, 0, 32, 16],
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r16",
-      "to_spawn": [144, 232],
+      "to_spawn": [
+        144,
+        232
+      ],
       "requires_moves": [],
-      "requires_flags": ["crucible_weaver_defeated"],
+      "requires_flags": [
+        "crucible_weaver_defeated"
+      ],
       "locked_door_id": "door_kiln_r15_north"
     }
   ],
@@ -35,7 +68,10 @@
       "id": "mini_crucible_weaver",
       "kind": "crucible_weaver",
       "boss_id": "crucible_weaver",
-      "pos": [272, 160],
+      "pos": [
+        272,
+        160
+      ],
       "zone": "kiln_r15",
       "leash": 220
     }
@@ -44,37 +80,86 @@
     {
       "id": "anc_kiln_r15",
       "kind": "room_anchor",
-      "pos": [256, 264],
-      "props": { "auto": true }
+      "pos": [
+        256,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anvil_kiln_r15_cycle",
       "kind": "temper_anvil",
-      "pos": [128, 224],
-      "props": { "mode": "cycle" }
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "mode": "cycle"
+      }
     },
     {
       "id": "emit_r15_blue",
       "kind": "beam_emitter",
-      "pos": [448, 160],
-      "props": { "dir": "w", "color": "blue", "period": 4.2, "duty": 0.65, "range": 380.0, "harms_wick": false }
+      "pos": [
+        448,
+        160
+      ],
+      "props": {
+        "dir": "w",
+        "color": "blue",
+        "period": 4.2,
+        "duty": 0.65,
+        "range": 380.0,
+        "harms_wick": false
+      }
     },
     {
       "id": "tf_r15_w",
       "kind": "blue_transformer",
-      "pos": [184, 200],
-      "props": { "angle_deg": 45, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        184,
+        200
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "tf_r15_e",
       "kind": "blue_transformer",
-      "pos": [344, 200],
-      "props": { "angle_deg": 135, "rotatable": true, "movable": false, "angle_step_deg": 45, "transforms_to": "blue", "size": [16, 16] }
+      "pos": [
+        344,
+        200
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "angle_step_deg": 45,
+        "transforms_to": "blue",
+        "size": [
+          16,
+          16
+        ]
+      }
     },
     {
       "id": "kiln_cast_key_2",
       "kind": "wick_key",
-      "pos": [256, 72],
+      "pos": [
+        256,
+        72
+      ],
       "props": {
         "dungeon_id": "great_kiln",
         "key_kind": "wick_key",
@@ -85,29 +170,239 @@
     {
       "id": "door_kiln_r15_north",
       "kind": "door",
-      "pos": [256, 24],
+      "pos": [
+        256,
+        24
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "size": [32, 16],
-        "requires_flags": ["crucible_weaver_defeated"]
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "crucible_weaver_defeated"
+        ]
       }
-    },
-    { "id": "lamp_kr15_1", "kind": "road_lamp", "pos": [168, 88], "props": { "lit": true } },
-    { "id": "lamp_kr15_2", "kind": "road_lamp", "pos": [344, 88], "props": { "lit": true } },
-    { "id": "lamp_kr15_3", "kind": "road_lamp", "pos": [96, 160], "props": { "lit": true } },
-    { "id": "lamp_kr15_4", "kind": "road_lamp", "pos": [416, 160], "props": { "lit": true } },
-    { "id": "lamp_kr15_5", "kind": "road_lamp", "pos": [256, 248], "props": { "lit": true } }
+    }
   ],
   "decor": [
-    { "kind": "circle", "pos": [256, 160], "radius": 52, "style": "ritual" },
-    { "kind": "grate", "rect": [192, 112, 128, 96], "glow": true }
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 58,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        128,
+        96,
+        64
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        88,
+        224,
+        144
+      ]
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        144,
+        160
+      ],
+      "radius": 32,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        160
+      ],
+      "radius": 32,
+      "glow": true
+    }
   ],
   "scenery": [
-    { "sheet": "theme_iron_colossus", "prop": "molten_crucible_vat", "pos": [80, 104], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_iron_colossus", "prop": "molten_crucible_vat", "pos": [432, 104], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_iron_colossus", "prop": "colossus_rib_buttress", "pos": [80, 216], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_iron_colossus", "prop": "colossus_rib_buttress", "pos": [432, 216], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "theme_iron_colossus", "prop": "brass_steam_pipe_arch", "pos": [256, 56], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        80,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "molten_crucible_vat",
+      "pos": [
+        432,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        80,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "colossus_rib_buttress",
+      "pos": [
+        432,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_iron_colossus",
+      "prop": "brass_steam_pipe_arch",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        168,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        344,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        104,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        424,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        248,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        152,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        152,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        376,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    }
   ],
   "triggers": [],
   "layers": [],
@@ -122,14 +417,44 @@
     "reward": "crucible_weaver_defeated+kiln_cast_key_2+open_r16",
     "why": "Second mini-boss of the deepened Great Kiln anchoring the East Casting Wing.",
     "exit": "exit_kiln_r15_north",
-    "start": { "flags": ["kiln_r14_cleared"] },
+    "start": {
+      "flags": [
+        "kiln_r14_cleared"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [256, 200], "tol": 8.0 },
-      { "op": "clear", "timeout": 120.0 },
-      { "op": "expect", "flag": "crucible_weaver_defeated" },
-      { "op": "goto", "to": [256, 72], "tol": 6.0 },
-      { "op": "interact", "target": "kiln_cast_key_2" },
-      { "op": "expect_exit", "exit": "exit_kiln_r15_north" }
+      {
+        "op": "goto",
+        "to": [
+          256,
+          200
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "crucible_weaver_defeated"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          72
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "kiln_cast_key_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r15_north"
+      }
     ]
   }
 }

@@ -408,13 +408,13 @@ func get_harmony_count() -> int:
 
 func get_completion_pct(relit_override: int = -1, embers_override: int = -1) -> int:
 	var relit_n: int = clampi(relit_override if relit_override >= 0 else relit_islands.size(), 0, 8)
-	var ember_n: int = clampi(embers_override if embers_override >= 0 else ember_pieces, 0, 16)
+	var ember_n: int = clampi(embers_override if embers_override >= 0 else ember_pieces, 0, 52)
 	var moves_n: int = 0
 	for mid: String in ["dash", "throw", "prism", "beam", "wings", "lens", "sunflare"]:
 		if has_move(mid): moves_n += 1
 	var upg_t: Vector2i = get_upgrade_totals()
 	var base_score: float = (float(relit_n) / 8.0) * 40.0 + (float(moves_n) / 7.0) * 14.0 \
-		+ (float(ember_n) / 16.0) * 16.0 + (float(get_harmony_count()) / 8.0) * 16.0 \
+		+ (float(ember_n) / 52.0) * 16.0 + (float(get_harmony_count()) / 8.0) * 16.0 \
 		+ (float(upg_t.x) / float(maxi(1, upg_t.y))) * 14.0
 	var extra_pts: float = 0.0; var extra_max: float = 0.0
 	if Lx.packs != null:

@@ -5,62 +5,131 @@
   "is_dungeon": true,
   "theme": "forge_deep",
   "music": "island6_dungeon",
-  "ambience": ["forge_rumble"],
+  "ambience": [
+    "forge_rumble"
+  ],
   "name_key": "ISL6_KILN_R11",
-  "spawn": [256, 264],
+  "spawn": [
+    256,
+    264
+  ],
   "zones": [
-    { "id": "kiln_r11", "name_key": "ISL6_KILN_R11", "rect": [0, 0, 512, 320], "dark": true }
+    {
+      "id": "kiln_r11",
+      "name_key": "ISL6_KILN_R11",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
   ],
   "exits": [
     {
       "id": "exit_kiln_r11_south",
-      "rect": [240, 304, 32, 16],
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
       "to_region": "kiln_r6",
-      "to_spawn": [448, 128],
+      "to_spawn": [
+        448,
+        128
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r11_west",
-      "rect": [0, 144, 16, 48],
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
       "to_region": "kiln_r1",
-      "to_spawn": [400, 72],
+      "to_spawn": [
+        400,
+        72
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_damper_lift"],
+      "requires_flags": [
+        "kiln_damper_lift"
+      ],
       "locked_door_id": "door_kiln_r11_lift"
     },
     {
       "id": "exit_kiln_r11_nw",
-      "rect": [0, 48, 16, 48],
+      "rect": [
+        0,
+        48,
+        16,
+        48
+      ],
       "to_region": "kiln_r4",
-      "to_spawn": [256, 36],
+      "to_spawn": [
+        256,
+        36
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_r11_grate"],
+      "requires_flags": [
+        "kiln_r11_grate"
+      ],
       "locked_door_id": "door_kiln_r11_grate"
     },
     {
       "id": "exit_kiln_r11_north",
-      "rect": [128, 0, 32, 16],
+      "rect": [
+        128,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r12",
-      "to_spawn": [256, 240],
+      "to_spawn": [
+        256,
+        240
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r11_east",
-      "rect": [496, 144, 16, 48],
+      "rect": [
+        496,
+        144,
+        16,
+        48
+      ],
       "to_region": "kiln_r14",
-      "to_spawn": [48, 152],
+      "to_spawn": [
+        48,
+        152
+      ],
       "requires_moves": [],
       "requires_flags": []
     },
     {
       "id": "exit_kiln_r11_ne",
-      "rect": [368, 0, 32, 16],
+      "rect": [
+        368,
+        0,
+        32,
+        16
+      ],
       "to_region": "kiln_r16",
-      "to_spawn": [80, 232],
+      "to_spawn": [
+        80,
+        232
+      ],
       "requires_moves": [],
-      "requires_flags": ["kiln_cast_key_1"],
+      "requires_flags": [
+        "kiln_cast_key_1"
+      ],
       "locked_door_id": "door_kiln_r11_ne"
     }
   ],
@@ -69,17 +138,29 @@
     {
       "id": "ws_kiln_damper",
       "kind": "waystone",
-      "pos": [256, 168],
-      "props": { "zone": "kiln_r11", "name_key": "ISL6_KILN_R11" }
+      "pos": [
+        256,
+        168
+      ],
+      "props": {
+        "zone": "kiln_r11",
+        "name_key": "ISL6_KILN_R11"
+      }
     },
     {
       "id": "lever_kiln_damper",
       "kind": "state_lever",
-      "pos": [256, 104],
+      "pos": [
+        256,
+        104
+      ],
       "props": {
         "scope": "dungeon:great_kiln",
         "var": "kiln_heat",
-        "values": ["low", "surge"],
+        "values": [
+          "low",
+          "surge"
+        ],
         "shootable": true,
         "persist": true,
         "prompt_key": "ISL6_PROMPT_DAMPER"
@@ -88,85 +169,283 @@
     {
       "id": "gauge_kiln_r11",
       "kind": "kiln_damper_gauge",
-      "pos": [256, 64],
+      "pos": [
+        256,
+        64
+      ],
       "props": {}
     },
     {
       "id": "anvil_kiln_r11_cycle",
       "kind": "temper_anvil",
-      "pos": [304, 168],
-      "props": { "mode": "cycle" }
+      "pos": [
+        304,
+        168
+      ],
+      "props": {
+        "mode": "cycle"
+      }
     },
     {
       "id": "switch_r11_lift",
       "kind": "switch_eye",
-      "pos": [80, 192],
-      "props": { "target_id": "door_kiln_r11_lift", "sets_flag": "kiln_damper_lift" }
+      "pos": [
+        80,
+        192
+      ],
+      "props": {
+        "target_id": "door_kiln_r11_lift",
+        "sets_flag": "kiln_damper_lift"
+      }
     },
     {
       "id": "door_kiln_r11_lift",
       "kind": "door",
-      "pos": [24, 168],
+      "pos": [
+        24,
+        168
+      ],
       "props": {
         "door_kind": "switch_door",
-        "size": [16, 48],
-        "requires_signals": ["switch_r11_lift"],
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_r11_lift"
+        ],
         "sets_flag": "kiln_damper_lift"
       }
     },
     {
       "id": "switch_r11_grate",
       "kind": "switch_eye",
-      "pos": [96, 80],
-      "props": { "target_id": "door_kiln_r11_grate", "sets_flag": "kiln_r11_grate" }
+      "pos": [
+        96,
+        80
+      ],
+      "props": {
+        "target_id": "door_kiln_r11_grate",
+        "sets_flag": "kiln_r11_grate"
+      }
     },
     {
       "id": "door_kiln_r11_grate",
       "kind": "door",
-      "pos": [24, 72],
+      "pos": [
+        24,
+        72
+      ],
       "props": {
         "door_kind": "switch_door",
-        "size": [16, 48],
-        "requires_signals": ["switch_r11_grate"],
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "switch_r11_grate"
+        ],
         "sets_flag": "kiln_r11_grate"
       }
     },
     {
       "id": "door_kiln_r11_ne",
       "kind": "door",
-      "pos": [384, 24],
+      "pos": [
+        384,
+        24
+      ],
       "props": {
         "door_kind": "key_door",
         "dungeon_id": "great_kiln",
         "key_kind": "wick_key",
-        "size": [32, 16],
-        "requires_flags": ["kiln_cast_key_1"]
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "kiln_cast_key_1"
+        ]
       }
     },
     {
       "id": "chest_kiln_r11_crust",
       "kind": "chest",
-      "pos": [80, 120],
-      "props": { "reward_kind": "shards", "reward": "shards", "amount": 40, "zone": "kiln_r11" }
-    },
-    { "id": "lamp_kr11_1", "kind": "road_lamp", "pos": [192, 240], "props": { "lit": true } },
-    { "id": "lamp_kr11_2", "kind": "road_lamp", "pos": [320, 240], "props": { "lit": true } },
-    { "id": "lamp_kr11_3", "kind": "road_lamp", "pos": [176, 88], "props": { "lit": true } },
-    { "id": "lamp_kr11_4", "kind": "road_lamp", "pos": [336, 88], "props": { "lit": true } },
-    { "id": "lamp_kr11_5", "kind": "road_lamp", "pos": [448, 168], "props": { "lit": true } }
+      "pos": [
+        80,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "kiln_r11"
+      }
+    }
   ],
   "decor": [
-    { "kind": "circle", "pos": [256, 168], "radius": 44, "style": "gear" },
-    { "kind": "grate", "rect": [224, 208, 64, 48], "glow": true },
-    { "kind": "inlay", "rect": [208, 80, 96, 48] }
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 36,
+      "style": "gear"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        224,
+        208,
+        64,
+        48
+      ],
+      "glow": true
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        224,
+        80,
+        64,
+        48
+      ]
+    }
   ],
   "scenery": [
-    { "sheet": "theme_forge_deep", "prop": "tempering_floor_seal", "pos": [256, 168], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 },
-    { "sheet": "theme_forge_deep", "prop": "molten_slag_crucible", "pos": [208, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_forge_deep", "prop": "molten_slag_crucible", "pos": [304, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_forge_deep", "prop": "bellows_hearth_stand", "pos": [448, 104], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_forge_deep", "prop": "quench_barrel_tub", "pos": [448, 224], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_forge_deep", "prop": "slag_chimney_vent", "pos": [104, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 }
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "tempering_floor_seal",
+      "pos": [
+        256,
+        168
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        304,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        448,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        448,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        104,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        200,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        328,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "molten_slag_crucible",
+      "pos": [
+        344,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ember_brazier_pillar",
+      "pos": [
+        456,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    }
   ],
   "triggers": [],
   "layers": [
@@ -174,20 +453,117 @@
       "id": "heat_low",
       "when": "dungeon:great_kiln.kiln_heat==low",
       "tiles": [
-        [7, 6, 5, 3, "ground"],
-        [20, 6, 5, 3, "ground"],
-        [7, 12, 5, 3, "ground"],
-        [20, 12, 5, 3, "ground"]
+        [
+          7,
+          6,
+          5,
+          3,
+          "ground"
+        ],
+        [
+          20,
+          6,
+          5,
+          3,
+          "ground"
+        ],
+        [
+          7,
+          12,
+          5,
+          3,
+          "ground"
+        ],
+        [
+          20,
+          12,
+          5,
+          3,
+          "ground"
+        ]
       ],
-      "enable": ["chest_kiln_r11_crust"],
-      "disable": []
+      "enable": [
+        "chest_kiln_r11_crust"
+      ],
+      "disable": [],
+      "overlay": "res://luxel/art/islands/6/kiln_r11__heat_low.png"
     },
     {
       "id": "heat_surge",
       "when": "dungeon:great_kiln.kiln_heat==surge",
       "tiles": [],
       "enable": [],
-      "disable": ["chest_kiln_r11_crust"]
+      "disable": [
+        "chest_kiln_r11_crust"
+      ],
+      "decor": [
+        {
+          "kind": "circle",
+          "pos": [
+            256,
+            168
+          ],
+          "radius": 36,
+          "style": "gear"
+        },
+        {
+          "kind": "grate",
+          "rect": [
+            224,
+            208,
+            64,
+            48
+          ],
+          "glow": true
+        },
+        {
+          "kind": "grate",
+          "rect": [
+            224,
+            80,
+            64,
+            48
+          ],
+          "glow": true
+        },
+        {
+          "kind": "cracks",
+          "pos": [
+            152,
+            120
+          ],
+          "radius": 34,
+          "glow": true
+        },
+        {
+          "kind": "cracks",
+          "pos": [
+            360,
+            120
+          ],
+          "radius": 34,
+          "glow": true
+        },
+        {
+          "kind": "cracks",
+          "pos": [
+            152,
+            216
+          ],
+          "radius": 34,
+          "glow": true
+        },
+        {
+          "kind": "cracks",
+          "pos": [
+            360,
+            216
+          ],
+          "radius": 34,
+          "glow": true
+        }
+      ],
+      "overlay": "res://luxel/art/islands/6/kiln_r11__heat_surge.png"
     }
   ],
   "events": [
@@ -196,8 +572,12 @@
       "on": "signal:switch_r11_lift",
       "once": true,
       "do": [
-        { "set_flag": "kiln_damper_lift" },
-        { "narrate": "ISL6_KILN_LIFT_OPEN" }
+        {
+          "set_flag": "kiln_damper_lift"
+        },
+        {
+          "narrate": "ISL6_KILN_LIFT_OPEN"
+        }
       ]
     },
     {
@@ -205,7 +585,9 @@
       "on": "signal:switch_r11_grate",
       "once": true,
       "do": [
-        { "set_flag": "kiln_r11_grate" }
+        {
+          "set_flag": "kiln_r11_grate"
+        }
       ]
     }
   ],
@@ -220,18 +602,73 @@
     "why": "Central macro-control hub for the 8-room Heat-Flow Casting Wing.",
     "optional": true,
     "exit": "exit_kiln_r11_north",
-    "start": { "vars": { "dungeon:great_kiln:kiln_heat": "low" }, "flags": ["forge_warden_defeated"] },
+    "start": {
+      "vars": {
+        "dungeon:great_kiln:kiln_heat": "low"
+      },
+      "flags": [
+        "forge_warden_defeated"
+      ]
+    },
     "solution": [
-      { "op": "goto", "to": [256, 184], "tol": 6.0 },
-      { "op": "interact", "target": "ws_kiln_damper" },
-      { "op": "goto", "to": [104, 192], "tol": 6.0 },
-      { "op": "shoot", "target": "switch_r11_lift", "wait_hit": 0.45 },
-      { "op": "goto", "to": [120, 80], "tol": 6.0 },
-      { "op": "shoot", "target": "switch_r11_grate", "wait_hit": 0.45 },
-      { "op": "goto", "to": [256, 120], "tol": 6.0 },
-      { "op": "interact", "target": "lever_kiln_damper" },
-      { "op": "expect", "var": "dungeon:great_kiln.kiln_heat==surge" },
-      { "op": "expect_exit", "exit": "exit_kiln_r11_north" }
+      {
+        "op": "goto",
+        "to": [
+          256,
+          184
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_kiln_damper"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          192
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "switch_r11_lift",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          120,
+          80
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "shoot",
+        "target": "switch_r11_grate",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          120
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_kiln_damper"
+      },
+      {
+        "op": "expect",
+        "var": "dungeon:great_kiln.kiln_heat==surge"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_kiln_r11_north"
+      }
     ]
   }
 }
