@@ -25,6 +25,28 @@
         320
       ],
       "dark": true
+    },
+    {
+      "id": "toll_west",
+      "name_key": "ISL8_TOLL_R8",
+      "rect": [
+        0,
+        224,
+        272,
+        96
+      ],
+      "dark": true
+    },
+    {
+      "id": "toll_east",
+      "name_key": "ISL8_TOLL_R8",
+      "rect": [
+        400,
+        224,
+        112,
+        96
+      ],
+      "dark": true
     }
   ],
   "exits": [
@@ -417,7 +439,7 @@
         136,
         264
       ],
-      "zone": "toll_ledger"
+      "zone": "toll_west"
     },
     {
       "id": "ee_r8_1",
@@ -426,7 +448,7 @@
         440,
         248
       ],
-      "zone": "toll_ledger"
+      "zone": "toll_east"
     }
   ],
   "scenery": [
@@ -611,7 +633,7 @@
       },
       {
         "op": "clear",
-        "zone": "",
+        "zone": "toll_west",
         "timeout": 28.0
       },
       {
@@ -658,6 +680,11 @@
           424,
           264
         ]
+      },
+      {
+        "op": "clear",
+        "zone": "toll_east",
+        "timeout": 25.0
       },
       {
         "op": "goto",
