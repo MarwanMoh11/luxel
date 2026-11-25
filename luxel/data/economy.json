@@ -3,7 +3,7 @@
   "notes": "Data-driven per-island enemy/boss HP and shard drop scaling for 484-region Luxel Epic (ECON-1).",
   "enemy_bands": {
     "default": {"hp_mult": 1.85, "shard_mult": 1.00},
-    "1": {"hp_mult": 1.85, "shard_mult": 0.45},
+    "1": {"hp_mult": 1.85, "shard_mult": 0.45, "exempt_hp_kinds": ["warden", "snatcher", "owl"]},
     "2": {"hp_mult": 2.05, "shard_mult": 0.65},
     "3": {"hp_mult": 2.30, "shard_mult": 0.80},
     "4": {"hp_mult": 2.60, "shard_mult": 0.85},

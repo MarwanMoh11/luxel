@@ -196,7 +196,7 @@ static func _decorate_live_state(tpl: Dictionary) -> Dictionary:
 		var has_lock: bool = false
 		for did: Variant in (nd.get("lock_door_ids", []) as Array):
 			var ds: String = str(did)
-			if not ds.is_empty() and (Lx.state == null or not Lx.state.opened_doors.has(ds)):
+			if not ds.is_empty() and not _door_opened(isl, [r], ds):
 				has_lock = true; break
 		nd["has_lock"] = has_lock
 		nd["has_key"] = _any_uncollected(isl, r, nd.get("key_ids", []) as Array)
@@ -206,7 +206,7 @@ static func _decorate_live_state(tpl: Dictionary) -> Dictionary:
 		var a: String = str(e["a"]); var b: String = str(e["b"])
 		var locked: bool = false
 		var ld: String = str(e.get("locked_door_id", ""))
-		if not ld.is_empty() and (Lx.state == null or not Lx.state.opened_doors.has(ld)):
+		if not ld.is_empty() and not _door_opened(isl, [a, b], ld):
 			locked = true
 		for fl: Variant in (e.get("requires_flags", []) as Array):
 			if not LxRegionLoader.check_flag_static(str(fl)):
@@ -443,3 +443,16 @@ static func _find_free_cell(want: Vector2i, occupied: Dictionary) -> Vector2i:
 				if not occupied.has(cand):
 					return cand
 	return want + Vector2i(16, 0)
+
+
+## Doors are saved as "island:region:id" (bare ids only for legacy regions in old saves).
+static func _door_opened(isl: int, regions: Array, door_id: String) -> bool:
+	if Lx.state == null:
+		return false
+	for reg_v: Variant in regions:
+		var reg: String = str(reg_v)
+		if Lx.state.opened_doors.has("%d:%s:%s" % [isl, reg, door_id]):
+			return true
+		if LxLegacy.is_legacy_region(isl, reg) and Lx.state.opened_doors.has(door_id):
+			return true
+	return false

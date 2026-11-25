@@ -22,6 +22,7 @@ var _chain_cut_t: float = 0.0
 var _dusk_frozen_t: float = 0.0
 var _smoke_pools: Array[Dictionary] = []
 var _dimming_wick: bool = false
+var _saved_light_scale: float = 1.0
 
 
 func _init() -> void:
@@ -280,9 +281,10 @@ func _tick_smoke_pools(dt: float) -> void:
 		if not gliding and wp.distance_to(sp["pos"] as Vector2) <= SMOKE_R:
 			wick_in_smoke = true
 	if wick_in_smoke and not _dimming_wick:
-		_dimming_wick = true
 		if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("set_light_scale"):
-			Lx.player.call("set_light_scale", LIGHT_DIM_SCALE)
+			_saved_light_scale = float(Lx.player.call("get_light_scale")) if Lx.player.has_method("get_light_scale") else 1.0
+			_dimming_wick = true
+			Lx.player.call("set_light_scale", _saved_light_scale * LIGHT_DIM_SCALE)
 	elif not wick_in_smoke and _dimming_wick:
 		_restore_wick_light()
 
@@ -292,7 +294,7 @@ func _restore_wick_light() -> void:
 		return
 	_dimming_wick = false
 	if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("set_light_scale"):
-		Lx.player.call("set_light_scale", 1.0)
+		Lx.player.call("set_light_scale", _saved_light_scale)
 
 
 func _should_give_up() -> bool:

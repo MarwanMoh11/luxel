@@ -104,10 +104,15 @@ static func band_multipliers(key: String, isl: int, is_boss: bool) -> Vector2:
 	var b: Dictionary = bands.get(str(isl), bands.get("default", {})) as Dictionary
 	var hp_m: float = float(b.get("hp_mult", 1.0))
 	var sh_m: float = float(b.get("shard_mult", 1.0))
+	var exempt_v: Variant = b.get("exempt_hp_kinds", [])
+	var hp_exempt: bool = exempt_v is Array and (exempt_v as Array).has(key)
+	if hp_exempt:
+		hp_m = 1.0
 	var ovs: Dictionary = cfg.get("kind_overrides", {}) as Dictionary
 	if ovs.has(key) and ovs[key] is Dictionary:
 		var ov: Dictionary = ovs[key] as Dictionary
-		hp_m *= float(ov.get("hp_mult", 1.0))
+		if not hp_exempt:
+			hp_m *= float(ov.get("hp_mult", 1.0))
 		sh_m *= float(ov.get("shard_mult", 1.0))
 	if Lx.state != null and Lx.state.is_hard_mode():
 		var hm: Dictionary = cfg.get("hard_mode", {}) as Dictionary

@@ -762,9 +762,6 @@
         "reward": "ember_piece",
         "amount": 1,
         "zone": "smugglers_cove",
-        "requires_moves": [
-          "throw"
-        ],
         "secret_id": "isl2_tide_cove"
       }
     },
@@ -1150,12 +1147,12 @@
       "id": "phantom_lens_1",
       "kind": "phantom_platform",
       "pos": [
-        1000,
-        600
+        960,
+        640
       ],
       "props": {
         "size": [
-          32,
+          64,
           32
         ]
       }
@@ -1164,12 +1161,12 @@
       "id": "phantom_lens_2",
       "kind": "phantom_platform",
       "pos": [
-        1048,
-        632
+        1024,
+        640
       ],
       "props": {
         "size": [
-          32,
+          64,
           32
         ]
       }

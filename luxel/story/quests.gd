@@ -7,6 +7,9 @@ const MOTH_TIERS: Array[int] = [5, 10, 20, 35, 50, 65, 80]
 
 static var active: LxQuests = null
 var _bound_events: LxEventBus = null
+var _active_timers: Array[String] = []
+var _timer_flags_ref: Dictionary = {}
+var _timer_cache_valid: bool = false
 
 
 static func current() -> LxQuests:
@@ -156,6 +159,10 @@ func set_flag(flag_name: String, val: Variant = true) -> void:
 	if Lx.state == null or flag_name.is_empty():
 		return
 	Lx.state.story_flags[flag_name] = val
+	if flag_name.begins_with("quest:timer:"):
+		_sync_timer_cache()
+		if not _active_timers.has(flag_name):
+			_active_timers.append(flag_name)
 
 
 func grant_quest_item(item_id: String, carry: bool = false) -> void:
@@ -176,11 +183,36 @@ func mark_hide_found(spot_id: String) -> void:
 	set_flag("quest:hide:" + spot_id, true)
 
 
+func rebuild_timer_cache() -> void:
+	_active_timers.clear()
+	if Lx.state == null:
+		_timer_flags_ref = {}
+		_timer_cache_valid = false
+		return
+	_timer_flags_ref = Lx.state.story_flags
+	_timer_cache_valid = true
+	for k: Variant in Lx.state.story_flags.keys():
+		var ks: String = str(k)
+		if ks.begins_with("quest:timer:"):
+			_active_timers.append(ks)
+
+
+func _sync_timer_cache() -> void:
+	if Lx.state == null:
+		return
+	if not _timer_cache_valid or not is_same(Lx.state.story_flags, _timer_flags_ref):
+		rebuild_timer_cache()
+
+
 func start_timed_delivery(quest_id: String, seconds: float) -> void:
 	if Lx.state == null:
 		return
-	Lx.state.story_flags["quest:timer:" + quest_id] = maxf(1.0, seconds)
+	_sync_timer_cache()
+	var tk: String = "quest:timer:" + quest_id
+	Lx.state.story_flags[tk] = maxf(1.0, seconds)
 	Lx.state.story_flags["quest:%s:started" % quest_id] = true
+	if not _active_timers.has(tk):
+		_active_timers.append(tk)
 
 
 func get_timer_left(quest_id: String) -> float:
@@ -192,15 +224,21 @@ func get_timer_left(quest_id: String) -> float:
 func tick(dt: float) -> void:
 	if Lx.state == null:
 		return
+	_sync_timer_cache()
+	if _active_timers.is_empty():
+		return
 	var expired: Array[String] = []
-	for k: Variant in Lx.state.story_flags.keys():
-		var ks: String = str(k)
-		if ks.begins_with("quest:timer:"):
-			var rem: float = float(Lx.state.story_flags[ks]) - dt
-			if rem <= 0.0:
-				expired.append(ks)
-			else:
-				Lx.state.story_flags[ks] = rem
+	for i: int in range(_active_timers.size() - 1, -1, -1):
+		var ks: String = _active_timers[i]
+		if not Lx.state.story_flags.has(ks):
+			_active_timers.remove_at(i)
+			continue
+		var rem: float = float(Lx.state.story_flags[ks]) - dt
+		if rem <= 0.0:
+			_active_timers.remove_at(i)
+			expired.append(ks)
+		else:
+			Lx.state.story_flags[ks] = rem
 	for ks: String in expired:
 		Lx.state.story_flags.erase(ks)
 		var qid: String = ks.substr(12)
@@ -265,7 +303,9 @@ func advance_quest(quest_id: String) -> Dictionary:
 
 	if idx + 1 >= steps.size():
 		set_flag("quest:%s:done" % quest_id, true)
-		Lx.state.story_flags.erase("quest:timer:" + quest_id)
+		var done_tk: String = "quest:timer:" + quest_id
+		Lx.state.story_flags.erase(done_tk)
+		_active_timers.erase(done_tk)
 		var reward: Dictionary = q.get("reward", {}) as Dictionary
 		grant_reward(reward)
 		var rescue_folk: String = str(q.get("rescue_folk", ""))

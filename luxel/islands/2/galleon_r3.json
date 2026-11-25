@@ -101,7 +101,9 @@
           "crate_r3"
         ],
         "speed": 140.0,
-        "surge_secs": 2.4
+        "surge_secs": 2.4,
+        "entry_list": "port",
+        "skip_if_solved_id": "gate_r3"
       }
     },
     {
