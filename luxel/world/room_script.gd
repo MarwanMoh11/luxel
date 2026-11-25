@@ -102,9 +102,9 @@ func tick(dt: float) -> void:
 	if active_challenge != null and is_instance_valid(active_challenge) and active_challenge.has_method("tick"):
 		active_challenge.call("tick", dt)
 		if _region_changed(): return
+	_commit_pending_wave_once_flags()
 	_poll_events()
 	if _region_changed(): return
-	_commit_pending_wave_once_flags()
 	_check_wave_auto_unlock()
 	if not _pending_spawns.is_empty(): queue_redraw()
 

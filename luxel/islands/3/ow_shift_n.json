@@ -170,8 +170,8 @@
       "id": "shift_n_strangler",
       "kind": "vine_strangler",
       "pos": [
-        256,
-        176
+        240,
+        232
       ],
       "route": [],
       "zone": "crown_thicket",
@@ -261,7 +261,7 @@
       "kind": "lore_stone",
       "pos": [
         304,
-        72
+        88
       ],
       "props": {
         "string_id": "ISL3_LORE_MOTHER_MURAL",

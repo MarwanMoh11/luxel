@@ -568,5 +568,33 @@ static func spawn_from_specs(specs: Array, ground_root: Node2D, sort_root: Node2
 			target = sort_root if sort_root != null else (ground_root if ground_root != null else over_root)
 		if target != null:
 			target.add_child(prop)
+			prop._flush_initial_draw()
 		out.append(prop)
 	return out
+
+
+func _flush_initial_draw() -> void:
+	if not _valid or _sheet == null or _sheet.tex == null:
+		return
+	var pinfo_v: Variant = _sheet.props.get(prop_key, null)
+	if not (pinfo_v is Dictionary):
+		return
+	var pinfo: Dictionary = pinfo_v as Dictionary
+	var rects_v: Variant = pinfo.get("rects", null)
+	if not (rects_v is Array) or (rects_v as Array).is_empty():
+		return
+	var rects: Array = rects_v as Array
+	var idx: int = clampi(_last_frame, 0, rects.size() - 1)
+	var src_rect: Rect2 = LxSpriteSheet._to_rect2(rects[idx])
+	if src_rect.size.x <= 0.0 or src_rect.size.y <= 0.0:
+		return
+	var anchor: Vector2 = LxSpriteSheet._to_vec2(pinfo.get("anchor", null), _sheet.default_anchor)
+	var ci: RID = get_canvas_item()
+	RenderingServer.canvas_item_clear(ci)
+	if _shadow_poly.size() >= 3:
+		RenderingServer.canvas_item_add_polygon(ci, _shadow_poly, PackedColorArray([Color(PAL["void"] as Color, 0.32)]))
+	if flip_x:
+		RenderingServer.canvas_item_add_set_transform(ci, Transform2D(Vector2(-1.0, 0.0), Vector2(0.0, 1.0), Vector2.ZERO))
+	RenderingServer.canvas_item_add_texture_rect_region(ci, Rect2((-anchor).round(), src_rect.size), _sheet.tex.get_rid(), src_rect)
+	if flip_x:
+		RenderingServer.canvas_item_add_set_transform(ci, Transform2D.IDENTITY)

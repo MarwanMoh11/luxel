@@ -320,16 +320,16 @@
       "kind": "bramble_knight",
       "pos": [
         216,
-        376
+        344
       ],
       "route": [
         [
           184,
-          376
+          344
         ],
         [
           248,
-          376
+          344
         ]
       ],
       "perches": [],
@@ -340,8 +340,8 @@
       "id": "sporecap_3_3",
       "kind": "sporecap",
       "pos": [
-        184,
-        424
+        200,
+        464
       ],
       "route": [],
       "perches": [],

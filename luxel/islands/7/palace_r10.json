@@ -529,7 +529,17 @@
       "once": true,
       "do": [
         {
+          "set_flag": "palace_mirror_chord"
+        },
+        {
           "set_flag": "palace_balcony_short"
+        },
+        {
+          "set_var": {
+            "scope": "dungeon:palace",
+            "name": "world_face",
+            "value": "silver"
+          }
         },
         {
           "sfx": "palace_chord_chime"
@@ -730,32 +740,16 @@
       {
         "op": "goto",
         "to": [
-          280,
-          296
+          448,
+          184
         ],
-        "tol": 6
-      },
-      {
-        "op": "interact",
-        "target": "pool_r10_s"
-      },
-      {
-        "op": "expect",
-        "var": "world_face==black"
+        "tol": 10
       },
       {
         "op": "goto",
         "to": [
-          232,
-          300
-        ],
-        "tol": 4
-      },
-      {
-        "op": "goto",
-        "to": [
-          232,
-          104
+          456,
+          64
         ],
         "tol": 10
       },

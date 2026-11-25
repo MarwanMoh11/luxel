@@ -315,8 +315,11 @@ static func setup_ground_visual(region: LxRegionLoader) -> Sprite2D:
 	if tex == null: return null
 	var sp := Sprite2D.new()
 	sp.name = "PaintedGround"; sp.texture = tex; sp.centered = false
-	sp.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST; sp.z_index = -10
+	sp.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST; sp.z_as_relative = false; sp.z_index = -10
 	region.add_child(sp)
+	var ci: RID = sp.get_canvas_item()
+	RenderingServer.canvas_item_clear(ci)
+	RenderingServer.canvas_item_add_texture_rect(ci, Rect2(Vector2.ZERO, tex.get_size()), tex.get_rid())
 	return sp
 
 

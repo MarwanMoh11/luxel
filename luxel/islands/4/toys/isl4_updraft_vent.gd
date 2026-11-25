@@ -31,6 +31,7 @@ var _vars_bound: LxWorldState = null
 
 func _toy_setup() -> void:
 	kind = "updraft_vent"
+	z_as_relative = false
 	z_index = -4
 	vent_radius = maxf(10.0, float(props.get("radius", 22.0)))
 	radius = vent_radius
@@ -190,7 +191,8 @@ func _draw() -> void:
 			draw_rect(Rect2(-5.0, sy, 10.0, 1.0), c_sky)
 
 	if not blowing:
-		# Dormant center pip
+		# Dormant center pip + faint boundary ring so inactive vents still read clearly
+		draw_arc(Vector2.ZERO, vent_radius - 2.0, 0.0, TAU, 16, Color(c_sky, 0.24), 1.0)
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_dusk)
 		return
 

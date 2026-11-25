@@ -276,7 +276,7 @@
       "kind": "npc",
       "pos": [
         256,
-        56
+        72
       ],
       "props": {
         "folk": "tailor_spider",
@@ -376,8 +376,8 @@
       "id": "chest_court_r1_tribute",
       "kind": "chest",
       "pos": [
-        360,
-        104
+        344,
+        136
       ],
       "props": {
         "reward_kind": "shards",

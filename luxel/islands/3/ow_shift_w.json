@@ -506,7 +506,18 @@
       ]
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "ev_shift_w_intro",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL3_HINT_SHIFT"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Western Whispering Wood clearing showcasing the Shifting Woods rule: unlit wood_pin_lamp rotates wood_turn (0=Great Stump, 1=Amber Well, 2=Crown Bridge) when leaving unpinned, while lighting it pins the clearing; static S/E exits guarantee zero softlocks.",
     "kind": "puzzle",

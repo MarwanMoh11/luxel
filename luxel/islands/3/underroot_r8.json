@@ -255,8 +255,8 @@
       "id": "lamp_r8_se",
       "kind": "road_lamp",
       "pos": [
-        336,
-        248
+        312,
+        240
       ],
       "props": {
         "zone": "ur_r8",
@@ -279,8 +279,8 @@
       "id": "lm_r8_acorn_se",
       "kind": "ur_tiny_landmark",
       "pos": [
-        384,
-        236
+        352,
+        216
       ],
       "props": {
         "variant": "acorn_boulder",
@@ -291,8 +291,8 @@
       "id": "chest_underroot_r8_shards",
       "kind": "chest",
       "pos": [
-        248,
-        40
+        280,
+        48
       ],
       "props": {
         "reward_kind": "shards",

@@ -308,8 +308,8 @@
       "id": "chest_oak_r5b_shards",
       "kind": "chest",
       "pos": [
-        392,
-        152
+        368,
+        168
       ],
       "props": {
         "reward_kind": "shards",

@@ -154,11 +154,11 @@ class HollowOakPainter(ThemePainter):
         edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
         is_edge = edge_n | edge_s | edge_w | edge_e
 
-        # Warm heartwood boardwalk / woven-bark walkway
-        out = ramp_blend(("plum", "wine", "mauve"), np.clip(nb * 0.55 + 0.35, 0.0, 0.999), bg)
+        # Warm heartwood boardwalk / woven-bark walkway (calm, cohesive with living bark)
+        out = ramp_blend(("dusk", "plum", "wine"), np.clip(nb * 0.50 + 0.36, 0.0, 0.999), bg)
         # Wide calm 8px bark-plank seams
-        out = np.where((ly % 8 == 0) & (bg < 0.58), IX["dusk"], out)
-        out = np.where((ly % 8 == 1) & (nb > 0.52) & (bg < 0.36), IX["coral"], out)
+        out = np.where((ly % 8 == 0) & (bg < 0.58), IX["night"], out)
+        out = np.where((ly % 8 == 1) & (nb > 0.55) & (bg < 0.34), IX["mauve"], out)
         # Warm amber sap-studs near walkway edges
         in_edge = (
             ((~ctx["n_up_path"]) & (ly == 1))
@@ -167,7 +167,7 @@ class HollowOakPainter(ThemePainter):
             | ((~ctx["n_rt_path"]) & (lx == ts - 2))
         )
         out = np.where(in_edge & (((xs + ys) % 6) == 0), IX["apricot"], out)
-        out = np.where(is_edge & (bg < 0.78), IX["dusk"], out)
+        out = np.where(is_edge & (bg < 0.78), IX["night"], out)
         buf[mask] = out[mask]
 
     def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
@@ -247,14 +247,15 @@ class HollowOakPainter(ThemePainter):
             sh_ring = (~m_wall) & (~over) & ctx["m_walk"] & (dist_w <= 7.5) & (root_n > 0.52) & (bg < 0.35)
             buf[sh_ring] = SHADE_IX[buf[sh_ring]]
 
-        # 3. Terraced glowing shelf-fungus brackets clinging to south-facing bark walls!
+        # 3. Terraced glowing shelf-fungus brackets clinging to interior south-facing bark walls (skip map bottom row)
+        interior_south = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
         bx_id = xs // 24
         by_id = ys // ts
         bh = hash01_grid(bx_id, by_id, s.seed + 631)
         fx = (xs % 24) - 12
         fy = ly - (ts - 4)
         # Organic half-oval shelf fungus cap (width ~9px, height ~3px) on selected wall segments
-        has_fungus = m_wall & dn_open & (bh > 0.56)
+        has_fungus = interior_south & (bh > 0.56)
         cap = has_fungus & ((fx * fx) / 20.0 + (fy * fy) / 4.5 <= 1.0) & (fy <= 1)
         cap_top = cap & (fy <= -1)
         cap_mid = cap & (fy == 0)
@@ -266,10 +267,10 @@ class HollowOakPainter(ThemePainter):
         under_f = has_fungus & (ly == ts - 2) & (np.abs(fx) <= 4)
         buf[under_f] = IX["void"]
 
-        # 4. Warm sap-light hollows nestled in bark faces (opposite segments from shelf fungus)
-        sap_seg = m_wall & dn_open & (bh < 0.24) & (np.abs(fx) <= 2) & (ly >= ts - 5) & (ly <= ts - 2)
+        # 4. Warm sap-light hollows nestled in interior bark faces (opposite segments from shelf fungus)
+        sap_seg = interior_south & (bh < 0.24) & (np.abs(fx) <= 2) & (ly >= ts - 5) & (ly <= ts - 2)
         buf[sap_seg] = IX["coral"]
-        sap_core = m_wall & dn_open & (bh < 0.24) & (np.abs(fx) <= 1) & (ly >= ts - 4) & (ly <= ts - 3)
+        sap_core = interior_south & (bh < 0.24) & (np.abs(fx) <= 1) & (ly >= ts - 4) & (ly <= ts - 3)
         buf[sap_core] = IX["gold"]
 
         # 5. Subtle mossy root coping overhanging water basins (softens square pools like oak_r4b!)
@@ -325,38 +326,39 @@ class ConservatoryPainter(ThemePainter):
         slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 61)
 
         if sunlit:
-            # Warm sunlit conservatory limestone (harmonious with r1..r14, NOT orange desert sand!)
-            slab_f = np.clip(nb * 0.45 + slab_h * 0.35 + warm * 0.16, 0.0, 0.999)
-            out = ramp_blend(("dusk", "plum", "mauve", "stone"), slab_f, bg)
+            # Warm sunlit conservatory limestone (calm mid-bright ~95-110 luma, NOT blinding orange desert sand!)
+            slab_f = np.clip(nb * 0.45 + slab_h * 0.35 + warm * 0.14, 0.0, 0.999)
+            out = ramp_blend(("dusk", "plum", "mauve", "mauve"), slab_f, bg)
             is_seam = (sx == 0) | (sy == 0)
-            is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.42) | (bg < 0.35))
-            out = np.where(is_bev, IX["cream"], out)
+            is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.48) | (bg < 0.30))
+            out = np.where(is_bev, IX["stone"], out)
             out = np.where(is_seam & (bg < 0.72), IX["dusk"], out)
             # Soft warm sunlit conservatory glass rays drifting diagonally across limestone
-            ray = ((xs - ys * 0.55) % 64.0)
-            in_ray = (ray >= 12.0) & (ray <= 28.0) & (nb > 0.38)
-            out = np.where(in_ray & (~is_seam) & (bg < 0.28), IX["gold"], out)
-            # Occasional delicate rose/sky stained-glass floor reflection
-            pane_tint = ((xs - ys * 0.55) % 96.0)
-            out = np.where((pane_tint >= 52.0) & (pane_tint <= 64.0) & (~is_seam) & (bg < 0.22), IX["rose"], out)
+            ray = (xs - ys * 0.55) % 68.0
+            in_ray = (ray >= 12.0) & (ray <= 26.0) & (nb > 0.38)
+            out = np.where(in_ray & (~is_seam) & (bg < 0.34), IX["stone"], out)
+            out = np.where(in_ray & (~is_seam) & (nb > 0.58) & (bg < 0.22), IX["gold"], out)
+            # Occasional delicate rose stained-glass floor reflection
+            pane_tint = (xs - ys * 0.55) % 96.0
+            out = np.where((pane_tint >= 52.0) & (pane_tint <= 64.0) & (~is_seam) & (bg < 0.20), IX["rose"], out)
         else:
             # Wet stained-glass glasshouse flagstones (target walk_lum ~76-84)
             slab_f = np.clip(nb * 0.48 + slab_h * 0.36 + warm * 0.10, 0.0, 0.999)
-            out = ramp_blend(("dusk", "plum", "mauve"), slab_f, bg)
+            out = ramp_blend(("dusk", "dusk", "plum", "mauve"), slab_f, bg)
             is_seam = (sx == 0) | (sy == 0)
-            is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.48) | (bg < 0.28))
+            is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.52) | (bg < 0.24))
             out = np.where(is_bev, IX["stone"], out)
-            out = np.where(is_seam & (bg < 0.76), IX["night"], out)
+            out = np.where(is_seam & (bg < 0.78), IX["night"], out)
             # Subtle wet conservatory skylight reflections (diagonal stained-glass pools!)
             diag = (xs - ys * 0.6) % 72.0
-            pool_a = (diag >= 10.0) & (diag <= 22.0) & (nb > 0.45) & (~is_seam)
-            pool_b = (diag >= 42.0) & (diag <= 52.0) & (nb > 0.50) & (~is_seam)
-            out = np.where(pool_a & (bg < 0.26), IX["sky"], out)
-            out = np.where(pool_b & (bg < 0.22), IX["rose"], out)
+            pool_a = (diag >= 10.0) & (diag <= 22.0) & (nb > 0.48) & (~is_seam)
+            pool_b = (diag >= 42.0) & (diag <= 52.0) & (nb > 0.52) & (~is_seam)
+            out = np.where(pool_a & (bg < 0.24), IX["sky"], out)
+            out = np.where(pool_b & (bg < 0.20), IX["rose"], out)
             # Wet moss tucked softly into seams near water
             near_w = ctx["n_up_water"] | ctx["n_dn_water"] | ctx["n_lt_water"] | ctx["n_rt_water"]
             out = np.where(near_w & is_seam & (bg < 0.65), IX["teal"], out)
-            out = np.where(near_w & (nf < 0.05), IX["jade"], out)
+            out = np.where(near_w & (nf < 0.04), IX["jade"], out)
 
         buf[mask] = out[mask]
 
@@ -383,10 +385,10 @@ class ConservatoryPainter(ThemePainter):
             | ((~ctx["n_rt_path"]) & (lx == ts - 2))
         )
 
-        main = IX["stone"] if sunlit else IX["mauve"]
-        hi = IX["cream"] if sunlit else IX["stone"]
-        edge_c = IX["plum"] if sunlit else IX["dusk"]
-        trim_c = IX["gold"]
+        main = IX["mauve"] if sunlit else IX["plum"]
+        hi = IX["stone"] if sunlit else IX["mauve"]
+        edge_c = IX["dusk"]
+        trim_c = IX["gold"] if sunlit else IX["apricot"]
 
         out = np.full(buf.shape, main, dtype=np.uint8)
         out = np.where((nb > 0.54) & (bg < 0.42), hi, out)
@@ -439,8 +441,8 @@ class ConservatoryPainter(ThemePainter):
         out = np.where(mullion, IX["night"], out)
         out = np.where((rib_x == 2) & (rib_y > 1), IX["dusk"], out)
 
-        # South-facing glasshouse wall with arched stained-glass lancets & broken panes
-        south = dn_open & (ly >= ts - 7)
+        # South-facing glasshouse wall with arched stained-glass lancets & broken panes (interior walls only)
+        south = dn_open & (ly >= ts - 7) & (ctx["ty"] < ctx["h_t"] - 1)
         out = np.where(south & (ly == ts - 7), IX["stone"], out)  # carved limestone cornice
         out = np.where(south & (ly > ts - 7) & (ly < ts - 1), IX["dusk"], out)
         # Stained-glass lancet windows every 24px (width 10px: rib_x 7..16)
@@ -502,15 +504,16 @@ class ConservatoryPainter(ThemePainter):
         out = np.where((mist > 0.62) & (bg < 0.45), IX["deep"], np.where((mist > 0.46) & (bg < 0.50), IX["night"], IX["void"]))
 
         # Diagonal wrought-iron conservatory rafters & skylight truss grid receding in the chasm
-        rafter_a = np.abs(((xs + ys) % 48) - 24) <= 1
-        rafter_b = np.abs(((xs - ys) % 48) - 24) <= 1
+        rafter_a = np.abs(((xs + ys) % 44) - 22) <= 1
+        rafter_b = np.abs(((xs - ys) % 44) - 22) <= 1
         cross_rib = (ys % 32 == 16)
         truss = rafter_a | rafter_b | cross_rib
-        out = np.where(truss & (bg < 0.65), IX["night"], out)
-        # Subtle moonlight gleam on iron truss intersections
+        out = np.where(truss & (bg < 0.78), IX["night"], out)
+        # Clearer wrought-iron skylight rib catchlights tying floating islands together
         joint = rafter_a & rafter_b
-        out = np.where(joint, IX["dusk"], out)
-        out = np.where(truss & ((xs % 48 == 24) | (ys % 32 == 16)) & (bg < 0.25), IX["deep"], out)
+        out = np.where(joint, IX["mauve"], out)
+        out = np.where((rafter_a | rafter_b) & (bg < 0.35), IX["dusk"], out)
+        out = np.where(cross_rib & (bg < 0.45), IX["deep"], out)
 
         # Tiny twilight stars / drifting conservatory pollen
         st = hash01_grid(xs, ys, s.seed + 433)
@@ -609,10 +612,10 @@ class RainMausoleumPainter(ThemePainter):
         sy = ys % sh
         slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
 
-        slab_f = np.clip(nb * 0.48 + slab_h * 0.38 + warm * 0.08, 0.0, 0.999)
-        out = ramp_blend(("dusk", "plum", "mauve"), slab_f, bg)
+        slab_f = np.clip(nb * 0.48 + slab_h * 0.36 + warm * 0.08, 0.0, 0.999)
+        out = ramp_blend(("dusk", "dusk", "plum", "mauve"), slab_f, bg)
         is_seam = (sx == 0) | (sy == 0)
-        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.44) | (bg < 0.28))
+        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & ((slab_h > 0.50) | (bg < 0.24))
         out = np.where(is_bev, IX["stone"], out)
         out = np.where(is_seam & (bg < 0.78), IX["night"], out)
 
@@ -660,9 +663,10 @@ class RainMausoleumPainter(ThemePainter):
         bg = ctx["bg"]
         s = self.spec
 
-        # 1. Carved arched mausoleum niches every 32px along south-facing crypt walls
+        # 1. Carved arched mausoleum niches every 32px along interior south-facing crypt walls
+        interior_south = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
         ax = xs % 32
-        niche_zone = m_wall & dn_open & (ly >= ts - 6) & (ly <= ts - 2)
+        niche_zone = interior_south & (ly >= ts - 6) & (ly <= ts - 2)
         in_niche = niche_zone & (ax >= 12) & (ax <= 19) & ~((ly == ts - 6) & ((ax == 12) | (ax == 19)))
         # Carved arch frame outline
         niche_rim = (
@@ -681,7 +685,7 @@ class RainMausoleumPainter(ThemePainter):
         buf[urn_lip] = IX["mauve"]
 
         # 2. Vertical rain-streak gloss lines running down south stone faces (between niches)
-        streak = m_wall & dn_open & (~in_niche) & (ly >= ts - 5) & (ly < ts - 1) & ((xs % 11) == 3)
+        streak = interior_south & (~in_niche) & (ly >= ts - 5) & (ly < ts - 1) & ((xs % 11) == 3)
         buf[streak] = IX["sky"]
 
         # 3. Projecting carved stone pilasters & chamfered corner buttresses breaking 12/12 flat boxes
@@ -722,17 +726,17 @@ class CanopySprintPainter(ThemePainter):
         warm = ctx["warm"]
         s = self.spec
 
-        # Warm living oak-branch deck planking (NOT grey stone sewer bricks!)
-        ph = 6
+        # Warm living oak-branch deck planking (calm ~78 luma, NOT grey stone sewer bricks!)
+        ph = 8
         pr = ys // ph
         py = ys % ph
-        butt = (xs + pr * 13) % 28
-        phash = hash01_grid((xs + pr * 13) // 28, pr, s.seed + 73)
-        field = np.clip(nb * 0.45 + phash * 0.35 + warm * 0.14, 0.0, 0.999)
-        out = ramp_blend(("dusk", "plum", "wine", "mauve"), field, bg)
-        out = np.where((py == 0) & (bg < 0.58), IX["night"], out)
-        out = np.where((butt == 0) & (py > 0) & (bg < 0.45), IX["night"], out)
-        out = np.where((py == 1) & (phash > 0.62) & (bg < 0.35), IX["coral"], out)
+        butt = (xs + pr * 15) % 32
+        phash = hash01_grid((xs + pr * 15) // 32, pr, s.seed + 73)
+        field = np.clip(nb * 0.45 + phash * 0.32 + warm * 0.12, 0.0, 0.999)
+        out = ramp_blend(("dusk", "plum", "plum", "wine"), field, bg)
+        out = np.where((py == 0) & (bg < 0.56), IX["night"], out)
+        out = np.where((butt == 0) & (py > 0) & (bg < 0.44), IX["night"], out)
+        out = np.where((py == 1) & (phash > 0.68) & (bg < 0.32), IX["mauve"], out)
 
         # Mossy canopy fringe bordering the platform edges over the abyss
         abyss = ctx["m_pit"] | ctx["m_void"] | ctx["m_phantom"]

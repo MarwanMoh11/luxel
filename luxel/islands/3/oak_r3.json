@@ -229,8 +229,8 @@
       "id": "lamp_oak_r3_nw",
       "kind": "road_lamp",
       "pos": [
-        152,
-        48
+        120,
+        40
       ],
       "props": {
         "lit": true

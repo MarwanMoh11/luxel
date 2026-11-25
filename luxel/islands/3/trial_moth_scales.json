@@ -244,8 +244,8 @@
       "id": "lamp_scales_e",
       "kind": "road_lamp",
       "pos": [
-        352,
-        96
+        344,
+        104
       ],
       "props": {
         "lit": true

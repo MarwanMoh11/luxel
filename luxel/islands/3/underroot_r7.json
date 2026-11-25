@@ -282,8 +282,8 @@
       "id": "lm_r7_grass_nw",
       "kind": "ur_tiny_landmark",
       "pos": [
-        56,
-        184
+        44,
+        112
       ],
       "props": {
         "variant": "grass_cathedral",

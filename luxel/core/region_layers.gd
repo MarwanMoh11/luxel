@@ -39,6 +39,7 @@ func setup(region: LxRegionLoader, layer_specs: Array[Dictionary], base_grid: Ar
 	_base_grid = _clone_grid(base_grid)
 	_initialized = false
 	_ensure_overlay_nodes()
+	_preload_overlays()
 	if not _layers.is_empty():
 		apply(false)
 	else:
@@ -59,7 +60,12 @@ func clear() -> void:
 	_initialized = false
 	for sp: Variant in _overlay_sprites.values():
 		if sp is Node and is_instance_valid(sp as Node):
-			(sp as Node).queue_free()
+			var n: Node = sp as Node
+			if n is CanvasItem:
+				(n as CanvasItem).visible = false
+			if n.get_parent() != null:
+				n.get_parent().remove_child(n)
+			n.queue_free()
 	_overlay_sprites.clear()
 	if _greybox_overlay != null and is_instance_valid(_greybox_overlay):
 		_greybox_overlay.queue_redraw()
@@ -72,11 +78,13 @@ func _ensure_overlay_nodes() -> void:
 	if _overlay_root == null or not is_instance_valid(_overlay_root):
 		_overlay_root = Node2D.new()
 		_overlay_root.name = "LayerOverlays"
+		_overlay_root.z_as_relative = false
 		_overlay_root.z_index = -9
 		_region.add_child(_overlay_root)
 	if _greybox_overlay == null or not is_instance_valid(_greybox_overlay):
 		_greybox_overlay = Node2D.new()
 		_greybox_overlay.name = "LayerTileDraw"
+		_greybox_overlay.z_as_relative = false
 		_greybox_overlay.z_index = -9
 		_greybox_overlay.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		_greybox_overlay.draw.connect(_draw_changed_tiles)
@@ -384,6 +392,34 @@ static func _is_permanently_spent(it: LxInteractable) -> bool:
 	return false
 
 
+func _preload_overlays() -> void:
+	_ensure_overlay_nodes()
+	for layer: Dictionary in _layers:
+		var lid: String = str(layer.get("id", ""))
+		if not lid.is_empty() and not _overlay_sprites.has(lid):
+			_create_overlay_sprite(layer, lid)
+
+
+func _create_overlay_sprite(layer: Dictionary, lid: String) -> Sprite2D:
+	var tex: Texture2D = _load_layer_texture(layer, lid)
+	if tex == null:
+		return null
+	var sp := Sprite2D.new()
+	sp.name = "Overlay_" + lid
+	sp.texture = tex
+	sp.centered = false
+	sp.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	sp.z_as_relative = false
+	sp.z_index = -9
+	sp.visible = false
+	_overlay_root.add_child(sp)
+	var ci: RID = sp.get_canvas_item()
+	RenderingServer.canvas_item_clear(ci)
+	RenderingServer.canvas_item_add_texture_rect(ci, Rect2(Vector2.ZERO, tex.get_size()), tex.get_rid())
+	_overlay_sprites[lid] = sp
+	return sp
+
+
 func _sync_overlays(active_layers: Array[Dictionary]) -> void:
 	_ensure_overlay_nodes()
 	var active_map: Dictionary = {}
@@ -393,17 +429,7 @@ func _sync_overlays(active_layers: Array[Dictionary]) -> void:
 			continue
 		active_map[lid] = layer
 		if not _overlay_sprites.has(lid):
-			var tex: Texture2D = _load_layer_texture(layer, lid)
-			if tex != null:
-				var sp := Sprite2D.new()
-				sp.name = "Overlay_" + lid
-				sp.texture = tex
-				sp.centered = false
-				sp.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-				sp.z_as_relative = false
-				sp.z_index = -9
-				_overlay_root.add_child(sp)
-				_overlay_sprites[lid] = sp
+			_create_overlay_sprite(layer, lid)
 	for lid: Variant in _overlay_sprites.keys():
 		var sp: Sprite2D = _overlay_sprites[lid] as Sprite2D
 		if sp != null and is_instance_valid(sp):

@@ -214,7 +214,10 @@ func _clear_loaded() -> void:
 				c.free()
 	for root_node: Node2D in [_floor_interactables_root, _interactables_root, _enemies_root]:
 		if root_node != null:
-			for c: Node in root_node.get_children(): c.queue_free()
+			for c: Node in root_node.get_children():
+				if c is CanvasItem: (c as CanvasItem).visible = false
+				root_node.remove_child(c)
+				c.queue_free()
 
 # ---- Frozen Loader API (CONTRACTS.md) ----
 

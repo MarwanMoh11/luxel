@@ -160,8 +160,8 @@
       "id": "lamp_r11_se",
       "kind": "road_lamp",
       "pos": [
-        368,
-        252
+        360,
+        232
       ],
       "props": {
         "zone": "lm_r11",

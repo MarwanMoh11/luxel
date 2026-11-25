@@ -133,7 +133,7 @@
       "id": "lamp_r11_sw",
       "kind": "road_lamp",
       "pos": [
-        96,
+        128,
         256
       ],
       "props": {
@@ -181,8 +181,8 @@
       "id": "lm_r11_acorn_sw",
       "kind": "ur_tiny_landmark",
       "pos": [
-        76,
-        248
+        112,
+        244
       ],
       "props": {
         "variant": "acorn_boulder",

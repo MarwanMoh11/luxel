@@ -276,6 +276,18 @@
         "zone": "lm_r2",
         "lit": true
       }
+    },
+    {
+      "id": "lore_lm_r2_warp",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        248
+      ],
+      "props": {
+        "string_id": "ISL3_LM_R2_HINT",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [

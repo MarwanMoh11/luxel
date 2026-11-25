@@ -373,6 +373,18 @@
         "variant": "acorn_boulder",
         "flip_x": false
       }
+    },
+    {
+      "id": "lore_ur_r2_shade",
+      "kind": "lore_stone",
+      "pos": [
+        248,
+        232
+      ],
+      "props": {
+        "string_id": "ISL3_UR_R2_HINT",
+        "icon": "sun"
+      }
     }
   ],
   "enemies": [],

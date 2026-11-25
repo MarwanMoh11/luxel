@@ -209,7 +209,7 @@
       "id": "lp_oak_r10_bounce_nw",
       "kind": "light_plant",
       "pos": [
-        128,
+        112,
         104
       ],
       "props": {
@@ -237,8 +237,8 @@
       "id": "lamp_oak_r10_sw",
       "kind": "road_lamp",
       "pos": [
-        168,
-        224
+        184,
+        232
       ],
       "props": {
         "lit": true
@@ -466,9 +466,9 @@
         "op": "goto",
         "to": [
           240,
-          72
+          68
         ],
-        "tol": 8.0
+        "tol": 4.0
       },
       {
         "op": "interact",
