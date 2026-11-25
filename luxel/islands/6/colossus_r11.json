@@ -139,7 +139,7 @@
       "kind": "temper_anvil",
       "pos": [
         196,
-        296
+        280
       ],
       "props": {
         "mode": "lance",
@@ -151,7 +151,7 @@
       "kind": "temper_anvil",
       "pos": [
         348,
-        296
+        280
       ],
       "props": {
         "mode": "scatter",
@@ -639,7 +639,7 @@
         "op": "goto",
         "to": [
           336,
-          296
+          280
         ],
         "tol": 6.0
       },

@@ -112,6 +112,6 @@
     {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [184, 304], "layer": "sort"},
     {"sheet": "theme_wick_house", "prop": "cottage_dining_table", "pos": [128, 124], "layer": "sort"},
     {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [276, 136], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [72, 236], "layer": "sort"}
+    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [104, 236], "layer": "sort"}
   ]
 }

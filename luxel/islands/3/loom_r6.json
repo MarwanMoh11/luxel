@@ -184,7 +184,9 @@
         144
       ],
       "radius": 52,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "mauve",
+      "secondary": "plum"
     },
     {
       "kind": "inlay",

@@ -25,16 +25,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        164,
-        100,
-        72,
-        104
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "circle",
       "pos": [
         64,

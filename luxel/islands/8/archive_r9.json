@@ -418,6 +418,28 @@
       ],
       "tint": "cool",
       "shear": 0.15
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        176
+      ],
+      "radius": 30,
+      "style": "compass",
+      "color": "sky",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        176
+      ],
+      "radius": 30,
+      "style": "ritual",
+      "color": "rose",
+      "secondary": "cream"
     }
   ],
   "layers": [],

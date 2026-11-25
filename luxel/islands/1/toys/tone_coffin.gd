@@ -308,15 +308,28 @@ func _draw() -> void:
 	var lid_hi: Color = PAL["ice"] as Color if state == State.FROZEN else (PAL["gold"] as Color if state == State.SLIDING else c_stone)
 	LxToyDraw.draw_bevel_box(self, r, lid_dark, lid_mid, lid_hi, c_void)
 
-	# Carved recessed cross/slab inlay (high contrast in greyscale)
+	# Carved recessed sarcophagus masonry, brass clasps & iron handles
 	var inner := Rect2(r.position + Vector2(3.0, 3.0), r.size - Vector2(6.0, 6.0))
 	draw_rect(inner, c_night, false, 1.0)
+	var clasp_col: Color = PAL["gold"] as Color if state == State.SLIDING else (PAL["ice"] as Color if state == State.FROZEN else PAL["apricot"] as Color)
+	draw_rect(Rect2(r.position + Vector2(2.0, 2.0), Vector2(2.0, 2.0)), clasp_col)
+	draw_rect(Rect2(Vector2(r.end.x - 4.0, r.position.y + 2.0), Vector2(2.0, 2.0)), clasp_col)
+	draw_rect(Rect2(Vector2(r.position.x + 2.0, r.end.y - 4.0), Vector2(2.0, 2.0)), clasp_col)
+	draw_rect(Rect2(r.end - Vector2(4.0, 4.0), Vector2(2.0, 2.0)), clasp_col)
 	if size.x >= size.y:
 		draw_line(Vector2(inner.position.x + 2.0, 0.0), Vector2(inner.end.x - 2.0, 0.0), lid_hi, 1.0)
 		draw_line(Vector2(-3.0, inner.position.y + 1.0), Vector2(-3.0, inner.end.y - 1.0), lid_hi, 1.0)
+		draw_rect(Rect2(r.position.x + 6.0, r.position.y - 1.0, 4.0, 2.0), c_stone)
+		draw_rect(Rect2(r.end.x - 10.0, r.position.y - 1.0, 4.0, 2.0), c_stone)
+		draw_rect(Rect2(r.position.x + 6.0, r.end.y - 1.0, 4.0, 2.0), c_dusk)
+		draw_rect(Rect2(r.end.x - 10.0, r.end.y - 1.0, 4.0, 2.0), c_dusk)
 	else:
 		draw_line(Vector2(0.0, inner.position.y + 2.0), Vector2(0.0, inner.end.y - 2.0), lid_hi, 1.0)
 		draw_line(Vector2(inner.position.x + 1.0, -3.0), Vector2(inner.end.x - 1.0, -3.0), lid_hi, 1.0)
+		draw_rect(Rect2(r.position.x - 1.0, r.position.y + 6.0, 2.0, 4.0), c_stone)
+		draw_rect(Rect2(r.end.x - 1.0, r.position.y + 6.0, 2.0, 4.0), c_dusk)
+		draw_rect(Rect2(r.position.x - 1.0, r.end.y - 10.0, 2.0, 4.0), c_stone)
+		draw_rect(Rect2(r.end.x - 1.0, r.end.y - 10.0, 2.0, 4.0), c_dusk)
 
 	# State icon & Dusk ice crystal rim + timer bar
 	if state == State.FROZEN:

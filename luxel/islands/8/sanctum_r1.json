@@ -614,5 +614,6 @@
         "exit": "exit_sanctum_r1_north"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

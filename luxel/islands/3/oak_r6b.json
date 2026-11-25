@@ -36,16 +36,6 @@
       "secondary": "gold"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        144,
-        192,
-        128,
-        48
-      ],
-      "color": "jade"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         208,

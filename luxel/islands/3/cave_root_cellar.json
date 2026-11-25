@@ -25,16 +25,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        132,
-        148,
-        72,
-        40
-      ],
-      "color": "jade"
-    },
-    {
       "kind": "stain",
       "pos": [
         72,

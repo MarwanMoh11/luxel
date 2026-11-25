@@ -326,6 +326,42 @@
         32
       ],
       "color": "plum"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        56,
+        144
+      ],
+      "radius": 26,
+      "style": "compass",
+      "color": "ice",
+      "secondary": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        112,
+        240,
+        64
+      ],
+      "style": "ornate",
+      "color": "deep",
+      "hi": "blue",
+      "trim": "ice",
+      "edge": "night"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        144
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "sky",
+      "secondary": "rose"
     }
   ],
   "layers": [],

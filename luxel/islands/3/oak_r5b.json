@@ -25,16 +25,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        96,
-        32,
-        288,
-        80
-      ],
-      "color": "apricot"
-    },
-    {
       "kind": "cracks",
       "pos": [
         104,

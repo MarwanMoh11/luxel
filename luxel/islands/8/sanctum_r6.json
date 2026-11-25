@@ -378,6 +378,30 @@
       "style": "mosaic",
       "color": "gold",
       "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 52,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        64,
+        64,
+        224
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
     }
   ],
   "layers": [],
@@ -432,5 +456,6 @@
         "flag": "great_lamp_8"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

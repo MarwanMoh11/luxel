@@ -430,6 +430,43 @@
       ],
       "tint": "warm",
       "shear": 0.35
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        160,
+        144,
+        96
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        328,
+        208
+      ],
+      "radius": 30,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        64,
+        176,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
     }
   ],
   "triggers": [],

@@ -384,6 +384,26 @@
       ],
       "tint": "cool",
       "shear": 0.2
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        176,
+        384,
+        16
+      ],
+      "color": "ice"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        64,
+        384,
+        16
+      ],
+      "color": "ice"
     }
   ],
   "layers": [

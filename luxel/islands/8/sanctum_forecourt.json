@@ -463,6 +463,43 @@
         304
       ],
       "color": "wine"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        272,
+        64,
+        64,
+        288
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        128,
+        208,
+        352,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        304,
+        224
+      ],
+      "radius": 44,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "rose"
     }
   ],
   "layers": [],
@@ -509,5 +546,6 @@
         "exit": "exit_to_sanctum_r1"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

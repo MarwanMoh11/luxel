@@ -514,6 +514,36 @@
         48
       ],
       "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        64,
+        320,
+        16
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        160,
+        320,
+        16
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        240,
+        320,
+        16
+      ],
+      "color": "gold"
     }
   ],
   "layers": [

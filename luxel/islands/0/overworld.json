@@ -101,13 +101,13 @@
     {
       "id": "npc_hub_grandma",
       "kind": "hub_npc",
-      "pos": [216, 136],
+      "pos": [268, 212],
       "props": {
         "folk": "candle_grandma",
         "routine": [
-          {"pos": [216, 136], "wait": 3.0, "anim": "idle"},
-          {"pos": [152, 112], "wait": 2.4, "anim": "happy"},
-          {"pos": [256, 152], "wait": 2.8, "anim": "idle"}
+          {"pos": [268, 212], "wait": 3.4, "anim": "happy"},
+          {"pos": [216, 148], "wait": 2.6, "anim": "idle"},
+          {"pos": [156, 164], "wait": 2.4, "anim": "idle"}
         ],
         "bubbles": [
           ["home", "lantern", "heart"],

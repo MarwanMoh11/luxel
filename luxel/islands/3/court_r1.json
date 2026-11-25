@@ -36,16 +36,6 @@
       "secondary": "cream"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        120,
-        80,
-        144,
-        64
-      ],
-      "color": "apricot"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         192,

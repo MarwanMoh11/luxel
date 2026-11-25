@@ -178,14 +178,39 @@ func get_light_pool() -> Vector4:
 func _draw() -> void:
 	if not active:
 		return
-	_draw_ground_shadow(10.0, 3.0, Vector2(0.0, 2.0))
+	_draw_ground_shadow(11.0, 3.5, Vector2(0.0, 2.0))
 	var acc: Color = LxPalette.color(_get_plinth_accent(), "gold")
-	draw_rect(Rect2(-9.0, -16.0, 18.0, 18.0), LxPalette.PAL["void"])
-	draw_rect(Rect2(-8.0, -15.0, 16.0, 16.0), LxPalette.PAL["dusk"])
-	draw_rect(Rect2(-7.0, -14.0, 14.0, 3.0), acc if not trial_running else LxPalette.PAL["lime"])
-	LxBubble.draw_icon(self, _get_plinth_icon(), Vector2(-4.0, -10.0), 1.0)
-	# 3 saved medal pips along plinth base
+	var c_void: Color = LxPalette.PAL["void"]
+	var c_night: Color = LxPalette.PAL["night"]
+	var c_dusk: Color = LxPalette.PAL["dusk"]
+	var c_stone: Color = LxPalette.PAL["stone"]
+	var c_cream: Color = LxPalette.PAL["cream"]
+	var top_col: Color = LxPalette.PAL["lime"] if trial_running else acc
+	# Stepped stone & timber plinth base
+	draw_rect(Rect2(-11.0, -3.0, 22.0, 6.0), c_void)
+	draw_rect(Rect2(-10.0, -2.0, 20.0, 4.0), c_dusk)
+	draw_rect(Rect2(-10.0, -2.0, 20.0, 1.0), c_stone)
+	# Ornate lectern pillar & brass crown
+	draw_rect(Rect2(-9.0, -17.0, 18.0, 15.0), c_void)
+	draw_rect(Rect2(-8.0, -16.0, 16.0, 13.0), LxPalette.PAL["wine"])
+	draw_rect(Rect2(-10.0, -18.0, 20.0, 4.0), c_void)
+	draw_rect(Rect2(-9.0, -17.0, 18.0, 2.0), top_col)
+	draw_rect(Rect2(-8.0, -17.0, 16.0, 1.0), c_cream)
+	# Recessed dark crest plate for trial emblem
+	draw_rect(Rect2(-6.0, -13.0, 12.0, 10.0), c_night)
+	draw_rect(Rect2(-6.0, -13.0, 1.0, 1.0), top_col)
+	draw_rect(Rect2(5.0, -13.0, 1.0, 1.0), top_col)
+	LxBubble.draw_icon(self, _get_plinth_icon(), Vector2(-4.0, -12.0), 1.0)
+	# Active flame beacon above crown when trial is live
+	if trial_running:
+		draw_rect(Rect2(-2.0, -21.0, 4.0, 3.0), LxPalette.PAL["lime"])
+		draw_rect(Rect2(-1.0, -20.0, 2.0, 2.0), c_cream)
+	# 3 saved medal sockets inset on stepped base
 	var best_m: int = LxHubState.get_minigame_medal(mg_id)
 	for mi: int in range(3):
 		var mc: Color = LxPalette.PAL["gold"] if mi == 2 else (LxPalette.PAL["ice"] if mi == 1 else LxPalette.PAL["apricot"])
-		draw_rect(Rect2(-7.0 + float(mi * 6), 3.0, 4.0, 3.0), mc if best_m > mi else LxPalette.PAL["night"])
+		var mx: float = -7.0 + float(mi * 6)
+		draw_rect(Rect2(mx - 1.0, 2.0, 6.0, 5.0), c_void)
+		draw_rect(Rect2(mx, 3.0, 4.0, 3.0), mc if best_m > mi else c_night)
+		if best_m > mi:
+			draw_rect(Rect2(mx, 3.0, 1.0, 1.0), c_cream)

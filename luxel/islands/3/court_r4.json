@@ -6,47 +6,104 @@
   "theme": "briar_court",
   "name_key": "ISL3_COURT_R4_NAME",
   "music": "isl3_boss_minor_p1",
-  "spawn": [256, 272],
+  "spawn": [
+    256,
+    272
+  ],
   "zones": [
     {
       "id": "court_r4",
       "name_key": "ISL3_COURT_R4_NAME",
-      "rect": [0, 0, 512, 320],
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
       "dark": true
     }
   ],
   "decor": [
-    { "kind": "circle", "pos": [256, 160], "radius": 52, "style": "ritual", "color": "gold", "secondary": "cream" },
-    { "kind": "inlay", "rect": [144, 112, 224, 96], "color": "apricot" },
-    { "kind": "light_shaft", "pos": [256, 80], "size": [64, 96], "tint": "warm", "shear": 0.15 }
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 52,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        80
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "warm",
+      "shear": 0.15
+    }
   ],
   "exits": [
     {
       "id": "exit_court_r4_south",
-      "rect": [240, 304, 32, 16],
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
       "to_region": "court_r3",
-      "to_spawn": [224, 48],
+      "to_spawn": [
+        224,
+        48
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_court_r4_west_sc",
-      "rect": [0, 144, 16, 48],
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
       "to_region": "court_r1",
-      "to_spawn": [192, 176],
+      "to_spawn": [
+        192,
+        176
+      ],
       "requires_moves": [],
-      "requires_flags": ["briar_court_done"],
+      "requires_flags": [
+        "briar_court_done"
+      ],
       "locked_door_id": "door_court_r4_sc_w"
     },
     {
       "id": "exit_court_r4_north",
-      "rect": [240, 0, 32, 16],
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
       "to_region": "ow_shift_n",
-      "to_spawn": [224, 64],
+      "to_spawn": [
+        224,
+        64
+      ],
       "one_way": true,
       "requires_moves": [],
-      "requires_flags": ["briar_court_done"],
+      "requires_flags": [
+        "briar_court_done"
+      ],
       "locked_door_id": "door_court_r4_arch"
     }
   ],
@@ -54,57 +111,329 @@
     {
       "id": "boss_briar_arbiter",
       "kind": "briar_arbiter",
-      "pos": [256, 152],
+      "pos": [
+        256,
+        152
+      ],
       "route": [],
       "zone": "court_r4",
       "leash": 0
     }
   ],
   "interactables": [
-    { "id": "anc_court_r4", "kind": "room_anchor", "pos": [256, 272], "props": { "auto": true } },
-    { "id": "seed_arch_r4", "kind": "court_seed_arch", "pos": [256, 80], "props": { "requires_flag": "briar_court_done" } },
-    { "id": "stump_r4_mercy", "kind": "stump_shrink", "pos": [256, 216], "props": { "target_size": "toggle" } },
-    { "id": "dew_r4_mercy", "kind": "dew_lens", "pos": [200, 216], "props": { "movable": true, "rail_axis": "x" } },
-    { "id": "t_r4_fire_w", "kind": "blue_transformer", "pos": [128, 112], "props": { "angle_deg": 45, "rotatable": true, "movable": false, "transforms_to": "blue" } },
-    { "id": "t_r4_fire_e", "kind": "blue_transformer", "pos": [384, 112], "props": { "angle_deg": 135, "rotatable": true, "movable": false, "transforms_to": "blue" } },
-    { "id": "chest_court_r4_ember", "kind": "chest", "pos": [328, 80], "props": { "reward_kind": "ember_piece", "reward": "ember_piece", "amount": 1, "requires_flags": ["briar_court_done"] } },
-    { "id": "door_court_r4_sc_w", "kind": "door", "pos": [24, 168], "props": { "door_kind": "shortcut_door", "size": [16, 48], "requires_flags": ["briar_court_done"] } },
-    { "id": "door_court_r4_arch", "kind": "door", "pos": [256, 24], "props": { "door_kind": "ward_barrier", "size": [32, 16], "requires_flags": ["briar_court_done"] } },
-    { "id": "lamp_court_r4_nw", "kind": "road_lamp", "pos": [160, 64], "props": { "lit": true } },
-    { "id": "lamp_court_r4_ne", "kind": "road_lamp", "pos": [400, 64], "props": { "lit": true } },
-    { "id": "lamp_court_r4_sw", "kind": "road_lamp", "pos": [128, 256], "props": { "lit": true } },
-    { "id": "lamp_court_r4_se", "kind": "road_lamp", "pos": [352, 256], "props": { "lit": true } },
-    { "id": "lamp_court_r4_w", "kind": "road_lamp", "pos": [64, 136], "props": { "lit": true } },
-    { "id": "lamp_court_r4_e", "kind": "road_lamp", "pos": [448, 136], "props": { "lit": true } }
+    {
+      "id": "anc_court_r4",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "seed_arch_r4",
+      "kind": "court_seed_arch",
+      "pos": [
+        256,
+        80
+      ],
+      "props": {
+        "requires_flag": "briar_court_done"
+      }
+    },
+    {
+      "id": "stump_r4_mercy",
+      "kind": "stump_shrink",
+      "pos": [
+        256,
+        216
+      ],
+      "props": {
+        "target_size": "toggle"
+      }
+    },
+    {
+      "id": "dew_r4_mercy",
+      "kind": "dew_lens",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "x"
+      }
+    },
+    {
+      "id": "t_r4_fire_w",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        112
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "t_r4_fire_e",
+      "kind": "blue_transformer",
+      "pos": [
+        384,
+        112
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false,
+        "transforms_to": "blue"
+      }
+    },
+    {
+      "id": "chest_court_r4_ember",
+      "kind": "chest",
+      "pos": [
+        328,
+        80
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "requires_flags": [
+          "briar_court_done"
+        ]
+      }
+    },
+    {
+      "id": "door_court_r4_sc_w",
+      "kind": "door",
+      "pos": [
+        24,
+        168
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "briar_court_done"
+        ]
+      }
+    },
+    {
+      "id": "door_court_r4_arch",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "briar_court_done"
+        ]
+      }
+    },
+    {
+      "id": "lamp_court_r4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        64
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        352,
+        256
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "scenery": [
-    { "sheet": "theme_briar_court", "prop": "stone_verdict_throne", "pos": [256, 54], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "rose_thorn_arch", "pos": [168, 52], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [96, 120], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [448, 112], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [168, 264], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [344, 264], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [256, 160], "layer": "ground", "shadow": false }
+    {
+      "sheet": "theme_briar_court",
+      "prop": "stone_verdict_throne",
+      "pos": [
+        256,
+        54
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "rose_thorn_arch",
+      "pos": [
+        168,
+        52
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        96,
+        120
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        448,
+        112
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        168,
+        264
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        344,
+        264
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        256,
+        160
+      ],
+      "layer": "ground",
+      "shadow": false
+    }
   ],
   "layers": [
     {
       "id": "v2_mercy",
       "when": "court_v2==mercy",
       "tiles": [
-        [14, 12, 4, 3, "ground"]
+        [
+          14,
+          12,
+          4,
+          3,
+          "ground"
+        ]
       ],
-      "enable": ["stump_r4_mercy", "dew_r4_mercy"],
-      "disable": ["t_r4_fire_w", "t_r4_fire_e"]
+      "enable": [
+        "stump_r4_mercy",
+        "dew_r4_mercy"
+      ],
+      "disable": [
+        "t_r4_fire_w",
+        "t_r4_fire_e"
+      ]
     },
     {
       "id": "v2_fire",
       "when": "court_v2==fire",
       "tiles": [
-        [7, 6, 2, 2, "path"],
-        [23, 6, 2, 2, "path"]
+        [
+          7,
+          6,
+          2,
+          2,
+          "path"
+        ],
+        [
+          23,
+          6,
+          2,
+          2,
+          "path"
+        ]
       ],
-      "enable": ["t_r4_fire_w", "t_r4_fire_e"],
-      "disable": ["stump_r4_mercy", "dew_r4_mercy"]
+      "enable": [
+        "t_r4_fire_w",
+        "t_r4_fire_e"
+      ],
+      "disable": [
+        "stump_r4_mercy",
+        "dew_r4_mercy"
+      ]
     }
   ],
   "events": [
@@ -113,7 +442,9 @@
       "on": "flag:briar_court_done",
       "once": true,
       "do": [
-        { "narrate": "ISL3_COURT_PASS" }
+        {
+          "narrate": "ISL3_COURT_PASS"
+        }
       ]
     }
   ],
@@ -128,16 +459,45 @@
     "why": "Emotional and mechanical climax of the Briar Court set piece unlocking The Hollow Oak",
     "exit": "exit_court_r4_north",
     "start": {
-      "vars": { "court_v2": "fire" },
-      "flags": ["underroot_done", "loom_done"],
-      "moves": ["bolt", "dash", "throw", "prism"]
+      "vars": {
+        "court_v2": "fire"
+      },
+      "flags": [
+        "underroot_done",
+        "loom_done"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
     },
     "solution": [
-      { "op": "clear", "timeout": 150.0 },
-      { "op": "expect", "flag": "briar_court_done" },
-      { "op": "goto", "to": [328, 96], "tol": 8.0 },
-      { "op": "interact", "target": "chest_court_r4_ember" },
-      { "op": "expect_exit", "exit": "exit_court_r4_north" }
+      {
+        "op": "clear",
+        "timeout": 150.0
+      },
+      {
+        "op": "expect",
+        "flag": "briar_court_done"
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          96
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_court_r4_ember"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_court_r4_north"
+      }
     ]
   }
 }

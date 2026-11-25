@@ -34,16 +34,6 @@
       "style": "ritual",
       "color": "coral",
       "secondary": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        160,
-        80,
-        128,
-        96
-      ],
-      "color": "apricot"
     }
   ],
   "exits": [

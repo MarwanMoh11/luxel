@@ -390,6 +390,30 @@
         32
       ],
       "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        128,
+        160,
+        64
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "apricot",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 44,
+      "style": "sun",
+      "color": "gold",
+      "secondary": "apricot"
     }
   ],
   "layers": [],

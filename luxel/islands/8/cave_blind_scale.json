@@ -335,6 +335,30 @@
         32
       ],
       "color": "wine"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        160
+      ],
+      "radius": 42,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        32,
+        224,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
     }
   ],
   "layers": [],

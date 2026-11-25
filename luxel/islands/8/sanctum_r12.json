@@ -395,8 +395,21 @@
         192
       ],
       "style": "ornate",
-      "color": "apricot",
-      "trim": "gold"
+      "color": "coral",
+      "hi": "apricot",
+      "trim": "gold",
+      "edge": "wine"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        144,
+        168
+      ],
+      "radius": 22,
+      "style": "sun",
+      "color": "gold",
+      "secondary": "cream"
     },
     {
       "kind": "rug",
@@ -408,7 +421,20 @@
       ],
       "style": "ornate",
       "color": "deep",
-      "trim": "sky"
+      "hi": "blue",
+      "trim": "ice",
+      "edge": "night"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        168
+      ],
+      "radius": 22,
+      "style": "compass",
+      "color": "sky",
+      "secondary": "ice"
     },
     {
       "kind": "rug",
@@ -420,7 +446,31 @@
       ],
       "style": "ornate",
       "color": "wine",
-      "trim": "rose"
+      "hi": "rose",
+      "trim": "cream",
+      "edge": "night"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        168
+      ],
+      "radius": 22,
+      "style": "ritual",
+      "color": "rose",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        56
+      ],
+      "radius": 18,
+      "style": "mosaic",
+      "color": "gold",
+      "secondary": "cream"
     },
     {
       "kind": "window_strip",

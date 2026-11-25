@@ -54,6 +54,58 @@ class WickHousePainter(ThemePainter):
         buf[glow] = IX["gold"]
 
 
+class TollHousePainter(ThemePainter):
+    """The Toll House: gilded ledger counting-house brass trim, pit rim studs, and warm hearthpools."""
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_walk = ctx["m_walk"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        # Brass-ruled ledger border running along north wall bases with gold corner rivets
+        rule_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 4) < 3)
+        buf[rule_n] = IX["apricot"]
+        buf[rule_n & ((xs % 16) == 0)] = IX["gold"]
+        # Brass guardrail studs along south/north pit rims for crisp figure-ground contrast
+        pit_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 3) & ((xs % 8) < 2)
+        buf[pit_s] = IX["gold"]
+        pit_n = m_walk & ctx["n_up_abyss"] & (ly == 2) & ((xs % 8) < 2)
+        buf[pit_n] = IX["apricot"]
+        # Subtle ledger column brass ticks on every 4th tile intersection
+        tick = m_walk & (lx == 0) & (ly == 0) & (((xs // ts) % 3) == 0) & (((ys // ts) % 2) == 0)
+        buf[tick] = IX["gold"]
+
+
+class EndlessStairPainter(ThemePainter):
+    """The Endless Stair: brass stair-rod highlights on treads and subtle starry rim shimmer."""
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_walk = ctx["m_walk"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        # Brass stair-rod glints at tread risers
+        rod = m_walk & (ly == 1) & ((xs % 12) == 2)
+        buf[rod] = IX["gold"]
+        # Rose-gold starlight coping along abyss drop-offs
+        edge_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 2) & ((xs % 6) < 2)
+        buf[edge_s] = IX["rose"]
+
+
+class BellSanctumPainter(ThemePainter):
+    """The Bell Sanctum: luminous obsidian-violet cathedral flagstones with gilded nave inlays."""
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_walk = ctx["m_walk"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        # Ornate gilded nave border strip beneath north cathedral walls
+        inlay_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 6) < 4)
+        buf[inlay_n] = IX["rose"]
+        buf[inlay_n & ((xs % 12) == 0)] = IX["gold"]
+        # Gilded lip studs along cathedral chasm rims so void edges pop clearly
+        rim_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 2) & ((xs % 8) < 3)
+        buf[rim_s] = IX["gold"]
+        rim_n = m_walk & ctx["n_up_abyss"] & (ly == 2) & ((xs % 8) < 3)
+        buf[rim_n] = IX["rose"]
+
+
 SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
     (
         ThemeSpec(
@@ -247,20 +299,20 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Toll House",
             island=8,
             floor_style="ledger_stone",
-            floor_ramp=("dusk", "mauve", "stone"),
+            floor_ramp=("dusk", "plum", "mauve", "stone"),
             floor_seam="night",
             floor_bevel="stone",
-            floor_accent_a="gold",
-            floor_accent_b="rose",
+            floor_accent_a="apricot",
+            floor_accent_b="gold",
             path_style="carpet_runner",
-            path_main="plum",
-            path_hi="wine",
-            path_edge="void",
+            path_main="wine",
+            path_hi="rose",
+            path_edge="night",
             path_trim="gold",
             wall_style="wainscot",
-            wall_cap=("void", "night", "dusk"),
+            wall_cap=("night", "dusk", "plum"),
             wall_lip="gold",
-            wall_face="dusk",
+            wall_face="plum",
             wall_face_hi="mauve",
             wall_base="void",
             water_style="moon_mirror",
@@ -271,20 +323,20 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             pit_style="crypt_abyss",
             void_style="crypt_abyss",
             rim_hi="gold",
-            rim_mid="rose",
+            rim_mid="apricot",
             bridge_style="stone_arch",
-            bridge_main="dusk",
+            bridge_main="plum",
             bridge_hi="mauve",
             bridge_rail="gold",
-            bridge_dark="void",
+            bridge_dark="night",
             seed=811,
             prop_sheet="theme_toll_house",
             door_sheet="theme_toll_house_doors",
             special_tiles=("D:carpet",),
             default_decor=("inlay", "rug", "circle"),
-            notes="The settings menu as architecture: ledger-ruled stone floor, dark counter paneling, crimson-gold runner.",
+            notes="The settings menu as architecture: gilded ledger-ruled stone floor, plum wainscot, crimson-gold runner.",
         ),
-        ThemePainter,
+        TollHousePainter,
     ),
     (
         ThemeSpec(
@@ -329,7 +381,52 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             default_decor=("circle", "inlay"),
             notes="Twelve-floor spiral ascent: stepped masonry treads with brass stair rods over bottomless star-void.",
         ),
-        ThemePainter,
+        EndlessStairPainter,
+    ),
+    (
+        ThemeSpec(
+            id="bell_sanctum",
+            name="The Bell Sanctum",
+            island=8,
+            floor_style="flagstone_crypt",
+            floor_ramp=("dusk", "plum", "mauve", "stone"),
+            floor_seam="night",
+            floor_bevel="stone",
+            floor_accent_a="rose",
+            floor_accent_b="gold",
+            path_style="carpet_runner",
+            path_main="wine",
+            path_hi="rose",
+            path_edge="night",
+            path_trim="gold",
+            wall_style="masonry",
+            wall_cap=("night", "dusk", "plum"),
+            wall_lip="gold",
+            wall_face="dusk",
+            wall_face_hi="mauve",
+            wall_base="void",
+            water_style="moon_mirror",
+            water_deep="void",
+            water_mid="night",
+            water_hi="deep",
+            water_foam="rose",
+            pit_style="star_chasm",
+            void_style="starry_cosmos",
+            rim_hi="gold",
+            rim_mid="rose",
+            bridge_style="stone_arch",
+            bridge_main="mauve",
+            bridge_hi="stone",
+            bridge_rail="gold",
+            bridge_dark="dusk",
+            seed=841,
+            prop_sheet="island8_scenery",
+            door_sheet="island8_doors",
+            special_tiles=("D:carpet",),
+            default_decor=("circle", "rug", "inlay"),
+            notes="Luminous obsidian-violet cathedral sanctum with gilded nave inlays, crimson choir carpets, and starry abyss chasms.",
+        ),
+        BellSanctumPainter,
     ),
     (
         ThemeSpec(

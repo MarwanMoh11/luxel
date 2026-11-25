@@ -57,7 +57,8 @@
         "sunflare"
       ],
       "requires_flags": [
-        "keepers_flame_8"
+        "keepers_flame_8",
+        "sanctum_bell_rung"
       ],
       "locked_door_id": "door_boss_8"
     },
@@ -280,11 +281,12 @@
       "id": "chain_sanctum_r5",
       "kind": "sanctum_bell_chain",
       "pos": [
-        248,
-        48
+        208,
+        42
       ],
       "props": {
-        "target_id": "door_sanctum_r5_threshold"
+        "target_id": "door_sanctum_r5_threshold",
+        "boss_door_id": "door_boss_8"
       }
     },
     {
@@ -303,7 +305,8 @@
           16
         ],
         "requires_flags": [
-          "keepers_flame_8"
+          "keepers_flame_8",
+          "sanctum_bell_rung"
         ]
       }
     },
@@ -560,6 +563,19 @@
         32
       ],
       "color": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        224,
+        128,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
     }
   ],
   "layers": [],
@@ -577,7 +593,7 @@
     "start": {
       "ember": 100
     },
-    "exit": "exit_sanctum_r5_north",
+    "exit": "exit_sanctum_r5_west",
     "solution": [
       {
         "op": "goto",
@@ -670,13 +686,29 @@
         "target": "chain_sanctum_r5"
       },
       {
-        "op": "interact",
-        "target": "door_boss_8"
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          200
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          48,
+          256
+        ],
+        "tol": 10.0
       },
       {
         "op": "expect_exit",
-        "exit": "exit_sanctum_r5_north"
+        "exit": "exit_sanctum_r5_west"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

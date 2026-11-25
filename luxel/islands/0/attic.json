@@ -60,14 +60,14 @@
     {
       "id": "npc_hub_moth_kid",
       "kind": "hub_npc",
-      "pos": [148, 112],
+      "pos": [168, 172],
       "props": {
         "folk": "moth_kid",
         "quest": "q_hub_moths",
         "routine": [
-          {"pos": [148, 112], "wait": 2.6, "anim": "happy"},
-          {"pos": [96, 128], "wait": 2.4, "anim": "idle"},
-          {"pos": [196, 144], "wait": 2.2, "anim": "happy"}
+          {"pos": [168, 172], "wait": 2.8, "anim": "happy"},
+          {"pos": [116, 148], "wait": 2.4, "anim": "idle"},
+          {"pos": [212, 164], "wait": 2.2, "anim": "happy"}
         ],
         "bubbles": [
           ["moth", "light_on", "happy"],

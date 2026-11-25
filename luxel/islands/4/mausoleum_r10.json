@@ -250,15 +250,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        256,
-        80,
-        80,
-        64
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         120,

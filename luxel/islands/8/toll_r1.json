@@ -281,7 +281,7 @@
       "kind": "toll_sensor",
       "pos": [
         376,
-        248
+        232
       ],
       "props": {
         "check": "sold_count>=1",
@@ -555,6 +555,17 @@
       ],
       "tint": "warm",
       "shear": 0.35
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        168
+      ],
+      "radius": 38,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "apricot"
     }
   ],
   "triggers": [],

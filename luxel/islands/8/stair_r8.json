@@ -319,7 +319,7 @@
       "sheet": "theme_endless_stair",
       "prop": "spiral_newel_pillar",
       "pos": [
-        304,
+        280,
         80
       ],
       "layer": "sort",
@@ -431,6 +431,53 @@
         32
       ],
       "color": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        112,
+        128,
+        256,
+        64
+      ],
+      "style": "ornate",
+      "color": "deep",
+      "hi": "blue",
+      "trim": "ice",
+      "edge": "night"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        160
+      ],
+      "radius": 48,
+      "style": "compass",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        144,
+        152
+      ],
+      "radius": 20,
+      "style": "mosaic",
+      "color": "ice",
+      "secondary": "sky"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        336,
+        152
+      ],
+      "radius": 20,
+      "style": "mosaic",
+      "color": "ice",
+      "secondary": "sky"
     }
   ],
   "layers": [],

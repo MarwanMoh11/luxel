@@ -97,7 +97,8 @@
       "props": {
         "angle_deg": 45,
         "movable": true,
-        "rotatable": true
+        "rotatable": true,
+        "persist_pos": false
       }
     },
     {

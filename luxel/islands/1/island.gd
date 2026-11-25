@@ -466,15 +466,14 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 
 func _on_lantern_picked_up(_pickup_id: String, _pos: Vector2) -> void:
 	if _events != null:
-		_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 5.5)
+		_events.prompt_requested.emit("PROMPT_AIM_SHOOT", "lx_fire", 2.8)
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
 	if _events == null:
 		return
 	if shrine_id == "shrine_dash" or move_id == "dash":
-		_emit_narration("MOVE_DASH_NAME", "title", 3.0)
-		_events.prompt_requested.emit("PROMPT_DASH", "lx_dash", 5.0)
+		_events.prompt_requested.emit("PROMPT_DASH", "lx_dash", 3.0)
 		_events.sfx_requested.emit("shrine_unlock", Vector2.ZERO, false)
 
 

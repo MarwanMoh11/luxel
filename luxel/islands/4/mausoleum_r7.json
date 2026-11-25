@@ -387,15 +387,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        192,
-        48,
-        64,
-        144
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         312,

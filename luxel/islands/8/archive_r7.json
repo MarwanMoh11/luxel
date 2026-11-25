@@ -420,6 +420,27 @@
         64
       ],
       "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        176
+      ],
+      "radius": 38,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        224,
+        112,
+        160,
+        128
+      ],
+      "color": "gold"
     }
   ],
   "layers": [],

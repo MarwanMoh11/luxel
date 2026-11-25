@@ -31,11 +31,29 @@ class RuleRuntime:
 
 	func tick(dt: float) -> void:
 		super.tick(dt)
+		_clamp_overworld_well_pull(dt)
 		LxI5StarNode.sync_region_constellations(region, dt, false)
 		_update_honest_preview()
 		if owner_rule != null:
 			owner_rule._sync_hud_badge(dt)
 		queue_redraw()
+
+	func _clamp_overworld_well_pull(dt: float) -> void:
+		if not (region_id in OVERWORLD_REGIONS):
+			return
+		if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
+			return
+		var w: LxWick = Lx.player as LxWick
+		var fv: Vector2 = w._field_vel
+		if fv.length_squared() <= 0.01:
+			return
+		# Keep overworld gravity wells tangible (slow visible struggle) yet always escapable on foot without Dash.
+		var mv: Vector2 = w.get_move_input()
+		if mv.length_squared() > 0.01 and mv.normalized().dot(fv.normalized()) < -0.15:
+			fv = fv.move_toward(Vector2.ZERO, 90.0 * dt)
+		if fv.length() > OW_WICK_FIELD_CAP:
+			fv = fv.normalized() * OW_WICK_FIELD_CAP
+		w._field_vel = fv
 
 	func _update_honest_preview() -> void:
 		_preview_pts = PackedVector2Array()

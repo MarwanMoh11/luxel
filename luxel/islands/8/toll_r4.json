@@ -243,7 +243,7 @@
       "props": {
         "door_type": "switch_door",
         "size": [
-          16,
+          14,
           16
         ],
         "requires_signals": [
@@ -474,6 +474,30 @@
       ],
       "tint": "cool",
       "shear": 0.3
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        112,
+        112,
+        224,
+        64
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 32,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "apricot"
     }
   ],
   "triggers": [],

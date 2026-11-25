@@ -177,7 +177,9 @@
         160
       ],
       "radius": 68,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "mauve",
+      "secondary": "plum"
     },
     {
       "kind": "compass",

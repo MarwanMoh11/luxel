@@ -612,6 +612,27 @@
         56
       ],
       "color": "rose"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 42,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        324,
+        416,
+        32
+      ],
+      "color": "gold"
     }
   ],
   "layers": [],
@@ -760,5 +781,6 @@
         "exit": "exit_sanctum_r13_north"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

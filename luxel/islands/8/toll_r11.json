@@ -317,6 +317,17 @@
       ],
       "tint": "warm",
       "shear": 0.3
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 48,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "cream"
     }
   ],
   "triggers": [],

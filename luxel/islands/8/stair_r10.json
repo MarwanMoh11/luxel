@@ -329,7 +329,7 @@
       "prop": "floating_stair_shard",
       "pos": [
         440,
-        88
+        64
       ],
       "layer": "sort",
       "flip_x": true,
@@ -393,6 +393,42 @@
         40
       ],
       "color": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        112,
+        224,
+        128
+      ],
+      "style": "ornate",
+      "color": "plum",
+      "hi": "rose",
+      "trim": "gold",
+      "edge": "void"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 58,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 34,
+      "style": "sun",
+      "color": "rose",
+      "secondary": "gold"
     }
   ],
   "layers": [],

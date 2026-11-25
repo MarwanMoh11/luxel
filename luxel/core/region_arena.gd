@@ -237,7 +237,9 @@ static func push_circle_out_of_tile(
 		best_d = db; best_p = Vector2(center.x, rect.end.y + radius)
 	if best_d < INF:
 		return best_p
-	return push_circle_out_of_rect(center, radius, rect)
+	# All 4 neighboring tiles are also solid (e.g., landing mid-water next to a wall):
+	# stay in place so void-respawn rescues Wick instead of shoving Wick into a wall tile.
+	return center
 
 
 static func can_place_rect_world(region: LxRegionLoader, rect: Rect2, ignore_id: String) -> bool:

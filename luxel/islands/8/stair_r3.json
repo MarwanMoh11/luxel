@@ -514,6 +514,27 @@
         48
       ],
       "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        64,
+        160,
+        160
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 36,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "rose"
     }
   ],
   "layers": [

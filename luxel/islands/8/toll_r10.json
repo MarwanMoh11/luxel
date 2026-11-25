@@ -265,7 +265,7 @@
       "props": {
         "door_type": "switch_door",
         "size": [
-          16,
+          14,
           16
         ],
         "requires_signals": [
@@ -506,6 +506,40 @@
       ],
       "tint": "rose",
       "shear": 0.3
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        128,
+        272,
+        80
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        176
+      ],
+      "radius": 36,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        48,
+        256,
+        32
+      ],
+      "color": "gold"
     }
   ],
   "triggers": [],

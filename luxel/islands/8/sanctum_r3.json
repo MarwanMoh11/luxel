@@ -392,6 +392,40 @@
         48
       ],
       "color": "plum"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 24,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        32,
+        176,
+        32
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        224,
+        96,
+        32
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
     }
   ],
   "layers": [],
@@ -464,5 +498,6 @@
         "exit": "exit_sanctum_r3_north"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }

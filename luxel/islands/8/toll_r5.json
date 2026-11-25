@@ -210,7 +210,7 @@
       "props": {
         "door_type": "switch_door",
         "size": [
-          16,
+          14,
           16
         ],
         "requires_signals": [
@@ -386,6 +386,30 @@
       ],
       "radius": 18,
       "style": "ink"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        128,
+        112,
+        192,
+        96
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 42,
+      "style": "compass",
+      "color": "gold",
+      "secondary": "cream"
     }
   ],
   "triggers": [],

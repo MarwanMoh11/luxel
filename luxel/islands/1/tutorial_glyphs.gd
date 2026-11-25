@@ -294,8 +294,9 @@ static func draw_stage1_shoot(ci: CanvasItem, wpos: Vector2, w_target: Vector2, 
 			d += 8.0
 	var br: float = 11.0 + (0.0 if fred else roundf(sin(clock * 4.0) * 1.2))
 	draw_target_brackets(ci, tpos.round(), br, c_cream if (fred or sin(clock * 4.0) > 0.2) else c_gold)
-	var mid: Vector2 = wpos.lerp(w_target, 0.5)
-	draw_pixel_mouse(ci, (mid + Vector2(0.0, -18.0 + (0.0 if fred else roundf(sin(clock * 3.4) * 1.0)))).round(), false, w, clock, fred)
+	var mid: Vector2 = wpos.lerp(w_target, 0.38 if dist < 58.0 else 0.5)
+	var lift: float = -24.0 if dist < 58.0 else -20.0
+	draw_pixel_mouse(ci, (mid + Vector2(0.0, lift + (0.0 if fred else roundf(sin(clock * 3.4) * 1.0)))).round(), false, w, clock, fred)
 
 
 static func draw_stage2_path(ci: CanvasItem, pts: Array[Vector2], next_pos: Vector2, show_head: bool, celebrate_t: float, w: float, clock: float, fred: bool) -> void:

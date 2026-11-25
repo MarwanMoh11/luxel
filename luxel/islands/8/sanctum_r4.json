@@ -323,6 +323,30 @@
       ],
       "radius": 28,
       "glow": false
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        64,
+        96,
+        160
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        144
+      ],
+      "radius": 42,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "rose"
     }
   ],
   "layers": [],
@@ -360,5 +384,6 @@
         "exit": "exit_sanctum_r4_north"
       }
     ]
-  }
+  },
+  "theme": "bell_sanctum"
 }
