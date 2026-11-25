@@ -40,6 +40,7 @@ var _is_boss_death: bool = false
 var _death_idx: int = 0 # 0 = RETRY, 1 = TITLE
 var _elapsed: float = 0.0
 var _stats: Dictionary = {}
+var _res_hard: bool = false; var _res_new_best: bool = false
 var _credit_lines: Array[Dictionary] = [] # {text, color, scale, divider?}
 var _scroll_y: float = 138.0
 var _credits_hold_t: float = 0.0
@@ -49,9 +50,7 @@ var _eyes: Array[Dictionary] = [] # {start, heap, dir, blink_off, recoil}
 var _motes: Array[Dictionary] = [] # {angle, speed, phase, color}
 
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	visible = false
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; visible = false
 
 func show_intro() -> void:
 	mode = Mode.INTRO; _elapsed = 0.0; _intro_cue_stage = 0; visible = true; queue_redraw()
@@ -65,9 +64,11 @@ func show_ending(p_mode: String = "display_off") -> void:
 
 func show_results(stats: Dictionary = {}) -> void:
 	mode = Mode.RESULTS; _stats = stats.duplicate(true); _elapsed = 0.0; visible = true
-	if Lx.audio != null:
-		var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
-		Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_lit", Vector2.ZERO, false, true)
+	var deaths: int = int(_stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
+	var relit: int = int(_stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
+	var rec: Dictionary = LxHudOverlays.record_results_best(_stats, _compute_rank_key(deaths, relit))
+	_res_hard = bool(rec["is_hard"]); _res_new_best = bool(rec["is_new_best"])
+	if Lx.audio != null: Lx.audio.play_sfx("shrine_unlock" if deaths <= 3 else "waystone_lit", Vector2.ZERO, false, true)
 	queue_redraw()
 
 func show_credits() -> void:
@@ -439,7 +440,8 @@ func _draw_results() -> void:
 	LxPixelFont.draw_faded(self, toll_txt, Vector2(175.0, 100.0), p4, "coral" if tolls_n > 0 else "stone", 1)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_UPGRADES_FMT", [upg_t.x, upg_t.y]), Vector2(48.0, 112.0), p4, "sky", 1)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_HARMONY_FMT", [harmony]), Vector2(175.0, 112.0), p4, "gold", 1)
-	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 153.0), clampf((_elapsed - 0.40) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
+	LxHudOverlays.draw_results_mode_and_bests(self, RESULTS_PANEL, _res_hard, _res_new_best, _elapsed)
+	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_HINT"), Vector2(160.0, 156.0), clampf((_elapsed - 0.40) / 0.25, 0.0, 1.0), "stone", 1, HORIZONTAL_ALIGNMENT_CENTER)
 
 
 func _credits_total_height() -> float:

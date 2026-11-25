@@ -107,41 +107,41 @@
       "id": "owl_r3_0",
       "kind": "owl",
       "pos": [
-        248,
-        88
+        184,
+        136
       ],
       "route": [],
       "perches": [
         [
+          256,
+          104
+        ],
+        [
+          288,
+          112
+        ],
+        [
           248,
-          88
-        ],
-        [
-          280,
-          112
-        ],
-        [
-          216,
-          112
+          128
         ]
       ],
       "zone": "belfry_gallery",
-      "leash": 72
+      "leash": 96
     },
     {
       "id": "snuffer_r3_0",
       "kind": "snuffer_acolyte",
       "pos": [
-        232,
-        128
+        200,
+        152
       ],
       "route": [
         [
-          216,
+          240,
           128
         ],
         [
-          280,
+          288,
           112
         ]
       ],
@@ -399,31 +399,31 @@
               "id": "snuffer_r3_rush",
               "kind": "snuffer_acolyte",
               "pos": [
-                280,
-                120
+                288,
+                112
               ],
               "zone": "belfry_gallery",
-              "leash": 120
+              "leash": 96
             },
             {
               "id": "moth_r3_rush",
               "kind": "toll_moth",
               "pos": [
-                248,
-                56
+                264,
+                72
               ],
               "zone": "belfry_gallery",
-              "leash": 120
+              "leash": 96
             },
             {
               "id": "moth_r3_rush2",
               "kind": "toll_moth",
               "pos": [
-                192,
-                160
+                264,
+                136
               ],
               "zone": "belfry_gallery",
-              "leash": 120
+              "leash": 96
             }
           ]
         }
@@ -453,8 +453,8 @@
       {
         "op": "goto",
         "to": [
-          216,
-          104
+          256,
+          112
         ]
       },
       {

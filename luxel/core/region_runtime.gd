@@ -531,6 +531,8 @@ static func apply_script_reward(
 			if d.has("amount"):
 				var amt_h: float = float(d.get("amount", 0.0))
 				if amt_h > 0.0:
+					if Lx.state.is_hard_mode():
+						amt_h = maxf(0.5, snappedf(amt_h * float(Lx.get_hard_mode_preset().get("heal_mult", 0.5)), 0.5))
 					Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + amt_h)
 					if Lx.events != null: Lx.events.player_healed.emit(Lx.state.hearts)
 				else:

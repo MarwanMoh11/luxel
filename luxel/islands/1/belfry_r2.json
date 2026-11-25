@@ -63,26 +63,26 @@
       "id": "owl_r2_0",
       "kind": "owl",
       "pos": [
-        200,
-        144
+        208,
+        120
       ],
       "route": [],
       "perches": [
         [
-          200,
-          144
+          208,
+          120
         ],
         [
           208,
-          112
+          96
         ],
         [
-          192,
-          168
+          208,
+          144
         ]
       ],
       "zone": "belfry_chasm",
-      "leash": 72
+      "leash": 48
     }
   ],
   "interactables": [

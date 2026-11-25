@@ -8,6 +8,12 @@ const GRAB_HOLD_DELAY: float = 0.16
 const GRAB_SLIDE_SPEED: float = 58.0
 
 
+static func _interact_radius() -> float:
+	if Lx.state != null and Lx.state.has_method("get_effective_pickup_radius"):
+		return maxf(INTERACT_RADIUS, Lx.state.get_effective_pickup_radius())
+	return INTERACT_RADIUS
+
+
 static func is_obj_movable(obj: Object) -> bool:
 	return obj != null and is_instance_valid(obj) and obj.has_method("is_movable") and bool(obj.call("is_movable"))
 
@@ -31,7 +37,8 @@ static func get_interact_candidates(wick: LxWick, world_ctx: Node) -> Array[Dict
 		if obj.get("shattered") is bool and bool(obj.get("shattered")):
 			continue
 		var irad_v: Variant = obj.get("radius")
-		var reach: float = maxf(INTERACT_RADIUS, (float(irad_v) if (irad_v is float or irad_v is int) else 0.0) + 6.0)
+		var base_reach: float = INTERACT_RADIUS if is_obj_movable(obj) else _interact_radius()
+		var reach: float = maxf(base_reach, (float(irad_v) if (irad_v is float or irad_v is int) else 0.0) + 6.0)
 		var d: float = wick.get_entity_pos(obj).distance_to(wick.global_position)
 		if d <= reach:
 			var has_prompt: bool = obj.has_method("get_interact_prompt") and not str(obj.call("get_interact_prompt")).is_empty()

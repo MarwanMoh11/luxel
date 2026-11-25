@@ -99,5 +99,13 @@ func _draw() -> void:
 			draw_rect(Rect2(rx + 2.0, -1.0, 2.0, 2.0), c_cream)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(6.0 + u * 18.0), 0.0, TAU, 14, c_gold, 1.2)
+		draw_arc(Vector2.ZERO, roundf(6.0 + u * 24.0), 0.0, TAU, 16, c_gold, 1.4)
+		draw_arc(Vector2.ZERO, roundf(4.0 + u * 15.0), 0.0, TAU, 14, c_cream, 1.0)
+	# Live locomotive exhaust surge plumes when throttles lock
+	var n_on: int = _locked_map.size()
+	if n_on > 0 and not LxHudFx.flash_reduced():
+		for si: int in range(n_on * 3):
+			var sx: float = -12.0 - fposmod(_clock * 48.0 + float(si * 13), 26.0)
+			var sy: float = -4.0 + float(si % 3) * 4.0
+			draw_rect(Rect2(roundf(sx), roundf(sy), 4.0, 2.0), c_gold if si % 2 == 0 else PAL["apricot"] as Color)
 	_draw_signal_pulses()

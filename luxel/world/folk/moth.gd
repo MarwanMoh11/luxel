@@ -45,6 +45,12 @@ func on_hit(hit: LxHit) -> bool:
 	return false
 
 
+func _effective_catch_dist() -> float:
+	if Lx.state != null and Lx.state.has_method("get_effective_pickup_radius"):
+		return CATCH_DIST * maxf(1.0, Lx.state.get_effective_pickup_radius() / 24.0)
+	return CATCH_DIST
+
+
 func on_light(light_radius: float, _source: String) -> void:
 	if caught or not active:
 		return
@@ -60,7 +66,7 @@ func on_light(light_radius: float, _source: String) -> void:
 			_lure_target = w.global_position
 	else:
 		_lure_target = pos
-	if light_radius >= 24.0 and pos.distance_to(_lure_target) <= CATCH_DIST:
+	if light_radius >= 24.0 and pos.distance_to(_lure_target) <= _effective_catch_dist():
 		_catch_moth()
 
 
@@ -95,9 +101,10 @@ func tick(dt: float) -> void:
 	if _lit_t > 0.0:
 		_lit_t = maxf(0.0, _lit_t - dt)
 		_lured_t += dt
-		pos = pos.move_toward(_lure_target, 42.0 * dt)
+		var pull_scale: float = maxf(1.0, Lx.state.get_effective_pickup_radius() / 24.0) if (Lx.state != null and Lx.state.has_method("get_effective_pickup_radius")) else 1.0
+		pos = pos.move_toward(_lure_target, 42.0 * pull_scale * dt)
 		position = pos.round()
-		if _lured_t >= LURE_CATCH_SECS or pos.distance_to(_lure_target) <= CATCH_DIST:
+		if _lured_t >= LURE_CATCH_SECS or pos.distance_to(_lure_target) <= _effective_catch_dist():
 			_catch_moth()
 	else:
 		_lured_t = maxf(0.0, _lured_t - dt * 0.5)

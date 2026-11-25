@@ -446,6 +446,8 @@ static func default_settings() -> Dictionary:
 		"assist_damage_mult": 1.0,
 		"assist_tell_scale": 1.0,
 		"assist_game_speed": 1.0,
+		"hard_mode": false,
+		"best_marks": {"normal": {}, "hard": {}},
 	}
 
 
@@ -464,6 +466,12 @@ func load_settings() -> Dictionary:
 				var hs: String = str(hk)
 				if hm.has(hs):
 					hm[hs] = "toggle" if str((d[k] as Dictionary)[hk]) == "toggle" else "hold"
+		elif k == "best_marks" and d[k] is Dictionary:
+			var bm_in: Dictionary = d[k] as Dictionary
+			var bm_out: Dictionary = base["best_marks"] as Dictionary
+			for mk: String in ["normal", "hard"]:
+				if bm_in.get(mk) is Dictionary:
+					bm_out[mk] = (bm_in[mk] as Dictionary).duplicate(true)
 		elif k == "bindings" and not (d[k] is Dictionary):
 			continue
 		else:
@@ -477,8 +485,43 @@ func load_settings() -> Dictionary:
 	base["assist_tell_scale"] = clampf(float(base.get("assist_tell_scale", 1.0)), 1.0, 1.5)
 	base["assist_game_speed"] = clampf(float(base.get("assist_game_speed", 1.0)), 0.7, 1.0)
 	base["screen_shake"] = clampi(int(base.get("screen_shake", 100)), 0, 100)
+	base["hard_mode"] = bool(base.get("hard_mode", false))
 	settings = base
 	return settings
+
+
+func get_best_mark(is_hard: bool) -> Dictionary:
+	var bm_v: Variant = settings.get("best_marks", {})
+	if not (bm_v is Dictionary):
+		return {}
+	var key: String = "hard" if is_hard else "normal"
+	var entry: Variant = (bm_v as Dictionary).get(key, {})
+	return (entry as Dictionary).duplicate(true) if entry is Dictionary else {}
+
+
+func record_best_mark(is_hard: bool, play_time_s: float, deaths: int, comp_pct: int, rank_key: String) -> Dictionary:
+	if not (settings.get("best_marks") is Dictionary):
+		settings["best_marks"] = {"normal": {}, "hard": {}}
+	var bm: Dictionary = settings["best_marks"] as Dictionary
+	var key: String = "hard" if is_hard else "normal"
+	var prev: Dictionary = (bm.get(key, {}) as Dictionary).duplicate(true) if bm.get(key) is Dictionary else {}
+	var order: Dictionary = {"RANK_C": 1, "RANK_B": 2, "RANK_A": 3, "RANK_S": 4}
+	var cur_rank_v: int = int(order.get(rank_key, 1))
+	var prev_rank_v: int = int(order.get(str(prev.get("best_rank", "")), 0))
+	var is_new_best: bool = prev.is_empty()
+	if cur_rank_v > prev_rank_v:
+		prev["best_rank"] = rank_key; is_new_best = true
+	var t_clamped: float = maxf(0.0, play_time_s)
+	if not prev.has("best_time_s") or (t_clamped > 0.0 and t_clamped < float(prev.get("best_time_s", INF))):
+		prev["best_time_s"] = snappedf(t_clamped, 0.1); is_new_best = true
+	if comp_pct > int(prev.get("best_pct", -1)):
+		prev["best_pct"] = clampi(comp_pct, 0, 100); is_new_best = true
+	if not prev.has("fewest_deaths") or deaths < int(prev.get("fewest_deaths", 999999)):
+		prev["fewest_deaths"] = maxi(0, deaths); is_new_best = true
+	prev["clears"] = int(prev.get("clears", 0)) + 1
+	bm[key] = prev
+	save_settings()
+	return {"mark": prev.duplicate(true), "is_new_best": is_new_best}
 
 
 func save_settings() -> bool:

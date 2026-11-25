@@ -63,6 +63,7 @@ var lantern: LxLantern = null
 var move_bolt: LxMoveBolt = null
 var move_dash: LxMoveDash = null
 var move_throw: LxMoveThrow = null
+var move_zip: LxMoveThrow = null
 var move_prism: MovePrism = null
 var move_beam: MoveBeam = null
 var move_wings: MoveWings = null
@@ -174,6 +175,7 @@ func _ensure_kit() -> void:
 	if move_bolt == null: move_bolt = LxMoveBolt.new(); register_move(move_bolt, "bolt")
 	if move_dash == null: move_dash = LxMoveDash.new(); register_move(move_dash, "dash")
 	if move_throw == null: move_throw = LxMoveThrow.new(); register_move(move_throw, "throw")
+	move_zip = move_throw
 	if move_prism == null: move_prism = MovePrism.new(); register_move(move_prism, "prism")
 	if move_beam == null: move_beam = MoveBeam.new(); register_move(move_beam, "beam")
 	if move_wings == null: move_wings = MoveWings.new(); register_move(move_wings, "wings")

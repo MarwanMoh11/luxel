@@ -1,13 +1,14 @@
 class_name LxIsland6RuleFx
 extends RefCounted
-## Pixel-art draw helpers for Island 6 moving-train scrolling windows/roof streaks
-## and the compact HUD Temper + Timetable / Kiln Heat / Stride Pendulum badge.
+## Pixel-art draw helpers for Island 6 moving-train scrolling windows/roof streaks,
+## Iron Collision Colossus-forearm vista, and the compact HUD Temper + Timetable /
+## Kiln Heat / Stride Pendulum badge.
 ## Strictly uses the 20-colour Last Light palette and LxStrings string IDs.
 
 const PAL: Dictionary = LxPalette.PAL
 
 
-static func draw_train_fx(canvas: Node2D, train_mode: String, train_scroll: float) -> void:
+static func draw_train_fx(canvas: Node2D, train_mode: String, train_scroll: float, braked: bool = false) -> void:
 	if canvas == null or not is_instance_valid(canvas) or canvas.is_queued_for_deletion() or not canvas.is_visible_in_tree() or Lx.world == null:
 		return
 	var b: Rect2 = Lx.world.get("bounds") as Rect2 if Lx.world.get("bounds") is Rect2 else Rect2(0, 0, 384, 224)
@@ -15,36 +16,88 @@ static func draw_train_fx(canvas: Node2D, train_mode: String, train_scroll: floa
 		return
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
 	var c_wine: Color = PAL["wine"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 	var c_apr: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var c_stone: Color = PAL["stone"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
+
 	if train_mode == "interior":
+		# Arched mahogany/brass carriage windows with multi-layer speeding viaduct parallax
 		var wx: float = 36.0
 		while wx < b.size.x - 52.0:
-			var win := Rect2(wx, 3.0, 26.0, 10.0)
+			var win := Rect2(wx, 2.0, 28.0, 12.0)
 			canvas.draw_rect(win.grow(1.0), c_void)
-			canvas.draw_rect(win, c_wine)
-			canvas.draw_rect(Rect2(wx, 8.0, 26.0, 5.0), c_coral)
-			var px: float = wx + 26.0 - fposmod(train_scroll + wx * 0.5, 26.0)
-			canvas.draw_rect(Rect2(roundf(px) - 1.0, 4.0, 2.0, 9.0), c_night)
-			var sx: float = wx + 26.0 - fposmod(train_scroll * 1.4 + wx * 0.3, 24.0)
-			canvas.draw_rect(Rect2(roundf(sx), 5.0, 3.0, 1.0), c_gold)
-			canvas.draw_rect(Rect2(wx + 12.0, 3.0, 2.0, 10.0), c_stone)
+			canvas.draw_rect(Rect2(wx - 1.0, 1.0, 30.0, 1.0), c_apr)
+			canvas.draw_rect(win, c_plum)
+			# Twilight caldera horizon band + glowing lava strip
+			canvas.draw_rect(Rect2(wx, 6.0, 28.0, 4.0), c_wine)
+			canvas.draw_rect(Rect2(wx, 10.0, 28.0, 4.0), c_coral)
+			canvas.draw_rect(Rect2(wx, 12.0, 28.0, 2.0), c_apr)
+			# Far basalt viaduct arch scrolling slow
+			var far_x: float = wx + 26.0 - fposmod(train_scroll * 0.55 + wx * 0.35, 26.0)
+			canvas.draw_rect(Rect2(roundf(far_x) - 1.0, 5.0, 3.0, 9.0), c_dusk)
+			# Near iron stanchion pillar zipping past fast
+			var near_x: float = wx + 27.0 - fposmod(train_scroll * 1.15 + wx * 0.5, 27.0)
+			canvas.draw_rect(Rect2(roundf(near_x) - 1.0, 2.0, 2.0, 12.0), c_night)
+			# Streaking firebox cinder outside window
+			var sx: float = wx + 26.0 - fposmod(train_scroll * 1.65 + wx * 0.3, 25.0)
+			canvas.draw_rect(Rect2(roundf(sx), 4.0 + fmod(wx, 3.0), 4.0, 1.0), c_gold)
+			# Brass window mullion bar
+			canvas.draw_rect(Rect2(wx + 13.0, 2.0, 2.0, 12.0), c_stone)
+			canvas.draw_rect(Rect2(wx + 13.0, 2.0, 1.0, 12.0), c_gold)
 			wx += 48.0
-		var rx: float = b.size.x - 16.0 - fposmod(train_scroll * 1.5, 48.0)
+		# Under-carriage speeding rail-tie sparks along south rim (coral-cream burst when braked!)
+		var step_r: float = 36.0 if braked else 48.0
+		var rx: float = b.size.x - 16.0 - fposmod(train_scroll * 1.6, step_r)
 		while rx > 16.0:
-			canvas.draw_rect(Rect2(roundf(rx), b.size.y - 3.0, 5.0, 1.0), c_apr)
-			rx -= 48.0
+			var sp_col: Color = c_cream if (braked and not fred) else c_apr
+			canvas.draw_rect(Rect2(roundf(rx), b.size.y - 4.0, 7.0 if braked else 5.0, 1.0), sp_col)
+			canvas.draw_rect(Rect2(roundf(rx) + 5.0, b.size.y - 3.0, 3.0, 1.0), c_gold)
+			rx -= step_r
 	elif train_mode == "roof":
-		var alpha: float = 0.42 if LxHudFx.flash_reduced() else 0.72
-		for row_y: float in [5.0, 11.0, b.size.y - 12.0, b.size.y - 6.0]:
-			var sx: float = b.size.x - fposmod(train_scroll * (1.2 if row_y < 20.0 else 1.6) + row_y * 7.0, 64.0)
+		var alpha: float = 0.38 if fred else 0.76
+		# Sweeping outer-rim viaduct gantry shadows (in outer void strips so play deck stays 100% clear)
+		var gx: float = b.size.x - fposmod(train_scroll * 1.35, 96.0)
+		while gx > 0.0:
+			canvas.draw_rect(Rect2(roundf(gx), 0.0, 6.0, 13.0), Color(c_night, alpha * 0.85))
+			canvas.draw_rect(Rect2(roundf(gx) + 1.0, 0.0, 1.0, 13.0), Color(c_apr, alpha * 0.5))
+			canvas.draw_rect(Rect2(roundf(gx), b.size.y - 13.0, 6.0, 13.0), Color(c_night, alpha * 0.85))
+			gx -= 96.0
+		# High-speed sunset wind & cinder ribbons along top & bottom abyss eaves
+		for row_y: float in [4.0, 10.0, 15.0, b.size.y - 15.0, b.size.y - 10.0, b.size.y - 4.0]:
+			var spd_m: float = 1.1 if row_y < 18.0 else 1.55
+			var sx: float = b.size.x - fposmod(train_scroll * spd_m + row_y * 9.0, 64.0)
 			while sx > 8.0:
-				canvas.draw_rect(Rect2(roundf(sx), row_y, 10.0, 1.0), Color(c_apr, alpha))
-				canvas.draw_rect(Rect2(roundf(sx) + 10.0, row_y, 4.0, 1.0), Color(c_gold, alpha))
+				canvas.draw_rect(Rect2(roundf(sx), row_y, 12.0, 1.0), Color(c_apr, alpha))
+				canvas.draw_rect(Rect2(roundf(sx) + 12.0, row_y, 5.0, 1.0), Color(c_gold, alpha))
+				canvas.draw_rect(Rect2(roundf(sx) + 17.0, row_y, 2.0, 1.0), Color(c_cream, alpha * 0.7))
 				sx -= 64.0
+		# Mid-air soaring ember flecks (sparse & crisp so never noisy)
+		if not fred:
+			for i: int in range(6):
+				var ex: float = b.size.x - fposmod(train_scroll * (1.4 + float(i % 3) * 0.35) + float(i) * 73.0, b.size.x)
+				var ey: float = 20.0 + fmod(float(i * 47 + 19), maxf(32.0, b.size.y - 40.0))
+				canvas.draw_rect(Rect2(roundf(ex), roundf(ey), 3.0, 1.0), Color(c_gold if i % 2 == 0 else c_apr, 0.55))
+	elif train_mode == "colossus_arm":
+		# Rushing twilight wind & rising giant-furnace heat streaks framing the braced iron forearm
+		var alpha_a: float = 0.36 if fred else 0.68
+		for row_y: float in [5.0, 12.0, b.size.y - 12.0, b.size.y - 5.0]:
+			var sx: float = b.size.x - fposmod(train_scroll * 1.25 + row_y * 11.0, 72.0)
+			while sx > 8.0:
+				canvas.draw_rect(Rect2(roundf(sx), row_y, 14.0, 1.0), Color(c_coral, alpha_a))
+				canvas.draw_rect(Rect2(roundf(sx) + 14.0, row_y, 5.0, 1.0), Color(c_gold, alpha_a))
+				sx -= 72.0
+		# Rising vertical furnace-vent steam wisps along the south abyss below the arm
+		var vx: float = 72.0
+		while vx < b.size.x - 56.0:
+			var lift: float = fposmod(train_scroll * 0.45 + vx * 0.4, 18.0)
+			canvas.draw_rect(Rect2(vx, b.size.y - 4.0 - roundf(lift), 4.0, 2.0), Color(c_apr, alpha_a * 0.6))
+			vx += 84.0
 
 
 static func draw_hud_mark(
@@ -52,6 +105,7 @@ static func draw_hud_mark(
 	clock: float,
 	temper_pop_t: float,
 	shift_flash_t: float,
+	heat_flash_t: float,
 	stride_active: bool,
 	stride_side: int,
 	stride_warn: bool,
@@ -99,8 +153,10 @@ static func draw_hud_mark(
 		var hk: String = "ISL6_HUD_SURGE" if surge else "ISL6_HUD_LOW"
 		var htxt: String = LxStrings.text(hk) if LxStrings.has_id(hk) else ""
 		var hw: float = float(LxPixelFont.width(htxt, 1)) + 8.0
-		LxPixelFont.draw_panel(canvas, Rect2(x, base_y, hw, 10.0), "night", "coral" if surge else "mauve", "void")
-		LxPixelFont.draw_left(canvas, htxt, Vector2(x + 4.0, base_y + 2.0), PAL["gold"] as Color if surge else PAL["stone"] as Color, 1)
+		var hbdr: String = "cream" if heat_flash_t > 0.0 else ("coral" if surge else "sky")
+		var hy: float = base_y - (1.0 if heat_flash_t > 0.55 else 0.0)
+		LxPixelFont.draw_panel(canvas, Rect2(x, hy, hw, 10.0), "night", hbdr, "void")
+		LxPixelFont.draw_left(canvas, htxt, Vector2(x + 4.0, hy + 2.0), PAL["cream"] as Color if heat_flash_t > 0.35 else (PAL["gold"] as Color if surge else PAL["ice"] as Color), 1)
 	elif not reg.begins_with("colossus_") and not reg.begins_with("train_") and not reg.begins_with("crash_"):
 		var sh: String = LxIsland6Rule.get_kiln_shift()
 		var sk: String = "ISL6_HUD_SHIFT_A" if sh == "station_a" else ("ISL6_HUD_SHIFT_B" if sh == "station_b" else "ISL6_HUD_SHIFT_C")

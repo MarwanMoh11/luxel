@@ -68,17 +68,17 @@
       "id": "skate_lev_r2_1",
       "kind": "reef_skate",
       "pos": [
-        408,
-        168
+        344,
+        72
       ],
       "route": [
         [
-          392,
-          144
+          312,
+          72
         ],
         [
-          424,
-          192
+          376,
+          72
         ]
       ],
       "zone": "lev_r2",
@@ -88,8 +88,8 @@
       "id": "mine_lev_r2_1",
       "kind": "buoy_mine",
       "pos": [
-        392,
-        120
+        312,
+        72
       ],
       "route": [],
       "zone": "lev_r2",

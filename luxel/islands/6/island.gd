@@ -35,6 +35,14 @@ const REGIONS: Array[String] = [
 	"kiln_r8",
 	"kiln_r9",
 	"kiln_r10",
+	"kiln_r11",
+	"kiln_r12",
+	"kiln_r13",
+	"kiln_r14",
+	"kiln_r15",
+	"kiln_r16",
+	"kiln_r17",
+	"kiln_r18",
 ]
 
 const MOTION_REGIONS: Array[String] = [
@@ -395,8 +403,9 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			st.story_flags["isl6_arrived"] = true
 			_emit_narration("ISL6_ARRIVAL", "narration", 4.0)
 			if _events != null:
-				_events.sfx_requested.emit("forge_gust", Vector2.ZERO, false)
-				_events.shake_requested.emit(0.05)
+				_events.sfx_requested.emit("steam_whistle", Vector2.ZERO, false)
+				_events.sfx_requested.emit("colossus_step", Vector2.ZERO, false)
+				_events.shake_requested.emit(0.04 if LxHudFx.flash_reduced() else 0.09)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id in ["ow_rail_yard", "ow_giant_stride", "ow_slag_basin", "ow_cinder_overlook"]:
@@ -406,7 +415,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 		if st != null and not st.defeated_bosses.has("first_forge") and not bool(st.story_flags.get("first_forge_defeated", false)):
 			_emit_narration("ISL6_BOSS_FIRST", "title", 3.5)
 			if _events != null:
-				_events.music_mode_requested.emit("superboss_a")
+				_events.music_mode_requested.emit("superboss_b")
 		elif _events != null:
 			_events.music_mode_requested.emit("explore")
 	elif region_id == "kiln_r10":
@@ -425,9 +434,15 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.shake_requested.emit(0.08)
 		if _events != null:
 			var mb_live: bool = region_id == "kiln_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
+			var weaver_live: bool = region_id == "kiln_r15" and st != null and not st.defeated_bosses.has("crucible_weaver") and not bool(st.story_flags.get("crucible_weaver_defeated", false))
 			if mb_live:
 				_emit_narration("MINIBOSS_6", "title", 3.2)
-			_events.music_mode_requested.emit("island6_boss_p1" if mb_live else "island6_dungeon")
+				_events.music_mode_requested.emit("island6_boss_p1")
+			elif weaver_live:
+				_emit_narration("ISL6_BOSS_WEAVER", "title", 3.2)
+				_events.music_mode_requested.emit("isl6_boss_minor_p1")
+			else:
+				_events.music_mode_requested.emit("island6_dungeon")
 
 
 func _on_shrine_claimed(shrine_id: String, move_id: String) -> void:
@@ -499,6 +514,11 @@ func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: 
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if boss_id == "crucible_weaver":
+		if phase >= 2 and _events != null:
+			_events.music_mode_requested.emit("isl6_boss_minor_p2")
+			_events.shake_requested.emit(0.18)
+		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:

@@ -62,6 +62,9 @@
     "enemy_hp_mult": 1.25,
     "boss_hp_mult": 1.20,
     "damage_mult": 1.50,
-    "tell_scale": 0.88
+    "tell_scale": 0.88,
+    "heal_cap_ratio": 0.75,
+    "heal_mult": 0.50,
+    "spare_wick_enabled": false
   }
 }

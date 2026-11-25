@@ -37,8 +37,10 @@ var _tick_driver: Node = null
 var _clock: float = 0.0
 var _temper_pop_t: float = 0.0
 var _shift_flash_t: float = 0.0
+var _heat_flash_t: float = 0.0
+var _last_hud_sig: String = ""
 var _brake_timer: float = 0.0
-var _train_mode: String = "" # "", "interior", "roof"
+var _train_mode: String = "" # "", "interior", "roof", "colossus_arm"
 var _train_scroll: float = 0.0
 var _chug_cd: float = 0.55
 var _wind_base_strength: Dictionary = {}
@@ -123,20 +125,35 @@ func _ensure_default_vars() -> void:
 		Lx.vars.set_var(SCOPE_EXPRESS, VAR_BRAKE, "running")
 
 
-func _on_var_changed(_scope: String, var_name: String, value: Variant) -> void:
+func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 	var val_s: String = str(value).strip_edges().to_lower()
+	var sc: String = scope.strip_edges()
 	match var_name:
 		VAR_SHIFT:
 			_on_kiln_shift_changed(val_s)
 		VAR_HEAT:
-			_on_kiln_heat_changed(val_s)
+			if sc.is_empty() or sc == SCOPE_KILN or sc.begins_with("room:6:") or sc == SCOPE_ISLAND:
+				_on_kiln_heat_changed(val_s)
 		VAR_BRAKE:
 			_on_train_brake_changed(val_s)
 		VAR_TEMPER:
 			if Lx.player is LxWick and is_instance_valid(Lx.player) and val_s in VALID_TEMPERS:
 				(Lx.player as LxWick).temper = val_s
-			if _hud_node != null and is_instance_valid(_hud_node):
-				_hud_node.queue_redraw()
+			_request_hud_redraw()
+
+
+func _request_hud_redraw() -> void:
+	if _hud_node == null or not is_instance_valid(_hud_node):
+		_mount_hud_overlay()
+	if _hud_node != null and is_instance_valid(_hud_node):
+		_hud_node.queue_redraw()
+	if Lx.ui != null and is_instance_valid(Lx.ui) and Lx.ui.get("hud") is CanvasItem:
+		(Lx.ui.get("hud") as CanvasItem).queue_redraw()
+
+
+func _hud_signature() -> String:
+	var cur_t: String = (Lx.player as LxWick).temper if (Lx.player is LxWick and is_instance_valid(Lx.player)) else get_saved_temper()
+	return "%s|%s|%s|%d|%d|%d" % [cur_t, get_kiln_heat(), get_kiln_shift(), _stride_side, int(_stride_warn), int(_stride_stabilized)]
 
 
 func _on_kiln_shift_changed(station: String) -> void:
@@ -163,6 +180,7 @@ func _on_kiln_shift_changed(station: String) -> void:
 func _on_kiln_heat_changed(heat_val: String) -> void:
 	if heat_val not in ["low", "surge"]:
 		return
+	_heat_flash_t = 1.0
 	var st: LxGameState = _get_state()
 	if st != null:
 		st.story_flags["kiln_heat_toggle"] = true
@@ -173,8 +191,7 @@ func _on_kiln_heat_changed(heat_val: String) -> void:
 		var cue: String = "ISL6_HEAT_SURGE" if heat_val == "surge" else "ISL6_HEAT_LOW"
 		if LxStrings.has_id(cue):
 			_events.narration_requested.emit(cue, "narration", 2.6)
-	if _hud_node != null and is_instance_valid(_hud_node):
-		_hud_node.queue_redraw()
+	_request_hud_redraw()
 
 
 func _on_train_brake_changed(brake_val: String) -> void:
@@ -410,7 +427,9 @@ func _setup_train_fx(region_id: String) -> void:
 		return
 	var rdata: Dictionary = Lx.world.get("region_data") as Dictionary if Lx.world.get("region_data") is Dictionary else {}
 	var th: String = str(rdata.get("theme", "")).strip_edges().to_lower()
-	if th == "ember_express_roof" or region_id in ["train_r5", "train_r6", "train_r7", "train_r10", "crash_r1", "crash_r3"]:
+	if region_id == "crash_r2":
+		_train_mode = "colossus_arm"
+	elif th == "ember_express_roof" or region_id in ["train_r5", "train_r6", "train_r7", "train_r10", "crash_r1", "crash_r3"]:
 		_train_mode = "roof"
 	elif th == "ember_express" or region_id.begins_with("train_") or region_id == "_proof_i6_1" or bool(rdata.get("moving_train", false)):
 		_train_mode = "interior"
@@ -418,12 +437,12 @@ func _setup_train_fx(region_id: String) -> void:
 		return
 	var fx := Node2D.new()
 	fx.name = "Island6TrainFx"
-	fx.z_index = 4 if _train_mode == "roof" else -3
+	fx.z_index = 4 if (_train_mode == "roof" or _train_mode == "colossus_arm") else -3
 	fx.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	var mode_snap: String = _train_mode
 	fx.draw.connect(func() -> void:
 		if fx == _train_fx and is_instance_valid(fx) and not fx.is_queued_for_deletion():
-			LxIsland6RuleFx.draw_train_fx(fx, mode_snap, _train_scroll)
+			LxIsland6RuleFx.draw_train_fx(fx, mode_snap, _train_scroll, get_train_brake() == "braked")
 	)
 	_train_fx = fx
 	Lx.world.add_child(fx)
@@ -441,13 +460,15 @@ func _mount_hud_overlay() -> void:
 	var hud := Node2D.new()
 	hud.name = "Island6HudMark"
 	hud.z_index = 2
+	hud.process_mode = Node.PROCESS_MODE_ALWAYS
 	hud.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	hud.draw.connect(func() -> void:
 		if hud == _hud_node and is_instance_valid(hud) and not hud.is_queued_for_deletion():
-			LxIsland6RuleFx.draw_hud_mark(hud, _clock, _temper_pop_t, _shift_flash_t, _stride_active, _stride_side, _stride_warn, _stride_stabilized)
+			LxIsland6RuleFx.draw_hud_mark(hud, _clock, _temper_pop_t, _shift_flash_t, _heat_flash_t, _stride_active, _stride_side, _stride_warn, _stride_stabilized)
 	)
 	_hud_node = hud
 	parent_hud.add_child(hud)
+	_last_hud_sig = _hud_signature()
 
 
 func _mount_tick_driver() -> void:
@@ -496,6 +517,13 @@ func tick_rule(dt: float) -> void:
 		redraw_hud = true
 	if _shift_flash_t > 0.0:
 		_shift_flash_t = maxf(0.0, _shift_flash_t - dt)
+		redraw_hud = true
+	if _heat_flash_t > 0.0:
+		_heat_flash_t = maxf(0.0, _heat_flash_t - dt)
+		redraw_hud = true
+	var cur_sig: String = _hud_signature()
+	if cur_sig != _last_hud_sig:
+		_last_hud_sig = cur_sig
 		redraw_hud = true
 	if _brake_timer > 0.0:
 		_brake_timer = maxf(0.0, _brake_timer - dt)

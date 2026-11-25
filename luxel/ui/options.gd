@@ -26,9 +26,7 @@ var _drag_row: String = ""
 var _drag_bar := Rect2()
 
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	visible = false
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; visible = false
 
 
 func open(initial_tab: int = Tab.AUDIO) -> void:
@@ -64,7 +62,7 @@ func _rows_for_tab(tab: int) -> Array[String]:
 		Tab.CONTROLS:
 			return ["rebind", "hold_fire", "hold_beam", "reset_controls"]
 		Tab.ASSIST:
-			return ["assist_damage_mult", "assist_tell_scale", "assist_game_speed"]
+			return ["assist_damage_mult", "assist_tell_scale", "assist_game_speed", "hard_mode"]
 		_:
 			return []
 
@@ -293,6 +291,12 @@ func _adjust_row(row_id: String, dir: int) -> void:
 		"assist_game_speed":
 			var spd: float = snappedf(clampf(float(cfg.get(row_id, 1.0)) + float(dir) * 0.05, 0.7, 1.0), 0.05)
 			cfg[row_id] = spd
+		"hard_mode":
+			var nh: bool = not bool(cfg.get("hard_mode", false))
+			cfg["hard_mode"] = nh
+			if Lx.state != null:
+				if nh: Lx.state.story_flags["mode_hard"] = true
+				else: Lx.state.story_flags.erase("mode_hard")
 		_:
 			return
 	_apply_and_save(cfg)
@@ -370,6 +374,8 @@ func _draw() -> void:
 	var rows: Array[String] = _rows_for_tab(current_tab)
 	for i: int in range(rows.size()):
 		_draw_row(i, rows[i], cfg)
+	if current_tab == Tab.ASSIST and (bool(cfg.get("hard_mode", false)) or (_row_idx < rows.size() and rows[_row_idx] == "hard_mode")):
+		LxPixelFont.draw_centered(self, LxStrings.text("OPT_HARD_NOTE"), 160.0, 126.0, LxPalette.PAL["coral"] if bool(cfg.get("hard_mode", false)) else LxPalette.PAL["stone"], 1)
 
 	LxPixelFont.draw_left(self, LxStrings.text("OPT_HINT"), Vector2(26.0, PANEL_RECT.end.y - 10.0), LxPalette.PAL["stone"], 1)
 	var br: Rect2 = _back_btn_rect()
@@ -433,7 +439,8 @@ func _draw_row(idx: int, row_id: String, cfg: Dictionary) -> void:
 		LxHudOverlays.draw_sold_badge(self, Vector2(r.end.x - 6.0, r.position.y + 2.0), 0, false, true)
 		return
 	if not val_txt.is_empty():
-		LxPixelFont.draw_right(self, val_txt, r.end.x - 8.0, r.position.y + 4.0, val_col, 1)
+		var vcol: Color = (LxPalette.PAL["gold"] if sel else LxPalette.PAL["coral"]) if (row_id == "hard_mode" and bool(cfg.get("hard_mode", false))) else val_col
+		LxPixelFont.draw_right(self, val_txt, r.end.x - 8.0, r.position.y + 4.0, vcol, 1)
 
 	if row_id in ["master_vol", "music_vol", "sfx_vol", "ambience_vol", "screen_shake", "assist_game_speed"]:
 		_draw_slider(r, row_id, cfg, sel)
@@ -504,6 +511,7 @@ func _row_label(row_id: String) -> String:
 		"assist_damage_mult": return LxStrings.text("OPT_ASSIST_DMG")
 		"assist_tell_scale": return LxStrings.text("OPT_ASSIST_TELLS")
 		"assist_game_speed": return LxStrings.text("OPT_ASSIST_SPEED")
+		"hard_mode": return LxStrings.text("OPT_HARD_MODE")
 		_: return LxStrings.text("OPT_BACK")
 
 
@@ -511,7 +519,7 @@ func _row_value_text(row_id: String, cfg: Dictionary) -> String:
 	match row_id:
 		"master_vol", "music_vol", "sfx_vol", "ambience_vol":
 			return LxStrings.fmt("FMT_PCT", [roundi(float(cfg.get(row_id, 1.0)) * 100.0)])
-		"mute_unfocus", "fullscreen", "flash_reduction":
+		"mute_unfocus", "fullscreen", "flash_reduction", "hard_mode":
 			return LxStrings.text("OPT_ON" if bool(cfg.get(row_id, false)) else "OPT_OFF")
 		"next_light_cue":
 			return LxStrings.text("OPT_ON" if LxUiNav.is_next_light_cue_enabled() else "OPT_OFF")

@@ -50,8 +50,8 @@
       "id": "moth_toll_r2_0",
       "kind": "toll_moth",
       "pos": [
-        256,
-        136
+        296,
+        256
       ],
       "route": [],
       "perches": [
@@ -65,14 +65,14 @@
         ]
       ],
       "zone": "toll_drop",
-      "leash": 140
+      "leash": 160
     },
     {
       "id": "moth_toll_r2_w",
       "kind": "toll_moth",
       "pos": [
-        128,
-        136
+        80,
+        208
       ],
       "route": [],
       "perches": [
@@ -86,7 +86,7 @@
         ]
       ],
       "zone": "toll_drop",
-      "leash": 140
+      "leash": 160
     }
   ],
   "interactables": [

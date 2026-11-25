@@ -38,7 +38,7 @@
       ],
       "to_region": "ow_open_sound",
       "to_spawn": [
-        696,
+        712,
         288
       ],
       "requires_moves": [],
@@ -98,17 +98,17 @@
       "id": "lamprey_lev_r1_1",
       "kind": "brine_lamprey",
       "pos": [
-        536,
-        152
+        488,
+        168
       ],
       "route": [
         [
-          504,
-          152
+          488,
+          168
         ],
         [
-          568,
-          152
+          520,
+          168
         ]
       ],
       "zone": "lev_r1",

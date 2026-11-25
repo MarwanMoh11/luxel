@@ -184,6 +184,8 @@ func _build_scene_signature() -> int:
 	h = _mix_hash(h, (1 if beam_on else 0) | ((1 if telegraphing else 0) << 1) | (max_bounces << 2))
 	h = _mix_hash(h, roundi(pos.x * 10.0))
 	h = _mix_hash(h, roundi(pos.y * 10.0))
+	h = _mix_hash(h, roundi(emit_dir.x * 100.0))
+	h = _mix_hash(h, roundi(emit_dir.y * 100.0))
 	h = _mix_hash(h, beam_color.hash())
 	if region != null and is_instance_valid(region) and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):

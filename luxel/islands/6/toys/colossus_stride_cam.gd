@@ -37,6 +37,7 @@ var step_count: int = 0
 var _stride_t: float = 0.0
 var _forced_stabilized: bool = false
 var _last_plant_side: int = 0
+var _plant_fx_t: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -108,6 +109,8 @@ func tick(dt: float) -> void:
 		queue_redraw()
 		return
 	_stride_t += dt * speed_mult
+	if _plant_fx_t > 0.0:
+		_plant_fx_t = maxf(0.0, _plant_fx_t - dt)
 	_sync_state(true)
 	queue_redraw()
 
@@ -151,6 +154,7 @@ func _sync_state(emit_fx: bool) -> void:
 		if cur_side != _last_plant_side:
 			_last_plant_side = cur_side
 			step_count += 1
+			_plant_fx_t = 0.55
 			_emit_sfx("colossus_step")
 			var amp: float = shake_amp * (0.45 if LxHudFx.flash_reduced() else 1.0)
 			if Lx.events != null and amp > 0.001:
@@ -230,3 +234,28 @@ func _draw() -> void:
 		LxPhysDraw.draw_chevron(self, Vector2(float(next_side) * 6.0, 5.0), Vector2(float(next_side), 0.0), c_cream, c_void, 2.0)
 	else:
 		LxPhysDraw.draw_chevron(self, Vector2(float(stride_side) * 6.0, 5.0), Vector2(float(stride_side), 0.0), c_gold, c_void, 2.0)
+
+	# Room-wide diegetic footstep shockwave & tilt-direction dust sweep (makes every step felt!)
+	if not calm:
+		var bounds: Rect2 = region.get("bounds") as Rect2 if (region != null and region.get("bounds") is Rect2) else Rect2(0, 0, 448, 288)
+		var local_tl: Vector2 = bounds.position - pos
+		var dir_x: float = float(next_side if is_warning else stride_side)
+		if _plant_fx_t > 0.0:
+			var pu: float = 1.0 - clampf(_plant_fx_t / 0.55, 0.0, 1.0)
+			var ra: float = (1.0 - pu) * (0.35 if fred else 0.72)
+			draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 52.0, pu)), 0.0, TAU, 18, Color(c_gold, ra), 1.6)
+			# Downhill edge furnace pulse strip
+			var edge_x: float = (local_tl.x + bounds.size.x - 10.0) if stride_side > 0 else (local_tl.x + 6.0)
+			draw_rect(Rect2(roundf(edge_x), local_tl.y + 18.0, 4.0, maxf(24.0, bounds.size.y - 36.0)), Color(c_coral, ra * 0.75))
+		elif is_warning:
+			var wa: float = 0.28 if fred else (0.35 + 0.30 * absf(sin(_clock * 14.0)))
+			var warn_x: float = (local_tl.x + bounds.size.x - 14.0) if next_side > 0 else (local_tl.x + 10.0)
+			draw_rect(Rect2(roundf(warn_x), local_tl.y + 24.0, 3.0, maxf(24.0, bounds.size.y - 48.0)), Color(c_cream, wa))
+		# Subtle sliding brass dust motes drifting across the floor in the active tilt direction
+		if not fred:
+			var m_cnt: int = 8
+			for i: int in range(m_cnt):
+				var span_x: float = maxf(64.0, bounds.size.x - 48.0)
+				var mx: float = local_tl.x + 24.0 + fposmod(float(i * 61) + _clock * 46.0 * dir_x, span_x)
+				var my: float = local_tl.y + 32.0 + fmod(float(i * 43 + 17), maxf(32.0, bounds.size.y - 64.0))
+				draw_rect(Rect2(roundf(mx), roundf(my), 3.0 if is_warning else 4.0, 1.0), Color(c_cream if is_warning else c_gold, 0.38))

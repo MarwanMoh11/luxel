@@ -43,9 +43,14 @@ func _ensure_hud() -> void:
 func sync_hud_visible() -> void:
 	if _hud_layer == null or not is_instance_valid(_hud_layer):
 		return
-	_hud_layer.visible = rule != null and rule.should_show_hud_badge()
+	var modal_open: bool = Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open"))
+	_hud_layer.visible = (not modal_open) and rule != null and rule.should_show_hud_badge()
 	if _hud_layer.visible and _hud_draw != null and is_instance_valid(_hud_draw):
 		_hud_draw.queue_redraw()
+
+
+func _process(_dt: float) -> void:
+	sync_hud_visible()
 
 
 func tick_from_toy(toy: Object, dt: float) -> void:

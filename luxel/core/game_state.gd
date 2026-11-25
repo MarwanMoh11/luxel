@@ -23,7 +23,7 @@ var spare_wick_ready: bool = false
 var hearts: float:
 	get: return _hearts
 	set(v):
-		if not _suppress_revive and v <= 0.0 and _hearts > 0.0 and spare_wick_ready:
+		if not _suppress_revive and v <= 0.0 and _hearts > 0.0 and spare_wick_ready and is_spare_wick_allowed():
 			var rev_h: float = get_effective_spare_wick_hearts()
 			if rev_h > 0.0:
 				spare_wick_ready = false
@@ -141,6 +141,9 @@ func get_highest_island() -> int:
 func is_hard_mode() -> bool:
 	return bool(story_flags.get("mode_hard", false)) or (Lx.save != null and bool(Lx.save.settings.get("hard_mode", false)))
 
+func is_spare_wick_allowed() -> bool:
+	return (not is_hard_mode()) or bool(Lx.get_hard_mode_preset().get("spare_wick_enabled", false))
+
 
 func get_upgrade_rank(upgrade_id: String) -> int: return int(upgrades.get(upgrade_id, 0))
 
@@ -247,6 +250,7 @@ func can_buy_ware(ware_id: String) -> String:
 	if eff == "lead" and p != null and int(p.call("get_max_lead")) >= 10: return "SHOP_WARE_CAP"
 	if eff == "slot" and p != null and int(p.call("get_slots")) >= 5: return "SHOP_WARE_CAP"
 	if eff == "pane" and _pick_unowned_pane().is_empty(): return "SHOP_WARE_NONE"
+	if eff == "rearm_wick" and not is_spare_wick_allowed(): return "SHOP_HARD_NO_WICK"
 	if eff == "rearm_wick" and spare_wick_ready: return "SHOP_WARE_ARMED"
 	return "SHOP_NO_SHARDS" if shards < get_ware_cost(ware_id) else ""
 
@@ -273,9 +277,8 @@ func buy_ware(ware_id: String) -> bool:
 
 
 func rearm_spare_wick() -> bool:
-	if get_upgrade_rank("spare_wick") <= 0 or spare_wick_ready: return false
-	spare_wick_ready = true
-	return true
+	if get_upgrade_rank("spare_wick") <= 0 or spare_wick_ready or not is_spare_wick_allowed(): return false
+	spare_wick_ready = true; return true
 
 
 func add_shards(amount: int) -> void:
@@ -353,8 +356,11 @@ func add_half_lantern() -> bool:
 
 
 func heal_full() -> void:
-	_hearts = float(max_hearts)
-	if get_upgrade_rank("spare_wick") > 0: spare_wick_ready = true
+	if is_hard_mode() and _hearts > 0.0:
+		var cap_h: float = maxf(3.0, ceilf(float(max_hearts) * clampf(float(Lx.get_hard_mode_preset().get("heal_cap_ratio", 0.75)), 0.25, 1.0) * 2.0) * 0.5)
+		_hearts = maxf(_hearts, minf(float(max_hearts), cap_h))
+	else: _hearts = float(max_hearts)
+	if get_upgrade_rank("spare_wick") > 0 and is_spare_wick_allowed(): spare_wick_ready = true
 	if Lx.events != null: Lx.events.player_healed.emit(_hearts)
 
 
@@ -579,7 +585,6 @@ static func _to_str_array(v: Variant) -> Array[String]:
 	if v is Array:
 		for item: Variant in v: out.append(str(item))
 	return out
-
 static func _to_unique_str_array(v: Variant) -> Array[String]:
 	var out: Array[String] = []
 	if v is Array:
@@ -587,7 +592,6 @@ static func _to_unique_str_array(v: Variant) -> Array[String]:
 			var s: String = str(item)
 			if not s.is_empty() and not out.has(s): out.append(s)
 	return out
-
 static func _to_int_array(v: Variant) -> Array[int]:
 	var out: Array[int] = []
 	if v is Array:

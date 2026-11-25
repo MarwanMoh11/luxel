@@ -49,9 +49,7 @@ var _bound: bool = false
 var _bound_events: Object = null
 var _bound_sold: Object = null
 
-func _ready() -> void:
-	process_mode = Node.PROCESS_MODE_ALWAYS
-	bind_events()
+func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; bind_events()
 
 func _exit_tree() -> void:
 	if is_instance_valid(_bound_events):
@@ -347,11 +345,11 @@ func _draw_hearts(origin: Vector2) -> void:
 			draw_rect(Rect2(pos + Vector2(1.0, 1.0), Vector2(1.0, 1.0)), LxPalette.PAL["rose"])
 		elif fill_amt >= 0.25:
 			for r: Rect2 in HALF_HEART_PIXELS: draw_rect(Rect2(pos + r.position, r.size), LxPalette.PAL["coral"])
-	if Lx.state.half_lanterns > 0:
-		LxHudOverlays.draw_half_lantern(self, origin, max_h, Lx.state.half_lanterns)
+	LxHudOverlays.draw_heart_extras(self, origin, max_h, _blink_t)
 	if cur_h > 0.0 and cur_h <= 1.0 and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.6) < 0.35):
 		var lh_x: float = origin.x + float(mini(max_h, 6)) * 7.0 + 3.0
-		var lh_y: float = origin.y + (8.0 if Lx.state.half_lanterns > 0 else 0.0)
+		var has_top_extra: bool = Lx.state.half_lanterns > 0 or (Lx.state.get_upgrade_rank("spare_wick") > 0 and Lx.state.is_spare_wick_allowed())
+		var lh_y: float = origin.y + (8.0 if has_top_extra else 0.0)
 		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(lh_x, lh_y), LxPalette.PAL["coral"], 1)
 
 
@@ -517,7 +515,8 @@ func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:
 		var it_pos_v: Variant = obj.get("pos")
 		var it_pos: Vector2 = (it_pos_v as Vector2) if it_pos_v is Vector2 else ((obj as Node2D).global_position if obj is Node2D else Vector2.ZERO)
 		var it_rad: float = float(obj.get("radius")) if obj.get("radius") != null else 14.0
-		var reach: float = maxf(24.0, it_rad + 10.0)
+		var base_r: float = Lx.state.get_effective_pickup_radius() if (Lx.state != null and Lx.state.has_method("get_effective_pickup_radius")) else 24.0
+		var reach: float = maxf(base_r, it_rad + 10.0)
 		var d2: float = it_pos.distance_squared_to(ppos)
 		if d2 <= reach * reach and d2 < best_d2:
 			best_d2 = d2; best_pid = pid; best_pos = it_pos

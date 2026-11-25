@@ -345,11 +345,15 @@ func get_effective_weather() -> String:
 
 
 func _redraw_hud() -> void:
+	var modal_open: bool = Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open"))
+	var st: LxGameState = _get_state()
+	var in_play: bool = Lx.root == null or Lx.root.get("flow") == null or int(Lx.root.get("flow")) in [2, 3, 4]
+	var show_hud: bool = (not modal_open) and st != null and st.island_id == ISLAND_ID and in_play
+	if _hud_layer != null and is_instance_valid(_hud_layer):
+		_hud_layer.visible = show_hud
 	if _hud_node != null and is_instance_valid(_hud_node):
-		var st: LxGameState = _get_state()
-		var in_play: bool = Lx.root == null or Lx.root.get("flow") == null or int(Lx.root.get("flow")) in [2, 3, 4]
-		_hud_node.visible = st != null and st.island_id == ISLAND_ID and in_play
-		if _hud_node.visible:
+		_hud_node.visible = show_hud
+		if show_hud:
 			_hud_node.queue_redraw()
 
 

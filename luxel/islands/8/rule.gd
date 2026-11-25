@@ -247,11 +247,13 @@ func _tick(dt: float) -> void:
 	if archive != null:
 		archive.tick(dt)
 	_tick_wick_powers(dt)
-	if _hud_node != null and is_instance_valid(_hud_node):
+	if _hud_layer != null and is_instance_valid(_hud_layer):
 		var show_badge: bool = _should_show_badge()
-		_hud_node.visible = show_badge
-		if show_badge:
-			_hud_node.queue_redraw()
+		_hud_layer.visible = show_badge
+		if _hud_node != null and is_instance_valid(_hud_node):
+			_hud_node.visible = show_badge
+			if show_badge:
+				_hud_node.queue_redraw()
 
 
 func _tick_wick_powers(dt: float) -> void:
@@ -306,8 +308,11 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			archive.deactivate()
 		if stair != null:
 			stair.on_region_changed(island_id, region_id)
+		var show_b: bool = _should_show_badge()
+		if _hud_layer != null and is_instance_valid(_hud_layer):
+			_hud_layer.visible = show_b
 		if _hud_node != null and is_instance_valid(_hud_node):
-			_hud_node.visible = _should_show_badge()
+			_hud_node.visible = show_b
 
 
 func _on_great_lamp_relit(island_id: int) -> void:
@@ -380,6 +385,8 @@ func _on_sold_state_changed() -> void:
 
 func _should_show_badge() -> bool:
 	if Lx.root != null and is_instance_valid(Lx.root) and int(Lx.root.get("flow")) == 0:
+		return false
+	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false
 	if sold != null and sold.get_toll_weight() > 0:
 		return true

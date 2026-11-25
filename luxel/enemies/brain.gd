@@ -254,9 +254,10 @@ func _release_token() -> void:
 
 
 func _assist_tell_scale() -> float:
-	if Lx.save != null and Lx.save.settings.has("assist_tell_scale"):
-		return clampf(float(Lx.save.settings["assist_tell_scale"]), 1.0, 1.5)
-	return 1.0
+	var s: float = clampf(float(Lx.save.settings["assist_tell_scale"]), 1.0, 1.5) if (Lx.save != null and Lx.save.settings.has("assist_tell_scale")) else 1.0
+	if Lx.state != null and Lx.state.is_hard_mode():
+		s *= clampf(float(Lx.get_hard_mode_preset().get("tell_scale", 0.88)), 0.5, 1.0)
+	return s
 
 
 func _scaled_tell(base_tell: float, is_counter: bool = false, dmg: float = -1.0) -> float:

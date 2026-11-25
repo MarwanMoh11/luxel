@@ -329,6 +329,10 @@ func _trigger_zip_arrival_burst(world_ctx: Node) -> void:
 				wick.spawn_sparks(ipos, idir, 6, LxWick.PAL_GOLD, 28.0, 82.0, 0.20)
 
 
+func is_active() -> bool:
+	return zipping
+
+
 func get_zip_velocity() -> Vector2:
 	return zip_dir * zip_speed if zipping else Vector2.ZERO
 

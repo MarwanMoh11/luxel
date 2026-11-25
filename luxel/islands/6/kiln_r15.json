@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "iron_colossus",
-  "music": "island6_boss_p1",
+  "music": "isl6_boss_minor_p1",
   "ambience": ["forge_rumble"],
   "name_key": "ISL6_KILN_R15",
   "spawn": [256, 264],

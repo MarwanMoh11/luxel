@@ -25,6 +25,7 @@ static var director: RefCounted = null
 static var data_islands: Dictionary = {}
 static var data_moves: Dictionary = {}
 static var data_upgrades: Dictionary = {}
+static var data_economy: Dictionary = {}
 
 
 static func reset() -> void:
@@ -77,6 +78,14 @@ static func load_all_data() -> void:
 	data_islands = load_json("res://luxel/data/islands.json")
 	data_moves = load_json("res://luxel/data/moves.json")
 	data_upgrades = load_json("res://luxel/data/upgrades.json")
+	data_economy = load_json("res://luxel/data/economy.json")
+
+
+static func get_hard_mode_preset() -> Dictionary:
+	if data_economy.is_empty():
+		data_economy = load_json("res://luxel/data/economy.json")
+	var hm: Variant = data_economy.get("hard_mode", {})
+	return hm as Dictionary if hm is Dictionary else {}
 
 
 static func get_island_data(island_id: int) -> Dictionary:

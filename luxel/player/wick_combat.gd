@@ -117,11 +117,11 @@ static func kill_by_void(w: LxWick, at_pos: Vector2) -> void:
 		w._local_max_hearts = Lx.state.max_hearts
 	else:
 		w._local_hearts = 0.0 if fatal else remaining
-	w.dead = true
-	w._void_resume_hearts = 0.0 if fatal else remaining
-	w._void_retry_t = 0.0 if fatal else VOID_RETRY_S
 	w.velocity = Vector2.ZERO
 	w.knock = Vector2.ZERO
+	w._field_vel = Vector2.ZERO
+	w._launch_t = 0.0
+	w._launch_vel = Vector2.ZERO
 	w.hurt_flash = 1.0
 	if w.move_dash != null: w.move_dash.cancel()
 	if w.move_wings != null: w.move_wings.stop_glide()
@@ -134,12 +134,32 @@ static func kill_by_void(w: LxWick, at_pos: Vector2) -> void:
 	w.spawn_sparks(at_pos, Vector2.UP, 10, LxWick.PAL_CORAL, 20.0, 75.0, 0.28)
 	w.emit_sfx("wick_hurt", at_pos, false)
 	if fatal:
+		w.dead = true
+		w._void_resume_hearts = 0.0
+		w._void_retry_t = 0.0
 		if Lx.state != null and Lx.state.has_method("append_run_log"):
 			Lx.state.append_run_log("death")
 		if Lx.events != null:
 			Lx.events.player_damaged.emit(maxf(cost, prev_hp), at_pos, Vector2.ZERO, "void")
 			Lx.events.player_died.emit()
-	elif Lx.events != null:
+		return
+	# Non-fatal void/water fall: deduct VOID_FALL_HEART_COST and instantly return Wick to last safe ground (keep boss damage).
+	var respawn_p: Vector2 = _find_void_respawn_pos(w, w._world_ctx)
+	w.dead = false
+	w._void_resume_hearts = 0.0
+	w._void_retry_t = 0.0
+	w.global_position = respawn_p
+	w.last_pos = respawn_p
+	w._last_safe_pos = respawn_p
+	w.mercy_t = 0.90
+	if w.lantern != null:
+		w.lantern.reset_to_hand(respawn_p)
+	w.spawn_ring(respawn_p, 2.0, 16.0, 0.24, LxWick.PAL_GOLD, 1.5)
+	w.spawn_sparks(respawn_p, Vector2.UP, 6, LxWick.PAL_CREAM, 20.0, 60.0, 0.20)
+	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
+		LxDarknessLayer.active_instance.trigger_transition_fade(0.20)
+	w.emit_sfx("phantom_phase", respawn_p, false)
+	if Lx.events != null:
 		Lx.events.player_damaged.emit(cost, at_pos, Vector2.ZERO, "void")
 
 

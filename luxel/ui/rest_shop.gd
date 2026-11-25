@@ -195,7 +195,9 @@ func _try_buy(i: int) -> void:
 		queue_redraw(); return
 
 	var req_m: String = str(u.get("requires_move", ""))
-	if not req_m.is_empty() and not Lx.state.has_move(req_m):
+	if uid == "spare_wick" and not Lx.state.is_spare_wick_allowed():
+		_on_buy_deny(i, LxStrings.text("SHOP_HARD_NO_WICK"), "coral")
+	elif not req_m.is_empty() and not Lx.state.has_move(req_m):
 		_on_buy_deny(i, LxStrings.fmt("SHOP_NEED_MOVE_FMT", [_req_move_name(u)]), "coral")
 	elif Lx.state.get_upgrade_rank(uid) >= int(u.get("max_rank", 0)):
 		_on_buy_deny(i, LxStrings.text("SHOP_MAXED"), "stone")
@@ -370,8 +372,10 @@ func _item_status(u: Dictionary) -> Dictionary:
 			return {"locked": false, "maxed": true, "affordable": false, "rank": r, "max_rank": mr, "cost": 0, "right_txt": LxStrings.text("SHOP_MAXED"), "right_col": "lime", "lock_detail": tr_shop(err)}
 		if err == "SHOP_NEED_ISL_FMT":
 			return {"locked": true, "maxed": false, "affordable": false, "rank": r, "max_rank": mr, "cost": cost, "right_txt": fmt_shop("SHOP_LOCKED_ISL_FMT", [isl_need]), "right_col": "mauve", "lock_detail": fmt_shop("SHOP_NEED_ISL_FMT", [isl_need])}
-		if err == "SHOP_WARE_NEED_WICK" or err == "SHOP_WARE_ARMED":
-			return {"locked": true, "maxed": false, "affordable": false, "rank": r, "max_rank": mr, "cost": cost, "right_txt": tr_shop("SHOP_WICK_READY") if err == "SHOP_WARE_ARMED" else LxStrings.text("SHOP_LOCKED_MOVE"), "right_col": "lime" if err == "SHOP_WARE_ARMED" else "mauve", "lock_detail": tr_shop(err)}
+		if err == "SHOP_WARE_NEED_WICK" or err == "SHOP_WARE_ARMED" or err == "SHOP_HARD_NO_WICK":
+			var rtxt_w: String = tr_shop("SHOP_HARD_OFF") if err == "SHOP_HARD_NO_WICK" else (tr_shop("SHOP_WICK_READY") if err == "SHOP_WARE_ARMED" else LxStrings.text("SHOP_LOCKED_MOVE"))
+			var rcol_w: String = "coral" if err == "SHOP_HARD_NO_WICK" else ("lime" if err == "SHOP_WARE_ARMED" else "mauve")
+			return {"locked": true, "maxed": false, "affordable": false, "rank": r, "max_rank": mr, "cost": cost, "right_txt": rtxt_w, "right_col": rcol_w, "lock_detail": tr_shop(err)}
 		var aff: bool = err.is_empty()
 		return {"locked": false, "maxed": false, "affordable": aff, "rank": r, "max_rank": mr, "cost": cost, "right_txt": LxStrings.fmt("SHOP_COST_FMT", [cost]), "right_col": "gold" if aff else "coral", "lock_detail": ""}
 
@@ -380,6 +384,8 @@ func _item_status(u: Dictionary) -> Dictionary:
 	var costs: Array = u.get("costs", []) as Array
 	var maxed: bool = rank >= max_rank
 	var req_m: String = str(u.get("requires_move", ""))
+	if uid == "spare_wick" and Lx.state != null and not Lx.state.is_spare_wick_allowed():
+		return {"locked": true, "maxed": false, "affordable": false, "rank": rank, "max_rank": max_rank, "cost": 0, "right_txt": tr_shop("SHOP_HARD_OFF"), "right_col": "coral", "lock_detail": tr_shop("SHOP_HARD_NO_WICK")}
 	if Lx.state != null and not req_m.is_empty() and not Lx.state.has_move(req_m):
 		return {"locked": true, "maxed": false, "affordable": false, "rank": rank, "max_rank": max_rank, "cost": 0, "right_txt": LxStrings.text("SHOP_LOCKED_MOVE"), "right_col": "mauve", "lock_detail": LxStrings.fmt("SHOP_NEED_MOVE_FMT", [_req_move_name(u)])}
 	if maxed:
@@ -474,16 +480,15 @@ func _fmt_stat_val(uid: String, v: float) -> String:
 
 static func tr_shop(key: String) -> String:
 	if key.is_empty(): return ""
+	if Lx.packs == null: Lx.ensure_packs()
 	if LxStrings.has_id(key): return LxStrings.text(key)
-	var tbl: Variant = Lx.data_upgrades.get("strings", {})
-	if tbl is Dictionary and (tbl as Dictionary).has(key):
-		return str((tbl as Dictionary)[key])
 	return LxStrings.sanitize(key, 45)
 
 
 static func fmt_shop(key: String, args: Array) -> String:
-	var tmpl: String = tr_shop(key)
-	return LxStrings._apply_fmt(tmpl, args)
+	if Lx.packs == null: Lx.ensure_packs()
+	if LxStrings.has_id(key): return LxStrings.fmt(key, args)
+	return LxStrings._apply_fmt(tr_shop(key), args)
 
 
 func _tab_rect(ti: int) -> Rect2:

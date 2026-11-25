@@ -95,7 +95,8 @@ static func draw_half_lantern(ci: CanvasItem, origin: Vector2, max_h: int, half_
 	var cols: int = mini(max_h, 6)
 	var x: float = origin.x + float(cols) * 7.0 + 3.0
 	var y: float = origin.y - 1.0
-	var txt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [half_count, 2]) if LxStrings.has_id("MAP_WS_COUNT_FMT") else LxStrings.fmt("HUD_SHARDS_FMT", [half_count])
+	var per_heart: int = maxi(1, int(Lx.get_decision("half_lanterns_per_heart", 8)))
+	var txt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [half_count, per_heart]) if LxStrings.has_id("MAP_WS_COUNT_FMT") else LxStrings.fmt("HUD_SHARDS_FMT", [half_count])
 	var tw: float = float(LxPixelFont.width(txt, 1))
 	ci.draw_rect(Rect2(x - 1.0, y, tw + 10.0, 8.0), Color(pal["void"] as Color, 0.72))
 	# Mini half-lit brass lantern icon (5x7)
@@ -109,6 +110,87 @@ static func draw_half_lantern(ci: CanvasItem, origin: Vector2, max_h: int, half_
 	ci.draw_rect(Rect2(x + 1.0, y + 3.0, 1.0, 2.0), pal["cream"] as Color)
 	ci.draw_rect(Rect2(x + 3.0, y + 2.0, 1.0, 4.0), pal["dusk"] as Color)
 	LxPixelFont.draw_left(ci, txt, Vector2(x + 7.0, y + 1.0), pal["gold"] as Color, 1)
+
+
+static func draw_heart_extras(ci: CanvasItem, origin: Vector2, max_h: int, blink_t: float) -> void:
+	if Lx.state == null:
+		return
+	var hc: int = Lx.state.half_lanterns
+	if hc > 0:
+		draw_half_lantern(ci, origin, max_h, hc)
+	if Lx.state.get_upgrade_rank("spare_wick") > 0 and Lx.state.is_spare_wick_allowed():
+		var cols: int = mini(max_h, 6)
+		var sx: float = origin.x + float(cols) * 7.0 + 3.0
+		if hc > 0:
+			var per_h: int = maxi(1, int(Lx.get_decision("half_lanterns_per_heart", 8)))
+			var htxt: String = LxStrings.fmt("MAP_WS_COUNT_FMT", [hc, per_h]) if LxStrings.has_id("MAP_WS_COUNT_FMT") else LxStrings.fmt("HUD_SHARDS_FMT", [hc])
+			sx += float(LxPixelFont.width(htxt, 1)) + 11.0
+		draw_spare_wick_pip(ci, Vector2(sx, origin.y - 1.0), Lx.state.spare_wick_ready, blink_t)
+
+
+static func draw_spare_wick_pip(ci: CanvasItem, at: Vector2, ready: bool, blink_t: float) -> void:
+	var pal: Dictionary = LxPalette.PAL
+	var x: float = roundf(at.x)
+	var y: float = roundf(at.y)
+	ci.draw_rect(Rect2(x - 1.0, y, 9.0, 8.0), Color(pal["void"] as Color, 0.72))
+	ci.draw_rect(Rect2(x, y, 7.0, 7.0), pal["night"] as Color)
+	if ready:
+		var flk: bool = LxHudFx.flash_reduced() or fmod(blink_t * 3.0, 1.0) < 0.55
+		ci.draw_rect(Rect2(x + 3.0, y, 1.0, 1.0), pal["cream"] as Color if flk else pal["gold"] as Color)
+		ci.draw_rect(Rect2(x + 2.0, y + 1.0, 3.0, 2.0), pal["gold"] as Color)
+		ci.draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), pal["cream"] as Color)
+		ci.draw_rect(Rect2(x + 1.0, y + 3.0, 5.0, 2.0), pal["coral"] as Color)
+		ci.draw_rect(Rect2(x + 2.0, y + 3.0, 3.0, 1.0), pal["apricot"] as Color)
+		ci.draw_rect(Rect2(x + 2.0, y + 5.0, 3.0, 2.0), pal["rose"] as Color)
+		ci.draw_rect(Rect2(x + 3.0, y + 5.0, 1.0, 1.0), pal["cream"] as Color)
+	else:
+		ci.draw_rect(Rect2(x + 3.0, y + 1.0, 1.0, 2.0), pal["mauve"] as Color)
+		ci.draw_rect(Rect2(x + 1.0, y + 3.0, 5.0, 2.0), pal["dusk"] as Color)
+		ci.draw_rect(Rect2(x + 2.0, y + 5.0, 3.0, 2.0), pal["dusk"] as Color)
+		ci.draw_rect(Rect2(x + 2.0, y + 3.0, 3.0, 1.0), pal["mauve"] as Color)
+
+
+static func record_results_best(stats: Dictionary, rank_key: String) -> Dictionary:
+	var is_hard: bool = bool(stats.get("hard_mode", Lx.state.is_hard_mode() if Lx.state != null else false))
+	var is_new_best: bool = false
+	if Lx.save != null and not bool(stats.get("skip_record", false)):
+		var play_s: float = float(stats.get("play_time_s", Lx.state.play_time_s if Lx.state != null else 0.0))
+		var deaths: int = int(stats.get("deaths", Lx.state.deaths if Lx.state != null else 0))
+		var relit: int = int(stats.get("relit_count", Lx.state.relit_islands.size() if Lx.state != null else 0))
+		var embers: int = int(stats.get("ember_pieces", Lx.state.ember_pieces if Lx.state != null else 0))
+		var comp_pct: int = int(stats.get("completion_pct", Lx.state.get_completion_pct(relit, embers) if Lx.state != null else 0))
+		is_new_best = bool(Lx.save.record_best_mark(is_hard, play_s, deaths, comp_pct, rank_key).get("is_new_best", false))
+	return {"is_hard": is_hard, "is_new_best": is_new_best}
+
+
+static func _format_best_mark_line(is_hard: bool) -> String:
+	var tag: String = LxStrings.text("RESULTS_HARD_TAG" if is_hard else "RESULTS_NORM_TAG")
+	var bm: Dictionary = Lx.save.get_best_mark(is_hard) if Lx.save != null else {}
+	if bm.is_empty():
+		return LxStrings.fmt("RESULTS_BEST_NONE_FMT", [tag])
+	var t_s: String = LxUiNav.format_epic_time(float(bm.get("best_time_s", 0.0)))
+	var pct: int = clampi(int(bm.get("best_pct", 0)), 0, 100)
+	var rk_id: String = str(bm.get("best_rank", "RANK_C"))
+	var rk: String = LxStrings.text(rk_id) if LxStrings.has_id(rk_id) else LxStrings.text("RANK_C")
+	return LxStrings.fmt("RESULTS_BEST_FMT", [tag, t_s, pct, rk])
+
+
+static func draw_results_mode_and_bests(ci: CanvasItem, _panel: Rect2, is_hard: bool, is_new_best: bool, elapsed: float) -> void:
+	var pal: Dictionary = LxPalette.PAL
+	var m_rect := Rect2(34.0, 43.0, 64.0, 10.0)
+	LxPixelFont.draw_panel(ci, m_rect, "wine" if is_hard else "night", "coral" if is_hard else "mauve", "night" if is_hard else "void")
+	var m_txt: String = LxStrings.text("RESULTS_MODE_HARD" if is_hard else "RESULTS_MODE_NORMAL")
+	LxPixelFont.draw_centered(ci, m_txt, m_rect.get_center().x, m_rect.position.y + 3.0, pal["gold"] as Color if is_hard else pal["stone"] as Color, 1)
+	if is_new_best:
+		var nb_rect := Rect2(222.0, 43.0, 64.0, 10.0)
+		var pulse_nb: bool = LxHudFx.flash_reduced() or fmod(elapsed * 2.4, 1.0) < 0.55
+		LxPixelFont.draw_panel(ci, nb_rect, "pine", "lime" if pulse_nb else "gold", "night")
+		LxPixelFont.draw_centered(ci, LxStrings.text("RESULTS_NEW_BEST"), nb_rect.get_center().x, nb_rect.position.y + 3.0, pal["cream"] as Color if pulse_nb else pal["gold"] as Color, 1)
+	var bar_r := Rect2(34.0, 143.0, 252.0, 10.0)
+	LxPixelFont.draw_panel(ci, bar_r, "night", "coral" if is_hard else "dusk", "void")
+	ci.draw_rect(Rect2(160.0, 145.0, 1.0, 6.0), pal["dusk"] as Color)
+	LxPixelFont.draw_centered(ci, _format_best_mark_line(false), 97.0, 146.0, pal["gold"] as Color if not is_hard else pal["stone"] as Color, 1)
+	LxPixelFont.draw_centered(ci, _format_best_mark_line(true), 223.0, 146.0, pal["coral"] as Color if is_hard else pal["mauve"] as Color, 1)
 
 
 static func resolve_active_temper() -> String:

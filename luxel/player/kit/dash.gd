@@ -257,6 +257,10 @@ func get_active_velocity() -> Vector2:
 	return Vector2.ZERO
 
 
+func is_active() -> bool:
+	return active
+
+
 func can_cross_gaps() -> bool:
 	if is_gliding or (wick != null and wick.move_wings != null and wick.move_wings.gliding):
 		return true

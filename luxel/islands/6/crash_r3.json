@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "theme": "ember_express_roof",
-  "music": "island6_boss_p1",
+  "music": "isl6_boss_minor_p1",
   "ambience": ["forge_rumble", "wind_howl"],
   "name_key": "ISL6_CR_R3",
   "spawn": [56, 144],
