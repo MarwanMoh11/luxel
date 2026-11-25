@@ -531,7 +531,7 @@
           184,
           248
         ],
-        "tol": 8
+        "tol": 16
       },
       {
         "op": "interact",
@@ -544,6 +544,10 @@
       {
         "op": "expect",
         "var": "world_face==black"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "interact",

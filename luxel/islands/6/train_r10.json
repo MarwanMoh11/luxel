@@ -53,7 +53,7 @@
       "to_region": "train_r11",
       "to_spawn": [
         48,
-        152
+        168
       ],
       "locked_door_id": "door_r10_east"
     }
@@ -71,10 +71,21 @@
       }
     },
     {
+      "id": "shrine_r10_prep",
+      "kind": "rest_shrine",
+      "pos": [
+        44,
+        68
+      ],
+      "props": {
+        "zone": "tr_r10"
+      }
+    },
+    {
       "id": "anvil_r10_cycle",
       "kind": "temper_anvil",
       "pos": [
-        80,
+        96,
         56
       ],
       "props": {
@@ -358,7 +369,22 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
+  "events": [
+    {
+      "id": "tr_r10_hearth_warmth",
+      "on": "enter",
+      "if": "!flag:engineer_defeated",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 4
+          }
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Blazing Z-stepped Smokestack Tender Catwalk leading into the Locomotive Cab: provides an 8-second boss checkpoint anchor, Cycle Anvil prep, and a tense sprint across staggered steam-gust gratings past a Stoker and Rail Hopper.",
     "kind": "traversal",
@@ -380,14 +406,10 @@
       {
         "op": "goto",
         "to": [
-          80,
-          72
+          128,
+          112
         ],
-        "tol": 3.0
-      },
-      {
-        "op": "interact",
-        "target": "anvil_r10_cycle"
+        "tol": 8.0
       },
       {
         "op": "clear",

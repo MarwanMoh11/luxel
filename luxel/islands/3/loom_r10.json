@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r10",
+      "id": "lm_r10",
       "name_key": "ISL3_LM_R10_NAME",
       "rect": [
         0,
@@ -44,7 +44,8 @@
       "to_spawn": [
         376,
         176
-      ]
+      ],
+      "locked_door_id": "door_loom_r10_east_sc"
     },
     {
       "id": "exit_loom_r10_north",
@@ -63,7 +64,7 @@
   ],
   "interactables": [
     {
-      "id": "anc_loom_r10",
+      "id": "anc_r10_west",
       "kind": "room_anchor",
       "pos": [
         40,
@@ -74,31 +75,357 @@
       }
     },
     {
-      "id": "lamp_loom_r10",
+      "id": "ws_loom_deep",
+      "kind": "waystone",
+      "pos": [
+        176,
+        152
+      ],
+      "props": {
+        "zone": "lm_r10",
+        "name_key": "ISL3_LM_R10_NAME"
+      }
+    },
+    {
+      "id": "lm_r10_tapestry",
+      "kind": "loom_landmark",
+      "pos": [
+        104,
+        64
+      ],
+      "props": {
+        "variant": "loom_tapestry"
+      }
+    },
+    {
+      "id": "lore_r10_rubbing",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        92
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_RUB_2",
+        "icon": "lantern"
+      }
+    },
+    {
+      "id": "spool_r10_practice",
+      "kind": "silk_loom_spool",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r10_end"
+        ],
+        "state": "taut",
+        "dry": true,
+        "walkable": true,
+        "burn_delay": 0.9,
+        "regrow_secs": 4.0
+      }
+    },
+    {
+      "id": "spool_r10_end",
+      "kind": "silk_loom_spool",
+      "pos": [
+        304,
+        72
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut"
+      }
+    },
+    {
+      "id": "chest_r10_shards",
+      "kind": "chest",
+      "pos": [
+        304,
+        100
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "door_loom_r10_east_sc",
+      "kind": "door",
+      "pos": [
+        328,
+        128
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "loom_r10_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        160
+      ],
+      "props": {
+        "zone": "lm_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_n",
       "kind": "road_lamp",
       "pos": [
         176,
-        112
+        48
       ],
       "props": {
-        "zone": "loom_r10",
+        "zone": "lm_r10",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        160
+      ],
+      "props": {
+        "zone": "lm_r10",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        144,
+        124,
+        64,
+        52
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        176,
+        152
+      ],
+      "radius": 22,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        72,
+        44,
+        64,
+        56
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        176,
+        144
+      ],
+      "size": [
+        40,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        176,
+        152
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        176,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        140,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        212,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        64,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        244,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        128,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        64,
+        100
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r10_unlock_lift",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_r10_lift"
+        }
+      ]
+    },
+    {
+      "id": "loom_r10_lore_flag",
+      "on": "signal:lore_r10_rubbing",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "lore_rubbing_2"
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r10",
-    "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
+    "idea": "Quiet pre-boss Bobbin Loft featuring Tailor Spider's Hollow Wick tapestry (Bark-Rubbing #2), Waystone 2, the Cycle 4 counterweight lift to Carding Hall, and a safe 0.9 s practice burn-spoke teaching the Loom Widow's spoke cadence.",
+    "kind": "story",
+    "beat": "ketsu",
+    "teaches": "Foreshadows the Loom Widow's 0.9 s spoke ember-burn and regrow rhythm while delivering Hollow Wick lore and pre-boss safety.",
+    "decisions": 4,
+    "expert_s": 38,
+    "reward": "ws_loom_deep+lore_rubbing_2+30_shards+cycle_4",
+    "why": "Pre-boss breather, Cycle 4 lift to r1, and Hollow Wick lore beat.",
+    "exit": "exit_loom_r10_north",
     "optional": true,
-    "solution": []
+    "solution": [
+      {
+        "op": "interact",
+        "target": "ws_loom_deep"
+      },
+      {
+        "op": "interact",
+        "target": "lore_r10_rubbing"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          192,
+          72
+        ],
+        "target": "spool_r10_practice"
+      },
+      {
+        "op": "wait",
+        "secs": 1.15
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          112
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "chest_r10_shards"
+      },
+      {
+        "op": "expect",
+        "flag": "loom_r10_lift"
+      },
+      {
+        "op": "expect",
+        "flag": "lore_rubbing_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r10_north"
+      }
+    ]
   },
   "id": "loom_r10",
   "island_id": 3,
@@ -112,6 +439,5 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
   "enemies": []
 }

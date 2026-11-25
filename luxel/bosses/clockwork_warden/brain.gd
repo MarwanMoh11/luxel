@@ -224,6 +224,14 @@ func on_light(a: Variant, b: Variant = Vector2.ZERO, source: String = "") -> voi
 		stage.play_sfx("lens_reveal", pos)
 
 
+func take_hit(hit: LxHit) -> int:
+	if not engaged and boss_state != BossState.DEATH and hit != null:
+		if world_ctx != null and str(world_ctx.get("current_region_id")) == "orrery_r6":
+			if _get_wick_pos().distance_to(pos) <= 92.0:
+				engage()
+	return super.take_hit(hit)
+
+
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])

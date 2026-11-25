@@ -150,8 +150,8 @@
       "id": "post_r9_e",
       "kind": "mooring_post",
       "pos": [
-        328,
-        176
+        312,
+        216
       ],
       "props": {
         "orbit_r": 44.0,
@@ -373,7 +373,7 @@
       "prop": "tangled_cargo_net",
       "pos": [
         72,
-        120
+        136
       ],
       "layer": "sort",
       "flip_x": false,
@@ -384,7 +384,7 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        56,
+        72,
         296
       ],
       "layer": "sort",
@@ -408,7 +408,7 @@
       "sheet": "theme_galleon",
       "prop": "broken_cannon",
       "pos": [
-        456,
+        440,
         248
       ],
       "layer": "sort",
@@ -432,7 +432,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        472,
+        456,
         56
       ],
       "layer": "sort",
@@ -495,6 +495,13 @@
           9,
           3,
           2,
+          "wall"
+        ],
+        [
+          20,
+          10,
+          1,
+          1,
           "wall"
         ],
         [
@@ -615,7 +622,7 @@
         "op": "goto",
         "to": [
           376,
-          144
+          146
         ],
         "tol": 2.0
       },
@@ -631,7 +638,7 @@
         "op": "goto",
         "to": [
           376,
-          144
+          146
         ],
         "tol": 2.0
       },

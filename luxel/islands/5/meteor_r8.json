@@ -55,7 +55,7 @@
         456,
         224
       ],
-      "locked_door_id": "door_mv_r8_k2"
+      "locked_door_id": "door_mv_r8_combat"
     }
   ],
   "interactables": [
@@ -100,29 +100,12 @@
       "id": "door_mv_r8_combat",
       "kind": "door",
       "pos": [
-        72,
+        24,
         136
       ],
       "props": {
         "door_kind": "combat_gate",
         "zone": "mv_r8",
-        "size": [
-          16,
-          48
-        ]
-      }
-    },
-    {
-      "id": "door_mv_r8_k2",
-      "kind": "door",
-      "pos": [
-        24,
-        136
-      ],
-      "props": {
-        "door_kind": "wick_key",
-        "dungeon_id": "meteor_vault",
-        "key_kind": "wick_key",
         "size": [
           16,
           48
@@ -367,22 +350,19 @@
     }
   ],
   "design": {
-    "idea": "Null Moth bastion where straight bolts are swallowed; curve bolts through the twin wells or detonate the Meteor Carrier's boulder mid-windup, then spend Key 2 on the West Vault Door.",
+    "idea": "Null Moth bastion where straight bolts are swallowed; curve bolts through the twin wells or detonate the Meteor Carrier's boulder mid-windup to lift the West Vault Combat Gate.",
     "kind": "combat",
     "beat": "ten",
     "teaches": "Countering Null Moths with curved gravity shots and detonating Meteor Carriers during tell.",
     "decisions": 8,
     "expert_s": 52,
     "reward": "sling_catapult_access",
-    "why": "Escalated combat room combining Null Moths, Meteor Carrier, and Comet Hound behind Key 2.",
+    "why": "Escalated combat room combining Null Moths, Meteor Carrier, and Comet Hound guarding the Sling Catapult.",
     "exit": "exit_mv_r8_w",
     "start": {
       "flags": [
         "power_orbit_ring"
-      ],
-      "keys": {
-        "wick_key": 1
-      }
+      ]
     },
     "solution": [
       {
@@ -395,10 +375,6 @@
         "prop": "opened",
         "value": true,
         "timeout": 3.0
-      },
-      {
-        "op": "interact",
-        "target": "door_mv_r8_k2"
       },
       {
         "op": "expect_exit",

@@ -335,10 +335,10 @@
     {
       "kind": "stain",
       "pos": [
-        392,
-        248
+        376,
+        232
       ],
-      "radius": 22,
+      "radius": 20,
       "style": "water"
     },
     {
@@ -384,8 +384,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        120,
-        248
+        152,
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -396,7 +396,7 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        360,
+        344,
         264
       ],
       "layer": "sort",
@@ -420,8 +420,8 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        440,
-        40
+        424,
+        72
       ],
       "layer": "sort",
       "flip_x": true,

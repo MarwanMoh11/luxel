@@ -243,7 +243,7 @@
       "id": "lamp_r3_w",
       "kind": "road_lamp",
       "pos": [
-        104,
+        120,
         216
       ],
       "props": {
@@ -297,7 +297,7 @@
     {
       "kind": "cracks",
       "pos": [
-        360,
+        344,
         72
       ],
       "radius": 18,
@@ -309,7 +309,7 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        376,
+        360,
         56
       ],
       "layer": "sort",
@@ -334,7 +334,7 @@
       "prop": "tangled_cargo_net",
       "pos": [
         408,
-        72
+        88
       ],
       "layer": "sort",
       "flip_x": true,
@@ -357,7 +357,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        344,
+        328,
         40
       ],
       "layer": "sort",
@@ -393,7 +393,7 @@
       "sheet": "theme_galleon",
       "prop": "barnacle_anchor",
       "pos": [
-        72,
+        104,
         248
       ],
       "layer": "sort",

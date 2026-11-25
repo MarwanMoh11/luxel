@@ -362,7 +362,7 @@
       "prop": "standing_oak_loom",
       "pos": [
         112,
-        144
+        156
       ],
       "layer": "sort",
       "flip_x": false,
@@ -374,7 +374,7 @@
       "prop": "standing_oak_loom",
       "pos": [
         396,
-        144
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -469,8 +469,8 @@
       "sheet": "theme_loom",
       "prop": "brass_shuttle_rack",
       "pos": [
-        292,
-        256
+        396,
+        240
       ],
       "layer": "sort",
       "flip_x": false,
@@ -547,11 +547,6 @@
     "reward": "r3_access+hub_orientation",
     "why": "Central multi-level hub linking all four cycles and teasing every major Weaver's Loom landmark.",
     "exit": "exit_loom_r2_sw",
-    "start": {
-      "vars": {
-        "loom_warp": "high"
-      }
-    },
     "solution": [
       {
         "op": "rotate",

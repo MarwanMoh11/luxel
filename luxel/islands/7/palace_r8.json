@@ -164,8 +164,8 @@
       "kind": "door",
       "pos": [232, 24],
       "props": {
-        "door_kind": "switch_door",
-        "requires_signals": ["scale_r8_twin"],
+        "door_kind": "ward_barrier",
+        "requires_flags": ["palace_r8_solved"],
         "persistent": true,
         "size": [48, 16]
       }
@@ -217,7 +217,17 @@
       "disable": []
     }
   ],
-  "events": [],
+  "events": [
+    {
+      "id": "r8_scale_flag",
+      "on": "signal:scale_r8_twin",
+      "once": false,
+      "do": [
+        { "set_flag": "palace_r8_solved" },
+        { "unlock": ["door_r8_north"] }
+      ]
+    }
+  ],
   "design": {
     "idea": "Two-world balance scale vault: load the Silver pan with a stone block and stone orb (weight 3), then smuggle a Light Orb through the Moon Pool into Black and guide your mirrored Mimic Statue north onto the Black pan (1+2=3) to unlock Key 2 and the Conservatory.",
     "kind": "puzzle",

@@ -31,7 +31,7 @@ class HushGravityWell:
 			return Vector2.ZERO
 		var dist: float = sqrt(d2)
 		var u: float = clampf(1.0 - dist / field_radius, 0.0, 1.0)
-		var mult: float = 0.22 if what == "wick" else 1.0
+		var mult: float = 0.14 if what == "wick" else 1.0
 		return (delta / dist) * (strength * mult * (0.35 + 0.65 * u))
 
 
@@ -120,11 +120,11 @@ func apply_phase_arena(ph: int, on_bell_ring: Callable) -> void:
 		# Island 3 (Growth) + Island 4 (The Loop): snuff 2 braziers, bramble spurs, briar pods & 6s echo ghost
 		boss.props.clear()
 		_snuff_braziers(2)
-		_carve_safe_tile(c + Vector2(-68.0, -28.0), "bramble")
-		_carve_safe_tile(c + Vector2(68.0, 28.0), "bramble")
+		_carve_safe_tile(c + Vector2(-44.0, -20.0), "bramble")
+		_carve_safe_tile(c + Vector2(44.0, 20.0), "bramble")
 		briar_nodes = [
-			_safe_pt(c + Vector2(-54.0, 20.0)),
-			_safe_pt(c + Vector2(54.0, -20.0)),
+			_safe_pt(c + Vector2(-38.0, 16.0)),
+			_safe_pt(c + Vector2(38.0, -16.0)),
 		]
 		echo_ghost_active = true
 		echo_ghost_pos = boss.call("_get_wick_pos") as Vector2
@@ -135,23 +135,23 @@ func apply_phase_arena(ph: int, on_bell_ring: Callable) -> void:
 		_restore_braziers()
 		_ensure_gravity(c)
 		conveyor_dir = 1.0
-		var bw: float = minf(124.0, ar.size.x * 0.72)
+		var bw: float = minf(84.0, ar.size.x * 0.72)
 		conveyor_rects = [
-			Rect2(c.x - bw * 0.5, c.y - 30.0, bw, 18.0),
-			Rect2(c.x - bw * 0.5, c.y + 12.0, bw, 18.0),
+			Rect2(c.x - bw * 0.5, c.y - 22.0, bw, 14.0),
+			Rect2(c.x - bw * 0.5, c.y + 8.0, bw, 14.0),
 		]
-		_carve_safe_tile(c + Vector2(-68.0, 0.0), "cracked")
-		_carve_safe_tile(c + Vector2(68.0, 0.0), "cracked")
+		_carve_safe_tile(c + Vector2(-46.0, 0.0), "cracked")
+		_carve_safe_tile(c + Vector2(46.0, 0.0), "cracked")
 	elif ph == 4:
 		# Island 7 (Mirrors) + Island 8 (What Was Sold): Silver/Rose Mirror Split + Mirror Twin + Closing Dark
 		boss.props.clear()
 		boss.stage.revert_tiles(boss.world_ctx)
-		_carve_safe_tile(c + Vector2(-68.0, 28.0), "mirror")
-		_carve_safe_tile(c + Vector2(68.0, -28.0), "mirror")
+		_carve_safe_tile(c + Vector2(-44.0, 20.0), "mirror")
+		_carve_safe_tile(c + Vector2(44.0, -20.0), "mirror")
 		mirror_fault_active = true
 		mirror_active = true
 		mirror_respawn_cd = 0.0
-		mirror_pos = _safe_pt(c + (c - boss.pos).limit_length(56.0))
+		mirror_pos = _safe_pt(c + (c - boss.pos).limit_length(42.0))
 
 
 func tick(dt: float, target: Vector2, on_mirror_shatter: Callable) -> void:
@@ -234,16 +234,16 @@ func _check_comeback_beat() -> void:
 	var w: LxWick = Lx.player as LxWick
 	if w.dead:
 		return
-	var low_hp: bool = Lx.state.hearts <= 2.0 and Lx.state.hearts > 0.01
+	var low_hp: bool = Lx.state.hearts <= 3.0 and Lx.state.hearts > 0.01
 	var p4_wounded: bool = boss.phase >= 4 and Lx.state.hearts <= float(Lx.state.max_hearts) * 0.50 and Lx.state.hearts > 0.01
 	if not low_hp and not p4_wounded:
 		return
 	comeback_used = true
-	comeback_surge_t = 6.5
+	comeback_surge_t = 7.5
 	comeback_burst_t = 0.85
-	Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 2.0)
+	Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 3.0)
 	w.ember = 100.0
-	boss.patterns.clear_bolts_in_radius(w.global_position, 102.0)
+	boss.patterns.clear_bolts_in_radius(w.global_position, 140.0)
 	boss.stage.light_burst(w.global_position, 136.0, 1.65, 0.55)
 	boss.stage.shake(0.20)
 	boss.stage.play_sfx("great_lamp_bloom", w.global_position)
@@ -298,11 +298,11 @@ func _tick_moving_floor(dt: float) -> void:
 	var ctx: Node = boss.world_ctx
 	for idx: int in range(conveyor_rects.size()):
 		var r: Rect2 = conveyor_rects[idx]
-		if r.has_point(wp):
+		if r.has_point(wp) and boss.arena_rect.grow(-8.0).has_point(wp):
 			var sgn: float = conveyor_dir if (idx % 2 == 0) else -conveyor_dir
-			var push_v := Vector2(sgn * 34.0, 0.0)
-			# Never push Wick into a wall or lethal pit/void!
-			var probe: Vector2 = wp + push_v.normalized() * 14.0
+			var push_v := Vector2(sgn * 22.0, 0.0)
+			# Never push Wick near a wall or lethal pit/void!
+			var probe: Vector2 = wp + push_v.normalized() * 48.0
 			var safe: bool = true
 			if ctx != null and is_instance_valid(ctx):
 				if ctx.has_method("is_lethal_void_at") and bool(ctx.call("is_lethal_void_at", probe)):

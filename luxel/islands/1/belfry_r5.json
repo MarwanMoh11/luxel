@@ -70,8 +70,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        256,
-        304
+        288,
+        336
       ],
       "requires_moves": [],
       "requires_flags": [

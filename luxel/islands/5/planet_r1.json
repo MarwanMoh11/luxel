@@ -70,7 +70,7 @@
       "to_region": "planet_r3",
       "to_spawn": [
         392,
-        208
+        248
       ],
       "requires_flags": [
         "pl_r3_short"
@@ -121,7 +121,7 @@
       "to_region": "planet_r9",
       "to_spawn": [
         256,
-        296
+        312
       ],
       "requires_flags": [
         "pl_r9_short"

@@ -37,12 +37,11 @@
         48
       ],
       "to_island": 6,
-      "to_region": "overworld",
+      "to_region": "ow_rail_yard",
       "to_spawn": [
-        104,
-        272
-      ],
-      "one_way": true
+        248,
+        72
+      ]
     },
     {
       "id": "exit_r1_north_hatch",

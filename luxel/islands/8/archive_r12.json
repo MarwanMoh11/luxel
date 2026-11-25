@@ -1,0 +1,450 @@
+{
+  "id": "archive_r12",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_ARC_R12",
+  "theme": "archive",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    336
+  ],
+  "zones": [
+    {
+      "id": "archive_boss",
+      "name_key": "ISL8_ARC_R12",
+      "rect": [
+        0,
+        0,
+        512,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r12_south",
+      "rect": [
+        240,
+        368,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        256,
+        56
+      ]
+    },
+    {
+      "id": "exit_r12_return",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        184,
+        240
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r12_return"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r12_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mirror_r12_w",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mirror_r12_e",
+      "kind": "blue_transformer",
+      "pos": [
+        384,
+        192
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "braz_r12_nw",
+      "kind": "brazier",
+      "pos": [
+        128,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r12_ne",
+      "kind": "brazier",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r12_sw",
+      "kind": "brazier",
+      "pos": [
+        128,
+        280
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r12_se",
+      "kind": "brazier",
+      "pos": [
+        384,
+        280
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "door_r12_return",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "archive_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r12_sw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        312
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_boss"
+      }
+    },
+    {
+      "id": "lamp_r12_se",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        312
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_boss"
+      }
+    },
+    {
+      "id": "lamp_r12_nw",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        80
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_boss"
+      }
+    },
+    {
+      "id": "lamp_r12_ne",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        80
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_boss"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "archivist_r12",
+      "kind": "archivist",
+      "pos": [
+        256,
+        168
+      ],
+      "zone": "archive_boss"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        160,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        352,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        88,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        392,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        112,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        408,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        208,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        304,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "window_strip",
+      "y": 24,
+      "x0": 176,
+      "x1": 336,
+      "style": "stars"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        72,
+        96,
+        240
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 60,
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        112,
+        96,
+        288,
+        192
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        168
+      ],
+      "size": [
+        80,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.28
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r12_victory",
+      "on": "flag:archivist_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_cleared"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_CLEARED",
+            "style": "title",
+            "duration": 3.5
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Grand Domed Folio Apse hosting Boss THE ARCHIVIST: counter three borrowed Keeper Chapters (reflecting Ch.1 Fresnel beams off twin mirrors, ringing the Ch.2 Dusk Bell against Briar/Echoes, and punishing Ch.3 Star-Kiln-Hollow bursts) to shatter the Archive Eclipse Seal.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Boss-scale synthesis of all 7 prior Island Keepers' counterplay.",
+    "decisions": 8,
+    "expert_s": 140,
+    "reward": "archive_cleared+half_lantern",
+    "why": "Climactic boss of The Archive of Lost Lamps unlocking 2/3 of the Triple Eclipse Seal.",
+    "exit": "exit_r12_return",
+    "start": {
+      "flags": [
+        "item_bookmark"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          280
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 180.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "archivist_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "archive_cleared",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r12_return",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r12_return"
+      }
+    ]
+  }
+}

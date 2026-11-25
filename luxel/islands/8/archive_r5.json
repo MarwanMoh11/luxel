@@ -1,0 +1,568 @@
+{
+  "id": "archive_r5",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 4,
+  "name_key": "ISL8_ARC_R5",
+  "theme": "archive_4",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_mem4",
+      "name_key": "ISL8_ARC_R5",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r4",
+      "to_spawn": [
+        224,
+        52
+      ]
+    },
+    {
+      "id": "exit_r5_east",
+      "rect": [
+        464,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        112,
+        56
+      ],
+      "locked_door_id": "door_r5_short"
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r6",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r5_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r5_west",
+      "kind": "room_anchor",
+      "pos": [
+        128,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r5_mem4",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        256
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R5",
+        "icon": "clock"
+      }
+    },
+    {
+      "id": "echo_r5_rose",
+      "kind": "echo_rose",
+      "pos": [
+        96,
+        184
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_r5_echo",
+      "kind": "pressure_plate",
+      "pos": [
+        96,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_ids": [
+          "bridge_r5_pier",
+          "gate_r5_mem4"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r5_pier",
+      "kind": "door",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "plate_r5_echo"
+        ]
+      }
+    },
+    {
+      "id": "wind_r5_east",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "size": [
+          128,
+          48
+        ],
+        "dir": [
+          1,
+          0
+        ],
+        "strength": 180.0
+      }
+    },
+    {
+      "id": "updraft_r5_mid",
+      "kind": "updraft_vent",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "radius": 24.0,
+        "on": true,
+        "dir": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "braz_r5_timed",
+      "kind": "timed_brazier",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "secs": 8.0,
+        "target_id": "gate_r5_mem4"
+      }
+    },
+    {
+      "id": "gate_r5_mem4",
+      "kind": "logic_gate",
+      "pos": [
+        328,
+        96
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r5_echo",
+          "braz_r5_timed"
+        ],
+        "target_id": "door_r5_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r5_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r5_mem4"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sw_r5_short",
+      "kind": "switch_eye",
+      "pos": [
+        416,
+        152
+      ],
+      "props": {
+        "target_id": "door_r5_short",
+        "sets_flag": "archive_m4_short",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r5_short",
+      "kind": "door",
+      "pos": [
+        456,
+        192
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "archive_m4_short"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem4"
+      }
+    },
+    {
+      "id": "lamp_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem4"
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        72
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem4"
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem4"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gloam_r5_1",
+      "kind": "choir_gloam",
+      "pos": [
+        312,
+        168
+      ],
+      "route": [
+        [
+          312,
+          144
+        ],
+        [
+          360,
+          168
+        ]
+      ],
+      "zone": "archive_mem4",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        368,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        48,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        64,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        384,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        112,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        416,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        320,
+        176,
+        128,
+        32
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        96,
+        184
+      ],
+      "radius": 22,
+      "color": "lime"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        144
+      ],
+      "size": [
+        96,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r5_mem4",
+      "on": "signal:gate_r5_mem4",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_4_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    },
+    {
+      "id": "ev_r5_short",
+      "on": "signal:sw_r5_short",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_m4_short"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory IV (Mirefen): record a 6-second Echo Rose holding the West bridge plate and kindling the timed brazier, then ride the east wind & updraft across the crescent pond while your ghost holds open the gate to the Catalogue Rails.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Island 4 Echo Rose recording + wind/updraft crossing + rotunda Cycle 1 shortcut.",
+    "decisions": 6,
+    "expert_s": 55,
+    "reward": "mem_4_lit+archive_m4_short",
+    "why": "Fourth Archive memory remixing Mirefen's 6-second Echo Rose and wind glide.",
+    "exit": "exit_r5_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          96,
+          184
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "echo_r5_rose"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_r5_echo",
+        "secs": 3.2
+      },
+      {
+        "op": "shoot",
+        "target": "braz_r5_timed"
+      },
+      {
+        "op": "wait",
+        "secs": 2.8
+      },
+      {
+        "op": "wait_until",
+        "target": "bridge_r5_pier",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          144
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 28.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          368,
+          152
+        ],
+        "target": "sw_r5_short"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r5_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "expect",
+        "flag": "mem_4_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
+    ]
+  }
+}

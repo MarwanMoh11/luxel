@@ -206,7 +206,7 @@
       "id": "lamp_r12_nw",
       "kind": "road_lamp",
       "pos": [
-        168,
+        128,
         56
       ],
       "props": {
@@ -218,7 +218,7 @@
       "id": "lamp_r12_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
+        384,
         56
       ],
       "props": {
@@ -471,6 +471,14 @@
       {
         "op": "expect",
         "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          208
+        ],
+        "tol": 16
       },
       {
         "op": "clear",

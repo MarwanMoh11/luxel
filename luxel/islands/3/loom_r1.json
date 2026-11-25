@@ -114,8 +114,8 @@
       "id": "lore_r1_hint",
       "kind": "lore_stone",
       "pos": [
-        164,
-        212
+        152,
+        200
       ],
       "props": {
         "string_id": "ISL3_HINT_LOOM",
@@ -176,8 +176,8 @@
       "id": "pw_r1_thorn",
       "kind": "light_plant",
       "pos": [
-        272,
-        120
+        264,
+        104
       ],
       "props": {
         "grow": "wall",
@@ -194,7 +194,7 @@
       "id": "spool_r1_k1",
       "kind": "silk_loom_spool",
       "pos": [
-        312,
+        304,
         120
       ],
       "props": {
@@ -254,7 +254,7 @@
       "kind": "timed_brazier",
       "pos": [
         168,
-        56
+        64
       ],
       "props": {
         "secs": 22.0,
@@ -275,7 +275,6 @@
           16
         ],
         "requires_signals": [
-          "spool_r1_k3",
           "tb_r1_north"
         ]
       }
@@ -320,7 +319,7 @@
       "id": "lamp_r1_sw",
       "kind": "road_lamp",
       "pos": [
-        128,
+        112,
         224
       ],
       "props": {
@@ -344,7 +343,7 @@
       "id": "lamp_r1_n",
       "kind": "road_lamp",
       "pos": [
-        256,
+        112,
         40
       ],
       "props": {
@@ -436,7 +435,7 @@
       "sheet": "theme_loom",
       "prop": "standing_oak_loom",
       "pos": [
-        88,
+        84,
         176
       ],
       "layer": "sort",
@@ -460,8 +459,8 @@
       "sheet": "theme_loom",
       "prop": "loom_lantern_brazier",
       "pos": [
-        160,
-        232
+        156,
+        234
       ],
       "layer": "sort",
       "flip_x": false,
@@ -472,8 +471,8 @@
       "sheet": "theme_loom",
       "prop": "loom_lantern_brazier",
       "pos": [
-        256,
-        232
+        260,
+        234
       ],
       "layer": "sort",
       "flip_x": true,
@@ -520,11 +519,23 @@
       "sheet": "theme_loom",
       "prop": "dyed_bolt_of_cloth",
       "pos": [
-        348,
+        356,
         120
       ],
       "layer": "sort",
       "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        76,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     },
@@ -544,8 +555,8 @@
       "sheet": "theme_loom",
       "prop": "spindle_totem",
       "pos": [
-        344,
-        168
+        360,
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -607,7 +618,7 @@
       {
         "op": "goto",
         "to": [
-          208,
+          196,
           120
         ]
       },
@@ -621,7 +632,7 @@
       {
         "op": "shoot",
         "from": [
-          208,
+          196,
           120
         ],
         "target": "spool_r1_k1"

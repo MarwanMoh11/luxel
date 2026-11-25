@@ -89,10 +89,7 @@
         288,
         368
       ],
-      "requires_moves": [
-        "dash",
-        "throw"
-      ],
+      "requires_moves": [],
       "requires_flags": [
         "beacon_orchard",
         "beacon_observatory",
@@ -134,11 +131,6 @@
       "to_spawn": [
         384,
         464
-      ],
-      "requires_moves": [
-        "bolt",
-        "dash",
-        "throw"
       ]
     },
     {
@@ -153,11 +145,6 @@
       "to_spawn": [
         56,
         256
-      ],
-      "requires_moves": [
-        "bolt",
-        "dash",
-        "throw"
       ]
     },
     {
@@ -172,11 +159,6 @@
       "to_spawn": [
         304,
         56
-      ],
-      "requires_moves": [
-        "bolt",
-        "dash",
-        "throw"
       ]
     }
   ],
@@ -896,10 +878,7 @@
       ],
       "props": {
         "id": "moth_1_01",
-        "zone": "moonlit_bridge",
-        "requires_moves": [
-          "throw"
-        ]
+        "zone": "moonlit_bridge"
       }
     }
   ],

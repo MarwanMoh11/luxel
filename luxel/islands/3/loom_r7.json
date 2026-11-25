@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r7",
+      "id": "lm_r7",
       "name_key": "ISL3_LM_R7_NAME",
       "rect": [
         0,
@@ -44,12 +44,13 @@
       "to_spawn": [
         224,
         248
-      ]
+      ],
+      "locked_door_id": "door_loom_r7_north"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r7",
+      "id": "anc_r7_west",
       "kind": "room_anchor",
       "pos": [
         48,
@@ -60,31 +61,462 @@
       }
     },
     {
-      "id": "lamp_loom_r7",
-      "kind": "road_lamp",
+      "id": "spool_r7_shuttle",
+      "kind": "loom_shuttle_spool",
       "pos": [
-        240,
+        160,
+        192
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "accepts_shuttle": true,
+        "require_shuttle": true,
+        "conduct_speed": 155.0
+      }
+    },
+    {
+      "id": "hook_r7_east",
+      "kind": "lantern_hook",
+      "pos": [
+        248,
+        160
+      ],
+      "props": {
+        "light_radius": 68.0
+      }
+    },
+    {
+      "id": "hook_r7_nw",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        104
+      ],
+      "props": {
+        "light_radius": 68.0
+      }
+    },
+    {
+      "id": "spool_r7_relay",
+      "kind": "silk_loom_spool",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r7_ne"
+        ],
+        "state": "taut",
+        "conduct_speed": 155.0
+      }
+    },
+    {
+      "id": "spool_r7_ne",
+      "kind": "silk_loom_spool",
+      "pos": [
+        352,
+        112
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut"
+      }
+    },
+    {
+      "id": "pb_r7_1",
+      "kind": "light_plant",
+      "pos": [
+        200,
+        176
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          56,
+          32
+        ],
+        "secs": 0.4,
+        "decay": 20.0
+      }
+    },
+    {
+      "id": "pb_r7_2",
+      "kind": "light_plant",
+      "pos": [
+        312,
+        136
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          64,
+          48
+        ],
+        "secs": 0.4,
+        "decay": 20.0
+      }
+    },
+    {
+      "id": "pb_r7_moth",
+      "kind": "light_plant",
+      "pos": [
+        144,
         144
       ],
       "props": {
-        "zone": "loom_r7",
+        "grow": "bridge",
+        "size": [
+          32,
+          64
+        ],
+        "secs": 0.4,
+        "decay": 20.0
+      }
+    },
+    {
+      "id": "moth_3_09",
+      "kind": "moth",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "id": "moth_3_09"
+      }
+    },
+    {
+      "id": "spool_r7_anchor1",
+      "kind": "silk_loom_spool",
+      "pos": [
+        400,
+        96
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "dry": true,
+        "burn_delay": 0.25,
+        "persist": true,
+        "target_id": "door_loom_r7_north"
+      }
+    },
+    {
+      "id": "door_loom_r7_north",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "spool_r7_anchor1"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_sw",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        200
+      ],
+      "props": {
+        "zone": "lm_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        176
+      ],
+      "props": {
+        "zone": "lm_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_ne",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        60
+      ],
+      "props": {
+        "zone": "lm_r7",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        56
+      ],
+      "props": {
+        "zone": "lm_r7",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        160,
+        192
+      ],
+      "radius": 20,
+      "style": "gear"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        348,
+        40,
+        76,
+        72
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        76,
+        36,
+        92,
+        56
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        160
+      ],
+      "size": [
+        44,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        384,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "brass_shuttle_rack",
+      "pos": [
+        124,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        92,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        416,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        352,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        416,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        64,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        164,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "wooden_thread_spool",
+      "pos": [
+        232,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r7_anchor_snap",
+      "on": "signal:spool_r7_anchor1",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_anchor_1"
+        },
+        {
+          "narrate": "ISL3_LM_ANCHOR_1"
+        },
+        {
+          "shake": 0.18
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r7",
+    "idea": "Master the Brass Shuttle by throwing your lantern from the shuttle spool onto mid-chasm hooks to weave a custom conducting silk wire across two unlinked seed-bridges, snapping Boss Key Anchor #1 in the NE (plus an optional NW weave for Lost Moth #9).",
     "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "beat": "ten",
+    "teaches": "Brass Shuttle custom wire weaving (throw from shuttle spool to hook -> recall -> shoot spool to send spark down your custom line) + dry anchor snapping.",
+    "decisions": 8,
+    "expert_s": 58,
+    "reward": "loom_anchor_1+moth_3_09+r8_access",
+    "why": "First Wing 2 showcase proving the Brass Shuttle item transforms unlinked islands into custom circuits.",
+    "exit": "exit_loom_r7_north",
+    "start": {
+      "flags": [
+        "brass_shuttle"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          160,
+          192
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "hook_r7_east"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          132,
+          192
+        ],
+        "target": "spool_r7_shuttle"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pb_r7_2",
+        "prop": "powered",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          96
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          368,
+          96
+        ],
+        "target": "spool_r7_anchor1"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r7_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "loom_anchor_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r7_north"
+      }
+    ]
   },
   "id": "loom_r7",
   "island_id": 3,
@@ -98,6 +530,5 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
   "enemies": []
 }

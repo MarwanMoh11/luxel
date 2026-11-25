@@ -407,6 +407,13 @@
         "flag": "ur_r10_lift"
       },
       {
+        "op": "goto",
+        "to": [
+          192,
+          56
+        ]
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_r10_north"
       }

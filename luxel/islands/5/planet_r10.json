@@ -319,8 +319,8 @@
       "id": "en_pl_r10_carrier",
       "kind": "meteor_carrier",
       "pos": [
-        240,
-        88
+        288,
+        152
       ],
       "zone": "pl_r10"
     },
@@ -328,8 +328,8 @@
       "id": "en_pl_r10_eye",
       "kind": "satellite_eye",
       "pos": [
-        192,
-        112
+        184,
+        152
       ],
       "zone": "pl_r10"
     }
@@ -419,8 +419,8 @@
       "sheet": "theme_planetarium",
       "prop": "brass_star_globe",
       "pos": [
-        424,
-        240
+        392,
+        232
       ],
       "layer": "sort",
       "flip_x": true,

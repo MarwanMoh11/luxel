@@ -67,7 +67,7 @@
       "to_region": "belfry_r11",
       "to_spawn": [
         48,
-        176
+        208
       ],
       "locked_door_id": "door_r10_east"
     }
@@ -457,7 +457,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.5
+        "secs": 1.1
       },
       {
         "op": "expect_exit",

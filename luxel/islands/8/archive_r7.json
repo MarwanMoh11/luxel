@@ -1,0 +1,557 @@
+{
+  "id": "archive_r7",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 5,
+  "name_key": "ISL8_ARC_R7",
+  "theme": "archive_5",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_mem5",
+      "name_key": "ISL8_ARC_R7",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        456,
+        192
+      ]
+    },
+    {
+      "id": "exit_r7_east_ow",
+      "rect": [
+        464,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        184,
+        240
+      ],
+      "one_way": true,
+      "locked_door_id": "door_r7_backdoor"
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r8",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r7_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r7_mid",
+      "kind": "room_anchor",
+      "pos": [
+        312,
+        152
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r7_mem5",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R7",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "well_r7_grav",
+      "kind": "gravity_well",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "radius": 64.0,
+        "strength": 360.0,
+        "pull": true
+      }
+    },
+    {
+      "id": "rotor_r7_astrolabe",
+      "kind": "rotor",
+      "pos": [
+        168,
+        128
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "quarter_on_signal": true,
+        "speed": 180.0
+      }
+    },
+    {
+      "id": "mirror_r7_star",
+      "kind": "blue_transformer",
+      "pos": [
+        168,
+        128
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "bsens_r7_blue",
+      "kind": "beam_sensor",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r7_north"
+      }
+    },
+    {
+      "id": "hook_r7_phantom",
+      "kind": "lantern_hook",
+      "pos": [
+        320,
+        152
+      ],
+      "props": {
+        "light_radius": 96.0
+      }
+    },
+    {
+      "id": "star_r7_1",
+      "kind": "star_node",
+      "pos": [
+        272,
+        168
+      ],
+      "props": {
+        "links": [
+          "star_r7_2"
+        ],
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "star_r7_2",
+      "kind": "star_node",
+      "pos": [
+        320,
+        120
+      ],
+      "props": {
+        "links": [
+          "star_r7_1"
+        ],
+        "link_range": 84.0
+      }
+    },
+    {
+      "id": "door_r7_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "bsens_r7_blue"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "sw_r7_backdoor",
+      "kind": "switch_eye",
+      "pos": [
+        400,
+        232
+      ],
+      "props": {
+        "target_id": "door_r7_backdoor",
+        "sets_flag": "archive_backdoor",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r7_backdoor",
+      "kind": "door",
+      "pos": [
+        456,
+        192
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "archive_backdoor"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem5"
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem5"
+      }
+    },
+    {
+      "id": "lamp_r7_nw",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        208
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem5"
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem5"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "eye_r7_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        264,
+        64
+      ],
+      "route": [],
+      "zone": "archive_mem5",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        368,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        56,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        272,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        48,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        368,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        240,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        80,
+        128
+      ],
+      "radius": 34,
+      "color": "blue"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        320,
+        152
+      ],
+      "radius": 24,
+      "color": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        224,
+        64,
+        64
+      ],
+      "style": "ornate"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r7_mem5",
+      "on": "signal:bsens_r7_blue",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_5_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    },
+    {
+      "id": "ev_r7_back",
+      "on": "signal:sw_r7_backdoor",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_backdoor"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory V (Starfall): rotate the astrolabe prism to bounce a blue beam into the celestial sensor, light the Star Nodes & pulse True Lens with your Bookmarked lantern across the star-chasm, shatter the Eclipse Eye, and unlock the backdoor and North Arch.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Island 5 Gravity Well + Rotor Prism + Star Nodes + Bookmark Sigil lantern-hook pinning over phantom chasms.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "mem_5_lit+archive_backdoor",
+    "why": "First Upper Stacks memory teaching Bookmark Sigil synergy with Starfall's phantom star-bridges.",
+    "exit": "exit_r7_north",
+    "start": {
+      "flags": [
+        "item_bookmark"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          168,
+          176
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r7_star",
+        "angle": 315.0
+      },
+      {
+        "op": "beam",
+        "from": [
+          196,
+          128
+        ],
+        "target": "mirror_r7_star"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r7_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "mem_5_lit"
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          168
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "star_r7_1"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          160
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r7_phantom"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          64
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_north"
+      }
+    ]
+  }
+}

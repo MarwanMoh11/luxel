@@ -135,7 +135,7 @@ GLOW_PROP_RADII: Dict[str, float] = {
     "rain_lantern_post": 42.0, "storm_brazier_bowl": 46.0, "pearl_lantern_post": 42.0,
     "sea_anemone_glow": 36.0, "toll_clerk_lantern": 42.0, "ant_lantern_post": 42.0,
     "glow_spore_cluster": 38.0, "bell_floor_seal": 40.0, "crypt_candelabra": 46.0,
-    "toll_brazier": 48.0, "belfry_torch": 44.0, "cozy_stone_hearth": 52.0,
+    "toll_brazier": 48.0, "cozy_stone_hearth": 52.0,
     "moth_lantern_tree": 48.0, "pane_stained_easel": 38.0, "warm_porch_lantern": 44.0,
 }
 

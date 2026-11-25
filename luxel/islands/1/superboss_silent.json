@@ -338,6 +338,13 @@
     "exit": "exit_sb_south",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          192,
+          264
+        ]
+      },
+      {
         "op": "interact",
         "target": "lore_silent_bell"
       },

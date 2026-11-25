@@ -199,7 +199,7 @@
       "id": "lamp_r11_ne",
       "kind": "road_lamp",
       "pos": [
-        280,
+        248,
         88
       ],
       "props": {
@@ -214,7 +214,7 @@
       "kind": "gull_thief",
       "pos": [
         104,
-        168
+        184
       ],
       "zone": "gal_r11"
     },
@@ -223,7 +223,7 @@
       "kind": "gull_thief",
       "pos": [
         312,
-        168
+        184
       ],
       "zone": "gal_r11"
     },
@@ -298,7 +298,7 @@
       "sheet": "theme_galleon",
       "prop": "broken_cannon",
       "pos": [
-        104,
+        88,
         232
       ],
       "layer": "sort",
@@ -310,8 +310,8 @@
       "sheet": "theme_galleon",
       "prop": "broken_cannon",
       "pos": [
-        328,
-        184
+        312,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -334,7 +334,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        264,
+        248,
         40
       ],
       "layer": "sort",
@@ -358,7 +358,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        168,
+        152,
         104
       ],
       "layer": "sort",

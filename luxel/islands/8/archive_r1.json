@@ -1,0 +1,632 @@
+{
+  "id": "archive_r1",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_ARC_R1",
+  "theme": "archive",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "archive_rotunda",
+      "name_key": "ISL8_ARC_R1",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_south_ow",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_cloister",
+      "to_spawn": [
+        184,
+        240
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_west",
+      "rect": [
+        0,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r2",
+      "to_spawn": [
+        392,
+        144
+      ],
+      "locked_door_id": "door_r1_west"
+    },
+    {
+      "id": "exit_r1_nw_short",
+      "rect": [
+        96,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r5",
+      "to_spawn": [
+        424,
+        192
+      ],
+      "locked_door_id": "door_r1_nw_short"
+    },
+    {
+      "id": "exit_r1_n2_short",
+      "rect": [
+        160,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r6",
+      "to_spawn": [
+        424,
+        240
+      ],
+      "locked_door_id": "door_r1_n2_short"
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r12",
+      "to_spawn": [
+        256,
+        336
+      ],
+      "locked_door_id": "door_r1_boss"
+    },
+    {
+      "id": "exit_r1_ne_short",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r10",
+      "to_spawn": [
+        56,
+        240
+      ],
+      "locked_door_id": "door_r1_ne_short"
+    },
+    {
+      "id": "exit_r1_east",
+      "rect": [
+        496,
+        176,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r7",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r1_east"
+    },
+    {
+      "id": "exit_r1_e2_short",
+      "rect": [
+        496,
+        96,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r11",
+      "to_spawn": [
+        368,
+        160
+      ],
+      "locked_door_id": "door_r1_e2_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r1_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_archive_r1",
+      "kind": "waystone",
+      "pos": [
+        256,
+        232
+      ],
+      "props": {
+        "lit": false
+      }
+    },
+    {
+      "id": "rotunda_lamps_r1",
+      "kind": "archive_rotunda_lamps",
+      "pos": [
+        256,
+        152
+      ],
+      "props": {}
+    },
+    {
+      "id": "lore_r1_rotunda",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        248
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R1",
+        "icon": "book"
+      }
+    },
+    {
+      "id": "bell_r1_west_call",
+      "kind": "bell",
+      "pos": [
+        152,
+        192
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 180.0,
+        "target_id": "door_r1_west",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r1_west",
+      "kind": "door",
+      "pos": [
+        24,
+        192
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "bell_r1_west_call"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_r1_nw_short",
+      "kind": "door",
+      "pos": [
+        112,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "archive_m4_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_n2_short",
+      "kind": "door",
+      "pos": [
+        176,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "archive_lower_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_boss",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "boss_key",
+        "dungeon_id": "archive",
+        "key_id": "archive_boss_key",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "door_r1_ne_short",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "archive_upper_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_east",
+      "kind": "door",
+      "pos": [
+        488,
+        192
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "archive",
+        "key_id": "key_archive_1",
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "door_r1_e2_short",
+      "kind": "door",
+      "pos": [
+        488,
+        112
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "archive_errata_lift"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        216,
+        296
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_rotunda"
+      }
+    },
+    {
+      "id": "lamp_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_rotunda"
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_rotunda"
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_rotunda"
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        256,
+        192
+      ],
+      "layer": "ground",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        320,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        64,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "rolling_library_ladder",
+      "pos": [
+        88,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        344,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        168,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        344,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        400,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        216,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        192
+      ],
+      "radius": 56,
+      "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        56,
+        64,
+        248
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        160
+      ],
+      "size": [
+        72,
+        64
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r1_enter",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Octagonal Reading Rotunda hub displaying 8 darkened Island Memory Lamps, boss arch tease, Upper Stacks key gate, and 4 balcony return shortcuts.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Eight-memory rotunda tracking, key & boss arch sightlines, and Dawn bell entry into Memory I.",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "waystone+8_tomes_tease",
+    "why": "Central hub of The Archive of Lost Lamps linking all 8 island memories and both boss domes.",
+    "exit": "exit_r1_west",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          232
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_archive_r1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          176
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "rotunda_lamps_r1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          176,
+          192
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "shoot",
+        "target": "bell_r1_west_call"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r1_west",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_west"
+      }
+    ]
+  }
+}

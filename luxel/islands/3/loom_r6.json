@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r6",
+      "id": "lm_r6",
       "name_key": "ISL3_LM_R6_NAME",
       "rect": [
         0,
@@ -44,12 +44,24 @@
       "to_spawn": [
         40,
         80
-      ]
+      ],
+      "locked_door_id": "door_loom_r6_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_thread_keeper",
+      "kind": "thread_keeper",
+      "pos": [
+        264,
+        144
+      ],
+      "zone": "lm_r6"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r6",
+      "id": "anc_r6_south",
       "kind": "room_anchor",
       "pos": [
         224,
@@ -60,31 +72,338 @@
       }
     },
     {
-      "id": "lamp_loom_r6",
-      "kind": "road_lamp",
+      "id": "t_r6_ne",
+      "kind": "blue_transformer",
       "pos": [
-        224,
-        144
+        384,
+        104
       ],
       "props": {
-        "zone": "loom_r6",
+        "angle_deg": 180,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "t_r6_se",
+      "kind": "blue_transformer",
+      "pos": [
+        384,
+        184
+      ],
+      "props": {
+        "angle_deg": 180,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "altar_loom_r6_shuttle",
+      "kind": "loom_shuttle_altar",
+      "pos": [
+        224,
+        72
+      ],
+      "props": {
+        "requires_flag": "brass_shuttle",
+        "target_id": "door_loom_r6_north"
+      }
+    },
+    {
+      "id": "door_loom_r6_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "altar_loom_r6_shuttle"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_nw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "zone": "lm_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        64
+      ],
+      "props": {
+        "zone": "lm_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_sw",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        224
+      ],
+      "props": {
+        "zone": "lm_r6",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r6_se",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        224
+      ],
+      "props": {
+        "zone": "lm_r6",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        56,
+        84,
+        336,
+        12
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        56,
+        138,
+        336,
+        12
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        56,
+        192,
+        336,
+        12
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        144
+      ],
+      "size": [
+        52,
+        72
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        224,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        224,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        148,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        300,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        176,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        272,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        176,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        252,
+        252
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        52,
+        92
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        52,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "brass_shuttle_rack",
+      "pos": [
+        396,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r6",
-    "kind": "puzzle",
+    "idea": "Octagonal warp-rail arena for The Thread-Keeper: ignite its active rail's west spool to burn its silk curtain and drop it center-floor, cut its P2 frost-silk wire, claim the Brass Shuttle, and exit north onto r2's NW balcony (Cycle 1).",
+    "kind": "boss",
     "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "teaches": "Using rail-fire ignition and P2 wire-cutting against The Thread-Keeper to earn the Brass Shuttle dungeon power.",
+    "decisions": 6,
+    "expert_s": 88,
+    "reward": "brass_shuttle+cycle_1_balcony",
+    "why": "Dungeon B mini-boss awarding the Brass Shuttle and opening Cycle 1 back to The Heddle Hub.",
+    "exit": "exit_loom_r6_north",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "lm_r6",
+        "timeout": 100.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "interact",
+        "target": "altar_loom_r6_shuttle"
+      },
+      {
+        "op": "expect",
+        "flag": "loom_shuttle_claimed"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r6_north"
+      }
+    ]
   },
   "id": "loom_r6",
   "island_id": 3,
@@ -98,6 +417,5 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
-  "enemies": []
+  "events": []
 }

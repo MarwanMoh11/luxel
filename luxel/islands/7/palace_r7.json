@@ -115,7 +115,7 @@
     {
       "id": "mirror_r7_east",
       "kind": "blue_transformer",
-      "pos": [336, 64],
+      "pos": [336, 72],
       "props": {
         "angle_deg": 135,
         "rotatable": false,
@@ -125,7 +125,7 @@
     {
       "id": "sw_r7_blue",
       "kind": "switch_eye",
-      "pos": [232, 64],
+      "pos": [232, 72],
       "props": {
         "requires_blue": true,
         "target_ids": ["door_r7_north", "door_r7_east", "bridge_r7_north"],
@@ -249,7 +249,8 @@
       { "op": "goto", "to": [368, 200], "tol": 10 },
       { "op": "interact", "target": "pool_r7_east" },
       { "op": "expect", "var": "world_face==silver" },
-      { "op": "shoot", "from": [336, 128], "at": [336, 64], "wait_hit": 0.55 },
+      { "op": "goto", "to": [336, 108], "tol": 3 },
+      { "op": "shoot", "from": [336, 108], "at": [336, 72], "wait_hit": 0.55 },
       { "op": "wait", "secs": 0.45 },
       { "op": "expect", "target": "sw_r7_blue", "prop": "activated", "value": true },
       { "op": "expect_exit", "exit": "exit_r7_east" }

@@ -1,0 +1,755 @@
+{
+  "id": "archive_r10",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_islands": [
+    1,
+    5,
+    7
+  ],
+  "name_key": "ISL8_ARC_R10",
+  "theme": "archive_8",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "archive_mem8",
+      "name_key": "ISL8_ARC_R10",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r9",
+      "to_spawn": [
+        256,
+        52
+      ]
+    },
+    {
+      "id": "exit_r10_west_short",
+      "rect": [
+        0,
+        224,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        368,
+        56
+      ],
+      "locked_door_id": "door_r10_west_short"
+    },
+    {
+      "id": "exit_r10_east",
+      "rect": [
+        496,
+        224,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r11",
+      "to_spawn": [
+        208,
+        52
+      ],
+      "locked_door_id": "door_r10_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r10_mem8",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        272
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R10",
+        "icon": "key"
+      }
+    },
+    {
+      "id": "plinth_r10_wings",
+      "kind": "memory_plinth",
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "move_id": "wings",
+        "target_id": "q_r10_1",
+        "auto_return_on_clear": false
+      }
+    },
+    {
+      "id": "plinth_r10_beam",
+      "kind": "memory_plinth",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "move_id": "beam",
+        "target_id": "q_r10_2",
+        "auto_return_on_clear": false
+      }
+    },
+    {
+      "id": "plinth_r10_dash",
+      "kind": "memory_plinth",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "move_id": "dash",
+        "target_id": "q_r10_3",
+        "auto_return_on_clear": false
+      }
+    },
+    {
+      "id": "plinth_r10_throw",
+      "kind": "memory_plinth",
+      "pos": [
+        384,
+        192
+      ],
+      "props": {
+        "move_id": "throw",
+        "target_id": "q_r10_4",
+        "auto_return_on_clear": false
+      }
+    },
+    {
+      "id": "q_r10_1",
+      "kind": "toggle_block",
+      "pos": [
+        112,
+        88
+      ],
+      "props": {
+        "group": "r10_q1",
+        "phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "q_r10_2",
+      "kind": "toggle_block",
+      "pos": [
+        400,
+        88
+      ],
+      "props": {
+        "group": "r10_q2",
+        "phase": 0,
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "q_r10_3",
+      "kind": "toggle_block",
+      "pos": [
+        88,
+        144
+      ],
+      "props": {
+        "group": "r10_q3",
+        "phase": 0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "q_r10_4",
+      "kind": "toggle_block",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "group": "r10_q4",
+        "phase": 0,
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bramble_r10_1",
+      "kind": "bramble",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "braz_r10_s1",
+      "kind": "brazier",
+      "pos": [
+        112,
+        40
+      ],
+      "props": {
+        "lit": false,
+        "target_id": "gate_r10_boss",
+        "persist": true
+      }
+    },
+    {
+      "id": "sw_r10_s2",
+      "kind": "switch_eye",
+      "pos": [
+        400,
+        40
+      ],
+      "props": {
+        "target_id": "gate_r10_boss",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r10_s3",
+      "kind": "blue_transformer",
+      "pos": [
+        48,
+        144
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "sw_r10_s3",
+      "kind": "switch_eye",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "gate_r10_boss",
+        "persist": true
+      }
+    },
+    {
+      "id": "bell_r10_s4",
+      "kind": "bell",
+      "pos": [
+        464,
+        144
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 140.0,
+        "target_id": "gate_r10_boss",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r10_boss",
+      "kind": "logic_gate",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "braz_r10_s1",
+          "sw_r10_s2",
+          "sw_r10_s3",
+          "bell_r10_s4"
+        ],
+        "target_ids": [
+          "door_r10_boss_vault",
+          "door_r10_east"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r10_boss_vault",
+      "kind": "door",
+      "pos": [
+        256,
+        88
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r10_boss"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "key_archive_boss",
+      "kind": "keepers_flame",
+      "pos": [
+        256,
+        48
+      ],
+      "props": {
+        "dungeon_id": "archive",
+        "key_kind": "keepers_flame",
+        "flag_id": "archive_boss_key"
+      }
+    },
+    {
+      "id": "door_r10_west_short",
+      "kind": "door",
+      "pos": [
+        24,
+        240
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "archive_upper_short"
+        ]
+      }
+    },
+    {
+      "id": "door_r10_east",
+      "kind": "door",
+      "pos": [
+        488,
+        240
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "gate_r10_boss"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        296
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem8"
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem8"
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem8"
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem8"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "gloam_r10_1",
+      "kind": "choir_gloam",
+      "pos": [
+        192,
+        192
+      ],
+      "route": [
+        [
+          168,
+          176
+        ],
+        [
+          224,
+          208
+        ]
+      ],
+      "zone": "archive_mem8",
+      "leash": 120
+    },
+    {
+      "id": "eye_r10_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        320,
+        192
+      ],
+      "route": [],
+      "zone": "archive_mem8",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        256,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        208,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        304,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        160,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        352,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        208,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        304,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        256,
+        176
+      ],
+      "layer": "ground",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 44,
+      "color": "rose"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        128,
+        64,
+        192
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        48
+      ],
+      "size": [
+        64,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r10_mem8",
+      "on": "signal:gate_r10_boss",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_8_lit"
+        },
+        {
+          "set_flag": "archive_upper_short"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory VIII (The Long Night \u2014 The Page That Takes): temporarily lend wings, beam, dash, and throw onto four brass Memory Plinths to open each opposite alcove, crack all four seals with your remaining kit, and claim the Archive Boss Key.",
+    "kind": "puzzle",
+    "beat": "ketsu",
+    "teaches": "Island 8 Memory Plinth voluntary move-lending + full-kit synthesis + Archive Boss Key & Cycle 5 shortcut.",
+    "decisions": 10,
+    "expert_s": 60,
+    "reward": "mem_8_lit+archive_boss_key+archive_upper_short",
+    "why": "Eighth and final Archive memory embodying Island 8's rule of voluntary sacrifice.",
+    "exit": "exit_r10_west_short",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          240
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_wings"
+      },
+      {
+        "op": "beam",
+        "from": [
+          112,
+          112
+        ],
+        "target": "bramble_r10_1"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          112,
+          96
+        ],
+        "target": "braz_r10_s1"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_wings"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_beam"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          400,
+          108
+        ],
+        "target": "sw_r10_s2"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_beam"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_dash"
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          144
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r10_s3",
+        "angle": 135.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          96,
+          144
+        ],
+        "target": "mirror_r10_s3"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_dash"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_throw"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          400,
+          144
+        ],
+        "target": "bell_r10_s4"
+      },
+      {
+        "op": "interact",
+        "target": "plinth_r10_throw"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r10_boss_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "mem_8_lit"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          48
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "expect",
+        "flag": "archive_boss_key"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_west_short"
+      }
+    ]
+  }
+}

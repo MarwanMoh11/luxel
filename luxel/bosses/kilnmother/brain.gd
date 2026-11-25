@@ -27,8 +27,8 @@ const GUST_HALF_W: float = 24.0
 const GUST_DMG_R: float = 54.0
 const GUST_PUSH_WICK: float = 210.0
 const GUST_PUSH_LANTERN: float = 175.0
-const CROSS_RANGE: float = 104.0
-const CROSS_HALF_W: float = 10.0
+const CROSS_RANGE: float = 68.0
+const CROSS_HALF_W: float = 9.0
 
 # Compat fields referenced by tests/luxel/boss_qa_capture.gd, action_qa_capture.gd & teaching fx
 var active_move: int = KilnMove.MOLTEN_RING
@@ -64,14 +64,14 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 172.0
-	hp = 172.0
+	max_hp = 128.0
+	hp = 128.0
 	body_radius = 10.0
-	move_speed = 32.0
+	move_speed = 30.0
 	stagger_threshold = 18.0
 	stagger_duration = 1.70
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	post_recover_cd = 0.36
 	shard_drop = 44
 	intro_duration = 0.65
 	phase_shift_duration = 0.70
@@ -80,26 +80,25 @@ func _init() -> void:
 
 func _configure_boss(_spec: Dictionary) -> void:
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "kiln_r10":
-		arena_rect = Rect2(176.0, 80.0, 144.0, 80.0)
+		arena_rect = Rect2(192.0, 64.0, 128.0, 96.0)
 	configure_phases([0.66, 0.33])
 
 	# Attack 1: Molten Ring — expanding fiery shockwave + cinder gap ring
 	register_attack("molten_ring", {
 		"weight": 1.25, "tell": 0.62, "commit": 0.36, "recover": 1.25, "cooldown": 1.55,
-		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			active_move = KilnMove.MOLTEN_RING
 			_ring_stage = RingStage.RING_1
 			_ring_progress = 0.0
 			_ring_hit = false
 			ground.warn_ring(pos, KILN_RING_MAX_R, last_tell_duration, 0.0, "coral", "gold")
-			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 0.5, "apricot", "coral")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_ring_stage = RingStage.RING_1
 			_ring_progress = 0.0
 			_ring_hit = false
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 120.0, gap_a, 0.85, {"color": "coral", "source": "kiln_ring_ember", "damage": 0.5})
+			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 120.0, gap_a, 0.88, {"color": "coral", "source": "kiln_ring_ember", "damage": 0.5})
 			_boss_impact(0.20, 96.0, 96.0)
 			stage.play_sfx("golem_stomp_shockwave", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
@@ -115,7 +114,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			facing = _gust_dir.angle()
 			_gust_hit = false
 			_gust_announced = false
-			ground.warn_lane(pos, pos + _gust_dir * 58.0, 14.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_lane(pos, pos + _gust_dir * 54.0, 12.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("kilnmother_bellows_inhale", pos),
 		"on_tell": func(_b: LxBossBase, _tgt: Vector2, _dt: float, _prog: float) -> void:
 			if state_timer > 0.22:
@@ -123,29 +122,27 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_gust_hit = false
 			_gust_announced = false
-			patterns.emit_fan(pos, _gust_dir, 5 if phase >= 2 else 3, 0.72, 142.0, {"color": "apricot", "source": "bellows_cinder", "damage": 0.5})
+			patterns.emit_fan(pos, _gust_dir, 5 if phase >= 2 else 3, 0.80, 120.0, {"color": "apricot", "source": "bellows_cinder", "damage": 0.5})
 			_boss_impact(0.20, 115.0, 110.0)
 			stage.play_sfx("kilnmother_bellows_gust", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			_step_bellows_commit(dt),
 	})
 
-	# Attack 3: Slag Lob — drops 2 coolable molten slag boulders + perimeter corner cinder rain!
+	# Attack 3: Slag Lob — drops 2 coolable molten slag boulders + aimed ember strike!
 	register_attack("slag_lob", {
 		"weight": 1.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.50,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = KilnMove.SLAG_LOB
 			_lob_done = false
-			var targets: Array[Vector2] = _slag.pick_lob_targets(pos, tgt, world_ctx)
-			for tp: Vector2 in targets:
-				ground.warn_ring(tp, 18.0, last_tell_duration, 0.0, "coral", "gold")
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.04, 24.0, 0.5, "apricot", "gold")
+			_slag.pick_lob_targets(pos, tgt, world_ctx)
+			ground.warn_ring(tgt, 22.0, last_tell_duration + 0.04, 0.5, "apricot", "gold")
 			stage.play_sfx("kilnmother_bellows_inhale", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_lob_done = true
 			_slag.commit_lobs(self)
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_lane(pos, d, 3, 146.0, 0.08, {"color": "gold", "source": "slag_sparks", "damage": 0.5})
+			patterns.emit_lane(pos, d, 3 if phase >= 2 else 2, 124.0, 0.10, {"color": "gold", "source": "slag_sparks", "damage": 0.5})
 			_boss_impact(0.16, 80.0, 82.0)
 			stage.play_sfx("magma_crack", pos),
 	})
@@ -161,14 +158,14 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_cross_hit = false
 			for ci: int in range(4):
 				var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
-				ground.warn_lane(pos, pos + cdir * 62.0, CROSS_HALF_W, last_tell_duration, 0.0, "coral", "gold")
+				ground.warn_lane(pos, pos + cdir * 58.0, CROSS_HALF_W, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_cross_progress = 0.0
 			_cross_hit = false
 			for ci: int in range(4):
 				var cdir: Vector2 = Vector2.from_angle(_cross_base_ang + float(ci) * (PI * 0.5))
-				patterns.emit_lane(pos, cdir, 2, 140.0, 0.09, {"color": "coral", "source": "furnace_cross_bolt", "damage": 0.5})
+				patterns.emit_lane(pos, cdir, 2, 120.0, 0.11, {"color": "coral", "source": "furnace_cross_bolt", "damage": 0.5})
 			_boss_impact(0.22, 108.0, 104.0)
 			stage.play_sfx("kilnmother_bellows_gust", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
@@ -184,14 +181,14 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_ring_progress = 0.0
 			_ring_hit = false
 			ground.warn_ring(pos, KILN_RING_MAX_R, last_tell_duration, 0.0, "coral", "cream")
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration + 0.08, 22.0, 0.5, "coral", "gold")
+			ground.warn_ring(tgt, 20.0, last_tell_duration + 0.08, 0.5, "coral", "gold")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_ring_stage = RingStage.RING_1
 			_ring_progress = 0.0
 			_ring_hit = false
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 12, 122.0, gap_a, 0.85, {"color": "gold", "source": "meltdown_ring1", "damage": 0.5})
+			patterns.emit_gap_ring(pos, 12, 120.0, gap_a, 0.88, {"color": "gold", "source": "meltdown_ring1", "damage": 0.5})
 			_boss_impact(0.22, 98.0, 100.0)
 			stage.play_sfx("golem_stomp_shockwave", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
@@ -248,21 +245,21 @@ func _on_phase_enter(new_phase: int) -> void:
 			_spawn_reforge_sparks()
 		_slag.rim_cracked = true
 		# P2 Arena Mutation: crack outer basalt rim into lava channels + spawn 2 director-compliant slag_slimes!
-		_carve_safe_pit_near(c + Vector2(-64.0, -56.0))
-		_carve_safe_pit_near(c + Vector2(64.0, -56.0))
+		_carve_safe_pit_near(c + Vector2(-72.0, -72.0))
+		_carve_safe_pit_near(c + Vector2(72.0, -72.0))
 		if not _slimes_spawned_p2 and Lx.packs != null and not Lx.packs.enemy_script("slag_slime").is_empty():
 			_slimes_spawned_p2 = true
 			var slime_specs: Array[Dictionary] = [
-				{"kind": "slag_slime", "pos": clamp_to_arena(home + Vector2(-44.0, 22.0)), "summon_color": "coral"},
-				{"kind": "slag_slime", "pos": clamp_to_arena(home + Vector2(44.0, 22.0)), "summon_color": "coral"},
+				{"kind": "slag_slime", "pos": clamp_to_arena(c + Vector2(-42.0, -28.0)), "summon_color": "coral"},
+				{"kind": "slag_slime", "pos": clamp_to_arena(c + Vector2(42.0, -28.0)), "summon_color": "coral"},
 			]
 			adds.queue_wave(slime_specs, 0.70, 2)
 		stage.darkness_pulse(0.62, 1.0)
 	elif new_phase == 3:
-		_carve_safe_pit_near(c + Vector2(-88.0, 8.0))
-		_carve_safe_pit_near(c + Vector2(96.0, 8.0))
-		props.spawn_pillar(clamp_to_arena(c + Vector2(-58.0, -32.0)), 4.5, "kiln_slag_pillar_w")
-		props.spawn_pillar(clamp_to_arena(c + Vector2(58.0, -32.0)), 4.5, "kiln_slag_pillar_e")
+		_carve_safe_pit_near(c + Vector2(-120.0, 40.0))
+		_carve_safe_pit_near(c + Vector2(120.0, 40.0))
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-48.0, -32.0)), 4.5, "kiln_slag_pillar_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(48.0, -32.0)), 4.5, "kiln_slag_pillar_e")
 		stage.darkness_pulse(0.72, 1.1)
 	stage.shake(0.30)
 	stage.play_sfx("kilnmother_phase", pos)
@@ -278,6 +275,14 @@ func _spawn_reforge_sparks() -> void:
 			for fi: int in range(4):
 				var fdir: Vector2 = Vector2.from_angle(PI * 0.25 + float(fi) * (PI * 0.5))
 				Lx.player.call("spawn_sparks", pos, fdir, 3, (PAL["gold"] if fi % 2 == 0 else PAL["coral"]) as Color, 36.0, 92.0, 0.32)
+
+
+func _step_brain(dt: float) -> void:
+	if not engaged and boss_state != BossState.DEATH and _has_player() and world_ctx != null and str(world_ctx.get("current_region_id")) == "kiln_r10":
+		var wp: Vector2 = _get_wick_pos()
+		if wp.y <= 202.0 and wp.x >= 192.0 and wp.x <= 320.0:
+			engage()
+	super._step_brain(dt)
 
 
 func _on_boss_tick(dt: float, _target: Vector2) -> void:
@@ -434,8 +439,8 @@ func _step_bellows_commit(dt: float) -> void:
 	if _has_player():
 		var wp: Vector2 = _get_wick_pos()
 		if Geometry2D.get_closest_point_to_segment(wp, pos, end_p).distance_to(wp) <= GUST_HALF_W:
-			var safe_push: bool = world_ctx == null or not world_ctx.has_method("is_lethal_void_at") or not bool(world_ctx.call("is_lethal_void_at", wp + _gust_dir * 24.0))
-			if safe_push and Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-20.0).has_point(wp + _gust_dir * 20.0):
+			var safe_push: bool = world_ctx == null or not world_ctx.has_method("is_lethal_void_at") or not bool(world_ctx.call("is_lethal_void_at", wp + _gust_dir * 42.0))
+			if safe_push and Lx.player != null and is_instance_valid(Lx.player) and Lx.player.has_method("apply_recoil") and arena_rect.grow(-24.0).has_point(wp + _gust_dir * 36.0):
 				Lx.player.call("apply_recoil", _gust_dir * GUST_PUSH_WICK * dt)
 			if not _gust_hit and pos.distance_to(wp) <= GUST_DMG_R:
 				_gust_hit = true

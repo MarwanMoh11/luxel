@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r9",
+      "id": "lm_r9",
       "name_key": "ISL3_LM_R9_NAME",
       "rect": [
         0,
@@ -29,7 +29,7 @@
       "to_region": "loom_r8",
       "to_spawn": [
         224,
-        48
+        40
       ]
     },
     {
@@ -44,12 +44,13 @@
       "to_spawn": [
         464,
         80
-      ]
+      ],
+      "locked_door_id": "door_loom_r9_north"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r9",
+      "id": "anc_r9_sw",
       "kind": "room_anchor",
       "pos": [
         48,
@@ -60,15 +61,242 @@
       }
     },
     {
-      "id": "lamp_loom_r9",
-      "kind": "road_lamp",
+      "id": "block_r9_u",
+      "kind": "push_block",
       "pos": [
-        272,
-        160
+        80,
+        216
       ],
       "props": {
-        "zone": "loom_r9",
-        "lit": true
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r9_pl",
+      "kind": "pressure_plate",
+      "pos": [
+        112,
+        216
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          20,
+          20
+        ],
+        "target_id": "bridge_r9_w"
+      }
+    },
+    {
+      "id": "bridge_r9_w",
+      "kind": "door",
+      "pos": [
+        160,
+        216
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          32
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "plate_r9_pl"
+        ]
+      }
+    },
+    {
+      "id": "t_r9",
+      "kind": "blue_transformer",
+      "pos": [
+        208,
+        208
+      ],
+      "props": {
+        "angle_deg": 135,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "spool_r9_k1",
+      "kind": "silk_loom_spool",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9_k2"
+        ],
+        "state": "taut",
+        "conduct_speed": 140.0
+      }
+    },
+    {
+      "id": "spool_r9_k2",
+      "kind": "silk_loom_spool",
+      "pos": [
+        184,
+        144
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9_k3"
+        ],
+        "state": "taut",
+        "conduct_speed": 140.0
+      }
+    },
+    {
+      "id": "spool_r9_k3",
+      "kind": "silk_loom_spool",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9_k4"
+        ],
+        "state": "taut",
+        "freeze_secs": 24.0,
+        "power_on_freeze": true,
+        "target_id": "gate_r9_hoist"
+      }
+    },
+    {
+      "id": "spool_r9_shuttle",
+      "kind": "loom_shuttle_spool",
+      "pos": [
+        232,
+        184
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "accepts_shuttle": true,
+        "require_shuttle": true,
+        "conduct_speed": 165.0
+      }
+    },
+    {
+      "id": "hook_r9_k4",
+      "kind": "lantern_hook",
+      "pos": [
+        308,
+        144
+      ],
+      "props": {
+        "light_radius": 64.0
+      }
+    },
+    {
+      "id": "spool_r9_k4",
+      "kind": "silk_loom_spool",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9_k5"
+        ],
+        "state": "taut",
+        "conduct_speed": 165.0
+      }
+    },
+    {
+      "id": "spool_r9_k5",
+      "kind": "silk_loom_spool",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r9_k6"
+        ],
+        "state": "taut",
+        "conduct_speed": 165.0
+      }
+    },
+    {
+      "id": "spool_r9_k6",
+      "kind": "silk_loom_spool",
+      "pos": [
+        464,
+        168
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "dry": true,
+        "burn_delay": 0.35,
+        "regrow_secs": 8.0,
+        "target_ids": [
+          "gate_r9_hoist",
+          "lm_r9_weight"
+        ]
+      }
+    },
+    {
+      "id": "lm_r9_weight",
+      "kind": "loom_landmark",
+      "pos": [
+        488,
+        168
+      ],
+      "props": {
+        "variant": "counterweight",
+        "drop_flag": "loom_r9_hoisted"
+      }
+    },
+    {
+      "id": "gate_r9_hoist",
+      "kind": "logic_gate",
+      "pos": [
+        232,
+        144
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "spool_r9_k3",
+          "spool_r9_k6"
+        ],
+        "persist": true,
+        "target_ids": [
+          "bridge_r9_hoist",
+          "door_loom_r9_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r9_hoist",
+      "kind": "door",
+      "pos": [
+        272,
+        104
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          80
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "gate_r9_hoist"
+        ]
       }
     },
     {
@@ -76,26 +304,411 @@
       "kind": "keepers_flame",
       "pos": [
         272,
-        128
+        64
       ],
       "props": {
-        "dungeon_id": "loom"
+        "dungeon_id": "loom",
+        "requires_flag": "loom_r9_hoisted"
+      }
+    },
+    {
+      "id": "door_loom_r9_north",
+      "kind": "door",
+      "pos": [
+        272,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r9_hoist"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r9_sw",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        244
+      ],
+      "props": {
+        "zone": "lm_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_mid",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        236
+      ],
+      "props": {
+        "zone": "lm_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        448,
+        144
+      ],
+      "props": {
+        "zone": "lm_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        48
+      ],
+      "props": {
+        "zone": "lm_r9",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r9_ne",
+      "kind": "road_lamp",
+      "pos": [
+        320,
+        48
+      ],
+      "props": {
+        "zone": "lm_r9",
+        "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        184
+      ],
+      "radius": 28,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        180,
+        132,
+        64,
+        92
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        236,
+        36,
+        72,
+        40
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        48,
+        200,
+        80,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        272,
+        96
+      ],
+      "size": [
+        60,
+        80
+      ],
+      "tint": "warm",
+      "shear": 0.3
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        272,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        412,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        124,
+        252
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        204,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        340,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        232,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        312,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "brass_shuttle_rack",
+      "pos": [
+        236,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        476,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        88,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "layers": [
+    {
+      "id": "hoisted_bridge",
+      "when": "flag:loom_r9_hoisted",
+      "tiles": [
+        [
+          16,
+          5,
+          3,
+          5,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r9_hoist_event",
+      "on": "signal:gate_r9_hoist",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_r9_hoisted"
+        },
+        {
+          "narrate": "ISL3_LM_HOIST_NOTE"
+        },
+        {
+          "shake": 0.24
+        },
+        {
+          "sfx": "bell_slam"
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r9",
+    "idea": "The Cathedral of One Thread: five floating islands hang on one continuous 6-spool silk line; lock the west deck with the stone block, freeze the center spool blue as a firebreak, weave a Brass Shuttle bypass to the east half, and burn the east counterweight so its plunge hoists the Boss Key bridge straight to r2 (Cycle 3).",
     "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "beat": "ten",
+    "teaches": "Astonishing synthesis of push-block deck locking, Blue silk firebreak, Brass Shuttle bypass weaving, and counterweight hoisting.",
+    "decisions": 11,
+    "expert_s": 66,
+    "reward": "keepers_flame_loom+cycle_3_bridge",
+    "why": "Signature astonishing room of The Weaver's Loom awarding the Boss Key and opening Cycle 3.",
+    "exit": "exit_loom_r9_north",
+    "start": {
+      "flags": [
+        "brass_shuttle"
+      ]
+    },
+    "solution": [
+      {
+        "op": "push",
+        "target": "block_r9_u",
+        "to": [
+          112,
+          216
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r9_w",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "rotate",
+        "target": "t_r9",
+        "angle": 225
+      },
+      {
+        "op": "shoot",
+        "from": [
+          184,
+          208
+        ],
+        "target": "t_r9"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "spool_r9_k3",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          184
+        ]
+      },
+      {
+        "op": "throw",
+        "target": "hook_r9_k4"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          184
+        ],
+        "target": "spool_r9_shuttle"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r9_hoist",
+        "prop": "opened",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
+        "op": "expect",
+        "flag": "loom_r9_hoisted"
+      },
+      {
+        "op": "interact",
+        "target": "keepers_flame_loom"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r9_north"
+      }
+    ]
   },
   "id": "loom_r9",
   "island_id": 3,
@@ -108,7 +721,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": [],
   "enemies": []
 }

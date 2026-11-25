@@ -49,9 +49,9 @@ func commit_lobs(owner: LxEnemyBrain) -> void:
 			if wp.distance_to(tp) <= 22.0:
 				var push: Vector2 = (wp - tp).normalized() if wp.distance_to(tp) > 0.1 else Vector2.DOWN
 				if owner.has_method("emit_boss_damage"):
-					owner.call("emit_boss_damage", push, 1.0, "slag_lob", tp, true)
+					owner.call("emit_boss_damage", push, 0.5, "slag_lob", tp, true)
 				else:
-					owner.call("_emit_player_hit", push, 1.0)
+					owner.call("_emit_player_hit", push, 0.5)
 	lob_targets.clear()
 
 

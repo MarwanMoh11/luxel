@@ -17,7 +17,7 @@ static var _fields_script: Variant = null
 static var _fields_checked: bool = false
 static var _room_script_res: Variant = null
 static var _room_script_checked: bool = false
-static var _ground_tex_cache: Dictionary = {}
+static var _ground_missing: Dictionary = {}
 
 
 static func check_flag_static(flag: String) -> bool:
@@ -272,20 +272,18 @@ static func _interactable_signal_state(it: LxInteractable) -> bool:
 
 static func setup_ground_visual(region: LxRegionLoader) -> Sprite2D:
 	var png_path: String = "res://luxel/art/islands/%d/%s_ground.png" % [region.current_island_id, region.current_region_id]
+	if _ground_missing.has(png_path):
+		return null
 	var tex: Texture2D = null
-	if _ground_tex_cache.has(png_path):
-		tex = _ground_tex_cache[png_path] as Texture2D
-	elif ResourceLoader.exists(png_path):
+	if ResourceLoader.exists(png_path):
 		var loaded: Resource = ResourceLoader.load(png_path)
 		if loaded is Texture2D: tex = loaded as Texture2D
-		_ground_tex_cache[png_path] = tex
 	elif FileAccess.file_exists(png_path):
 		var img := Image.new()
 		if img.load(ProjectSettings.globalize_path(png_path)) == OK:
 			tex = ImageTexture.create_from_image(img)
-		_ground_tex_cache[png_path] = tex
 	else:
-		_ground_tex_cache[png_path] = null
+		_ground_missing[png_path] = true
 	if tex == null: return null
 	var sp := Sprite2D.new()
 	sp.name = "PaintedGround"; sp.texture = tex; sp.centered = false

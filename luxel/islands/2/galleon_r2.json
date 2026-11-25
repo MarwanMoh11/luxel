@@ -419,7 +419,7 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        168,
+        216,
         344
       ],
       "layer": "sort",
@@ -456,7 +456,7 @@
       "prop": "brass_porthole_lamp",
       "pos": [
         504,
-        280
+        232
       ],
       "layer": "sort",
       "flip_x": true,

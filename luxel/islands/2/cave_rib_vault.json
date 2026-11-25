@@ -380,7 +380,7 @@
     "target": "item_brass_compass",
     "start": {
       "vars": {
-        "vault_water": "low"
+        "room:2:cave_rib_vault:vault_water": "low"
       },
       "spawn": [
         216,
@@ -406,6 +406,14 @@
           104,
           216
         ]
+      },
+      {
+        "op": "expect",
+        "var": "vault_water==low"
+      },
+      {
+        "op": "wait",
+        "secs": 0.1
       },
       {
         "op": "shoot",
@@ -438,13 +446,6 @@
         "interactable": "door_rib_vault",
         "prop": "opened",
         "value": true
-      },
-      {
-        "op": "goto",
-        "to": [
-          360,
-          184
-        ]
       },
       {
         "op": "interact",

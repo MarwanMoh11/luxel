@@ -496,7 +496,11 @@
         "requires_blue": true,
         "requires_prism": true,
         "target_id": "bridge_2_drydock",
-        "sets_flag": "isl2_drydock_eye"
+        "sets_flag": "isl2_drydock_eye",
+        "target_ids": [
+          "bridge_2_drydock",
+          "door_2_drydock_gate"
+        ]
       }
     },
     {
@@ -920,6 +924,25 @@
       ],
       "props": {
         "zone": "drydock_quays"
+      }
+    },
+    {
+      "id": "door_2_drydock_gate",
+      "kind": "door",
+      "pos": [
+        368,
+        160
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "drydock_quays",
+        "requires_signals": [
+          "switch_eye_2_1"
+        ]
       }
     },
     {
@@ -2071,7 +2094,7 @@
     "optional": true,
     "start": {
       "vars": {
-        "tide": "ebb"
+        "island:2:tide": "ebb"
       },
       "spawn": [
         104,
@@ -2095,6 +2118,24 @@
         "flag": "skiff_unlocked"
       },
       {
+        "op": "goto",
+        "to": [
+          120,
+          344
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "skiff_bell_quay"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          264
+        ]
+      },
+      {
         "op": "shoot",
         "from": [
           232,
@@ -2107,6 +2148,10 @@
         "var": "tide==half"
       },
       {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
         "op": "shoot",
         "from": [
           232,
@@ -2117,6 +2162,11 @@
       {
         "op": "expect",
         "var": "tide==flood"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_ow_west",
+        "walk": false
       }
     ]
   }

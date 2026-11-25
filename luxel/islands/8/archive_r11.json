@@ -1,0 +1,396 @@
+{
+  "id": "archive_r11",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_ARC_R11",
+  "theme": "archive",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    56,
+    160
+  ],
+  "zones": [
+    {
+      "id": "archive_errata",
+      "name_key": "ISL8_ARC_R11",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r11_west",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r8",
+      "to_spawn": [
+        424,
+        176
+      ]
+    },
+    {
+      "id": "exit_r11_north",
+      "rect": [
+        192,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r10",
+      "to_spawn": [
+        456,
+        240
+      ]
+    },
+    {
+      "id": "exit_r11_east_short",
+      "rect": [
+        400,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        456,
+        112
+      ],
+      "locked_door_id": "door_r11_east_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r11_west",
+      "kind": "room_anchor",
+      "pos": [
+        56,
+        160
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "bell_r11_dusk",
+      "kind": "bell",
+      "pos": [
+        208,
+        144
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 200.0
+      }
+    },
+    {
+      "id": "chest_ember_8_archive",
+      "kind": "chest",
+      "pos": [
+        248,
+        64
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_8_archive"
+      }
+    },
+    {
+      "id": "door_r11_east_short",
+      "kind": "door",
+      "pos": [
+        392,
+        160
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "archive_errata"
+      }
+    },
+    {
+      "id": "lamp_r11_w",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_errata"
+      }
+    },
+    {
+      "id": "lamp_r11_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_errata"
+      }
+    },
+    {
+      "id": "lamp_r11_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        96
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_errata"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "wraith_r11_1",
+      "kind": "page_wraith",
+      "pos": [
+        232,
+        200
+      ],
+      "route": [],
+      "zone": "archive_errata",
+      "leash": 120
+    },
+    {
+      "id": "wraith_r11_2",
+      "kind": "page_wraith",
+      "pos": [
+        264,
+        216
+      ],
+      "route": [],
+      "zone": "archive_errata",
+      "leash": 120
+    },
+    {
+      "id": "censer_r11_1",
+      "kind": "censer",
+      "pos": [
+        208,
+        176
+      ],
+      "route": [
+        [
+          184,
+          176
+        ],
+        [
+          248,
+          176
+        ]
+      ],
+      "zone": "archive_errata",
+      "leash": 120
+    },
+    {
+      "id": "eye_r11_1",
+      "kind": "eclipse_eye",
+      "pos": [
+        312,
+        64
+      ],
+      "route": [],
+      "zone": "archive_errata",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        96,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        88,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "rolling_library_ladder",
+      "pos": [
+        320,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        168,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        248,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        208,
+        144
+      ],
+      "layer": "ground",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        144
+      ],
+      "radius": 32,
+      "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        144,
+        48,
+        128,
+        48
+      ]
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r11_clear",
+      "on": "cleared:archive_errata",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_errata_lift"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Optional Errata Gallery horseshoe balcony bridging Memory VI, Memory VIII, and the Rotunda: ring the central Dusk Bell to hush the Eclipse Eye and freeze the Page Wraiths while slicing the Censer, winning an Ember Piece and the Rotunda Lift.",
+    "kind": "combat",
+    "beat": "ketsu",
+    "teaches": "Tactical Dusk Bell crowd-control in a twin-bookshelf cover arena.",
+    "decisions": 8,
+    "expert_s": 45,
+    "reward": "ember_8_archive+archive_errata_lift",
+    "why": "High-value optional combat gallery creating Cycles 3 & 4 across the Upper Stacks.",
+    "exit": "exit_r11_east_short",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          128,
+          160
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "bell_r11_dusk"
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "archive_errata_lift",
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          80
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_8_archive"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r11_east_short",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r11_east_short"
+      }
+    ]
+  }
+}

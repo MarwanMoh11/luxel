@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r3",
+      "id": "lm_r3",
       "name_key": "ISL3_LM_R3_NAME",
       "rect": [
         0,
@@ -44,12 +44,13 @@
       "to_spawn": [
         40,
         128
-      ]
+      ],
+      "locked_door_id": "door_loom_r3_north"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r3",
+      "id": "anc_r3_south",
       "kind": "room_anchor",
       "pos": [
         208,
@@ -60,31 +61,408 @@
       }
     },
     {
-      "id": "lamp_loom_r3",
-      "kind": "road_lamp",
+      "id": "t_r3",
+      "kind": "blue_transformer",
       "pos": [
         208,
-        128
+        200
       ],
       "props": {
-        "zone": "loom_r3",
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "spool_r3_k0",
+      "kind": "silk_loom_spool",
+      "pos": [
+        288,
+        184
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r3_k1",
+          "spool_r3_k2"
+        ],
+        "state": "taut",
+        "conduct_speed": 155.0
+      }
+    },
+    {
+      "id": "spool_r3_k1",
+      "kind": "silk_loom_spool",
+      "pos": [
+        208,
+        136
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r3_trap"
+        ],
+        "state": "taut",
+        "conduct_speed": 170.0,
+        "freeze_secs": 18.0,
+        "power_on_freeze": true
+      }
+    },
+    {
+      "id": "spool_r3_trap",
+      "kind": "silk_loom_spool",
+      "pos": [
+        112,
+        120
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut"
+      }
+    },
+    {
+      "id": "pw_r3_thorn",
+      "kind": "light_plant",
+      "pos": [
+        112,
+        120
+      ],
+      "props": {
+        "grow": "wall",
+        "size": [
+          48,
+          16
+        ],
+        "secs": 3.5,
+        "decay": 10.0,
+        "blocks_sight": true
+      }
+    },
+    {
+      "id": "spool_r3_k2",
+      "kind": "silk_loom_spool",
+      "pos": [
+        360,
+        184
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r3_k3"
+        ],
+        "state": "taut",
+        "conduct_speed": 165.0
+      }
+    },
+    {
+      "id": "spool_r3_k3",
+      "kind": "silk_loom_spool",
+      "pos": [
+        360,
+        72
+      ],
+      "props": {
+        "linked_to": [
+          "spool_r3_k4"
+        ],
+        "state": "taut",
+        "conduct_speed": 165.0
+      }
+    },
+    {
+      "id": "spool_r3_k4",
+      "kind": "silk_loom_spool",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut"
+      }
+    },
+    {
+      "id": "tb_r3_north",
+      "kind": "timed_brazier",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "secs": 16.0,
+        "target_id": "door_loom_r3_north"
+      }
+    },
+    {
+      "id": "door_loom_r3_north",
+      "kind": "door",
+      "pos": [
+        112,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "tb_r3_north"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        224
+      ],
+      "props": {
+        "zone": "lm_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        160
+      ],
+      "props": {
+        "zone": "lm_r3",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        44
+      ],
+      "props": {
+        "zone": "lm_r3",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        200,
+        176,
+        172,
+        32
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        172,
+        128,
+        24
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        288,
+        168
+      ],
+      "size": [
+        44,
+        56
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        184,
+        48,
+        40,
+        32
+      ],
+      "color": "rose"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        112,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        336,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        256,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        312,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        256,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        148,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        76,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "wooden_thread_spool",
+      "pos": [
+        296,
+        220
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        64,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        304,
+        144
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r3",
+    "idea": "Two silk threads of unequal length race from one starter spool to a thorn-wall snare and a distant timed brazier; rotate the Blue Transformer to freeze the short branch as a firebreak, then ignite the starter spool so only the long thread reaches the north brazier.",
     "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
+    "beat": "ki",
+    "teaches": "Using Blue silk-freeze as a selective firebreak on branching conducting threads so fire only travels the safe long route.",
     "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "expert_s": 48,
+    "reward": "r4_access",
+    "why": "Develops silk-fire conduction into branching firebreak logic with clear visual sightline across the split gallery.",
+    "exit": "exit_loom_r3_north",
+    "solution": [
+      {
+        "op": "rotate",
+        "target": "t_r3",
+        "angle": 135
+      },
+      {
+        "op": "shoot",
+        "from": [
+          244,
+          200
+        ],
+        "target": "t_r3"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "spool_r3_k1",
+        "prop": "powered",
+        "value": true,
+        "timeout": 2.5
+      },
+      {
+        "op": "shoot",
+        "from": [
+          256,
+          184
+        ],
+        "target": "spool_r3_k0"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r3_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 5.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r3_north"
+      }
+    ]
   },
   "id": "loom_r3",
   "island_id": 3,

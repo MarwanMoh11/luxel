@@ -206,8 +206,8 @@
       "id": "en_pl_r8_eye1",
       "kind": "satellite_eye",
       "pos": [
-        128,
-        88
+        160,
+        72
       ],
       "zone": "pl_r8"
     },
@@ -325,8 +325,8 @@
       "sheet": "theme_planetarium",
       "prop": "planetarium_lantern",
       "pos": [
-        104,
-        208
+        128,
+        192
       ],
       "layer": "sort",
       "flip_x": false,

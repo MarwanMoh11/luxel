@@ -1,0 +1,451 @@
+{
+  "id": "archive_r6",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_ARC_R6",
+  "theme": "archive",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_indexer_hall",
+      "name_key": "ISL8_ARC_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r5",
+      "to_spawn": [
+        368,
+        52
+      ]
+    },
+    {
+      "id": "exit_r6_se_short",
+      "rect": [
+        464,
+        224,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        176,
+        56
+      ],
+      "locked_door_id": "door_r6_se_short"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mirror_r6_w",
+      "kind": "blue_transformer",
+      "pos": [
+        104,
+        160
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mirror_r6_e",
+      "kind": "blue_transformer",
+      "pos": [
+        344,
+        160
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "braz_r6_nw",
+      "kind": "brazier",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r6_ne",
+      "kind": "brazier",
+      "pos": [
+        344,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r6_sw",
+      "kind": "brazier",
+      "pos": [
+        104,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "braz_r6_se",
+      "kind": "brazier",
+      "pos": [
+        344,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "altar_r6_bookmark",
+      "kind": "archive_bookmark_altar",
+      "pos": [
+        200,
+        160
+      ],
+      "props": {
+        "requires_flag": "indexer_defeated"
+      }
+    },
+    {
+      "id": "key_archive_1",
+      "kind": "wick_key",
+      "pos": [
+        264,
+        160
+      ],
+      "props": {
+        "dungeon_id": "archive",
+        "key_kind": "wick_key",
+        "requires_flag": "indexer_defeated"
+      }
+    },
+    {
+      "id": "door_r6_se_short",
+      "kind": "door",
+      "pos": [
+        456,
+        240
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "archive_lower_short"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r6_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_indexer_hall"
+      }
+    },
+    {
+      "id": "lamp_r6_n",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_indexer_hall"
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_indexer_hall"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "indexer_r6",
+      "kind": "indexer",
+      "pos": [
+        232,
+        136
+      ],
+      "zone": "archive_indexer_hall"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "index_card_cabinet",
+      "pos": [
+        88,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "index_card_cabinet",
+      "pos": [
+        360,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        176,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        296,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        48,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "rolling_library_ladder",
+      "pos": [
+        64,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        408,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "compass_rug_medallion",
+      "pos": [
+        224,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        80,
+        264,
+        152
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        160
+      ],
+      "radius": 44,
+      "color": "rose"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        136
+      ],
+      "size": [
+        64,
+        56
+      ],
+      "tint": "warm",
+      "shear": 0.25
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r6_indexer_win",
+      "on": "flag:indexer_defeated",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "archive_lower_short"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "narrate": {
+            "id": "ISL8_ARC_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Mini-boss hall hosting THE INDEXER: bank blue bolts off flanking mirrors or Throw behind its armoured front drawers into its golden tail drawer, catch its P2 split cars with Sunflare, and claim the Bookmark Sigil + Archive Key 1.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Flanking armoured segmented bosses, claiming Bookmark Sigil, and unlocking Cycle 2 Rotunda Lift.",
+    "decisions": 6,
+    "expert_s": 85,
+    "reward": "item_bookmark+key_archive_1+archive_lower_short",
+    "why": "Mid-dungeon boss crowning the Lower Memories I-IV and awarding the Bookmark Sigil for Upper Stacks.",
+    "exit": "exit_r6_se_short",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          232
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "indexer_defeated",
+        "timeout": 5.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "archive_lower_short",
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          200,
+          168
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_r6_bookmark"
+      },
+      {
+        "op": "expect",
+        "flag": "item_bookmark"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          160
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "expect",
+        "key": {
+          "dungeon": "archive",
+          "kind": "wick_key",
+          "min": 1
+        }
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r6_se_short",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_se_short"
+      }
+    ]
+  }
+}

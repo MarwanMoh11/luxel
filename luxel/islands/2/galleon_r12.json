@@ -94,7 +94,7 @@
       "id": "mir_r12_e",
       "kind": "blue_transformer",
       "pos": [
-        344,
+        328,
         216
       ],
       "props": {
@@ -124,7 +124,7 @@
       "id": "keg_r12_e",
       "kind": "ballast_keg",
       "pos": [
-        344,
+        328,
         152
       ],
       "props": {
@@ -168,7 +168,7 @@
       "id": "lamp_r12_se",
       "kind": "road_lamp",
       "pos": [
-        344,
+        328,
         312
       ],
       "props": {
@@ -192,7 +192,7 @@
       "id": "lamp_r12_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
+        328,
         88
       ],
       "props": {
@@ -242,7 +242,7 @@
     {
       "kind": "cracks",
       "pos": [
-        328,
+        312,
         200
       ],
       "radius": 24,
@@ -268,7 +268,7 @@
       "prop": "barnacle_anchor",
       "pos": [
         120,
-        280
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -279,8 +279,8 @@
       "sheet": "theme_galleon",
       "prop": "barnacle_anchor",
       "pos": [
-        376,
-        280
+        360,
+        264
       ],
       "layer": "sort",
       "flip_x": true,
@@ -303,7 +303,7 @@
       "sheet": "theme_galleon",
       "prop": "mast_stump_pillar",
       "pos": [
-        376,
+        328,
         88
       ],
       "layer": "sort",
@@ -339,8 +339,8 @@
       "sheet": "theme_galleon",
       "prop": "hanging_ship_lantern",
       "pos": [
-        120,
-        184
+        104,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -351,8 +351,8 @@
       "sheet": "theme_galleon",
       "prop": "hanging_ship_lantern",
       "pos": [
-        376,
-        184
+        344,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -375,7 +375,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        328,
+        312,
         56
       ],
       "layer": "sort",

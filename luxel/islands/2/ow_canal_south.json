@@ -884,7 +884,7 @@
     "optional": true,
     "start": {
       "vars": {
-        "tide": "ebb"
+        "island:2:tide": "ebb"
       },
       "spawn": [
         344,
@@ -902,6 +902,17 @@
       {
         "op": "interact",
         "target": "ws_2_canal"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          296
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "skiff_bell_canal"
       },
       {
         "op": "shoot",

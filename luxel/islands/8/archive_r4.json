@@ -1,0 +1,516 @@
+{
+  "id": "archive_r4",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 3,
+  "name_key": "ISL8_ARC_R4",
+  "theme": "archive_3",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_mem3",
+      "name_key": "ISL8_ARC_R4",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r3",
+      "to_spawn": [
+        240,
+        52
+      ]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r5",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r4_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r4_mem3",
+      "kind": "lore_stone",
+      "pos": [
+        176,
+        256
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R4",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "dew_r4_lens",
+      "kind": "dew_lens",
+      "pos": [
+        168,
+        200
+      ],
+      "props": {
+        "movable": true,
+        "rail_axis": "y",
+        "focus_range": 140.0
+      }
+    },
+    {
+      "id": "knot_r4_root",
+      "kind": "dry_root_knot",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "size": [
+          16,
+          16
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "bramble_r4_w",
+      "kind": "bramble",
+      "pos": [
+        88,
+        168
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "hook_r4_bridge",
+      "kind": "lantern_hook",
+      "pos": [
+        320,
+        184
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "plant_r4_bridge",
+      "kind": "light_plant",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "grow": "bridge",
+        "size": [
+          32,
+          32
+        ],
+        "secs": 0.45,
+        "decay": 6.0
+      }
+    },
+    {
+      "id": "sgate_r4_north",
+      "kind": "shadow_gate",
+      "pos": [
+        320,
+        104
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ],
+        "threshold": 0.35
+      }
+    },
+    {
+      "id": "plate_r4_latch",
+      "kind": "pressure_plate",
+      "pos": [
+        272,
+        56
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "door_r4_north"
+      }
+    },
+    {
+      "id": "door_r4_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_r4_latch"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "lamp_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem3"
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem3"
+      }
+    },
+    {
+      "id": "lamp_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        216
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem3"
+      }
+    },
+    {
+      "id": "lamp_r4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        48
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem3"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "bknight_r4_1",
+      "kind": "bramble_knight",
+      "pos": [
+        128,
+        152
+      ],
+      "route": [
+        [
+          96,
+          152
+        ],
+        [
+          176,
+          152
+        ]
+      ],
+      "zone": "archive_mem3",
+      "leash": 120
+    },
+    {
+      "id": "censer_r4_1",
+      "kind": "censer",
+      "pos": [
+        320,
+        216
+      ],
+      "route": [
+        [
+          288,
+          216
+        ],
+        [
+          368,
+          216
+        ]
+      ],
+      "zone": "archive_mem3",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        224,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        48,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        176,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        368,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        96,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        384,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        288,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        224,
+        64,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        320,
+        184
+      ],
+      "radius": 22,
+      "color": "jade"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        160,
+        32,
+        144,
+        48
+      ]
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r4_mem3",
+      "on": "signal:plate_r4_latch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_3_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory III (Thornwood): defeat the Censer and Bramble Knight, slide the Dew Lens to melt the Dry Root Knot, hang your lantern on the hook to grow the Seedlight vine bridge while slipping unlit through the Shadow Gate.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Island 3 Dew Lens + Dry Root Knot + Seedlight bridge growth vs Shadow Gate darkness.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "mem_3_lit",
+    "why": "Third Archive memory fusing Thornwood's seedlight growth and pruning darkness.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          240
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "push",
+        "target": "dew_r4_lens",
+        "to": [
+          168,
+          168
+        ],
+        "tol": 5.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          128,
+          168
+        ],
+        "target": "dew_r4_lens"
+      },
+      {
+        "op": "wait_until",
+        "target": "knot_r4_root",
+        "prop": "burned",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          184
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r4_bridge"
+      },
+      {
+        "op": "wait",
+        "secs": 0.65
+      },
+      {
+        "op": "goto",
+        "to": [
+          320,
+          56
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          56
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r4_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "mem_3_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
+}

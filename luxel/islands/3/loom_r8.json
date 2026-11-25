@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r8",
+      "id": "lm_r8",
       "name_key": "ISL3_LM_R8_NAME",
       "rect": [
         0,
@@ -47,7 +47,8 @@
       ],
       "requires_flags": [
         "loom_r8_shortcut"
-      ]
+      ],
+      "locked_door_id": "door_loom_r8_west_sc"
     },
     {
       "id": "exit_loom_r8_north",
@@ -61,12 +62,86 @@
       "to_spawn": [
         48,
         256
-      ]
+      ],
+      "locked_door_id": "door_loom_r8_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "r8_mimic",
+      "kind": "false_lantern",
+      "pos": [
+        224,
+        152
+      ],
+      "route": [],
+      "zone": "lm_r8",
+      "leash": 136
+    },
+    {
+      "id": "r8_spider",
+      "kind": "jumping_spider",
+      "pos": [
+        304,
+        152
+      ],
+      "route": [
+        [
+          280,
+          152
+        ],
+        [
+          328,
+          152
+        ]
+      ],
+      "zone": "lm_r8",
+      "leash": 152
+    },
+    {
+      "id": "r8_archer_w",
+      "kind": "thorn_archer",
+      "pos": [
+        112,
+        64
+      ],
+      "route": [
+        [
+          88,
+          64
+        ],
+        [
+          136,
+          64
+        ]
+      ],
+      "zone": "lm_r8",
+      "leash": 144
+    },
+    {
+      "id": "r8_archer_e",
+      "kind": "thorn_archer",
+      "pos": [
+        344,
+        80
+      ],
+      "route": [
+        [
+          320,
+          80
+        ],
+        [
+          368,
+          80
+        ]
+      ],
+      "zone": "lm_r8",
+      "leash": 144
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r8",
+      "id": "anc_r8_south",
       "kind": "room_anchor",
       "pos": [
         224,
@@ -77,31 +152,339 @@
       }
     },
     {
-      "id": "lamp_loom_r8",
-      "kind": "road_lamp",
+      "id": "spool_r8_w",
+      "kind": "loom_shuttle_spool",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "accepts_shuttle": true,
+        "require_shuttle": true
+      }
+    },
+    {
+      "id": "spool_r8_e",
+      "kind": "loom_shuttle_spool",
+      "pos": [
+        280,
+        152
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "accepts_shuttle": true,
+        "require_shuttle": true
+      }
+    },
+    {
+      "id": "hook_r8_nw",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "hook_r8_ne",
+      "kind": "lantern_hook",
+      "pos": [
+        320,
+        96
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "door_loom_r8_north",
+      "kind": "door",
       "pos": [
         224,
+        24
+      ],
+      "props": {
+        "door_kind": "combat_gate",
+        "size": [
+          32,
+          16
+        ],
+        "zone": "lm_r8"
+      }
+    },
+    {
+      "id": "door_loom_r8_west_sc",
+      "kind": "door",
+      "pos": [
+        16,
         144
       ],
       "props": {
-        "zone": "loom_r8",
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "loom_r8_shortcut"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        224
+      ],
+      "props": {
+        "zone": "lm_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_nw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        48
+      ],
+      "props": {
+        "zone": "lm_r8",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r8_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        48
+      ],
+      "props": {
+        "zone": "lm_r8",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 34,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        68,
+        56,
+        84,
+        48
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        296,
+        56,
+        84,
+        48
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        152
+      ],
+      "size": [
+        48,
+        60
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        224,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        176,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        272,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        164,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        284,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        48,
+        124
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        380,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "brass_shuttle_rack",
+      "pos": [
+        256,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        72,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r8_open_shortcut",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_r8_shortcut"
+        },
+        {
+          "narrate": "ISL3_LM_SHORTCUT"
+        },
+        {
+          "sfx": "shrine_unlock"
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r8",
-    "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "idea": "Three-peninsula silk gauntlet against two shadow-reloading Thorn Archers, a Jumping Spider, and a disguised False Lantern; bolt-test the mimic, throw your lantern onto the archers' hooks to jam their bows and string fire-threads, and clear the hall to unseal the Cycle 2 zip-cable back to Carding Hall.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Combining False Lantern bolt-testing, Thorn Archer light-jamming via Brass Shuttle hooks, and Jumping Spider flank evasion.",
+    "decisions": 7,
+    "expert_s": 54,
+    "reward": "cycle_2_shortcut+r9_access",
+    "why": "Wing 2 combat climax awarding Cycle 2 back to loom_r1 right before the Astonishing Room.",
+    "exit": "exit_loom_r8_north",
+    "start": {
+      "flags": [
+        "brass_shuttle"
+      ]
+    },
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "lm_r8",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect",
+        "flag": "loom_r8_shortcut"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r8_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r8_north"
+      }
+    ]
   },
   "id": "loom_r8",
   "island_id": 3,
@@ -114,7 +497,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": [],
-  "enemies": []
+  "layers": []
 }

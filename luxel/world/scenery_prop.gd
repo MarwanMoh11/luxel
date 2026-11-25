@@ -110,7 +110,6 @@ const GLOW_PROPS: Dictionary = {
 	"bell_floor_seal": Vector2(40.0, 0.58),
 	"crypt_candelabra": Vector2(46.0, 0.74),
 	"toll_brazier": Vector2(48.0, 0.76),
-	"belfry_torch": Vector2(44.0, 0.70),
 	"cozy_stone_hearth": Vector2(52.0, 0.80),
 	"moth_lantern_tree": Vector2(48.0, 0.76),
 	"pane_stained_easel": Vector2(38.0, 0.56),

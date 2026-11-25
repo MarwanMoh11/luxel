@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r4",
+      "id": "lm_r4",
       "name_key": "ISL3_LM_R4_NAME",
       "rect": [
         0,
@@ -44,12 +44,75 @@
       "to_spawn": [
         48,
         208
-      ]
+      ],
+      "locked_door_id": "door_loom_r4_east"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "r4_strangler",
+      "kind": "vine_strangler",
+      "pos": [
+        216,
+        128
+      ],
+      "route": [
+        [
+          196,
+          128
+        ],
+        [
+          236,
+          128
+        ]
+      ],
+      "zone": "lm_r4",
+      "leash": 136
+    },
+    {
+      "id": "r4_spider_ne",
+      "kind": "jumping_spider",
+      "pos": [
+        276,
+        76
+      ],
+      "route": [
+        [
+          264,
+          76
+        ],
+        [
+          284,
+          96
+        ]
+      ],
+      "zone": "lm_r4",
+      "leash": 148
+    },
+    {
+      "id": "r4_spider_se",
+      "kind": "jumping_spider",
+      "pos": [
+        276,
+        180
+      ],
+      "route": [
+        [
+          264,
+          180
+        ],
+        [
+          284,
+          160
+        ]
+      ],
+      "zone": "lm_r4",
+      "leash": 148
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r4",
+      "id": "anc_r4_west",
       "kind": "room_anchor",
       "pos": [
         40,
@@ -60,31 +123,277 @@
       }
     },
     {
-      "id": "lamp_loom_r4",
-      "kind": "road_lamp",
+      "id": "spool_r4_log",
+      "kind": "silk_loom_spool",
       "pos": [
         224,
+        72
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "dry": true,
+        "burn_delay": 0.25,
+        "target_id": "lm_r4_beam"
+      }
+    },
+    {
+      "id": "lm_r4_beam",
+      "kind": "loom_landmark",
+      "pos": [
+        224,
+        108
+      ],
+      "props": {
+        "variant": "overhead_beam"
+      }
+    },
+    {
+      "id": "door_loom_r4_east",
+      "kind": "door",
+      "pos": [
+        424,
         128
       ],
       "props": {
-        "zone": "loom_r4",
+        "door_kind": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "lm_r4"
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "zone": "lm_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        168
+      ],
+      "props": {
+        "zone": "lm_r4",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "zone": "lm_r4",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        128
+      ],
+      "radius": 38,
+      "style": "ritual"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        88,
+        96,
+        80
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        224,
+        128
+      ],
+      "size": [
+        52,
+        64
+      ],
+      "tint": "rose",
+      "shear": 0.35
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        224,
+        112
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        224,
+        128
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        176,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        244,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        56,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        180,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        384,
+        68
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        396,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "wooden_thread_spool",
+      "pos": [
+        64,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        372,
+        196
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r4_clear_flag",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "loom_r4_cleared"
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r4",
-    "kind": "puzzle",
+    "idea": "Three-island silk-catwalk arena over loom void against a Vine Strangler and two Jumping Spiders; dash-cut the Strangler's tether, snap the overhead dry shuttle beam for disruption, and use the wide catwalk hubs to outplay spider landing rings.",
+    "kind": "combat",
     "beat": "sho",
-    "teaches": "stub",
+    "teaches": "Vine Strangler tether-cutting paired with Jumping Spider pit-vaulting flanks across catwalk islands.",
     "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "expert_s": 50,
+    "reward": "r5_access+shards",
+    "why": "First combat escalation of Wing 1 testing spatial discipline over void islands.",
+    "exit": "exit_loom_r4_east",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "lm_r4",
+        "timeout": 45.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r4_east",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r4_east"
+      }
+    ]
   },
   "id": "loom_r4",
   "island_id": 3,
@@ -97,7 +406,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": [],
-  "enemies": []
+  "layers": []
 }

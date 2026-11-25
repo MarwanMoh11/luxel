@@ -11,7 +11,7 @@
   ],
   "spawn": [
     72,
-    200
+    184
   ],
   "zones": [
     {
@@ -31,7 +31,7 @@
       "id": "exit_maw_out",
       "rect": [
         0,
-        176,
+        160,
         16,
         48
       ],
@@ -47,8 +47,8 @@
       "id": "boss_undertow",
       "kind": "undertow",
       "pos": [
-        264,
-        200
+        248,
+        168
       ],
       "zone": "undertow_maw"
     }
@@ -59,7 +59,7 @@
       "kind": "room_anchor",
       "pos": [
         72,
-        200
+        184
       ],
       "props": {
         "auto": true
@@ -70,7 +70,7 @@
       "kind": "vehicle_skiff",
       "pos": [
         184,
-        184
+        328
       ],
       "props": {}
     },
@@ -78,13 +78,13 @@
       "id": "skiff_bell_maw",
       "kind": "skiff_bell",
       "pos": [
-        136,
-        216
+        152,
+        280
       ],
       "props": {
         "dock_pos": [
           184,
-          184
+          328
         ],
         "dock_dir": "e"
       }
@@ -93,8 +93,8 @@
       "id": "post_maw_n",
       "kind": "mooring_post",
       "pos": [
-        264,
-        136
+        248,
+        72
       ],
       "props": {
         "orbit_r": 48,
@@ -106,7 +106,7 @@
       "kind": "mooring_post",
       "pos": [
         264,
-        264
+        328
       ],
       "props": {
         "orbit_r": 48,
@@ -117,8 +117,8 @@
       "id": "post_maw_w",
       "kind": "mooring_post",
       "pos": [
-        168,
-        232
+        152,
+        248
       ],
       "props": {
         "orbit_r": 48,
@@ -129,8 +129,8 @@
       "id": "post_maw_e",
       "kind": "mooring_post",
       "pos": [
-        344,
-        200
+        360,
+        264
       ],
       "props": {
         "orbit_r": 48,
@@ -141,8 +141,8 @@
       "id": "raft_maw_nw",
       "kind": "tide_raft",
       "pos": [
-        216,
-        152
+        184,
+        120
       ],
       "props": {
         "mounts": "blue_transformer",
@@ -158,8 +158,8 @@
       "id": "raft_maw_se",
       "kind": "tide_raft",
       "pos": [
-        312,
-        248
+        344,
+        328
       ],
       "props": {
         "mounts": "blue_transformer",
@@ -245,8 +245,8 @@
       "id": "lamp_maw_n",
       "kind": "road_lamp",
       "pos": [
-        264,
-        72
+        248,
+        56
       ],
       "props": {
         "zone": "undertow_maw",
@@ -257,8 +257,8 @@
       "id": "lamp_maw_s",
       "kind": "road_lamp",
       "pos": [
-        264,
-        312
+        184,
+        280
       ],
       "props": {
         "zone": "undertow_maw",
@@ -269,8 +269,8 @@
       "id": "lamp_maw_e",
       "kind": "road_lamp",
       "pos": [
-        408,
-        200
+        360,
+        184
       ],
       "props": {
         "zone": "undertow_maw",
@@ -310,17 +310,17 @@
     {
       "kind": "circle",
       "pos": [
-        264,
-        200
+        248,
+        168
       ],
-      "radius": 92,
+      "radius": 88,
       "style": "ritual"
     },
     {
       "kind": "cracks",
       "pos": [
-        264,
-        88
+        248,
+        72
       ],
       "radius": 24,
       "glow": false
@@ -328,8 +328,8 @@
     {
       "kind": "cracks",
       "pos": [
-        264,
-        312
+        248,
+        264
       ],
       "radius": 24,
       "glow": false
@@ -350,7 +350,7 @@
       "prop": "ivory_rib_arch",
       "pos": [
         88,
-        184
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -361,8 +361,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "curled_rib_pillar",
       "pos": [
-        216,
-        72
+        200,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -374,7 +374,7 @@
       "prop": "curled_rib_pillar",
       "pos": [
         312,
-        72
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -397,8 +397,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "swallowed_ship_crate",
       "pos": [
-        376,
-        264
+        360,
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -409,8 +409,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "barnacle_cluster",
       "pos": [
-        168,
-        312
+        152,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -422,7 +422,7 @@
       "prop": "whale_lantern_jar",
       "pos": [
         104,
-        152
+        136
       ],
       "layer": "sort",
       "flip_x": false,
@@ -458,7 +458,7 @@
       "prop": "digestive_spore_bulb",
       "pos": [
         376,
-        216
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -469,8 +469,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "digestive_spore_bulb",
       "pos": [
-        248,
-        328
+        232,
+        280
       ],
       "layer": "sort",
       "flip_x": false,
@@ -479,7 +479,7 @@
     }
   ],
   "design": {
-    "idea": "Circular abyssal maelstrom superboss arena for THE UNDERTOW featuring a live central suction/geyser well, 4 cardinal mooring posts for Skiff orbits, and 2 mirror rafts.",
+    "idea": "Circular abyssal maelstrom superboss arena for THE UNDERTOW featuring a live central suction/geyser well, South Skiff lagoon, 4 mooring posts, and 2 sea-glass mirror rafts.",
     "kind": "boss",
     "beat": "ketsu",
     "teaches": "Full Island 2 mastery exam: Skiff orbits, Mooring Zip, Prism Split banks, mine batting",
@@ -497,27 +497,41 @@
         "bolt",
         "dash",
         "throw",
-        "prism"
+        "prism",
+        "beam",
+        "wings",
+        "sunflare"
       ],
+      "ember": 100,
       "spawn": [
         72,
-        200
+        184
       ]
     },
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          168,
+          168
+        ]
+      },
+      {
         "op": "clear",
+        "zone": "undertow_maw",
         "timeout": 180.0
       },
       {
-        "op": "expect",
-        "flag": "undertow_defeated"
+        "op": "wait_until",
+        "flag": "undertow_defeated",
+        "timeout": 5.0
       },
       {
-        "op": "expect",
+        "op": "wait_until",
         "interactable": "door_maw_trophy",
         "prop": "opened",
-        "value": true
+        "value": true,
+        "timeout": 3.0
       },
       {
         "op": "goto",

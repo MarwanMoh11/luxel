@@ -33,13 +33,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 54.0
-	hp = 54.0
+	max_hp = 74.0
+	hp = 74.0
 	body_radius = 8.5
 	move_speed = 40.0
-	stagger_threshold = 11.5
-	stagger_duration = 1.60
-	punish_dmg_mult = 1.30
+	stagger_threshold = 12.5
+	stagger_duration = 1.55
+	punish_dmg_mult = 1.25
 	post_recover_cd = 0.36
 	shard_drop = 24
 	death_duration = 2.0
@@ -47,19 +47,19 @@ func _init() -> void:
 
 func _configure_boss(_spec: Dictionary) -> void:
 	if world_ctx != null and str(world_ctx.get("current_region_id")) == "conservatory_r6":
-		arena_rect = Rect2(176.0, 56.0, 124.0, 104.0)
+		arena_rect = Rect2(156.0, 86.0, 132.0, 52.0)
 	configure_phases([0.52])
 
 	# Attack 1: Lily Leap Slam — parabolic hop (air-interceptable!) + water shockwave ring
 	register_attack("lily_leap_slam", {
-		"weight": 1.25, "tell": 0.52, "commit": 0.50, "recover": 1.15, "cooldown": 1.35,
+		"weight": 1.25, "tell": 0.54, "commit": 0.50, "recover": 1.15, "cooldown": 1.40,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			hop_z = 0.0
 			_leap_from = pos
 			var c_l: Vector2 = arena_rect.get_center()
-			_leap_to = c_l + (tgt - c_l).limit_length(32.0)
+			_leap_to = c_l + (tgt - c_l).limit_length(18.0)
 			_leap_landed = false
-			ground.warn_ring(_leap_to, 16.0, last_tell_duration + LEAP_AIR_TIME * 0.65, 0.5, "sky", "gold")
+			ground.warn_ring(_leap_to, 13.0, last_tell_duration + LEAP_AIR_TIME * 0.65, 0.5, "sky", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_leap_from = pos
@@ -75,59 +75,59 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_leap_landed = true
 				hop_z = 0.0
 				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 104.0 if phase >= 2 else 96.0, gap_a, 0.94, {"color": "sky", "source": "lily_ring", "damage": 0.5})
+				patterns.emit_gap_ring(pos, 9 if phase >= 2 else 8, 94.0 if phase >= 2 else 88.0, gap_a, 1.22, {"color": "sky", "source": "lily_ring", "damage": 0.5})
 				stage.shake(0.18)
 				stage.play_sfx("hopper_land", pos)
 				if phase >= 2:
 					_trigger_submerging_rim_pads(),
 	})
 
-	# Attack 2: Petal Spit Fan — 3-arc (P2: 5-arc) blooming coral lily petals + side water drops
+	# Attack 2: Petal Spit Fan — 3-arc (P2: 5-arc) blooming coral lily petals + rim pressure
 	register_attack("petal_spit_fan", {
-		"weight": 1.20, "tell": 0.50, "commit": 0.30, "recover": 1.00, "cooldown": 1.40,
+		"weight": 1.20, "tell": 0.52, "commit": 0.30, "recover": 1.08, "cooldown": 1.50,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			hop_z = 0.0
 			_spit_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _spit_dir.angle()
-			ground.warn_sector(pos, _spit_dir.angle() - 0.52, _spit_dir.angle() + 0.52, 42.0, last_tell_duration, 0.0, "rose", "coral")
+			ground.warn_sector(pos, _spit_dir.angle() - 0.52, _spit_dir.angle() + 0.52, 38.0, last_tell_duration, 0.0, "rose", "coral")
 			if not arena_rect.grow(-11.0).has_point(tgt):
 				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "sky", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _spit_dir, cnt, 0.80 if phase >= 2 else 0.54, 114.0, {"color": "coral", "source": "lily_petal", "damage": 0.5})
+			patterns.emit_fan(pos, _spit_dir, cnt, 0.96 if phase >= 2 else 0.62, 96.0, {"color": "coral", "source": "lily_petal", "damage": 0.5})
 			stage.shake(0.12)
 			stage.play_sfx("barnacle_fire", pos),
 	})
 
 	# Attack 3: Tongue Whip Sweep — long telegraphed water-lance pressuring all perimeter spots
 	register_attack("tongue_whip_sweep", {
-		"weight": 1.15, "tell": 0.52, "commit": 0.34, "recover": 1.05, "cooldown": 1.50,
+		"weight": 1.15, "tell": 0.54, "commit": 0.34, "recover": 1.10, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			hop_z = 0.0
 			_whip_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _whip_dir.angle()
-			ground.warn_lane(pos, pos + _whip_dir * 48.0, 7.0, last_tell_duration, 0.0, "coral", "rose")
+			ground.warn_lane(pos, pos + _whip_dir * 44.0, 7.0, last_tell_duration, 0.0, "coral", "rose")
 			if not arena_rect.grow(-11.0).has_point(tgt):
 				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.04, 1.0, "coral", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _whip_dir, 3, 122.0, 0.09, {"color": "rose", "source": "tongue_whip", "damage": 0.5})
-			patterns.emit_boomerang(pos, _whip_dir.rotated(0.28), 114.0, 0.65, 0.65, {"color": "sky", "source": "lily_splash", "damage": 0.5})
+			patterns.emit_lane(pos, _whip_dir, 3, 106.0, 0.11, {"color": "rose", "source": "tongue_whip", "damage": 0.5})
+			patterns.emit_boomerang(pos, _whip_dir.rotated(0.35), 100.0, 0.65, 0.62, {"color": "sky", "source": "lily_splash", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("marsh_splash", pos),
 	})
 
-	# Attack 4 (Phase 2): Twin-Ripple Hop — consecutive double leap + expanding water square + rim submerge
+	# Attack 4 (Phase 2): Twin-Ripple Hop — consecutive double leap + twin gapped water ripples
 	register_attack("twin_ripple_hop", {
-		"phases": [2], "weight": 1.65, "tell": 0.56, "commit": 0.80, "recover": 1.20, "cooldown": 1.60,
+		"phases": [2], "weight": 2.00, "tell": 0.56, "commit": 0.80, "recover": 1.25, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			hop_z = 0.0
 			_twin_stage = 0
 			_leap_from = pos
 			var c_t: Vector2 = arena_rect.get_center()
-			_leap_to = c_t + (tgt - c_t).limit_length(28.0)
-			ground.warn_ring(_leap_to, 14.0, last_tell_duration + 0.28, 0.5, "sky", "gold")
+			_leap_to = c_t + (tgt - c_t).limit_length(18.0)
+			ground.warn_ring(_leap_to, 13.0, last_tell_duration + 0.28, 0.5, "sky", "gold")
 			stage.play_sfx("hopper_crouch", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_leap_from = pos
@@ -142,12 +142,13 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_twin_stage = 1
 				hop_z = 0.0
 				_trigger_submerging_rim_pads()
-				patterns.emit_expanding_square(pos, 3, 108.0, facing, 1, {"color": "sky", "source": "twin_ripple", "damage": 0.5})
+				var gap_1: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
+				patterns.emit_gap_ring(pos, 8, 90.0, gap_1, 1.24, {"color": "sky", "source": "twin_ripple", "damage": 0.5})
 				stage.shake(0.18)
 				stage.play_sfx("hopper_land", pos)
 				_leap_from = pos
 				var c_t2: Vector2 = arena_rect.get_center()
-				_leap_to = c_t2 + (tgt - c_t2).limit_length(32.0)
+				_leap_to = c_t2 + (tgt - c_t2).limit_length(18.0)
 			elif el >= 0.44 and el < 0.76:
 				if _twin_stage == 1:
 					_twin_stage = 2
@@ -159,7 +160,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_twin_stage = 3
 				hop_z = 0.0
 				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.88, {"color": "ice", "source": "twin_ripple", "damage": 0.5})
+				patterns.emit_gap_ring(pos, 9, 98.0, gap_a, 1.20, {"color": "ice", "source": "twin_ripple", "damage": 0.5})
 				stage.shake(0.20)
 				stage.play_sfx("hopper_land", pos),
 	})
@@ -195,11 +196,11 @@ func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
 		hop_z = 0.0
 		var c: Vector2 = arena_rect.get_center()
-		# P2 Arena Mutation: Submerging outer rim pads flood to water (rolled back on reset!)
-		_carve_safe_tile_near(Vector2(arena_rect.position.x - 24.0, c.y), "water")
-		_carve_safe_tile_near(Vector2(arena_rect.end.x + 24.0, c.y), "water")
-		props.spawn_pillar(clamp_to_arena(c + Vector2(-48.0, 0.0)), 4.0, "lily_reed_w")
-		props.spawn_pillar(clamp_to_arena(c + Vector2(48.0, 0.0)), 4.0, "lily_reed_e")
+		# P2 Arena Mutation: Submerging far outer rim pads flood to water (rolled back on reset!)
+		_carve_safe_tile_near(Vector2(120.0, 40.0), "water")
+		_carve_safe_tile_near(Vector2(328.0, 40.0), "water")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(-56.0, -14.0)), 4.0, "lily_reed_w")
+		props.spawn_pillar(clamp_to_arena(c + Vector2(56.0, -14.0)), 4.0, "lily_reed_e")
 		_trigger_submerging_rim_pads()
 		stage.darkness_pulse(0.56, 0.90)
 		stage.shake(0.24)
@@ -250,13 +251,21 @@ func _step_updrafts_and_pads(dt: float) -> void:
 			_submerged_pads.remove_at(i)
 
 
+func take_hit(hit: LxHit) -> int:
+	if not engaged and boss_state != BossState.DEATH and hit != null:
+		if world_ctx != null and str(world_ctx.get("current_region_id")) == "conservatory_r6":
+			if _get_wick_pos().distance_to(pos) <= 92.0:
+				engage()
+	return super.take_hit(hit)
+
+
 func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var h: Dictionary = _read_hit(hit)
 	var src: String = str(h["source"])
 	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 	var gliding: bool = wick != null and not wick.dead and wick.is_gliding()
-	var heavy: bool = src in [LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE] \
-			or bool(h["pierce"]) or bool(h["cracks_armour"])
+	var is_beam: bool = src == LxHit.SOURCE_BEAM or bool(h["pierce"]) or bool(h["cracks_armour"])
+	var heavy: bool = is_beam or src in [LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL, LxHit.SOURCE_SUNFLARE]
 
 	# Mid-air intercept crash: gliding bolt or heavy throw/beam mid-leap triggers instant air-stagger!
 	if is_flying() and (gliding or heavy):
@@ -266,11 +275,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		return dmg * 1.55
 
 	if boss_state == BossState.STAGGER:
-		return dmg * (1.75 if heavy else 1.45)
+		return dmg * (1.45 if is_beam else 1.25)
 	if is_punishable():
-		return dmg * (1.65 if heavy else (1.20 if gliding else 1.0))
+		return dmg * (1.35 if is_beam else (1.15 if gliding else 1.0))
+	if is_beam:
+		return dmg * 1.35
 	if heavy:
-		return dmg * 1.55
+		return dmg * 0.62
 	if gliding:
 		return dmg * 1.15
 

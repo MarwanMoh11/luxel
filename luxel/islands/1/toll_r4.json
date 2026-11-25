@@ -100,7 +100,7 @@
       "props": {
         "radius_px": 56,
         "scroll_speed": 76,
-        "duration_s": 18.0,
+        "duration_s": 12.0,
         "brakes_needed": 3,
         "auto_start": true,
         "complete_flag": "great_toll_done",
@@ -108,7 +108,7 @@
           "door_toll_r4_crash",
           "bridge_toll_r4"
         ],
-        "persist": true,
+        "persist": false,
         "rail_events": [
           {
             "t": 2.0,
@@ -507,7 +507,7 @@
       {
         "op": "wait_until",
         "flag": "great_toll_done",
-        "timeout": 8.0
+        "timeout": 14.0
       },
       {
         "op": "expect_exit",

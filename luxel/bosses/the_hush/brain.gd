@@ -25,16 +25,17 @@ const P4_VEIL_MAX: float = 5.0
 const P4_VEIL_RES: float = 0.35
 const WARD_BASH_HIT_R: float = 34.0
 const WARD_BASH_ARC: float = 1.20
-const RECALL_SLAM_BURST_R: float = 38.0
+const RECALL_SLAM_BURST_R: float = 36.0
 const RING_START_R: float = 12.0
-const RING_MAX_R: float = 74.0
+const RING_MAX_R: float = 54.0
 const RING_SINGLE_DUR: float = 0.34
 const RING_GAP_DUR: float = 0.46
 const BEAM_RANGE: float = 162.0
 const BEAM_ARC: float = 1.42
 const BEAM_DUR: float = 0.58
 const UNBROKEN_STAND_SECS: float = 25.0
-const SANCTUM_R6_CORE := Rect2(168.0, 136.0, 168.0, 80.0)
+const SANCTUM_R6_CORE := Rect2(224.0, 126.0, 112.0, 58.0)
+const SANCTUM_R6_ENGAGE := Rect2(144.0, 112.0, 240.0, 116.0)
 
 # Compat & VFX fields read by visuals.gd, biome_boss_synergy.gd, boss_qa_capture.gd
 var active_move: int = HushMove.VOLLEY
@@ -88,15 +89,15 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island8_boss_p1"
 	music_p2_cue = "island8_boss_p2"
-	max_hp = 820.0
-	hp = 820.0
+	max_hp = 1520.0
+	hp = 1520.0
 	body_radius = 11.0
-	move_speed = 44.0
-	stagger_threshold = 34.0
-	stagger_duration = 1.85
-	post_stagger_immunity = 4.4
+	move_speed = 42.0
+	stagger_threshold = 38.0
+	stagger_duration = 1.90
+	post_stagger_immunity = 4.6
 	punish_dmg_mult = 1.35
-	post_recover_cd = 0.36
+	post_recover_cd = 0.44
 	intro_duration = 0.55
 	phase_shift_duration = 0.68
 	death_duration = 2.2
@@ -118,18 +119,23 @@ func is_flying() -> bool:
 	return true
 
 
+func _is_sanctum_r6() -> bool:
+	if world_ctx == null or not is_instance_valid(world_ctx):
+		return false
+	var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
+	return reg == "sanctum_r6"
+
+
 func _infer_arena_rect() -> Rect2:
-	if world_ctx != null and is_instance_valid(world_ctx):
-		var reg: String = str(world_ctx.get("current_region_id")) if world_ctx.get("current_region_id") != null else str(world_ctx.get("region_id"))
-		if reg == "sanctum_r6":
-			return SANCTUM_R6_CORE
+	if _is_sanctum_r6():
+		return SANCTUM_R6_CORE
 	return super._infer_arena_rect()
 
 
 func _configure_boss(spec: Dictionary) -> void:
 	if arena == null:
 		arena = ArenaRules.new(self)
-	var base_hp: float = 820.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 1520.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	kind = "the_hush"
@@ -257,7 +263,8 @@ func take_hit(hit: LxHit) -> int:
 	if finale_stage in [FinaleStage.SWELL, FinaleStage.CHOICE]:
 		_emit_enemy_hit(hit, HitResult.GLANCED); return HitResult.GLANCED
 	if not engaged:
-		if not arena_rect.grow(2.0).has_point(_get_wick_pos()):
+		var eng_r: Rect2 = SANCTUM_R6_ENGAGE if _is_sanctum_r6() else arena_rect.grow(2.0)
+		if not eng_r.has_point(_get_wick_pos()):
 			clank_t = 0.12; _emit_enemy_hit(hit, HitResult.GLANCED); return HitResult.GLANCED
 		engage()
 	if boss_state == BossState.INTRO or boss_state == BossState.PHASE_SHIFT:
@@ -358,7 +365,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 			return dmg * res_m
 
 	if is_pierce or cracks:
-		return dmg * (1.15 if boss_state == BossState.STAGGER else (1.0 if is_punishable() else 0.90))
+		return dmg * (1.15 if boss_state == BossState.STAGGER else (1.0 if is_punishable() else 0.88))
 	if boss_state == BossState.STAGGER:
 		return dmg * 1.18
 	if is_punishable():
@@ -367,7 +374,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	_armour_glint_t = 0.20; _armour_glint_ang = rel.angle() if rel.length() > 1.0 else facing; clank_t = 0.10
 	if _clank_sfx_cd <= 0.0:
 		_clank_sfx_cd = 0.28; stage.play_sfx("mirror_ping", pos)
-	return dmg * (0.20 if src == LxHit.SOURCE_BOLT else 0.42)
+	return dmg * (0.16 if src == LxHit.SOURCE_BOLT else 0.36)
 
 
 func _enter_phase(next_phase: int) -> void:
@@ -502,8 +509,8 @@ func _pick_sanctuary_circles(tgt: Vector2) -> Array[Vector2]:
 
 
 func _perimeter_targets(tgt: Vector2, count: int) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
-	var inset: Rect2 = arena_rect.grow(-16.0)
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),
 		Vector2(inset.position.x, inset.end.y), inset.end,

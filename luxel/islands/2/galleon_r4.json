@@ -138,7 +138,7 @@
       "id": "lamp_r4_s",
       "kind": "road_lamp",
       "pos": [
-        168,
+        184,
         248
       ],
       "props": {
@@ -162,7 +162,7 @@
       "id": "lamp_r4_e",
       "kind": "road_lamp",
       "pos": [
-        344,
+        312,
         216
       ],
       "props": {
@@ -251,7 +251,7 @@
     {
       "kind": "cracks",
       "pos": [
-        296,
+        280,
         232
       ],
       "radius": 18,
@@ -263,8 +263,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        376,
-        232
+        344,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -275,7 +275,7 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        360,
+        296,
         248
       ],
       "layer": "sort",
@@ -287,8 +287,8 @@
       "sheet": "theme_galleon",
       "prop": "broken_cannon",
       "pos": [
-        152,
-        248
+        184,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -347,7 +347,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        392,
+        376,
         152
       ],
       "layer": "sort",

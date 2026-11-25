@@ -145,7 +145,7 @@
           "bell_r18_dusk",
           "bell_r18_war"
         ],
-        "persist": true
+        "persist": false
       }
     },
     {

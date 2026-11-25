@@ -265,9 +265,23 @@
       "tiles": [
         [
           8,
-          6,
-          10,
           8,
+          10,
+          6,
+          "ground"
+        ],
+        [
+          8,
+          6,
+          5,
+          2,
+          "ground"
+        ],
+        [
+          16,
+          6,
+          2,
+          2,
           "ground"
         ]
       ],
@@ -438,7 +452,7 @@
     "target": "pickup_anchor_lead",
     "start": {
       "vars": {
-        "cistern_tide": "half"
+        "room:2:cave_bell_cistern:cistern_tide": "half"
       },
       "spawn": [
         232,
@@ -463,14 +477,41 @@
           72,
           152
         ],
-        "count": 2
+        "count": 1,
+        "wait_hit": 0.2
       },
       {
         "op": "wait",
-        "secs": 0.9
+        "secs": 1.35
       },
       {
-        "op": "dismount"
+        "op": "dismount",
+        "to": [
+          232,
+          120
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          104
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "lore_cistern"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          136
+        ]
+      },
+      {
+        "op": "expect",
+        "var": "cistern_tide==half"
       },
       {
         "op": "shoot",

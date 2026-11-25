@@ -6,7 +6,7 @@ from typing import Any
 import numpy as np
 
 from .base import ThemePainter, ThemeSpec
-from .kit import IX, LIGHT_IX, SHADE_IX
+from .kit import IX, LIGHT_IX, SHADE_IX, hash01_grid, ramp_blend
 
 
 class UndercroftPainter(ThemePainter):
@@ -55,6 +55,121 @@ class LocksPainter(ThemePainter):
         bg = ctx["bg"]
         damp = m_wall & dn_open & (ly >= ts - 3) & (ly < ts - 1) & (bg < 0.55)
         buf[damp] = IX["pine"]
+
+
+class GalleonPainter(ThemePainter):
+    """The Drowned Galleon: calm, low-contrast ship timber distinct across hold, deck, and cabin."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        nf = ctx["n_fine"]
+        warm = ctx["warm"]
+        meta = ctx.get("meta", {})
+        rid = str(meta.get("id", "")).lower()
+
+        is_cabin = rid in ("galleon_r10",) or ("cabin" in rid) or ("boathouse" in rid)
+        is_hold = rid in (
+            "galleon_r1",
+            "galleon_r2",
+            "galleon_r3",
+            "galleon_r4",
+            "galleon_r5",
+            "galleon_r6",
+        )
+
+        if is_hold:
+            # Lower Hold: deep damp oak planking (wide 8px planks, quiet seams, damp bilge seepage)
+            ph = 8
+            pr = ys // ph
+            py = ys % ph
+            butt_off = (pr * 17) % 36
+            px_b = (xs + butt_off) % 36
+            plank_h = hash01_grid((xs + butt_off) // 36, pr, s.seed + 83)
+            field = np.clip(nb * 0.55 + plank_h * 0.25 + warm * 0.12, 0.0, 0.85)
+            out = ramp_blend(("dusk", "plum"), field, bg)
+            # Soft dithered caulk seams (never harsh black zebra stripes)
+            is_hseam = (py == 0) & (bg < 0.48)
+            is_vseam = (px_b == 0) & (py > 0) & (bg < 0.42)
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
+            # Subtle damp pine seepage near water edges
+            wet_edge = ctx["n_dn_water"] | ctx["n_up_water"] | ctx["n_lt_water"] | ctx["n_rt_water"]
+            out = np.where(wet_edge & (nf < 0.16) & (py > 0), IX["pine"], out)
+            # Ultra-restrained plank catchlight
+            out = np.where((py == 1) & (plank_h > 0.86) & (bg < 0.30), IX["mauve"], out)
+        elif is_cabin:
+            # Captain's Cabin / Chartroom: warm dark mahogany decking (6px planks, subtle wine warmth)
+            ph = 6
+            pr = ys // ph
+            py = ys % ph
+            butt_off = (pr * 19) % 40
+            px_b = (xs + butt_off) % 40
+            plank_h = hash01_grid((xs + butt_off) // 40, pr, s.seed + 97)
+            field = np.clip(nb * 0.48 + plank_h * 0.24 + warm * 0.16, 0.0, 0.78)
+            out = ramp_blend(("dusk", "plum", "wine"), field, bg)
+            is_hseam = (py == 0) & (bg < 0.52)
+            is_vseam = (px_b == 0) & (py > 0) & (bg < 0.44)
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
+            # Quiet polished mahogany highlight & rare tiny brass floor stud
+            out = np.where((py == 1) & (plank_h > 0.82) & (bg < 0.28), IX["wine"], out)
+            stud = (px_b == 20) & (py == 3) & (plank_h > 0.93)
+            out = np.where(stud, IX["apricot"], out)
+        else:
+            # Upper Weather / Gun / Keel / Prow Deck: salt-weathered wide timber + subtle deck ribs
+            ph = 8
+            pr = ys // ph
+            py = ys % ph
+            butt_off = (pr * 15) % 32
+            px_b = (xs + butt_off) % 32
+            plank_h = hash01_grid((xs + butt_off) // 32, pr, s.seed + 109)
+            field = np.clip(nb * 0.52 + plank_h * 0.26 + warm * 0.10, 0.0, 0.84)
+            out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
+            is_hseam = (py == 0) & (bg < 0.50)
+            is_vseam = (px_b == 0) & (py > 0) & (bg < 0.40)
+            out = np.where(is_hseam | is_vseam, IX["night"], out)
+            # Subtle transverse ship deck-rib timber line every 48px
+            rib = (xs % 48 == 0) & (bg < 0.48)
+            out = np.where(rib, IX["night"], out)
+            # Quiet weathered edge sheen & sparse salt mist
+            out = np.where((py == 1) & (plank_h > 0.80) & (bg < 0.30), IX["mauve"], out)
+            salt = (nb > 0.82) & (nf > 0.92) & (bg < 0.32) & (py > 0)
+            out = np.where(salt, IX["stone"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly = ctx["lx"], ctx["ly"]
+        ts = ctx["ts"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+
+        edge_n = (~ctx["n_up_path"]) & (ly == 0)
+        edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+        edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+        edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+        is_edge = edge_n | edge_s | edge_w | edge_e
+
+        main = IX[s.path_main]
+        hi = IX[s.path_hi]
+        edge = IX[s.path_edge]
+        dk = SHADE_IX[main]
+
+        # Calm oak deck runner with wide 8px cross-planks and quiet bevels
+        out = np.full(buf.shape, main, dtype=np.uint8)
+        out = np.where((nb > 0.58) & (bg < 0.36), hi, out)
+        out = np.where((ly % 8 == 0) & (bg < 0.55), dk, out)
+        out = np.where(is_edge & (bg < 0.72), edge, out)
+        buf[mask] = out[mask]
 
 
 SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
@@ -199,21 +314,21 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Drowned Galleon",
             island=2,
             floor_style="ship_planking",
-            floor_ramp=("plum", "wine", "mauve"),
+            floor_ramp=("dusk", "plum", "mauve"),
             floor_seam="night",
-            floor_bevel="apricot",
-            floor_accent_a="gold",
-            floor_accent_b="stone",
+            floor_bevel="mauve",
+            floor_accent_a="wine",
+            floor_accent_b="pine",
             path_style="boardwalk",
-            path_main="wine",
-            path_hi="coral",
+            path_main="plum",
+            path_hi="mauve",
             path_edge="night",
-            path_trim="gold",
+            path_trim="wine",
             wall_style="ship_hull",
-            wall_cap=("night", "plum", "wine"),
-            wall_lip="apricot",
-            wall_face="plum",
-            wall_face_hi="coral",
+            wall_cap=("night", "dusk", "plum"),
+            wall_lip="mauve",
+            wall_face="dusk",
+            wall_face_hi="plum",
             wall_base="void",
             water_style="canal_water",
             water_deep="deep",
@@ -222,21 +337,21 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             water_foam="ice",
             pit_style="crypt_abyss",
             void_style="crypt_abyss",
-            rim_hi="apricot",
-            rim_mid="coral",
+            rim_hi="mauve",
+            rim_mid="plum",
             bridge_style="timber",
             bridge_main="wine",
             bridge_hi="coral",
-            bridge_rail="gold",
+            bridge_rail="apricot",
             bridge_dark="night",
             seed=211,
             prop_sheet="theme_galleon",
             door_sheet="theme_galleon_doors",
             special_tiles=("H:grate", "T:tide"),
             default_decor=("grate", "stain", "compass"),
-            notes="Listing shipwreck: salt-bleached timber deck planks, oak ribs, brass portholes, sloshing bilge water.",
+            notes="Listing shipwreck: calm low-contrast oak hold, weathered deck, and dark mahogany cabin planks, oak ribs, brass portholes, sloshing bilge water.",
         ),
-        ThemePainter,
+        GalleonPainter,
     ),
     (
         ThemeSpec(

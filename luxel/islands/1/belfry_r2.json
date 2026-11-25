@@ -63,26 +63,26 @@
       "id": "owl_r2_0",
       "kind": "owl",
       "pos": [
-        208,
-        168
+        200,
+        144
       ],
       "route": [],
       "perches": [
         [
+          200,
+          144
+        ],
+        [
           208,
+          112
+        ],
+        [
+          192,
           168
-        ],
-        [
-          208,
-          128
-        ],
-        [
-          184,
-          176
         ]
       ],
       "zone": "belfry_chasm",
-      "leash": 145
+      "leash": 72
     }
   ],
   "interactables": [
@@ -90,8 +90,8 @@
       "id": "switch_eye_r2",
       "kind": "switch_eye",
       "pos": [
-        328,
-        40
+        304,
+        64
       ],
       "props": {
         "target_id": "bridge_r2",
@@ -300,8 +300,8 @@
       {
         "op": "shoot",
         "from": [
-          392,
-          96
+          376,
+          88
         ],
         "target": "switch_eye_r2"
       },

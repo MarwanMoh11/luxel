@@ -25,9 +25,9 @@ const BEAM_REVERSE_TIME: float = 0.52
 const LAMP_CRACK_DURATION: float = 4.50
 const LAMP_CRACK_MULT: float = 1.50
 const TIDE_START_R: float = 10.0
-const TIDE_MAX_R: float = 56.0
+const TIDE_MAX_R: float = 52.0
 const TIDE_BAND: float = 9.0
-const BEAM_BURN_RANGE: float = 56.0
+const BEAM_BURN_RANGE: float = 48.0
 
 # Compat fields referenced by tests/luxel/boss_qa_capture.gd
 var active_move: int = BossMove.NONE
@@ -67,14 +67,14 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 116.0
-	hp = 116.0
+	max_hp = 136.0
+	hp = 136.0
 	body_radius = 9.0
-	move_speed = 36.0
+	move_speed = 34.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.50
 	punish_dmg_mult = 1.30
-	post_recover_cd = 0.34
+	post_recover_cd = 0.36
 	shard_drop = 38
 	intro_duration = 0.65
 	phase_shift_duration = 0.70
@@ -120,7 +120,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if phase >= 3:
 				state_timer = BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE + BEAM_REVERSE_TIME
 			var aim_v: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_v, 3, 0.72, 124.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
+			patterns.emit_fan(pos, aim_v, 3, 0.82, 116.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
 			_boss_impact(0.16, 78.0, 72.0)
 			stage.play_sfx("hermit_beam_sweep", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, el: float) -> void:
@@ -138,28 +138,27 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(pos, pos + _aim_dir * 54.0, 7.5, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("hermit_beam_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _aim_dir, 3, 134.0, 0.09, {"color": "sky", "source": "fresnel_lance", "damage": 0.5})
+			patterns.emit_lane(pos, _aim_dir, 3 if phase >= 2 else 2, 124.0, 0.10, {"color": "sky", "source": "fresnel_lance", "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("hermit_tide_fire", pos),
 	})
 
 	# Attack 3: Lantern Shell Slam — surging shell lunge + gap ring of brine bolts
 	register_attack("lantern_shell_slam", {
-		"weight": 1.15, "tell": 0.56, "commit": 0.34, "recover": 1.15, "cooldown": 1.60,
+		"weight": 1.15, "tell": 0.56, "commit": 0.34, "recover": 1.18, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			active_move = BossMove.NONE
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
-			ground.warn_lane(pos, pos + _aim_dir * 56.0, 9.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_lane(pos, pos + _aim_dir * 52.0, 9.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("warden_swing", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.90, {"color": "sky", "source": "shell_slam_ring", "damage": 0.5})
-			patterns.emit_lane(pos, _aim_dir, 2, 128.0, 0.12, {"color": "ice", "source": "shell_slam_bolt", "damage": 0.5})
+			patterns.emit_gap_ring(pos, 10, 110.0, gap_a, 0.92, {"color": "sky", "source": "shell_slam_ring", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_aim_dir * 96.0 * dt, false)
+			move_boss(_aim_dir * 86.0 * dt, false)
 			check_contact_damage(body_radius + 10.0, _aim_dir, 0.5, "shell_slam"),
 	})
 

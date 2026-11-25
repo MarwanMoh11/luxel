@@ -12,7 +12,7 @@
   "name_key": "ISL6_TR_R11",
   "spawn": [
     48,
-    152
+    168
   ],
   "zones": [
     {
@@ -21,8 +21,8 @@
       "rect": [
         0,
         0,
-        544,
-        320
+        576,
+        352
       ],
       "dark": true
     }
@@ -32,7 +32,7 @@
       "id": "exit_r11_west",
       "rect": [
         0,
-        128,
+        144,
         16,
         48
       ],
@@ -45,16 +45,16 @@
     {
       "id": "exit_r11_return",
       "rect": [
-        528,
-        128,
+        560,
+        144,
         16,
         48
       ],
       "to_island": 6,
-      "to_region": "overworld",
+      "to_region": "ow_rail_yard",
       "to_spawn": [
-        104,
-        272
+        248,
+        72
       ],
       "one_way": true,
       "requires_flags": [
@@ -69,7 +69,7 @@
       "kind": "room_anchor",
       "pos": [
         48,
-        152
+        168
       ],
       "props": {
         "auto": true
@@ -79,8 +79,8 @@
       "id": "anvil_r11_cycle",
       "kind": "temper_anvil",
       "pos": [
-        80,
-        72
+        72,
+        112
       ],
       "props": {
         "mode": "cycle"
@@ -90,8 +90,8 @@
       "id": "door_r11_return",
       "kind": "door",
       "pos": [
-        520,
-        152
+        552,
+        168
       ],
       "props": {
         "door_type": "ward_barrier",
@@ -108,7 +108,7 @@
       "id": "lamp_r11_nw",
       "kind": "road_lamp",
       "pos": [
-        136,
+        152,
         72
       ],
       "props": {
@@ -120,8 +120,8 @@
       "id": "lamp_r11_sw",
       "kind": "road_lamp",
       "pos": [
-        264,
-        272
+        112,
+        288
       ],
       "props": {
         "zone": "tr_r11",
@@ -132,7 +132,7 @@
       "id": "lamp_r11_ne",
       "kind": "road_lamp",
       "pos": [
-        384,
+        416,
         72
       ],
       "props": {
@@ -144,8 +144,8 @@
       "id": "lamp_r11_se",
       "kind": "road_lamp",
       "pos": [
-        384,
-        216
+        416,
+        264
       ],
       "props": {
         "zone": "tr_r11",
@@ -156,8 +156,20 @@
       "id": "lamp_r11_mid",
       "kind": "road_lamp",
       "pos": [
-        264,
+        288,
         72
+      ],
+      "props": {
+        "zone": "tr_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_s",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        288
       ],
       "props": {
         "zone": "tr_r11",
@@ -170,15 +182,15 @@
       "id": "boss_r11_engineer",
       "kind": "engineer",
       "pos": [
-        312,
-        152
+        352,
+        168
       ],
       "zone": "tr_r11",
       "arena": [
-        64,
+        80,
         56,
-        368,
-        168
+        400,
+        224
       ]
     }
   ],
@@ -186,32 +198,32 @@
     {
       "kind": "window_strip",
       "y": 4,
-      "x0": 96,
-      "x1": 208,
+      "x0": 144,
+      "x1": 256,
       "style": "sunset"
     },
     {
       "kind": "window_strip",
       "y": 4,
-      "x0": 288,
-      "x1": 400,
+      "x0": 320,
+      "x1": 432,
       "style": "slag"
     },
     {
       "kind": "circle",
       "pos": [
-        272,
-        152
+        296,
+        168
       ],
-      "radius": 58,
+      "radius": 64,
       "style": "gear"
     },
     {
       "kind": "grate",
       "rect": [
-        208,
-        128,
-        128,
+        224,
+        144,
+        144,
         48
       ],
       "glow": false
@@ -219,8 +231,8 @@
     {
       "kind": "cracks",
       "pos": [
-        216,
-        152
+        232,
+        168
       ],
       "radius": 24,
       "glow": true
@@ -228,8 +240,8 @@
     {
       "kind": "cracks",
       "pos": [
-        328,
-        152
+        360,
+        168
       ],
       "radius": 24,
       "glow": true
@@ -240,8 +252,8 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        44,
-        64
+        128,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -252,8 +264,8 @@
       "sheet": "theme_ember_express",
       "prop": "steam_pipe_column",
       "pos": [
-        408,
-        64
+        448,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -264,7 +276,7 @@
       "sheet": "theme_ember_express",
       "prop": "iron_stove_brazier",
       "pos": [
-        248,
+        288,
         56
       ],
       "layer": "sort",
@@ -276,8 +288,8 @@
       "sheet": "theme_ember_express",
       "prop": "emergency_brake_wheel",
       "pos": [
-        464,
-        120
+        496,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -288,8 +300,8 @@
       "sheet": "theme_ember_express",
       "prop": "emergency_brake_wheel",
       "pos": [
-        464,
-        192
+        496,
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -301,7 +313,7 @@
       "prop": "carriage_wall_lamp",
       "pos": [
         208,
-        280
+        308
       ],
       "layer": "sort",
       "flip_x": false,
@@ -312,8 +324,8 @@
       "sheet": "theme_ember_express",
       "prop": "carriage_wall_lamp",
       "pos": [
-        352,
-        280
+        368,
+        308
       ],
       "layer": "sort",
       "flip_x": true,
@@ -359,6 +371,12 @@
           }
         },
         {
+          "reward": {
+            "kind": "heal",
+            "amount": 2
+          }
+        },
+        {
           "shake": 0.24
         },
         {
@@ -367,6 +385,22 @@
             "style": "narration",
             "duration": 2.8
           }
+        }
+      ]
+    },
+    {
+      "id": "tr_r11_p3_vent",
+      "on": "boss_hp:0.33",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2
+          }
+        },
+        {
+          "shake": 0.22
         }
       ]
     },
@@ -397,8 +431,8 @@
             "id": "pane_r11_cinder",
             "kind": "pane_pickup",
             "pos": [
-              312,
-              152
+              328,
+              168
             ],
             "props": {
               "pane": "cinder_blast"
@@ -434,8 +468,8 @@
       {
         "op": "goto",
         "to": [
-          80,
-          88
+          72,
+          128
         ],
         "tol": 3.0
       },
@@ -444,12 +478,12 @@
         "target": "anvil_r11_cycle"
       },
       {
-        "op": "beam",
-        "from": [
-          136,
-          152
+        "op": "goto",
+        "to": [
+          144,
+          168
         ],
-        "target": "boss_r11_engineer"
+        "tol": 8.0
       },
       {
         "op": "clear",

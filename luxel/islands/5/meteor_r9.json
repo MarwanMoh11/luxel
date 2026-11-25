@@ -189,8 +189,8 @@
       "id": "eye_r9_catapult",
       "kind": "switch_eye",
       "pos": [
-        216,
-        68
+        226,
+        70
       ],
       "props": {
         "requires_blue": true,
@@ -541,15 +541,15 @@
         "timeout": 4.5
       },
       {
-        "op": "recall"
-      },
-      {
         "op": "goto",
         "to": [
           96,
           224
         ],
         "tol": 3.0
+      },
+      {
+        "op": "recall"
       },
       {
         "op": "shoot",

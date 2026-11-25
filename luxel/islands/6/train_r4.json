@@ -119,6 +119,17 @@
       }
     },
     {
+      "id": "shrine_r4_hearth",
+      "kind": "rest_shrine",
+      "pos": [
+        272,
+        208
+      ],
+      "props": {
+        "zone": "tr_r4"
+      }
+    },
+    {
       "id": "anvil_r4_cycle",
       "kind": "temper_anvil",
       "pos": [

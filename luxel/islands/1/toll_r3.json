@@ -139,8 +139,8 @@
         144
       ],
       "props": {
-        "length": 36,
-        "speed": 1.35,
+        "length": 24,
+        "speed": 1.2,
         "arms": 2
       }
     },
@@ -460,12 +460,20 @@
         "op": "goto",
         "to": [
           224,
-          184
+          200
         ]
       },
       {
         "op": "clear",
         "timeout": 18.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          240
+        ],
+        "target": "bell_toll_r3_k"
       },
       {
         "op": "goto",
@@ -485,6 +493,21 @@
       {
         "op": "goto",
         "to": [
+          224,
+          224
+        ]
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          224
+        ],
+        "target": "bell_toll_r3_k"
+      },
+      {
+        "op": "goto",
+        "to": [
           304,
           136
         ]
@@ -496,6 +519,10 @@
           136
         ],
         "target": "bell_toll_r3_w2"
+      },
+      {
+        "op": "wait",
+        "secs": 0.5
       },
       {
         "op": "expect",

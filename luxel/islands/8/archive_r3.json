@@ -1,0 +1,537 @@
+{
+  "id": "archive_r3",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 2,
+  "name_key": "ISL8_ARC_R3",
+  "theme": "archive_2",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_mem2",
+      "name_key": "ISL8_ARC_R3",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r2",
+      "to_spawn": [
+        224,
+        52
+      ]
+    },
+    {
+      "id": "exit_r3_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r4",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r3_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r3_mem2",
+      "kind": "lore_stone",
+      "pos": [
+        176,
+        256
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R3",
+        "icon": "wave"
+      }
+    },
+    {
+      "id": "skiff_r3",
+      "kind": "vehicle_skiff",
+      "pos": [
+        128,
+        176
+      ],
+      "props": {
+        "dir": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "id": "lever_r3_tide",
+      "kind": "state_lever",
+      "pos": [
+        80,
+        200
+      ],
+      "props": {
+        "scope": "dungeon:archive",
+        "var": "mem_tide",
+        "values": [
+          "flood",
+          "ebb"
+        ],
+        "index": 0,
+        "style": "tide_organ",
+        "shootable": true,
+        "persist": false
+      }
+    },
+    {
+      "id": "raft_r3_mirror",
+      "kind": "tide_raft",
+      "pos": [
+        240,
+        144
+      ],
+      "props": {
+        "mounts": "blue_transformer",
+        "tide_var": "mem_tide",
+        "tide_min": "flood",
+        "rotatable": true,
+        "angle_deg": 45.0,
+        "size": [
+          32,
+          32
+        ]
+      }
+    },
+    {
+      "id": "mirror_r3_quay",
+      "kind": "blue_transformer",
+      "pos": [
+        240,
+        224
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "eye_r3_sluice",
+      "kind": "switch_eye",
+      "pos": [
+        344,
+        224
+      ],
+      "props": {
+        "requires_blue": true,
+        "target_id": "door_r3_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "portal_r3_seabed",
+      "kind": "blue_portal",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "target_portal_id": "portal_r3_dais",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "portal_r3_dais",
+      "kind": "blue_portal",
+      "pos": [
+        168,
+        40
+      ],
+      "props": {
+        "target_portal_id": "portal_r3_seabed",
+        "requires_blue": true,
+        "pair_sync": true
+      }
+    },
+    {
+      "id": "door_r3_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "eye_r3_sluice"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem2"
+      }
+    },
+    {
+      "id": "lamp_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem2"
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        400,
+        200
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem2"
+      }
+    },
+    {
+      "id": "lamp_r3_n",
+      "kind": "road_lamp",
+      "pos": [
+        312,
+        40
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem2"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "crab_r3_1",
+      "kind": "crab_warden",
+      "pos": [
+        384,
+        208
+      ],
+      "route": [
+        [
+          352,
+          208
+        ],
+        [
+          416,
+          208
+        ]
+      ],
+      "zone": "archive_mem2",
+      "leash": 100
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        368,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        112,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scroll_cubby_rack",
+      "pos": [
+        368,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        160,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        320,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        224,
+        64,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        224
+      ],
+      "radius": 24,
+      "color": "sky"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        240,
+        144
+      ],
+      "size": [
+        64,
+        48
+      ],
+      "tint": "cool",
+      "shear": 0.2
+    }
+  ],
+  "layers": [
+    {
+      "id": "ebb_seabed",
+      "when": "mem_tide==ebb",
+      "tiles": [
+        [
+          7,
+          6,
+          16,
+          7,
+          "ground"
+        ]
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r3_mem2",
+      "on": "signal:eye_r3_sluice",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_2_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory II (Tidewater): bank blue light through the quay prism into the sluice eye, drain the canal to EBB at the Tide Organ to expose the walkable seabed, defeat the Crab Warden, and charge the seabed Blue Portal to warp past the sea wall to the North Dais.",
+    "kind": "puzzle",
+    "beat": "sho",
+    "teaches": "Island 2 Tide Organ layer draining + Blue Portal warping across sealed sea walls + Tide Raft.",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "mem_2_lit",
+    "why": "Second Archive memory remixing Tidewater Harbor's tide state layers, Skiff, Raft, and Blue Portals.",
+    "exit": "exit_r3_north",
+    "start": {
+      "vars": {
+        "mem_tide": "flood"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          256
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r3_quay",
+        "angle": 45.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          264
+        ],
+        "target": "mirror_r3_quay"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r3_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "mem_2_lit"
+      },
+      {
+        "op": "goto",
+        "to": [
+          104,
+          200
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "lever_r3_tide"
+      },
+      {
+        "op": "expect",
+        "var": "mem_tide==ebb"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          184
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "rotate",
+        "target": "raft_r3_mirror",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          288,
+          144
+        ],
+        "target": "raft_r3_mirror"
+      },
+      {
+        "op": "wait_until",
+        "target": "portal_r3_seabed",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          104
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_north"
+      }
+    ]
+  }
+}

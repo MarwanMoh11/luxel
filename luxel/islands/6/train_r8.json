@@ -445,6 +445,12 @@
       "do": [
         {
           "set_flag": "train_r8_cleared"
+        },
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2
+          }
         }
       ]
     }

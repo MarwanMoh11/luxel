@@ -815,7 +815,7 @@
     "optional": true,
     "start": {
       "vars": {
-        "tide": "ebb"
+        "island:2:tide": "ebb"
       },
       "spawn": [
         712,
@@ -835,6 +835,24 @@
         "target": "ws_2_shoals"
       },
       {
+        "op": "goto",
+        "to": [
+          616,
+          296
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "skiff_bell_shoals"
+      },
+      {
+        "op": "goto",
+        "to": [
+          664,
+          264
+        ]
+      },
+      {
         "op": "shoot",
         "from": [
           664,
@@ -845,6 +863,10 @@
       {
         "op": "expect",
         "var": "tide==half"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "shoot",

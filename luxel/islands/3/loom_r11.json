@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r11",
+      "id": "lm_r11",
       "name_key": "ISL3_LM_R11_NAME",
       "rect": [
         0,
@@ -49,12 +49,24 @@
       "one_way": true,
       "requires_flags": [
         "loom_done"
-      ]
+      ],
+      "locked_door_id": "door_loom_r11_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_loom_widow",
+      "kind": "loom_widow",
+      "pos": [
+        256,
+        132
+      ],
+      "zone": "lm_r11"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r11",
+      "id": "anc_r11_south",
       "kind": "room_anchor",
       "pos": [
         256,
@@ -65,31 +77,370 @@
       }
     },
     {
-      "id": "lamp_loom_r11",
-      "kind": "road_lamp",
+      "id": "t_r11_w",
+      "kind": "blue_transformer",
       "pos": [
-        256,
+        72,
         160
       ],
       "props": {
-        "zone": "loom_r11",
+        "angle_deg": 0,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "t_r11_e",
+      "kind": "blue_transformer",
+      "pos": [
+        440,
+        160
+      ],
+      "props": {
+        "angle_deg": 180,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "door_loom_r11_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "loom_done"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r11_nw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        68
+      ],
+      "props": {
+        "zone": "lm_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_ne",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        68
+      ],
+      "props": {
+        "zone": "lm_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_sw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        252
+      ],
+      "props": {
+        "zone": "lm_r11",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r11_se",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        252
+      ],
+      "props": {
+        "zone": "lm_r11",
         "lit": true
       }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 68,
+      "style": "ritual"
+    },
+    {
+      "kind": "compass",
+      "pos": [
+        256,
+        160
+      ],
+      "radius": 44,
+      "color": "gold",
+      "secondary": "rose"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        256,
+        160
+      ],
+      "size": [
+        58,
+        76
+      ],
+      "tint": "cool",
+      "shear": 0.25
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        220,
+        32,
+        72,
+        24
+      ],
+      "color": "gold"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "woven_floor_medallion",
+      "pos": [
+        256,
+        160
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        256,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        320,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        192,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        320,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        88,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        424,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        88,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        424,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        216,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "events": [
+    {
+      "id": "loom_r11_boss_victory",
+      "on": "flag:loom_done",
+      "once": true,
+      "do": [
+        {
+          "narrate": "ISL3_LM_CLEARED"
+        },
+        {
+          "sfx": "shrine_claimed"
+        },
+        {
+          "reward": {
+            "kind": "shards",
+            "amount": 40
+          }
+        }
+      ]
+    },
+    {
+      "id": "loom_r11_spawn_ember",
+      "on": "flag:loom_done",
+      "once": false,
+      "do": [
+        {
+          "spawn": {
+            "id": "chest_loom_r11_ember",
+            "kind": "chest",
+            "pos": [
+              256,
+              144
+            ],
+            "props": {
+              "reward_kind": "ember_piece",
+              "amount": 1
+            }
+          }
+        }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r11",
-    "kind": "puzzle",
-    "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "idea": "Octagonal six-spoke radial web arena for The Loom Widow: ignite the rim spool of the spoke she clings to (0.9 s ember burn warning) to drop her onto the central brass spindle for punish, cut P2 rim tethers, and claim Half-Lantern #2 + Ember Piece.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Climax mastery of silk-spoke ignition, tether cutting, and agile dodge windows against The Loom Widow.",
+    "decisions": 8,
+    "expert_s": 122,
+    "reward": "half_lantern+ember_piece+loom_done",
+    "why": "Climax boss of The Weaver's Loom awarding Half-Lantern #2 (+1 Heart with Under-Root) and Ember Piece.",
+    "exit": "exit_loom_r11_ow",
+    "solution": [
+      {
+        "op": "clear",
+        "zone": "lm_r11",
+        "timeout": 125.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.45
+      },
+      {
+        "op": "expect",
+        "flag": "loom_done"
+      },
+      {
+        "op": "interact",
+        "target": "chest_loom_r11_ember"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_loom_r11_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r11_ow"
+      }
+    ]
   },
   "id": "loom_r11",
   "island_id": 3,
@@ -102,7 +453,5 @@
     "cave_drip"
   ],
   "triggers": [],
-  "layers": [],
-  "events": [],
-  "enemies": []
+  "layers": []
 }

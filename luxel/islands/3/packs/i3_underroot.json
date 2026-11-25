@@ -1,7 +1,7 @@
 {
   "pack_id": "i3_underroot",
   "owner": "P3-UNDERROOT",
-  "comment": "Island 3 Minor Dungeon A: The Under-Root (11 tiny-world rooms, 4 internal cycles, theme under_root). Wired to ow_shift_w Turn 0 Great Stump.",
+  "comment": "Island 3 Minor Dungeon A: The Under-Root (11 tiny-world rooms, 4 internal cycles, theme under_root). Wired to ow_shift_w.",
   "strings": {
     "ISL3_DNG_UNDERROOT": "THE UNDER-ROOT",
     "ISL3_UR_R1_NAME": "ROOT THRESHOLD",

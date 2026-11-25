@@ -405,8 +405,12 @@
         ]
       },
       {
-        "op": "interact",
-        "target": "moth_1_09"
+        "op": "wait",
+        "secs": 1.1
+      },
+      {
+        "op": "expect",
+        "flag": "moth:moth_1_09"
       },
       {
         "op": "expect_exit",

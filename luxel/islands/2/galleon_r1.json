@@ -82,7 +82,7 @@
       "id": "ws_galleon",
       "kind": "waystone",
       "pos": [
-        120,
+        136,
         216
       ],
       "props": {
@@ -279,9 +279,9 @@
       "kind": "stain",
       "pos": [
         88,
-        184
+        168
       ],
-      "radius": 20,
+      "radius": 18,
       "style": "water"
     },
     {
@@ -334,8 +334,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        88,
-        200
+        104,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -346,8 +346,8 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        312,
-        248
+        296,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -358,8 +358,8 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        360,
-        232
+        376,
+        72
       ],
       "layer": "sort",
       "flip_x": true,
@@ -418,8 +418,8 @@
       "sheet": "theme_galleon",
       "prop": "barnacle_anchor",
       "pos": [
-        72,
-        56
+        104,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

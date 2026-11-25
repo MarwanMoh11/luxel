@@ -77,7 +77,7 @@
       "id": "mirror_r11_w",
       "kind": "blue_transformer",
       "pos": [
-        120,
+        88,
         184
       ],
       "props": {
@@ -90,7 +90,7 @@
       "id": "mirror_r11_e",
       "kind": "blue_transformer",
       "pos": [
-        360,
+        392,
         184
       ],
       "props": {
@@ -121,8 +121,8 @@
       "id": "lamp_r11_sw",
       "kind": "road_lamp",
       "pos": [
-        184,
-        280
+        168,
+        296
       ],
       "props": {
         "zone": "toll_boss",
@@ -133,8 +133,8 @@
       "id": "lamp_r11_se",
       "kind": "road_lamp",
       "pos": [
-        312,
-        280
+        344,
+        296
       ],
       "props": {
         "zone": "toll_boss",
@@ -145,8 +145,8 @@
       "id": "lamp_r11_nw",
       "kind": "road_lamp",
       "pos": [
-        152,
-        72
+        200,
+        40
       ],
       "props": {
         "zone": "toll_boss",
@@ -157,8 +157,8 @@
       "id": "lamp_r11_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
-        72
+        280,
+        40
       ],
       "props": {
         "zone": "toll_boss",
@@ -200,7 +200,7 @@
       "sheet": "theme_toll_house",
       "prop": "brass_balance_scale",
       "pos": [
-        184,
+        152,
         56
       ],
       "layer": "sort"
@@ -209,7 +209,7 @@
       "sheet": "theme_toll_house",
       "prop": "brass_balance_scale",
       "pos": [
-        312,
+        328,
         56
       ],
       "layer": "sort"
@@ -359,9 +359,18 @@
     "start": {
       "flags": [
         "item_brass_receipt"
-      ]
+      ],
+      "ember": 100.0
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          248,
+          296
+        ],
+        "tol": 8.0
+      },
       {
         "op": "goto",
         "to": [
@@ -371,29 +380,24 @@
         "tol": 8.0
       },
       {
+        "op": "goto",
+        "to": [
+          248,
+          216
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "sunflare"
+      },
+      {
         "op": "clear",
         "timeout": 150.0
       },
       {
         "op": "wait_until",
-        "flag": "tollmaster_defeated",
-        "timeout": 5.0
-      },
-      {
-        "op": "wait_until",
         "flag": "toll_cleared",
         "timeout": 5.0
-      },
-      {
-        "op": "expect",
-        "flag": "toll_redemption_ready"
-      },
-      {
-        "op": "wait_until",
-        "target": "door_r11_return",
-        "prop": "opened",
-        "value": true,
-        "timeout": 3.0
       },
       {
         "op": "expect_exit",

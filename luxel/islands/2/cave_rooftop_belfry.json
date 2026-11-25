@@ -479,7 +479,7 @@
     "target": "chest_belfry_salvage",
     "start": {
       "vars": {
-        "belfry_tide": "flood"
+        "room:2:cave_rooftop_belfry:belfry_tide": "flood"
       },
       "spawn": [
         232,
@@ -487,6 +487,28 @@
       ]
     },
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          232,
+          232
+        ]
+      },
+      {
+        "op": "expect",
+        "var": "belfry_tide==flood"
+      },
+      {
+        "op": "goto",
+        "to": [
+          248,
+          232
+        ]
+      },
+      {
+        "op": "wait",
+        "secs": 0.1
+      },
       {
         "op": "shoot",
         "from": [
@@ -507,13 +529,6 @@
         "interactable": "door_belfry_reward",
         "prop": "opened",
         "value": true
-      },
-      {
-        "op": "goto",
-        "to": [
-          264,
-          40
-        ]
       },
       {
         "op": "interact",

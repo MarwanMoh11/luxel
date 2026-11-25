@@ -313,8 +313,8 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        376,
-        232
+        344,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -325,7 +325,7 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        136,
+        152,
         280
       ],
       "layer": "sort",
@@ -338,7 +338,7 @@
       "prop": "tangled_cargo_net",
       "pos": [
         376,
-        120
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -374,7 +374,7 @@
       "prop": "hanging_ship_lantern",
       "pos": [
         104,
-        216
+        200
       ],
       "layer": "sort",
       "flip_x": false,
@@ -386,7 +386,7 @@
       "prop": "hanging_ship_lantern",
       "pos": [
         392,
-        200
+        184
       ],
       "layer": "sort",
       "flip_x": true,

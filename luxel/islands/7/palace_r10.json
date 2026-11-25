@@ -48,7 +48,7 @@
     {
       "id": "avatar_r10",
       "kind": "mirror_avatar",
-      "pos": [352, 136],
+      "pos": [256, 136],
       "props": {
         "axis": "y",
         "pivot": [256, 184],
@@ -60,7 +60,7 @@
     {
       "id": "pool_r10_s",
       "kind": "moon_pool",
-      "pos": [304, 296],
+      "pos": [280, 296],
       "props": {
         "var": "world_face",
         "allow_bolt_flip": false,
@@ -101,7 +101,7 @@
     {
       "id": "orb_r10_primer",
       "kind": "carry_orb",
-      "pos": [352, 72],
+      "pos": [384, 72],
       "props": {
         "kind": "light",
         "persist": true
@@ -236,7 +236,7 @@
       "overlay": "res://luxel/art/islands/7/palace_r10__black_world.png",
       "full_frame": true,
       "tiles": [
-        [18, 5, 1, 5, "ground"]
+        [21, 5, 1, 5, "ground"]
       ],
       "enable": ["orb_r10_primer"],
       "disable": []
@@ -273,16 +273,18 @@
       { "op": "shoot", "from": [168, 304], "at": [168, 272], "wait_hit": 0.50 },
       { "op": "wait", "secs": 0.35 },
       { "op": "expect", "target": "portal_r10_s", "prop": "powered", "value": true },
-      { "op": "goto", "to": [304, 296], "tol": 12 },
+      { "op": "goto", "to": [280, 296], "tol": 12 },
       { "op": "interact", "target": "pool_r10_s" },
       { "op": "expect", "var": "world_face==black" },
-      { "op": "goto", "to": [232, 272], "tol": 10 },
-      { "op": "wait", "secs": 0.35 },
+      { "op": "goto", "to": [252, 272], "tol": 3 },
+      { "op": "dash", "dir": [-1, 0] },
+      { "op": "wait", "secs": 0.25 },
       { "op": "carry", "target": "orb_r10_primer", "action": "pickup" },
-      { "op": "goto", "to": [232, 104], "tol": 10 },
-      { "op": "wait", "secs": 0.35 },
+      { "op": "goto", "to": [252, 104], "tol": 3 },
+      { "op": "dash", "dir": [-1, 0] },
+      { "op": "wait", "secs": 0.25 },
       { "op": "carry", "target": "orb_r10_primer", "action": "drop", "to": [96, 288] },
-      { "op": "goto", "to": [304, 296], "tol": 12 },
+      { "op": "goto", "to": [280, 296], "tol": 12 },
       { "op": "interact", "target": "pool_r10_s" },
       { "op": "expect", "var": "world_face==silver" },
       { "op": "goto", "to": [352, 200], "tol": 6 },
@@ -290,8 +292,12 @@
       { "op": "beam", "from": [352, 232], "at": [168, 232] },
       { "op": "wait", "secs": 0.45 },
       { "op": "expect", "target": "gate_r10_chord", "prop": "powered", "value": true },
-      { "op": "goto", "to": [232, 272], "tol": 10 },
-      { "op": "wait", "secs": 0.35 },
+      { "op": "goto", "to": [280, 296], "tol": 12 },
+      { "op": "interact", "target": "pool_r10_s" },
+      { "op": "expect", "var": "world_face==black" },
+      { "op": "goto", "to": [252, 272], "tol": 3 },
+      { "op": "dash", "dir": [-1, 0] },
+      { "op": "wait", "secs": 0.25 },
       { "op": "expect_exit", "exit": "exit_r10_balc" }
     ]
   }

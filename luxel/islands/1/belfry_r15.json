@@ -427,7 +427,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         496,
-        184
+        224
       ],
       "layer": "sort",
       "flip_x": true,
@@ -439,7 +439,7 @@
       "prop": "wind_chime_rack",
       "pos": [
         240,
-        32
+        48
       ],
       "layer": "sort",
       "flip_x": false,

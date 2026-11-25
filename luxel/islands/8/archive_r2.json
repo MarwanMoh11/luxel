@@ -1,0 +1,525 @@
+{
+  "id": "archive_r2",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 1,
+  "name_key": "ISL8_ARC_R2",
+  "theme": "archive_1",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    392,
+    144
+  ],
+  "zones": [
+    {
+      "id": "archive_mem1",
+      "name_key": "ISL8_ARC_R2",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_east",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r1",
+      "to_spawn": [
+        56,
+        192
+      ]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r3",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_east",
+      "kind": "room_anchor",
+      "pos": [
+        392,
+        144
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r2_mem1",
+      "kind": "lore_stone",
+      "pos": [
+        352,
+        104
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R2",
+        "icon": "bell"
+      }
+    },
+    {
+      "id": "bell_r2_dusk",
+      "kind": "bell",
+      "pos": [
+        296,
+        144
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 180.0,
+        "target_id": "gate_r2_mem1",
+        "persist": true
+      }
+    },
+    {
+      "id": "mirror_r2_prism",
+      "kind": "blue_transformer",
+      "pos": [
+        88,
+        176
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "bell_r2_dawn",
+      "kind": "bell",
+      "pos": [
+        88,
+        80
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 220.0,
+        "target_id": "gate_r2_mem1",
+        "persist": true
+      }
+    },
+    {
+      "id": "coffin_r2_bridge",
+      "kind": "tone_coffin",
+      "pos": [
+        176,
+        80
+      ],
+      "props": {
+        "dir": "e",
+        "slide_tiles": 2,
+        "steps": 1,
+        "speed": 96.0,
+        "size": [
+          32,
+          32
+        ],
+        "tone_map": {
+          "dawn": "slide",
+          "dusk": "freeze",
+          "war": "shatter"
+        }
+      }
+    },
+    {
+      "id": "block_r2_weight",
+      "kind": "push_block",
+      "pos": [
+        296,
+        88
+      ],
+      "props": {
+        "variant": "stone",
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r2_warden",
+      "kind": "pressure_plate",
+      "pos": [
+        256,
+        88
+      ],
+      "props": {
+        "by": [
+          "enemy",
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r2_mem1"
+      }
+    },
+    {
+      "id": "spawner_r2_warden",
+      "kind": "archive_warden_spawner",
+      "pos": [
+        256,
+        128
+      ],
+      "props": {
+        "spawn_pos": [
+          256,
+          88
+        ],
+        "route": [
+          [
+            224,
+            88
+          ],
+          [
+            288,
+            88
+          ]
+        ]
+      }
+    },
+    {
+      "id": "gate_r2_mem1",
+      "kind": "logic_gate",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bell_r2_dusk",
+          "bell_r2_dawn",
+          "plate_r2_warden"
+        ],
+        "target_id": "door_r2_north",
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r2_mem1"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem1"
+      }
+    },
+    {
+      "id": "lamp_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem1"
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        224
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem1"
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        280,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem1"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "warden_r2_1",
+      "kind": "warden",
+      "pos": [
+        296,
+        128
+      ],
+      "route": [
+        [
+          264,
+          128
+        ],
+        [
+          320,
+          128
+        ]
+      ],
+      "zone": "archive_mem1",
+      "leash": 110
+    },
+    {
+      "id": "wraith_r2_1",
+      "kind": "page_wraith",
+      "pos": [
+        224,
+        184
+      ],
+      "route": [],
+      "zone": "archive_mem1",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        224,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        360,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "rolling_library_ladder",
+      "pos": [
+        384,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        120,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        272,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        328,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        128,
+        144,
+        32
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        176,
+        64,
+        144,
+        48
+      ]
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        88,
+        176
+      ],
+      "radius": 24,
+      "color": "gold"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r2_mem1",
+      "on": "signal:gate_r2_mem1",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_1_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory I (Bell Isle): clear the ambushing Page Wraith, ring the Dusk Bell, weigh the Bell-Plate, and bank a Prism bolt around the acoustic baffle into the Dawn Bell to slide the stone coffin and unseal Memory I.",
+    "kind": "puzzle",
+    "beat": "ki",
+    "teaches": "Island 1 Ring Waves + Dawn/Dusk bell coordination + acoustic baffle Prism banking.",
+    "decisions": 5,
+    "expert_s": 45,
+    "reward": "mem_1_lit",
+    "why": "First of the 8 lost island memories inside the Archive, remixing Bell Isle's bells and coffins.",
+    "exit": "exit_r2_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          328,
+          144
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "clear",
+        "timeout": 35.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          328,
+          144
+        ],
+        "target": "bell_r2_dusk"
+      },
+      {
+        "op": "push",
+        "target": "block_r2_weight",
+        "to": [
+          256,
+          88
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r2_prism",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          144,
+          176
+        ],
+        "target": "mirror_r2_prism"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r2_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "expect",
+        "flag": "mem_1_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_north"
+      }
+    ]
+  }
+}

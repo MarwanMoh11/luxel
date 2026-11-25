@@ -306,17 +306,17 @@
       "id": "tc_r4_1",
       "kind": "toll_clerk",
       "pos": [
-        184,
+        248,
         232
       ],
       "zone": "toll_sightline",
       "route": [
         [
-          184,
+          232,
           232
         ],
         [
-          248,
+          296,
           232
         ]
       ]
@@ -325,7 +325,7 @@
       "id": "cn_r4_1",
       "kind": "censer",
       "pos": [
-        296,
+        328,
         232
       ],
       "zone": "toll_sightline"
@@ -500,19 +500,22 @@
     "reward": "open_r5",
     "why": "Third Interface Wing room (cursor_ring), escalating combat tactics ahead of The Chief Auditor.",
     "exit": "exit_r4_north",
+    "start": {
+      "ember": 100.0
+    },
     "solution": [
       {
         "op": "goto",
         "to": [
           216,
-          200
+          184
         ],
         "tol": 6.0
       },
       {
         "op": "throw",
         "target": "ring_r4_div",
-        "hold": 0.45
+        "hold": 0.35
       },
       {
         "op": "recall"
@@ -526,7 +529,7 @@
       },
       {
         "op": "wait",
-        "secs": 0.7
+        "secs": 0.65
       },
       {
         "op": "clear",

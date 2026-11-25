@@ -710,6 +710,10 @@
         ]
       },
       {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
         "op": "goto",
         "to": [
           152,
@@ -724,10 +728,6 @@
       {
         "op": "expect",
         "var": "wick_temper==lance"
-      },
-      {
-        "op": "clear",
-        "timeout": 40.0
       },
       {
         "op": "goto",

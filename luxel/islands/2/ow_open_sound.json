@@ -837,16 +837,16 @@
   "design": {
     "idea": "Sweeping outer coastal sound with Waterway Blue Portal Regatta loop (flood), Rooftop Belfry arch, sunlit Leviathan sandbar (relit), Wings viaduct, and Undertow Maw seal.",
     "kind": "traversal",
-    "beat": "ten",
+    "beat": "sho",
     "teaches": "Flood-tide Waterway Portal Regatta, relit world state, superboss chart gate",
-    "decisions": 5,
+    "decisions": 6,
     "expert_s": 80,
     "reward": "ember_2_4 + quest_regatta_won + moth_2_05 + moth_2_10 + Undertow entry",
     "why": "Northeastern Island 2 overworld hub for flood Regatta, Belfry cave, Leviathan horizon, and Superboss",
     "optional": true,
     "start": {
       "vars": {
-        "tide": "ebb"
+        "island:2:tide": "ebb"
       },
       "spawn": [
         56,
@@ -866,6 +866,24 @@
         "target": "ws_2_sound"
       },
       {
+        "op": "goto",
+        "to": [
+          152,
+          408
+        ]
+      },
+      {
+        "op": "interact",
+        "target": "skiff_bell_sound"
+      },
+      {
+        "op": "goto",
+        "to": [
+          264,
+          280
+        ]
+      },
+      {
         "op": "shoot",
         "from": [
           264,
@@ -876,6 +894,10 @@
       {
         "op": "expect",
         "var": "tide==half"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "shoot",

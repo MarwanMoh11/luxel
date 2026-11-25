@@ -1,0 +1,546 @@
+{
+  "id": "archive_r9",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 7,
+  "name_key": "ISL8_ARC_R9",
+  "theme": "archive_7",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "archive_mem7",
+      "name_key": "ISL8_ARC_R9",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r8",
+      "to_spawn": [
+        368,
+        52
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r10",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r9_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "mimic_r9_black",
+      "kind": "mimic_statue",
+      "pos": [
+        392,
+        232
+      ],
+      "props": {
+        "mirror": "x",
+        "range": 440.0,
+        "size": [
+          14,
+          14
+        ],
+        "shadow_mode": "nw_wrong"
+      }
+    },
+    {
+      "id": "plate_r9_black",
+      "kind": "pressure_plate",
+      "pos": [
+        360,
+        128
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r9_mem7"
+      }
+    },
+    {
+      "id": "emit_r9_silver",
+      "kind": "beam_emitter",
+      "pos": [
+        48,
+        176
+      ],
+      "props": {
+        "dir": [
+          1,
+          0
+        ],
+        "color": "gold",
+        "period": 0.0,
+        "range": 192.0,
+        "harms_wick": false
+      }
+    },
+    {
+      "id": "glass_r9_blue",
+      "kind": "color_glass",
+      "pos": [
+        112,
+        176
+      ],
+      "props": {
+        "color": "blue",
+        "size": [
+          16,
+          16
+        ],
+        "movable": true,
+        "cycles_color": true
+      }
+    },
+    {
+      "id": "hook_r9_silver",
+      "kind": "lantern_hook",
+      "pos": [
+        80,
+        128
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "lsens_r9_silver",
+      "kind": "light_sensor",
+      "pos": [
+        80,
+        160
+      ],
+      "props": {
+        "need_secs": 0.75,
+        "hold": false,
+        "persist": true,
+        "target_id": "gate_r9_mem7"
+      }
+    },
+    {
+      "id": "vision_r9_hollow",
+      "kind": "archive_hollow_vision",
+      "pos": [
+        264,
+        168
+      ],
+      "props": {}
+    },
+    {
+      "id": "gate_r9_mem7",
+      "kind": "logic_gate",
+      "pos": [
+        224,
+        112
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r9_black",
+          "lsens_r9_silver"
+        ],
+        "target_ids": [
+          "door_r9_vault",
+          "vision_r9_hollow"
+        ],
+        "persist": true
+      }
+    },
+    {
+      "id": "door_r9_vault",
+      "kind": "door",
+      "pos": [
+        240,
+        88
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r9_mem7"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "key_archive_2",
+      "kind": "wick_key",
+      "pos": [
+        312,
+        56
+      ],
+      "props": {
+        "dungeon_id": "archive",
+        "key_kind": "wick_key"
+      }
+    },
+    {
+      "id": "moth_r9_07",
+      "kind": "moth",
+      "pos": [
+        96,
+        56
+      ],
+      "props": {
+        "id": "moth_8_07"
+      }
+    },
+    {
+      "id": "door_r9_north",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_type": "wick_key",
+        "dungeon_id": "archive",
+        "key_id": "key_archive_2",
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        304
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem7"
+      }
+    },
+    {
+      "id": "lamp_r9_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        240
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem7"
+      }
+    },
+    {
+      "id": "lamp_r9_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        240
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem7"
+      }
+    },
+    {
+      "id": "lamp_r9_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem7"
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        256,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        192,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        416,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_orb_pedestal",
+      "pos": [
+        384,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        128,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "scholar_reading_desk",
+      "pos": [
+        320,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        112,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        208,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        224,
+        288,
+        64,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        168
+      ],
+      "radius": 36,
+      "color": "ice"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        168
+      ],
+      "size": [
+        40,
+        120
+      ],
+      "tint": "cool",
+      "shear": 0.15
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r9_mem7",
+      "on": "signal:gate_r9_mem7",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_7_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING \u2014 Memory VII (Moon Shoals): desync your X-mirrored Black twin against the eastern wall to park it on the Black plate while hanging your Bookmarked lantern beside the Silver light sensor\u2014triggering Hollow Wick's wordless refusal vision in the glass spine.",
+    "kind": "puzzle",
+    "beat": "ten",
+    "teaches": "Island 7 X-mirror desync + Hollow Wick's backstory reveal + Archive Key 2 & Moth 8_07.",
+    "decisions": 9,
+    "expert_s": 60,
+    "reward": "mem_7_lit+key_archive_2+moth_8_07",
+    "why": "Emotional centerpiece of The Archive revealing why Hollow Wick fell before Island 8.",
+    "exit": "exit_r9_north",
+    "start": {
+      "flags": [
+        "item_bookmark"
+      ]
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          240
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          128
+        ],
+        "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_r9_black",
+        "prop": "pressed",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          128
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "hook_r9_silver"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r9_vault",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "mem_7_lit"
+      },
+      {
+        "op": "goto",
+        "to": [
+          312,
+          56
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "expect",
+        "key": {
+          "dungeon": "archive",
+          "kind": "wick_key",
+          "min": 1
+        }
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          40
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "door_r9_north"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

@@ -1,0 +1,548 @@
+{
+  "id": "archive_r8",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "remix_island": 6,
+  "name_key": "ISL8_ARC_R8",
+  "theme": "archive_6",
+  "music": "isl8_archive",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "archive_mem6",
+      "name_key": "ISL8_ARC_R8",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r7",
+      "to_spawn": [
+        368,
+        52
+      ]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "archive_r9",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r8_north"
+    },
+    {
+      "id": "exit_r8_east",
+      "rect": [
+        464,
+        160,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "archive_r11",
+      "to_spawn": [
+        56,
+        160
+      ],
+      "locked_door_id": "door_r8_east"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "lore_r8_mem6",
+      "kind": "lore_stone",
+      "pos": [
+        176,
+        256
+      ],
+      "props": {
+        "string_id": "ISL8_ARC_LORE_R8",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "anvil_r8_lance",
+      "kind": "temper_anvil",
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "mode": "lance",
+        "hit_to_swap": true,
+        "ceremony": false
+      }
+    },
+    {
+      "id": "mirror_r8_cool",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        184
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "slag_r8_block",
+      "kind": "push_block",
+      "pos": [
+        288,
+        184
+      ],
+      "props": {
+        "variant": "slag",
+        "cooled": false,
+        "size": [
+          16,
+          16
+        ]
+      }
+    },
+    {
+      "id": "plate_r8_switch",
+      "kind": "pressure_plate",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_ids": [
+          "cart_r8_foundry",
+          "bridge_r8_magma",
+          "door_r8_north"
+        ]
+      }
+    },
+    {
+      "id": "cart_r8_foundry",
+      "kind": "vehicle_cart",
+      "pos": [
+        120,
+        120
+      ],
+      "props": {
+        "rail": [
+          [
+            120,
+            120
+          ],
+          [
+            264,
+            120
+          ]
+        ],
+        "alt_rail": [
+          [
+            120,
+            120
+          ],
+          [
+            368,
+            120
+          ],
+          [
+            368,
+            56
+          ]
+        ],
+        "speed": 110.0
+      }
+    },
+    {
+      "id": "bridge_r8_magma",
+      "kind": "door",
+      "pos": [
+        368,
+        112
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          32,
+          64
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "plate_r8_switch"
+        ]
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "plate_r8_switch"
+        ],
+        "persistent": true
+      }
+    },
+    {
+      "id": "door_r8_east",
+      "kind": "door",
+      "pos": [
+        456,
+        176
+      ],
+      "props": {
+        "door_type": "combat_gate",
+        "size": [
+          16,
+          32
+        ],
+        "zone": "archive_mem6"
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        280
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem6"
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        184
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem6"
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        208
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem6"
+      }
+    },
+    {
+      "id": "lamp_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        48
+      ],
+      "props": {
+        "lit": true,
+        "zone": "archive_mem6"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "golem_r8_1",
+      "kind": "cinder_golem",
+      "pos": [
+        160,
+        168
+      ],
+      "route": [
+        [
+          120,
+          168
+        ],
+        [
+          184,
+          168
+        ]
+      ],
+      "zone": "archive_mem6",
+      "leash": 120
+    },
+    {
+      "id": "wraith_r8_1",
+      "kind": "page_wraith",
+      "pos": [
+        104,
+        176
+      ],
+      "route": [],
+      "zone": "archive_mem6",
+      "leash": 120
+    },
+    {
+      "id": "censer_r8_1",
+      "kind": "censer",
+      "pos": [
+        288,
+        152
+      ],
+      "route": [
+        [
+          256,
+          152
+        ],
+        [
+          320,
+          152
+        ]
+      ],
+      "zone": "archive_mem6",
+      "leash": 120
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_arch_portal",
+      "pos": [
+        368,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "wide_library_bookcase",
+      "pos": [
+        104,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        48,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "index_card_cabinet",
+      "pos": [
+        400,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        312,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "archive_lantern_sconce",
+      "pos": [
+        112,
+        256
+      ],
+      "layer": "sort",
+      "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "hanging_archive_banner",
+      "pos": [
+        416,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        224,
+        64,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        224
+      ],
+      "radius": 22,
+      "color": "coral"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        160,
+        160,
+        48
+      ]
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r8_mem6",
+      "on": "signal:plate_r8_switch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "mem_6_lit"
+        },
+        {
+          "sfx": "shrine_claimed"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Memory VI (Ashen Kiln): strike the Temper Anvil for Lance bolts to pierce the Cinder Golem in a 3-role furnace brawl, then bank a blue bolt to cool the molten slag block and push it onto the rail switch to cross the magma viaduct.",
+    "kind": "combat",
+    "beat": "ten",
+    "teaches": "Island 6 Temper Anvil + blue slag cooling + foundry cart rail switching + 3-role combat.",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "mem_6_lit+errata_access",
+    "why": "Sixth Archive memory fusing Ashen Kiln's tempering, slag cooling, and magma rails.",
+    "exit": "exit_r8_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          232
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r8_lance"
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r8_cool",
+        "angle": 315.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          224
+        ],
+        "target": "mirror_r8_cool"
+      },
+      {
+        "op": "wait_until",
+        "target": "slag_r8_block",
+        "prop": "cooled",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "push",
+        "target": "slag_r8_block",
+        "to": [
+          344,
+          184
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r8_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect",
+        "flag": "mem_6_lit"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  }
+}

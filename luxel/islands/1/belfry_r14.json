@@ -34,8 +34,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        256,
-        52
+        288,
+        32
       ]
     },
     {
@@ -233,7 +233,7 @@
           "bell_r14_dusk",
           "bell_r14_war"
         ],
-        "persist": true,
+        "persist": false,
         "target_ids": [
           "door_r14_north",
           "door_r14_lift"

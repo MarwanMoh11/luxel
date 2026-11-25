@@ -27,10 +27,10 @@
         16
       ],
       "to_island": 3,
-      "to_region": "overworld",
+      "to_region": "ow_shift_w",
       "to_spawn": [
-        352,
-        912
+        184,
+        264
       ],
       "one_way": true
     },

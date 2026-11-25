@@ -359,8 +359,8 @@
       "sheet": "theme_galleon",
       "prop": "oak_ship_barrel",
       "pos": [
-        344,
-        72
+        328,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
@@ -395,7 +395,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        312,
+        280,
         40
       ],
       "layer": "sort",
@@ -431,7 +431,7 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        280,
+        264,
         216
       ],
       "layer": "sort",

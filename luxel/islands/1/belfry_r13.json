@@ -48,8 +48,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        464,
-        176
+        520,
+        208
       ],
       "one_way": true,
       "locked_door_id": "door_r13_drop"
@@ -399,7 +399,7 @@
         "op": "shoot",
         "from": [
           200,
-          240
+          248
         ],
         "target": "tog_r13_w"
       },
@@ -407,7 +407,7 @@
         "op": "shoot",
         "from": [
           224,
-          208
+          248
         ],
         "target": "bell_r13_war"
       },

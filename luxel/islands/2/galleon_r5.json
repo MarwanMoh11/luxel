@@ -334,7 +334,7 @@
       "sheet": "theme_galleon",
       "prop": "rope_coil_crate",
       "pos": [
-        184,
+        200,
         280
       ],
       "layer": "sort",
@@ -359,7 +359,7 @@
       "prop": "tangled_cargo_net",
       "pos": [
         472,
-        104
+        120
       ],
       "layer": "sort",
       "flip_x": true,
@@ -406,7 +406,7 @@
       "sheet": "theme_galleon",
       "prop": "hanging_ship_lantern",
       "pos": [
-        472,
+        376,
         280
       ],
       "layer": "sort",

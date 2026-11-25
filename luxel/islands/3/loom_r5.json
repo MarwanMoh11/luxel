@@ -6,7 +6,7 @@
   ],
   "zones": [
     {
-      "id": "loom_r5",
+      "id": "lm_r5",
       "name_key": "ISL3_LM_R5_NAME",
       "rect": [
         0,
@@ -44,12 +44,13 @@
       "to_spawn": [
         224,
         248
-      ]
+      ],
+      "locked_door_id": "door_loom_r5_north"
     }
   ],
   "interactables": [
     {
-      "id": "anc_loom_r5",
+      "id": "anc_r5_west",
       "kind": "room_anchor",
       "pos": [
         48,
@@ -60,42 +61,516 @@
       }
     },
     {
-      "id": "lamp_loom_r5",
-      "kind": "road_lamp",
+      "id": "pf_r5",
+      "kind": "light_plant",
       "pos": [
-        240,
-        144
+        112,
+        208
       ],
       "props": {
-        "zone": "loom_r5",
-        "lit": true
+        "grow": "fruit",
+        "secs": 0.45,
+        "decay": 18.0,
+        "drop_orb": true,
+        "auto_drop": false
+      }
+    },
+    {
+      "id": "plate_r5_a",
+      "kind": "pressure_plate",
+      "pos": [
+        192,
+        192
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "hold": true,
+        "size": [
+          24,
+          24
+        ],
+        "target_ids": [
+          "gate_r5_panb",
+          "gate_r5_pana_free"
+        ]
+      }
+    },
+    {
+      "id": "t_r5",
+      "kind": "blue_transformer",
+      "pos": [
+        288,
+        160
+      ],
+      "props": {
+        "angle_deg": 45,
+        "rotatable": true,
+        "movable": false
+      }
+    },
+    {
+      "id": "spool_r5_hoist",
+      "kind": "silk_loom_spool",
+      "pos": [
+        288,
+        224
+      ],
+      "props": {
+        "linked_to": [],
+        "state": "taut",
+        "freeze_secs": 20.0,
+        "power_on_freeze": true,
+        "target_id": "gate_r5_panb"
+      }
+    },
+    {
+      "id": "gate_r5_panb",
+      "kind": "logic_gate",
+      "pos": [
+        336,
+        208
+      ],
+      "props": {
+        "op": "any",
+        "inputs": [
+          "plate_r5_a",
+          "spool_r5_hoist"
+        ],
+        "target_id": "emitter_r5"
+      }
+    },
+    {
+      "id": "gate_r5_pana_free",
+      "kind": "logic_gate",
+      "pos": [
+        192,
+        152
+      ],
+      "props": {
+        "op": "any",
+        "invert": true,
+        "inputs": [
+          "plate_r5_a"
+        ],
+        "target_id": "gate_r5_bridge"
+      }
+    },
+    {
+      "id": "emitter_r5",
+      "kind": "beam_emitter",
+      "pos": [
+        384,
+        160
+      ],
+      "props": {
+        "dir": "w",
+        "color": "gold",
+        "needs_signal": true,
+        "range": 240.0,
+        "max_bounces": 3
+      }
+    },
+    {
+      "id": "bs_r5_key",
+      "kind": "beam_sensor",
+      "pos": [
+        288,
+        72
+      ],
+      "props": {
+        "color": "blue",
+        "latch": true,
+        "target_id": "gate_r5_bridge"
+      }
+    },
+    {
+      "id": "gate_r5_bridge",
+      "kind": "logic_gate",
+      "pos": [
+        336,
+        152
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "bs_r5_key",
+          "gate_r5_pana_free"
+        ],
+        "target_ids": [
+          "bridge_r5_key",
+          "door_loom_r5_north"
+        ]
+      }
+    },
+    {
+      "id": "bridge_r5_key",
+      "kind": "door",
+      "pos": [
+        384,
+        104
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          48,
+          48
+        ],
+        "starts_open": false,
+        "requires_signals": [
+          "gate_r5_bridge"
+        ]
       }
     },
     {
       "id": "wick_key_loom_1",
       "kind": "wick_key",
       "pos": [
-        240,
-        80
+        336,
+        56
       ],
       "props": {
         "dungeon_id": "loom"
       }
+    },
+    {
+      "id": "door_loom_r5_north",
+      "kind": "door",
+      "pos": [
+        384,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "gate_r5_bridge"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        176
+      ],
+      "props": {
+        "zone": "lm_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_mid",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        236
+      ],
+      "props": {
+        "zone": "lm_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        416,
+        48
+      ],
+      "props": {
+        "zone": "lm_r5",
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        236,
+        48
+      ],
+      "props": {
+        "zone": "lm_r5",
+        "lit": true
+      }
     }
   ],
-  "decor": [],
-  "scenery": [],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        172,
+        172,
+        40,
+        40
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        268,
+        140,
+        40,
+        100
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        308,
+        36,
+        96,
+        36
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        288,
+        160
+      ],
+      "size": [
+        44,
+        68
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        192
+      ],
+      "radius": 22,
+      "style": "gear"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_loom",
+      "prop": "tapestry_frame_stand",
+      "pos": [
+        384,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "standing_oak_loom",
+      "pos": [
+        80,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "spindle_totem",
+      "pos": [
+        240,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "tension_peg_pillar",
+      "pos": [
+        412,
+        188
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        148,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "loom_lantern_brazier",
+      "pos": [
+        336,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "hanging_silk_banner",
+      "pos": [
+        308,
+        36
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "wooden_thread_spool",
+      "pos": [
+        112,
+        244
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "luminous_yarn_basket",
+      "pos": [
+        204,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_loom",
+      "prop": "dyed_bolt_of_cloth",
+      "pos": [
+        420,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
   "design": {
-    "idea": "Temporary graph stub for loom_r5",
+    "idea": "Ripen a heavy seed fruit onto Scale Pan A to lift Pan B into the east wall emitter; rotate the Blue Transformer to refract blue light into the north sensor, freeze Pan B's hoist cable blue, then remove the fruit so BOTH pans sit high to raise Key #1's bridge.",
     "kind": "puzzle",
     "beat": "sho",
-    "teaches": "stub",
-    "decisions": 5,
-    "expert_s": 45,
-    "reward": "stub",
-    "why": "Graph validation stub",
-    "optional": true,
-    "solution": []
+    "teaches": "Counterbalanced scale + Blue silk-hoist freeze: locking one side UP with blue light while freeing the other side.",
+    "decisions": 7,
+    "expert_s": 56,
+    "reward": "wick_key_loom_1+r6_access",
+    "why": "Wing 1 synthesis puzzle awarding the dungeon's Small Key before the Thread-Keeper mini-boss.",
+    "exit": "exit_loom_r5_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          112,
+          196
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "pf_r5",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "carry",
+        "action": "pickup",
+        "target": "pf_r5"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          192,
+          192
+        ]
+      },
+      {
+        "op": "rotate",
+        "target": "t_r5",
+        "angle": 135
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bs_r5_key",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "shoot",
+        "from": [
+          248,
+          160
+        ],
+        "target": "t_r5"
+      },
+      {
+        "op": "wait_until",
+        "interactable": "spool_r5_hoist",
+        "prop": "powered",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "carry",
+        "action": "pickup",
+        "target": "pf_r5_seed_orb"
+      },
+      {
+        "op": "carry",
+        "action": "drop",
+        "to": [
+          144,
+          192
+        ]
+      },
+      {
+        "op": "wait_until",
+        "interactable": "bridge_r5_key",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.5
+      },
+      {
+        "op": "interact",
+        "target": "wick_key_loom_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_loom_r5_north"
+      }
+    ]
   },
   "id": "loom_r5",
   "island_id": 3,

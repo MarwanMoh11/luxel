@@ -744,8 +744,8 @@
       {
         "op": "shoot",
         "from": [
-          240,
-          224
+          192,
+          248
         ],
         "target": "bell_town_dawn"
       },

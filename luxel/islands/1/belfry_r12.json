@@ -34,8 +34,8 @@
       ],
       "to_region": "belfry_r11",
       "to_spawn": [
-        464,
-        176
+        520,
+        208
       ]
     },
     {
@@ -59,47 +59,47 @@
       "id": "owl_r12_0",
       "kind": "owl",
       "pos": [
-        296,
-        112
+        280,
+        144
       ],
       "route": [],
       "perches": [
         [
-          296,
-          112
+          280,
+          144
+        ],
+        [
+          280,
+          192
         ],
         [
           296,
-          200
-        ],
-        [
-          320,
-          152
+          128
         ]
       ],
       "zone": "belfry_pendulum",
-      "leash": 160
+      "leash": 56
     },
     {
       "id": "moth_r12_0",
       "kind": "toll_moth",
       "pos": [
-        304,
-        232
+        296,
+        224
       ],
       "route": [],
       "perches": [
         [
-          304,
-          232
+          296,
+          224
         ],
         [
-          256,
-          224
+          264,
+          216
         ]
       ],
       "zone": "belfry_pendulum",
-      "leash": 140
+      "leash": 64
     }
   ],
   "interactables": [

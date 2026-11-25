@@ -138,7 +138,7 @@
       "kind": "star_node",
       "pos": [
         112,
-        96
+        104
       ],
       "props": {
         "cap_group": "pl_r2",
@@ -154,7 +154,7 @@
       "kind": "star_node",
       "pos": [
         112,
-        68
+        80
       ],
       "props": {
         "cap_group": "pl_r2",
@@ -308,7 +308,7 @@
       "sheet": "theme_planetarium",
       "prop": "planetarium_lantern",
       "pos": [
-        60,
+        76,
         44
       ],
       "layer": "sort",

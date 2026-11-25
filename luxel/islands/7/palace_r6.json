@@ -108,11 +108,11 @@
       "kind": "moon_pool",
       "pos": [
         248,
-        168
+        128
       ],
       "props": {
         "var": "world_face",
-        "allow_bolt_flip": true,
+        "allow_bolt_flip": false,
         "step_flip": true,
         "radius_px": 16,
         "persist": true
@@ -496,6 +496,16 @@
   ],
   "events": [
     {
+      "id": "r6_orb_flag",
+      "on": "signal:gate_r6",
+      "once": false,
+      "do": [
+        {
+          "set_flag": "palace_r6_orb_lit"
+        }
+      ]
+    },
+    {
       "id": "r6_backdoor_msg",
       "on": "signal:sw_r6_backdoor",
       "once": true,
@@ -539,7 +549,7 @@
         "op": "goto",
         "to": [
           248,
-          168
+          128
         ],
         "tol": 6
       },

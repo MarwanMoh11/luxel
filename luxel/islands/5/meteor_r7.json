@@ -55,7 +55,7 @@
         224,
         272
       ],
-      "locked_door_id": "door_mv_r7_n"
+      "locked_door_id": "door_mv_r7_k2"
     }
   ],
   "interactables": [
@@ -74,12 +74,12 @@
       "id": "well_r7_1",
       "kind": "polarity_well",
       "pos": [
-        144,
-        176
+        132,
+        180
       ],
       "props": {
         "mode": "pull",
-        "radius": 64.0,
+        "radius": 58.0,
         "strength": 720.0
       }
     },
@@ -87,7 +87,7 @@
       "id": "well_r7_2",
       "kind": "polarity_well",
       "pos": [
-        224,
+        212,
         160
       ],
       "props": {
@@ -114,8 +114,8 @@
       "id": "trans_r7",
       "kind": "blue_transformer",
       "pos": [
-        176,
-        152
+        164,
+        156
       ],
       "props": {
         "angle_deg": 0.0,
@@ -127,15 +127,12 @@
       "id": "eye_r7_blue",
       "kind": "switch_eye",
       "pos": [
-        216,
-        44
+        200,
+        72
       ],
       "props": {
         "requires_blue": true,
-        "target_ids": [
-          "gate_r7_bridge",
-          "door_mv_r7_n"
-        ]
+        "target_id": "gate_r7_bridge"
       }
     },
     {
@@ -199,18 +196,16 @@
       }
     },
     {
-      "id": "door_mv_r7_n",
+      "id": "door_mv_r7_k2",
       "kind": "door",
       "pos": [
         400,
         24
       ],
       "props": {
-        "door_kind": "switch_door",
-        "requires_signals": [
-          "eye_r7_blue"
-        ],
-        "sets_flag": "mv_r7_open",
+        "door_kind": "wick_key",
+        "dungeon_id": "meteor_vault",
+        "key_kind": "wick_key",
         "size": [
           32,
           16
@@ -290,8 +285,8 @@
     {
       "kind": "circle",
       "pos": [
-        176,
-        152
+        164,
+        156
       ],
       "radius": 24,
       "style": "astrolabe"
@@ -347,8 +342,8 @@
       "sheet": "theme_meteor_vault",
       "prop": "star_ore_crate",
       "pos": [
-        360,
-        184
+        432,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -408,14 +403,14 @@
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Clear the patrolling Satellite Eye, rotate the Blue Transformer, flip Well 2 to Push, and curve a yellow bolt through Well 1 into the mirror so the reflected blue ray curves the opposite way into the Blue Eye, bridging the chasm to Key 2.",
+    "idea": "Clear the patrolling Satellite Eye, rotate the Blue Transformer, flip Well 2 to Push, and curve a yellow bolt through Well 1 into the mirror so the reflected blue ray curves the opposite way into the Blue Eye, bridging the chasm to Key 2 and the North Vault Door.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Chaining curved yellow gravity shots with Blue Prism reflection and opposite-polarity blue curves.",
     "decisions": 9,
     "expert_s": 55,
     "reward": "mv_key_2",
-    "why": "Mid-deep optics synthesis puzzle rewarding Small Key 2.",
+    "why": "Mid-deep optics synthesis puzzle rewarding Small Key 2 and unlocking the North Bastion.",
     "exit": "exit_mv_r7_n",
     "start": {
       "flags": [
@@ -458,8 +453,8 @@
       {
         "op": "shoot",
         "target": [
-          164,
-          198
+          159,
+          188
         ],
         "wait_hit": 0.95
       },
@@ -480,6 +475,18 @@
       {
         "op": "interact",
         "target": "mv_key_2"
+      },
+      {
+        "op": "goto",
+        "to": [
+          400,
+          42
+        ],
+        "tol": 4.0
+      },
+      {
+        "op": "interact",
+        "target": "door_mv_r7_k2"
       },
       {
         "op": "expect_exit",

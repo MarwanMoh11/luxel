@@ -73,7 +73,7 @@
       "kind": "push_block",
       "pos": [
         216,
-        176
+        224
       ],
       "props": {
         "variant": "stone",
@@ -87,7 +87,7 @@
       "id": "plate_r8",
       "kind": "pressure_plate",
       "pos": [
-        184,
+        168,
         224
       ],
       "props": {
@@ -340,7 +340,7 @@
         "op": "push",
         "target": "blk_r8_weight",
         "to": [
-          184,
+          168,
           224
         ]
       },

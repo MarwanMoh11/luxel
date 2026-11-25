@@ -78,12 +78,12 @@
       "id": "orb_r11_w",
       "kind": "meteor_orb",
       "pos": [
-        104,
+        120,
         192
       ],
       "props": {
         "cradle_pos": [
-          104,
+          120,
           192
         ],
         "respawn_s": 1.2
@@ -93,12 +93,12 @@
       "id": "orb_r11_e",
       "kind": "meteor_orb",
       "pos": [
-        408,
+        392,
         192
       ],
       "props": {
         "cradle_pos": [
-          408,
+          392,
           192
         ],
         "respawn_s": 1.2
@@ -174,7 +174,7 @@
       "id": "lamp_mv_r11_w",
       "kind": "road_lamp",
       "pos": [
-        80,
+        96,
         192
       ],
       "props": {
@@ -186,7 +186,7 @@
       "id": "lamp_mv_r11_e",
       "kind": "road_lamp",
       "pos": [
-        432,
+        416,
         192
       ],
       "props": {
@@ -201,14 +201,14 @@
       "kind": "twin_moons",
       "pos": [
         256,
-        168
+        176
       ],
       "zone": "mv_r11",
       "arena": [
-        96,
-        72,
-        320,
-        240
+        128,
+        104,
+        256,
+        176
       ]
     }
   ],
@@ -292,8 +292,8 @@
       "sheet": "theme_meteor_vault",
       "prop": "vault_lantern_brazier",
       "pos": [
-        144,
-        112
+        128,
+        100
       ],
       "layer": "sort",
       "flip_x": false,
@@ -304,8 +304,8 @@
       "sheet": "theme_meteor_vault",
       "prop": "vault_lantern_brazier",
       "pos": [
-        368,
-        112
+        384,
+        100
       ],
       "layer": "sort",
       "flip_x": true,
@@ -316,8 +316,8 @@
       "sheet": "theme_meteor_vault",
       "prop": "meteor_crystal_cluster",
       "pos": [
-        136,
-        264
+        128,
+        284
       ],
       "layer": "sort",
       "flip_x": false,
@@ -328,8 +328,8 @@
       "sheet": "theme_meteor_vault",
       "prop": "meteor_crystal_cluster",
       "pos": [
-        376,
-        264
+        384,
+        284
       ],
       "layer": "sort",
       "flip_x": true,
@@ -364,6 +364,32 @@
   "triggers": [],
   "layers": [],
   "events": [
+    {
+      "id": "mv_r11_p2_dew",
+      "on": "boss_hp:0.66",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    },
+    {
+      "id": "mv_r11_p3_dew",
+      "on": "boss_hp:0.33",
+      "once": true,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal",
+            "amount": 2.0
+          }
+        }
+      ]
+    },
     {
       "id": "mv_r11_victory_msg",
       "on": "flag:meteor_done",
@@ -416,16 +442,15 @@
     },
     "solution": [
       {
-        "op": "beam",
-        "from": [
+        "op": "goto",
+        "to": [
           256,
-          288
-        ],
-        "target": "boss_twin_moons"
+          264
+        ]
       },
       {
         "op": "clear",
-        "timeout": 125.0
+        "timeout": 140.0
       },
       {
         "op": "wait_until",

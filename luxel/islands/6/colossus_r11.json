@@ -12,7 +12,7 @@
   "name_key": "ISL6_COL_R11",
   "spawn": [
     272,
-    304
+    312
   ],
   "zones": [
     {
@@ -67,7 +67,7 @@
       "kind": "room_anchor",
       "pos": [
         272,
-        304
+        312
       ],
       "props": {
         "auto": true
@@ -95,12 +95,12 @@
       "kind": "tilt_group",
       "pos": [
         272,
-        176
+        216
       ],
       "props": {
         "size": [
           320,
-          176
+          144
         ],
         "axis": "e",
         "strength": 40.0,
@@ -112,8 +112,8 @@
       "id": "tf_r11_west",
       "kind": "blue_transformer",
       "pos": [
-        64,
-        176
+        72,
+        200
       ],
       "props": {
         "angle_deg": 45.0,
@@ -125,8 +125,8 @@
       "id": "tf_r11_east",
       "kind": "blue_transformer",
       "pos": [
-        480,
-        176
+        472,
+        200
       ],
       "props": {
         "angle_deg": 135.0,
@@ -138,8 +138,8 @@
       "id": "anvil_r11_lance",
       "kind": "temper_anvil",
       "pos": [
-        224,
-        280
+        196,
+        296
       ],
       "props": {
         "mode": "lance",
@@ -147,14 +147,15 @@
       }
     },
     {
-      "id": "anvil_r11_cycle",
+      "id": "anvil_r11_scatter",
       "kind": "temper_anvil",
       "pos": [
-        368,
-        280
+        348,
+        296
       ],
       "props": {
-        "mode": "cycle"
+        "mode": "scatter",
+        "sets_flag": "temper_scatter_known"
       }
     },
     {
@@ -179,8 +180,8 @@
       "id": "lamp_r11_s",
       "kind": "road_lamp",
       "pos": [
-        208,
-        296
+        228,
+        320
       ],
       "props": {
         "zone": "col_r11",
@@ -254,14 +255,14 @@
       "kind": "colossus_heart",
       "pos": [
         272,
-        160
+        204
       ],
       "zone": "col_r11",
       "arena": [
-        64,
-        64,
-        416,
-        224
+        112,
+        144,
+        320,
+        144
       ]
     }
   ],
@@ -270,7 +271,7 @@
       "kind": "circle",
       "pos": [
         272,
-        168
+        216
       ],
       "radius": 68,
       "style": "gear"
@@ -279,7 +280,7 @@
       "kind": "grate",
       "rect": [
         184,
-        136,
+        184,
         176,
         64
       ],
@@ -289,16 +290,16 @@
       "kind": "inlay",
       "rect": [
         144,
-        80,
+        144,
         256,
-        176
+        144
       ]
     },
     {
       "kind": "cracks",
       "pos": [
         208,
-        168
+        216
       ],
       "radius": 24,
       "glow": true
@@ -307,7 +308,7 @@
       "kind": "cracks",
       "pos": [
         336,
-        168
+        216
       ],
       "radius": 24,
       "glow": true
@@ -367,7 +368,7 @@
       "prop": "colossus_rib_buttress",
       "pos": [
         496,
-        152
+        232
       ],
       "layer": "sort",
       "flip_x": true,
@@ -402,6 +403,36 @@
   "triggers": [],
   "layers": [],
   "events": [
+    {
+      "id": "col_r11_p2_vent_heal",
+      "on": "boss_hp:0.60",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        },
+        {
+          "sfx": "furnace_draw"
+        }
+      ]
+    },
+    {
+      "id": "col_r11_p3_vent_heal",
+      "on": "boss_hp:0.30",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        },
+        {
+          "sfx": "furnace_draw"
+        }
+      ]
+    },
     {
       "id": "col_r11_boss_flag_bridge",
       "on": "flag:colossus_heart_defeated",
@@ -460,10 +491,22 @@
       {
         "op": "goto",
         "to": [
-          272,
-          244
+          336,
+          296
         ],
         "tol": 6.0
+      },
+      {
+        "op": "interact",
+        "target": "anvil_r11_scatter"
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          264
+        ],
+        "tol": 8.0
       },
       {
         "op": "beam",

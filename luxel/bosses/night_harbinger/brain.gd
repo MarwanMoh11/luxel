@@ -83,8 +83,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island8_boss_p1"
 	music_p2_cue = "island8_boss_p2"
-	max_hp = 305.0
-	hp = 305.0
+	max_hp = 395.0
+	hp = 395.0
 	body_radius = 8.5
 	move_speed = 44.0
 	stagger_threshold = 24.0
@@ -112,7 +112,7 @@ func _infer_arena_rect() -> Rect2:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	var base_hp: float = 305.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 395.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	kind = "night_harbinger"
@@ -130,6 +130,8 @@ func _configure_boss(spec: Dictionary) -> void:
 			_aim_mirror_at(tgt)
 			ground.warn_sector(pos, facing - 1.12, facing + 1.12, 42.0, last_tell_duration, 1.0, "sky", "coral")
 			ground.warn_lane(pos, clamp_to_arena(pos + _main_dir * 165.0), 8.0, last_tell_duration, 0.0, "ice", "gold")
+			if tgt.distance_to(pos) > 72.0:
+				ground.warn_ring(tgt, 20.0, last_tell_duration + 0.08, 1.0, "sky", "coral")
 			stage.play_sfx("moonshade_feint", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var cnt: int = 4 if phase >= 2 else 3
@@ -542,8 +544,8 @@ func _safe_arena_point(pt: Vector2) -> Vector2:
 
 
 func _perimeter_targets(tgt: Vector2, count: int) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
-	var inset: Rect2 = arena_rect.grow(-16.0)
+	var out: Array[Vector2] = [tgt]
+	var inset: Rect2 = arena_rect.grow(-14.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),
 		Vector2(inset.position.x, inset.end.y), inset.end,

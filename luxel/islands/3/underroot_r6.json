@@ -64,8 +64,8 @@
       "id": "pw_r6_nw",
       "kind": "light_plant",
       "pos": [
-        176,
-        104
+        160,
+        88
       ],
       "props": {
         "grow": "wall",
@@ -81,8 +81,8 @@
       "id": "pw_r6_ne",
       "kind": "light_plant",
       "pos": [
-        272,
-        104
+        288,
+        88
       ],
       "props": {
         "grow": "wall",
@@ -98,8 +98,8 @@
       "id": "pw_r6_sw",
       "kind": "light_plant",
       "pos": [
-        176,
-        184
+        160,
+        200
       ],
       "props": {
         "grow": "wall",
@@ -115,8 +115,8 @@
       "id": "pw_r6_se",
       "kind": "light_plant",
       "pos": [
-        272,
-        184
+        288,
+        200
       ],
       "props": {
         "grow": "wall",
@@ -455,6 +455,13 @@
     "why": "Dungeon A mini-boss awarding the Sap-Horn and opening Cycle 1 back to Acorn Atrium.",
     "exit": "exit_r6_north_sc",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          144,
+          144
+        ]
+      },
       {
         "op": "clear",
         "zone": "ur_r6",

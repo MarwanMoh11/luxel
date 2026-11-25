@@ -92,7 +92,7 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 	var ring_prog: float = float(b.get("ring_progress"))
 	if b.boss_state == LxBossBase.BossState.COMMIT:
 		if active_move == 3 and ring_stage != 1: # SILENCE_RING
-			var ring_r: float = lerpf(12.0, 74.0, ring_prog)
+			var ring_r: float = lerpf(12.0, 54.0, ring_prog)
 			b.draw_arc(off, ring_r + 2.2, 0.0, TAU, 36, pal["deep"] as Color, 2.2)
 			b.draw_arc(off, ring_r, 0.0, TAU, 36, pal["sky"] as Color, 3.6)
 			b.draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, pal["ice"] as Color, 1.8)
@@ -105,8 +105,8 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 			b.draw_arc(c, 34.0, ca_c - 1.20, ca_c + 1.20, 16, pal["sky"] as Color, 3.2)
 			b.draw_arc(c, 31.0, ca_c - 1.00, ca_c + 1.00, 14, pal["cream"] as Color, 1.4)
 		elif active_move == 6 and bool(b.get("_slam_burst_done")): # RECALL_SLAM
-			b.draw_arc(c, 38.0, 0.0, TAU, 24, pal["sky"] as Color, 3.0)
-			b.draw_arc(c, 34.0, 0.0, TAU, 20, pal["cream"] as Color, 1.4)
+			b.draw_arc(c, 36.0, 0.0, TAU, 24, pal["sky"] as Color, 3.0)
+			b.draw_arc(c, 32.0, 0.0, TAU, 20, pal["cream"] as Color, 1.4)
 		elif active_move == 2: # SHADOW_DASH
 			b.draw_line(c, (off - commit_dir * 26.0).round(), pal["sky"] as Color, 3.0)
 			b.draw_line(c, (off - commit_dir * 18.0).round(), pal["ice"] as Color, 1.6)

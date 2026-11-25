@@ -193,9 +193,18 @@ func _clear_loaded() -> void:
 	_lens_circles.clear(); _fired_triggers.clear()
 	_current_room_id = ""; _current_room_rect = Rect2()
 	_room_anchor_pos = Vector2(-1.0, -1.0); _exits_locked = false
-	if _ground_sprite != null: _ground_sprite.queue_free(); _ground_sprite = null
+	if _ground_sprite != null:
+		if is_instance_valid(_ground_sprite):
+			if _ground_sprite.get_parent() != null: _ground_sprite.get_parent().remove_child(_ground_sprite)
+			_ground_sprite.free()
+		_ground_sprite = null
 	_scenery_props.clear()
-	for root_node: Node2D in [_floor_interactables_root, _interactables_root, _enemies_root, _scenery_ground_root, _scenery_sort_root, _scenery_over_root]:
+	for sroot: Node2D in [_scenery_ground_root, _scenery_sort_root, _scenery_over_root]:
+		if sroot != null:
+			for c: Node in sroot.get_children():
+				sroot.remove_child(c)
+				c.free()
+	for root_node: Node2D in [_floor_interactables_root, _interactables_root, _enemies_root]:
 		if root_node != null:
 			for c: Node in root_node.get_children(): c.queue_free()
 

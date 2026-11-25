@@ -29,6 +29,9 @@ func _sync_from_state() -> void:
 	if Lx.state == null:
 		return
 	var saved: int = int(Lx.state.story_flags.get("medal_" + trial_id, 0))
+	if saved <= 0 and bool(Lx.state.story_flags.get("trial_" + trial_id + "_done", false)):
+		on_signal("trial_flag", true)
+		return
 	medal_tier = clampi(saved, 0, 3)
 	powered = medal_tier > 0
 
@@ -40,7 +43,7 @@ func on_signal(_from_id: String, is_on: bool) -> void:
 	if region != null and is_instance_valid(region):
 		var scr: Variant = region.get("room_script")
 		if scr is Object and is_instance_valid(scr):
-			var ch: Variant = (scr as Object).get("_active_challenge")
+			var ch: Variant = (scr as Object).get("active_challenge")
 			if ch is Object and is_instance_valid(ch) and (ch as Object).get("elapsed_s") != null:
 				elapsed = float((ch as Object).get("elapsed_s"))
 	var earned: int = 3 if elapsed <= gold_s else (2 if elapsed <= silver_s else 1)

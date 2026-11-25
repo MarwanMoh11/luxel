@@ -367,7 +367,7 @@
     {
       "kind": "window_strip",
       "y": 8,
-      "x0": 144,
+      "x0": 160,
       "x1": 208,
       "style": "stars"
     },
@@ -375,7 +375,7 @@
       "kind": "window_strip",
       "y": 8,
       "x0": 288,
-      "x1": 400,
+      "x1": 368,
       "style": "stars"
     },
     {
@@ -424,7 +424,7 @@
       "sheet": "theme_galleon",
       "prop": "ship_helm_wheel",
       "pos": [
-        360,
+        344,
         72
       ],
       "layer": "sort",

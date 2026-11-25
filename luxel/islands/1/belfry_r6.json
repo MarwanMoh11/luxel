@@ -131,8 +131,8 @@
       "id": "brazier_r6_vault",
       "kind": "brazier",
       "pos": [
-        168,
-        56
+        192,
+        64
       ],
       "props": {
         "light_by_lantern": true,
@@ -164,8 +164,8 @@
       "id": "switch_eye_r6",
       "kind": "switch_eye",
       "pos": [
-        168,
-        168
+        192,
+        160
       ],
       "props": {
         "target_ids": [
@@ -483,7 +483,7 @@
         "op": "shoot",
         "from": [
           240,
-          152
+          160
         ],
         "target": "switch_eye_r6"
       },
@@ -491,7 +491,7 @@
         "op": "throw",
         "from": [
           240,
-          88
+          64
         ],
         "target": "brazier_r6_vault"
       },
@@ -513,7 +513,7 @@
         "op": "goto",
         "to": [
           272,
-          48
+          40
         ]
       },
       {

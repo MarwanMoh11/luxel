@@ -147,6 +147,10 @@
       ],
       "props": {
         "grow": "fruit",
+        "size": [
+          20,
+          20
+        ],
         "secs": 0.8,
         "decay": 1.4,
         "target_id": "gate_r9_jar"
@@ -161,6 +165,10 @@
       ],
       "props": {
         "grow": "fruit",
+        "size": [
+          20,
+          20
+        ],
         "secs": 0.8,
         "decay": 1.4,
         "target_id": "gate_r9_jar"
@@ -175,6 +183,10 @@
       ],
       "props": {
         "grow": "fruit",
+        "size": [
+          20,
+          20
+        ],
         "secs": 0.8,
         "decay": 1.4,
         "target_id": "gate_r9_jar"
@@ -189,6 +201,10 @@
       ],
       "props": {
         "grow": "fruit",
+        "size": [
+          20,
+          20
+        ],
         "secs": 0.8,
         "decay": 1.4,
         "target_id": "gate_r9_jar"
@@ -198,8 +214,8 @@
       "id": "gate_r9_jar",
       "kind": "logic_gate",
       "pos": [
-        376,
-        128
+        368,
+        112
       ],
       "props": {
         "op": "all",
@@ -218,7 +234,7 @@
       "kind": "door",
       "pos": [
         392,
-        128
+        112
       ],
       "props": {
         "door_kind": "switch_door",
@@ -236,7 +252,7 @@
       "kind": "wick_key",
       "pos": [
         448,
-        128
+        112
       ],
       "props": {
         "dungeon_id": "underroot",
@@ -284,18 +300,27 @@
       "id": "lm_r9_jar_shadow",
       "kind": "ur_tiny_landmark",
       "pos": [
-        264,
+        256,
         144
       ],
       "props": {
         "variant": "jar_shadow",
         "flip_x": false,
-        "span_px": 240
+        "span_px": 224
       }
     }
   ],
   "enemies": [],
   "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        120,
+        168
+      ],
+      "radius": 10,
+      "style": "ritual"
+    },
     {
       "kind": "circle",
       "pos": [
@@ -318,7 +343,7 @@
       "kind": "circle",
       "pos": [
         448,
-        128
+        112
       ],
       "radius": 24,
       "style": "ritual"
@@ -326,7 +351,7 @@
     {
       "kind": "light_shaft",
       "pos": [
-        264,
+        256,
         128
       ],
       "size": [
@@ -340,7 +365,7 @@
       "kind": "light_shaft",
       "pos": [
         448,
-        128
+        112
       ],
       "size": [
         36,
@@ -575,14 +600,10 @@
           120,
           168
         ],
-        "tol": 2.5
+        "tol": 1.2
       },
       {
         "op": "shoot",
-        "from": [
-          120,
-          168
-        ],
         "target": "dew_r9"
       },
       {
