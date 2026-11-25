@@ -32,6 +32,8 @@ const TINY_REGIONS: Dictionary = {
 const TURN_KEYS: Array[String] = ["ISL3_HUD_MOSS", "ISL3_HUD_SILK", "ISL3_HUD_CROWN"]
 
 static var active_instance: LxIsland3Rule = null
+## The controller is rebuilt on every region load; the clearing Wick just left must survive that or the wood never turns.
+static var _carry: Dictionary = {}
 
 
 class Island3HudOverlay:
@@ -168,6 +170,10 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 	_vars = Lx.vars
 	_attached = true
 	active_instance = self
+	if _state != null and int(_carry.get("state", 0)) == int(_state.get_instance_id()):
+		_active_region_id = str(_carry.get("region", ""))
+		_active_clearing = str(_carry.get("clearing", ""))
+	_carry = {}
 	_ensure_defaults()
 	if _events != null and not _events.region_entered.is_connected(_on_region_entered):
 		_events.region_entered.connect(_on_region_entered)
@@ -186,6 +192,8 @@ func detach() -> void:
 	if _hud != null and is_instance_valid(_hud):
 		_hud.queue_free()
 	_hud = null
+	if _attached and _state != null and not _active_region_id.is_empty():
+		_carry = {"state": _state.get_instance_id(), "region": _active_region_id, "clearing": _active_clearing}
 	_active_region_id = ""
 	_active_clearing = ""
 	_attached = false

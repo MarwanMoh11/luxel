@@ -83,6 +83,24 @@
       }
     },
     {
+      "id": "gate_masq_r1",
+      "kind": "logic_gate",
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "dancer_r1_truth_w",
+          "dancer_r1_truth"
+        ],
+        "sets_flag": "masq_r1_done",
+        "persist": true,
+        "target_id": "door_masq_r1_north"
+      }
+    },
+    {
       "id": "door_masq_r1_north",
       "kind": "door",
       "pos": [
@@ -96,7 +114,7 @@
           16
         ],
         "requires_signals": [
-          "dancer_r1_truth"
+          "gate_masq_r1"
         ]
       }
     },
@@ -161,15 +179,15 @@
       }
     },
     {
-      "id": "dancer_r1_1",
+      "id": "dancer_r1_truth_w",
       "kind": "masquerade_dancer",
       "pos": [
         128,
         128
       ],
       "props": {
-        "role": "liar",
-        "shadow_mode": "nw_wrong",
+        "role": "truth",
+        "shadow_mode": "se_gold",
         "path": [
           [
             128,
@@ -196,8 +214,9 @@
             160
           ]
         ],
-        "speed": 34.0,
-        "spawns_enemy": "reflection"
+        "speed": 32.0,
+        "persist": true,
+        "target_id": "gate_masq_r1"
       }
     },
     {
@@ -477,9 +496,8 @@
           ]
         ],
         "speed": 32.0,
-        "reveal_flag": "masq_r1_done",
         "persist": true,
-        "target_id": "door_masq_r1_north"
+        "target_id": "gate_masq_r1"
       }
     }
   ],
@@ -690,7 +708,7 @@
     },
     {
       "id": "ev_m1_clear",
-      "on": "signal:dancer_r1_truth",
+      "on": "signal:gate_masq_r1",
       "once": true,
       "do": [
         {
@@ -703,14 +721,14 @@
     }
   ],
   "design": {
-    "idea": "Eight masked Wicks waltz in twin ovals beneath gilded chandeliers; read their cast shadows to unmask the ONE truthful guest casting a warm SE shadow.",
+    "idea": "Eight masked Wicks waltz in twin West and East ovals beneath gilded chandeliers; read their cast shadows in both ovals to unmask the TWO truthful guests casting warm SE shadows.",
     "kind": "setpiece",
     "beat": "ki",
-    "teaches": "Compares SE truth shadows against NW/absent liar shadows under chandelier light without resetting on a wrong unmask.",
-    "decisions": 5,
+    "teaches": "Compares SE truth shadows against NW/absent liar shadows across both waltzing ovals under chandelier light without resetting on a wrong unmask.",
+    "decisions": 7,
     "expert_s": 50,
     "reward": "masq_r1_done+ballroom_seal",
-    "why": "Theatrical opening beat of The Masquerade turning Island 7's Shadow-Truth law into a live waltz puzzle.",
+    "why": "Theatrical opening beat of The Masquerade turning Island 7's Shadow-Truth law into a live twin-oval waltz puzzle.",
     "exit": "exit_masq_r1_north",
     "solution": [
       {
@@ -727,6 +745,15 @@
       },
       {
         "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": "dancer_r1_truth_w",
+        "tol": 26.0
+      },
+      {
+        "op": "interact",
+        "target": "dancer_r1_truth_w"
       },
       {
         "op": "goto",

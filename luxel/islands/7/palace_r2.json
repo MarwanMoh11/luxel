@@ -158,7 +158,7 @@
       ],
       "props": {
         "reward_kind": "shards",
-        "amount": 15
+        "amount": 35
       }
     },
     {
@@ -390,12 +390,44 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Flipping to Black raises true obsidian bridges and exposes Black plates; flipping back to Silver clears Black obsidian masonry over exits.",
-    "decisions": 5,
+    "decisions": 7,
     "expert_s": 45,
-    "reward": "open_r3+15sh",
-    "why": "First pure Silver/Black spatial puzzle introducing two-phase flip-cross-push-flip mastery plus a NW-shadow false_chest decoy.",
+    "reward": "open_r3+35sh",
+    "why": "First pure Silver/Black spatial puzzle introducing two-phase flip-cross-push-flip mastery plus a NW-shadow false_chest decoy guarding 35 shards.",
     "exit": "exit_r2_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          280,
+          96
+        ],
+        "tol": 14
+      },
+      {
+        "op": "clear",
+        "timeout": 15.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          64
+        ],
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "chest_r2_shards"
+      },
+      {
+        "op": "goto",
+        "to": [
+          288,
+          152
+        ],
+        "tol": 14
+      },
       {
         "op": "interact",
         "target": "pool_r2_east"
