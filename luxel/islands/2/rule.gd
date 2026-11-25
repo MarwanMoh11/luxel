@@ -172,7 +172,7 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 	elif scope == "dungeon:lighthouse" and var_name == "tower_tide":
 		if _events != null:
 			_events.sfx_requested.emit("clockwork_chime", Vector2.ZERO, false)
-			_events.sfx_requested.emit("tide_surge", Vector2.ZERO, false)
+			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
 			_events.shake_requested.emit(0.10)
 	elif scope == "dungeon:galleon" and var_name == "list":
 		if _events != null:
@@ -180,7 +180,7 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 			_events.shake_requested.emit(0.08)
 	elif scope == "dungeon:locks" and var_name == "lock_water":
 		if _events != null:
-			_events.sfx_requested.emit("tide_surge", Vector2.ZERO, false)
+			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
 			_events.shake_requested.emit(0.09)
 	elif scope == "dungeon:lighthouse" and var_name.begins_with("relay_f") and (val_s == "1" or val_s == "true"):
 		if _events != null and LxStrings.has_id("LH2_RELAY_ON"):
@@ -191,8 +191,9 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 
 func _on_tide_shifted(level: String) -> void:
 	if _events != null:
-		_events.sfx_requested.emit("lighthouse_toll", Vector2.ZERO, false)
-		_events.sfx_requested.emit("tide_surge", Vector2.ZERO, false)
+		var organ_sfx: String = "tide_organ_" + (level if level in TIDE_VALUES else "half")
+		_events.sfx_requested.emit(organ_sfx, Vector2.ZERO, false)
+		_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
 		_events.shake_requested.emit(0.11)
 		var sid: String = str(TIDE_STRINGS.get(level, ""))
 		if not sid.is_empty() and LxStrings.has_id(sid):

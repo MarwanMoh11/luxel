@@ -296,7 +296,7 @@ func set_world_face(scope: String, face: String, trigger_fx: bool = true, origin
 		Lx.world.call("apply_layers", trigger_fx)
 	_sync_layer_enabled_interactables()
 	if trigger_fx:
-		if _events != null: _events.sfx_requested.emit("moon_pool_flip", origin, origin != Vector2.ZERO)
+		if _events != null: _events.sfx_requested.emit("moon_pool_black" if norm == "black" else "moon_pool_silver", origin, origin != Vector2.ZERO)
 		if _hud != null:
 			_hud.flip_to_black = (norm == "black"); _hud.flip_flash_t = 1.2; _hud.refresh()
 	elif _hud != null: _hud.refresh()

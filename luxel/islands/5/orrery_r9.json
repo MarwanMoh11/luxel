@@ -195,7 +195,7 @@
       "kind": "blue_transformer",
       "pos": [
         408,
-        56
+        104
       ],
       "props": {
         "angle_deg": 0,
@@ -531,14 +531,6 @@
         ]
       },
       {
-        "op": "push",
-        "target": "transformer_o5_r9",
-        "to": [
-          408,
-          104
-        ]
-      },
-      {
         "op": "rotate",
         "target": "transformer_o5_r9",
         "angle": 315
@@ -577,12 +569,11 @@
         "op": "goto",
         "to": [
           128,
-          64
+          44
         ]
       },
       {
-        "op": "interact",
-        "target": "door_boss_5"
+        "op": "interact"
       },
       {
         "op": "expect_exit",

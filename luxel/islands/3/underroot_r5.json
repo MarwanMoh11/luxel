@@ -268,9 +268,75 @@
         "variant": "acorn_boulder",
         "flip_x": true
       }
+    },
+    {
+      "id": "chest_ur_r5_shards",
+      "kind": "chest",
+      "pos": [
+        424,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_ur_r5_dew",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        200
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R5",
+        "icon": "leaf"
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "ur_r5_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        152,
+        40
+      ],
+      "route": [
+        [
+          136,
+          40
+        ],
+        [
+          168,
+          40
+        ]
+      ],
+      "zone": "ur_r5",
+      "leash": 120
+    },
+    {
+      "id": "ur_r5_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        280,
+        216
+      ],
+      "route": [
+        [
+          264,
+          216
+        ],
+        [
+          304,
+          216
+        ]
+      ],
+      "zone": "ur_r5",
+      "leash": 120
+    }
+  ],
   "decor": [
     {
       "kind": "circle",
@@ -461,12 +527,16 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Using both states of dew_lens in one chamber: frozen 3-way Blue Prism Splitter for frost-pinning + eye activation, and liquid focused dew_ray to burn dry_root_knot.",
-    "decisions": 6,
+    "decisions": 8,
     "expert_s": 54,
     "reward": "wick_key_ur_1",
     "why": "Key #1 optical showcase proving frozen vs liquid dew_lens mastery before the mini-boss.",
     "exit": "exit_r5_east",
     "solution": [
+      {
+        "op": "clear",
+        "timeout": 45.0
+      },
       {
         "op": "push",
         "target": "dew_r5_1",
@@ -513,6 +583,10 @@
           288,
           140
         ]
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
       },
       {
         "op": "goto",

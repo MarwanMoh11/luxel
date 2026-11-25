@@ -161,8 +161,7 @@
           48
         ],
         "zone": "oak_r3",
-        "clear_zone": "oak_r3",
-        "sets_flag": "oak_r3_cleared"
+        "clear_zone": "oak_r3"
       }
     },
     {
@@ -235,6 +234,34 @@
       ],
       "props": {
         "lit": true
+      }
+    },
+    {
+      "id": "chest_oak_r3_shards",
+      "kind": "chest",
+      "pos": [
+        360,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "requires_flags": [
+          "oak_r3_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_oak_r3_spores",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R3",
+        "icon": "flame"
       }
     }
   ],
@@ -401,7 +428,7 @@
     "kind": "combat",
     "beat": "sho",
     "teaches": "Multi-purpose brazier lighting (Gloam unmask + Seedlight bounce-cap bloom) + Vine Strangler tether dash-cut",
-    "decisions": 5,
+    "decisions": 7,
     "expert_s": 48,
     "reward": "oak_r3_cleared + oak_r2b junction",
     "why": "Upgrades the first Hollow Oak fight with Island 3's new Vine Strangler and bounce flora",
@@ -432,6 +459,18 @@
         "timeout": 60.0
       },
       {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
         "op": "expect",
         "flag": "oak_r3_cleared"
       },
@@ -440,5 +479,71 @@
         "exit": "exit_oak_r3_east"
       }
     ]
-  }
+  },
+  "events": [
+    {
+      "id": "oak_r3_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "oak_r3_w2_beetle",
+              "kind": "burrow_beetle",
+              "pos": [
+                168,
+                184
+              ],
+              "zone": "oak_r3",
+              "leash": 140
+            },
+            {
+              "id": "oak_r3_w2_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                248,
+                184
+              ],
+              "zone": "oak_r3",
+              "leash": 140
+            },
+            {
+              "id": "oak_r3_w2_drifter",
+              "kind": "dandelion_drifter",
+              "pos": [
+                120,
+                184
+              ],
+              "zone": "oak_r3",
+              "leash": 150
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_oak_r3_combat",
+            "exit_oak_r3_east"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
+      "id": "oak_r3_finish",
+      "on": "cleared",
+      "if": "flag:rscr_3_oak_r3_oak_r3_wave2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_r3_cleared"
+        },
+        {
+          "sfx": "shrine_unlock"
+        }
+      ]
+    }
+  ]
 }

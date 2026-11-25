@@ -426,6 +426,9 @@
       "once": true,
       "do": [
         {
+          "set_flag": "spire_r17_solved"
+        },
+        {
           "sfx": "spire_nave_chord"
         },
         {

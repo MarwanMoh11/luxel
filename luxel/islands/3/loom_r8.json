@@ -270,6 +270,34 @@
         "zone": "lm_r8",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r8_shards",
+      "kind": "chest",
+      "pos": [
+        264,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "requires_flags": [
+          "loom_r8_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_loom_r8_gauntlet",
+      "kind": "lore_stone",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R8",
+        "icon": "flame"
+      }
     }
   ],
   "decor": [
@@ -428,10 +456,63 @@
   ],
   "events": [
     {
+      "id": "loom_r8_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "loom_r8_w2_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                392,
+                104
+              ],
+              "zone": "lm_r8",
+              "leash": 150
+            },
+            {
+              "id": "loom_r8_w2_strangler",
+              "kind": "vine_strangler",
+              "pos": [
+                376,
+                152
+              ],
+              "zone": "lm_r8",
+              "leash": 150
+            },
+            {
+              "id": "loom_r8_w2_drifter",
+              "kind": "dandelion_drifter",
+              "pos": [
+                360,
+                200
+              ],
+              "zone": "lm_r8",
+              "leash": 150
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_loom_r8_north",
+            "exit_loom_r8_north"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
       "id": "loom_r8_open_shortcut",
       "on": "cleared",
       "once": true,
       "do": [
+        {
+          "set_flag": "loom_r8_cleared"
+        },
         {
           "set_flag": "loom_r8_shortcut"
         },
@@ -441,7 +522,8 @@
         {
           "sfx": "shrine_unlock"
         }
-      ]
+      ],
+      "if": "flag:rscr_3_loom_r8_loom_r8_wave2"
     }
   ],
   "design": {
@@ -449,7 +531,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Combining False Lantern bolt-testing, Thorn Archer light-jamming via Brass Shuttle hooks, and Jumping Spider flank evasion.",
-    "decisions": 7,
+    "decisions": 9,
     "expert_s": 54,
     "reward": "cycle_2_shortcut+r9_access",
     "why": "Wing 2 combat climax awarding Cycle 2 back to loom_r1 right before the Astonishing Room.",
@@ -464,6 +546,19 @@
         "op": "clear",
         "zone": "lm_r8",
         "timeout": 60.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "zone": "lm_r8",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "wait",

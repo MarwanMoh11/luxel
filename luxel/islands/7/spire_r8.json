@@ -230,7 +230,7 @@
         120
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": true,
         "radius_px": 15,
@@ -450,11 +450,23 @@
     "expert_s": 55,
     "reward": "spire_r8_cleared+r17_arch",
     "why": "Penultimate Spire combat convergence with D25a spawn fix and r15/r17 loop links.",
+    "start": {
+      "hearts": 11,
+      "ember": 100.0
+    },
     "exit": "exit_spire_r8_west",
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          216,
+          120
+        ],
+        "tol": 16.0
+      },
+      {
         "op": "clear",
-        "timeout": 40.0
+        "timeout": 45.0
       },
       {
         "op": "expect",

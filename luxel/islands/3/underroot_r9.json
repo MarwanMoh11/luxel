@@ -308,6 +308,31 @@
         "flip_x": false,
         "span_px": 224
       }
+    },
+    {
+      "id": "chest_ur_r9_shards",
+      "kind": "chest",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lore_ur_r9_shadow",
+      "kind": "lore_stone",
+      "pos": [
+        440,
+        168
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R9",
+        "icon": "lantern"
+      }
     }
   ],
   "enemies": [],
@@ -505,7 +530,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Chaining a liquid dew_lens through Blue Transformers and curved glass walls into a 5-bounce simultaneous blue starburst.",
-    "decisions": 10,
+    "decisions": 11,
     "expert_s": 64,
     "reward": "keepers_flame_ur+cycle_3_bridge",
     "why": "Signature astonishing centerpiece puzzle of The Under-Root awarding the Boss Key and Cycle 3 back to Acorn Atrium.",

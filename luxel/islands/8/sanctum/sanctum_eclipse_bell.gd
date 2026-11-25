@@ -55,7 +55,7 @@ func is_solid() -> bool:
 
 
 func get_solid_rect() -> Rect2:
-	return Rect2(pos + Vector2(-14.0, -8.0), Vector2(28.0, 16.0)) if active else Rect2()
+	return Rect2(pos + Vector2(-7.0, -6.0), Vector2(14.0, 12.0)) if active else Rect2()
 
 
 func on_signal(from_id: String, is_on: bool) -> void:

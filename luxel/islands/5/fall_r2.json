@@ -459,8 +459,14 @@
     "exit": "exit_fl_r2_e",
     "solution": [
       {
-        "op": "interact",
-        "target": "lore_fl_r2"
+        "op": "goto",
+        "to": [
+          56,
+          156
+        ]
+      },
+      {
+        "op": "interact"
       },
       {
         "op": "clear",
@@ -492,8 +498,8 @@
       {
         "op": "goto",
         "to": [
-          368,
-          176
+          424,
+          152
         ]
       },
       {

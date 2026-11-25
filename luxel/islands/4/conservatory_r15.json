@@ -290,6 +290,29 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_c4_r15_west",
+      "kind": "chest",
+      "pos": [
+        72,
+        224
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 50
+      }
+    },
+    {
+      "id": "lore_c4_r15",
+      "kind": "lore_stone",
+      "pos": [
+        120,
+        224
+      ],
+      "props": {
+        "string_id": "ISL4_C4_CANOPY_HINT"
+      }
     }
   ],
   "layers": [],
@@ -388,9 +411,9 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Reversing a wind-vane corridor via prism bank to bend an updraft Wings glide 90 degrees north",
-    "decisions": 10,
+    "decisions": 12,
     "expert_s": 70,
-    "reward": "c4_r15_open",
+    "reward": "c4_r15_open, 50 shards",
     "why": "Signature Upper Glass Canopy vertical-rafter showcase.",
     "exit": "exit_c4_r15_north",
     "start": {

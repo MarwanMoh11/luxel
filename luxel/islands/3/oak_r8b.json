@@ -358,6 +358,31 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r8b_shards",
+      "kind": "chest",
+      "pos": [
+        200,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lore_oak_r8b_split",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        216
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R8B",
+        "icon": "leaf"
+      }
     }
   ],
   "scenery": [
@@ -413,13 +438,48 @@
     }
   ],
   "layers": [],
-  "events": [],
+  "events": [
+    {
+      "id": "oak_r8b_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "oak_r8b_w2_mimic",
+              "kind": "false_lantern",
+              "pos": [
+                128,
+                88
+              ],
+              "zone": "oak_r8b",
+              "leash": 110
+            },
+            {
+              "id": "oak_r8b_w2_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                152,
+                152
+              ],
+              "zone": "oak_r8b",
+              "leash": 120
+            }
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "The Canopy Split (Big + Tiny Synthesis): defeat the Bramble Knight and False Lantern, drop the Cycle 6 SW shortcut to oak_r6b, flood sap high to wake the central Shrink Stump, dive tiny into the sealed east bark fissure to align the Blue Transformer, return normal, fire Beam through the pinhole grate into the blue eye, and unlock Key #3's door to oak_r9.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Sap-powered Shrink Stump + tiny fissure alignment + normal-scale pinhole Blue Beam + Key #3 lock",
-    "decisions": 9,
+    "decisions": 10,
     "expert_s": 58,
     "reward": "Cycle 6 shortcut to oak_r6b + Key #3 route to oak_r9",
     "why": "Synthesizes Sap Clock, Shrink Stump, Blue Prism, and Beam in one unforgettable room",
@@ -443,6 +503,14 @@
       ]
     },
     "solution": [
+      {
+        "op": "clear",
+        "timeout": 60.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.95
+      },
       {
         "op": "clear",
         "timeout": 60.0

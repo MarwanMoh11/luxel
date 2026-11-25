@@ -186,8 +186,7 @@
           16
         ],
         "zone": "oak_r8",
-        "clear_zone": "oak_r8",
-        "sets_flag": "oak_r8_cleared"
+        "clear_zone": "oak_r8"
       }
     },
     {
@@ -285,6 +284,34 @@
       ],
       "props": {
         "lit": true
+      }
+    },
+    {
+      "id": "chest_oak_r8_shards",
+      "kind": "chest",
+      "pos": [
+        184,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35,
+        "requires_flags": [
+          "oak_r8_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_oak_r8_bastion",
+      "kind": "lore_stone",
+      "pos": [
+        232,
+        200
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R8",
+        "icon": "flame"
       }
     }
   ],
@@ -439,7 +466,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Lantern-throw bow jamming + Beam piercing thorn-wall & Bramble Knight guard",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 52,
     "reward": "oak_r8_cleared + Cycle 5 oak_r7b lookout + oak_r8b Canopy Split",
     "why": "Escalates Hollow Oak combat by adding Thorn Archer and Seedlight cover around the Bastion",
@@ -471,6 +498,18 @@
         "timeout": 75.0
       },
       {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
         "op": "expect",
         "flag": "oak_r8_cleared"
       },
@@ -479,5 +518,71 @@
         "exit": "exit_oak_r8_north"
       }
     ]
-  }
+  },
+  "events": [
+    {
+      "id": "oak_r8_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "oak_r8_w2_knight",
+              "kind": "bramble_knight",
+              "pos": [
+                56,
+                72
+              ],
+              "zone": "oak_r8",
+              "leash": 140
+            },
+            {
+              "id": "oak_r8_w2_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                264,
+                120
+              ],
+              "zone": "oak_r8",
+              "leash": 140
+            },
+            {
+              "id": "oak_r8_w2_mimic",
+              "kind": "false_lantern",
+              "pos": [
+                112,
+                136
+              ],
+              "zone": "oak_r8",
+              "leash": 140
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_oak_r8_combat",
+            "exit_oak_r8_north"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
+      "id": "oak_r8_finish",
+      "on": "cleared",
+      "if": "flag:rscr_3_oak_r8_oak_r8_wave2",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "oak_r8_cleared"
+        },
+        {
+          "sfx": "shrine_unlock"
+        }
+      ]
+    }
+  ]
 }

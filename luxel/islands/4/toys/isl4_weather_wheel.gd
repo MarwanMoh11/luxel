@@ -138,6 +138,7 @@ func set_weather(new_weather: String, with_feedback: bool = true) -> bool:
 	set_powered(current_weather != str(props.get("start", "rain")).to_lower())
 	emit_power(true)
 	if with_feedback:
+		_emit_sfx("weather_wheel_turn")
 		_emit_sfx("weather_shift_" + current_weather)
 		_emit_gust(60.0, 42.0)
 		if Lx.events != null:

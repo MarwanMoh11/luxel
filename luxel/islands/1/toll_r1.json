@@ -126,6 +126,27 @@
       ],
       "zone": "toll_rigging",
       "leash": 145
+    },
+    {
+      "id": "owl_toll_r1_w",
+      "kind": "owl",
+      "pos": [
+        104,
+        72
+      ],
+      "route": [],
+      "perches": [
+        [
+          104,
+          72
+        ],
+        [
+          152,
+          72
+        ]
+      ],
+      "zone": "toll_rigging",
+      "leash": 145
     }
   ],
   "interactables": [
@@ -210,6 +231,15 @@
         "string_id": "ISL1_TOLL_LORE_RIG",
         "icon": "bell"
       }
+    },
+    {
+      "id": "shrine_toll_r1_rest",
+      "kind": "rest_shrine",
+      "pos": [
+        248,
+        232
+      ],
+      "props": {}
     },
     {
       "id": "anc_toll_r1",
@@ -432,7 +462,7 @@
     "kind": "setpiece",
     "beat": "ki",
     "teaches": "Establishes Hollow Wick as a wordless rival and combines War/Dawn combat with an urgent post-cut plunge.",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 45,
     "reward": "hollow_cameo_1+25sh",
     "why": "Dramatic narrative launchpad from Belfry Forecourt into the plunging Great Toll shaft.",

@@ -388,6 +388,31 @@
         "zone": "lm_r9",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r9_shards",
+      "kind": "chest",
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lore_loom_r9_thread",
+      "kind": "lore_stone",
+      "pos": [
+        88,
+        264
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R9",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [
@@ -621,7 +646,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Astonishing synthesis of push-block deck locking, Blue silk firebreak, Brass Shuttle bypass weaving, and counterweight hoisting.",
-    "decisions": 11,
+    "decisions": 12,
     "expert_s": 66,
     "reward": "keepers_flame_loom+cycle_3_bridge",
     "why": "Signature astonishing room of The Weaver's Loom awarding the Boss Key and opening Cycle 3.",

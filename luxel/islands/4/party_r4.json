@@ -102,6 +102,16 @@
       "leash": 120
     },
     {
+      "id": "rf_party_r4",
+      "kind": "rain_frog",
+      "pos": [
+        168,
+        232
+      ],
+      "zone": "party_r4_w",
+      "leash": 110
+    },
+    {
       "id": "hh_party_r4",
       "kind": "hour_heron",
       "pos": [
@@ -354,6 +364,18 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_party_r4",
+      "kind": "chest",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 45
+      }
     }
   ],
   "layers": [
@@ -522,9 +544,9 @@
     "kind": "setpiece",
     "beat": "ten",
     "teaches": "Hour IV East Wind powering twin chandelier bounce-rafter crossings and Kitchen Winch pull_ring",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 55,
-    "reward": "party_winch_4 (Pantry Shortcut + Gazebo Shutters)",
+    "reward": "party_winch_4 (Pantry Shortcut + Gazebo Shutters), 45 shards",
     "why": "Hour IV aerial-rafter heist climax bypassing ground security and opening Cycle 1 back to r2.",
     "exit": "exit_party_r4_north",
     "start": {

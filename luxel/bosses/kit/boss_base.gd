@@ -396,7 +396,7 @@ func add_stagger(amount: float) -> bool:
 		_set_boss_state(BossState.STAGGER, stagger_duration)
 		staggered.emit(stagger_duration)
 		LxDamageFx.boss_impact(pos, 0.18, 76.0, 82.0, 80.0, 1.38, 0.32)
-		_emit_sfx("warden_shield_break")
+		_emit_sfx("stagger_break")
 		return true
 	return false
 

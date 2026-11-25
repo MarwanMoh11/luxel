@@ -261,6 +261,31 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r7_shards",
+      "kind": "chest",
+      "pos": [
+        248,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lore_oak_r7_loom",
+      "kind": "lore_stone",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R7",
+        "icon": "lantern"
+      }
     }
   ],
   "triggers": [],
@@ -403,7 +428,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Movable Blue Transformer + Blue Piercing Beam through layered bramble and silk web",
-    "decisions": 9,
+    "decisions": 10,
     "expert_s": 58,
     "reward": "oak_r7_loom_open (opens oak_r8 & Cycle 5 lookout in oak_r7b)",
     "why": "Core Beam + Prism synthesis puzzle unlocking the upper Bastion and Moving Chamber shortcut",

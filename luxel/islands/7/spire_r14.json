@@ -96,7 +96,7 @@
         176
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": false,
         "radius_px": 16,
@@ -494,6 +494,9 @@
       "once": true,
       "do": [
         {
+          "set_flag": "spire_r14_solved"
+        },
+        {
           "sfx": "spire_nave_chord"
         },
         {
@@ -513,7 +516,7 @@
     "why": "Grand Dungeon astonishing signature puzzle leading into The Counterfeit Bell Isle.",
     "start": {
       "vars": {
-        "world_face": "silver"
+        "island:7:world_face": "silver"
       }
     },
     "exit": "exit_spire_r14_west",

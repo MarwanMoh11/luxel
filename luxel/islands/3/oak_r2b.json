@@ -120,7 +120,48 @@
       "locked_door_id": "door_oak_r2b_west_sc"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "r2b_beetle",
+      "kind": "burrow_beetle",
+      "pos": [
+        152,
+        40
+      ],
+      "route": [
+        [
+          136,
+          40
+        ],
+        [
+          184,
+          40
+        ]
+      ],
+      "zone": "oak_r2b",
+      "leash": 130
+    },
+    {
+      "id": "r2b_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        168,
+        88
+      ],
+      "route": [
+        [
+          152,
+          88
+        ],
+        [
+          192,
+          88
+        ]
+      ],
+      "zone": "oak_r2b",
+      "leash": 130
+    }
+  ],
   "interactables": [
     {
       "id": "anc_oak_r2b",
@@ -278,6 +319,31 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r2b_shards",
+      "kind": "chest",
+      "pos": [
+        56,
+        120
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_oak_r2b_clock",
+      "kind": "lore_stone",
+      "pos": [
+        360,
+        120
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R2B",
+        "icon": "leaf"
+      }
     }
   ],
   "scenery": [
@@ -371,7 +437,7 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Sap Clock valve (oak_sap high/low), floating bridges, shadow-gate shortcut",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 52,
     "reward": "oak_sap_unlocked + Cycle 1 shortcut to oak_r1",
     "why": "Teaches the Hollow Oak's signature macro state variable safely before inner trunk puzzles",
@@ -388,6 +454,10 @@
       ]
     },
     "solution": [
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
       {
         "op": "goto",
         "to": [

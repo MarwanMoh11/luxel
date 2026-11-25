@@ -225,7 +225,7 @@
         184
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": true,
         "radius_px": 15,
@@ -463,8 +463,20 @@
     "expert_s": 145,
     "reward": "great_lamp_7+island_7_relit",
     "why": "Grand climax of Island 7 returning cleanly to relit Moon Shoals overworld (D43).",
+    "start": {
+      "hearts": 12,
+      "ember": 100.0
+    },
     "exit": "exit_r10_bridge_8",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          200
+        ],
+        "tol": 18.0
+      },
       {
         "op": "clear",
         "timeout": 180.0

@@ -234,11 +234,11 @@
     { "sheet": "island4_scenery", "prop": "cattail_reeds", "pos": [56, 224], "layer": "sort", "flip_x": false, "shadow": false, "phase": 0.2 }
   ],
   "design": {
-    "idea": "Zero-death 4-stage Wings gymnasium: dry-stone glide gate, generous 3-tile water hop with lip anchor, updraft refresh lagoon, and harmless ripple fountain preview.",
+    "idea": "Zero-death 4-stage Wings gymnasium: dry-stone glide gate, generous 3-tile water hop with lip anchor, neutral updraft refresh lagoon, harmless ripple fountain preview, and twin-updraft southern ember loop.",
     "kind": "traversal",
     "beat": "ki",
     "teaches": "holding Shift after Flare Dash to glide over floor plates, water gaps, and updraft plumes",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 55,
     "reward": "move:wings + c4_r5_stage1 + c4_r5_shortcut + ember_4_4",
     "why": "Rebuilt Drowned Conservatory Wings shrine pavilion eliminating blind water deaths.",

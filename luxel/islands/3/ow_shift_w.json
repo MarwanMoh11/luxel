@@ -178,6 +178,17 @@
       ],
       "zone": "whispering_wood",
       "leash": 136
+    },
+    {
+      "id": "shift_w_strangler",
+      "kind": "vine_strangler",
+      "pos": [
+        312,
+        264
+      ],
+      "route": [],
+      "zone": "whispering_wood",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -277,6 +288,31 @@
       ],
       "props": {
         "lit": true
+      }
+    },
+    {
+      "id": "chest_shift_w_shards",
+      "kind": "chest",
+      "pos": [
+        200,
+        72
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lore_shift_w_compass",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_SHIFT_W",
+        "icon": "sun"
       }
     }
   ],

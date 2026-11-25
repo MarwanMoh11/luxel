@@ -69,7 +69,7 @@ func stop_trial(record: bool = false, final_val: float = 0.0) -> void:
 		_result_medal = medal
 		_result_new_best = bool(res.get("new_best", false))
 		_result_banner_t = 3.2
-		_emit_sfx("shrine_unlock" if medal >= LxHubState.MEDAL_BRONZE else "ui_confirm")
+		_emit_sfx("hub_medal_gold" if medal >= LxHubState.MEDAL_GOLD else ("hub_medal_silver" if medal >= LxHubState.MEDAL_SILVER else ("hub_medal_bronze" if medal >= LxHubState.MEDAL_BRONZE else "ui_confirm")))
 		if Lx.events != null:
 			var cue: String = "HUB_MEDAL_GOLD" if medal >= 3 else ("HUB_MEDAL_SILVER" if medal == 2 else ("HUB_MEDAL_BRONZE" if medal == 1 else "HUB_TRIAL_DONE"))
 			Lx.events.narration_requested.emit(cue, "title", 2.6)

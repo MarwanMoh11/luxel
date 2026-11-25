@@ -130,7 +130,7 @@ func interact(_actor: Node = null) -> bool:
 
 	_show_page(pages, _talk_idx)
 	_talk_t = 0.55
-	_emit_sfx("ui_move")
+	_emit_sfx("folk_chirp_" + folk_id)
 	queue_redraw()
 	return true
 
@@ -179,7 +179,7 @@ func _finish_conversation() -> void:
 		var res: Dictionary = LxQuests.current().advance_quest(quest_id)
 		var status: String = str(res.get("status", ""))
 		if status == "completed":
-			_emit_sfx("shrine_unlock")
+			_emit_sfx("quest_done")
 			_bubble.show_strip(["check", "gift", "happy"], 0, 1, "lime")
 			_happy_t = 1.8
 		elif status == "advanced":
@@ -187,7 +187,7 @@ func _finish_conversation() -> void:
 			_bubble.show_strip(LxQuests.current().get_active_bubble_icons(quest_id), 0, 1, "gold")
 	if rescuable and not rescue_flag.is_empty() and not LxQuests.current().has_flag(rescue_flag):
 		LxQuests.current().set_flag(rescue_flag, true)
-		_emit_sfx("shrine_unlock")
+		_emit_sfx("quest_done")
 		_bubble.show_strip(["home", "heart", "happy"], 0, 1, "gold")
 		if Lx.events != null:
 			Lx.events.narration_requested.emit("FOLK_RESCUED", "title", 2.8)

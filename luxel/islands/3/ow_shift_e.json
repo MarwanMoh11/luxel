@@ -194,6 +194,26 @@
       "route": [],
       "zone": "silkwood",
       "leash": 120
+    },
+    {
+      "id": "shift_e_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        232,
+        264
+      ],
+      "route": [
+        [
+          216,
+          264
+        ],
+        [
+          248,
+          264
+        ]
+      ],
+      "zone": "silkwood",
+      "leash": 130
     }
   ],
   "interactables": [
@@ -265,6 +285,31 @@
       ],
       "props": {
         "lit": true
+      }
+    },
+    {
+      "id": "chest_shift_e_shards",
+      "kind": "chest",
+      "pos": [
+        344,
+        264
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lore_shift_e_compass",
+      "kind": "lore_stone",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_SHIFT_E",
+        "icon": "sun"
       }
     }
   ],

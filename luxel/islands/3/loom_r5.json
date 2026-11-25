@@ -299,6 +299,31 @@
         "zone": "lm_r5",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r5_shards",
+      "kind": "chest",
+      "pos": [
+        72,
+        232
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_loom_r5_scales",
+      "kind": "lore_stone",
+      "pos": [
+        104,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R5",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [
@@ -482,12 +507,16 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Counterbalanced scale + Blue silk-hoist freeze: locking one side UP with blue light while freeing the other side.",
-    "decisions": 7,
+    "decisions": 9,
     "expert_s": 56,
     "reward": "wick_key_loom_1+r6_access",
     "why": "Wing 1 synthesis puzzle awarding the dungeon's Small Key before the Thread-Keeper mini-boss.",
     "exit": "exit_loom_r5_north",
     "solution": [
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
       {
         "op": "goto",
         "to": [
@@ -585,5 +614,37 @@
   "triggers": [],
   "layers": [],
   "events": [],
-  "enemies": []
+  "enemies": [
+    {
+      "id": "r5_spider",
+      "kind": "jumping_spider",
+      "pos": [
+        312,
+        248
+      ],
+      "route": [
+        [
+          296,
+          248
+        ],
+        [
+          328,
+          248
+        ]
+      ],
+      "zone": "lm_r5",
+      "leash": 130
+    },
+    {
+      "id": "r5_mimic",
+      "kind": "false_lantern",
+      "pos": [
+        360,
+        248
+      ],
+      "route": [],
+      "zone": "lm_r5",
+      "leash": 120
+    }
+  ]
 }

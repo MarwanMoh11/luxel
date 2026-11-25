@@ -227,7 +227,7 @@
         176
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": false,
         "radius_px": 15,
@@ -441,6 +441,11 @@
     "reward": "ws_spire+wing_hub",
     "why": "Central Spire anchor connecting all lower and upper wings.",
     "optional": true,
+    "start": {
+      "vars": {
+        "island:7:world_face": "silver"
+      }
+    },
     "exit": "exit_spire_r1_west",
     "solution": [
       {

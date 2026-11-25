@@ -431,8 +431,14 @@
         "target": "wick_key_5_2"
       },
       {
-        "op": "interact",
-        "target": "door_o5_r6_west"
+        "op": "goto",
+        "to": [
+          60,
+          112
+        ]
+      },
+      {
+        "op": "interact"
       },
       {
         "op": "expect_exit",

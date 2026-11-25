@@ -243,6 +243,31 @@
         "zone": "lm_r3",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r3_shards",
+      "kind": "chest",
+      "pos": [
+        136,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_loom_r3_race",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        72
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R3",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [
@@ -417,12 +442,16 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Using Blue silk-freeze as a selective firebreak on branching conducting threads so fire only travels the safe long route.",
-    "decisions": 5,
+    "decisions": 8,
     "expert_s": 48,
     "reward": "r4_access",
     "why": "Develops silk-fire conduction into branching firebreak logic with clear visual sightline across the split gallery.",
     "exit": "exit_loom_r3_north",
     "solution": [
+      {
+        "op": "clear",
+        "timeout": 55.0
+      },
       {
         "op": "rotate",
         "target": "t_r3",
@@ -477,5 +506,37 @@
   "triggers": [],
   "layers": [],
   "events": [],
-  "enemies": []
+  "enemies": [
+    {
+      "id": "r3_mimic",
+      "kind": "false_lantern",
+      "pos": [
+        360,
+        152
+      ],
+      "route": [],
+      "zone": "lm_r3",
+      "leash": 120
+    },
+    {
+      "id": "r3_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        360,
+        104
+      ],
+      "route": [
+        [
+          344,
+          104
+        ],
+        [
+          376,
+          104
+        ]
+      ],
+      "zone": "lm_r3",
+      "leash": 120
+    }
+  ]
 }

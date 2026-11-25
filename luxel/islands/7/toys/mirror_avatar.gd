@@ -35,6 +35,7 @@ var _bolts: Array[Dictionary] = [] # [{pos, prev, dir, dist, color, prism, bounc
 var _beam_segs: Array[Dictionary] = [] # [{start, end, color}]
 var _beam_vis_t: float = 0.0
 var _move_t: float = 0.0
+var _step_sfx_cd: float = 0.0
 var _blocked_t: float = 0.0
 var _shot_flash_t: float = 0.0
 var _resync_t: float = 0.0
@@ -182,6 +183,8 @@ func tick(dt: float) -> void:
 	var dirty: bool = false
 	if _move_t > 0.0:
 		_move_t = maxf(0.0, _move_t - dt); dirty = true
+	if _step_sfx_cd > 0.0:
+		_step_sfx_cd = maxf(0.0, _step_sfx_cd - dt)
 	if _blocked_t > 0.0:
 		_blocked_t = maxf(0.0, _blocked_t - dt); dirty = true
 	if _shot_flash_t > 0.0:
@@ -219,6 +222,9 @@ func tick(dt: float) -> void:
 				_try_push_obstacles(mdelta)
 				var resolved: Vector2 = _move_with_collision(pos + mdelta)
 				if resolved.distance_squared_to(pos) > 0.0001:
+					if _step_sfx_cd <= 0.0 and resolved.distance_to(pos) > 0.4:
+						_step_sfx_cd = 0.34
+						_emit_sfx("mirror_avatar_step")
 					pos = resolved
 					position = pos.round()
 					_move_t = 0.14

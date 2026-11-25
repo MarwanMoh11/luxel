@@ -490,6 +490,37 @@
       ]
     },
     {
+      "id": "ev_toll_r2_landing",
+      "on": "flag:toll_r2_survived",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "snuffer_tr2_land",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                152,
+                408
+              ],
+              "zone": "toll_drop",
+              "leash": 140
+            },
+            {
+              "id": "moth_tr2_land",
+              "kind": "toll_moth",
+              "pos": [
+                232,
+                408
+              ],
+              "zone": "toll_drop",
+              "leash": 160
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ev_toll_r2_chord",
       "on": "signal:gate_toll_r2_chord",
       "once": true,
@@ -512,7 +543,7 @@
     "kind": "setpiece",
     "beat": "sho",
     "teaches": "Rapid Dawn/Dusk/War bell targeting while holding footing on a live plunging set piece.",
-    "decisions": 9,
+    "decisions": 10,
     "expert_s": 55,
     "reward": "toll_r2_survived+40sh",
     "why": "Signature adrenaline drop surfing the falling bell down the shaft.",

@@ -172,7 +172,8 @@ func confirm_selected() -> bool:
 			sold.apply_hush_finale_choice("display")
 			_last_trade_id = "display_pixels"
 			_last_trade_action = "sell"
-			_play_ui_sfx("ui_confirm")
+			_play_ui_sfx("setting_sold_visual")
+			_play_ui_sfx("toll_coin_clink")
 			trade_completed.emit("sell", "display_pixels", _mode)
 			close()
 			return true
@@ -180,7 +181,7 @@ func confirm_selected() -> bool:
 			sold.apply_hush_finale_choice("keep")
 			_last_trade_id = "keep_display"
 			_last_trade_action = "keep"
-			_play_ui_sfx("ui_confirm")
+			_play_ui_sfx("toll_coin_clink")
 			trade_completed.emit("keep", "keep_display", _mode)
 			close()
 			return true
@@ -190,7 +191,7 @@ func confirm_selected() -> bool:
 			_last_trade_id = sid
 			_last_trade_action = "redeem"
 			_set_feedback(LxStrings.text("ISL8_TOLL_REDEEMED"), PAL["lime"] as Color)
-			_play_ui_sfx("ui_confirm")
+			_play_ui_sfx("toll_coin_clink")
 			trade_completed.emit("redeem", sid, _mode)
 			_rebuild_rows()
 			close()
@@ -211,7 +212,8 @@ func confirm_selected() -> bool:
 	_last_trade_id = sid
 	_last_trade_action = "sell"
 	_set_feedback(LxStrings.text("ISL8_TOLL_SOLD_OK"), PAL["gold"] as Color)
-	_play_ui_sfx("ui_confirm")
+	_play_ui_sfx(_sold_sfx_for(sid, str(row.get("tab", ""))))
+	_play_ui_sfx("toll_coin_clink")
 	trade_completed.emit("sell", sid, _mode)
 	_rebuild_rows()
 	if _mode in ["gate", "boon_toll", "invoice"]:
@@ -344,6 +346,14 @@ func _set_feedback(txt: String, col: Color) -> void:
 	_feedback_text = txt
 	_feedback_col = col
 	_feedback_t = 1.6
+
+
+func _sold_sfx_for(sid: String, tab: String) -> String:
+	if sid in ["sound_off", "music_off"]:
+		return "setting_sold_audio"
+	if tab.to_upper() == "INTERFACE" or sid in ["hud_hearts", "minimap_hud", "ember_hud", "cursor_ring"]:
+		return "setting_sold_hud"
+	return "setting_sold_visual"
 
 
 func _play_ui_sfx(sfx_id: String) -> void:

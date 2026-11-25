@@ -45,6 +45,7 @@ var _bank_amt: float = 0.0
 var _bump_cd: float = 0.0
 var _bat_cd: Dictionary = {}
 var _wake_cd: float = 0.0
+var _wake_sfx_cd: float = 0.0
 var _wake: Array[Dictionary] = []
 var _bob_phase: float = 0.0
 var _cached_dock_pos: Vector2 = Vector2.INF
@@ -140,7 +141,7 @@ func get_platform_rect() -> Rect2: return Rect2(pos - size * 0.5, size)
 func recall_to_dock(target_pos: Vector2) -> void:
 	pos = target_pos; position = target_pos.round(); vel = Vector2.ZERO
 	grounded = _check_grounded(region)
-	_spawn_wake(pos, 6.0); _emit_sfx("harbor_creak"); queue_redraw()
+	_spawn_wake(pos, 6.0); _emit_sfx("skiff_dock"); queue_redraw()
 
 func on_portal_warped(_from_p: Vector2, _to_p: Vector2, preserved_vel: Vector2) -> void:
 	_swing_t = 0.0; _release_post_whip()
@@ -161,7 +162,7 @@ func on_mounted(w: LxWick) -> void:
 	if not w.fired.is_connected(_on_rider_fired):
 		w.fired.connect(_on_rider_fired)
 	w.global_position = pos; w.last_pos = pos
-	_spawn_wake(pos, 5.5); _emit_sfx("harbor_creak"); queue_redraw()
+	_spawn_wake(pos, 5.5); _emit_sfx("skiff_dock"); queue_redraw()
 
 func on_dismounted(w: LxWick) -> void:
 	if w != null and w.fired.is_connected(_on_rider_fired):
@@ -226,7 +227,7 @@ func _on_rider_fired(aim_dir: Vector2, fire_kind: String) -> void:
 		heading = heading.lerp(vel.normalized(), 0.36).normalized()
 	_recoil_kick = 1.0
 	_spawn_wake(pos - thrust_dir * 8.0, 5.0)
-	_emit_sfx("tide_wave")
+	_emit_sfx("skiff_recoil_pop")
 	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
 		Lx.camera.call("add_kick", thrust_dir, 0.9)
 	queue_redraw()
@@ -243,7 +244,7 @@ func on_wick_dash(w: LxWick) -> bool:
 	_spawn_wake(pos - sdir * 8.0, 7.0)
 	w.spawn_ring(pos, 4.0, 18.0, 0.20, PAL["ice"] as Color, 1.4)
 	w.spawn_sparks(pos, -sdir, 7, PAL["cream"] as Color, 32.0, 90.0, 0.18)
-	_emit_sfx("dash_whoosh")
+	_emit_sfx("skiff_wake")
 	_shake_off_latched_enemies(w)
 	_bat_nearby_mines(sdir, 210.0)
 	queue_redraw()
@@ -350,7 +351,7 @@ func tick_mounted(dt: float, w: LxWick, world_ctx: Node) -> void:
 func tick(dt: float) -> void:
 	super.tick(dt)
 	_bob_phase += dt * 2.5
-	_bump_cd = maxf(0.0, _bump_cd - dt); _dash_cd = maxf(0.0, _dash_cd - dt)
+	_bump_cd = maxf(0.0, _bump_cd - dt); _dash_cd = maxf(0.0, _dash_cd - dt); _wake_sfx_cd = maxf(0.0, _wake_sfx_cd - dt)
 	_dash_burst_t = maxf(0.0, _dash_burst_t - dt); _slingshot_t = maxf(0.0, _slingshot_t - dt)
 	_recoil_kick = maxf(0.0, _recoil_kick - dt * 5.0)
 	if not _bat_cd.is_empty():
@@ -419,7 +420,7 @@ func _step_water_physics(dt: float, world_ctx: Node) -> void:
 		if by: vel.y = -vel.y * BUMP_RESTITUTION
 		if not bx and not by: vel = -vel * BUMP_RESTITUTION
 		if _bump_cd <= 0.0 and vel.length() > 14.0:
-			_bump_cd = 0.25; _emit_sfx("harbor_creak"); _spawn_wake(resolved, 5.0)
+			_bump_cd = 0.25; _emit_sfx("skiff_hull_bump"); _spawn_wake(resolved, 5.0)
 	pos = resolved; position = pos.round()
 
 	var spd_now: float = vel.length()
@@ -431,6 +432,9 @@ func _step_water_physics(dt: float, world_ctx: Node) -> void:
 		if _wake_cd <= 0.0:
 			_wake_cd = clampf(0.15 - spd_now * 0.00055, 0.048, 0.15)
 			_spawn_wake(pos - heading * 8.0, 2.5 + spd_now * 0.022)
+		if rider != null and spd_now > 55.0 and _wake_sfx_cd <= 0.0:
+			_wake_sfx_cd = 0.65
+			_emit_sfx("skiff_wake")
 
 func _check_grounded(ctx: Node) -> bool:
 	if ctx == null or not is_instance_valid(ctx) or not ctx.has_method("tile_at"): return false

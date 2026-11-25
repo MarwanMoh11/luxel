@@ -303,6 +303,31 @@
           32
         ]
       }
+    },
+    {
+      "id": "chest_oak_r7b_shards",
+      "kind": "chest",
+      "pos": [
+        40,
+        184
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 35
+      }
+    },
+    {
+      "id": "lore_oak_r7b_chamber",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R7B",
+        "icon": "lantern"
+      }
     }
   ],
   "scenery": [
@@ -465,7 +490,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Intentional darkness-triggered chamber rotation (ring_rot 0..3) + Blue Beam bank",
-    "decisions": 11,
+    "decisions": 12,
     "expert_s": 68,
     "reward": "wick_key_3_3 + Cycle 5 shortcut to oak_r8",
     "why": "Centerpiece astonishing room turning Island 3's Shifting Wood rule into an indoor puzzle box",

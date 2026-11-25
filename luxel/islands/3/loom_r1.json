@@ -349,6 +349,31 @@
         "zone": "lm_r1",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r1_shards",
+      "kind": "chest",
+      "pos": [
+        360,
+        168
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lore_loom_r1_warp",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R1",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [
@@ -580,7 +605,7 @@
     "kind": "puzzle",
     "beat": "ki",
     "teaches": "Blue light freezes silk_loom_spool (hoisting bridges); yellow light sends a conducting fire spark along linked threads to bloom light_plants and ignite braziers.",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 42,
     "reward": "ws_loom+r2_access",
     "why": "Entry Carding Hall anchoring Waystone 1 and both dungeon return shortcuts (r8 zip-cable, r10 lift).",

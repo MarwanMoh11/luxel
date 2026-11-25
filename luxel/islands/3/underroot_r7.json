@@ -301,9 +301,55 @@
         "variant": "acorn_boulder",
         "flip_x": true
       }
+    },
+    {
+      "id": "chest_ur_r7_shards",
+      "kind": "chest",
+      "pos": [
+        424,
+        200
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_ur_r7_ferry",
+      "kind": "lore_stone",
+      "pos": [
+        392,
+        136
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R7",
+        "icon": "leaf"
+      }
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "ur_r7_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        360,
+        232
+      ],
+      "route": [
+        [
+          344,
+          232
+        ],
+        [
+          384,
+          232
+        ]
+      ],
+      "zone": "ur_r7",
+      "leash": 130
+    }
+  ],
   "decor": [
     {
       "kind": "circle",
@@ -509,7 +555,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Riding beetle_mount across sap, using its mirrored carapace as a mobile Prism reflector, and luring + Sap-Horn halting wild beetles onto weight plates.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 56,
     "reward": "moth_3_08+r8_access",
     "why": "Signature Sap-Horn puzzle showcasing all three beetle_mount mechanics (ferry, Prism carapace, wild-lure halt) plus Moth #8.",
@@ -580,6 +626,17 @@
         "prop": "powered",
         "value": true,
         "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          392,
+          172
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 45.0
       },
       {
         "op": "goto",

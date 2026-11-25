@@ -255,6 +255,34 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r1_shards",
+      "kind": "chest",
+      "pos": [
+        56,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "requires_flags": [
+          "oak_sap_unlocked"
+        ]
+      }
+    },
+    {
+      "id": "lore_oak_r1_sap",
+      "kind": "lore_stone",
+      "pos": [
+        216,
+        56
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R1",
+        "icon": "lantern"
+      }
     }
   ],
   "triggers": [
@@ -438,7 +466,7 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "Hollow Oak hub topology, live Sap-Ring Floor Dial, multi-cycle shortcut teasers",
-    "decisions": 3,
+    "decisions": 5,
     "expert_s": 44,
     "reward": "ws_oak + Cycles 1/4/7 hub return",
     "why": "Grand Dungeon vertical hub anchoring 7 internal cycles and live oak_sap state",

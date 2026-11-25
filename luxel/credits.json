@@ -32,7 +32,7 @@
     {
       "title": "SOUND DESIGN",
       "lines": [
-        "300 ZERO-HISS PROCEDURAL SFX",
+        "483 ZERO-HISS PROCEDURAL SFX",
         "16 ORGANIC BIOME SOUNDSCAPES"
       ]
     },
@@ -813,6 +813,13 @@
         "luxel/audio/music/superboss_a.ogg",
         "luxel/audio/music/superboss_b.ogg"
       ]
+    },
+    {
+      "id": "lantern_gothic_epic_sfx",
+      "description": "Luxel Epic bespoke Lantern Gothic acoustic foley expansion: 81 new multi-take SFX pools (183 stereo Ogg Vorbis q4 takes, D harmonic minor, zero hiss) covering Islands 1-8 toys, Hub/Folk/Progression, and Boss/Combat feedback (483 total SFX)",
+      "generator": "gen_sfx_epic_core.py, gen_sfx_epic_a.py, gen_sfx_epic_b.py, gen_sfx_epic_c.py, gen_sfx_epic_d.py, gen_sfx_epic_all.py",
+      "license": "Original project asset",
+      "outputs": []
     }
   ],
   "third_party_audio": []

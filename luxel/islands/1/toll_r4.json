@@ -254,6 +254,18 @@
       }
     },
     {
+      "id": "bell_toll_r4_w",
+      "kind": "bell",
+      "pos": [
+        144,
+        296
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 208
+      }
+    },
+    {
       "id": "bridge_toll_r4",
       "kind": "door",
       "pos": [
@@ -522,6 +534,16 @@
               ],
               "zone": "toll_brake",
               "leash": 180
+            },
+            {
+              "id": "snuffer_tr4_bw3",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                136,
+                120
+              ],
+              "zone": "toll_brake",
+              "leash": 160
             }
           ]
         }
@@ -551,7 +573,7 @@
     "kind": "setpiece",
     "beat": "ketsu",
     "teaches": "High-tempo Dawn chord braking amidst pendulums and enemies, culminating in the crash into belfry_r1.",
-    "decisions": 10,
+    "decisions": 11,
     "expert_s": 55,
     "reward": "great_toll_done+belfry_lift+30sh",
     "why": "Climax of the Great Toll set piece delivering the player directly into the Grand Belfry Narthex.",

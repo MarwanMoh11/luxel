@@ -154,6 +154,11 @@ func _dust_color_for(surf: String) -> Color:
 	if surf == "crystal" or surf == "water": return LxWick.PAL_ICE if randf() < 0.45 else LxWick.PAL_SKY
 	return LxWick.PAL_STONE if randf() < 0.55 else PAL_MAUVE
 
+func _footstep_sfx_for(surf: String) -> String:
+	if surf == "ash" and Lx.state != null and bool(Lx.state.story_flags.get("item_heat_boots", false)):
+		return "heat_boots_step"
+	return "footstep_" + surf
+
 func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: Vector2, glide_lift: float) -> void:
 	if _last_clock_t < 0.0 or clock_t < _last_clock_t:
 		_last_clock_t = clock_t
@@ -185,7 +190,7 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 				if Lx.state.relit_islands.has(isl_l) or bool(Lx.state.story_flags.get("disc_all_%d" % isl_l, false)):
 					r_col = LxBiomePalette.col(isl_l, "glow")
 			spawn_ring(wick.global_position + Vector2(0.0, 1.0), 2.0, 8.5, 0.17, r_col, 1.0)
-		wick.emit_sfx("footstep_" + surf_l, wick.global_position, false)
+		wick.emit_sfx(_footstep_sfx_for(surf_l), wick.global_position, false)
 	_was_airborne = airborne
 
 	# Surface-aware footstep dust puffs, sharp-turn skid dust, & biome-matched footsteps (grass / wood / stone)
@@ -213,7 +218,7 @@ func _tick_emitters(wick: LxWick, clock_t: float, lan_in_hand: bool, hand_pos: V
 			if _step_parity == 1:
 				if LxWaterFx.active_instance != null and is_instance_valid(LxWaterFx.active_instance):
 					LxWaterFx.active_instance.spawn_shore_spray(wick.global_position + Vector2(0.0, 1.0), mdir, false)
-				wick.emit_sfx("footstep_" + surf, wick.global_position, false)
+				wick.emit_sfx(_footstep_sfx_for(surf), wick.global_position, false)
 	else:
 		_prev_move_dir = Vector2.ZERO
 		_dust_cd = minf(_dust_cd, 0.06)

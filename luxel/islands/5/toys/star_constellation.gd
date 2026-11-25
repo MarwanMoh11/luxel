@@ -164,6 +164,8 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 		entry["cells"] = []
 		entry["sig"] = ""
 		entry["room_token"] = room_token
+		entry["prev_edges"] = -1
+		entry["prev_tris"] = -1
 
 	var sig_parts := PackedStringArray()
 	for s: LxI5StarNode in stars:
@@ -225,6 +227,17 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 			var area2: float = absf((p1.x - p0.x) * (lan_v.y - p0.y) - (p1.y - p0.y) * (lan_v.x - p0.x))
 			if area2 > 128.0 and (adj.has("%d:%d" % [i0, i1]) or p0.distance_to(p1) <= 168.0):
 				lit_tris.append(PackedVector2Array([p0, p1, lan_v]))
+
+	var prev_edges: int = int(entry.get("prev_edges", -1))
+	var prev_tris: int = int(entry.get("prev_tris", -1))
+	entry["prev_edges"] = lit_edges.size()
+	entry["prev_tris"] = lit_tris.size()
+	if prev_edges >= 0 and (lit_tris.size() > prev_tris or lit_edges.size() > prev_edges):
+		var fx_p: Vector2 = lit_tris[lit_tris.size() - 1][0] if not lit_tris.is_empty() else (lit_edges[lit_edges.size() - 1][0] if not lit_edges.is_empty() else Vector2.ZERO)
+		if Lx.events != null:
+			Lx.events.sfx_requested.emit("star_constellation", fx_p, fx_p != Vector2.ZERO)
+		elif Lx.audio != null:
+			Lx.audio.play_sfx("star_constellation", fx_p, fx_p != Vector2.ZERO)
 
 	var has_sex_link: bool = not sextant_edges.is_empty()
 	canvas.unlit_edges = unlit_edges

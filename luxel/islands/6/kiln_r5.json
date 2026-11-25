@@ -152,7 +152,7 @@
       { "op": "goto", "to": [200, 104], "tol": 6.0 },
       { "op": "interact", "target": "shrine_sunflare" },
       { "op": "expect", "move": "sunflare" },
-      { "op": "goto", "to": [288, 120], "tol": 6.0 },
+      { "op": "goto", "to": [288, 120], "tol": 4.0 },
       { "op": "sunflare" },
       { "op": "wait_until", "target": "door_kiln_r5_east", "prop": "opened", "value": true, "timeout": 3.5 },
       { "op": "expect_exit", "exit": "exit_kiln_r5_east" }

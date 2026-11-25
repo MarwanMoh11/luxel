@@ -232,7 +232,7 @@ func add_half_lantern() -> bool:
 	if Lx.events != null:
 		var cue: String = "CUE_HALF_LANTERN" if LxStrings.has_id("CUE_HALF_LANTERN") else "CUE_EMBER_FOUND"
 		Lx.events.narration_requested.emit(cue, "title", 2.6)
-		Lx.events.sfx_requested.emit("ember_pickup", Vector2.ZERO, false)
+		Lx.events.sfx_requested.emit("half_lantern_pickup", Vector2.ZERO, false)
 	return false
 
 

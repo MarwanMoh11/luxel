@@ -71,7 +71,7 @@ func interact(_actor: Node = null) -> bool:
 			Lx.events.narration_requested.emit("ISL8_STAIR_LIFT_LOCKED", "narration", 2.0)
 		return false
 	_pulse_t = 0.45
-	_emit_sfx("boon_draft")
+	_emit_sfx("express_lift")
 	var dir: LxStairDirector = _get_director()
 	if dir != null and floor_num in [4, 8, 12]:
 		dir.warp_to_lift(floor_num)

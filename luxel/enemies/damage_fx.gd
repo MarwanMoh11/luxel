@@ -177,6 +177,8 @@ static func trigger_boss_phase_reset(boss: LxEnemyBrain, next_phase: int) -> voi
 		return
 	var fred: bool = LxHudFx.flash_reduced()
 	boss.awaken_t = maxf(boss.awaken_t, 0.55)
+	if Lx.events != null:
+		Lx.events.sfx_requested.emit("phase_shift_crown", boss.pos, true)
 	var hs: float = 0.14 if (boss.kind == "the_hush" and next_phase >= 3) else 0.11
 	if Lx.hitstop != null and is_instance_valid(Lx.hitstop):
 		Lx.hitstop.trigger(hs)

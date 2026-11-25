@@ -319,6 +319,18 @@
       }
     },
     {
+      "id": "chest_hg_r9_sanctum",
+      "kind": "chest",
+      "pos": [
+        296,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 50
+      }
+    },
+    {
       "id": "lamp_r9_s",
       "kind": "road_lamp",
       "pos": [
@@ -622,9 +634,9 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Full 3-Echo causal choreography combining clock_gate rotation, blue_transformer bank shots, and Topiary Knight confrontation.",
-    "decisions": 11,
+    "decisions": 12,
     "expert_s": 75,
-    "reward": "hg_boss_key+hg_east_shortcut",
+    "reward": "hg_boss_key+hg_east_shortcut+50 shards",
     "why": "Signature Island 4 climax puzzle before the final boss; closes Cycle 4 back to the Rotunda.",
     "exit": "exit_hg_r9_shortcut",
     "start": {

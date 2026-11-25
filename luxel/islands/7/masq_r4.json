@@ -556,15 +556,11 @@
           72,
           240
         ],
-        "tol": 18.0
-      },
-      {
-        "op": "interact",
-        "target": "portal_r4_1"
+        "tol": 8.0
       },
       {
         "op": "wait",
-        "secs": 0.35
+        "secs": 0.6
       },
       {
         "op": "goto",

@@ -504,8 +504,14 @@
     },
     "solution": [
       {
-        "op": "interact",
-        "target": "lore_o5_r13"
+        "op": "goto",
+        "to": [
+          424,
+          164
+        ]
+      },
+      {
+        "op": "interact"
       },
       {
         "op": "goto",

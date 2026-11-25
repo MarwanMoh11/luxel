@@ -27,6 +27,7 @@ var curve_angle_deg: float = 0.0
 
 var _respawn_left: float = 0.0
 var _flight_t: float = 0.0
+var _roll_sfx_cd: float = 0.0
 var _hit_ids: Array[int] = []
 var _trail: Array[Vector2] = []
 
@@ -51,6 +52,7 @@ func _reset_to_cradle() -> void:
 	curve_angle_deg = 0.0
 	_respawn_left = 0.0
 	_flight_t = 0.0
+	_roll_sfx_cd = 0.22
 	_hit_ids.clear()
 	_trail.clear()
 	queue_redraw()
@@ -93,6 +95,7 @@ func on_hit(hit: LxHit) -> bool:
 	light_color = LxHit.COLOR_BLUE if hit.is_blue() else LxHit.COLOR_YELLOW
 	curve_angle_deg = hit.curve_angle_deg
 	_flight_t = 0.0
+	_roll_sfx_cd = 0.22
 	_hit_ids.clear()
 	_trail.clear()
 	_emit_sfx("meteor_clank")
@@ -177,6 +180,10 @@ func _tick_flight(dt: float) -> void:
 
 	pos = nxt
 	position = pos.round()
+	_roll_sfx_cd = maxf(0.0, _roll_sfx_cd - dt)
+	if vel.length() > 60.0 and _roll_sfx_cd <= 0.0:
+		_roll_sfx_cd = 0.40
+		_emit_sfx("meteor_orb_roll")
 
 	# Stop smoothly on solid ground when coasted out, or respawn if flown too long
 	if vel.length() <= 14.0:
@@ -248,7 +255,7 @@ func _check_interactable_hits(a: Vector2, b: Vector2) -> bool:
 			_hit_ids.append(iid)
 			var h_brk := LxHit.make(LxHit.SOURCE_BEAM, METEOR_DAMAGE, move_d, pos, 3.0, true, true, self, true, light_color, curve_angle_deg)
 			it.on_hit(h_brk)
-			_emit_sfx("stone_break")
+			_emit_sfx("meteor_orb_shatter")
 			return true
 
 		if it.kind in ["switch_eye", "star_bell", "crystal_toggle", "timed_brazier", "brazier", "star_node", "polarity_well"]:

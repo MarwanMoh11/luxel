@@ -93,7 +93,7 @@
         152
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": false,
         "radius_px": 16,
@@ -481,11 +481,7 @@
           240,
           96
         ],
-        "tol": 18.0
-      },
-      {
-        "op": "interact",
-        "target": "moth_7_09"
+        "tol": 10.0
       },
       {
         "op": "expect",

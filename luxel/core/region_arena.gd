@@ -77,7 +77,7 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 			locked = true
 			_lock_flash = 0.35
 			if Lx.events != null:
-				Lx.events.sfx_requested.emit("door_locked", wick_pos, false)
+				Lx.events.sfx_requested.emit("arena_bars_rise", wick_pos, false)
 				Lx.events.shake_requested.emit(0.04 if LxHudFx.flash_reduced() else 0.08)
 			queue_redraw()
 		elif _rise_t > 0.0:
@@ -88,7 +88,7 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 			locked = false
 			_lock_flash = 0.0
 			if not wick_dead and Lx.events != null:
-				Lx.events.sfx_requested.emit("door_open", wick_pos, false)
+				Lx.events.sfx_requested.emit("arena_bars_fall", wick_pos, false)
 			queue_redraw()
 		else:
 			_clock += dt

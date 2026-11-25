@@ -189,7 +189,7 @@ func _start_recording() -> void:
 	_sample_accum = 0.0
 	_last_shots = _read_wick_shots()
 	_record_sample(false)
-	_emit_sfx("prop_chime")
+	_emit_sfx("echo_rose_record")
 	queue_redraw()
 
 
@@ -210,7 +210,7 @@ func _start_playback() -> void:
 	_refresh_region_slot_indices()
 	set_powered(true)
 	emit_power(true)
-	_emit_sfx("lens_reveal")
+	_emit_sfx("echo_rose_replay")
 	queue_redraw()
 
 

@@ -286,6 +286,34 @@
         "variant": "acorn_boulder",
         "flip_x": false
       }
+    },
+    {
+      "id": "chest_underroot_r8_shards",
+      "kind": "chest",
+      "pos": [
+        248,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "requires_flags": [
+          "ur_r8_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_ur_r8_mill",
+      "kind": "lore_stone",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R8",
+        "icon": "flame"
+      }
     }
   ],
   "enemies": [
@@ -486,10 +514,63 @@
   ],
   "events": [
     {
+      "id": "underroot_r8_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "ur_r8_w2_mimic",
+              "kind": "false_lantern",
+              "pos": [
+                360,
+                216
+              ],
+              "zone": "ur_r8",
+              "leash": 150
+            },
+            {
+              "id": "ur_r8_w2_spider",
+              "kind": "jumping_spider",
+              "pos": [
+                296,
+                248
+              ],
+              "zone": "ur_r8",
+              "leash": 150
+            },
+            {
+              "id": "ur_r8_w2_strangler",
+              "kind": "vine_strangler",
+              "pos": [
+                392,
+                168
+              ],
+              "zone": "ur_r8",
+              "leash": 150
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_r8_combat",
+            "exit_r8_north"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
       "id": "ur_r8_open_shortcut",
       "on": "cleared",
       "once": true,
       "do": [
+        {
+          "set_flag": "ur_r8_cleared"
+        },
         {
           "set_flag": "ur_r8_shortcut"
         },
@@ -499,7 +580,8 @@
         {
           "sfx": "shrine_unlock"
         }
-      ]
+      ],
+      "if": "flag:rscr_3_underroot_r8_underroot_r8_wave2"
     }
   ],
   "design": {
@@ -507,7 +589,7 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Bolt-checking suspicious lamps before throwing your lantern and riding moving ant belts to outpace jumping_spider leaps.",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 54,
     "reward": "ur_r8_shortcut+r9_access",
     "why": "High-tempo wing-2 combat ring opening Cycle 2 back to Root Threshold.",
@@ -517,6 +599,19 @@
         "op": "clear",
         "zone": "ur_r8",
         "timeout": 55.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "zone": "ur_r8",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "wait_until",

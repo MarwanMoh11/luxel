@@ -267,6 +267,31 @@
         "zone": "lm_r7",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r7_shards",
+      "kind": "chest",
+      "pos": [
+        72,
+        232
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_loom_r7_shuttle",
+      "kind": "lore_stone",
+      "pos": [
+        376,
+        56
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R7",
+        "icon": "lantern"
+      }
     }
   ],
   "decor": [
@@ -446,7 +471,7 @@
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Brass Shuttle custom wire weaving (throw from shuttle spool to hook -> recall -> shoot spool to send spark down your custom line) + dry anchor snapping.",
-    "decisions": 8,
+    "decisions": 10,
     "expert_s": 58,
     "reward": "loom_anchor_1+moth_3_09+r8_access",
     "why": "First Wing 2 showcase proving the Brass Shuttle item transforms unlinked islands into custom circuits.",
@@ -494,6 +519,10 @@
         ]
       },
       {
+        "op": "clear",
+        "timeout": 45.0
+      },
+      {
         "op": "shoot",
         "from": [
           368,
@@ -530,5 +559,26 @@
   ],
   "triggers": [],
   "layers": [],
-  "enemies": []
+  "enemies": [
+    {
+      "id": "r7_drifter",
+      "kind": "dandelion_drifter",
+      "pos": [
+        168,
+        88
+      ],
+      "route": [
+        [
+          152,
+          88
+        ],
+        [
+          184,
+          88
+        ]
+      ],
+      "zone": "lm_r7",
+      "leash": 120
+    }
+  ]
 }

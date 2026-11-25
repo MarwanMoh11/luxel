@@ -71,7 +71,7 @@ func _catch_moth() -> void:
 	active = false
 	_catch_fx_t = 0.50
 	LxQuests.current().catch_moth(moth_id)
-	_emit_sfx("ember_pickup")
+	_emit_sfx("moth_catch")
 	_emit_gust(42.0, 38.0, Vector2(0.0, -4.0))
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("MOTH_CAUGHT", "narration", 2.0)

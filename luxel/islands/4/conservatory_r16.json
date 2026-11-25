@@ -141,6 +141,16 @@
       ],
       "zone": "conservatory_r16",
       "leash": 130
+    },
+    {
+      "id": "ms_c4_r16",
+      "kind": "mire_snuffer",
+      "pos": [
+        360,
+        152
+      ],
+      "zone": "conservatory_r16",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -307,6 +317,18 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_c4_r16",
+      "kind": "chest",
+      "pos": [
+        72,
+        184
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 45
+      }
     }
   ],
   "layers": [],
@@ -432,9 +454,9 @@
     "kind": "combat",
     "beat": "ten",
     "teaches": "Combining Weather Wheel SUN shifts with Beam bramble clearing and dual-plate latching",
-    "decisions": 8,
+    "decisions": 9,
     "expert_s": 55,
-    "reward": "c4_r16_cleared, 45 shards",
+    "reward": "c4_r16_cleared, 90 shards",
     "why": "Synthesis combat-puzzle chamber before the Sundial Chandelier finale.",
     "exit": "exit_c4_r16_north",
     "start": {

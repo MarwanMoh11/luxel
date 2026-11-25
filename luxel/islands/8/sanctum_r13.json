@@ -740,6 +740,22 @@
         "flag": "sanctum_bell_rung"
       },
       {
+        "op": "goto",
+        "to": [
+          276,
+          148
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
         "op": "expect_exit",
         "exit": "exit_sanctum_r13_north"
       }

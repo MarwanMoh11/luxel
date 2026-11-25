@@ -241,7 +241,7 @@ func _on_phase_enter(new_phase: int) -> void:
 			armour_intact = true
 			armour_hp = 2.5
 			_armor_forged_roar = true
-			stage.play_sfx("golem_armour_clank", pos)
+			stage.play_sfx("boss_armour_glint", pos)
 			_spawn_reforge_sparks()
 		_slag.rim_cracked = true
 		# P2 Arena Mutation: crack outer basalt rim into lava channels + spawn 2 director-compliant slag_slimes!
@@ -295,7 +295,7 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 		if _armour_broken_t <= 0.0:
 			armour_intact = true
 			armour_hp = armour_max * 0.65
-			stage.play_sfx("golem_armour_clank", pos)
+			stage.play_sfx("boss_armour_glint", pos)
 	_slag.tick(dt, self)
 
 
@@ -351,7 +351,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	clank_t = 0.12
 	if _clank_sfx_cd <= 0.0:
 		_clank_sfx_cd = 0.28
-		stage.play_sfx("golem_armour_clank", pos)
+		stage.play_sfx("boss_armour_chip", pos)
 	if armour_intact:
 		_wear_armour(0.10)
 	return dmg * (0.24 if armour_intact else 0.34)

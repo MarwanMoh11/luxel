@@ -151,7 +151,7 @@ func _sync_state(emit_fx: bool) -> void:
 		if cur_side != _last_plant_side:
 			_last_plant_side = cur_side
 			step_count += 1
-			_emit_sfx("golem_stomp")
+			_emit_sfx("colossus_step")
 			var amp: float = shake_amp * (0.45 if LxHudFx.flash_reduced() else 1.0)
 			if Lx.events != null and amp > 0.001:
 				Lx.events.shake_requested.emit(amp)

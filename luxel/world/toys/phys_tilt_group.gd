@@ -107,7 +107,7 @@ func tick(dt: float) -> void:
 		var was_tele: bool = telegraphing
 		telegraphing = local_t >= (half_p - TELEGRAPH_S)
 		if telegraphing and not was_tele:
-			_emit_sfx("harbor_creak")
+			_emit_sfx("colossus_tilt" if island_id == 6 else "harbor_creak")
 		if tilt_side != prev_side:
 			_emit_sfx("tide_surge")
 		_ext_mult = 1.0

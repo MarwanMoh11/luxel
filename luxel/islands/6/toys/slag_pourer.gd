@@ -103,7 +103,7 @@ func trigger_pour() -> bool:
 		return false
 	_set_state(PourState.POURING)
 	_pour_t = pour_warn_secs
-	_emit_sfx("furnace_draw")
+	_emit_sfx("slag_pour")
 	queue_redraw()
 	return true
 
@@ -174,7 +174,7 @@ func _complete_pour() -> void:
 			spawned_obj = iv as Object
 	if spawned_obj != null:
 		_spawned.append(spawned_obj)
-		_emit_sfx("magma_crack")
+		_emit_sfx("slag_cool")
 		if Lx.player is LxWick and is_instance_valid(Lx.player):
 			(Lx.player as LxWick).spawn_ring(spawn_pos, 2.0, 14.0, 0.24, PAL["coral"] as Color, 1.4)
 			(Lx.player as LxWick).spawn_sparks(spawn_pos, Vector2.UP, 6, PAL["gold"] as Color, 22.0, 66.0, 0.22)

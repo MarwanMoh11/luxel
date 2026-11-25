@@ -216,6 +216,34 @@
         "variant": "acorn_boulder",
         "flip_x": false
       }
+    },
+    {
+      "id": "chest_underroot_r4_shards",
+      "kind": "chest",
+      "pos": [
+        184,
+        40
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "requires_flags": [
+          "ur_r4_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_ur_r4_thimble",
+      "kind": "lore_stone",
+      "pos": [
+        376,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R4",
+        "icon": "flame"
+      }
     }
   ],
   "enemies": [
@@ -413,10 +441,63 @@
   ],
   "events": [
     {
+      "id": "underroot_r4_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "ur_r4_w2_beetle",
+              "kind": "burrow_beetle",
+              "pos": [
+                72,
+                216
+              ],
+              "zone": "ur_r4",
+              "leash": 150
+            },
+            {
+              "id": "ur_r4_w2_spider",
+              "kind": "jumping_spider",
+              "pos": [
+                40,
+                168
+              ],
+              "zone": "ur_r4",
+              "leash": 150
+            },
+            {
+              "id": "ur_r4_w2_drifter",
+              "kind": "dandelion_drifter",
+              "pos": [
+                40,
+                104
+              ],
+              "zone": "ur_r4",
+              "leash": 150
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_r4_combat",
+            "exit_r4_north"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
       "id": "ur_r4_reward",
       "on": "cleared",
       "once": true,
       "do": [
+        {
+          "set_flag": "ur_r4_cleared"
+        },
         {
           "sfx": "shrine_unlock"
         },
@@ -426,7 +507,8 @@
             "amount": 15
           }
         }
-      ]
+      ],
+      "if": "flag:rscr_3_underroot_r4_underroot_r4_wave2"
     }
   ],
   "design": {
@@ -434,7 +516,7 @@
     "kind": "combat",
     "beat": "sho",
     "teaches": "Using central thimble cover to stall a Burrow Beetle and firing through a dew_lens to crack its shell while popping drifting dandelion seed-mines.",
-    "decisions": 5,
+    "decisions": 7,
     "expert_s": 50,
     "reward": "15_shards+r5_access",
     "why": "First combat crucible introducing Island 3's tank + aerial disrupter pair around a signature tiny-world thimble tower.",
@@ -444,6 +526,19 @@
         "op": "clear",
         "zone": "ur_r4",
         "timeout": 45.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "zone": "ur_r4",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "wait_until",

@@ -180,7 +180,7 @@ func reclaim() -> void:
 		Lx.state.story_flags[release_flag] = true
 	set_powered(true)
 	emit_power(true)
-	_emit_sfx("mask_shatter")
+	_emit_sfx("mask_reclaim")
 	_emit_gust(60.0, 46.0)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		(Lx.player as LxWick).spawn_ring(pos, 4.0, 28.0, 0.34, PAL["gold"] as Color, 1.5)

@@ -321,6 +321,31 @@
         "variant": "acorn_boulder",
         "flip_x": false
       }
+    },
+    {
+      "id": "chest_ur_r1_shards",
+      "kind": "chest",
+      "pos": [
+        328,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 20
+      }
+    },
+    {
+      "id": "lore_ur_r1_sun",
+      "kind": "lore_stone",
+      "pos": [
+        216,
+        200
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_UR_R1",
+        "icon": "lantern"
+      }
     }
   ],
   "enemies": [],
@@ -538,7 +563,7 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "1.8x sun-lantern blooms thorn-walls from afar; hiding light behind cover starves them; rolling dew_lens and shooting yellow focuses a dew_ray to burn dry_root_knot.",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 40,
     "reward": "ws_underroot+r2_access",
     "why": "Entry threshold of The Under-Root anchoring Waystone 1 and two later return shortcuts (r8, r10).",

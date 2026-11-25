@@ -239,8 +239,8 @@
       "id": "tk_r7_n",
       "kind": "topiary_knight",
       "pos": [
-        232,
-        88
+        376,
+        120
       ],
       "zone": "hg_r7_walk"
     },
@@ -248,8 +248,8 @@
       "id": "snuffer_r7_ne",
       "kind": "mire_snuffer",
       "pos": [
-        312,
-        88
+        408,
+        200
       ],
       "zone": "hg_r7_walk"
     }

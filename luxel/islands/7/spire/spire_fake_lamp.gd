@@ -76,9 +76,9 @@ func _shatter_illusion() -> bool:
 	if not shatter_flag.is_empty() and Lx.state != null:
 		Lx.state.story_flags[shatter_flag] = true
 	if LxIsland7Rule.active_rule != null:
-		LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_SPIRE, "black", true, pos)
+		LxIsland7Rule.active_rule.set_world_face(LxIsland7Rule.SCOPE_ISLAND, "black", true, pos)
 	elif Lx.vars != null:
-		Lx.vars.set_var(LxIsland7Rule.SCOPE_SPIRE, "world_face", "black")
+		Lx.vars.set_var(LxIsland7Rule.SCOPE_ISLAND, "world_face", "black")
 		if region != null and region.has_method("apply_layers"):
 			region.call("apply_layers", true)
 	set_powered(true)

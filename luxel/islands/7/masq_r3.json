@@ -538,11 +538,12 @@
         "op": "lens"
       },
       {
-        "op": "shoot",
-        "from": [
-          272,
-          288
-        ],
+        "op": "goto",
+        "to": "dancer_r3_hollow",
+        "tol": 26.0
+      },
+      {
+        "op": "interact",
         "target": "dancer_r3_hollow"
       },
       {
@@ -554,14 +555,11 @@
       },
       {
         "op": "goto",
-        "to": [
-          272,
-          256
-        ],
-        "tol": 20.0
+        "to": "dancer_r3_hollow",
+        "tol": 26.0
       },
       {
-        "op": "shoot",
+        "op": "interact",
         "target": "dancer_r3_hollow"
       },
       {
@@ -573,14 +571,11 @@
       },
       {
         "op": "goto",
-        "to": [
-          272,
-          240
-        ],
-        "tol": 20.0
+        "to": "dancer_r3_hollow",
+        "tol": 26.0
       },
       {
-        "op": "shoot",
+        "op": "interact",
         "target": "dancer_r3_hollow"
       },
       {

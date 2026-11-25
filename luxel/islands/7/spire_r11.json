@@ -118,7 +118,7 @@
         192
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": false,
         "carry_bridge": true,
@@ -414,6 +414,18 @@
       "disable": []
     }
   ],
+  "events": [
+    {
+      "id": "ev_r11_solved",
+      "on": "signal:gate_r11_exit",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "spire_r11_solved"
+        }
+      ]
+    }
+  ],
   "design": {
     "idea": "Split-glass atrium where Wick smuggles a Light Orb across a Moon Pool into Black while commanding their Y-mirrored reflection across glass to bank a Blue Bolt into the upper switch.",
     "kind": "puzzle",
@@ -428,7 +440,7 @@
         "item_moon_pocket"
       ],
       "vars": {
-        "world_face": "silver"
+        "island:7:world_face": "silver"
       }
     },
     "exit": "exit_spire_r11_east",

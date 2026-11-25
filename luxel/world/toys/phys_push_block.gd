@@ -110,7 +110,7 @@ func _on_power_changed(is_on: bool) -> void:
 func _cool_slag() -> void:
 	cooled = true
 	_flash_t = 0.30
-	_emit_sfx("magma_crack")
+	_emit_sfx("slag_cool")
 	if Lx.player is LxWick:
 		(Lx.player as LxWick).spawn_ring(pos, 3.0, 14.0, 0.22, PAL["ice"] as Color, 1.2)
 	queue_redraw()

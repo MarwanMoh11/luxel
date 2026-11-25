@@ -93,7 +93,10 @@
       "requires_flags": [
         "beacon_4_1",
         "beacon_4_2",
-        "beacon_4_3"
+        "beacon_4_3",
+        "dungeon_hourglass_done",
+        "dungeon_mausoleum_done",
+        "golden_clock_key"
       ],
       "locked_door_id": "door_dungeon_4"
     },

@@ -91,7 +91,39 @@
       "locked_door_id": "door_oak_r5b_east"
     }
   ],
-  "enemies": [],
+  "enemies": [
+    {
+      "id": "r5b_archer",
+      "kind": "thorn_archer",
+      "pos": [
+        216,
+        216
+      ],
+      "route": [
+        [
+          192,
+          216
+        ],
+        [
+          240,
+          216
+        ]
+      ],
+      "zone": "oak_r5b",
+      "leash": 130
+    },
+    {
+      "id": "r5b_mimic",
+      "kind": "false_lantern",
+      "pos": [
+        232,
+        168
+      ],
+      "route": [],
+      "zone": "oak_r5b",
+      "leash": 120
+    }
+  ],
   "interactables": [
     {
       "id": "anc_oak_r5b",
@@ -271,6 +303,31 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_oak_r5b_shards",
+      "kind": "chest",
+      "pos": [
+        392,
+        152
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "lore_oak_r5b_sluice",
+      "kind": "lore_stone",
+      "pos": [
+        40,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R5B",
+        "icon": "leaf"
+      }
     }
   ],
   "scenery": [
@@ -322,7 +379,7 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Blue Piercing Beam frost-pinning a seedlight bridge while piercing a thorn wall",
-    "decisions": 7,
+    "decisions": 9,
     "expert_s": 54,
     "reward": "Direct upper entry to oak_r6 Spore Crown",
     "why": "Tests newly acquired Beam with Island 3's Seedlight starving and blue frost-pin rules",
@@ -348,6 +405,10 @@
       {
         "op": "beam",
         "target": "bramble_r5b_1"
+      },
+      {
+        "op": "clear",
+        "timeout": 55.0
       },
       {
         "op": "goto",

@@ -493,8 +493,14 @@
         "target": "scope_o5_r15_hollow"
       },
       {
-        "op": "interact",
-        "target": "lore_o5_r15_hollow"
+        "op": "goto",
+        "to": [
+          184,
+          84
+        ]
+      },
+      {
+        "op": "interact"
       },
       {
         "op": "goto",

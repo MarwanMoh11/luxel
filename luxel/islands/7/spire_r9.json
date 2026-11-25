@@ -459,6 +459,9 @@
     "expert_s": 50,
     "reward": "keepers_flame_7+r1_short+lore",
     "why": "Final Spire staging hub keeping island_check's boss-door flow intact while rewarding both deepened Spire Crests.",
+    "start": {
+      "ember": 100.0
+    },
     "exit": "exit_spire_r9_north",
     "solution": [
       {

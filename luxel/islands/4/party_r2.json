@@ -121,6 +121,16 @@
       ],
       "zone": "party_r2",
       "leash": 120
+    },
+    {
+      "id": "snuffer_party_r2",
+      "kind": "mire_snuffer",
+      "pos": [
+        408,
+        248
+      ],
+      "zone": "party_r2",
+      "leash": 115
     }
   ],
   "interactables": [
@@ -249,6 +259,18 @@
       ],
       "props": {
         "id": "party_fork_2"
+      }
+    },
+    {
+      "id": "chest_party_r2",
+      "kind": "chest",
+      "pos": [
+        56,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 35
       }
     },
     {
@@ -526,9 +548,9 @@
     "kind": "setpiece",
     "beat": "sho",
     "teaches": "Combining Hour I-II sundial shifts with Coat-Hook decoy and Echo Rose plate holding",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 50,
-    "reward": "party_token_1, party_fork_2",
+    "reward": "party_token_1, party_fork_2, 35 shards",
     "why": "First two clock hours of the One-Dusk Heist teaching usher stealth and Hour II rose bloom.",
     "exit": "exit_party_r2_north",
     "start": {

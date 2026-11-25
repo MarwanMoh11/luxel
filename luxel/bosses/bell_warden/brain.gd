@@ -337,12 +337,12 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		clank_t = 0.14
 		if src == LxHit.SOURCE_BOLT:
 			_wear_shield(0.24)
-			stage.play_sfx("warden_clank", pos)
+			stage.play_sfx("boss_armour_glint", pos)
 			return dmg * 0.22
 		return dmg * 0.50
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
-		stage.play_sfx("warden_clank", pos)
+		stage.play_sfx("boss_armour_chip", pos)
 		return dmg * 0.36
 	return dmg * 0.62
 

@@ -121,6 +121,16 @@
       ],
       "zone": "party_r3",
       "leash": 135
+    },
+    {
+      "id": "hh_party_r3",
+      "kind": "hour_heron",
+      "pos": [
+        40,
+        152
+      ],
+      "zone": "party_r3",
+      "leash": 120
     }
   ],
   "interactables": [
@@ -181,6 +191,18 @@
       ],
       "props": {
         "id": "teacup"
+      }
+    },
+    {
+      "id": "chest_party_r3",
+      "kind": "chest",
+      "pos": [
+        104,
+        72
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 40
       }
     },
     {
@@ -455,9 +477,9 @@
     "kind": "setpiece",
     "beat": "sho",
     "teaches": "Hour III Rain dousing patio light to open a Shadow Gate + floating a moat barge",
-    "decisions": 6,
+    "decisions": 9,
     "expert_s": 50,
-    "reward": "party_cellar_3, quest_item_teacup",
+    "reward": "party_cellar_3, quest_item_teacup, 40 shards",
     "why": "Hour III heist beat combining shadow-stealth cellar looting with Candle Grandmother's teacup quest.",
     "exit": "exit_party_r3_north",
     "start": {

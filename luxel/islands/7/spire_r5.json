@@ -230,7 +230,7 @@
         192
       ],
       "props": {
-        "scope": "dungeon:spire",
+        "scope": "island:7",
         "var": "world_face",
         "allow_bolt_flip": false,
         "radius_px": 15,
@@ -454,7 +454,7 @@
     "why": "Central mid-Spire crossroads with D25a spawn fixes and Rehearsal Vault branch.",
     "start": {
       "vars": {
-        "world_face": "silver"
+        "island:7:world_face": "silver"
       }
     },
     "exit": "exit_spire_r5_south",

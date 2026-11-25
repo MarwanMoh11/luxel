@@ -436,8 +436,14 @@
     "exit": "exit_fl_r1_e",
     "solution": [
       {
-        "op": "interact",
-        "target": "lore_fl_r1"
+        "op": "goto",
+        "to": [
+          56,
+          164
+        ]
+      },
+      {
+        "op": "interact"
       },
       {
         "op": "goto",

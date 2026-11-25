@@ -199,6 +199,34 @@
         "zone": "lm_r4",
         "lit": true
       }
+    },
+    {
+      "id": "chest_loom_r4_shards",
+      "kind": "chest",
+      "pos": [
+        408,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "requires_flags": [
+          "loom_r4_cleared"
+        ]
+      }
+    },
+    {
+      "id": "lore_loom_r4_catwalk",
+      "kind": "lore_stone",
+      "pos": [
+        56,
+        152
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_LM_R4",
+        "icon": "flame"
+      }
     }
   ],
   "decor": [
@@ -356,6 +384,56 @@
   ],
   "events": [
     {
+      "id": "loom_r4_wave2",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "loom_r4_w2_spider",
+              "kind": "jumping_spider",
+              "pos": [
+                216,
+                40
+              ],
+              "zone": "lm_r4",
+              "leash": 150
+            },
+            {
+              "id": "loom_r4_w2_archer",
+              "kind": "thorn_archer",
+              "pos": [
+                216,
+                200
+              ],
+              "zone": "lm_r4",
+              "leash": 150
+            },
+            {
+              "id": "loom_r4_w2_mimic",
+              "kind": "false_lantern",
+              "pos": [
+                200,
+                152
+              ],
+              "zone": "lm_r4",
+              "leash": 150
+            }
+          ]
+        },
+        {
+          "lock": [
+            "door_loom_r4_east",
+            "exit_loom_r4_east"
+          ]
+        },
+        {
+          "sfx": "warden_alert"
+        }
+      ]
+    },
+    {
       "id": "loom_r4_clear_flag",
       "on": "cleared",
       "once": true,
@@ -363,7 +441,8 @@
         {
           "set_flag": "loom_r4_cleared"
         }
-      ]
+      ],
+      "if": "flag:rscr_3_loom_r4_loom_r4_wave2"
     }
   ],
   "design": {
@@ -371,7 +450,7 @@
     "kind": "combat",
     "beat": "sho",
     "teaches": "Vine Strangler tether-cutting paired with Jumping Spider pit-vaulting flanks across catwalk islands.",
-    "decisions": 5,
+    "decisions": 7,
     "expert_s": 50,
     "reward": "r5_access+shards",
     "why": "First combat escalation of Wing 1 testing spatial discipline over void islands.",
@@ -381,6 +460,19 @@
         "op": "clear",
         "zone": "lm_r4",
         "timeout": 45.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.95
+      },
+      {
+        "op": "clear",
+        "zone": "lm_r4",
+        "timeout": 75.0
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
       },
       {
         "op": "wait_until",

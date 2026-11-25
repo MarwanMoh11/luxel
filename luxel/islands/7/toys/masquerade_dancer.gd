@@ -242,7 +242,7 @@ static func trigger_dim_swap(region_node: Node, group_name: String, dur: float =
 		var src_i: int = (i + shift) % n
 		members[i].begin_dim_swap(positions[src_i], indices[src_i], dur)
 	if Lx.events != null:
-		Lx.events.sfx_requested.emit("cotillion_dim", Vector2.ZERO, false)
+		Lx.events.sfx_requested.emit("masq_waltz_shuffle", Vector2.ZERO, false)
 	return n
 
 

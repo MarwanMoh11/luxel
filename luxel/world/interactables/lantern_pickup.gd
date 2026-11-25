@@ -102,7 +102,7 @@ func _collect(_actor: Node) -> bool:
 		Lx.events.hitstop_requested.emit(0.065)
 		Lx.events.shake_requested.emit(0.10)
 		Lx.events.sfx_requested.emit("lamp_lit", pos, true)
-		Lx.events.sfx_requested.emit("shrine_claimed", pos, false)
+		Lx.events.sfx_requested.emit("half_lantern_pickup", pos, false)
 		Lx.events.lantern_picked_up.emit(id, global_position)
 	elif Lx.audio != null:
 		Lx.audio.play_sfx("lamp_lit", pos, true)

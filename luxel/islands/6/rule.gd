@@ -40,6 +40,7 @@ var _shift_flash_t: float = 0.0
 var _brake_timer: float = 0.0
 var _train_mode: String = "" # "", "interior", "roof"
 var _train_scroll: float = 0.0
+var _chug_cd: float = 0.55
 var _wind_base_strength: Dictionary = {}
 var _cart_base_speed: Dictionary = {}
 var _stride_warn: bool = false
@@ -180,7 +181,7 @@ func _on_train_brake_changed(brake_val: String) -> void:
 	if brake_val == "braked":
 		_brake_timer = BRAKE_DURATION_S
 		if _events != null:
-			_events.sfx_requested.emit("steam_whistle", Vector2.ZERO, false)
+			_events.sfx_requested.emit("train_brake", Vector2.ZERO, false)
 			_events.shake_requested.emit(0.04 if LxHudFx.flash_reduced() else 0.09)
 	else:
 		_brake_timer = 0.0
@@ -501,11 +502,18 @@ func tick_rule(dt: float) -> void:
 		if _brake_timer <= 0.0 and get_train_brake() == "braked" and Lx.vars != null:
 			Lx.vars.set_var(SCOPE_EXPRESS, VAR_BRAKE, "running")
 	if _train_fx != null and is_instance_valid(_train_fx):
-		var spd: float = 42.0 if get_train_brake() == "braked" else 118.0
+		var braked: bool = get_train_brake() == "braked"
+		var spd: float = 42.0 if braked else 118.0
 		if LxHudFx.flash_reduced():
 			spd *= 0.45
 		_train_scroll = fposmod(_train_scroll + spd * dt, 96.0)
 		_train_fx.queue_redraw()
+		_chug_cd -= dt
+		if _chug_cd <= 0.0:
+			_chug_cd = 1.15 if braked else 0.62
+			var in_play: bool = Lx.root == null or int(Lx.root.get("flow")) == 2
+			if in_play and (Lx.audio == null or not Lx.audio.is_paused) and _events != null:
+				_events.sfx_requested.emit("train_chug", Vector2.ZERO, false)
 	if _stride_active:
 		redraw_hud = true
 	if redraw_hud and _hud_node != null and is_instance_valid(_hud_node):

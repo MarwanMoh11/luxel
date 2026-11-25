@@ -185,7 +185,7 @@ func trigger_flip() -> bool:
 		LxToyDraw.world_set_var(var_scope, var_name, next_face)
 		if region != null and is_instance_valid(region) and region.has_method("apply_layers"):
 			region.call("apply_layers", true)
-		_emit_sfx("moon_pool_flip")
+		_emit_sfx("moon_pool_black" if next_face == "black" else "moon_pool_silver")
 
 	# Re-assert Moon Pocket carried orb visibility/activity even if layer toggles tried to hide it
 	if bridged_orb != null and is_instance_valid(bridged_orb):

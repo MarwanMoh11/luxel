@@ -309,6 +309,29 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "chest_c4_r17",
+      "kind": "chest",
+      "pos": [
+        424,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "amount": 50
+      }
+    },
+    {
+      "id": "lore_c4_r17",
+      "kind": "lore_stone",
+      "pos": [
+        440,
+        216
+      ],
+      "props": {
+        "string_id": "ISL4_C4_CANOPY_HINT"
+      }
     }
   ],
   "layers": [
@@ -443,9 +466,9 @@
     "kind": "puzzle",
     "beat": "ketsu",
     "teaches": "Synthesizing Weather Wheel, Blue Transformer, Shadow Gate, Lantern Hook, Updraft Vent, and Moth Wings in one grand optical contraption",
-    "decisions": 12,
+    "decisions": 13,
     "expert_s": 75,
-    "reward": "c4_canopy_seal",
+    "reward": "c4_canopy_seal, 50 shards",
     "why": "Grand Island 4 synthesis climax puzzle guarding the Bellfry Loft vista.",
     "exit": "exit_c4_r17_north",
     "start": {

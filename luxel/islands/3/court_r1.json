@@ -6,87 +6,492 @@
   "theme": "briar_court",
   "name_key": "ISL3_COURT_R1_NAME",
   "music": "isl3_setpiece",
-  "spawn": [48, 104],
+  "spawn": [
+    48,
+    104
+  ],
   "zones": [
     {
       "id": "court_r1",
       "name_key": "ISL3_COURT_R1_NAME",
-      "rect": [0, 0, 416, 224],
+      "rect": [
+        0,
+        0,
+        416,
+        224
+      ],
       "dark": true
     }
   ],
   "decor": [
-    { "kind": "circle", "pos": [192, 112], "radius": 42, "style": "ritual", "color": "gold", "secondary": "cream" },
-    { "kind": "inlay", "rect": [120, 80, 144, 64], "color": "apricot" },
-    { "kind": "light_shaft", "pos": [192, 72], "size": [52, 84], "tint": "warm", "shear": 0.2 }
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        112
+      ],
+      "radius": 42,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        120,
+        80,
+        144,
+        64
+      ],
+      "color": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        192,
+        72
+      ],
+      "size": [
+        52,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.2
+    }
   ],
   "exits": [
     {
       "id": "exit_court_r1_ow",
-      "rect": [0, 80, 16, 48],
+      "rect": [
+        0,
+        80,
+        16,
+        48
+      ],
       "to_region": "ow_shift_n",
-      "to_spawn": [224, 64],
+      "to_spawn": [
+        224,
+        64
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_court_r1_north",
-      "rect": [176, 0, 32, 16],
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
       "to_region": "court_r2",
-      "to_spawn": [48, 144],
+      "to_spawn": [
+        48,
+        144
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": "door_court_r1_pit"
     },
     {
       "id": "exit_court_r1_east_sc",
-      "rect": [400, 80, 16, 48],
+      "rect": [
+        400,
+        80,
+        16,
+        48
+      ],
       "to_region": "court_r3",
-      "to_spawn": [48, 144],
+      "to_spawn": [
+        48,
+        144
+      ],
       "requires_moves": [],
-      "requires_flags": ["court_r3_juror_sc"],
+      "requires_flags": [
+        "court_r3_juror_sc"
+      ],
       "locked_door_id": "door_court_r1_sc_r3"
     },
     {
       "id": "exit_court_r1_south_sc",
-      "rect": [176, 208, 32, 16],
+      "rect": [
+        176,
+        208,
+        32,
+        16
+      ],
       "to_region": "court_r4",
-      "to_spawn": [48, 160],
+      "to_spawn": [
+        48,
+        160
+      ],
       "requires_moves": [],
-      "requires_flags": ["briar_court_done"],
+      "requires_flags": [
+        "briar_court_done"
+      ],
       "locked_door_id": "door_court_r1_sc_r4"
     }
   ],
   "enemies": [],
   "interactables": [
-    { "id": "anc_court_r1", "kind": "room_anchor", "pos": [48, 104], "props": { "auto": true } },
-    { "id": "ws_court", "kind": "waystone", "pos": [192, 112], "props": { "zone": "court_r1", "name_key": "ISL3_DNG_COURT" } },
-    { "id": "pedestal_acorn", "kind": "court_relic_pedestal", "pos": [144, 104], "props": { "relic": "acorn", "persist": true, "target_id": "door_court_r1_pit" } },
-    { "id": "pedestal_shuttle", "kind": "court_relic_pedestal", "pos": [240, 104], "props": { "relic": "shuttle", "persist": true, "target_id": "door_court_r1_pit" } },
-    { "id": "door_court_r1_pit", "kind": "door", "pos": [192, 24], "props": { "door_kind": "switch_door", "size": [32, 16], "requires_signals": ["pedestal_acorn", "pedestal_shuttle"], "sets_flag": "court_pit_open" } },
-    { "id": "door_court_r1_sc_r3", "kind": "door", "pos": [392, 104], "props": { "door_kind": "shortcut_door", "size": [16, 48], "requires_flags": ["court_r3_juror_sc"] } },
-    { "id": "door_court_r1_sc_r4", "kind": "door", "pos": [192, 200], "props": { "door_kind": "shortcut_door", "size": [32, 16], "requires_flags": ["briar_court_done"] } },
-    { "id": "lore_court_open", "kind": "lore_stone", "pos": [192, 156], "props": { "string_id": "ISL3_COURT_OPEN", "icon": "flame" } },
-    { "id": "juror_1", "kind": "npc", "pos": [128, 56], "props": { "folk": "gardener_frog", "wander_radius": 0, "bubbles": [["flame", "cross", "seed"]] } },
-    { "id": "juror_2", "kind": "npc", "pos": [256, 56], "props": { "folk": "tailor_spider", "wander_radius": 0, "bubbles": [["flame", "cross", "seed"]] } },
-    { "id": "juror_3", "kind": "npc", "pos": [144, 168], "props": { "folk": "scribe_worm", "wander_radius": 0, "bubbles": [["flame", "cross", "seed"]] } },
-    { "id": "juror_4", "kind": "npc", "pos": [248, 168], "props": { "folk": "ferry_beetle", "wander_radius": 0, "bubbles": [["flame", "cross", "seed"]] } },
-    { "id": "lamp_court_r1_w", "kind": "road_lamp", "pos": [64, 72], "props": { "lit": true } },
-    { "id": "lamp_court_r1_nw", "kind": "road_lamp", "pos": [160, 48], "props": { "lit": true } },
-    { "id": "lamp_court_r1_ne", "kind": "road_lamp", "pos": [232, 48], "props": { "lit": true } },
-    { "id": "lamp_court_r1_e", "kind": "road_lamp", "pos": [328, 136], "props": { "lit": true } }
+    {
+      "id": "anc_court_r1",
+      "kind": "room_anchor",
+      "pos": [
+        48,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_court",
+      "kind": "waystone",
+      "pos": [
+        192,
+        112
+      ],
+      "props": {
+        "zone": "court_r1",
+        "name_key": "ISL3_DNG_COURT"
+      }
+    },
+    {
+      "id": "pedestal_acorn",
+      "kind": "court_relic_pedestal",
+      "pos": [
+        144,
+        104
+      ],
+      "props": {
+        "relic": "acorn",
+        "persist": true,
+        "target_id": "door_court_r1_pit"
+      }
+    },
+    {
+      "id": "pedestal_shuttle",
+      "kind": "court_relic_pedestal",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "relic": "shuttle",
+        "persist": true,
+        "target_id": "door_court_r1_pit"
+      }
+    },
+    {
+      "id": "door_court_r1_pit",
+      "kind": "door",
+      "pos": [
+        192,
+        24
+      ],
+      "props": {
+        "door_kind": "switch_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "pedestal_acorn",
+          "pedestal_shuttle"
+        ],
+        "sets_flag": "court_pit_open"
+      }
+    },
+    {
+      "id": "door_court_r1_sc_r3",
+      "kind": "door",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "court_r3_juror_sc"
+        ]
+      }
+    },
+    {
+      "id": "door_court_r1_sc_r4",
+      "kind": "door",
+      "pos": [
+        192,
+        200
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "briar_court_done"
+        ]
+      }
+    },
+    {
+      "id": "lore_court_open",
+      "kind": "lore_stone",
+      "pos": [
+        192,
+        156
+      ],
+      "props": {
+        "string_id": "ISL3_COURT_OPEN",
+        "icon": "flame"
+      }
+    },
+    {
+      "id": "juror_1",
+      "kind": "npc",
+      "pos": [
+        128,
+        56
+      ],
+      "props": {
+        "folk": "gardener_frog",
+        "wander_radius": 0,
+        "bubbles": [
+          [
+            "flame",
+            "cross",
+            "seed"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "juror_2",
+      "kind": "npc",
+      "pos": [
+        256,
+        56
+      ],
+      "props": {
+        "folk": "tailor_spider",
+        "wander_radius": 0,
+        "bubbles": [
+          [
+            "flame",
+            "cross",
+            "seed"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "juror_3",
+      "kind": "npc",
+      "pos": [
+        144,
+        168
+      ],
+      "props": {
+        "folk": "scribe_worm",
+        "wander_radius": 0,
+        "bubbles": [
+          [
+            "flame",
+            "cross",
+            "seed"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "juror_4",
+      "kind": "npc",
+      "pos": [
+        248,
+        168
+      ],
+      "props": {
+        "folk": "ferry_beetle",
+        "wander_radius": 0,
+        "bubbles": [
+          [
+            "flame",
+            "cross",
+            "seed"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "lamp_court_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r1_nw",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        48
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_court_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "chest_court_r1_tribute",
+      "kind": "chest",
+      "pos": [
+        360,
+        104
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30,
+        "requires_flags": [
+          "court_r3_juror_sc"
+        ]
+      }
+    },
+    {
+      "id": "lore_court_r1_verdicts",
+      "kind": "lore_stone",
+      "pos": [
+        200,
+        56
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_COURT_VERDICTS",
+        "icon": "lantern"
+      }
+    }
   ],
   "scenery": [
-    { "sheet": "theme_briar_court", "prop": "rose_thorn_arch", "pos": [192, 40], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [152, 42], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "heraldic_court_banner", "pos": [232, 42], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "court_bench_stone", "pos": [128, 72], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "court_bench_stone", "pos": [256, 72], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [72, 136], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "clipped_rose_urn", "pos": [312, 72], "layer": "sort", "shadow": true },
-    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [120, 128], "layer": "ground", "shadow": false },
-    { "sheet": "theme_briar_court", "prop": "petal_drift_floor", "pos": [272, 128], "layer": "ground", "shadow": false }
+    {
+      "sheet": "theme_briar_court",
+      "prop": "rose_thorn_arch",
+      "pos": [
+        192,
+        40
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        152,
+        42
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "heraldic_court_banner",
+      "pos": [
+        232,
+        42
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "court_bench_stone",
+      "pos": [
+        128,
+        72
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "court_bench_stone",
+      "pos": [
+        256,
+        72
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        72,
+        136
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "clipped_rose_urn",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "shadow": true
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        120,
+        128
+      ],
+      "layer": "ground",
+      "shadow": false
+    },
+    {
+      "sheet": "theme_briar_court",
+      "prop": "petal_drift_floor",
+      "pos": [
+        272,
+        128
+      ],
+      "layer": "ground",
+      "shadow": false
+    }
   ],
   "layers": [],
   "events": [
@@ -95,7 +500,9 @@
       "on": "enter",
       "once": true,
       "do": [
-        { "narrate": "ISL3_COURT_OPEN" }
+        {
+          "narrate": "ISL3_COURT_OPEN"
+        }
       ]
     }
   ],
@@ -104,26 +511,80 @@
     "kind": "story",
     "beat": "ki",
     "teaches": "Briar Court trial premise, twin relic stands, juror shortcuts",
-    "decisions": 4,
+    "decisions": 5,
     "expert_s": 42,
     "reward": "ws_court + Trial Pit descent",
     "why": "Ceremonial hub linking Crown Thicket to all three knight jousts with juror shortcuts",
     "exit": "exit_court_r1_north",
     "start": {
-      "flags": ["underroot_done", "loom_done"],
-      "moves": ["bolt", "dash", "throw", "prism"]
+      "flags": [
+        "underroot_done",
+        "loom_done"
+      ],
+      "moves": [
+        "bolt",
+        "dash",
+        "throw",
+        "prism"
+      ]
     },
     "solution": [
-      { "op": "goto", "to": [192, 128], "tol": 8.0 },
-      { "op": "interact", "target": "ws_court" },
-      { "op": "goto", "to": [192, 144], "tol": 8.0 },
-      { "op": "interact", "target": "lore_court_open" },
-      { "op": "goto", "to": [144, 120], "tol": 8.0 },
-      { "op": "interact", "target": "pedestal_acorn" },
-      { "op": "goto", "to": [240, 120], "tol": 8.0 },
-      { "op": "interact", "target": "pedestal_shuttle" },
-      { "op": "expect", "flag": "court_pit_open" },
-      { "op": "expect_exit", "exit": "exit_court_r1_north" }
+      {
+        "op": "goto",
+        "to": [
+          192,
+          128
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_court"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_court_open"
+      },
+      {
+        "op": "goto",
+        "to": [
+          144,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pedestal_acorn"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          120
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "pedestal_shuttle"
+      },
+      {
+        "op": "expect",
+        "flag": "court_pit_open"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_court_r1_north"
+      }
     ]
   }
 }

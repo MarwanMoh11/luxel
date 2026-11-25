@@ -153,18 +153,18 @@
       "id": "moth_r3_0",
       "kind": "toll_moth",
       "pos": [
-        232,
-        88
+        192,
+        160
       ],
       "route": [],
       "perches": [
         [
-          232,
-          88
+          192,
+          160
         ],
         [
-          264,
-          56
+          224,
+          152
         ]
       ],
       "zone": "belfry_gallery",

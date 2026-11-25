@@ -113,12 +113,12 @@
       "kind": "door",
       "pos": [
         320,
-        32
+        88
       ],
       "props": {
         "door_kind": "combat_gate",
         "size": [
-          48,
+          64,
           16
         ],
         "clear_zone": "dream_r5"

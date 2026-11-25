@@ -246,7 +246,7 @@ func _finish_drag(pos: Vector2) -> void:
 			pm.swap_slots(from_s, drop_s)
 			_spark_slot = drop_s
 			_spark_t = 0.35
-			_play_sfx("shop_buy")
+			_play_sfx("pane_fit")
 		elif drop_s < 0:
 			pm.unequip_slot(from_s)
 			_set_feedback("PANE_REMOVED", "stone")
@@ -312,7 +312,7 @@ func _equip_pane(pid: String, at_slot: int) -> void:
 		_spark_slot = at_slot if at_slot >= 0 else pm.equipped_ids().size() - 1
 		_spark_t = 0.42
 		_set_feedback("PANE_EQUIPPED", "lime")
-		_play_sfx("shop_buy")
+		_play_sfx("pane_fit")
 		pane_changed.emit(pid, true)
 
 
