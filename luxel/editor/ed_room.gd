@@ -22,6 +22,8 @@ var width: int = 0
 var height: int = 0
 var ts: int = 16
 var dirty: bool = false
+var first_ids: Dictionary = {}  # ids the room had before any hand edit
+var version: int = 0  # goes up with every change to the room
 
 var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
@@ -50,6 +52,12 @@ func load_room(isl: int, reg: String) -> bool:
 	if _disk_map.is_empty() or _disk_json.is_empty():
 		return false
 	dirty = false
+	first_ids.clear()
+	var first: Dictionary = Io.parse_json(Io.read(base_json_path()) if has_base() else _disk_json)
+	for l: String in ["interactables", "enemies"]:
+		if first.get(l) is Array:
+			for it: Variant in (first[l] as Array):
+				first_ids[str((it as Dictionary).get("id", ""))] = true
 	return _parse(_disk_map, _disk_json)
 
 
@@ -199,6 +207,7 @@ func commit(op: Dictionary = {}) -> bool:
 	if before["rows"] == rows and (before["json"] as Dictionary) == json:
 		return false
 	before["op"] = op
+	version += 1
 	_undo.append(before)
 	if _undo.size() > UNDO_MAX:
 		_undo.pop_front()
@@ -240,6 +249,7 @@ func redo() -> bool:
 
 
 func _restore(s: Dictionary) -> void:
+	version += 1
 	rows = (s["rows"] as PackedStringArray).duplicate()
 	json = (s["json"] as Dictionary).duplicate(true)
 	head = (s["head"] as PackedStringArray).duplicate()

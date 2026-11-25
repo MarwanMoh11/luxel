@@ -146,7 +146,8 @@ def room_report(fk: str, draw: bool = False) -> Tuple[List[str], List[str]]:
 def summary(only: str = "") -> int:
     notes = json.loads((E / "notes.json").read_text()) if (E / "notes.json").exists() else []
     verdicts = json.loads((E / "verdicts.json").read_text()) if (E / "verdicts.json").exists() else {}
-    keys = sorted({key(f) for f in rooms()} | {n["room"] for n in notes} | set(verdicts))
+    checks = json.loads((E / "checks.json").read_text()) if (E / "checks.json").exists() else {}
+    keys = sorted({key(f) for f in rooms()} | {n["room"] for n in notes} | set(verdicts) | set(checks))
     if only:
         keys = [k for k in keys if k == only] or [only]
     L: List[str] = []
@@ -158,6 +159,8 @@ def summary(only: str = "") -> int:
             ch, warn = room_report(fk, bool(only))
             L += [f"- {c}" if not c.startswith("  ") else c for c in (ch or ["no changes left (undone or reset)"])]
             L += [f"- CHECK: {w}" for w in warn]
+        for q, a in sorted(checks.get(k, {}).items(), key=lambda x: x[1]):
+            L.append(f"- VISION {'MET' if a == 'yes' else 'NOT MET'}: {q}")
         for n in notes:
             if n["room"] == k:
                 at = f" about `{n['target']}`" if n.get("target") else ""

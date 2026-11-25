@@ -12,6 +12,7 @@ const Canvas := preload("res://luxel/editor/ed_canvas.gd")
 const Palette := preload("res://luxel/editor/ed_palette.gd")
 const SideCard := preload("res://luxel/editor/ed_side.gd")
 const Browser := preload("res://luxel/editor/ed_browser.gd")
+const Vision := preload("res://luxel/editor/ed_vision.gd")
 
 enum Tool { HAND, STAMP, ERASE, WIRE, NOTE }
 
@@ -30,6 +31,10 @@ var canvas: Canvas = null
 var cam: Camera2D = null
 var ui: CanvasLayer = null
 
+var vision: Vision = null
+var vision_on: bool = true
+var hot_step: int = -1  # the step under the mouse in the list
+var run_times: Dictionary = {}  # room -> seconds of the last test run
 var playing: bool = false
 var tool: int = Tool.HAND
 var tab: String = "ground"
@@ -59,6 +64,10 @@ var _hint_root: Control = null
 var _clip: Array[Dictionary] = []
 var _save_t: float = -1.0
 var _last_sfx: float = 0.0
+var _run_t: float = 0.0
+var _watch_t: float = 2.0
+var _vision_stamp: int = -1
+var _vis_btn: Button = null
 var _god: bool = false
 
 

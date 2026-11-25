@@ -13,6 +13,8 @@ func _ready() -> void:
 	world.boot(main)
 	catalog = Catalog.new()
 	catalog.build()
+	vision = Vision.new()
+	vision.ed = self
 	notes = Notes.new()
 	notes.load_all()
 	thumbs = Thumbs.new()
@@ -118,6 +120,10 @@ func _build_top() -> Control:
 	h.add_child(_undo_btn)
 	_redo_btn = Style.button("", "redo", "Redo (Cmd+Shift+Z)", redo)
 	h.add_child(_redo_btn)
+	_vis_btn = Style.button("Vision", "eye", "Show the intended way through this room (V)", func() -> void: set_vision(not vision_on))
+	_vis_btn.toggle_mode = true
+	_vis_btn.button_pressed = vision_on
+	h.add_child(_vis_btn)
 	h.add_child(Style.button("", "grid", "Grid (G)", func() -> void: canvas.grid_on = not canvas.grid_on))
 	h.add_child(Style.button("", "fit", "See the whole room (F)", func() -> void: canvas.fit()))
 	h.add_child(Style.button(" ? ", "", "How this works", func() -> void: _help.visible = not _help.visible))
@@ -176,6 +182,7 @@ func _build_help() -> PanelContainer:
 		["note", "Note: pin a message for Claude anywhere in the room."],
 		["play", "B plays the room from where Wick stands. B again comes back to edit."],
 		["rooms", "Rooms shows all 466 rooms. Double-click a green exit to walk through it."],
+		["eye", "Vision (V) shows the intended way through. The card on the right says what the room should be."],
 		["heart", "Love it / Needs work: your verdict tells Claude what to keep and what to fix."],
 		["undo", "Cmd+Z undoes anything. Everything saves by itself."],
 	]:
@@ -218,6 +225,12 @@ func _set_view(edit: bool) -> void:
 		w.content_scale_size = Vector2i(320, 180)
 
 
+func set_vision(on: bool) -> void:
+	vision_on = on
+	_vis_btn.set_pressed_no_signal(on)
+	sfx("lens_reveal" if on else "ui_back")
+
+
 # ---- Play / edit ----
 
 func _enter_edit() -> void:
@@ -244,6 +257,7 @@ func _start_play() -> void:
 	select([])
 	var at: Vector2 = world.wick.global_position
 	playing = true
+	_run_t = 0.0
 	ui.visible = false
 	cam.enabled = false
 	_set_view(false)
@@ -256,6 +270,9 @@ func _start_play() -> void:
 
 func _stop_play() -> void:
 	world.leave_live()
+	if _run_t > 2.0:
+		run_times[room.key()] = _run_t
+		room.log_op({"op": "played", "secs": roundi(_run_t)})
 	var isl: int = Lx.state.island_id
 	var reg: String = Lx.state.region_id
 	var at: Vector2 = world.wick.global_position
@@ -357,6 +374,12 @@ func _close_note() -> void:
 		set_tool(Tool.HAND)
 
 
+func set_check(q: String, v: String) -> void:
+	notes.set_check(room.key(), q, "" if notes.check(room.key(), q) == v else v)
+	sfx("ui_confirm")
+	_side.refresh()
+
+
 func set_verdict(v: String) -> void:
 	notes.set_verdict(room.key(), "" if notes.verdict(room.key()) == v else v)
 	sfx("heart_pickup" if v == "love" else "ui_move")
@@ -366,6 +389,15 @@ func set_verdict(v: String) -> void:
 # ---- Every frame ----
 
 func _process(dt: float) -> void:
+	if playing and main.flow == LxMain.Flow.PLAY and Lx.state.region_id == room.region and Lx.state.island_id == room.island:
+		_run_t += dt
+	_watch_t -= dt
+	if _watch_t <= 0.0 and room != null and not playing:
+		_watch_t = 2.0
+		var st: int = vision.stamp(room.island)
+		if st != _vision_stamp and selection.is_empty() and not _typing():
+			_vision_stamp = st
+			_side.refresh()
 	if _toast_t > 0.0:
 		_toast_t -= dt
 		_toast.modulate.a = clampf(_toast_t * 2.0, 0.0, 1.0)
@@ -460,6 +492,7 @@ func _edit_key(k: InputEventKey) -> bool:
 		KEY_G: canvas.grid_on = not canvas.grid_on
 		KEY_F: canvas.fit()
 		KEY_M: _browser.open()
+		KEY_V: set_vision(not vision_on)
 		KEY_X: flip_selection()
 		KEY_DELETE, KEY_BACKSPACE: delete_selection()
 		KEY_EQUAL, KEY_KP_ADD: canvas.set_zoom(canvas.zoom * 1.2)

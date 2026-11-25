@@ -7,6 +7,7 @@ const Room := preload("res://luxel/editor/ed_room.gd")
 
 var notes: Array = []
 var verdicts: Dictionary = {}
+var checks: Dictionary = {}  # room -> {question: "yes" / "no"}
 
 
 func _notes_path() -> String: return Room.edits_dir + "/notes.json"
@@ -18,11 +19,14 @@ func load_all() -> void:
 	notes = n as Array if n is Array else []
 	var v: Variant = Io.read_json(_verdicts_path(), {})
 	verdicts = v as Dictionary if v is Dictionary else {}
+	var c: Variant = Io.read_json(Room.edits_dir + "/checks.json", {})
+	checks = c as Dictionary if c is Dictionary else {}
 
 
 func save_all() -> void:
 	Io.write(_notes_path(), Io.to_json(notes) + "\n")
 	Io.write(_verdicts_path(), Io.to_json(verdicts) + "\n")
+	Io.write(Room.edits_dir + "/checks.json", Io.to_json(checks) + "\n")
 
 
 func of_room(key: String) -> Array[Dictionary]:
@@ -59,6 +63,21 @@ func set_verdict(key: String, v: String) -> void:
 		verdicts.erase(key)
 	else:
 		verdicts[key] = {"verdict": v, "time": Io.stamp_now()}
+	save_all()
+
+
+func check(key: String, question: String) -> String:
+	return str((checks.get(key, {}) as Dictionary).get(question, ""))
+
+
+func set_check(key: String, question: String, v: String) -> void:
+	var d: Dictionary = checks.get_or_add(key, {}) as Dictionary
+	if v.is_empty():
+		d.erase(question)
+	else:
+		d[question] = v
+	if d.is_empty():
+		checks.erase(key)
 	save_all()
 
 
