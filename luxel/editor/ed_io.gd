@@ -4,6 +4,8 @@ extends RefCounted
 
 const EDITS_DIR: String = "res://docs/level_edits"
 
+static var work_dir: String = "user://editor"  # checks point this elsewhere so they never touch an open editor's files
+
 
 static func parse_json(text: String) -> Dictionary:
 	# str_to_var keeps 500 an int and 0.0 a float; JSON.parse_string turns every number into a float.

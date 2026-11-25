@@ -60,6 +60,13 @@ func fit() -> void:
 	cam.position = px * 0.5 - (area.get_center() - size * 0.5) / zoom
 
 
+func frame(world: Rect2, view: Rect2) -> void:
+	## Brings a part of the room into a part of the screen.
+	zoom = clampf(minf(view.size.x / (world.size.x + 64.0), view.size.y / (world.size.y + 64.0)), 0.6, 4.0)
+	cam.zoom = Vector2(zoom, zoom)
+	cam.position = world.get_center() - (view.get_center() - size * 0.5) / zoom
+
+
 func look_at_world(p: Vector2) -> void:
 	cam.position = p - (ed.free_area().get_center() - size * 0.5) / zoom
 	_keep_near()

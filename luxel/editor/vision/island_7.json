@@ -1,0 +1,556 @@
+{
+  "island": {
+    "title": "Moon Shoals",
+    "rule": "Moon pools flip the island between silver illusions and black obsidian truth, shadows cast northwest betray every lie, and Hollow Wick steals your moves.",
+    "feel": "Haunting lunar theatre where suspicion turns into optical cleverness, mirror smuggling, and unmasking your own double.",
+    "arc": "Learn the shadow lie law from a mimic chest, flip moon pools across the shoals, clear the Inverted Palace and Doppel Theatre in either order, unmask Hollow Wick at the Masquerade, climb the Mirror Spire, and defeat him.",
+    "moments": [
+      "Opening a silver chest whose shadow points the wrong way wakes a mimic, teaching the shadow law without a word.",
+      "Stepping into a moon pool sweeps a silver ripple across the shore, turning alabaster marble into black obsidian reefs.",
+      "Walking in silver while your reflection walks in black across glass, swapping worlds so both beams meet on one lock.",
+      "Losing both bolt and beam on stage, then spinning a turntable to catch Hollow Wick's own stolen beams with mirrors.",
+      "Stepping through a spire arch into a mirror-flipped fake Bell Isle where touching the false Great Lamp shatters the sky."
+    ]
+  },
+  "dungeons": {
+    "palace": {
+      "promise": "A two-world hall where moon pools swap silver illusions for black truth and your living reflection acts across looking glass.",
+      "power": "Moon-Glass Pocket carries orbs across world flips and pulses opposite switches.",
+      "arc": "Teaches two-world flips and mirror reflections, grants orb smuggling past the mimic mini-boss, chains cross-world lanterns and scales, and climaxes in a dual-world ballroom and false throne.",
+      "boss": "The Queen in the Glass reflects direct bolts, testing blue mirrors, reflection hits, world flips, and true shadows."
+    },
+    "theatre": {
+      "promise": "A velvet playhouse in five acts where Hollow Wick steals your moves one by one until you break each stage mask to win them back.",
+      "power": "Cue-Mirror lets shots pierce velvet curtains from spotlights and doubles echoes.",
+      "arc": "Removes Throw in Act One and Dash with Wings in Act Two for the Cue-Mirror, branches into blind Act Three and gunless Act Four, and builds to a late-smiling vanity mirror before Curtain Call.",
+      "boss": "The Understudy snatches Throw, Dash, and Bolt into orbiting spotlight masks, testing fast mask shatters mid-duel."
+    },
+    "masquerade": {
+      "promise": "A gilded ballroom where every guest wears your cloak and lantern, leaving only shadows and floor reflections to betray the lies.",
+      "power": "",
+      "arc": "Starts with twin waltzing ovals of true and lying shadows, adds upside-down floor reflections, spins eight Wicks on rotating rings, and ends in a shattering chase through the spire rose window.",
+      "boss": ""
+    },
+    "mirror_spire": {
+      "promise": "A tall prism spire uniting silver and black world flips, mirror twins, stolen moves, and counterfeit memories on the climb to Hollow Wick.",
+      "power": "",
+      "arc": "Deepens prism banks and lens crossings with black-world branches, adds a move-theft vault and prism duchess, peaks in a twin-world chord and fake Bell Isle, and gives a parry room before the summit.",
+      "boss": "Hollow Wick Unmasked tests your full kit, a center moon pool to shatter his clone, and parrying his dark lantern."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Explore twin shoals where a wrong-shadow chest teaches the lie law in seconds, moon pools raise black piers, and Hollow Wick ambushes you.",
+      "aha": "Northwest shadows betray lies, and stepping into moon pools raises hidden black obsidian bridges.",
+      "checks": [
+        "Did the mimic chest by the landing teach the wrong-shadow rule right away?",
+        "Did flipping your first moon pool clearly transform the shoals and raise piers?",
+        "Did the three skirmishes with Hollow Wick build strong tension across the map?"
+      ]
+    },
+    "silver_quay": {
+      "promise": "Rest at the crescent camp by the Palace gate, meet Mirror Crab and Moth Kid, and flip black to raise a sunken vista and cave bridge.",
+      "aha": "Flipping Silver Quay to black reveals both the sunken moon vista for quests and the obsidian bridge west.",
+      "checks": [
+        "Did flipping the camp moon pool noticeably reshape the bay and unlock paths?",
+        "Were the Inverted Palace gate, house door, and both quests easy to spot?",
+        "Did finding the lost moth in the black-world vista feel rewarding?"
+      ]
+    },
+    "black_shoals": {
+      "promise": "Cross a sunken obsidian reef where flipping to black raises bridges to the Twin Grotto and Palace backdoor while turning glass knight shields brittle.",
+      "aha": "Switching to black world raises dry obsidian causeways and makes reflective glass shields shatter cleanly.",
+      "checks": [
+        "Did black world clearly raise the bridges to the grotto and palace backdoor?",
+        "Did glass knight shields obviously become brittle once you flipped to black?",
+        "Did you spot the wrong-shadow decoy tucked into the reefs?"
+      ]
+    },
+    "velvet_promenade": {
+      "promise": "Walk the crimson theatre causeway lined with five act playbills, meet Tailor Spider, and run the timed shadow waltz trial under bright spotlights.",
+      "aha": "Compare warm southeast truth shadows against wrong northwest shadows fast under the theatre spotlights.",
+      "checks": [
+        "Did the five playbills build curiosity about the Doppel Theatre ahead?",
+        "Were true and lying shadows clearly readable during the timed waltz trial?",
+        "Did the causeway connect cleanly to the Echo Vault and theatre marquee?"
+      ]
+    },
+    "glass_terrace": {
+      "promise": "Reach the octagonal Spire forecourt joining every outer district before the Twin-Mask Gate to the Masquerade and Mirror Spire.",
+      "aha": "Both minor dungeons and the three lunar obelisks converge here to unseal the Masquerade and Spire.",
+      "checks": [
+        "Did this forecourt make all outer district shortcuts feel cleanly connected?",
+        "Was it obvious what remained to unseal the Twin-Mask Gate ahead?",
+        "Did Scribe Worm's post-relight rumor clearly point you toward Zenith Atoll?"
+      ]
+    },
+    "zenith_atoll": {
+      "promise": "Visit the lagoon eye holding a Moon Anvil, a timed mirror-parry target range that opens the Glass Crypt, and the sealed sundial gate to High Noon.",
+      "aha": "Use the Moon Anvil and beat the timed range to open the crypt, then return after relighting the lamp.",
+      "checks": [
+        "Was swapping bolt tempers at the lagoon Moon Anvil quick and clear?",
+        "Did the timed mirror-parry range feel crisp and fair to beat?",
+        "Did the closed sundial gate spark curiosity about returning later?"
+      ]
+    },
+    "cave_mirror_tide": {
+      "promise": "Solve a curved tidal sea-cave by carrying a silver light orb across a center moon pool so the raised black bridge lets you socket it west.",
+      "aha": "Smuggling a silver light orb across a moon pool raises a black bridge and powers the opposite-world socket.",
+      "checks": [
+        "Did carrying the light orb through the moon pool feel intuitive and clean?",
+        "Did the raised black obsidian bridge line up naturally toward the socket?",
+        "Did winning an ember piece and lost moth reward the cave detour well?"
+      ]
+    },
+    "cave_twin_grotto": {
+      "promise": "Guide a vertically mirrored statue across a glass divide around uneven ice pillars onto a plate while banking blue light to win Tailor Spider's mask.",
+      "aha": "Use uneven ice pillars to offset your mirrored statue, cross phantom ice with True Lens, and bank a blue bolt.",
+      "checks": [
+        "Could you offset the mirrored statue against ice pillars without frustration?",
+        "Did combining True Lens ice crossing with the blue mirror bank flow well?",
+        "Did claiming the Silver Mask and lost moth pay off the puzzle?"
+      ]
+    },
+    "cave_echo_vault": {
+      "promise": "Flip to black in a velvet vault to expose puppet spools and a moth, hang your lantern to pass a shadow gate, and pick the lone true chest of three.",
+      "aha": "Flip black to expose puppet spools, leave your lantern for the gate, and trust only the southeast shadow.",
+      "checks": [
+        "Did flipping to black clearly reveal both puppet spools and the lost moth?",
+        "Did leaving your lantern to slip past the shadow gate feel tense?",
+        "Did the final three-chest shadow test make you double-check before opening?"
+      ]
+    },
+    "cave_phase_trial": {
+      "promise": "Run the horseshoe optical target trial, alternating direct yellow shots and blue mirror bank shots on a tight clock for a stained glass pane and moth.",
+      "aha": "Keep a clean yellow then blue rhythm between direct targets and mirror banks to beat the clock.",
+      "checks": [
+        "Did alternating direct yellow and blue mirror shots feel snappy and rhythmic?",
+        "Was the timer tight enough to be exciting without feeling punishing?",
+        "Did winning the Moon Phase pane and lost moth feel well earned?"
+      ]
+    },
+    "cave_glass_crypt": {
+      "promise": "Chain Skip and Lance tempering, True Lens phantom tiles, and Sunflare obsidian breaking in a secret crypt to uncover Hollow Wick's origin mural.",
+      "aha": "Combine anvil tempers, True Lens anchors, and Sunflare to breach the final seal around Hollow Wick's story.",
+      "checks": [
+        "Did weaving tempers, True Lens, and Sunflare feel like a crisp late test?",
+        "Did Hollow Wick's origin mural land with real emotional weight?",
+        "Did the mastery ember piece make unlocking this crypt worthwhile?"
+      ]
+    },
+    "palace_r1": {
+      "promise": "Enter the mirrored Palace foyer linking the central moon pool, throne boss door, east locked gate, and two future upper return shortcuts.",
+      "aha": "Flipping the foyer moon pool changes the entire palace between silver illusions and black obsidian truth.",
+      "checks": [
+        "Did the foyer clearly show the throne door and upper shortcut balconies?",
+        "Did flipping the central moon pool immediately show the two-world contrast?",
+        "Was the open west wing an obvious starting point from the foyer?"
+      ]
+    },
+    "palace_r2": {
+      "promise": "Cross a flooded mirror basin where the bridge and weight plate exist only in black world while the north exit opens only back in silver.",
+      "aha": "Flip to black to cross and push the block onto the plate, then flip back to silver to clear the exit.",
+      "checks": [
+        "Did switching black to push and back to silver to exit click cleanly?",
+        "Did you spot the wrong-shadow mimic chest before opening it?",
+        "Did this room teach two-world spatial thinking without clutter?"
+      ]
+    },
+    "palace_r3": {
+      "promise": "Enter a split looking-glass gallery where your mirrored reflection behind glass banks a blue bolt into a sealed switch while you hold the west plate.",
+      "aha": "Align your reflection against walls behind glass so its mirrored shot banks off the mirror into the switch.",
+      "checks": [
+        "Was watching your reflection mirror every step and shot immediately legible?",
+        "Did lining up the reflection's blue bank shot feel clever and smooth?",
+        "Did the east wall seam tease a future stairwell shortcut?"
+      ]
+    },
+    "palace_r4": {
+      "promise": "Fight two glass knights and a reflection around a center moon pool where flipping to black shatters mirror shields while widening edge pits.",
+      "aha": "Flip to black to make glass knight shields brittle, accepting tighter pit edges as the tradeoff.",
+      "checks": [
+        "Was the silver-versus-black combat tradeoff clear right away?",
+        "Did shattering glass knight shields in black world feel punchy?",
+        "Were the narrower pit edges fair while dodging the reflection?"
+      ]
+    },
+    "palace_r5": {
+      "promise": "Duel the Silver-Tide Mimic, baiting its move-copying patterns and flipping to black to crack its shell for Moon-Glass Pocket, key one, and a shortcut.",
+      "aha": "Bait safe moves when it copies you, then flip the moon pool to black in phase two to crack its mirror shell.",
+      "checks": [
+        "Could you clearly tell which of your moves the Mimic was copying?",
+        "Did flipping to black to crack its phase-two armor feel smart?",
+        "Did claiming Moon-Glass Pocket and looping back to the foyer feel great?"
+      ]
+    },
+    "palace_r6": {
+      "promise": "Test Moon-Glass Pocket in a three-room cloister by smuggling a silver orb into black for a socket, claiming key three, and passing a shadow gate.",
+      "aha": "Moon-Glass Pocket keeps your carried light orb intact through moon pool flips so you can power black sockets.",
+      "checks": [
+        "Did smuggling the light orb through the moon pool pay off the new power?",
+        "Were the two moon jellies manageable around the cloister rooms?",
+        "Did slipping unarmed through the shadow gate open the backdoor cleanly?"
+      ]
+    },
+    "palace_r7": {
+      "promise": "Cross a split stairwell by hanging your lantern in silver so its glow blooms a black vine bridge toward a ferry and switch.",
+      "aha": "Your hung lantern shines across worlds, blooming a black vine bridge before a ferry carries you east.",
+      "checks": [
+        "Did seeing your silver lantern bloom a black vine bridge surprise you?",
+        "Did riding the ferry and flipping back to silver for the mirror bank flow?",
+        "Did this stairwell tie the palace's wings together smoothly?"
+      ]
+    },
+    "palace_r8": {
+      "promise": "Balance a two-world scale by loading silver weights on one pan, then smuggling a light orb into black and guiding a mirror statue onto the other pan.",
+      "aha": "Combine silver weights on one pan with a smuggled orb and mirror statue in black so both pans match.",
+      "checks": [
+        "Could you easily compare the weights across silver and black pans?",
+        "Did combining orb smuggling with mirror-statue alignment feel clever?",
+        "Did winning key two and an ember piece feel worth the logic puzzle?"
+      ]
+    },
+    "palace_r9": {
+      "promise": "Clear glass foes in a conservatory, flip to black to expose a hidden beam sensor, push blue glass into the emitter, and angle the prism to open north.",
+      "aha": "Flip black for both the glass knight and the hidden sensor, then tint and angle the beam into it.",
+      "checks": [
+        "Did shifting between combat and optical beam routing feel smooth?",
+        "Was pushing the blue glass into the emitter and aiming the prism clear?",
+        "Did the locked throne vault ahead build anticipation for the ballroom?"
+      ]
+    },
+    "palace_r10": {
+      "promise": "Solve the dual-world ballroom where you walk in silver and your reflection walks in black, swapping worlds and firing one beam chord across glass.",
+      "aha": "Link portals, smuggle the orb by swapping worlds, then fire one beam so gold and blue strike together.",
+      "checks": [
+        "Did watching yourself and your reflection live in opposite worlds click?",
+        "Did firing one beam to strike both gold and blue locks together pay off?",
+        "Did opening the foyer balcony shortcut and finding the moth feel great?"
+      ]
+    },
+    "palace_r11": {
+      "promise": "Approach a golden boss key on the False Throne whose wrong-way shadow betrays a trap, flipping to black to crack the dais and reveal the true key.",
+      "aha": "Check the golden key's northwest shadow or pulse True Lens to expose the hidden moon pool and true key.",
+      "checks": [
+        "Did you notice the wrong-way shadow on the fake boss key before grabbing it?",
+        "Did cracking the silver throne into black truth feel dramatic and fair?",
+        "Did this quiet twist pay off the island's shadow law right before the boss?"
+      ]
+    },
+    "palace_r12": {
+      "promise": "Face the Queen in the Glass whose mirror pane bounces direct bolts, beating her via blue banks, your reflection, world flips, and true shadows.",
+      "aha": "Never shoot straight; strike via blue mirrors, your reflection, black flips, and her true southeast shadow.",
+      "checks": [
+        "Was it immediately clear that direct bolts bounced off her mirror pane?",
+        "Did hitting her through mirrors and your reflection feel satisfying?",
+        "Could you spot her true southeast shadow among phase-three clones?"
+      ]
+    },
+    "theatre_r1": {
+      "promise": "Step into the velvet theatre foyer beneath five golden move masks over the sealed main curtain, where returning always restores any stolen move.",
+      "aha": "The five masks track your acts, and stepping back into the foyer always gives back every stolen ability.",
+      "checks": [
+        "Did the five masks over the sealed curtain make the dungeon structure clear?",
+        "Did knowing the foyer restores stolen moves make experimentation feel safe?",
+        "Did the open Act One doorway invite you right onto the stage?"
+      ]
+    },
+    "theatre_r2": {
+      "promise": "Play Act One without lantern throw, tinting a stage beam with blue glass, dashing across the pit to aim a mirror, and running a timed brazier relay.",
+      "aha": "Without Throw, lean on blue glass tinting, mirror angling, and fast dashes across the orchestra pit.",
+      "checks": [
+        "Did losing lantern throw immediately change how you read the stage?",
+        "Was the timed brazier relay across the pit fair without throw or zip?",
+        "Did the room prove every gap stayed cleanly solvable without Throw?"
+      ]
+    },
+    "theatre_r3": {
+      "promise": "Close Act One without Throw by baiting a bolt-eating snatcher with an echo rose and cutting puppet cords with beam, then shatter the mask for key one.",
+      "aha": "Use the center echo rose decoy to draw the snatcher and sever puppet strings with beam until the mask opens.",
+      "checks": [
+        "Did baiting the snatcher with the echo rose feel smart without Throw?",
+        "Did shattering the Act One mask to win Throw back feel triumphant?",
+        "Did opening the foyer shortcut right after feel clean?"
+      ]
+    },
+    "theatre_r4": {
+      "promise": "Cross Act Two's abyssal rigging with Dash and Wings stolen, chaining a bounce bloom launch, brass lantern-hook zips past a turret, and a winch ring.",
+      "aha": "Without Dash or Wings, your bounce pad and thrown lantern zips become your only bridge across open drops.",
+      "checks": [
+        "Did chaining the bounce bloom and lantern-hook zips feel crisp without Dash?",
+        "Was timing zips past the turret eye readable and fair?",
+        "Did pulling the curtain winch set up the Prompter fight well?"
+      ]
+    },
+    "theatre_r5": {
+      "promise": "Duel the Prompter without Dash or Wings by zipping across four brass hooks over baton sweeps and cutting two overhead cords for the Cue-Mirror.",
+      "aha": "Use the four music-stand lantern hooks to dodge baton sweeps and slice both overhead cords to drop the boss.",
+      "checks": [
+        "Did zipping across four brass hooks work smoothly as your dodge move?",
+        "Was cutting both overhead marionette cords clear and punchy?",
+        "Did winning Dash, Wings, and the Cue-Mirror back feel rewarding?"
+      ]
+    },
+    "theatre_r6": {
+      "promise": "Use the backstage Greenroom hub to test spotlight curtain piercing on a treasure cache, open the stage door, and pick Act Three or Act Four freely.",
+      "aha": "Standing in golden floor spotlights with the Cue-Mirror lets your shots pierce velvet curtains.",
+      "checks": [
+        "Did the spotlight tutorial chest teach curtain piercing in one shot?",
+        "Was choosing between Act Three and Act Four clear from this hub?",
+        "Did opening the backstage door to Velvet Promenade feel helpful?"
+      ]
+    },
+    "theatre_r7": {
+      "promise": "Play Act Three without True Lens or Prism, tracking a silvered owl by shadow and recording a doubled echo rose to hold baffles for sliding ice blocks.",
+      "aha": "Cue-Mirror doubles echo duration so your ghost holds the baffle while you slide the second ice block.",
+      "checks": [
+        "Could you track the silvered owl cleanly by shadow without True Lens?",
+        "Did the longer echo rose duration make the two-ice-block puzzle click?",
+        "Did chalk ice tracks read clearly across the darkened stage?"
+      ]
+    },
+    "theatre_r8": {
+      "promise": "Fight in the Fly-Loft without Lens or Prism, beaming from spotlights through velvet curtains, then use reclaimed Lens for a rafter ember.",
+      "aha": "Stand in golden spotlights to beam through velvet curtains, then pulse reclaimed Lens on the rafters.",
+      "checks": [
+        "Did firing beams through velvet curtains from spotlights feel clever?",
+        "Did fighting the owl and puppets without Lens keep tension high?",
+        "Did crossing the phantom rafters right after winning Lens back feel sweet?"
+      ]
+    },
+    "theatre_r9": {
+      "promise": "Play Act Four completely gunless with Bolt and Beam stolen, spinning a turntable with winch rings to catch Hollow Wick's beams and fuel Sunflare.",
+      "aha": "Spin the turntable mirrors into Hollow Wick's own beams, tint with rose glass, and shatter the seal.",
+      "checks": [
+        "Did losing both Bolt and Beam create an instant gasp when entering?",
+        "Was steering the turntable mirrors into his stolen beams clear and clever?",
+        "Did gathering spotlight motes to fuel Sunflare pay off the puzzle?"
+      ]
+    },
+    "theatre_r10": {
+      "promise": "Win Act Four's gunless brawl with lantern throws, recalls, zip slams, and Sunflare against a knight, reflection, and puppets for Bolt and Beam.",
+      "aha": "Use throw and recall cord slices, zip slams, and Sunflare to beat every foe without firing a single shot.",
+      "checks": [
+        "Did fighting purely with lantern throws, zips, and Sunflare feel viable?",
+        "Did slicing puppet cords and using flank mirrors keep the brawl fair?",
+        "Did reclaiming Bolt and Beam right after feel hugely satisfying?"
+      ]
+    },
+    "theatre_r11": {
+      "promise": "Pause in the Royal Box past a vanity mirror that smiles late, open the foyer stair, and shoot through curtains from a spotlight for a moth.",
+      "aha": "Shoot from the golden spotlight through velvet curtains for a lost moth and open a fast boss retry stair.",
+      "checks": [
+        "Did your reflection smiling half a beat late give a genuine chill?",
+        "Did opening the Royal Stair make retrying the boss quick and painless?",
+        "Did spotting the spotlight shot through the curtain free the moth cleanly?"
+      ]
+    },
+    "theatre_r12": {
+      "promise": "Face the Understudy with all moves restored as each phase steals Throw, Dash, or Bolt into an orbiting spotlight mask you must shatter mid-duel.",
+      "aha": "Focus each hovering spotlight mask right away to stun the boss and win your stolen move back immediately.",
+      "checks": [
+        "Could you tell right away which move was trapped in the spotlight mask?",
+        "Did shattering each mask for a stun and instant restore feel punchy?",
+        "Did this duel pay off every act of the Doppel Theatre?"
+      ]
+    },
+    "masq_r1": {
+      "promise": "Enter a chandelier ballroom where eight masked Wicks waltz in twin ovals, reading their cast shadows to unmask the two truthful guests.",
+      "aha": "Watch every dancer's floor shadow and unmask only the two guests casting warm southeast shadows.",
+      "checks": [
+        "Could you clearly compare warm southeast shadows against lying shadows?",
+        "Did unmasking wrong guests forgive mistakes without tedious full resets?",
+        "Did the twin waltzing ovals set an eerie, playful tone right away?"
+      ]
+    },
+    "masq_r2": {
+      "promise": "Read upside-down crimson assassin masks in a mirror dancefloor under seven waltzing guests around blades, unmasking all three impostors to fight them.",
+      "aha": "Pulse True Lens to sharpen floor reflections, expose all three crimson masks, then clear the exposed trio.",
+      "checks": [
+        "Did pulsing True Lens make the upside-down floor masks pop clearly?",
+        "Were the spinning blades and narrow bridges fair while checking reflections?",
+        "Did unmasking all three impostors into a sudden fight feel sharp?"
+      ]
+    },
+    "masq_r3": {
+      "promise": "Track Hollow Wick across three nested rotating dance rings among seven decoys as blackouts shuffle everyone, unmasking the lone black lantern shadow.",
+      "aha": "After every blackout shuffle, scan shadows for the one dancer holding a black lantern and dodge his riposte.",
+      "checks": [
+        "Could you spot the one black-lantern shadow across the three spinning rings?",
+        "Did the periodic chandelier blackouts build real suspense without cheap hits?",
+        "Did unmasking Hollow Wick three times feel like a standout moment?"
+      ]
+    },
+    "masq_r4": {
+      "promise": "Chase Hollow Wick across crumbling marble, chandelier zip hooks, and a blue portal slingshot straight through the spire rose window.",
+      "aha": "Sprint across crumbling stone, chain chandelier zips, and sling through the portal into the Spire.",
+      "checks": [
+        "Did the shattering floor and zip chain sell a breathless chase?",
+        "Did mid-pursuit checkpoints keep any missed jump brisk and painless?",
+        "Did crashing straight through the Mirror Spire's rose window feel great?"
+      ]
+    },
+    "spire_r1": {
+      "promise": "Land in the Mirror Spire atrium uniting a central moon pool, the north boss door, and two sealed return portals from deeper wings.",
+      "aha": "Flipping the atrium moon pool connects the lower and upper spire loops back to this central waystone.",
+      "checks": [
+        "Did crashing into this atrium give an immediate sense of the Spire's height?",
+        "Were the central moon pool, boss door, and return portals easy to read?",
+        "Did the open path west pull you cleanly into the first wing?"
+      ]
+    },
+    "spire_r2": {
+      "promise": "Bank blue bolts off a mirror into twin eyes for key one, then flip the moon pool to raise a black bridge to a vault and the north arch.",
+      "aha": "Rotate the mirror for key one, then flip to black to raise a hidden vault bridge and open the north wing.",
+      "checks": [
+        "Did banking blue bolts into both switch eyes feel crisp and clear?",
+        "Did flipping the moon pool obviously open both the vault and north arch?",
+        "Did the cracked wall treasure feel like a nice reward for checking corners?"
+      ]
+    },
+    "spire_r3": {
+      "promise": "Battle a warden, owl, snatcher, and mirrored reflection around two blue mirrors and a center moon pool to push deeper into the spire.",
+      "aha": "Use blue mirror banks to break shields while sidestepping the reflection's copied volleys.",
+      "checks": [
+        "Did adding a reflection to the moonshade squad keep combat lively?",
+        "Were both blue mirrors placed well for breaking the warden's shield?",
+        "Was the fight fair and readable right on entry?"
+      ]
+    },
+    "spire_r4": {
+      "promise": "Cross the lunar abyss on True Lens phantom stones, detour through a blue portal for an ember, and flip black to dissolve a silver wall for treasure.",
+      "aha": "Pulse True Lens across the abyss, use the portal for an ember piece, and flip black to dissolve the east wall.",
+      "checks": [
+        "Did crossing the phantom abyss feel steady with clear landing ledges?",
+        "Was noticing the silver wall dissolve in black world a neat discovery?",
+        "Did the west loop from the upper atrium tie back cleanly here?"
+      ]
+    },
+    "spire_r5": {
+      "promise": "Solve the refraction crossroads using beam on bramble, Sunflare on obsidian, twin blue mirror banks, and a moon pool opening a dark south stair.",
+      "aha": "Clear bramble and obsidian, bank both blue eyes, and choose between the warden east or rehearsal vault south.",
+      "checks": [
+        "Did combining beam, Sunflare, and twin mirrors flow smoothly in one hall?",
+        "Did opening the return portal to the atrium feel timely and useful?",
+        "Was the choice between the east warden and south black stair clear?"
+      ]
+    },
+    "spire_r6": {
+      "promise": "Duel the Moonshade Warden around twin mirrors and moon pools, banking blue bolts on his shield and flipping black to erase his ghost.",
+      "aha": "Break his shield with blue banks and flip a moon pool in phase two to wipe out his silver blink-ghost.",
+      "checks": [
+        "Did banking blue bolts to crack his buckler feel sharp and consistent?",
+        "Did flipping a moon pool to erase his phase-two blink-ghost click?",
+        "Did claiming key two feel like a strong mid-spire turning point?"
+      ]
+    },
+    "spire_r7": {
+      "promise": "Chain a True Lens phantom crossing, a blue portal warp up to a high ledge, and a blue mirror bank unlocking both the upper hall and twin-world nave.",
+      "aha": "Anchor your lantern on the phantom span, warp up via the blue portal, and bank a shot to open both arches.",
+      "checks": [
+        "Did chaining True Lens, blue portals, and mirror banks feel seamless?",
+        "Were both newly opened arches west and north clearly visible?",
+        "Was the upper chest a clean bonus along the warp ledge?"
+      ]
+    },
+    "spire_r8": {
+      "promise": "Clear an upper spire garrison of warden, snatcher, and owl around twin mirrors and a moon pool to unseal the reliquary and tempering vault.",
+      "aha": "Use twin mirrors and moon pool sightlines to isolate the owl and snatcher before cracking the warden.",
+      "checks": [
+        "Did the three-foe clash feel brisk and demanding near the spire's peak?",
+        "Were the mirrors and moon pool useful cover rather than clutter?",
+        "Did unlocking the reliquary and side tempering vault read cleanly?"
+      ]
+    },
+    "spire_r9": {
+      "promise": "Burn bramble and shatter obsidian in the Reliquary to claim the Keeper's Flame, inspect the crest plinth, read lore, and open the summit path.",
+      "aha": "Combine beam and Sunflare for the Keeper's Flame while the crest plinth tracks your twin spire seals.",
+      "checks": [
+        "Did inspecting the crest plinth clearly show both deeper spire seals?",
+        "Did Hollow Wick's origin lore land right before the final ascent?",
+        "Did the atrium shortcut and west summit path connect smoothly?"
+      ]
+    },
+    "spire_r10": {
+      "promise": "Face Hollow Wick Unmasked at the summit, flipping the center moon pool to shatter his clone and parrying his dark lantern to relight Lamp seven.",
+      "aha": "Flip the center moon pool against his mirror clone and parry his dark lantern mid-flight in phase three.",
+      "checks": [
+        "Did flipping the moon pool to shatter his phase-two clone click clearly?",
+        "Did parrying his flying dark lantern pay off practicing in the antechamber?",
+        "Did relighting Great Lamp seven give Moon Shoals a powerful finish?"
+      ]
+    },
+    "spire_r11": {
+      "promise": "Smuggle a light orb into black while guiding your vertical reflection behind glass to bank a blue shot into a high switch.",
+      "aha": "Clear the jelly, smuggle the orb to power black, and steer your reflection to hit the mirror switch.",
+      "checks": [
+        "Did combining orb smuggling with a vertical reflection feel fresh?",
+        "Was lining up the reflection's blue bank shot clear across the glass?",
+        "Did opening the shortcut directly onto the abyss ledge feel rewarding?"
+      ]
+    },
+    "spire_r12": {
+      "promise": "Clear a rehearsal vault with Dash stolen by a room mask, cutting puppet cords, tuning blue and rose beams, and shattering the mask for key three.",
+      "aha": "Survive without Dash while tuning both blue and rose glass beams and using the echo rose, then smash the mask.",
+      "checks": [
+        "Did losing Dash inside the Spire feel like a cool callback to the Theatre?",
+        "Were both blue and rose beam paths readable while managing two puppets?",
+        "Did shattering the mask for key three and opening the Duchess feel great?"
+      ]
+    },
+    "spire_r13": {
+      "promise": "Duel the Kaleidoscope Duchess as she splits into four colored copies, tracking her lone true shadow and banking blue shots for a crest.",
+      "aha": "Ignore the lying colored copies, track her one warm southeast shadow, and bank blue bolts off corner mirrors.",
+      "checks": [
+        "Could you pick out her lone southeast shadow among the four copies?",
+        "Did banking blue bolts off corner mirrors stun her spinning carousel?",
+        "Did opening the return portal to the atrium feel earned?"
+      ]
+    },
+    "spire_r14": {
+      "promise": "Walk in silver beside your black reflection down a glass nave, flipping both worlds mid-chord to chime all four cross-world switches.",
+      "aha": "Line up opposite-world shots with your reflection, tint with stained glass, and flip both worlds mid-sequence.",
+      "checks": [
+        "Did synchronizing four harmonic switches across two worlds feel clear?",
+        "Did flipping both worlds mid-chord create a memorable optical aha?",
+        "Did unsealing the arch ahead build intrigue for what waits beyond?"
+      ]
+    },
+    "spire_r15": {
+      "promise": "Step into a mirror-flipped counterfeit Bell Isle with the sun in the east and a fake Great Lamp, shattering the painted sky into an obsidian ambush.",
+      "aha": "The backwards sun and wrong shadow betray the lie; smash the fake lamp, beat two waves, and save a moth.",
+      "checks": [
+        "Did realizing Bell Isle was mirror-flipped give you an eerie double take?",
+        "Did shattering the painted sky into obsidian feel like a great twist?",
+        "Was the two-wave black-world ambush fair for winning the second crest?"
+      ]
+    },
+    "spire_r16": {
+      "promise": "Rest at the summit waystone, practice parrying dark lanterns on a pedestal, and slip through a shadow gate for a stained glass pane.",
+      "aha": "Practice the boss lantern parry here, then leave your lantern to pass the shadow gate with True Lens.",
+      "checks": [
+        "Did the parry pedestal cleanly teach timing for the boss's dark lantern?",
+        "Was the waystone close enough to keep boss attempts brisk?",
+        "Did passing the shadow gate and phantom bridge for Mirror Ward feel clever?"
+      ]
+    },
+    "spire_r17": {
+      "promise": "Clear a three-wing optical vault around a Moon Anvil, chaining Skip, Lance, and Scatter across stained glass and orbs for an ember.",
+      "aha": "Match each wing to the right temper: Skip bounces, Lance pierces twin glass, and Scatter hits three orbs.",
+      "checks": [
+        "Did swapping between Skip, Lance, and Scatter across three wings feel crisp?",
+        "Were all three optical locks easy to match to the right bolt temper?",
+        "Did winning the ember piece and upper catwalk make the detour worthwhile?"
+      ]
+    },
+    "superboss_noon": {
+      "promise": "Face Your Shadow at Noon on a sunlit sundial where your shadow replays your moves late, hanging lanterns to merge clones and cast a body you can hit.",
+      "aha": "Hang lanterns on perimeter hooks to merge noon shadows and cast a sideways shadow body at high noon.",
+      "checks": [
+        "Was fighting your own delayed shadow immediately creepy and legible?",
+        "Did hanging lanterns to merge clones and cast a sideways shadow click?",
+        "Did reuniting your shadow for the final moth feel like a peak superboss?"
+      ]
+    }
+  }
+}

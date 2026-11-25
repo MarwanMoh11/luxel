@@ -1,0 +1,556 @@
+{
+  "island": {
+    "title": "Thornwood Hollow",
+    "rule": "Light grows living bridges, bounce caps, and thorn walls that wilt in shadow, unlit woods rotate behind your back, and hollow stumps shrink you tiny.",
+    "feel": "Eerie storybook woods that shift from creepy trap to botanical garden once you master hiding your own light.",
+    "arc": "Learn Seedlight in Lantern Glade and steer the Shifting Woods. Clear the tiny Under Root and the silk Weaver's Loom in either order, stand trial in the Briar Court, earn Solar Beam inside the Hollow Oak, defeat Briar Matron, and face the Mother Root.",
+    "moments": [
+      "Shrinking tiny and realizing your oversized lantern blooms thorn walls unless you hide it behind an acorn crate.",
+      "Bouncing one shot five times around a sideways glass jar to frost pin four fruits at once.",
+      "Freezing half a room's silk line blue while burning the other half so its fall hoists the Boss Key bridge.",
+      "Lighting Mercy or Fire after each Briar Court joust and seeing the next arena physically transform.",
+      "Darkening half an oak chamber on purpose so the unlit room rotates a locked vault right to your feet."
+    ]
+  },
+  "dungeons": {
+    "underroot": {
+      "promise": "A tiny world beneath the Great Stump where grass blades tower like cathedrals and your lantern burns like a miniature sun.",
+      "power": "Sap Horn commands tame beetles to carry you across sap and halt on command.",
+      "arc": "Learn to hide your bright lantern and focus dewdrop lenses, flip the Stag Colossus for Sap Horn, ride beetles across sap rivers, solve the glass Lantern Jar, and darken Hundred Lamps.",
+      "boss": "Hundred Lamps is a ten segment centipede vulnerable only on dark rings. Hide your lantern behind pillars to cast shadow."
+    },
+    "loom": {
+      "promise": "A suspended silk cathedral where blue light freezes hoist threads while yellow sparks race along linked webs to burn and bloom.",
+      "power": "Brass Shuttle lets your thrown lantern string a live fire silk wire from spools.",
+      "arc": "Learn silk firebreaks and frozen hoists, burn the Thread Keeper's curtain for Brass Shuttle, weave custom wires across void gaps, solve the Cathedral of One Thread, and face the Loom Widow.",
+      "boss": "The Loom Widow prowls a six spoke web over void. Ignite the rim spool of her spoke to drop her onto the center spindle."
+    },
+    "briar_court": {
+      "promise": "A forest courtroom of three knight jousts where choosing Mercy or Fire after each duel physically rebuilds the next arena.",
+      "power": "",
+      "arc": "Place both relics before the forest jurors, unhorse Sir Taproot and Dame Spindle while casting two arena changing verdicts, and counterbalance the Briar Arbiter's scales to open the Hollow Oak.",
+      "boss": "The Briar Arbiter wields justice scales on your shaped arena. Use your verdict gift and counterbalance his scale pan."
+    },
+    "hollow_oak": {
+      "promise": "A towering living tree uniting sap levels, rotating growth rings, tiny bark crawls, silk sparks, and the piercing Solar Beam.",
+      "power": "Solar Beam slices brambles, cracks masonry, and pierces obstacles in one line.",
+      "arc": "Learn the Sap Clock, win Solar Beam in the Heartwood Shrine, beat Elder Sporecap, spin the Sap Hub and dark rotating Moving Chamber, combine big and tiny scales, and defeat Briar Matron.",
+      "boss": "Briar Matron splits the floor into growth rings and snuffs the canopy. Vault spores, beam snares, and bloom the center."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Climb the coiling Heartwood Spine past trailhead beacons, Lantern Glade, and Shifting Wood paths up to the Hollow Oak and next island bridge.",
+      "aha": "Your lantern blooms plants along the spine while hollow stumps and shifting clearings hide deeper paths.",
+      "checks": [
+        "Did the coiling vertical root layout feel clear to climb and navigate?",
+        "Did blooming Seedlight plants along the path teach the rule naturally?",
+        "Were the three beacons and branches into the Shifting Woods easy to spot?"
+      ]
+    },
+    "ow_camp": {
+      "promise": "Rest in Lantern Glade to meet the forest folk, inspect the Wood Compass, and learn shadow starving by hanging your lantern behind a root pillar.",
+      "aha": "Hanging your lantern behind a root pillar starves a thorn wall so you can walk past it to Lost Moth Two.",
+      "checks": [
+        "Did wilting the nursery thorn wall by hiding your lantern click immediately?",
+        "Did the Wood Compass clearly hint at how the Shifting Woods rotate?",
+        "Were the three folk requests and hub door easy to spot around camp?"
+      ]
+    },
+    "ow_shift_w": {
+      "promise": "Enter the Western Whispering Wood where leaving the compass lamp unlit rotates the exits between the Great Stump, Amber Well, and Crown Bridge.",
+      "aha": "Leave the compass lamp unlit to rotate paths behind you, or light it to lock the clearing in place.",
+      "checks": [
+        "Did the three wedge moss compass make the rotating exits readable?",
+        "Did lighting or snuffing the pin lamp give you crisp control over routing?",
+        "Did the beetle, drifter, and strangler make crossing the wood lively?"
+      ]
+    },
+    "ow_shift_e": {
+      "promise": "Explore the Eastern Silkwood linking Burrow Den, Weaver's Loom, Canopy Sprint, and Crown Thicket while watching for a False Lantern.",
+      "aha": "Test suspicious lamps with a bolt before trusting them, and shine light near the Thorn Archer to jam its bow.",
+      "checks": [
+        "Did the disguised False Lantern catch your eye before or after springing?",
+        "Did pinning the Silkwood compass cleanly lead to the Loom and side trial?",
+        "Did shining light on the Thorn Archer feel like a clever counter?"
+      ]
+    },
+    "ow_shift_n": {
+      "promise": "Reach the highland Crown Thicket tying the Shifting Woods together with the Briar Court arch, Beam gated late secrets, and a distant monolith.",
+      "aha": "This upper clearing gathers every Shifting Wood turn and teases late game secrets behind bramble and stone.",
+      "checks": [
+        "Did Crown Thicket clearly connect the upper wood, Briar Court, and oak?",
+        "Did the bramble and stone barriers cleanly tease coming back with Solar Beam?",
+        "Did the strangler and bramble knight make the highland feel guarded?"
+      ]
+    },
+    "ow_tiny_moss": {
+      "promise": "Shrink under Spore Glade, hide your bright lantern behind a root to wilt thorns, and focus a dewdrop to grow a real overworld bridge.",
+      "aha": "Burning a tiny jammed sap knot underground grows a full size root bridge in the overworld above.",
+      "checks": [
+        "Did growing a full size overworld bridge from a tiny pocket delight you?",
+        "Was hiding your oversized lantern behind the root pillar intuitive?",
+        "Did rolling the dewdrop lens to burn the dry sap knot feel crisp?"
+      ]
+    },
+    "cave_amber_well": {
+      "promise": "Roll and rotate a blue mirror into two lanes to latch a blue eye switch and frost pin a fast wilting Seedlight bridge long enough to cross.",
+      "aha": "Blue light freezes a bloomed Seedlight bridge open for sixteen seconds so you can cross without holding light.",
+      "checks": [
+        "Was freezing the wilting bridge with blue light an immediate aha moment?",
+        "Did repositioning the mirror for both the eye and bridge feel smooth?",
+        "Did the ember, moth, and sun seed reward feel generous for the cave?"
+      ]
+    },
+    "cave_burrow_den": {
+      "promise": "Fight a Burrow Beetle, Thorn Archer, and Dandelion Drifter around bloomable bounce caps and cover pillars to recover the amber spindle.",
+      "aha": "Bloom bounce caps to reposition quickly, shine light to jam the archer, and lure the beetle into pillars.",
+      "checks": [
+        "Did the three enemy types complement each other in an interesting brawl?",
+        "Were the bounce caps helpful for dodging charges and drifting mines?",
+        "Did winning the amber spindle and lost moth feel cleanly earned?"
+      ]
+    },
+    "cave_root_cellar": {
+      "promise": "Balance a fruit scale with a glowing seed orb and crate for a moth and shards, while peering across a phantom chasm teased for later.",
+      "aha": "A carried seed orb and crate balance the scale, while the empty chasm hints at a future lens power.",
+      "checks": [
+        "Was balancing the fruit scale with both the seed orb and crate clear?",
+        "Did the wide empty chasm spark curiosity about returning with a new power?",
+        "Did the cellar feel like a cozy secret right beneath camp?"
+      ]
+    },
+    "cave_sap_vault": {
+      "promise": "Shrink inside the sealed Sap Vault to align a blue mirror on a pinhole line, return full size, and fire Beam through the grate for Canopy Dew.",
+      "aha": "Adjust the mirror while tiny inside the vault, then step out full size to fire Solar Beam through the pinhole.",
+      "checks": [
+        "Did using tiny and normal scale inside one room feel genuinely clever?",
+        "Was firing Solar Beam through the narrow pinhole grate satisfying?",
+        "Did winning the Canopy Dew glass pane feel like a worthy late secret?"
+      ]
+    },
+    "trial_canopy_sprint": {
+      "promise": "Race twenty five seconds across a treetop bend of three wilting Seedlight bridges, blooming each ahead with bolts to unlock the Briar Thorn pane.",
+      "aha": "Shoot ahead to bloom the next vine bridge before your feet even leave the current ledge.",
+      "checks": [
+        "Did shooting bridges open mid sprint feel fast and rhythmic?",
+        "Was the twenty five second timer exciting without feeling unfair?",
+        "Did the instant retry keep chasing the Briar Thorn pane fun?"
+      ]
+    },
+    "trial_moth_scales": {
+      "promise": "Leave your lantern hooked east to open twin Shadow Gates and race sixty seconds through darkness to light three shrine braziers for an ember and moth.",
+      "aha": "Hang your lantern once to unlock both dark gates, then plan the tightest loop across all three braziers.",
+      "checks": [
+        "Was hanging your lantern to hold both Shadow Gates open clear right away?",
+        "Did racing through the dark loop to light all three braziers feel tense?",
+        "Did the ember piece and lost moth feel like a fair prize for the run?"
+      ]
+    },
+    "sb_mother_root": {
+      "promise": "Fight the colossal Mother Root by growing thorn walls as beam cover, riding rotating rings, and diving tiny inside her trunk to scorch her heart.",
+      "aha": "Bloom thorn walls to block her beam, then shrink into her open bark fissure to burn her heart with a dew lens.",
+      "checks": [
+        "Did growing thorn walls to shield yourself from her beam feel awesome?",
+        "Did diving tiny inside her pulsing heart mid fight blow your mind?",
+        "Did the fight feel like the ultimate test of every Thornwood rule?"
+      ]
+    },
+    "underroot_r1": {
+      "promise": "Wake shrunk tiny with a sun bright lantern, hide it behind a root pillar to wilt a thorn wall, and roll a dewdrop lens to burn the north root knot.",
+      "aha": "While tiny your lantern blooms thorns from afar, so hang it behind cover before focusing a dewdrop ray.",
+      "checks": [
+        "Did the sudden jump in scale and lantern brightness feel striking right away?",
+        "Was hiding your lantern behind the root pillar to starve the thorns clear?",
+        "Did focusing a yellow shot through the dewdrop lens feel tactile?"
+      ]
+    },
+    "underroot_r2": {
+      "promise": "Enter the Acorn Atrium hub teasing the key door and Boss Door, and push an acorn crate to shadow a dark gate from both a brazier and your lantern.",
+      "aha": "One pushed acorn crate can shadow a gate from both a fixed brazier and your own bright hung lantern.",
+      "checks": [
+        "Did the Acorn Atrium clearly lay out the dungeon's locked doors and returns?",
+        "Was blocking two light sources with one acorn crate a crisp aha moment?",
+        "Did walking unarmed through the dark gate feel tense and clever?"
+      ]
+    },
+    "underroot_r3": {
+      "promise": "Pluck a glowing seed orb onto a leafcutter ant highway, hide your lantern behind a root wall, and walk dark as ants carry light to your exit.",
+      "aha": "Leafcutter ants can carry a glowing seed to bloom a distant bridge while you sneak past thorns in shadow.",
+      "checks": [
+        "Did using leafcutter ants as light couriers make you smile?",
+        "Was timing your dark walk past the thorn wall with the moving seed clear?",
+        "Did the tiny world feel alive and inventive here?"
+      ]
+    },
+    "underroot_r4": {
+      "promise": "Fight a Burrow Beetle and two Dandelion Drifters around an overturned brass thimble using wind lanes and a fixed dew lens to crack the beetle's shell.",
+      "aha": "Use the giant thimble as cover and fire through the dewdrop lens to shatter the beetle's armor.",
+      "checks": [
+        "Did fighting around an overturned thimble sell the miniature scale?",
+        "Was firing through the dew lens to crack the Burrow Beetle clear?",
+        "Did the wind lanes and drifting seed mines keep you moving?"
+      ]
+    },
+    "underroot_r5": {
+      "promise": "Freeze one dewdrop blue into a three way prism to pin a bridge and trip a blue eye, then roll a liquid dewdrop to burn the knot for Key One.",
+      "aha": "A frozen dewdrop splits blue light three ways while a liquid dewdrop focuses yellow fire to burn knots.",
+      "checks": [
+        "Did using both frozen and liquid dew lenses in one room feel smart?",
+        "Was frost pinning the bridge and hitting the blue eye in one shot clean?",
+        "Did claiming Key One feel earned ahead of the mini boss?"
+      ]
+    },
+    "underroot_r6": {
+      "promise": "Outwit the bus sized Stag Colossus in a root bowl by blooming thorn walls in its charge path to flip it onto its back and win the Sap Horn.",
+      "aha": "Bloom a thorn wall in its charge path to flip its shell belly up, or overheat it with corner dew lenses.",
+      "checks": [
+        "Was flipping the huge beetle onto its back with a bloomed wall funny and fun?",
+        "Did the phase two corner dew lenses add a neat second way to stun it?",
+        "Did earning the Sap Horn make you eager to ride beetles across sap?"
+      ]
+    },
+    "underroot_r7": {
+      "promise": "Ride a tame beetle across amber sap, bounce blue off its shell for Moth Eight, and lure a wild beetle onto a plate before halting it with Sap Horn.",
+      "aha": "Beetles ferry you over sap, bounce prism shots off their backs, and halt on plates when called with Sap Horn.",
+      "checks": [
+        "Did riding the beetle across the amber sap river feel playful and smooth?",
+        "Was bouncing a blue bolt off its shiny shell an exciting surprise?",
+        "Did luring and halting the wild beetle onto the gate plate click cleanly?"
+      ]
+    },
+    "underroot_r8": {
+      "promise": "Survive a clockwise ant conveyor ring against two Jumping Spiders and a False Lantern, then unseal the root slide shortcut back to entry.",
+      "aha": "Bolt check the suspicious lamp before throwing your lantern, and ride the ant belts away from spider leaps.",
+      "checks": [
+        "Did riding the clockwise ant conveyor ring make dodging spiders lively?",
+        "Did you test the False Lantern before getting tricked by it?",
+        "Did unlocking the shortcut back to the entrance feel well timed?"
+      ]
+    },
+    "underroot_r9": {
+      "promise": "Inside a sideways glass jar as Hundred Lamps glides outside, align a dew lens and two mirrors so one shot loops five times to pop the cork.",
+      "aha": "One angled shot through the dew lens and mirrors loops five times around glass to freeze all four fruits.",
+      "checks": [
+        "Did seeing the giant centipede shadow glide outside the glass jar give chills?",
+        "Was watching one shot loop five times around the jar unforgettable?",
+        "Did popping the cork for the Boss Key and hub bridge feel triumphant?"
+      ]
+    },
+    "underroot_r10": {
+      "promise": "Pause beneath Hundred Lamps' shed exoskeleton for a waystone, sap lift home, bark rubbing, and a shadow rib cache previewing the boss.",
+      "aha": "Hiding your lantern behind a rib pillar to open the shadow cache quietly teaches how to hurt Hundred Lamps.",
+      "checks": [
+        "Did walking under the giant shed exoskeleton build eerie anticipation?",
+        "Did opening the darkened rib cache clearly foreshadow the boss weakness?",
+        "Did the upper waystone and sap lift make preparing for the boss easy?"
+      ]
+    },
+    "underroot_r11": {
+      "promise": "Battle the ten segment centipede Hundred Lamps by hanging your bright lantern behind root pillars to cast shadow and striking only dark rings.",
+      "aha": "Your bright lantern armors any segment it hits, so hide light behind pillars and snuff glowing eggs.",
+      "checks": [
+        "Was the inverted rule of hurting only dark segments instantly readable?",
+        "Did hanging your lantern behind root pillars to cast shadow feel dramatic?",
+        "Did winning Half Lantern One and the Ember Seed pane feel hard won?"
+      ]
+    },
+    "loom_r1": {
+      "promise": "Learn silk rules in the Carding Hall: freeze a hoist thread blue to raise a bridge, then shoot yellow at a spool to spark fire along linked threads.",
+      "aha": "Blue light freezes silk cables in place while yellow bolts send a spark racing along linked threads.",
+      "checks": [
+        "Was the difference between blue silk freezing and yellow fire sparks obvious?",
+        "Did watching the spark race along linked threads to bloom plants look crisp?",
+        "Did the Carding Hall cleanly preview future shortcuts back to the start?"
+      ]
+    },
+    "loom_r2": {
+      "promise": "Explore the Heddle Hub beneath the hanging Boss Key bobbin, shifting the Warp Wheel and freezing a tension spool blue to cross west.",
+      "aha": "Shift the Warp Wheel to lower the track, then freeze its tension spool blue before it snaps back.",
+      "checks": [
+        "Did the hanging Boss Key bobbin overhead immediately set a clear goal?",
+        "Was freezing the lowered shuttle track blue before it snapped back intuitive?",
+        "Did the hub balconies clearly tease how later wings loop back here?"
+      ]
+    },
+    "loom_r3": {
+      "promise": "Freeze the short branch of a forked silk line blue as a firebreak, then ignite the starter spool so fire only races down the long thread.",
+      "aha": "A frozen blue silk branch blocks fire, steering one spark safely down only the thread you want.",
+      "checks": [
+        "Did using blue light as a selective firebreak feel like a clever discovery?",
+        "Could you easily read both thread lengths before firing the starter spark?",
+        "Did the False Lantern and drifter keep the split gallery alert?"
+      ]
+    },
+    "loom_r4": {
+      "promise": "Hold three silk catwalk islands over the void against a Vine Strangler and two Jumping Spiders, dash cutting tethers and snapping a dry shuttle beam.",
+      "aha": "Dash through the Vine Strangler's tether while using the wide catwalk hubs to sidestep spider landings.",
+      "checks": [
+        "Did fighting across narrow void islands make positioning feel sharp?",
+        "Was dash cutting the Vine Strangler's tether responsive and clear?",
+        "Did snapping the overhead shuttle beam give a neat tactical edge?"
+      ]
+    },
+    "loom_r5": {
+      "promise": "Ripen a heavy fruit onto one scale pan to lift the other into a beam, freeze its cable blue, and remove the fruit so both stay high for Key One.",
+      "aha": "Lock one lifted scale pan high with a blue silk freeze so taking the fruit off leaves both sides raised.",
+      "checks": [
+        "Did locking one side of a balance scale up with blue light feel brilliant?",
+        "Was coordinating the mirror refraction with the hoisted pan clear?",
+        "Did claiming Key One feel like a clean climax to the first wing?"
+      ]
+    },
+    "loom_r6": {
+      "promise": "Duel the Thread Keeper across three warp rails behind silk curtains, igniting its active rail spool to drop it center for the Brass Shuttle.",
+      "aha": "Shoot the west spool of whichever rail it hides behind to burn its silk curtain and knock it onto the floor.",
+      "checks": [
+        "Was burning the Thread Keeper's active rail curtain clear and punchy?",
+        "Did cutting its frozen phase two wire keep the second half fresh?",
+        "Did winning the Brass Shuttle immediately spark ideas for custom wires?"
+      ]
+    },
+    "loom_r7": {
+      "promise": "Use Brass Shuttle by throwing your lantern from a spool to hooks to weave your own fire wire across unlinked bridges and snap Boss Anchor One.",
+      "aha": "Your thrown lantern strings a live conducting wire between any shuttle spool and hook you choose.",
+      "checks": [
+        "Did weaving your own silk wire across empty gaps feel empowering?",
+        "Was sending a spark down your custom thread to bloom bridges intuitive?",
+        "Did the optional northwest weave for Lost Moth Nine tempt you to detour?"
+      ]
+    },
+    "loom_r8": {
+      "promise": "Cross three peninsulas against two Thorn Archers, a Jumping Spider, and a False Lantern, throwing light to jam bows and open the zip cable home.",
+      "aha": "Bolt check the False Lantern, then park your lantern near archers to jam their bows and string fire lines.",
+      "checks": [
+        "Did parking your lantern near the Thorn Archers cleanly shut down their bows?",
+        "Were the three peninsulas tense without feeling cramped against the spider?",
+        "Did unsealing the zip cable back to the Carding Hall feel earned?"
+      ]
+    },
+    "loom_r9": {
+      "promise": "Solve the Cathedral of One Thread: lock one deck with a block, freeze a center firebreak, weave a bypass, and burn the east counterweight.",
+      "aha": "Freeze half the continuous thread blue while burning the east weight so its drop hoists the Boss Key bridge.",
+      "checks": [
+        "Did realizing five islands all hung from one single thread amaze you?",
+        "Did combining block weight, blue firebreak, and custom weaving feel epic?",
+        "Did watching the east drop hoist the Boss Key bridge feel unforgettable?"
+      ]
+    },
+    "loom_r10": {
+      "promise": "Rest in the Bobbin Loft beside a Hollow Wick tapestry, open the lift home, and test a burning spoke previewing the Loom Widow's rhythm.",
+      "aha": "The practice spoke teaches the exact ember warning and regrow timing you will need on the Widow's web.",
+      "checks": [
+        "Did the Hollow Wick tapestry add quiet mystery before the boss fight?",
+        "Did practicing the spoke burn timing prepare you naturally for the boss?",
+        "Did the waystone and lift back to entry make retrying painless?"
+      ]
+    },
+    "loom_r11": {
+      "promise": "Fight the Loom Widow on a six spoke silk web over void by igniting the rim spool of her active spoke so she drops onto the center spindle.",
+      "aha": "Burn the spoke under her feet to stun her, and weave temporary shuttle paths whenever she cuts rim links.",
+      "checks": [
+        "Was burning the spoke beneath the Widow readable and thrilling to time?",
+        "Did her cutting rim links force clever Brass Shuttle weaves in phase two?",
+        "Did winning Half Lantern Two and an ember feel like a worthy finale?"
+      ]
+    },
+    "court_r1": {
+      "promise": "Stand before silent forest jurors in a wooden amphitheater and set your two dungeon relics on the stands to open the Briar Court Trial Pit.",
+      "aha": "Placing both the Under Root and Loom relics opens the formal trial of three knight jousts.",
+      "checks": [
+        "Did the silent jurors and picture bubbles create a striking courtroom mood?",
+        "Was placing both relics on the twin stands clear and ceremonial?",
+        "Did the side doors cleanly hint at juror shortcuts returning here?"
+      ]
+    },
+    "court_r2": {
+      "promise": "Joust beetle mounted Sir Taproot across three lanes by blooming thorn walls in his charge path, then light the Mercy or Fire verdict brazier.",
+      "aha": "Bloom a lane thorn wall to unhorse his charge, then pick Mercy or Fire knowing it will alter the next room.",
+      "checks": [
+        "Was unhorsing Sir Taproot with a bloomed thorn wall crisp and fun?",
+        "Did lighting either the Mercy or Fire brazier feel like a real decision?",
+        "Were you curious right away to see how your verdict changed the next fight?"
+      ]
+    },
+    "court_r3": {
+      "promise": "Joust silk swinging Dame Spindle on an arena shaped by Verdict One, shooting her glowing anchor spool mid swing before casting Verdict Two.",
+      "aha": "Bolt her glowing corner spool to snap her swing and drop her, then pick Mercy or Fire for the Arbiter.",
+      "checks": [
+        "Could you clearly see how your first verdict physically reshaped this floor?",
+        "Was shooting Dame Spindle's glowing corner spool mid swing satisfying?",
+        "Did opening the juror shortcut back to the bench feel thoughtful?"
+      ]
+    },
+    "court_r4": {
+      "promise": "Face the Briar Arbiter on your doubly shaped arena, using your verdict gift and counterbalancing his scales so he yields and plants the oak seed.",
+      "aha": "Use your Mercy nook or Fire mirrors against charges, and step on the opposite scale pan to stagger him.",
+      "checks": [
+        "Did your second verdict give a tangible tool during the Arbiter duel?",
+        "Was counterbalancing his slammed justice scale intuitive and memorable?",
+        "Did his wordless yield and golden seed ceremony feel moving?"
+      ]
+    },
+    "oak_r1": {
+      "promise": "Enter the Heartwood Root Hub around the Sap Ring floor dial, teasing sap sluice, beam portal, and heartwood lift shortcuts looping home.",
+      "aha": "The central floor dial tracks the entire oak's sap level while locked returns hint at seven internal loops.",
+      "checks": [
+        "Did the central Sap Ring dial clearly set the oak's vertical hub theme?",
+        "Were the open starting wing and teased return doors easy to read?",
+        "Did returning to this hub via new lifts and portals feel satisfying?"
+      ]
+    },
+    "oak_r2": {
+      "promise": "Cross a knotwork cavern using a lantern hook to starve thorns and banking a blue shot into an eye switch for Key One and the sap branch.",
+      "aha": "Starve the thorns with your lantern hook so your bounced blue shot reaches the key vault switch.",
+      "checks": [
+        "Was combining thorn starving with a blue mirror bank clear?",
+        "Did noticing the north branch into the sap sluice invite exploration?",
+        "Did claiming Key One feel brisk for an opening grand dungeon room?"
+      ]
+    },
+    "oak_r2b": {
+      "promise": "Learn the Oak Sap Clock by flooding sap to float a bridge for a crate plate, then draining low and hanging light to slip a Shadow Gate home.",
+      "aha": "High sap floats amber bridges while low sap drains pathways so you can open the first hub shortcut.",
+      "checks": [
+        "Did flooding and draining sap clearly change the room's walkable bridges?",
+        "Was pushing the crate first and slipping dark second easy to sequence?",
+        "Did opening the first shortcut back to the Root Hub feel crisp?"
+      ]
+    },
+    "oak_r3": {
+      "promise": "Fight a Sporecap, Gloam, and Vine Strangler where lighting two braziers both unmasks the hidden Gloam and blooms bounce caps over shockwaves.",
+      "aha": "Lighting the twin braziers solves two combat problems at once: revealing the Gloam and growing bounce pads.",
+      "checks": [
+        "Did lighting the braziers clearly both expose the Gloam and bloom pads?",
+        "Were the bounce caps fun for vaulting Sporecap shockwaves?",
+        "Did the Vine Strangler add sharp pressure alongside the Sporecap?"
+      ]
+    },
+    "oak_r4": {
+      "promise": "Cross Sunshaft Lagoon by sending silk sparks across water to light two north braziers, lighting a third for the shrine, and spotting a tiny stump.",
+      "aha": "Overhead silk spools carry fire across the water, while the hollow stump hides a tiny bark crawlspace.",
+      "checks": [
+        "Did chaining silk sparks across the lagoon to light twin braziers click?",
+        "Was spotting the hollow Shrink Stump an exciting optional find?",
+        "Did the lagoon blend Loom and Under Root ideas naturally?"
+      ]
+    },
+    "oak_r4b": {
+      "promise": "Crawl tiny inside oak bark, ride a tame beetle over a golden sap river, and roll a dew lens into a ceiling sun crack to melt an ember knot.",
+      "aha": "A tiny beetle ferries you across sap so you can line up a dew lens under a sunbeam to melt the sap knot.",
+      "checks": [
+        "Did riding a beetle across a sap river inside the oak feel magical?",
+        "Was rolling the dew lens into the ceiling sunbeam clear and readable?",
+        "Did the ember piece and drop chute back to the sluice reward the detour?"
+      ]
+    },
+    "oak_r5": {
+      "promise": "Claim Solar Beam at the shrine to pierce bramble, stone, and eye in one shot, then practice a blue piercing beam through living thorns.",
+      "aha": "Solar Beam slices brambles and stone in one line, and bouncing it off a blue mirror makes a blue beam.",
+      "checks": [
+        "Did slicing bramble, stone, and eye in one first Beam shot feel awesome?",
+        "Did the northeast wall naturally teach blue piercing beams right away?",
+        "Did opening the return portal to the hub feel immediately convenient?"
+      ]
+    },
+    "oak_r5b": {
+      "promise": "Slice bramble and stone to expose a mirror, hide light behind a pillar to wilt thorns, and bank a blue beam pinning a bridge into the eye.",
+      "aha": "One banked blue Solar Beam can frost pin a wide pit bridge and pierce a thorn wall into the eye together.",
+      "checks": [
+        "Did combining lantern starving with a blue piercing beam feel clever?",
+        "Was watching one blue beam both pin the bridge and hit the eye clear?",
+        "Did the Thorn Archer and False Lantern fit neatly around the puzzle?"
+      ]
+    },
+    "oak_r6": {
+      "promise": "Defeat Elder Sporecap using twin bounce caps to vault spore rings and Solar Beam to unearth its burrow and slice brambles for Key Two.",
+      "aha": "Fire Solar Beam straight through its phase two brambles and glowing burrow mound to unearth and stagger it.",
+      "checks": [
+        "Did vaulting fungal rings with the twin bounce caps feel nimble?",
+        "Was slicing both new brambles and its burrow mound in one Beam punchy?",
+        "Did winning Key Two and opening the Inner Sap Hub feel like a mid peak?"
+      ]
+    },
+    "oak_r6b": {
+      "promise": "Slice brambles off the Sap Rotor, flood sap high to grease a giant four way growth ring turntable, and steer between both upper oak wings.",
+      "aha": "High sap greases the giant heartwood turntable so you can turn it toward either wing with no key deadlock.",
+      "checks": [
+        "Did flooding sap to lubricate the giant wooden turntable feel tactile?",
+        "Was choosing between the east and west upper wings clear and open?",
+        "Did the upper balcony tease a future return loop cleanly?"
+      ]
+    },
+    "oak_r7": {
+      "promise": "Push a blue mirror north into a silk and bramble lane inside the Sap Silk Loom and refract a blue Solar Beam right through layers of thorns and web.",
+      "aha": "Position the movable mirror so a blue Solar Beam cuts cleanly through both bramble and silk web to the switch.",
+      "checks": [
+        "Was pushing and angling the blue mirror into the layered lane intuitive?",
+        "Did piercing both bramble and web in one blue Beam feel super clean?",
+        "Did unlocking both the bastion and a moving chamber lookout feel great?"
+      ]
+    },
+    "oak_r7b": {
+      "promise": "In the Moving Chamber, hang your lantern on a hook so dark opposite walls rotate the inner vault ninety degrees, spinning Key Three right to you.",
+      "aha": "Darken half the room on purpose by hanging your lantern so the Shifting Wood rule turns the vault for you.",
+      "checks": [
+        "Did realizing you could rotate the room by darkening half of it amaze you?",
+        "Was spinning the cracked key vault onto your bridge easy to track?",
+        "Did spinning one more turn for the mirror shortcut feel like pure mastery?"
+      ]
+    },
+    "oak_r8": {
+      "promise": "Clear the Bramble Bastion against a Bramble Knight, Gloam, and Thorn Archer across a thorn wall, throwing light to jam and beaming through.",
+      "aha": "Throw light to jam the archer and reveal the Gloam, then fire Solar Beam straight through wall and shield.",
+      "checks": [
+        "Did throwing your lantern solve both the hidden Gloam and the archer?",
+        "Was piercing the thorn wall and Bramble Knight guard in one Beam juicy?",
+        "Did the bastion feel like a crisp upper tree combat exam?"
+      ]
+    },
+    "oak_r8b": {
+      "promise": "Clear the Canopy Split, flood sap to wake a Shrink Stump, align a mirror tiny inside a fissure, and return big to Beam through the grate.",
+      "aha": "High sap wakes the Shrink Stump so tiny you can aim a hidden mirror for full size you to Beam through a grate.",
+      "checks": [
+        "Did uniting sap height, shrinking, and a pinhole blue Beam feel epic?",
+        "Was dropping the shortcut back to the Sap Hub well placed?",
+        "Did unlocking the Key Three door feel like the final step to the vault?"
+      ]
+    },
+    "oak_r9": {
+      "promise": "Reach the Keeper's Amber Vault to drop the Heartwood Lift home, branch to two side shrines, and unite Beam, mirrors, and fire for the Boss Key.",
+      "aha": "Combine Solar Beam, twin blue mirrors, and brazier lighting in one vault to claim Keeper's Flame Three.",
+      "checks": [
+        "Did dropping the Heartwood Lift straight down to the hub feel triumphant?",
+        "Was the final Boss Key puzzle a crisp synthesis of your oak powers?",
+        "Did the optional crucible and hollow shrine doors tempt you before the boss?"
+      ]
+    },
+    "oak_r9b": {
+      "promise": "Enter an optional three ring crucible testing two waves of Thornwood enemy roles around silk fire lines and bounce caps to earn an Ember Piece.",
+      "aha": "Use perimeter silk fire threads and bloomed bounce caps to control both escalating enemy waves.",
+      "checks": [
+        "Did both combat waves test distinct counters you learned across the island?",
+        "Were the perimeter silk lines and bounce caps genuinely useful in battle?",
+        "Did the Ember Piece feel like a fair trophy for the optional gauntlet?"
+      ]
+    },
+    "oak_r9c": {
+      "promise": "Light two amber braziers in a quiet chapel to cast a haunting double winged shadow behind a sap effigy and claim the final bark rubbing.",
+      "aha": "Lighting the twin braziers reveals a wordless shadow clue about your rival Hollow Wick.",
+      "checks": [
+        "Did the double winged shadow cast behind the effigy land as a chilling beat?",
+        "Was finding the final bark rubbing for Scribe Worm rewarding?",
+        "Did the quiet chapel give a haunting pause right before Briar Matron?"
+      ]
+    },
+    "oak_r10": {
+      "promise": "Duel Briar Matron using bounce bulbs over spore rings, Beam chain burns on silk snares, and a center sun bloom before relighting Great Lamp Three.",
+      "aha": "Vault spores on bounce bulbs, chain burn her phase two snares with Beam, and toss light center in phase three.",
+      "checks": [
+        "Did chain burning her three silk snares with one Beam feel incredible?",
+        "Was throwing your lantern center to bloom the canopy in phase three clear?",
+        "Did relighting Great Lamp Three and seeing the forest bloom feel earned?"
+      ]
+    }
+  }
+}

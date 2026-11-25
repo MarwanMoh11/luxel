@@ -1,0 +1,556 @@
+{
+  "island": {
+    "title": "Mirefen Gardens",
+    "rule": "The gardens repeat one generous six hour dusk shifting gates, rain, wind, and statues, while Echo Roses record six seconds of you to act beside your past self.",
+    "feel": "A wistful rainlit clockwork conservatory where reading a living schedule feels playful instead of hurried.",
+    "arc": "Discover the six hour dusk and sundial skip across Mirefen. Clear the Hourglass Maze and Rain Mausoleum in either order, pull off the one dusk Garden Party heist, earn Moth Wings inside the Drowned Conservatory, relight Great Lamp Four, and face the Last Hour.",
+    "moments": [
+      "Choreographing three rose ghosts of yourself at once across rotating hedges inside the Hourglass Maze.",
+      "Fighting your own recorded past against the Gardener Twice and bouncing your old bolts off mirrors.",
+      "Chaining Sun, Rain, and Wind in one room to float a mirror, bounce a skylight beam, and blow a spore.",
+      "Running the one dusk Garden Party heist and swapping the Golden Clock Key on a balance scale.",
+      "Battling the Last Hour backwards in time where your forward bolts cancel her reversed shots mid air."
+    ]
+  },
+  "dungeons": {
+    "hourglass_maze": {
+      "promise": "A turning hedge labyrinth where Echo Roses replay six seconds of your footsteps and shots to hold plates, flip clocks, and fire through grates.",
+      "power": "Echo Bud lets you trigger up to three Echo Roses in one room.",
+      "arc": "Learn Echo plate holding and grate shooting, lure the Shear Keeper into thorn cages, pair Echoes with prism mirrors and shadow gates, conduct three Wicks at once, and face the Gardener Twice.",
+      "boss": "The Gardener Twice records your path and bolts to spawn an echo twin. Aim your past shots into mirrors to shatter him."
+    },
+    "rain_mausoleum": {
+      "promise": "A flooded stone basilica where spinning the Weather Wheel cycles Sun, Rain, and Wind to drain canals, float buoys, and blow spores across gaps.",
+      "power": "Vane Rod lets your bolts spin Weather Wheels between Sun, Rain, and Wind.",
+      "arc": "Learn sheltered flames and sun drained combat, float a mirror buoy into a sunbeam, shatter the Cloud Urn Deacon, ride wind carried spores, chain all three seasons, and silence the Drowned Choir.",
+      "boss": "The Drowned Choir sings five voices veiled by weather. Spin the wheel mid song to silence each porcelain bust in order."
+    },
+    "garden_party": {
+      "promise": "A playful one dusk heist across a six hour estate banquet where every hour unlocks a new trick, from usher stealth to a chandelier raft run.",
+      "power": "",
+      "arc": "Scout the schedule board freely, then launch at Hour One to fool topiary ushers, slip a rain darkened cellar, ride Hour Four winds across chandeliers, bow trick the Toastmaster, and swap the Golden Clock Key.",
+      "boss": "The Toastmaster guards the Golden Clock Key. Ring the banquet bell or plant an Echo guest to force him to bow open."
+    },
+    "conservatory": {
+      "promise": "A flooded glasshouse and lofty rafter canopy built around Moth Wings gliding, thermal updrafts, prism banks, and weather wheels.",
+      "power": "Moth Wings lets you glide smoothly off a dash and refresh flight on updrafts.",
+      "arc": "Open the sunken glass atrium, master Moth Wings in a gentle four stage pavilion, soar over Great Lily Hopper, ride glass roof girders, shatter the canopy seal, and defeat Heron Abbess.",
+      "boss": "Heron Abbess sweeps the dome with gusts and water ripples. Shatter skylights for updrafts and soar above her strikes."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Explore Mirefen's central dusk lagoon on a six hour loop with handy sundials, Echo Roses, pinnable caves, and paths to three districts.",
+      "aha": "Sundials skip or rewind hours with zero waiting, and inner sconces pin shortcuts open forever.",
+      "checks": [
+        "Was reading the six hour dusk sundial clear without feeling rushed?",
+        "Did skipping hours at a sundial feel snappy and zero stress?",
+        "Were the three beacons, side caves, and district paths inviting to explore?"
+      ]
+    },
+    "ow_weeping_orchard": {
+      "promise": "Visit the western orchard camp for Gardener Frog, use Hour Two's Echo Rose bloom on a dual plate trellis, and approach the Hourglass Maze.",
+      "aha": "Hour Two blooms Echo Roses longer so your ghost can hold one plate while you step on the other.",
+      "checks": [
+        "Did Hour Two noticeably help you coordinate the dual plate trellis?",
+        "Were the Topiary Knight and Petal Duelist a sharp introduction to garden foes?",
+        "Was the entrance to the Hourglass Maze clear and inviting?"
+      ]
+    },
+    "ow_drowned_cloister": {
+      "promise": "Explore the southern cloister where Hour Three floats the raft to Rain Mausoleum and Hour Six raises a dark bridge to a late secret.",
+      "aha": "Hour Three rain floods raft bridges into action while Hour Six reveals the distant Shadow Bridge.",
+      "checks": [
+        "Did Hour Three rain clearly float the raft path toward the Mausoleum?",
+        "Did meeting the Rain Frog and Mist Eel preview weather combat well?",
+        "Did the Hour Six Shadow Bridge spark curiosity for after relighting?"
+      ]
+    },
+    "ow_clock_terrace": {
+      "promise": "Cross the grand sundial plaza showing three live seal plinths, Scribe Bookworm's camp, pinnable district shortcuts, and the Garden Party arch.",
+      "aha": "The three seal plinths track your island progress while lit sconces permanently unlock district shortcuts.",
+      "checks": [
+        "Did the three seal plinths make your main island goals crystal clear?",
+        "Did pinning district shortcuts open feel satisfying and permanent?",
+        "Did the Wing Spire and Garden Party arches invite you onward?"
+      ]
+    },
+    "cave_echo_cellar": {
+      "promise": "Enter an Hour One cellar where hanging your lantern freezes Topiary Knights on twin plates, or pair with an Echo Rose, to claim Moth Three and lore.",
+      "aha": "Topiary Knights freeze into solid statues under light, letting you park them right on floor plates.",
+      "checks": [
+        "Did freezing a Topiary Knight in light onto a plate spark a smile?",
+        "Did lighting the inner sconce clearly keep the cave pinned open later?",
+        "Was finding Lost Moth Three and cellar lore worth the quick visit?"
+      ]
+    },
+    "cave_sundial_well": {
+      "promise": "Drop into an Hour Two cistern well where an Echo Rose holds a weight plate while you sprint to light timed braziers and permanently pin the well open.",
+      "aha": "Record an Echo standing on the plate so your hands are free to light the timed braziers in time.",
+      "checks": [
+        "Was using an Echo Rose to hold the plate while you sprinted clear?",
+        "Did pinning the well open from inside prove the loop respects your progress?",
+        "Did the ember piece and Lost Moth Two feel like a generous early find?"
+      ]
+    },
+    "cave_rain_cistern": {
+      "promise": "Fight in a rain cistern where spinning the center Weather Wheel from Rain to Sun drains the moat, stranding Mist Eels and shrinking Rain Frogs.",
+      "aha": "Spinning the Weather Wheel to Sun turns a flooded ambush into stranded eels and shrunken frogs.",
+      "checks": [
+        "Did flipping the wheel from Rain to Sun dramatically turn the fight?",
+        "Could you clearly see Mist Eels strand and Rain Frogs shrink in sunlight?",
+        "Did winning Lost Moth Six and shards feel crisp and punchy?"
+      ]
+    },
+    "cave_heron_roost": {
+      "promise": "Soar through an Hour Four east wind cliff cave by chaining three thermal updraft plumes across stepped ledges to claim an ember and Lost Moth Eight.",
+      "aha": "Touch each thermal plume while gliding to refresh your Moth Wings and ride the east wind between cliffs.",
+      "checks": [
+        "Did chaining three thermal updrafts across cliffs feel joyful and fluid?",
+        "Were the mid course anchors generous enough to keep retries light?",
+        "Did reaching the high roost ember and moth feel like a true flight payoff?"
+      ]
+    },
+    "trial_wing_spire": {
+      "promise": "Race an instant retry spire flight course chaining five updrafts for medals and winning the Petal Mirror pane and Lost Moth Nine.",
+      "aha": "Tight glides between all five updrafts shave seconds without losing momentum across the spire.",
+      "checks": [
+        "Did chaining all five updrafts at speed feel exhilarating and smooth?",
+        "Did instant restarts make chasing a higher medal genuinely addictive?",
+        "Did winning the Petal Mirror pane and Lost Moth Nine feel earned?"
+      ]
+    },
+    "vault_last_hour": {
+      "promise": "Step onto a starry void clock face after relighting Mirefen to fight the Last Hour backwards in time, cancelling reversed shots with Echo bolts.",
+      "aha": "Her attacks run in reverse from the rim inward, and firing forward Echo Rose bolts annihilates them mid air.",
+      "checks": [
+        "Did seeing attacks and broken tiles play backwards in time blow your mind?",
+        "Was cancelling her backward shots with forward Echo bolts readable and fun?",
+        "Did gliding over sweeping clock hands feel like an epic superboss climax?"
+      ]
+    },
+    "hourglass_r1": {
+      "promise": "Enter the Sundial Rotunda teasing the Bell Jar Boss Door, claim Echo Bud, and pair your first rose ghost on twin plates to open the West Wing.",
+      "aha": "Your Echo Rose records and replays your footsteps so you and your ghost can stand on two plates together.",
+      "checks": [
+        "Did pairing with your first rose ghost on twin plates click immediately?",
+        "Did the north Bell Jar Boss Door and locked east gate orient the dungeon?",
+        "Did this rotunda feel like a clear home hub for future shortcuts?"
+      ]
+    },
+    "hourglass_r2": {
+      "promise": "Record your Echo firing west through iron bars at a switch while you walk over to hold the shutter plate and light twin timed braziers.",
+      "aha": "Echoes replay your exact bolts through iron bars so you can hold a distant shutter open for your past shot.",
+      "checks": [
+        "Did watching your past self shoot through the bars while you held the plate click?",
+        "Did the patrolling Mire Snuffer add light urgency around the timed braziers?",
+        "Was synchronizing your walk and recorded shot forgiving enough to enjoy?"
+      ]
+    },
+    "hourglass_r3": {
+      "promise": "Fight Topiary Knights with a Mire Snuffer, Petal Duelist, and Hour Heron by freezing a knight under light or Echoes to flank its blooming back.",
+      "aha": "Freeze a Topiary Knight in place with light or an Echo Rose so you can circle behind its vulnerable back.",
+      "checks": [
+        "Was freezing a Topiary Knight with light to strike its back intuitive?",
+        "Did the Mire Snuffer keep you mindful of where you left your lantern?",
+        "Did the twin lane cover pillars help you read the Petal Duelist and Heron?"
+      ]
+    },
+    "hourglass_r4": {
+      "promise": "Thread a turning hedge maze by recording a delayed Echo shot on the room sundial, crossing Gate One so your past self swings Gate Two open.",
+      "aha": "Wait a couple seconds before shooting the sundial so your Echo flips the hedges right after you cross.",
+      "checks": [
+        "Did delaying your recorded shot to flip a gate behind you feel brilliant?",
+        "Was watching the alternating hedge gates rotate cleanly readable?",
+        "Did the mid maze Topiary Knight fit smoothly into the timing puzzle?"
+      ]
+    },
+    "hourglass_r5": {
+      "promise": "Outsmart the blind Brass Shear Keeper in an oval lawn by planting Echo Rose decoys to lure its scissor charge into thorn cages for Key One.",
+      "aha": "Plant an Echo Rose behind a thorn cage so the blind hound lunges in and jams its scissor blades wide open.",
+      "checks": [
+        "Was luring the blind hound into thorn cages with an Echo Rose fun?",
+        "Did its jammed blades and frantic tail wag bring welcome humor?",
+        "Did opening the west shortcut back to the rotunda feel brisk?"
+      ]
+    },
+    "hourglass_r6": {
+      "promise": "Rotate a blue mirror so your Echo banks blue bolts north across water into a prism eye while you flip a crystal bar and light the east brazier.",
+      "aha": "Echo bolts bounce off blue mirrors too, holding distant prism eyes while you work across the room.",
+      "checks": [
+        "Did seeing your Echo's bolt turn blue off the mirror spark delight?",
+        "Was splitting tasks between your Echo and live self smooth and readable?",
+        "Did turning the mirror a second angle for the bonus portal reward curiosity?"
+      ]
+    },
+    "hourglass_r7": {
+      "promise": "Clear a pendulum court against two Hour Herons, a Petal Duelist, knight, and snuffer using an Echo decoy and unlocking a cross hedge shortcut.",
+      "aha": "Drop an Echo Rose to pull the Petal Duelist's parry away while punishing Hour Herons on their steady tick.",
+      "checks": [
+        "Did using an Echo Rose to turn the Petal Duelist's guard away feel sharp?",
+        "Were the cover pillars placed well for dodging the two Hour Herons?",
+        "Did opening the cross hedge shortcut back to the west wing feel neat?"
+      ]
+    },
+    "hourglass_r8": {
+      "promise": "Flip your instinct at a dark gate: route your Echo behind a solid east wall onto a plate, hang your lantern west, and walk dark through.",
+      "aha": "Echoes glow too, so hide your ghost behind a solid wall and your lantern in an alcove to open the gate.",
+      "checks": [
+        "Did realizing your own glowing Echo was closing the Shadow Gate surprise you?",
+        "Was routing your Echo behind the solid wall onto the plate a crisp aha?",
+        "Did clearing the Mire Snuffer feel clean before setting up the dark walk?"
+      ]
+    },
+    "hourglass_r9": {
+      "promise": "Conduct three live Echo Roses across clock gated bays so one holds west, one banks blue through bars, and one holds east for the Boss Key.",
+      "aha": "Chain three distinct Echoes across three bays so all three past selves hold the sanctum open for you.",
+      "checks": [
+        "Did seeing three ghosts of yourself working together feel unforgettable?",
+        "Could you refine one bay's Echo without losing track of the whole plan?",
+        "Did claiming the Boss Key and east hub shortcut feel like a true peak?"
+      ]
+    },
+    "hourglass_r10": {
+      "promise": "Visit an optional twin island basin where an Echo holds the west plate while you chime three cross water Sequence Orbs in order for Lost Moth Four.",
+      "aha": "Park an Echo on the west island plate to free yourself to chime all three orbs in order across the water.",
+      "checks": [
+        "Was holding the west plate with an Echo while chiming three orbs smooth?",
+        "Did the optional shortcut loop between east wing rooms feel worthwhile?",
+        "Did Lost Moth Four and the shard chest feel like a cozy bonus?"
+      ]
+    },
+    "hourglass_r11": {
+      "promise": "Walk the quiet Sand Glass Promenade to watch a golden ghost prune one rose twice into sand, read the lore mural, and heal before the amphitheatre.",
+      "aha": "The wordless pruning ghost quietly foreshadows the Gardener Twice splitting into present and echo halves.",
+      "checks": [
+        "Did the golden ghost pruning a rose twice land as an eerie quiet moment?",
+        "Did the lore mural and dew shrine give a clean breath before the boss?",
+        "Did stepping onward into the amphitheatre feel dramatic?"
+      ]
+    },
+    "hourglass_r12": {
+      "promise": "Duel the Gardener Twice as he records your trail and bolts into an Echo Gardener, aiming your past shots into mirrors to shatter his back.",
+      "aha": "Fire toward the mirrors while he records you so his Echo replays blue bounces straight into his back.",
+      "checks": [
+        "Did turning your own recorded past into a weapon against him blow your mind?",
+        "Was aiming into the twin mirrors during his recording clear to discover?",
+        "Did both halves bowing with a golden rose make a memorable ending?"
+      ]
+    },
+    "mausoleum_r1": {
+      "promise": "Enter the Cistern Nave teasing a rain floated choir balcony, claim Vane Rod, and spin the Weather Wheel to Sun to drain the West Crypt stair.",
+      "aha": "Spinning the Weather Wheel cycles Sun, Rain, and Wind across the crypt, draining stairs or floating rafts.",
+      "checks": [
+        "Did spinning the wheel from Rain to Sun clearly drain the west stair?",
+        "Did the high choir balcony clearly tease needing Rain and the Boss Key later?",
+        "Did this three weather hub make the Mausoleum easy to picture?"
+      ]
+    },
+    "mausoleum_r2": {
+      "promise": "Contrast an open rain snuffed brazier with stone roofed braziers: light the roofed flame in Sun, then shift to Rain to float the raft north.",
+      "aha": "Roofed braziers stay lit even in a downpour, letting you switch to Rain to float across after lighting them.",
+      "checks": [
+        "Was the contrast between exposed and stone roofed braziers obvious?",
+        "Did lighting under shelter in Sun then flooding to float north feel clean?",
+        "Did shrinking the two Rain Frogs in Sun feel playful?"
+      ]
+    },
+    "mausoleum_r3": {
+      "promise": "Fight two Rain Frogs, two Mist Eels, and an Hour Heron in a flooded colonnade by spinning the center wheel to Sun before frogs flip it back.",
+      "aha": "Spinning the center wheel to Sun drains both eel canals and shrinks frogs, so keep them from flipping it.",
+      "checks": [
+        "Did fighting over control of the center Weather Wheel feel exciting?",
+        "Did draining the canals in Sun clearly strand both Mist Eels for big hits?",
+        "Was managing the Hour Heron alongside the weather brawl fair?"
+      ]
+    },
+    "mausoleum_r4": {
+      "promise": "Push a blue mirror onto a sunken buoy in Sun to arm it, flood in Rain to float and latch it high, then return to Sun to bounce a sunbeam.",
+      "aha": "Cycle Sun, Rain, and Sun again so Rain lifts your aimed mirror right into an upper skylight sunbeam.",
+      "checks": [
+        "Did using Rain buoyancy to lift a mirror into a sunbeam feel inventive?",
+        "Was each step of the Sun, Rain, Sun sequence readable on the floor?",
+        "Did the lone Rain Frog add light friction without slowing the puzzle?"
+      ]
+    },
+    "mausoleum_r5": {
+      "promise": "Beat the Cloud Urn Deacon in an octagonal chapel by spinning Wind to blow open his orbiting urns and flipping Sun to melt his shield for Key One.",
+      "aha": "Wind blows his three protective rain urns wide to break, and Sun strips his rain armor wide open.",
+      "checks": [
+        "Was switching between Wind and Sun to dismantle his defenses clear?",
+        "Did seeing him fan himself when his cloud wig shrank in Sun make you smile?",
+        "Did opening the west raft shortcut back to the nave feel rewarding?"
+      ]
+    },
+    "mausoleum_r6": {
+      "promise": "Set a dandelion seed orb on a launch pad in calm Sun, then spin Wind so an east gale wakes bounce blooms and blows it across an eight tile gap.",
+      "aha": "Place the light spore in calm Sun first, then summon Wind to blow it across the wide gap onto the far plate.",
+      "checks": [
+        "Did watching the east gale ferry your seed orb across the chasm delight you?",
+        "Was clearing the east rim Petal Duelist brisk once the bridge extended?",
+        "Did the room cleanly branch toward both the belfry and optional reliquary?"
+      ]
+    },
+    "mausoleum_r7": {
+      "promise": "Win a diamond belfry brawl by spinning Wind to sweep frog puddles and disrupt duelists, flipping Sun to shrink the frog, and opening a tunnel.",
+      "aha": "Use Wind to sweep puddles and shift spacing, then Sun to shrink the frog and clean up the squad.",
+      "checks": [
+        "Did toggling Wind and Sun mid fight noticeably change how the battle flowed?",
+        "Were the twin Petal Duelists, stalker, and heron fair to juggle together?",
+        "Did opening the west drain tunnel shortcut back to the colonnade feel slick?"
+      ]
+    },
+    "mausoleum_r8": {
+      "promise": "Run the Three Seasons chain: burn a bramble in Sun, float a mirror buoy in Rain, bounce a beam in Sun, and blow a spore in Wind for the Boss Key.",
+      "aha": "One unbroken chain of Sun, Rain, Sun, and Wind unites every Mausoleum rule to unlock the Boss Key.",
+      "checks": [
+        "Did chaining all three seasons in one grand contraption feel thrilling?",
+        "Could you trace the next step cleanly without guessing blindly?",
+        "Did claiming the Boss Key and east hub shortcut feel like a true payoff?"
+      ]
+    },
+    "mausoleum_r9": {
+      "promise": "Learn the Drowned Choir's rule in the Tuning Nave by spinning the Weather Wheel to unveil four singing urns in order: Sun, Rain, Wind, Sun.",
+      "aha": "Each singing urn opens only under its matching weather, teaching the exact stanza order of the boss.",
+      "checks": [
+        "Did silencing the four urns in numbered weather order click right away?",
+        "Did defending the wheel from the Rain Frog keep the tuning lively?",
+        "Did this room make you feel ready for the Drowned Choir boss?"
+      ]
+    },
+    "mausoleum_r10": {
+      "promise": "Curve a shot or thrown lantern ninety degrees around a wall using a Wind draft to trip a hidden eye, then flood Rain to float to Moth Five.",
+      "aha": "A Wind gale bends your bolt or lantern cleanly around a solid stone divider to hit a hidden switch.",
+      "checks": [
+        "Did curving a shot around a solid stone corner with Wind feel awesome?",
+        "Was flipping to Rain afterward to float the raft smooth and brisk?",
+        "Did Lost Moth Five and the choir shortcut make the detour feel rich?"
+      ]
+    },
+    "mausoleum_r11": {
+      "promise": "Climb the Organ Stair before the boss by hanging light to freeze a Topiary Knight, timing twin Hour Herons along draft lanes, and healing.",
+      "aha": "Park your lantern on the center hook to freeze the knight while weaving organ draft lanes past the herons.",
+      "checks": [
+        "Did the stepped organ pipe lanes give the pre boss brawl strong rhythm?",
+        "Was freezing the Topiary Knight on the center hook helpful under pressure?",
+        "Did topping up at the dew shrine right before the apse feel fair?"
+      ]
+    },
+    "mausoleum_r12": {
+      "promise": "Silence the five porcelain busts of the Drowned Choir in sung order, spinning the Weather Wheel mid stanza to expose weather veiled voices.",
+      "aha": "Listen and watch each sung stanza, spinning Rain, Wind, and Sun mid song so you can shoot every bust in order.",
+      "checks": [
+        "Could you read each sung stanza clearly by both sound and glow?",
+        "Did spinning the Weather Wheel mid stanza to expose hidden busts thrill you?",
+        "Did shattering the Conductor Organ for Half Lantern Four B feel grand?"
+      ]
+    },
+    "party_r1": {
+      "promise": "Scout the Veranda Lobby freely, check permanent notes on the Heist Schedule Board, and chime the Starting Arch to launch the One Dusk Heist.",
+      "aha": "Scout freely first, then chime the arch knowing discovered intel and unlocked shortcuts persist forever.",
+      "checks": [
+        "Did the Heist Schedule Board make planning the six hour run exciting?",
+        "Did knowing intel stamps and shortcuts persist remove any timer dread?",
+        "Did chiming the Starting Arch feel like launching a playful caper?"
+      ]
+    },
+    "party_r2": {
+      "promise": "Fool or clear two Topiary Ushers at Hour One for the Banquet Token, then shift to Hour Two so an Echo holds the lift plate for the Tuning Fork.",
+      "aha": "Decoy ushers with the coat hook at Hour One, then use Hour Two's rose bloom for the dumbwaiter lift.",
+      "checks": [
+        "Did outsmarting the two Topiary Ushers feel brisk and heist like?",
+        "Was shifting to Hour Two so an Echo held the lift plate smooth?",
+        "Did snagging both the token and tuning fork build crisp momentum?"
+      ]
+    },
+    "party_r3": {
+      "promise": "Use Hour Three's rain to snuff the patio lamp sealing the wine cellar, hide light behind a hedge for Grandma's teacup, and float the barge.",
+      "aha": "Hour Three rain kills the patio light so hiding your lantern opens the dark wine cellar and floats the barge.",
+      "checks": [
+        "Did exploiting the Hour Three rain to darken the wine cellar feel clever?",
+        "Was finding Grandma's unbroken teacup a charming heist bonus?",
+        "Were the frogs, eel, and heron manageable without bogging down the clock?"
+      ]
+    },
+    "party_r4": {
+      "promise": "Summon Hour Four's East Wind in the Chandelier Gallery to wake bounce blooms and gusts, soar over guards, and yank the winch for a shortcut.",
+      "aha": "Ride Hour Four gusts over high chandelier rafters to bypass guards and open a permanent pantry shortcut.",
+      "checks": [
+        "Did soaring above the ground guards on chandelier wind gusts feel slick?",
+        "Was yanking the Kitchen Winch with Throw and Recall tactile and clear?",
+        "Did unlocking the permanent Pantry Shortcut make repeat runs feel great?"
+      ]
+    },
+    "party_r5": {
+      "promise": "Ring the bell or plant an Echo to make the Toastmaster bow, beat him, swap a tea urn for the Golden Clock Key, and ride the Hour Six aqueduct.",
+      "aha": "Chime the bell or plant an Echo guest to force a deep bow, then swap the tea urn on the scale for the key.",
+      "checks": [
+        "Did making the Toastmaster compulsively bow to a bell or Echo crack you up?",
+        "Did swapping the tea urn onto the balance scale for the key feel iconic?",
+        "Did escaping along the Hour Six aqueduct back to the lobby cap it cleanly?"
+      ]
+    },
+    "conservatory_r1": {
+      "promise": "Enter the sunken Glass Atrium hub, bank blue off a mirror to light a treasure island portal, inspect the Canopy Seal plinth, and branch east.",
+      "aha": "This sunken atrium anchors four returning shortcuts and teases the locked Upper Glass Canopy from step one.",
+      "checks": [
+        "Was banking off the mirror to light the treasure island portal crisp?",
+        "Did the Canopy Seal plinth and upper balconies tease the grand layout?",
+        "Did returning here later through unlocked shortcuts feel rewarding?"
+      ]
+    },
+    "conservatory_r2": {
+      "promise": "Slice brambles with Solar Beam in the Reed Basin, hit the eye switch to bridge the canal and unseal Key One, and try the Echo bonus chest.",
+      "aha": "Clear the bramble with Beam first so you can hit the switch that both bridges the canal and unseals Key One.",
+      "checks": [
+        "Did slicing the bramble and watching both bridge and vault open feel clean?",
+        "Was the optional Echo Rose bonus chest a nice little treat to grab?",
+        "Did claiming Key One feel brisk as an opening grand dungeon room?"
+      ]
+    },
+    "conservatory_r3": {
+      "promise": "Fight a Petal Duelist, Lily Hopper, and Mire Snuffer across a diagonal trench bridge, balancing parries, leaps, and flame snuffing in tight cover.",
+      "aha": "Use the center cover bridge to separate the parrying duelist from the leaping hopper and flame snuffer.",
+      "checks": [
+        "Did the three enemy roles create a lively, readable diagonal skirmish?",
+        "Was the central cover bridge helpful without feeling cramped?",
+        "Did clearing the court feel like a fair step up in Conservatory combat?"
+      ]
+    },
+    "conservatory_r4": {
+      "promise": "Unlock the key door into the Brazier Gallery, throw your lantern onto the north brazier while shooting the south eye to open two wing forks.",
+      "aha": "Split your actions by throwing your lantern north to burn the brazier while firing south at the eye switch.",
+      "checks": [
+        "Did splitting throw north and shoot south feel clean and rhythmic?",
+        "Were both the Wings Pavilion east and optional aqueduct north clear?",
+        "Did the room smoothly bridge early Conservatory play into Moth Wings?"
+      ]
+    },
+    "conservatory_r5": {
+      "promise": "Claim Moth Wings in a gentle four stage pavilion, gliding over dry floor plates, a small water hop, a refreshing updraft lagoon, and an ember loop.",
+      "aha": "Hold glide out of a dash to cross plates and water safely, and touch updraft plumes to refresh flight.",
+      "checks": [
+        "Did the four gentle stages make Moth Wings feel effortless right away?",
+        "Did gliding over floor plates and refreshing on updrafts feel joyful?",
+        "Did the optional southern twin updraft ember loop tempt you to test flight?"
+      ]
+    },
+    "conservatory_r6": {
+      "promise": "Soar on four corner thermal plumes above the Great Lily Hopper to clear twin water shockwaves and intercept its leaps mid air for Key Two.",
+      "aha": "Use the four corner updrafts to hover safely over shockwaves and shoot the hopper mid leap for bonus stagger.",
+      "checks": [
+        "Did hovering on corner updrafts over water rings feel freeing and clear?",
+        "Was intercepting the hopper mid air for extra stagger exciting to land?",
+        "Did winning Key Two prove your new Moth Wings work in real combat?"
+      ]
+    },
+    "conservatory_r7": {
+      "promise": "Bank blue across a twin lagoon into a center eye to raise a bridge, opening the north cloister and the optional Thermal Conservatory east.",
+      "aha": "Combine a cross lagoon mirror bank with a center updraft glide to open both main and thermal wings.",
+      "checks": [
+        "Was banking a blue shot across the west lagoon into the eye clear?",
+        "Did spotting the updraft leading into the optional thermal wing invite you?",
+        "Did the anti cheese grate keep the mirror puzzle feeling cleanly earned?"
+      ]
+    },
+    "conservatory_r8": {
+      "promise": "Survive a flooded cloister skirmish against a Heron Stalker, Mire Snuffer, Lily Hopper, and Topiary Knight using twin updrafts over shockwaves.",
+      "aha": "Ride the twin updraft plumes to stay above shockwaves and drop behind stalkers and the Topiary Knight.",
+      "checks": [
+        "Were the two updraft vents genuinely useful tactical tools mid battle?",
+        "Did the four role mire squad feel intense yet fair to read?",
+        "Did clearing the cloister feel like a crisp climb toward the upper vault?"
+      ]
+    },
+    "conservatory_r9": {
+      "promise": "Crack masonry with Beam in the Vault Nexus, glide across to light a brazier and trip the eye for Keeper's Flame Four, and spot the upper canopy.",
+      "aha": "Unite Beam, Wings gliding, and a throw across the lagoon for the Boss Key, or climb west to the canopy.",
+      "checks": [
+        "Did combining Beam, gliding, and lantern throw here feel smooth and earned?",
+        "Was the west updraft branch into the Upper Glass Canopy clearly marked?",
+        "Did claiming Keeper's Flame Four make the final dome feel within reach?"
+      ]
+    },
+    "conservatory_r10": {
+      "promise": "Duel the Heron Abbess in the railed Glass Dome, shattering skylights for updrafts against her gusts and ripples before relighting Great Lamp Four.",
+      "aha": "Shatter glass skylights to summon updraft columns so your Wings soar clear of her gusts and ripples.",
+      "checks": [
+        "Did the safety rails keep the water flanks fair while staying intense?",
+        "Was summoning updrafts from shattered skylights clear and exhilarating?",
+        "Did relighting Great Lamp Four feel like a soaring Mirefen climax?"
+      ]
+    },
+    "conservatory_r11": {
+      "promise": "Peer down through the Dew Drop Aqueduct grate at the lagoon below, then ride a wind bent thermal updraft northeast to snag Lost Moth Seven.",
+      "aha": "Let the east wind bend your updraft glide along a curve onto the high northeast moth perch.",
+      "checks": [
+        "Did peering down through the grate into the earlier lagoon feel cool?",
+        "Was curving your Wings glide on the wind bent updraft fun to nail?",
+        "Did Lost Moth Seven and the cycle link reward exploring off the main road?"
+      ]
+    },
+    "conservatory_r12": {
+      "promise": "Glide east across a steam plume to the center pad, strike the steam crystal to swap updrafts, and reach the greenhouse and aqueduct shortcut.",
+      "aha": "Strike the steam crystal mid island to swap which thermal plumes erupt so you can cross the cistern.",
+      "checks": [
+        "Was toggling between Phase A and Phase B steam plumes immediately clear?",
+        "Did gliding across the multi island cistern feel breezy and rhythmic?",
+        "Did opening both the greenhouse north and aqueduct shortcut south feel tidy?"
+      ]
+    },
+    "conservatory_r13": {
+      "promise": "Fight two ticking Hour Herons and two Mist Eels across an H bridge greenhouse while four rhythmic thermal geysers pulse up around the deck.",
+      "aha": "Time your glides with the four pulsing thermal geysers to flank the metronome herons and dodge eel lunges.",
+      "checks": [
+        "Did the four pulsing geysers give the greenhouse fight a cool tempo?",
+        "Was flanking the Hour Herons on their ticks across the H bridge clear?",
+        "Did the shard payout feel worthwhile for this optional wing battle?"
+      ]
+    },
+    "conservatory_r14": {
+      "promise": "Record an Echo walking three thermal plates in sequence so you surf your own rolling updraft wave across a huge abyss for Ember Six and a chute.",
+      "aha": "Your Echo footsteps light each thermal plate right under your wings so you surf a rolling updraft wave across.",
+      "checks": [
+        "Did surfing an updraft wave triggered by your own Echo feel mind blowing?",
+        "Was timing your Echo walk across the three plates comfortable to nail?",
+        "Did Ember Six and the chute straight back to the atrium feel awesome?"
+      ]
+    },
+    "conservatory_r15": {
+      "promise": "Soar along high roof girders over starry void, banking blue into a wind vane to bend the wind ninety degrees north onto the far canopy girder.",
+      "aha": "Aim the center mirror to hit the high wind vane so the gale turns ninety degrees north for your glide.",
+      "checks": [
+        "Did gliding along high glass roof girders over the starry void feel breathtaking?",
+        "Was bending the wind corridor ninety degrees with a mirror bank intuitive?",
+        "Did the crumbling floor and three anchors keep the risk fair and crisp?"
+      ]
+    },
+    "conservatory_r16": {
+      "promise": "Spin the Weather Wheel from Rain to Sun to shrink Rain Frogs, clear the squad, burn two bramble cages with Solar Beam, and latch twin topiary plates.",
+      "aha": "Shift to Sun first to weaken frogs, slice bramble cages with Beam, and weight plates with knights or Echo.",
+      "checks": [
+        "Did shrinking the Rain Frogs with the Weather Wheel kick off the fight well?",
+        "Was burning both bramble cages with Beam and latching twin plates smooth?",
+        "Did this combat puzzle feel like a strong warm up for the grand chandelier?"
+      ]
+    },
+    "conservatory_r17": {
+      "promise": "Solve the Sundial Chandelier: summon Wind to glide, aim a mirror through a dark gate, hang light behind a baffle, and turn Sun to break the seal.",
+      "aha": "Unite Wind updrafts, an aimed blue mirror, a dark Shadow Gate, and a Sun beam in one grand sequence.",
+      "checks": [
+        "Did weaving Weather Wheel, Wings, mirror, and Shadow Gate together feel epic?",
+        "Was hanging your lantern behind the baffle so the sunbeam passed clear?",
+        "Did shattering the Canopy Seal feel like the ultimate Island Four puzzle?"
+      ]
+    },
+    "conservatory_r18": {
+      "promise": "Pause in the Bellfry Loft to watch the Heron Abbess fold her wet wings through stained glass, read feather lore, heal, and drop back below.",
+      "aha": "This quiet bay window gives a poignant glimpse of the Abbess and drops you right back into the action.",
+      "checks": [
+        "Did watching the Heron Abbess fold her wet wings below feel poignant?",
+        "Did the feather lore add intrigue for Scribe Bookworm and Hollow Wick?",
+        "Did the heal shrine and twin drop chutes make entering the boss seamless?"
+      ]
+    }
+  }
+}

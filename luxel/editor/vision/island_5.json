@@ -1,0 +1,574 @@
+{
+  "island": {
+    "title": "Starfall Observatory",
+    "rule": "Nothing flies straight or stands still. Gravity wells bend shots and throws, star bells turn whole rooms in quarter turns, and lit stars form solid ground.",
+    "feel": "Clockmaker wonder meets trick shot billiards over a dark starfield, with crisp brass clicks and curved shots.",
+    "arc": "Learn curved shots on the landing, master orbiting throws in the Meteor Vault and turning star skies in the Planetarium, survive the falling dome, earn the True Lens inside the Grand Orrery, and beat the Astronomer.",
+    "moments": [
+      "Your first bolt bends sharply around a stone pier through a floating gravity well to hit a hidden switch.",
+      "Orbiting your lantern in one well while curving one bolt through three wells and a mirror to unlock the vault key.",
+      "Standing on one tiny star while ringing a bell so the whole room turns a locked vault straight to your feet.",
+      "Midway through the falling dome, orbiting your lantern to bridge around tumbling debris and zipping across open sky.",
+      "Standing in a pitch black dome, pulsing the True Lens to glimpse invisible stars, and turning an unseen sky beneath you."
+    ]
+  },
+  "dungeons": {
+    "meteor_vault": {
+      "promise": "A trick shot vault where gravity wells bend bolts, meteors, and thrown lanterns around solid shields and chasms.",
+      "power": "Apogee Clasp lets thrown lanterns lock into steady orbits around gravity wells.",
+      "arc": "Starts with clean curved shots around stone baffles, introduces push and pull flips with meteors, grants orbiting lantern throws, and peaks in a multi-well catapult puzzle and moving moon wells.",
+      "boss": "The Twin Moons orbit as opposite wells, testing curved shots and meteors through moving pull and push fields."
+    },
+    "planetarium": {
+      "promise": "A dark celestial dome where you build your own star bridges and rotate entire chambers in quarter turns.",
+      "power": "Starlight Sextant turns a thrown lantern into a star anchor and reverses bells.",
+      "arc": "Introduces four-star capped bridges and quarter-turn rooms, teaches lantern star bridging, weaves in blue mirrors and cover bells, and peaks by spinning the room around a lone star perch.",
+      "boss": "The Zodiac shifts across four star shapes as the dome turns, testing star footing, lantern anchors, and curves."
+    },
+    "fall": {
+      "promise": "A breathless mid-air descent through tumbling observatory debris right after the dome chains snap.",
+      "power": "",
+      "arc": "Opens with crumbling arches and chain anchors, adds curved shots over drifting slabs, fuses orbiting lanterns with star bridging in mid-drop, and ends on the plummeting roof.",
+      "boss": "The Counterweight hammers the falling roof, testing curved shots around its center gravity well to snap its chains."
+    },
+    "orrery": {
+      "promise": "A grand clockwork dome that unites gravity curves, turning star rings, blue optics, and hidden paths seen only with the True Lens.",
+      "power": "True Lens pulses reveal invisible platforms, hidden stars, and cloaked foes.",
+      "arc": "Builds from classic chasms and blue mirrors to the True Lens shrine, then opens into invisible star domes, nested turning rings, a quiet telescope room, and a three-star bridge to the crown.",
+      "boss": "The Astronomer tests True Lens decoy shatters, safe star footing on a turning floor, and twin orbiting wells."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Explore the observatory grounds, bend your first bolt around stone through a gravity well, and rotate the plaza bridges to reach every wing.",
+      "aha": "The central star bell visibly rotates the island walkways in quarter turns to connect different wings.",
+      "checks": [
+        "Did your first curved shot around the landing well feel surprising and clear?",
+        "Could you see the plaza star bell rotate the walkways across the island?",
+        "Did the sealed observatory dome and side paths pull you toward the beacons?"
+      ]
+    },
+    "ow_dome_causeway": {
+      "promise": "Cross a turning causeway above the Planetarium, visit South Camp, and rotate the bridge to uncover a hidden tablet and moth.",
+      "aha": "Ringing the causeway bell opens side stairs to the tablet and moth before you bridge south on stars.",
+      "checks": [
+        "Did turning the causeway clearly reveal the stairs to the tablet and moth?",
+        "Was lighting the star bridge south intuitive right before the Planetarium?",
+        "Did the camp and side trial entrance feel easy to spot and return to?"
+      ]
+    },
+    "ow_meteor_apron": {
+      "promise": "Traverse fractured asteroid ledges approaching the Meteor Vault, curving a shot for a tablet and bridging stars to a moth islet.",
+      "aha": "Each side reward uses a quick taste of curved shots or star bridging right on the open ledge.",
+      "checks": [
+        "Did the curved shot around the rock fin open the tablet bridge cleanly?",
+        "Were the hound and meteor carrier readable across the broken ledges?",
+        "Did the paths to the Meteor Vault, trial, and cliff read clearly?"
+      ]
+    },
+    "ow_starfall_cliff": {
+      "promise": "Stand at a quiet cosmic overlook linking the Dream Telescope, its upper shortcut, the superboss rift, and two cliffside secrets.",
+      "aha": "A cracked stone pillar hides a tablet while a short star bridge over the abyss leads to a lost moth.",
+      "checks": [
+        "Did the Dream Telescope gate and superboss rift feel distinct and inviting?",
+        "Did you spot the cracked pillar hiding the tablet without hunting blindly?",
+        "Did crossing the short star bridge over the void feel tense and rewarding?"
+      ]
+    },
+    "cave_astrolabe_crypt": {
+      "promise": "Use the True Lens in a dark rift vault to cross invisible stepping stones, uncloak a gravity well and phantom owl, and claim two rewards.",
+      "aha": "One lens pulse reveals the floor, the hidden gravity well, and the phantom owl all at once.",
+      "checks": [
+        "Did pulsing the True Lens clearly show the phantom stones and hidden well?",
+        "Was fighting the uncloaked owl and shot-eating moth fair in the tight vault?",
+        "Did winning both the moth and ember piece feel worth returning with the lens?"
+      ]
+    },
+    "cave_broken_pendulum": {
+      "promise": "Unjam a flooded clockwork cellar by flipping a gravity well, shattering a stuck gear tooth, and ringing the bell to bridge to the brass lens.",
+      "aha": "Flipping the gravity well to push lets you smash the jammed gear tooth so the central turntable can move.",
+      "checks": [
+        "Was it obvious why the central turntable was jammed at first glance?",
+        "Did breaking the gear tooth and hitting the eye free the rotor smoothly?",
+        "Did ringing the star bell line up the north bridge to the brass lens cleanly?"
+      ]
+    },
+    "cave_gravity_well": {
+      "promise": "Practice bending bolts around solid stone fins at tighter angles through two gravity wells to unlock a lost moth and chest.",
+      "aha": "Aiming just past the rim of a gravity well bends bolts smoothly around walls straight shots cannot pass.",
+      "checks": [
+        "Did the first bend teach the aim offset needed for the tighter second bend?",
+        "Could you read where the bolt would curve without guessing blindly?",
+        "Did the moth and treasure feel like a good payoff for a short skill cave?"
+      ]
+    },
+    "cave_star_cistern": {
+      "promise": "Solve a quiet dark pool cave combining a four-star bridge, a blue mirror bank, and a shadow gate to win a stained glass pane.",
+      "aha": "You must toss your lantern behind a pillar to darken yourself and slip past the shadow gate.",
+      "checks": [
+        "Did the four-star bridge across the pool flow cleanly into the mirror puzzle?",
+        "Did rotating the blue mirror into the blue switch feel crisp and fair?",
+        "Did hiding your lantern behind a pillar to pass the shadow gate click?"
+      ]
+    },
+    "trial_comet_range": {
+      "promise": "Stand behind a brass grate and curve shots through twin gravity wells around three walls to hit all three shielded targets.",
+      "aha": "Each shielded switch asks for a different entry angle past the same pair of gravity wells.",
+      "checks": [
+        "Could you tell all three switches were reachable from behind the grate?",
+        "Did each target feel like a fresh angle rather than repeating the same shot?",
+        "Did winning the Comet Tail pane feel earned once the third switch rang?"
+      ]
+    },
+    "trial_constellation_sprint": {
+      "promise": "Sprint across a void chasm on a four-star limit while dodging two floating eyes to ring the finish bell before old stars fade.",
+      "aha": "Keep lighting fresh stars ahead and never linger on your oldest star while dodging incoming fire.",
+      "checks": [
+        "Did the fading warning on the oldest star give you enough time to step off?",
+        "Did the two floating eyes add tension without causing cheap void falls?",
+        "Did ringing the finish bell for the ember piece feel tight and exciting?"
+      ]
+    },
+    "dream_r1": {
+      "promise": "Open the Dream Telescope gauntlet by curving shots around a central gravity well to break a floating eye while splitting up two hounds.",
+      "aha": "Use the center gravity well to hit the eye behind cover while piers disrupt the hounds' curved leaps.",
+      "checks": [
+        "Did the central well help you crack the floating eye around cover?",
+        "Could you use the stone piers to separate the two charging hounds?",
+        "Did this opening floor set a brisk, fair pace for the climb ahead?"
+      ]
+    },
+    "dream_r2": {
+      "promise": "Cross floating islets on lit stars or a turning bridge to clear two splitting star jellies cleanly over the abyss.",
+      "aha": "Using beam or lantern throws destroys star jellies in one go instead of splitting them on narrow ground.",
+      "checks": [
+        "Did you feel rewarded for finishing jellies cleanly without splitting them?",
+        "Were the star bridges and bell turntable both useful for crossing the gaps?",
+        "Was fighting over void edges tense without feeling cramped or unfair?"
+      ]
+    },
+    "dream_r3": {
+      "promise": "Fight two shot-eating moths and a meteor carrier across a stepped arena with twin opposite gravity wells to win a lead slot and shortcut.",
+      "aha": "Curve shots past the pull and push wells into the moths and pop the carrier's boulder before it throws.",
+      "checks": [
+        "Could you tell which well pulled and which pushed mid-fight?",
+        "Did curving shots into the shot-eating moths feel reliable and sharp?",
+        "Did earning the extra lead slot and cliff shortcut feel like a big milestone?"
+      ]
+    },
+    "dream_r4": {
+      "promise": "Bank shots off two blue mirrors across a turning nave to crack two shielded sentinels and a mimicking moth before a lens gate.",
+      "aha": "Turning the central bell shifts your cover while letting mirror shots slip past sentinel shields.",
+      "checks": [
+        "Did banking shots off the blue mirrors cleanly bypass the sentinel shields?",
+        "Was turning the nave mid-fight helpful rather than disorienting?",
+        "Did the sealed lens shutter clearly signal you need the True Lens to go on?"
+      ]
+    },
+    "dream_r5": {
+      "promise": "Pulse the True Lens to cross invisible spans, expose two phantom owls around a gravity well, and uncover hidden stars to a lost moth.",
+      "aha": "One lens pulse opens both the fight against the cloaked owls and the hidden star path to the moth.",
+      "checks": [
+        "Could you juggle crossing invisible spans while tracking both phantom owls?",
+        "Did curving shots around the gravity well help once the owls were revealed?",
+        "Did you spot the hidden lens stars leading out to the lost moth?"
+      ]
+    },
+    "dream_r6": {
+      "promise": "Survive a two-wave peak gauntlet combining Island 5 foes around dual gravity wells and a central star bell for the final trophy.",
+      "aha": "Pick off threats in order using the twin wells, rotating cover, and True Lens instead of trading hits.",
+      "checks": [
+        "Did the mix of enemies test curved shots, star spacing, and the True Lens?",
+        "Was the arena readable despite two waves and rotating cover?",
+        "Did the difficulty feel right for the final climb to the star crown?"
+      ]
+    },
+    "meteor_r1": {
+      "promise": "Enter the Meteor Vault hub, spot the locked boss door and sealed wings, and bend two shots around the center well to open the west wing.",
+      "aha": "You can hit switches hidden behind iron walls by aiming past the center gravity well.",
+      "checks": [
+        "Did the hub make the boss door and future shortcut paths clear right away?",
+        "Did both curved shots around the center well land smoothly without fuss?",
+        "Did unlocking the west wing set up the dungeon's gravity trick immediately?"
+      ]
+    },
+    "meteor_r2": {
+      "promise": "Climb a three-bay stone staircase that asks for progressively tighter curved shots around solid fins over safe ground.",
+      "aha": "Adjusting how close you aim to a well's center controls how sharply the bolt hooks around cover.",
+      "checks": [
+        "Did the three bays step up cleanly from an easy bend to a sharp hook?",
+        "Did safe footing let you focus fully on reading the curve arcs?",
+        "Were you confident aiming curved shots by the time the exit opened?"
+      ]
+    },
+    "meteor_r3": {
+      "promise": "Battle two hounds and a shielded floating eye around twin gravity wells and cover piers to earn the first key and a hub shortcut.",
+      "aha": "Curve bolts through the wells to strike behind the eye's shield while using piers to block the hounds.",
+      "checks": [
+        "Did curving behind the floating eye's shield feel satisfying in live combat?",
+        "Did the twin wells and piers give you clear counterplay against both hounds?",
+        "Did opening the shortcut back to the hub feel immediately useful?"
+      ]
+    },
+    "meteor_r4": {
+      "promise": "Flip a gravity well from pull to push so a slung meteor swings in a wide bend across the chasm to smash a cracked wall.",
+      "aha": "Switching the far well to push turns a straight meteor throw into a boomerang curve around the wall.",
+      "checks": [
+        "Was the crystal toggle's effect on the well's pull and push clear at once?",
+        "Did watching the meteor bend around the chasm into the cracked wall delight you?",
+        "Was lining up the meteor throw forgiving once you understood the flip?"
+      ]
+    },
+    "meteor_r5": {
+      "promise": "Claim the Apogee Clasp and toss your lantern sideways into the center well so one smooth orbit lights all three timed braziers.",
+      "aha": "Throwing your lantern past a gravity well's rim locks it into a lasting circular orbit.",
+      "checks": [
+        "Did your lantern lock into orbit cleanly on one of your first tries?",
+        "Did sweeping all three timed braziers in one lap feel immediately joyful?",
+        "Did you notice the lost moth waiting on the side void ledge?"
+      ]
+    },
+    "meteor_r6": {
+      "promise": "Duel the Apogee Hound around a switchable center gravity well while it kicks blazing meteors, earning a half-lantern and hub shortcut.",
+      "aha": "Flipping the central well derails the hound's curving pounce and opens its flank for damage.",
+      "checks": [
+        "Could you read the hound's curving pounce and meteor kicks cleanly?",
+        "Did flipping the center well create a clear punish window on its flank?",
+        "Was the fight length right for a mid-dungeon mini-boss?"
+      ]
+    },
+    "meteor_r7": {
+      "promise": "Clear a floating eye, flip a well to push, and curve a yellow bolt into a blue mirror so the blue ray bends the opposite way for key two.",
+      "aha": "A yellow bolt can bend one way into a mirror and leave as a blue ray curving the opposite way.",
+      "checks": [
+        "Did clearing the floating eye give you calm space to solve the mirror puzzle?",
+        "Could you trace how the yellow curve and reflected blue curve linked up?",
+        "Did claiming key two feel like a clever step up from earlier vaults?"
+      ]
+    },
+    "meteor_r8": {
+      "promise": "Fight two shot-eating moths, a meteor carrier, and a hound around twin wells where straight shots fail and timed pops shine.",
+      "aha": "Curved bolts bypass the moths' hunger while shooting the carrier's boulder mid-windup detonates it.",
+      "checks": [
+        "Did you clearly see the moths swallowing straight shots so curving felt vital?",
+        "Could you reliably detonate the meteor carrier's boulder before it threw?",
+        "Did the twin wells give enough room to manage all four enemies fairly?"
+      ]
+    },
+    "meteor_r9": {
+      "promise": "Solve a boss key vault with zero straight lines by orbiting your lantern for a sensor, flipping a well, and curving one bolt through three wells.",
+      "aha": "An orbiting lantern opens the shutter so one curved shot through three wells and a mirror bridges it.",
+      "checks": [
+        "Did realizing there is no straight line make the room feel like a great puzzle?",
+        "Did orbiting the lantern to charge the light sensor work without finicky aiming?",
+        "Did watching that final multi-well mirror shot land feel genuinely triumphant?"
+      ]
+    },
+    "meteor_r10": {
+      "promise": "Push across offset ledges and crumbling slabs before the boss, flipping linked gravity wells mid-fight to bend lanes against four foes.",
+      "aha": "Toggling both gravity wells together shifts the battlefield so you can curve around moths and boulders.",
+      "checks": [
+        "Did flipping both wells with the crystal feel useful during live combat?",
+        "Were the crumbling flank slabs tense without feeling like cheap pit traps?",
+        "Did this room feel like a strong final warm-up before the Twin Moons?"
+      ]
+    },
+    "meteor_r11": {
+      "promise": "Fight the Twin Moons as two live moving gravity wells, bending bolts and meteors through their fields to smash them together.",
+      "aha": "Use the moons' own pull and push fields to curve shots and meteors into triggering a clash stun.",
+      "checks": [
+        "Could you read which moon pulled and which pushed while both were moving?",
+        "Did turning their own gravity against them to trigger a clash feel great?",
+        "Did winning the half-lantern and pane cap the Meteor Vault on a high note?"
+      ]
+    },
+    "planet_r1": {
+      "promise": "Arrive in the dark Planetarium dome, light two stars to step onto the center turntable, and ring the bell to swing the west bridge in.",
+      "aha": "Lit stars become solid floor over the void, and the star bell rotates the dome in quarter turns.",
+      "checks": [
+        "Did stepping onto your first lit star bridge feel immediately safe and clear?",
+        "Could you see the whole dome turn a quarter step when the bell rang?",
+        "Did the locked boss door and high balconies promise shortcuts to unlock later?"
+      ]
+    },
+    "planet_r2": {
+      "promise": "Cross a curving void gulf on six star points while learning that lighting a fifth star fades the oldest one behind you.",
+      "aha": "You can only keep four stars lit at once, so light ahead and step off fading oldest stars cleanly.",
+      "checks": [
+        "Did the amber warning on the oldest star make the four-star cap obvious?",
+        "Could you cross the whole S-curve without unfair drops into the void?",
+        "Did the puzzle teach star budgeting cleanly in under a minute?"
+      ]
+    },
+    "planet_r3": {
+      "promise": "Battle two splitting star jellies and a mimicking moth across three star-bridged islets to claim key one and open a hub shortcut.",
+      "aha": "Finish star jellies with beam or thrown lantern so they vanish cleanly instead of crowding your islets.",
+      "checks": [
+        "Did you quickly learn why clean jelly kills matter on small void islets?",
+        "Was lighting star bridges mid-fight smooth and free of awkward snags?",
+        "Did lighting the shortcut star back to the hub feel clean and rewarding?"
+      ]
+    },
+    "planet_r4": {
+      "promise": "Navigate a glass-divided rotunda by ringing the east star bell through multiple quarter turns to unlock the north arch and cross.",
+      "aha": "Shoot the bell once to reach the side latch plate, then turn the dome again to align the north exit.",
+      "checks": [
+        "Could you tell which quarter turn opened the latch and which opened north?",
+        "Did the glass walls block movement while still letting you plan your shots?",
+        "Did multi-step dome turning feel smooth rather than tedious?"
+      ]
+    },
+    "planet_r5": {
+      "promise": "Claim the Starlight Sextant and toss your lantern into the void between two distant stars to bridge the gap yourself.",
+      "aha": "Your thrown lantern now acts as a portable star point, and blue bell shots turn the dome counterclockwise.",
+      "checks": [
+        "Did bridging two far stars with your thrown lantern click immediately?",
+        "Did the optional counterclockwise blue bell turn to the moth feel clever?",
+        "Did the new power feel like it opened fresh ways to cross empty space?"
+      ]
+    },
+    "planet_r6": {
+      "promise": "Duel the Meridian Weaver across an eight-star compass ring while it snuffs stars underfoot, ringing corner bells to turn and stun it.",
+      "aha": "Ringing a corner star bell during the Weaver's slice windup rotates the dome and stuns it open.",
+      "checks": [
+        "Did relighting stars the Weaver snuffed keep the floor tense and readable?",
+        "Was the slice windup clear enough to shoot a corner bell in time?",
+        "Did the mini-boss feel well paced and earn its hub shortcut?"
+      ]
+    },
+    "planet_r7": {
+      "promise": "Walk a four-star spiral onto the center rotor, bank a blue mirror shot to turn the bell counterclockwise for key two, and budget north.",
+      "aha": "A blue mirror shot turns the bell counterclockwise past glass without breaking your four-star spiral.",
+      "checks": [
+        "Was managing your four-star spiral onto the center turntable clear and fair?",
+        "Did angling the blue mirror to turn the bell counterclockwise work cleanly?",
+        "Did spending your remaining stars to exit north feel tight and satisfying?"
+      ]
+    },
+    "planet_r8": {
+      "promise": "Clear two floating eyes, a star jelly, and a shot-eating moth around a gravity well and star bell that rotates eclipse cover walls.",
+      "aha": "Ring the star bell to swing cover between crossfire while curving shots around the center well.",
+      "checks": [
+        "Did rotating the eclipse walls with the bell actually protect you from fire?",
+        "Was curving around the center well into the moth and eyes smooth in combat?",
+        "Did clearing the nave feel like a fair gate to the boss key dome?"
+      ]
+    },
+    "planet_r9": {
+      "promise": "Reach a lone star perch, leave your lantern on the center turntable, and ring the bell so the whole dome spins the boss key vault to you.",
+      "aha": "Anchoring your lantern on the turntable holds the bridge alive while you rotate the room from a tiny star.",
+      "checks": [
+        "Did standing on one lone star while the whole room rotated feel memorable?",
+        "Was planting the lantern on the turntable glyph clear and forgiving?",
+        "Did swinging the boss key vault right to your feet deliver a strong aha?"
+      ]
+    },
+    "planet_r10": {
+      "promise": "Clear a meteor carrier and floating eye, then light four side constellation bays that preview the Zodiac's four forms before the boss.",
+      "aha": "Each side bay traces one of the four Zodiac shapes you are about to fight in the next room.",
+      "checks": [
+        "Were the four constellation shapes distinct and memorable as you lit them?",
+        "Did clearing the two guards leave clean focus for lighting the four bays?",
+        "Did this room build anticipation right before entering the boss dome?"
+      ]
+    },
+    "planet_r11": {
+      "promise": "Battle the Zodiac across four living star forms as the dome rotates a quarter turn and redraws the floor between every form.",
+      "aha": "Each quarter turn shifts the boss pattern, asking you to adapt star bridges, lantern anchors, and curves.",
+      "checks": [
+        "Did all four Zodiac forms feel distinct when the dome turned between them?",
+        "Could you keep safe star footing without cheap falls during phase shifts?",
+        "Did finishing the Planetarium boss feel like a rewarding peak for star turning?"
+      ]
+    },
+    "fall_r1": {
+      "promise": "Sprint off the snapping observatory plaza across crumbling brass, shoot both chain anchors with a throw and zip, and drop into the wind.",
+      "aha": "Keep moving across crumbling stone and zip off the lantern hook to snap the upper anchor in stride.",
+      "checks": [
+        "Did the sudden drop and wind sell the feeling that the dome chains just broke?",
+        "Were the crumbling floor timing and hook zip smooth on a first run?",
+        "Did snapping both chain anchors feel fast and punchy?"
+      ]
+    },
+    "fall_r2": {
+      "promise": "Fight across drifting marble decks in howling wind, curving a bolt around a mid-air gravity eddy behind stone to drop the chasm bridge.",
+      "aha": "Even while falling, a curved shot around the central eddy snaps the hidden anchor to bridge forward.",
+      "checks": [
+        "Did fighting the hounds and moth on drifting slabs feel brisk and exciting?",
+        "Was the curved shot around the gravity eddy easy to spot amid the wind?",
+        "Did quick checkpoints keep any fall into the abyss painless?"
+      ]
+    },
+    "fall_r3": {
+      "promise": "Fuse both dungeon powers in mid-drop by orbiting your lantern as a star bridge past falling stone, flipping a well, and ringing a far bell.",
+      "aha": "An orbiting lantern bridges stars around tumbling debris while a flipped push well bends a shot to the bell.",
+      "checks": [
+        "Did orbiting your lantern around the arch as a star bridge feel great?",
+        "Was clearing the eye and flipping the second well readable under wind pressure?",
+        "Did this room feel like the centerpiece payoff of both minor dungeons?"
+      ]
+    },
+    "fall_r4": {
+      "promise": "Duel the giant brass Counterweight hammering the plummeting dome roof by curving shots around its well to snap its three chains.",
+      "aha": "Bend bolts around the Counterweight's own gravity well to hit its shielded chains while watching roof cracks.",
+      "checks": [
+        "Did the plummeting roof setting make this boss feel huge and urgent?",
+        "Could you curve shots into its rear chains cleanly through the moving well?",
+        "Did locking the Grand Orrery dome into place feel like a big turning point?"
+      ]
+    },
+    "orrery_r1": {
+      "promise": "Step into the three-ring Grand Orrery hub, turn its star bell, spot future shortcut balconies, and explore a blue portal side cache.",
+      "aha": "The central star bell and sealed balconies show how every wing loops back to this main hub.",
+      "checks": [
+        "Did the hub layout make the locked wings and shortcut balconies easy to read?",
+        "Did the blue portal treasure cache feel like a nice callback to earlier skills?",
+        "Did turning the hub star bell give a strong sense of a giant clockwork machine?"
+      ]
+    },
+    "orrery_r2": {
+      "promise": "Extend a bridge across a wide chasm with a straight or curved eye shot, take key one, and shatter a cracked bulkhead with a beam.",
+      "aha": "The chasm is too wide to zip across, so you must shoot the far eye before breaking through north.",
+      "checks": [
+        "Was it clear right away that you had to shoot the eye instead of zipping?",
+        "Did claiming key one and beaming the cracked wall flow cleanly?",
+        "Did the side branch into the outer gear wing feel easy to notice?"
+      ]
+    },
+    "orrery_r3": {
+      "promise": "Fight a shielded sentinel, a floating eye, and a mimicking moth around a central gravity well and twin basalt cover piers.",
+      "aha": "Curve bolts through the center well to bypass front shields while piers block the moth's dashes.",
+      "checks": [
+        "Did the center well let you flank both shielded foes without feeling cramped?",
+        "Were the two basalt piers placed well for dodging the mimicking moth?",
+        "Did this room set a crisp combat bar for the Grand Orrery?"
+      ]
+    },
+    "orrery_r4": {
+      "promise": "Unlock the optics gallery and align two blue mirrors to hit twin blue switches, raid a portal cache, and branch toward the carousel.",
+      "aha": "Each blue mirror solves a different angle, and a portal loop opens an optional treasure alcove.",
+      "checks": [
+        "Did aligning both blue mirrors feel clean without awkward pixel nudging?",
+        "Was the optional portal treasure cache fun to spot and unlock?",
+        "Did the exits to the shrine and south carousel read clearly?"
+      ]
+    },
+    "orrery_r5": {
+      "promise": "Claim the True Lens at the altar and cross a winding void rift on invisible platforms and hidden stars using pulses and lantern anchors.",
+      "aha": "True Lens pulses reveal phantom ground briefly, and leaving your lantern down anchors platforms solid.",
+      "checks": [
+        "Did the True Lens pulse make hidden platforms and stars immediately legible?",
+        "Did leaving your lantern to anchor a phantom span click right away?",
+        "Did finding the side chest make experimenting with the new lens rewarding?"
+      ]
+    },
+    "orrery_r6": {
+      "promise": "Duel the Clockwork Warden in a gear ring using True Lens spin pauses, phantom flanks, and curved shots into its glowing back core.",
+      "aha": "Pulsing the True Lens halts the Warden's spin so you can curve bolts around its well into its back.",
+      "checks": [
+        "Did pulsing the True Lens to pause the Warden's spin feel responsive?",
+        "Were the corner phantom platforms useful for getting a flank angle?",
+        "Did winning key two and opening the next wing feel well earned?"
+      ]
+    },
+    "orrery_r7": {
+      "promise": "Cross a branching True Lens rift over a central gravity well, using split phantom spans and a hidden star to open the shutter and vault.",
+      "aha": "Choose between the main shutter fork and the south treasure fork while keeping your lens rhythm steady.",
+      "checks": [
+        "Did the split forks feel open and interesting to read with the True Lens?",
+        "Did orbiting or anchoring your lantern make crossing the well smooth?",
+        "Was the south shard vault a clear optional detour worth taking?"
+      ]
+    },
+    "orrery_r8": {
+      "promise": "Clear a four-foe hall uniting a phantom owl, sentinel, mimicking moth, and shot-eating moth around a central well to open both upper wings.",
+      "aha": "Pulse the True Lens first to expose the owl, then use the center well to curve past shields and moths.",
+      "checks": [
+        "Did all four enemy roles create interesting priority choices at once?",
+        "Was uncloaking the phantom owl smooth amidst the other three threats?",
+        "Did unlocking both upper wings feel like a major milestone?"
+      ]
+    },
+    "orrery_r9": {
+      "promise": "Cross invisible spans and hidden stars with the True Lens, align the blue mirror to open the vault and hub bridge, and claim the Keeper's Flame.",
+      "aha": "Crossing to the upper deck with the True Lens lets one mirror aim open both the key vault and hub return.",
+      "checks": [
+        "Did crossing the phantom and star chasm with the lens feel tense and fair?",
+        "Did aligning the blue mirror clearly open the vault, bridge, and return path?",
+        "Did claiming the Keeper's Flame and unlocking the boss door feel momentous?"
+      ]
+    },
+    "orrery_r10": {
+      "promise": "Face the Astronomer across three phases testing True Lens decoy shatters, safe star footing, and twin wells before relighting the Great Lamp.",
+      "aha": "Pulse the True Lens to shatter her decoys, light stars when the floor turns, and curve through her twin wells.",
+      "checks": [
+        "Did shattering her decoys with the True Lens read clearly and feel great?",
+        "Were the safe star pedestals and twin wells fair in the final phase?",
+        "Did relighting the Great Lamp give Island 5 a strong, satisfying finish?"
+      ]
+    },
+    "orrery_r11": {
+      "promise": "Clear a gear hound, turn the star bell for a hub span, flip the well, and sling a meteor into the west latch to lock the shortcut open.",
+      "aha": "Turning the ring aligns the escape span while a flipped meteor slingshot pins the gear shortcut permanently.",
+      "checks": [
+        "Did the gear turning and meteor slingshot work together smoothly?",
+        "Was it clear what the west latch unlocked when the meteor struck it?",
+        "Did looping back into the main hub feel like a satisfying shortcut?"
+      ]
+    },
+    "orrery_r12": {
+      "promise": "Clear a shot-eating moth and hound on a turning optics carousel, then bank blue light off two mirrors to loot a chest and open the balcony.",
+      "aha": "Clear the pair around the well first, then aim both mirrors across the carousel into twin switches.",
+      "checks": [
+        "Did fighting on the rotating carousel feel lively without being confusing?",
+        "Were both blue mirror bank angles easy to read and line up?",
+        "Did opening the balcony toward the lens shrine feel cleanly connected?"
+      ]
+    },
+    "orrery_r13": {
+      "promise": "Step into a pitch-black dome with invisible stars, glimpse and light them with the True Lens, turn the unseen sky, and anchor your lantern.",
+      "aha": "Leaving your lantern on the center turntable holds both the True Lens reveal and star bridge while you cross.",
+      "checks": [
+        "Did pulsing the True Lens in pitch darkness create a real moment of wonder?",
+        "Could you track the invisible star layout after turning the unseen sky?",
+        "Did anchoring your lantern on the center plate feel like a peak aha moment?"
+      ]
+    },
+    "orrery_r14": {
+      "promise": "Clear a floating eye and rotate nested clockwork rings to align the bridge to the Astronomer's Study and unseal the boss key vault.",
+      "aha": "Turning the nested rings to the right quarter step links the study bridge and exposes the alignment latch.",
+      "checks": [
+        "Did watching the nested rings align deliver the giant clockwork fantasy?",
+        "Was it clear how the alignment latch opened both the study and east vault?",
+        "Did clearing the floating eye fit nicely before the ring puzzle?"
+      ]
+    },
+    "orrery_r15": {
+      "promise": "Pause in the Astronomer's Study to spot Hollow Wick through the telescope, reveal hidden carpet stars for key three and a moth, and open a hub bridge.",
+      "aha": "Pulsing the True Lens over the woven carpet reveals four hidden stars that unlock key three and a lost moth.",
+      "checks": [
+        "Did looking through the telescope feel like a quiet, gripping story beat?",
+        "Did discovering the hidden carpet stars with the True Lens surprise you?",
+        "Did dropping the hub bridge right after make backtracking effortless?"
+      ]
+    },
+    "orrery_r16": {
+      "promise": "Cross three floating star decks before the boss, beat the honor guard, and reveal and align all three stars to raise the ascension bridge.",
+      "aha": "Expose the phantom owl first, clear the guard, then pulse the True Lens to light all three stars in line.",
+      "checks": [
+        "Did exposing the phantom owl early feel like the smart tactical opening?",
+        "Did lighting all three stars in alignment raise the bridge dramatically?",
+        "Did this gauntlet build strong momentum heading straight to the Astronomer?"
+      ]
+    },
+    "superboss_horizon": {
+      "promise": "Challenge the Event Horizon on a circular glass ring where straight shots heal it, forcing grazing orbital curves and white hole counters.",
+      "aha": "Straight shots feed the singularity, so graze its rim on curved orbits and counter when it flips white.",
+      "checks": [
+        "Was it immediately obvious that straight shots were eaten and healed it?",
+        "Did grazing its rim with curved shots feel skill-based and fair?",
+        "Did the star safety phase and white hole flip feel worthy of a superboss?"
+      ]
+    }
+  }
+}

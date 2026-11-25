@@ -1,0 +1,556 @@
+{
+  "island": {
+    "title": "Bell Isle",
+    "rule": "Striking a bell sends a visible wave blocked by walls. Dawn bells wake and open, Dusk bells hush and freeze motion, and War bells shatter cracks and armor.",
+    "feel": "A twilight clockwork island where sound acts like physical pools of light and shadow.",
+    "arc": "Wake unarmed and earn your bolt, dash, and lantern throw. Toll the Town Bell to shift the island to midnight, then clear the Undercroft and the Manor in either order. Hang the stolen clapper, ride the falling bell into the Belfry, and relight the Great Lamp.",
+    "moments": [
+      "Sending your first golden bell wave around stone corners to unseal Chime Town.",
+      "Tolling the Town Bell at dusk to swing graveyard gates open and raise ghost pond stones.",
+      "Using delayed bell echoes to slide, freeze, and shatter three moving coffins in the Undercroft.",
+      "Turning four painted watching eyes into sliding bookcase keys inside the Manor.",
+      "Riding the plunging Great Bell down the tower shaft while shooting wall bells to survive."
+    ]
+  },
+  "dungeons": {
+    "undercroft": {
+      "promise": "Flooded stone catacombs under the graveyard where bells move coffins, hush creeping hands, and bounce around walls.",
+      "power": "Echo Clapper makes bells struck by your thrown lantern ring a second time.",
+      "arc": "Learn how all three bell tones move coffins and hit stone walls, win the Echo Clapper from the blind hound, then time delayed echoes across flooded gaps to reach the Sexton.",
+      "boss": "The Sexton digs lethal trenches under you. Ring overhead bells to cave in his tunnels and shatter his coffin shield."
+    },
+    "manor": {
+      "promise": "A candlelit estate whodunit where darkness opens doors and three lying portraits hide the real culprit.",
+      "power": "Shutter Hood cloaks you in darkness while your lantern rests away from you.",
+      "arc": "Slip past patrolling butlers and gazing eyes, win the Shutter Hood from the Valet, gather three clues using shadow tricks, then accuse the culprit before facing the Chandelier.",
+      "boss": "The Chandelier swings on chains and snuffs the room dark. Crack chains with War bells and relight sconces with Dawn."
+    },
+    "great_toll": {
+      "promise": "A furious vertical plunge on top of the falling Great Bell after a shadowy rival cuts its rigging cable.",
+      "power": "",
+      "arc": "Hang the stolen clapper, survive the ambush after the rope snaps, surf the tumbling bell while shooting wall bells, cut it free from a giant gear, and ring three brakes to land.",
+      "boss": ""
+    },
+    "belfry": {
+      "promise": "A towering four floor clockwork spire that weaves bell tones, delayed echoes, stealth darkness, and giant moving gears together.",
+      "power": "",
+      "arc": "Open lower clockwork loops, beat the Bell Warden to reach the rotating clock hand hub, cross the giant clock face, freeze the Metronome, and climb to the Grand Bellkeeper.",
+      "boss": "The Grand Bellkeeper sweeps a phantom clock hand and calls three tones. Answer each tone with the matching rim bell."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Wake unarmed in the plaza, earn your bolt, dash, and lantern throw across three beacons, and ring your first bell wave to open the island.",
+      "aha": "Your thrown lantern lets you zip across rivers, bait snatchers, and bounce bell waves around corners.",
+      "checks": [
+        "Did picking up the lantern and earning each power feel clear without reading?",
+        "Did the first Dawn bell wave make wall blocking obvious right away?",
+        "Could you spot paths branching toward town, the gardens, and the foundry?"
+      ]
+    },
+    "bell_yard": {
+      "promise": "Rest in Chime Town, meet the island folk, and toll the great Town Bell to shift Bell Isle between evening and midnight.",
+      "aha": "Tolling the Town Bell to midnight raises pond stepping stones and transforms secrets across the island.",
+      "checks": [
+        "Did tolling the Town Bell clearly transform the mood and the millpond?",
+        "Were the town folk requests easy to read from their picture bubbles?",
+        "Did the four note carillon ear test feel fair and fun to repeat?"
+      ]
+    },
+    "vesper_graveyard": {
+      "promise": "Cross a moonlit hillside cemetery that opens its iron crypt gates and ghost causeway once midnight falls.",
+      "aha": "Midnight turns a closed hilltop into the live crossroads for the crypts and hidden sanctum.",
+      "checks": [
+        "Did midnight clearly open gates and paths that were sealed at evening?",
+        "Did waking grave hands and volatile toll moths keep the crossing tense?",
+        "Was the entrance to the catacombs easy to spot once the gates opened?"
+      ]
+    },
+    "manor_gardens": {
+      "promise": "Weave through aristocratic hedges past lamp carrying butlers, try the four bell stealth relay, and return at midnight for hidden paths.",
+      "aha": "Midnight draws garden guards indoors and exposes the locked estate shed.",
+      "checks": [
+        "Could you read each butler's light cone and plan a clean route past it?",
+        "Did the four bell stealth relay reward quiet movement without frustration?",
+        "Did returning at midnight noticeably shift the guards and open the shed?"
+      ]
+    },
+    "belfry_forecourt": {
+      "promise": "Stand before the Twin Clapper Seal at the base of the great tower and see which two crests still need lighting.",
+      "aha": "Both the catacombs and the manor can be cleared in either order to break the tower seal.",
+      "checks": [
+        "Did the Twin Clapper Seal make both required dungeons clear at a glance?",
+        "Did the side paths to town and the estate gardens feel well connected?",
+        "After relighting the Great Lamp, did the rumor point clearly toward a secret?"
+      ]
+    },
+    "cliff_foundry": {
+      "promise": "Explore a coastal bronze foundry, shatter its sealed shutter with War, and light three cooled moulds at once for Grandma's hearth.",
+      "aha": "One well placed Dawn wave can light all three bronze moulds together.",
+      "checks": [
+        "Was it clear that a War wave was needed to crack the foundry shutter?",
+        "Did lighting all three moulds in one sweep feel satisfying?",
+        "Did the branches to the speed trial and sealed grotto invite curiosity?"
+      ]
+    },
+    "cave_echo_well": {
+      "promise": "Slide a stone block out of a cistern slit so a three bell Dawn chain ripples across sealed water to unlock a hidden vault.",
+      "aha": "Moving a stone block clears a narrow channel so bell waves can chain across water.",
+      "checks": [
+        "Did you notice the stone block was stopping the bell wave from crossing?",
+        "Was watching the three bell chain ripple around the cistern rewarding?",
+        "Did the ember piece and lost moth feel worth the midnight detour?"
+      ]
+    },
+    "cave_whisper": {
+      "promise": "Leave your lantern behind a pillar to open a Shadow Gate while freezing a watching turret with Dusk to recover the lost brass clapper.",
+      "aha": "Hiding your lantern behind stone lets you slip past dark gates while a Dusk bell holds the turret still.",
+      "checks": [
+        "Did hiding the lantern behind the pillar clearly open the Shadow Gate?",
+        "Was freezing the turret with Dusk long enough to cross safely?",
+        "Did claiming the brass clapper and lost moth feel cleanly earned?"
+      ]
+    },
+    "cave_shed": {
+      "promise": "Step into a midnight estate shed packed with disguised pew mimics and a volatile moth guarding an ember and a rope clue.",
+      "aha": "Shooting the toll moth unleashes a War wave that unmasks mimics and cracks the back closet.",
+      "checks": [
+        "Did the disguised pews surprise you while still giving a fair hint?",
+        "Could you turn the toll moth's War blast against the mimics and sealed door?",
+        "Did the cut rope clue spark curiosity about the Manor mystery?"
+      ]
+    },
+    "cave_foundry_trial": {
+      "promise": "Sprint across foundry pit islands using bolts, dashes, and lantern zips to ring five elevated bells before time runs out.",
+      "aha": "Chaining throw zips with dashes shaves seconds off the route between high bells.",
+      "checks": [
+        "Could you read the five bell route cleanly within your first two attempts?",
+        "Did chaining dashes and zips across the pits feel snappy and responsive?",
+        "Did the timer feel tight enough to thrill without feeling unfair?"
+      ]
+    },
+    "cave_lens_grotto": {
+      "promise": "Peer through a day one grate at a sealed mural across an abyss, then return much later with beam and lens powers to claim its treasure.",
+      "aha": "Some mysteries on Bell Isle are planted early for powers earned on distant islands.",
+      "checks": [
+        "Did peering through the grate make you want to come back later?",
+        "Was it clear on your first visit that you lacked the tools to cross yet?",
+        "Did the mural and ember reward feel meaningful once you returned?"
+      ]
+    },
+    "superboss_silent": {
+      "promise": "Fight the Silent Bell in total silence after relighting the island, reading dust ripples by eye and throwing your lantern inside its mouth.",
+      "aha": "With sound gone, floor ripples reveal every strike and throwing your lantern in its mouth forces a ring.",
+      "checks": [
+        "Did the sudden total silence feel eerie right after entering the arena?",
+        "Were the floor cracks and dust ripples readable without sound cues?",
+        "Did throwing your lantern into its open mouth and breaking the silence thrill you?"
+      ]
+    },
+    "undercroft_r1": {
+      "promise": "Enter a cruciform crypt nave with the boss door ahead, locked wings on both sides, and a Dawn bell teaching how sound opens matching gates.",
+      "aha": "A visible golden wave from a Dawn bell unlocks matching tone doors.",
+      "checks": [
+        "Did the boss door and high shortcut balconies orient you immediately?",
+        "Was ringing the Dawn bell to open the west gate effortless to understand?",
+        "Did the nave feel like a clear home base to loop back into?"
+      ]
+    },
+    "undercroft_r2": {
+      "promise": "Cross a dry stone ossuary where Dawn slides twin coffins over a pit, Dusk hushes grave hands, and a stone block shields a mimic from War.",
+      "aha": "Each bell tone has a distinct physical job, and stone blocks can shield targets from waves.",
+      "checks": [
+        "Did sliding the coffins with Dawn clearly form a bridge over the pit?",
+        "Was it clear how the stone block shielded the far side from the War wave?",
+        "Did Dusk give you enough breathing room against the waking grave hands?"
+      ]
+    },
+    "undercroft_r3": {
+      "promise": "Clear the guards around a lantern hook, hang your light to lift a shutter, and chain three Dawn bells across a twin gallery.",
+      "aha": "Leaving your lantern on a hook holds a sound shutter open while you walk unarmed to ring the chain.",
+      "checks": [
+        "Was it clear that hanging your lantern kept the acoustic shutter lifted?",
+        "Did watching the three bell Dawn relay travel across the room feel crisp?",
+        "Did the guards waking on the far gallery keep the puzzle lively?"
+      ]
+    },
+    "undercroft_r4": {
+      "promise": "Hold a circular cloister around a central Dusk bell, freezing sprinting snuffers and lighting two timed altar braziers before they go out.",
+      "aha": "Use the center Dusk bell to freeze snuffers and the toll moth's blast to crack the shielded warden.",
+      "checks": [
+        "Did the central Dusk bell feel useful for stopping sprinting snuffers?",
+        "Was the pressure to light both timed braziers exciting rather than hectic?",
+        "Did the ambush on lighting the braziers catch you cleanly off guard?"
+      ]
+    },
+    "undercroft_r5": {
+      "promise": "Outsmart the blind Toll Hound in a pillared rotunda by ringing perimeter bells so it charges headfirst into stone pillars.",
+      "aha": "The blind hound chases sound, so bells let you steer its charge straight into pillars.",
+      "checks": [
+        "Did you quickly realize the hound was chasing your bell rings and shots?",
+        "Was slamming it into a stone pillar funny and rewarding to pull off?",
+        "Did testing your new Echo Clapper power feel immediately clear?"
+      ]
+    },
+    "undercroft_r6": {
+      "promise": "Cross three flooded stone piers by throwing at a Dawn bell for a delayed echo, dashing across, and ringing Dusk while the echo lands.",
+      "aha": "Your Echo Clapper lets one thrown bell ring twice so you can be in two places across a gap.",
+      "checks": [
+        "Did the delayed second wave clearly solve a gap you could not reach alone?",
+        "Was the 1.4 second echo window comfortable to time across the center pier?",
+        "Did the toll moth and grave hand add tension without ruining the puzzle timing?"
+      ]
+    },
+    "undercroft_r7": {
+      "promise": "Weight a stone scale to flip twin sound shutters so War echoes shatter both the key vault and a shortcut seam back to the early crypt.",
+      "aha": "Tipping the counterweight scale flips which acoustic lanes stay open for War waves.",
+      "checks": [
+        "Was the link between weighting the scale and the twin shutters easy to see?",
+        "Did shattering the shortcut seam back to the early crypt feel satisfying?",
+        "Were the two grave hands manageable while lining up your War shots?"
+      ]
+    },
+    "undercroft_r8": {
+      "promise": "Step through a zig zag chapel of six pews where three hide mimics and one conceals a lost moth, choosing quiet Dusk control or War chaos.",
+      "aha": "Watch pew hinges for tells, then decide whether to freeze them with Dusk or unmask everything with War.",
+      "checks": [
+        "Could you spot subtle clues distinguishing disguised mimics from normal pews?",
+        "Did choosing between Dusk control and a War brawl feel like a real choice?",
+        "Was finding the lost moth hidden inside a pew a pleasant surprise?"
+      ]
+    },
+    "undercroft_r9": {
+      "promise": "Orchestrate three parallel moving coffins across a flooded three tower choir using a stone baffle, delayed echoes, Dusk freezes, and War blasts.",
+      "aha": "Freezing sliding coffins mid path with Dusk and timing delayed echoes turns three lanes into one bridge.",
+      "checks": [
+        "Did all three coffin lanes read clearly as one grand linked contraption?",
+        "Did solving it make you feel clever for combining every Undercroft trick?",
+        "Was the Boss Key perched visibly enough to pull you forward?"
+      ]
+    },
+    "undercroft_r10": {
+      "promise": "Sprint a crumbling chandelier balcony back to the nave hub, then time a War echo through a plate held shutter for a secret glass pane.",
+      "aha": "Throw at the bell, then step onto the floor plate yourself before the delayed echo arrives.",
+      "checks": [
+        "Did dropping the shortcut back into the nave feel rewarding with the Boss Key?",
+        "Was timing your own footsteps on the plate with the War echo an aha moment?",
+        "Did the secret glass pane feel worth braving the seal ambush?"
+      ]
+    },
+    "undercroft_r11": {
+      "promise": "Battle the burrowing Sexton by ringing overhead bells to cave in his tunnels, leaping trenches, and cracking his coffin shield.",
+      "aha": "Ring whichever bell sits above his dirt trail to cave him in, then crack his final coffin lid with War.",
+      "checks": [
+        "Was collapsing his underground tunnel with an overhead bell instantly clear?",
+        "Did the second phase cross trench force nimble dashes across the four islands?",
+        "Did shattering his coffin lid with a War bell feel like a true finale?"
+      ]
+    },
+    "manor_r1": {
+      "promise": "Step into a grand foyer where three lying portraits peer down from a locked upper balcony while wings branch left and right.",
+      "aha": "The three portraits watching from above set up the Manor mystery you can explore from either side.",
+      "checks": [
+        "Did the three watching portraits immediately make you curious about the culprit?",
+        "Were the open dining and kitchen paths inviting to pick in either order?",
+        "Did the locked upper doors tease future loops back to this foyer?"
+      ]
+    },
+    "manor_r2": {
+      "promise": "Learn Manor stealth in a dining hall by freezing patrolling butlers with Dusk and hanging your lantern behind a screen to open a Shadow Gate.",
+      "aha": "Shadow Gates only open when no light reaches them, so leaving your lantern behind cover unlocks the way.",
+      "checks": [
+        "Did freezing the butlers with the center Dusk bell feel safe and readable?",
+        "Was hanging your lantern behind the dining screen an intuitive way to open the gate?",
+        "Did the disguised banquet pew add a sharp surprise without feeling cheap?"
+      ]
+    },
+    "manor_r3": {
+      "promise": "Freeze a watching portrait eye with Dusk, hide your lantern behind a pantry pillar to open the safe, grab your first clue and key, and drop home.",
+      "aha": "Freezing a portrait eye with Dusk shuts off its gaze long enough to slip into the dark safe.",
+      "checks": [
+        "Was it clear that the portrait eye was guarding the pantry Shadow Gate?",
+        "Did grabbing the first clue make the Manor whodunit start clicking?",
+        "Did taking the chute straight back to the foyer feel brisk and clever?"
+      ]
+    },
+    "manor_r4": {
+      "promise": "Unmask a kitchen mimic with War, douse the roaring hearth holding a Shadow Gate shut, and slip dark toward the workshop.",
+      "aha": "Even a lit room hearth blocks a Shadow Gate, so you must douse the fire first.",
+      "checks": [
+        "Did you realize the roaring hearth itself was keeping the Shadow Gate closed?",
+        "Was fighting the kitchen brawl while using both War and Dusk bells fun?",
+        "Did unlocking the garden tunnel give a nice sense of estate layout?"
+      ]
+    },
+    "manor_r5": {
+      "promise": "Duel the Clockwork Valet whose silver trays block frontal shots, luring him to bow toward thrown lantern hooks to strike his winding key.",
+      "aha": "Throwing your lantern behind the polite valet makes him turn to bow, exposing his brass winding key.",
+      "checks": [
+        "Did luring the valet to bow toward your thrown lantern make you smile?",
+        "Was freezing his sweeping spotlights with Dusk helpful in the second phase?",
+        "Did earning the Shutter Hood make you eager to test walking in the dark?"
+      ]
+    },
+    "manor_r6": {
+      "promise": "Pull a brass ring to rip open a velvet stage drape, rescue a hidden moth, ring the revealed Dawn bell, and slip dark to inspect Clue Two.",
+      "aha": "Tugging the pull ring clears a velvet curtain so your bell wave and path can pass.",
+      "checks": [
+        "Did ripping open the velvet drape with your lantern pull feel tactile?",
+        "Did sneaking past the butlers in Shutter Hood darkness feel genuinely stealthy?",
+        "Was finding both the hidden moth and the second clue well paced?"
+      ]
+    },
+    "manor_r7": {
+      "promise": "Cross the Hall of Shifting Eyes where four painted watchers slide heavy bookcases whenever they spot light, turning them into moving keys.",
+      "aha": "Pin your lantern on hooks to hold select walls open while sneaking past other eyes in darkness.",
+      "checks": [
+        "Could you tell which painted eye controlled each sliding bookcase?",
+        "Did balancing pinned light, darkness, and Dusk freezes feel like a peak puzzle?",
+        "Did opening the stair back to the foyer feel like a huge payoff?"
+      ]
+    },
+    "manor_r8": {
+      "promise": "Push an iron fire screen between a roaring fireplace and a Shadow Gate to cast real shadow, uncover the smoking gun clue, and claim the balcony key.",
+      "aha": "A pushed iron screen casts a real shadow that lets a Shadow Gate open beside a blazing fire.",
+      "checks": [
+        "Did blocking the fireplace glow with the iron screen feel logical and clever?",
+        "Did the final clue clearly expose which suspect was lying?",
+        "Were the butler, toll moth, and portrait eye balanced around the puzzle?"
+      ]
+    },
+    "manor_r9": {
+      "promise": "Weigh your three gathered clues on the balcony and ring the accusation bell beneath the guilty portrait to choose your route into the ballroom.",
+      "aha": "The right accusation opens a vault that weakens the boss, while a wrong guess drops you into an ambush.",
+      "checks": [
+        "Could you deduce the true culprit using the clues without guessing blindly?",
+        "Did ringing the accusation bell feel dramatic and consequential?",
+        "Did knowing either verdict leads forward keep the moment playful?"
+      ]
+    },
+    "manor_r10a": {
+      "promise": "Celebrate a right verdict in the Velvet Vault by unmasking a mimic, yanking a ceiling winch to pre cut a boss chain, and rescuing a stealth moth.",
+      "aha": "Solving the mystery rewards a real fight advantage by severing one of the Chandelier's chains early.",
+      "checks": [
+        "Did pulling the ceiling winch feel like a tangible payoff for solving the mystery?",
+        "Was slipping dark through the Shadow Gate for the lost moth smooth and quick?",
+        "Did the vault feel rich without slowing your rush to the ballroom?"
+      ]
+    },
+    "manor_r10b": {
+      "promise": "Survive a coal chute ambush on twin moving belts by freezing conveyors with Dusk, cracking armor with War, and claiming a hidden ember piece.",
+      "aha": "A Dusk bell halts both coal belts so you can safely trigger War blasts against the ambush pack.",
+      "checks": [
+        "Did the coal chute ambush feel like a fun twist rather than a punishment?",
+        "Was freezing the twin belts with Dusk key to controlling the fight?",
+        "Did claiming the hidden ember make surviving the cellar feel worthwhile?"
+      ]
+    },
+    "manor_r11": {
+      "promise": "Face the swinging Chandelier in the grand ballroom, vibrating its chains brittle with War bells to drop its core and using Dawn to beat blackouts.",
+      "aha": "Ring War to make the iron chains brittle, snap them to drop the boss, and ring Dawn whenever sconces go dark.",
+      "checks": [
+        "Was cracking the chains with the War bell clear and deeply satisfying?",
+        "Did lighting all sconces at once with Dawn feel heroic during blackouts?",
+        "Did the final spinning floor phase escalate cleanly from the hanging phases?"
+      ]
+    },
+    "toll_r1": {
+      "promise": "Clear the tower rigging using War and Dawn bells, then hang the stolen clapper to watch a shadowy rival cut the rope and launch the fall.",
+      "aha": "Hanging the clapper triggers your silent rival's sabotage and kicks off the plunging descent.",
+      "checks": [
+        "Did the rival cutting the cable land as a sharp wordless story beat?",
+        "Did the ambush right after the cut create urgency to dive north?",
+        "Was using the side War and Dawn bells in the rigging brawl intuitive?"
+      ]
+    },
+    "toll_r2": {
+      "promise": "Surf the plunging bronze bell down the tower shaft while shooting Dusk bells to freeze beams and War bells to smash stone grates.",
+      "aha": "Quickly read each incoming shaft obstacle and shoot Dusk for beams or War for grates before impact.",
+      "checks": [
+        "Did standing on the falling bell feel thrilling and readable at speed?",
+        "Could you tell at a glance which obstacles needed Dusk versus War?",
+        "Did the flanking shaft moths add pressure without unfair cheap hits?"
+      ]
+    },
+    "toll_r3": {
+      "promise": "Break free after the falling bell snags on a giant spinning gear by freezing the central spinner with Dusk and snapping two chain locks.",
+      "aha": "Freeze the gear spinner with Dusk to buy safe footing while breaking both chain locks.",
+      "checks": [
+        "Did snagging on the giant gear feel like a sharp change of pace mid fall?",
+        "Was the reinforcement wave after breaking the first chain lock exciting?",
+        "Did shattering the second lock cleanly launch you back into the drop?"
+      ]
+    },
+    "toll_r4": {
+      "promise": "Weave twin swinging pendulums on the final drop, fight off clinging snuffers and moths, and ring three Dawn arrestor bells to crash land safely.",
+      "aha": "Ring all three Dawn braking bells amidst the chaos to bring the plunging bell down intact.",
+      "checks": [
+        "Did weaving the twin pendulums while ringing three brake bells feel intense?",
+        "Was your progress toward ringing all three brake bells always clear?",
+        "Did crashing straight into the Belfry base feel like an unforgettable entrance?"
+      ]
+    },
+    "belfry_r1": {
+      "promise": "Gather your bearings in the Belfry Narthex beside the fallen bell shard, where locked doors and empty shafts preview four floors of shortcuts.",
+      "aha": "Every upper floor of the tower eventually loops right back into this central hall.",
+      "checks": [
+        "Did the narthex make the tower feel tall and interconnected right away?",
+        "Was it clear which starting wing was open before finding keys?",
+        "Did returning here later through unlocked shortcuts feel deeply satisfying?"
+      ]
+    },
+    "belfry_r2": {
+      "promise": "Shoot an eye switch to extend a bridge across an eight tile chasm, dash for the first tower key, and ring a Dawn bell to open the north path.",
+      "aha": "The gap is too wide to zip, so the eye switch bridge and a dash are both required.",
+      "checks": [
+        "Was it immediately clear you needed the eye switch bridge to cross the gap?",
+        "Did the ambush after grabbing the key keep the room tense?",
+        "Did ringing the north Dawn bell cleanly point you toward the upper loop?"
+      ]
+    },
+    "belfry_r3": {
+      "promise": "Zip across the Lantern Gallery chasm, hush the snuffer with Dusk, light both braziers to open the east shutter, and ring Dawn to unlock north.",
+      "aha": "Hush the snuffer first so it cannot put out the braziers while you light the pair.",
+      "checks": [
+        "Did zipping across the gallery chasm feel smooth and inviting?",
+        "Was the snuffer a real threat you had to control before lighting both braziers?",
+        "Did noticing the extra north Dawn door feel like a rewarding discovery?"
+      ]
+    },
+    "belfry_r4": {
+      "promise": "Survive a colonnade ambush around a sweeping pendulum spinner by freezing hazards with Dusk and unmasking a mimic and shielded wardens with War.",
+      "aha": "Pair Dusk to halt the center spinner with War to crack shields and expose the hidden mimic.",
+      "checks": [
+        "Did the sweeping pendulum force smart positioning during the brawl?",
+        "Were both the Dusk and War bells worth reaching mid combat?",
+        "Did the optional shard chest feel like a tempting risk to detour for?"
+      ]
+    },
+    "belfry_r5": {
+      "promise": "Defeat the Bell Warden in his octagonal loft using twin brass bell pedestals to crack his shield and cancel his second phase echo slams.",
+      "aha": "Ring the opposite bell pedestal during his echo pause to cancel the second shockwave and stun him.",
+      "checks": [
+        "Were the two brass pedestals obvious tools for breaking his shield?",
+        "Could you spot the pause before his second phase echo slam and counter it?",
+        "Did activating the clockwork lift upward feel like a big milestone?"
+      ]
+    },
+    "belfry_r6": {
+      "promise": "Cross a high vault by hushing a snatcher, throwing light to a brazier, and shooting an eye switch bridge for Keeper's Flame.",
+      "aha": "Calm the snatcher with Dusk before throwing your lantern to light the distant brazier and bridge.",
+      "checks": [
+        "Did the snatcher make throwing your lantern across the pit genuinely tense?",
+        "Was chaining the brazier and eye switch bridge across the gap clear?",
+        "Did dropping the south shortcut back to the ground hall feel earned?"
+      ]
+    },
+    "belfry_r7": {
+      "promise": "Climb to the Spire Crown to defeat the Grand Bellkeeper using three rim tone bells, then relight Great Lamp One to restore Bell Isle.",
+      "aha": "Answer his crown aura with the matching rim bell and freeze his sweeping phantom clock hand with Dusk.",
+      "checks": [
+        "Were all three rim bells easy to reach and tell apart during the fight?",
+        "Did freezing the sweeping clock hand in phase two feel like a great callback?",
+        "Did relighting Great Lamp One land as a triumphant island climax?"
+      ]
+    },
+    "belfry_r8": {
+      "promise": "Push a stone counterweight onto a scale plate to clear a sound baffle, turn the first gear crank, and chain a War relay east.",
+      "aha": "Weighting the scale opens both the crank bridge and the line of sight for a War wave.",
+      "checks": [
+        "Did pushing the stone onto the plate clearly open the sound lane and bridge?",
+        "Was the ambush triggered by turning the gear crank exciting to handle?",
+        "Did chaining the War wave to open the east path feel crisp?"
+      ]
+    },
+    "belfry_r9": {
+      "promise": "Fight across twin spinning gear islands at a four way crossroad, freezing gears with Dusk and popping a toll moth to crack a shielded warden.",
+      "aha": "Freeze the spinning gears with Dusk and use the toll moth's War burst to strip armor.",
+      "checks": [
+        "Did the twin spinning gears make footwork feel different from normal rooms?",
+        "Could you intentionally turn the toll moth's blast against the warden?",
+        "Did opening this four way crossroad pull the lower tower together?"
+      ]
+    },
+    "belfry_r10": {
+      "promise": "Freeze a moving conveyor belt with Dusk to seat a drum counterweight, open a Dawn shutter, and drop a permanent rope shortcut down to the base hall.",
+      "aha": "Dusk freezes the conveyor long enough to push the counterweight neatly onto its plate.",
+      "checks": [
+        "Was freezing the belt with Dusk to seat the counterweight intuitive?",
+        "Did dropping the permanent rope back to the first floor feel rewarding?",
+        "Were the mimic, snuffer, and moth well spaced around the belt?"
+      ]
+    },
+    "belfry_r11": {
+      "promise": "Stand in the second floor Mainspring Rotunda and ring Dawn or War rim bells to rotate a huge brass clock hand bridge between four wings.",
+      "aha": "Dawn turns the giant bridge clockwise and War turns it counter clockwise across the abyss.",
+      "checks": [
+        "Was controlling the rotating brass bridge with Dawn and War instantly clear?",
+        "Did watching the giant hand swing between wings feel grand and mechanical?",
+        "Did this hub clearly organize all of the tower's upper branches?"
+      ]
+    },
+    "belfry_r12": {
+      "promise": "Sprint across twin abyssal catwalks by chaining Dusk freezes on three staggered pendulums, anchoring midway, and dodging diving moths.",
+      "aha": "Chain timed Dusk freezes across the staggered pendulums instead of trying to rush them live.",
+      "checks": [
+        "Did the three staggered pendulums feel rhythmic once you froze them with Dusk?",
+        "Was the central pier checkpoint placed fairly between the two crossings?",
+        "Did the southern pier chest feel like a worthwhile extra jump?"
+      ]
+    },
+    "belfry_r13": {
+      "promise": "Master a mixed Belfry squad in a U shaped foundry vault by toggling brass cover blocks and ringing a central War bell to claim Key Three.",
+      "aha": "Flip the brass cover blocks to break line of sight, then blast War to unmask mimics and crack armor.",
+      "checks": [
+        "Did toggling the brass cover blocks genuinely help you manage the squad?",
+        "Was ringing the central War bell a strong momentum swing in the fight?",
+        "Did dropping straight back to the hub with Key Three feel slick?"
+      ]
+    },
+    "belfry_r14": {
+      "promise": "Combine all three tones with Shutter Hood stealth: ring Dawn, cloak dark, freeze a watcher with Dusk, slip a dark gate for War, and drop the lift.",
+      "aha": "Every island power works together here: three ordered tones, darkness cloak, and a frozen eye.",
+      "checks": [
+        "Did combining bell tones with Shutter Hood stealth feel like a natural synthesis?",
+        "Was the three tone order clear without needing trial and error?",
+        "Did dropping the Master Lift all the way to floor one feel great?"
+      ]
+    },
+    "belfry_r15": {
+      "promise": "Step inside the giant clock face, ride the Hour Hand to War, cloak dark into twelve for Dawn, and Dusk freeze the Minute Hand at three.",
+      "aha": "Ride the live Hour Hand, sneak dark into twelve, and freeze the Minute Hand as a bridge to the Mainspring Key.",
+      "checks": [
+        "Did stepping onto the moving clock hands behind glass feel unforgettable?",
+        "Was freezing the Minute Hand at the right numeral satisfying to pull off?",
+        "Did the clock face feel like the true peak puzzle of the whole tower?"
+      ]
+    },
+    "belfry_r16": {
+      "promise": "Duel the Brass Metronome along its rail, ringing Dusk bells at peak swing to freeze it open and strike its bronze cuckoo core.",
+      "aha": "Hit a Dusk bell right at the top of its swing to freeze its armor wide open.",
+      "checks": [
+        "Was freezing the Metronome at peak swing clear and fun to time?",
+        "Did the little bronze cuckoo popping out during a freeze make you laugh?",
+        "Did the phase two floor gears raise pressure without muddying the timing?"
+      ]
+    },
+    "belfry_r17": {
+      "promise": "Explore a foundry loft by lighting a skylight sensor across a chasm, sneaking dark through a Shadow Gate for an ember, and rescuing Moth Nine.",
+      "aha": "Toss light across the chasm to trigger the skylight sensor, then leave your lantern hooked to enter dark.",
+      "checks": [
+        "Was lighting the far skylight sensor across the gap a clever throw puzzle?",
+        "Did the snatcher add a playful wrinkle rather than annoying interference?",
+        "Did the ember and lost moth feel like a great reward for the optional detour?"
+      ]
+    },
+    "belfry_r18": {
+      "promise": "Catch your breath on an open air carillon balcony with an upper waystone, a final lore stone, and a three bell practice rack before the crown.",
+      "aha": "Ringing Dawn, Dusk, and War on the practice rack previews the final boss's rhythm and pays shards.",
+      "checks": [
+        "Did the open air vista give a welcome breath before the tower climax?",
+        "Did the three bell practice rack clearly prepare you for the Grand Bellkeeper?",
+        "Did the upper waystone make retrying the final climb feel effortless?"
+      ]
+    }
+  }
+}

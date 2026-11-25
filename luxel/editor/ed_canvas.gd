@@ -88,6 +88,9 @@ func _left_down(b: InputEventMouseButton) -> void:
 				_press = "wire"
 				ed.wire_from = src
 				ed.sfx("ui_move")
+		ed.Tool.MAGIC:
+			if not ed.magic.busy():
+				_press = "magic"
 		ed.Tool.NOTE:
 			var n: Dictionary = note_at(b.position)
 			if not n.is_empty():
@@ -183,7 +186,7 @@ func _hint() -> void:
 		mouse_default_cursor_shape = Control.CURSOR_POINTING_HAND
 	elif ed.tool == ed.Tool.HAND and not hover.is_empty():
 		mouse_default_cursor_shape = Control.CURSOR_DRAG
-	elif ed.tool in [ed.Tool.STAMP, ed.Tool.WIRE, ed.Tool.NOTE]:
+	elif ed.tool in [ed.Tool.STAMP, ed.Tool.WIRE, ed.Tool.NOTE, ed.Tool.MAGIC]:
 		mouse_default_cursor_shape = Control.CURSOR_CROSS
 	else:
 		mouse_default_cursor_shape = Control.CURSOR_ARROW
@@ -208,6 +211,9 @@ func _left_up() -> void:
 			if not dst.is_empty() and not _same(dst, ed.wire_from):
 				ed.toggle_wire(ed.wire_from, dst)
 			ed.wire_from = {}
+		"magic":
+			var box: Rect2i = _magic_box()
+			ed.magic.start(box if w2s(_press_w).distance_to(w2s(mouse_w)) > 8.0 else Rect2i(0, 0, ed.room.width, ed.room.height))
 		"band":
 			var r: Rect2 = Rect2(_press_w, Vector2.ZERO).expand(mouse_w)
 			if r.size.x > 4.0 or r.size.y > 4.0:
@@ -215,6 +221,14 @@ func _left_up() -> void:
 	_press = ""
 	_drag_d = Vector2.ZERO
 	_rect_from = Vector2i(-99, -99)
+
+
+func _magic_box() -> Rect2i:
+	var r: Rect2 = Rect2(_press_w, Vector2.ZERO).expand(mouse_w)
+	var ts: float = float(ed.room.ts)
+	var a := Vector2i((r.position / ts).floor())
+	var b := Vector2i((r.end / ts).ceil())
+	return Rect2i(a, (b - a).max(Vector2i.ONE))
 
 
 func _in_rect(r: Rect2) -> Array[Dictionary]:
@@ -329,6 +343,7 @@ func _draw() -> void:
 	_draw_wick()
 	_draw_notes()
 	_draw_tool()
+	_draw_magic()
 	for p: Dictionary in _pop:
 		var k: float = float(p["t"]) / 0.35
 		draw_arc(w2s(p["pos"] as Vector2), (6.0 + 16.0 * k) * zoom * 0.5, 0, TAU, 24, Style.col(str(p["col"]), 1.0 - k), 3.0 * (1.0 - k) + 0.5)
@@ -455,6 +470,44 @@ func _draw_vision() -> void:
 			hot = s
 	if not hot.is_empty():
 		_tag((hot["at"] as Vector2) + Vector2(0, -26), "%d. %s%s" % [int(hot["n"]), str(hot["text"]), " (it is gone)" if bool(hot["lost"]) else ""], Style.col("night", 0.96), Style.col("gold"))
+
+
+func _draw_magic() -> void:
+	var rose: Color = Style.col("rose")
+	if _press == "magic":
+		var b: Rect2i = _magic_box()
+		_magic_frame(r2s(Rect2(Vector2(b.position) * ed.room.ts, Vector2(b.size) * ed.room.ts)), 0.16)
+		return
+	if not ed.magic.here():
+		return
+	var box: Rect2 = r2s(ed.magic.area_px())
+	match int(ed.magic.state):
+		ed.magic.S.ASK: _magic_frame(box, 0.10)
+		ed.magic.S.THINK:
+			_magic_frame(box, 0.08 + 0.05 * sin(_t * 4.0))
+			for i: int in range(14):
+				var k: float = fposmod(_t * 0.35 + float(i) * 0.381966, 1.0)
+				var p: Vector2 = box.position + Vector2(fposmod(float(i) * 0.618034 + k * 0.1, 1.0) * box.size.x, (1.0 - k) * box.size.y)
+				_spark(p, 5.0 * sin(k * PI), Style.col("gold" if i % 2 == 0 else "rose", sin(k * PI)))
+		ed.magic.S.SHOW:
+			draw_rect(box, Color(rose, 0.35), false, 1.5)
+			var a: float = 0.45 + 0.35 * sin(_t * 5.0)
+			for r: Rect2 in ed.magic.changed:
+				draw_rect(r2s(r).grow(2.0), Color(rose, a), false, 2.0)
+
+
+func _magic_frame(r: Rect2, fill: float) -> void:
+	draw_rect(r, Style.col("rose", fill))
+	var c: Array[Vector2] = [r.position, Vector2(r.end.x, r.position.y), r.end, Vector2(r.position.x, r.end.y)]
+	for i: int in range(4):
+		draw_dashed_line(c[i], c[(i + 1) % 4], Style.col("rose"), 2.5, 8.0)
+	_spark(r.position, 7.0, Style.col("gold"))
+	_spark(r.end, 7.0, Style.col("gold"))
+
+
+func _spark(p: Vector2, s: float, c: Color) -> void:
+	if s > 0.5:
+		draw_colored_polygon(PackedVector2Array([p + Vector2(0, -s), p + Vector2(s * 0.25, -s * 0.25), p + Vector2(s, 0), p + Vector2(s * 0.25, s * 0.25), p + Vector2(0, s), p + Vector2(-s * 0.25, s * 0.25), p + Vector2(-s, 0), p + Vector2(-s * 0.25, -s * 0.25)]), c)
 
 
 func _draw_enemy_range(s: Dictionary) -> void:

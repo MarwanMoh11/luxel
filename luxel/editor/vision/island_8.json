@@ -1,0 +1,565 @@
+{
+  "island": {
+    "title": "The Long Night",
+    "rule": "Brass Toll Scales let you sell the game's own settings, like hearts, map, color, or sound, for lantern power, and the island reacts to every choice.",
+    "feel": "Wistful, strange, and mythic as each sacrifice strips the screen down to pure aim while fueling your lantern.",
+    "arc": "Make your first setting trade at Vigil Terrace, clear the Toll House, Archive of Lost Lamps, and Endless Stair to break the Triple Eclipse Seal, ascend the Bell Sanctum, and face the Hush with a final choice.",
+    "moments": [
+      "Making your first trade pulls motes straight out of the display into your lantern as twin eclipse bridges light up.",
+      "Standing in the mezzanine where selling color exposes a hidden four-color mural concealed inside full-color light.",
+      "The Tollmaster pauses mid-fight with an invoice, daring you to sell a setting or smash his register in time.",
+      "Seeing a silent vision of Hollow Wick refusing a golden Toll Scale, then reading his final note before the Hush.",
+      "Facing the final choice at the Hush: sell the screen itself for one last blast, or refuse and stand unbroken."
+    ]
+  },
+  "dungeons": {
+    "toll_house": {
+      "promise": "A counting house built like a settings menu, where scales, organs, and vaults reward both pure aim and whatever settings you chose to sell.",
+      "power": "Brass Receipt stamps thrown lanterns onto plates to hold weight for six seconds.",
+      "arc": "Crosses the Interface Wing to earn the Brass Receipt from the Chief Auditor, puts weight stamps to work through the Feel Wing, peaks in a four-color mezzanine and mute organ loft, and ends at the Basilica.",
+      "boss": "The Tollmaster tests mirror banks behind his lectern and mid-fight invoices to sell a setting or smash his register."
+    },
+    "archive": {
+      "promise": "A grand library holding eight remixed memories of every island's rules, building toward Hollow Wick's untold refusal and a borrowed-boss finale.",
+      "power": "Bookmark Sigil pins fading timers, plants, roses, and lantern hooks longer.",
+      "arc": "Replays Islands one through four in the lower stacks before the Indexer grants the Bookmark Sigil, then remixes Islands five through eight culminating in lending away your own moves on memory plinths.",
+      "boss": "The Archivist cycles three chapters of earlier Keepers, testing mirrors, Dusk Bells, and full-kit counters."
+    },
+    "endless_stair": {
+      "promise": "A twelve-floor spiral climb through shifting encounter pools where each cleared floor offers a choice of three temporary blessings.",
+      "power": "",
+      "arc": "Climbs through three tiers of randomized arenas with Express Lift checkpoints at floors four, eight, and twelve, a quiet sky balcony midway, and a three-terrace scramble right before the summit.",
+      "boss": "The Stair Warden returns on floors four, eight, and twelve with lunges, mirror lances, and crumbling treads."
+    },
+    "bell_sanctum": {
+      "promise": "A ruined gothic cathedral uniting every island's moves and rules across twin wings before a grand eclipse bell and the final duel with the Hush.",
+      "power": "",
+      "arc": "Branches from the narthex through a shadow-scale west wing and stained-glass east wing past two mini-bosses, merges inside an eight-move belfry contraption, and pauses at a quiet threshold before the Hush.",
+      "boss": "The Hush spans four phases pairing every island's rules, reacting to sold settings, and ending in a final choice."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Cross a five-islet spine over starry void lighting three eclipse beacons while branching outward to Vigil Terrace, every major wing, and the sanctum.",
+      "aha": "The central spine tests foes from every past island and fans out to all four districts of the Long Night.",
+      "checks": [
+        "Did facing familiar enemies from earlier islands feel like a homecoming?",
+        "Were the three eclipse beacons and four outer branches easy to read?",
+        "Did spotting the lost moth and toll gates encourage checking side ledges?"
+      ]
+    },
+    "vigil_terrace": {
+      "promise": "Arrive at camp holding the central Toll Scale, quests, the eighty-moth arch, and your first setting sale lighting both wing bridges.",
+      "aha": "Selling just one setting at the Toll Scale pours power into your lantern and lights the bridges east and west.",
+      "checks": [
+        "Did selling your first setting feel clear, weighty, and surprising?",
+        "Did seeing the motes leave the display to light both bridges land well?",
+        "Were the camp folk, redemption desk, and eighty-moth arch easy to understand?"
+      ]
+    },
+    "toll_causeway": {
+      "promise": "Cross the west viaduct linking camp to the Toll House, two vaults, and the forecourt while reflecting an eye beam past clerks.",
+      "aha": "Use the blue mirror to bounce the eclipse eye's shots while flanking the shielded toll clerks on the viaduct.",
+      "checks": [
+        "Did the viaduct clearly link the Toll House, side vaults, and forecourt?",
+        "Was reflecting shots off the mirror helpful against the clerks and eye?",
+        "Did spotting the hidden page wraith keep you alert on the bridge?"
+      ]
+    },
+    "archive_cloister": {
+      "promise": "Walk the rose-glass cloister linking camp to the Archive, Hush Trial, and forecourt while slicing censers and spotting wraiths.",
+      "aha": "Watch for subtle rug tells from disguised page wraiths while slicing swinging censers clear of the corridor.",
+      "checks": [
+        "Could you spot disguised page wraiths before they sprang from the floor?",
+        "Did slicing swinging censers feel crisp amidst the cloister pillars?",
+        "Were the paths to the Archive, Hush Trial, and forecourt clear?"
+      ]
+    },
+    "stair_landing": {
+      "promise": "Fight a toll clerk and two choir gloams around a central star-well chasm linking the overworld to the Endless Stair, Glass Grotto, and forecourt.",
+      "aha": "Circle the open star-well to separate the humming gloams from the clerk's shield on the spiral ring.",
+      "checks": [
+        "Did the central void ring immediately evoke the spiral stair rising above?",
+        "Was fighting the clerk and twin gloams around the drop fair and lively?",
+        "Were the entrances to the Endless Stair and Glass Grotto easy to spot?"
+      ]
+    },
+    "sanctum_forecourt": {
+      "promise": "Stand in the cathedral plaza where bridges from all three major wings meet before the Triple Eclipse Seal guarding the Bell Sanctum.",
+      "aha": "Clearing the Toll House, Archive, and Endless Stair breaks all three seals on the great cathedral doors here.",
+      "checks": [
+        "Did all three wing bridges converging here feel like a grand gathering?",
+        "Was it unmistakable which eclipse seals were broken and which remained?",
+        "Did the spare Toll Scale here feel well placed before entering the Sanctum?"
+      ]
+    },
+    "cave_blind_scale": {
+      "promise": "Offset a mirrored statue across an iron grate while carrying a stone orb west so both weights land on twin scale pans at the exact same moment.",
+      "aha": "Offset your mirrored statue against walls across the grate so your orb and statue balance both pans.",
+      "checks": [
+        "Did balancing the twin scale with an orb and mirrored statue click quickly?",
+        "Was offsetting the mirrored statue across the grate smooth to control?",
+        "Did winning both an ember piece and a lost moth reward the side cave well?"
+      ]
+    },
+    "cave_silent_vault": {
+      "promise": "Raid a velvet vault guarded by two clerks and a censer around a Dusk Bell, or slip past silently if you chose to sell game sound.",
+      "aha": "Selling sound unlocks a stealth bypass, while ringing the Dusk Bell lets full-sound players win cleanly.",
+      "checks": [
+        "Did the vault feel fair to clear by combat even if you kept sound on?",
+        "Did the silent sensor clearly show how selling sound changes this room?",
+        "Did claiming the quest spool and lost moth make the vault worthwhile?"
+      ]
+    },
+    "cave_hush_trial": {
+      "promise": "Race a tight clock around an octagonal star wheel to light all six braziers while dodging harmonized choir gloams for a stained glass pane and moth.",
+      "aha": "Plan a smooth outer loop chaining bolts and beam across all six braziers without letting the gloams stall you.",
+      "checks": [
+        "Did routing the six braziers around the star wheel make you want another try?",
+        "Were the dodging lanes around the harmonized gloams fair under the clock?",
+        "Did earning the Hush Glass pane and lost moth feel like a great prize?"
+      ]
+    },
+    "cave_glass_grotto": {
+      "promise": "Pass a three-stage secret grotto using a lantern hook past a shadow gate, a True Lens bridge, and Sunflare on obsidian for a pane, ember, and mural.",
+      "aha": "Hang your lantern to run dark or use the gilded four-sale bypass, cross with True Lens, and Sunflare the lock.",
+      "checks": [
+        "Did chaining shadow stealth, True Lens, and Sunflare feel crisp and earned?",
+        "Was the gilded bypass for four or more sold settings clear to notice?",
+        "Did the stained glass pane and Hollow Wick mural reward finding this cave?"
+      ]
+    },
+    "toll_r1": {
+      "promise": "Enter the mahogany counting lobby teasing the boss counter, east locked wing, high mezzanine, and a check-in bell that opens the west wing.",
+      "aha": "Ringing the front check-in bell opens the west wing, while every closed balcony shows later shortcut loops.",
+      "checks": [
+        "Did the lobby feel like an ornate counting house built around settings?",
+        "Was ringing the counter bell to open the west wing immediately clear?",
+        "Did the overhead mezzanine and boss counter clearly frame the dungeon?"
+      ]
+    },
+    "toll_r2": {
+      "promise": "Clear a patrolling clerk, push a stone weight onto the west scale pan, and toss your lantern over a rail onto a hook to balance the east pan.",
+      "aha": "Weigh the west pan with stone and toss your lantern over the rail onto the hook so both pans level out.",
+      "checks": [
+        "Did tossing your lantern over the pit rail to balance the scale feel clever?",
+        "Was fighting the patrolling clerk smooth before solving the scale?",
+        "Did the blind side alcove reward players who sold their heart icons?"
+      ]
+    },
+    "toll_r3": {
+      "promise": "Shatter an eclipse eye, aim a blue mirror to drop a tile over a compass point, walk north-east-south-west in order, and crack a wall for a moth.",
+      "aha": "Lower the blocking tile with blue light so you can step on all four compass plates clockwise around the hall.",
+      "checks": [
+        "Did tracing the clockwise compass circuit feel readable and satisfying?",
+        "Was angling the blue mirror to clear the east compass tile intuitive?",
+        "Did spotting the cracked wall for the moth or the mapless cache pay off?"
+      ]
+    },
+    "toll_r4": {
+      "promise": "Battle two clerks, a censer, and an eclipse eye across a glass teller wall, banking blue shots through slits and yanking a ring to drop the divider.",
+      "aha": "Bank blue shots through the glass teller slits first, then yank the pull ring to open the center barrier.",
+      "checks": [
+        "Did shooting through the teller glass slits give the fight a fun twist?",
+        "Was yanking the pull ring to drop the vault divider clear mid-fight?",
+        "Did the four-foe mix feel well paced right before the mini-boss?"
+      ]
+    },
+    "toll_r5": {
+      "promise": "Duel the Chief Auditor by rotating Bolt, Throw, and Beam whenever he audits a move, winning the Brass Receipt, key one, and a lobby shortcut.",
+      "aha": "When the Auditor stamps one of your moves, switch immediately to your other attacks to keep dealing damage.",
+      "checks": [
+        "Could you tell right away which move the Auditor had stamped out?",
+        "Did rotating between Bolt, Throw, and Beam feel playful and sharp?",
+        "Did winning the Brass Receipt and opening the lobby shortcut feel great?"
+      ]
+    },
+    "toll_r6": {
+      "promise": "Showcase the Brass Receipt by stamping a plate with a thrown lantern, hanging your lantern on a hook, and sprinting dark through a shadow gate.",
+      "aha": "Your thrown lantern stamps a six-second weight on the plate so you can hang it and run dark through the gate.",
+      "checks": [
+        "Did stamping the plate and running dark through the gate click immediately?",
+        "Was six seconds generous enough to hang the lantern and sprint through?",
+        "Did opening the overworld backdoor right away feel convenient?"
+      ]
+    },
+    "toll_r7": {
+      "promise": "Fight a clerk, censer, and two choir gloams in a butterfly hall by flipping crystal cover blocks mid-battle to split smoke and sound waves.",
+      "aha": "Flip the crystal switches mid-fight to raise cover pillars that split enemy fire around the twin pits.",
+      "checks": [
+        "Did toggling the cover blocks actually help isolate the clerk and gloams?",
+        "Were the twin star pits readable during a lively four-foe skirmish?",
+        "Did the hall feel like a fair combat step up in the Feel Wing?"
+      ]
+    },
+    "toll_r8": {
+      "promise": "Expose a disguised page wraith, ride a recoil rail cart across a chasm to spin a second rotor mirror, and send a double blue beam through a grate.",
+      "aha": "Ride the recoil cart across the chasm to spin the far mirror so both blue mirrors line up through the grate.",
+      "checks": [
+        "Did riding the recoil rail cart across the chasm feel smooth and fun?",
+        "Could you clearly trace the double blue mirror alignment through the grate?",
+        "Did claiming key two and lowering the mid-bridge save walking?"
+      ]
+    },
+    "toll_r9": {
+      "promise": "Cross the mezzanine over the lobby by tuning three glass colors, shading a gate with a mirror statue, and claiming the boss key and pane.",
+      "aha": "Cycle gold, blue, and rose glass to bridge the gap, shade the gate with your statue, then run dark.",
+      "checks": [
+        "Did looking down over the lobby abyss make this mezzanine feel special?",
+        "Did using your mirrored statue to cast shade on the shadow gate click?",
+        "Did earning both the boss key and stained glass pane feel triumphant?"
+      ]
+    },
+    "toll_r10": {
+      "promise": "Silence foes with the Dusk Bell, lower pipes with Dawn and War Bells, play four orbs in chord order, and drop by the boss gate.",
+      "aha": "Use all three bells to hush foes and open pipes, crack the moth pipe, then hit the four orbs in order.",
+      "checks": [
+        "Did coordinating Dawn, Dusk, and War Bells feel musical and clear?",
+        "Was the four-orb chord order readable without tedious trial and error?",
+        "Did dropping down the chute straight to the boss gate feel smooth?"
+      ]
+    },
+    "toll_r11": {
+      "promise": "Face the Tollmaster in the basilica, banking blue shots behind his lectern and selling a setting or smashing his register on invoices.",
+      "aha": "Bank blue shots behind his shield, and smash his brass register fast whenever you refuse his invoice.",
+      "checks": [
+        "Did the mid-fight invoice pause create real tension over selling or fighting?",
+        "Was smashing the brass register within eight seconds fair and exciting?",
+        "Did winning a half-lantern and one free redemption feel hugely rewarding?"
+      ]
+    },
+    "archive_r1": {
+      "promise": "Enter the octagonal reading rotunda displaying eight dark island memory lamps, teasing the boss arch, upper stacks, and four balcony shortcuts.",
+      "aha": "The eight unlit lamps track every island memory, and ringing the Dawn Bell opens Memory One.",
+      "checks": [
+        "Did seeing all eight dark memory lamps set an exciting goal right away?",
+        "Were the locked upper stacks, boss arch, and return balconies clear?",
+        "Did ringing the Dawn Bell smoothly invite you into Bell Isle's memory?"
+      ]
+    },
+    "archive_r2": {
+      "promise": "Replay Bell Isle's memory by clearing a page wraith, ringing the Dusk Bell, weighing the plate, and banking a mirror shot into the Dawn Bell.",
+      "aha": "Bank a reflected bolt around the sound wall into the Dawn Bell to slide the stone coffin clear.",
+      "checks": [
+        "Did this memory feel like a crisp remix of Bell Isle's bells and coffins?",
+        "Was banking the shot around the sound baffle into the Dawn Bell clear?",
+        "Did lighting the first memory lamp feel warm and nostalgic?"
+      ]
+    },
+    "archive_r3": {
+      "promise": "Replay Tidewater's memory by banking blue light into a sluice eye, draining to low tide, beating a crab, and warping through a portal.",
+      "aha": "Drain the canal at the tide lever to walk the seabed, beat the crab, and warp past the sea wall.",
+      "checks": [
+        "Did draining the water to walk the seabed capture Tidewater well?",
+        "Did charging the seabed blue portal to bypass the sea wall click cleanly?",
+        "Was fighting the crab warden on the drained canal bed fun and fair?"
+      ]
+    },
+    "archive_r4": {
+      "promise": "Replay Thornwood's memory by sliding a dew lens onto dry roots, hanging your lantern for a vine bridge, and passing a shadow gate.",
+      "aha": "Hang your lantern so it grows the vine bridge while leaving you dark enough to slip past the shadow gate.",
+      "checks": [
+        "Did clearing the censer and bramble knight flow cleanly into the puzzle?",
+        "Did hanging your lantern to grow vines and stay dark click right away?",
+        "Did melting the dry root knot with the dew lens feel tactile?"
+      ]
+    },
+    "archive_r5": {
+      "promise": "Replay Mirefen's memory by recording an echo rose to hold a plate and timed brazier while you glide across the pond on wind and updrafts.",
+      "aha": "Record a six-second echo holding the plate and brazier so you have time to ride the wind across the pond.",
+      "checks": [
+        "Did the echo rose give enough time to ride the wind and updraft across?",
+        "Was fighting the choir gloam smooth around the pond edges?",
+        "Did opening the shortcut back to the rotunda feel well timed?"
+      ]
+    },
+    "archive_r6": {
+      "promise": "Duel the Indexer by banking blue shots or throwing behind its armored front drawers into its golden tail for the Bookmark Sigil and key.",
+      "aha": "Strike its exposed golden tail drawer via mirrors or throws, then catch its split cars with Sunflare.",
+      "checks": [
+        "Was the contrast between its armored front and golden tail obvious?",
+        "Did banking mirrors or throwing behind it feel sharp and consistent?",
+        "Did claiming the Bookmark Sigil and opening the rotunda lift feel great?"
+      ]
+    },
+    "archive_r7": {
+      "promise": "Replay Starfall's memory by aiming a rotating mirror, pinning your lantern with the Bookmark Sigil over hidden stars, and breaking an eye.",
+      "aha": "Use your new Bookmark Sigil to pin the hung lantern longer while crossing lit stars and True Lens tiles.",
+      "checks": [
+        "Did the Bookmark Sigil immediately prove its worth on this star chasm?",
+        "Did rotating the mirror and fighting the eclipse eye fit together cleanly?",
+        "Did opening the cloister backdoor give a nice rest stop?"
+      ]
+    },
+    "archive_r8": {
+      "promise": "Replay Ashen Kiln's memory by forging Lance bolts for a cinder golem in a three-foe brawl, then cooling molten slag with blue light for a rail switch.",
+      "aha": "Strike the anvil for Lance to pierce the golem, then cool the molten block and push it onto the rail switch.",
+      "checks": [
+        "Did forging Lance to break the cinder golem feel punchy amid three foes?",
+        "Was cooling the slag block to trigger the rail cart clear and quick?",
+        "Did opening the path toward the optional Errata Gallery feel inviting?"
+      ]
+    },
+    "archive_r9": {
+      "promise": "Replay Moon Shoals by offsetting a mirrored twin onto a black plate and bookmarking your lantern by a sensor for Hollow Wick's vision.",
+      "aha": "Park your mirrored twin on the far plate and pin your lantern by the sensor to reveal Hollow Wick's past.",
+      "checks": [
+        "Did offsetting the mirrored statue onto the far plate feel crisp?",
+        "Did Hollow Wick's silent vision at the Toll Scale hit emotionally?",
+        "Did claiming key two and the lost moth make this room stand out?"
+      ]
+    },
+    "archive_r10": {
+      "promise": "Solve Memory Eight by lending Wings, Beam, Dash, and Throw onto four brass plinths in turn, cracking each seal with what remains for the key.",
+      "aha": "Voluntarily leave one move on a brass plinth to open its opposite seal, then reclaim it once that seal breaks.",
+      "checks": [
+        "Did voluntarily lending away your own moves feel true to Island Eight's rule?",
+        "Was every alcove cleanly solvable while missing the move you lent?",
+        "Did claiming the boss key and upper shortcut feel like a big finish?"
+      ]
+    },
+    "archive_r11": {
+      "promise": "Fight across the optional Errata Gallery balcony using a center Dusk Bell to hush an eclipse eye and freeze page wraiths for an ember piece and lift.",
+      "aha": "Ring the center Dusk Bell to quiet the eye and stun both wraiths while you slice the swinging censer.",
+      "checks": [
+        "Did ringing the Dusk Bell give clear tactical control over the gallery?",
+        "Were the twin bookshelves good cover during the four-foe clash?",
+        "Did the ember piece and rotunda lift make this optional room worth taking?"
+      ]
+    },
+    "archive_r12": {
+      "promise": "Face the Archivist across three chapters of past Keepers' attacks, reflecting beams off twin mirrors and ringing the Dusk Bell for the seal.",
+      "aha": "Match each chapter with past counterplay: twin mirrors first, Dusk Bell second, and your full kit third.",
+      "checks": [
+        "Did recognizing borrowed Keeper attacks across the three chapters delight you?",
+        "Were the twin mirrors and four braziers clear tools during the duel?",
+        "Did breaking the Archive eclipse seal feel like a strong boss payoff?"
+      ]
+    },
+    "stair_r1": {
+      "promise": "Enter the spiral vestibule holding the Iron Ascent board, three sealed Express Lifts for floors four, eight, and twelve, and the north arch.",
+      "aha": "Express Lifts save your progress every four floors, while the board tracks full twelve-floor climbs.",
+      "checks": [
+        "Did the three Express Lift pads make the twelve-floor structure clear?",
+        "Did the Iron Ascent board make a nonstop climb sound tempting?",
+        "Did the open north arch pull you straight into floor one?"
+      ]
+    },
+    "stair_r2": {
+      "promise": "Clear the first tiered climb arena across shifting conveyor or mirror layouts, then pick one of three temporary blessings to carry upward.",
+      "aha": "Clear every foe to raise three blessing pedestals and start shaping your climb build right away.",
+      "checks": [
+        "Did the stepped arena layout feel lively over the surrounding star void?",
+        "Did picking your first blessing from three pedestals feel exciting?",
+        "Was the fight difficulty right for an opening floor of the climb?"
+      ]
+    },
+    "stair_r3": {
+      "promise": "Conquer a spiral ring arena with either a Dusk Bell and censers or crosswinds and a spinner, stacking a second temporary blessing before floor four.",
+      "aha": "Use the central bell or bounce pads to control enemy lanes, then pick a blessing that pairs with your first.",
+      "checks": [
+        "Did the curved ring shape feel distinct from the first stepped floor?",
+        "Were the Dusk Bell or wind hazards fun to leverage rather than annoying?",
+        "Did stacking a second blessing make your build feel noticeably stronger?"
+      ]
+    },
+    "stair_r4": {
+      "promise": "Beat the Stair Warden's first form on floor four to unlock Express Lift four back to the base and draft your third blessing for the middle tier.",
+      "aha": "Bait the halberdier's banister lunge to stun him open, locking in your first permanent lift checkpoint.",
+      "checks": [
+        "Was reading and punishing the Warden's banister lunge clean and sharp?",
+        "Did unlocking Express Lift four feel like a welcome safety milestone?",
+        "Did drafting blessing three build strong momentum into the middle floors?"
+      ]
+    },
+    "stair_r5": {
+      "promise": "Push through a diagonal terrace featuring gravity turrets or shadow hooks around a center obsidian pillar to earn your fourth temporary blessing.",
+      "aha": "Use the center pillar to break sightlines while turning gravity wells or lantern hooks against tougher foes.",
+      "checks": [
+        "Did the diagonal terrace clearly step up the pressure in the middle tier?",
+        "Did your stacked blessings noticeably change how you handled the room?",
+        "Was fighting around the center pillar fair against turrets or wraiths?"
+      ]
+    },
+    "stair_r6": {
+      "promise": "Cross twin star-chasm islands using an echo rose or rail cart under sniper fire, clear the deck, and pick your fifth blessing.",
+      "aha": "Flank across side spans using the echo rose or rail cart instead of charging headlong into the snipers.",
+      "checks": [
+        "Did the twin-island chasm create interesting flanking choices?",
+        "Were the crumbling spans and sniper lanes fair to cross?",
+        "Did reaching five stacked blessings make your kit feel potent?"
+      ]
+    },
+    "stair_r7": {
+      "promise": "Catch your breath on the sky balcony midway up the stair, weigh an optional crowned Toll Scale blessing, open a chute, and rescue a moth.",
+      "aha": "Rest at the brazier, decide whether a crowned blessing is worth a setting trade, and glide out for the moth.",
+      "checks": [
+        "Did this quiet sky balcony feel like a welcome breather before floor eight?",
+        "Was the optional crowned Toll Scale tempting without feeling mandatory?",
+        "Did gliding or zipping to the detached sky buttress for the moth feel great?"
+      ]
+    },
+    "stair_r8": {
+      "promise": "Duel the Stair Warden's prism-lancer form on floor eight with twin rotor mirrors for blue back-hits, unlocking lift eight and blessing six.",
+      "aha": "Angle the rotating mirrors to bounce blue light into the Warden's back whenever he plants his lance.",
+      "checks": [
+        "Did the Prism Lancer feel like a fresh escalation over floor four's fight?",
+        "Was using the twin rotor mirrors for blue back-hits clear and responsive?",
+        "Did unlocking Express Lift eight feel well earned?"
+      ]
+    },
+    "stair_r9": {
+      "promise": "Scramble up three stacked sky terraces through shifting late-climb gauntlets with your blessing build to earn one final rare draft.",
+      "aha": "Chain your stacked blessings across three brisk ascending decks to enter the final summit at peak strength.",
+      "checks": [
+        "Did climbing three terraces in one room feel like a soaring climax?",
+        "Did your stacked blessings make this three-terrace scramble feel strong?",
+        "Did the final blessing pedestal feel impactful right before floor twelve?"
+      ]
+    },
+    "stair_r10": {
+      "promise": "Beat the Stair Warden's final eclipse form on floor twelve as outer treads crumble into void, breaking the third seal for an ember piece.",
+      "aha": "Break his eclipse crown using flanking mirrors while moving inward as outer stair treads drop into void.",
+      "checks": [
+        "Did outer treads crumbling into void create real urgency without cheap deaths?",
+        "Did the final Warden form test both your movement and your drafted blessings?",
+        "Did clearing floor twelve and unlocking the top lift feel triumphant?"
+      ]
+    },
+    "sanctum_r1": {
+      "promise": "Enter the shattered Bell Sanctum narthex uniting the central spine, west scale wing, cloister portal, Toll Scale, and sealed return loops.",
+      "aha": "Every wing of the cathedral loops back to this narthex, with a Toll Scale right beside the main waystone.",
+      "checks": [
+        "Did the cathedral narthex feel solemn and clearly laid out on entry?",
+        "Was the cloister blue portal chest a nice bonus right off the hub?",
+        "Were the main spine and west transept clearly signposted?"
+      ]
+    },
+    "sanctum_r2": {
+      "promise": "Burn bramble, dodge a patrolling censer, and combine a blue mirror with cyclable blue stained glass to claim key one and open the east cloister.",
+      "aha": "Align both the blue mirror and tinted glass to trigger the sensors while avoiding the patrolling censer.",
+      "checks": [
+        "Did combining bramble burning, mirrors, and stained glass feel crisp?",
+        "Was the patrolling censer easy to clear or dodge without interrupting aim?",
+        "Did opening the east cloister branch feel clear once key one was yours?"
+      ]
+    },
+    "sanctum_r3": {
+      "promise": "Cross a phantom bridge over void using a mid-pier lantern hook, then beat a phantom owl, echo moth, and choir gloam on the far terrace.",
+      "aha": "Anchor your lantern at the mid-pier hook so crossing into the elevated True Lens combat terrace stays safe.",
+      "checks": [
+        "Did the mid-pier lantern hook prevent frustrating blind void falls?",
+        "Was uncloaking the owl while handling the moth and gloam fair?",
+        "Did the west phantom arch clearly invite exploring the side wing?"
+      ]
+    },
+    "sanctum_r4": {
+      "promise": "Battle the Night Harbinger in the transept, relighting the snuffed west eclipse brazier to break his phase-two mirror and open east.",
+      "aha": "When his eclipse mirror appears in phase two, relight the snuffed west brazier right away to shatter it.",
+      "checks": [
+        "Was it clear that relighting the west brazier broke his phase-two mirror?",
+        "Did his lunar shield patterns feel sharp and fair to read?",
+        "Did victory clearly open both forward progress and the east ossuary?"
+      ]
+    },
+    "sanctum_r5": {
+      "promise": "Combine Throw, Prism, Sunflare, and True Lens in the grand vault to claim the Keeper's Flame beneath the Eclipse Bell Chain linking both upper wings.",
+      "aha": "Chain four core moves to unlock the Keeper's Flame while seeing the huge bell chain connect both side wings.",
+      "checks": [
+        "Did the four-move synthesis vault feel brisk and rewarding?",
+        "Did inspecting the Eclipse Bell Chain make the upper belfry goal obvious?",
+        "Did the narthex shortcut and upper wing doorways stay easy to navigate?"
+      ]
+    },
+    "sanctum_r6": {
+      "promise": "Confront the Hush across four phases pairing every island's rules, reacting to sold settings, and ending with a final screen-or-stand choice.",
+      "aha": "Counter each twin-island phase with your kit, then choose whether to sell the screen or stand unbroken.",
+      "checks": [
+        "Did recognizing every island's rules return across the four phases land?",
+        "Did the fight clearly react to the settings you chose to sell or keep?",
+        "Did the final choice at the Great Lamp feel powerful and earned?"
+      ]
+    },
+    "sanctum_r7": {
+      "promise": "Balance a cathedral scale using a stone weight and mirrored statue, then hang your lantern to slip dark through a shadow gate west.",
+      "aha": "Weigh one pan with stone, offset your mirrored statue onto the other pan, then slip dark past the gate.",
+      "checks": [
+        "Did blending stone blocks, mirrored statues, and shadow stealth feel smooth?",
+        "Was the extra toll-sensor vault a cool bonus for sold-setting runs?",
+        "Did this room kick off the West Wing with a clean, quiet puzzle?"
+      ]
+    },
+    "sanctum_r8": {
+      "promise": "Tune three stained glass panes in the east cloister using a crystal toggle shutter and conveyor to paint gold, blue, and rose beams in exact order.",
+      "aha": "Flip the toggle shutter and clear the stone baffle so all three beams hit in gold, blue, rose order.",
+      "checks": [
+        "Was the required gold, blue, rose color sequence easy to read?",
+        "Did combining stained glass, toggle shutters, and conveyors flow cleanly?",
+        "Did this optical organ set up the three-color Seraph fight ahead?"
+      ]
+    },
+    "sanctum_r9": {
+      "promise": "Silence twin choir gloams and a turret with the Dusk Bell, flank a toll clerk across crumbling walkways, and crack a buttress hiding lost moth nine.",
+      "aha": "Use the Dusk Bell to silence the noisy threats while crossing crumbling walkways to flank the clerk.",
+      "checks": [
+        "Did ringing the Dusk Bell mid-fight feel smart and decisive?",
+        "Were the crumbling walkways tense without causing cheap void falls?",
+        "Did cracking the hidden wall for lost moth nine feel rewarding?"
+      ]
+    },
+    "sanctum_r10": {
+      "promise": "Clear a wraith and eye, weave past a spinning pendulum, and curve a thrown lantern through a gravity well onto a pull ring to bridge void.",
+      "aha": "Throw and recall your lantern around the gravity well to yank the distant pull ring across the wide chasm.",
+      "checks": [
+        "Did curving a thrown lantern through a gravity well onto a ring click?",
+        "Was weaving past the twin-arm spinner clean once the foes were down?",
+        "Did blending Island Five, Six, and Eight tools feel clever here?"
+      ]
+    },
+    "sanctum_r11": {
+      "promise": "Visit Hollow Wick's broken lantern vigil, chaining an echo rose bridge, shadow gate sprint, and True Lens tiles to light the west seal.",
+      "aha": "Record an echo holding the chasm bridge, hang your lantern to run dark, then recall and pulse True Lens.",
+      "checks": [
+        "Did finding Hollow Wick's broken lantern give this room quiet weight?",
+        "Did chaining echo rose, shadow gate, and True Lens feel tight and fair?",
+        "Did dropping back to the narthex after lighting the seal feel smooth?"
+      ]
+    },
+    "sanctum_r12": {
+      "promise": "Duel the Rose-Window Seraph by matching her gold, sky, and rose carpet stripes and beaming through stained glass to crack her wings.",
+      "aha": "Stand on the matching color carpet stripe and beam through stained glass to crack her wings.",
+      "checks": [
+        "Was reading her cycling halo color against the carpet stripes instant?",
+        "Did beaming through stained glass to shatter her wings feel punchy?",
+        "Did claiming the east seal, ember piece, and half-lantern feel earned?"
+      ]
+    },
+    "sanctum_r13": {
+      "promise": "Operate the Great Eclipse Belfry uniting all eight moves in one contraption to snap three eclipse chains and toll the bell for the finale.",
+      "aha": "Every move plays one clear part around the drum until Sunflare snaps the final chain and tolls the bell.",
+      "checks": [
+        "Did using all eight moves in one grand contraption feel clear, not cluttered?",
+        "Did snapping each of the three eclipse chains build strong anticipation?",
+        "Did tolling the giant bell feel like the true prelude to the finale?"
+      ]
+    },
+    "sanctum_r14": {
+      "promise": "Pause at the quiet Lantern's Threshold with a boss waystone, final Toll Scale, Hollow Wick's parting note, the eightieth moth, and a narthex lift.",
+      "aha": "Hollow Wick's final note frames the choice ahead, and one last Toll Scale sits beside the boss checkpoint.",
+      "checks": [
+        "Did Hollow Wick's final note hit hard right before facing the Hush?",
+        "Did rescuing the eightieth lost moth here feel like a meaningful beat?",
+        "Did the waystone and final scale give a calm, clear breath before the end?"
+      ]
+    },
+    "superboss_first_dark": {
+      "promise": "Enter the eighty-moth disc against the First Dark as it erases floor tiles, reading memory tiles with True Lens and ripping sparks.",
+      "aha": "Pulse True Lens to read erased floor tiles, rip moth sparks on recall, and punish the core with Sunflare.",
+      "checks": [
+        "Did seeing all eighty rescued moths ring the disc feel truly celebratory?",
+        "Was reading erased floor tiles with True Lens fair during the fight?",
+        "Did beating the First Dark feel like a worthy capstone to the whole game?"
+      ]
+    }
+  }
+}

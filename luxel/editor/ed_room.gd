@@ -5,8 +5,6 @@ extends RefCounted
 const Io := preload("res://luxel/editor/ed_io.gd")
 const LISTS: Array[String] = ["interactables", "enemies", "scenery", "decor", "exits"]
 const UNDO_MAX: int = 200
-const DRAFT_MAP: String = "user://editor/draft.map"
-const DRAFT_JSON: String = "user://editor/draft.json"
 
 static var islands_dir: String = "res://luxel/islands"
 static var edits_dir: String = Io.EDITS_DIR
@@ -271,9 +269,13 @@ func json_text() -> String:
 	return (Io.ascii(t) if _json_ascii else t) + ("\n" if _json_newline else "")
 
 
+static func draft_map() -> String: return Io.work_dir + "/draft.map"
+static func draft_json() -> String: return Io.work_dir + "/draft.json"
+
+
 func write_draft() -> void:
-	Io.write(DRAFT_MAP, map_text())
-	Io.write(DRAFT_JSON, json_text())
+	Io.write(draft_map(), map_text())
+	Io.write(draft_json(), json_text())
 
 
 func base_map_path() -> String: return "%s/base/%s.map.txt" % [edits_dir, file_key()]

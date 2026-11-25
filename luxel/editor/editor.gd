@@ -29,7 +29,7 @@ func _ready() -> void:
 	if DisplayServer.get_name() != "headless" and not OS.get_cmdline_user_args().has("windowed"):
 		get_window().mode = Window.MODE_MAXIMIZED
 	get_window().title = "Luxel Level Editor"
-	var s: Dictionary = Io.read_json(SESSION, {}) as Dictionary
+	var s: Dictionary = Io.read_json(session_path(), {}) as Dictionary
 	var key: String = str(s.get("room", "1:overworld"))
 	for a: String in OS.get_cmdline_user_args():
 		if a.begins_with("room=") and a.contains(":"):
@@ -77,6 +77,9 @@ func _build_ui() -> void:
 	root.add_child(_toast)
 	_note_box = _build_note_box()
 	root.add_child(_note_box)
+	magic = Magic.new()
+	add_child(magic)
+	magic.setup(self, root)
 	_help = _build_help()
 	var mid := CenterContainer.new()
 	mid.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -179,6 +182,7 @@ func _build_help() -> PanelContainer:
 		["brush", "Pick something from the bottom bar, then click in the room to place it."],
 		["copy", "Right-click any thing or tile to pick up a copy. Esc lets go."],
 		["wire", "Wire: drag from a switch to a door, and the switch opens it."],
+		["wand", "Magic: drag a box, say what you want in plain words, and it happens. Keep it, undo it or ask again."],
 		["note", "Note: pin a message for Claude anywhere in the room."],
 		["play", "B plays the room from where Wick stands. B again comes back to edit."],
 		["rooms", "Rooms shows all 466 rooms. Double-click a green exit to walk through it."],
@@ -203,8 +207,11 @@ func _build_help() -> PanelContainer:
 	return p
 
 
+static func session_path() -> String: return Io.work_dir + "/session.json"
+
+
 func _write_session() -> void:
-	Io.write(SESSION, Io.to_json({"room": room.key(), "seen_help": true}))
+	Io.write(session_path(), Io.to_json({"room": room.key(), "seen_help": true}))
 
 
 func free_area() -> Rect2:
@@ -249,6 +256,7 @@ func toggle_play() -> void:
 	if playing:
 		_stop_play()
 	else:
+		magic.card.visible = false
 		_start_play()
 
 
@@ -309,6 +317,7 @@ func open_room(isl: int, reg: String, at: Vector2 = Vector2(-1, -1)) -> bool:
 	_refresh()
 	_palette.refresh()
 	canvas.fit.call_deferred()
+	magic.on_room_opened.call_deferred()
 	return true
 
 
@@ -482,6 +491,7 @@ func _edit_key(k: InputEventKey) -> bool:
 		KEY_ESCAPE:
 			if _help.visible: _help.visible = false
 			elif _note_box.visible: _close_note()
+			elif magic.card.visible and not magic.busy(): magic.close()
 			elif tool != Tool.HAND: set_tool(Tool.HAND)
 			else: select([])
 		KEY_ENTER, KEY_KP_ENTER: toggle_play()
@@ -493,6 +503,7 @@ func _edit_key(k: InputEventKey) -> bool:
 		KEY_F: canvas.fit()
 		KEY_M: _browser.open()
 		KEY_V: set_vision(not vision_on)
+		KEY_A, KEY_5: magic_here()
 		KEY_X: flip_selection()
 		KEY_DELETE, KEY_BACKSPACE: delete_selection()
 		KEY_EQUAL, KEY_KP_ADD: canvas.set_zoom(canvas.zoom * 1.2)
@@ -505,6 +516,23 @@ func _edit_key(k: InputEventKey) -> bool:
 		KEY_DOWN: _arrow(Vector2.DOWN, k)
 		_: return false
 	return true
+
+
+func magic_here() -> void:
+	## With things selected, the box is already drawn around them.
+	if selection.is_empty():
+		set_tool(Tool.MAGIC)
+		return
+	var r := Rect2()
+	for s: Dictionary in selection:
+		var q: Rect2 = canvas.rect_of(s)
+		r = q if not r.has_area() else r.merge(q)
+	r = r.grow(float(room.ts) * 0.5)
+	var a := Vector2i((r.position / float(room.ts)).floor())
+	var b := Vector2i((r.end / float(room.ts)).ceil())
+	tool = Tool.MAGIC
+	_palette.sync_tool()
+	magic.start(Rect2i(a, b - a))
 
 
 func _arrow(d: Vector2, k: InputEventKey) -> void:

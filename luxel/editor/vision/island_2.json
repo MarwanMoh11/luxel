@@ -1,0 +1,556 @@
+{
+  "island": {
+    "title": "Tidewater Harbor",
+    "rule": "Tide Organs shift the ocean between low, half, and high tide to reshape caves and canals, while your oarless skiff sails on lantern recoil and mooring swings.",
+    "feel": "Brisk salt spray momentum paired with clever tidal engineering where water height changes everything.",
+    "arc": "Arrive stranded at low tide, free your skiff, and sound the Tide Organ. Clear the Drowned Galleon and Smugglers' Locks in either order, survive the Leviathan's belly, climb the tidal Lighthouse with Prism Split, and face the Undertow.",
+    "moments": [
+      "Grounding your empty skiff at low tide right on top of a submerged floor plate to weigh it down.",
+      "Pulling the ship capsize wheel to roll a hull room onto its side and flood it into a skiff canal.",
+      "Firing one blue bolt into a four portal loop that orbits forever to power twin capacitors.",
+      "Getting swallowed whole with your skiff by the Leviathan and blasting out its blowhole.",
+      "Splitting one bolt into three rays across mirrors and floating rafts inside the Lighthouse."
+    ]
+  },
+  "dungeons": {
+    "galleon": {
+      "promise": "A half sunk wooden warship whose rolling deck slides cargo, mirrors, and oil kegs from side to side across flooded bilges.",
+      "power": "Ballast Clamp lets your thrown lantern pin sliding crates, mirrors, or kegs.",
+      "arc": "Learn how shifting the ship's tilt moves crates and drains bilges, defeat the Bosun's Rig for Ballast Clamp, split linked cargo, capsize a hull into a canal, and face the Figurehead.",
+      "boss": "The Figurehead swings across a listing bowsprit on an anchor chain. Clamp her anchor fluke to slam her nose first."
+    },
+    "locks": {
+      "promise": "Twin terraced smuggling canals where sluice gates trade water between basins and blue portals warp both bolts and boats.",
+      "power": "Sluice Harpoon lets your lantern recall tow floating mirror rafts and sea mines.",
+      "arc": "Learn skiff recoil portals and linked lock water, defeat the Dredge Hulk for Sluice Harpoon, tow rafts through portals, tip a water scale, and build a perpetual bolt orbit before the Twins.",
+      "boss": "The Twin Lockmasters pass one shared shield through four portals while flipping canal water every twelve seconds."
+    },
+    "leviathan": {
+      "promise": "A storm surge chase over flooded rooftops that ends inside a colossal whale's belly and launches you skyward through its blowhole.",
+      "power": "",
+      "arc": "Outrun the Leviathan's bow wave across rooftops, choose a breakwater route to ring the chum bell and get swallowed, solve the heartbeat bilge, defeat the Gullet Lamprey, and ride three blowhole geysers out.",
+      "boss": "The Gullet Lamprey coils around the whale's glowing heart. Light its three swallowed ship lanterns to flip it open."
+    },
+    "lighthouse": {
+      "promise": "A four story tidal beacon where water height, floating mirror rafts, and three way prism rays link every floor vertically.",
+      "power": "Prism Split turns a bounced bolt into a three ray blue fan.",
+      "arc": "Light the first seabed relay, win Prism Split in the prism rotunda, beat the Tide Captain, witness a shadowy rival shatter a lamp, align the mirror drum, and climb to the Hermit.",
+      "boss": "The Lighthouse Hermit sweeps a scorching beam across four mirrors. Reflect his beam back and clamp drifting mirrors."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Untether your oarless skiff in Tidewater Harbor, sound the quay Tide Organs to reshape shoals and slips, and sail out toward the outer waters.",
+      "aha": "Your bolt recoil drives the skiff while Tide Organs physically change which paths are dry or flooded.",
+      "checks": [
+        "Did untethering the skiff and steering by bolt recoil click quickly?",
+        "Did sounding a Tide Organ visibly reshape where you could walk and sail?",
+        "Were the three beacons and outer sea exits easy to spot and reach?"
+      ]
+    },
+    "ow_boathouse": {
+      "promise": "Dock inside a warm drydock boathouse to trade quest finds with harbor folk, piece together the Spyglass Sea Chart, and travel back to Wick House.",
+      "aha": "Gathering scattered chart pieces on the boathouse table reveals the hidden route to the Undertow.",
+      "checks": [
+        "Did the boathouse feel like a cozy, safe harbor to return to between trips?",
+        "Were the harbor folk requests and rewards easy to understand?",
+        "Did assembling the Spyglass Sea Chart build excitement for a hidden boss?"
+      ]
+    },
+    "ow_canal_south": {
+      "promise": "Navigate a terraced canal district whose water height opens the boathouse, smuggler cellar, lock basin, and high crane balcony at different tides.",
+      "aha": "Each tide height unlocks a different layer of the same canal quarter.",
+      "checks": [
+        "Did switching tide height clearly open new paths at low, half, and high water?",
+        "Was lighting the three lamps for Moth Kid fun to weave into exploration?",
+        "Were the entrances to the Locks and smuggler cellar clearly marked?"
+      ]
+    },
+    "ow_shoals_west": {
+      "promise": "Explore a western reef where low tide opens a rib cave and hull breach, half tide runs a skiff slalom, and high tide lifts you to mastheads.",
+      "aha": "Revisiting the shoals across all three tides turns one reef into three layered playgrounds.",
+      "checks": [
+        "Did each tide state reveal genuinely different paths among the wrecks?",
+        "Was the half tide skiff slalom tight and satisfying around mooring posts?",
+        "Was the breach leading into the Drowned Galleon easy to recognize?"
+      ]
+    },
+    "ow_open_sound": {
+      "promise": "Sail across the wide outer sound to race a high tide portal regatta, reach the flooded rooftop belfry, and uncover the Undertow seal.",
+      "aha": "High tide connects blue portals across open water into a fast sailing loop.",
+      "checks": [
+        "Did racing through blue portals on your skiff feel fast and exhilarating?",
+        "Were the rooftop belfry arch and Undertow seal intriguing landmarks?",
+        "Did the outer sound feel noticeably different after relighting the island?"
+      ]
+    },
+    "cave_bell_cistern": {
+      "promise": "Sail your skiff over a submerged giant floor plate at half tide, hop off, and drain the cistern so the grounded boat weighs the plate down.",
+      "aha": "Your empty grounded skiff is heavy enough to hold down a floor plate once the water drains.",
+      "checks": [
+        "Did parking the skiff and draining the water onto the plate feel like pure genius?",
+        "Was lining up the drained basin mirror bank clear once the plate dropped?",
+        "Did the Anchor Lead glass pane feel like a worthy prize for the secret?"
+      ]
+    },
+    "cave_rib_vault": {
+      "promise": "Rotate a grounded mirror raft on the dry cavern floor, then flood the vault to float the mirror up to beam height and unseal the brass compass.",
+      "aha": "Adjust a mirror raft while it rests dry, then flood the room to lift it into the beam line.",
+      "checks": [
+        "Was it clear that the raft had to be rotated dry before flooding the cave?",
+        "Did watching the mirror float up into alignment feel crisp and readable?",
+        "Did finding both the brass compass and lost moth feel rewarding?"
+      ]
+    },
+    "cave_rooftop_belfry": {
+      "promise": "Fight a flooded rooftop belfry trial where dropping the inner tide valve mid battle drains flanking trenches and strands Reef Skates high and dry.",
+      "aha": "Flipping the tide valve mid fight strips the skate of water and leaves it helpless on dry stone.",
+      "checks": [
+        "Did draining the trenches mid combat clearly strand the Reef Skate?",
+        "Was the optional no hit salvage trial tense without feeling unfair?",
+        "Did banking off the mirror help against the Crab Warden?"
+      ]
+    },
+    "cave_smuggler_cellar": {
+      "promise": "Solve a low tide smuggler cellar by throwing your lantern onto a recessed brazier across a canal while banking a blue bolt to extend the vault bridge.",
+      "aha": "Both the cross canal lantern light and the blue mirror switch must be solved to reach the shard.",
+      "checks": [
+        "Did throwing your lantern across the canal to light the brazier feel clean?",
+        "Did finding the spyglass shard and ship log hook you into the island mysteries?",
+        "Did the bramble alcove clearly tease a moth to return for later?"
+      ]
+    },
+    "cave_undertow_maw": {
+      "promise": "Challenge the Undertow inside a roaring abyssal maelstrom using skiff orbits, mooring swings, floating mirror rafts, and batted mines.",
+      "aha": "Whip around the four mooring posts to orbit the suction well while banking prism shots off drifting rafts.",
+      "checks": [
+        "Did orbiting the central whirlpool in your skiff feel intense and controllable?",
+        "Were the mooring posts and mirror rafts vital tools rather than clutter?",
+        "Did the fight feel like a true exam of every Tidewater Harbor skill?"
+      ]
+    },
+    "galleon_r1": {
+      "promise": "Step into the tilted stern bilge and shift the ballast valve to slide deck cargo clear of a mirror sightline while teasing the upper winch shortcut.",
+      "aha": "Flipping the ballast valve tilts the ship so heavy deck objects slide across the bilge.",
+      "checks": [
+        "Did shifting the ballast valve clearly roll cargo across the bilge?",
+        "Was the bounced blue shot into the eye switch easy to spot once clear?",
+        "Did the locked stern winch tease a future shortcut back to the entrance?"
+      ]
+    },
+    "galleon_r2": {
+      "promise": "Cross the three tier Mast Well hub where tilting the ship swings a fallen mast bridge between port and starboard wings while teasing the Boss Key.",
+      "aha": "Tilting the ship port or starboard aims the central mast bridge toward whichever wing you need.",
+      "checks": [
+        "Did swinging the fallen mast bridge between wings feel clear and tactile?",
+        "Did seeing the Boss Key behind the north iron grate give you an immediate goal?",
+        "Did the hub make the ship's layout easy to remember as shortcuts opened?"
+      ]
+    },
+    "galleon_r3": {
+      "promise": "Alternate ship tilt to drain a bilge and rotate a sunken mirror, then tilt back to slide a cargo crate onto a sluice plate for a clean blue bank.",
+      "aha": "Two opposite ship tilts handle draining the mirror first and sliding the crate into place second.",
+      "checks": [
+        "Was it clear why you needed to drain the bilge to rotate the mirror first?",
+        "Did sliding the crate onto the plate while keeping your shot open feel clever?",
+        "Did the lone Reef Skate keep the shifting water lively?"
+      ]
+    },
+    "galleon_r4": {
+      "promise": "Fight your first rolling deck battle by flipping ship tilt to strand Reef Skates dry on alternating bilges while batting a mine into a Crab Warden.",
+      "aha": "Flipping the ship's tilt turns floor water into a weapon against swimming Reef Skates.",
+      "checks": [
+        "Did tilting the ship noticeably strand the Reef Skates on dry planks?",
+        "Was batting the buoy mine into the Crab Warden satisfying to pull off?",
+        "Did claiming Key One and looping back to the mast hub feel brisk?"
+      ]
+    },
+    "galleon_r5": {
+      "promise": "Plant a heavy stone block as a catch peg so a sliding wooden crate stops dead center on the middle sluice plate, then bank blue to crack a sentry.",
+      "aha": "Heavy stone blocks ignore ship tilt and can catch sliding wooden crates right on a target plate.",
+      "checks": [
+        "Did noticing that stone stays put while wood slides spark an aha moment?",
+        "Was catching the sliding crate dead center on the middle plate satisfying?",
+        "Did banking a blue bolt around the Barnacle Sentry feel clean?"
+      ]
+    },
+    "galleon_r6": {
+      "promise": "Battle the Bosun's Rig in a listing cargo well as his overhead crane swings with the ship's roll, winning the Ballast Clamp and a hub ladder shortcut.",
+      "aha": "Time ship tilt to slam his sweeping crane arm into the high bulkhead and stun him wide open.",
+      "checks": [
+        "Did the rolling deck make the crane boss feel uniquely nautical?",
+        "Was using blue banks and ship tilt to topple his crane arm clear?",
+        "Did earning the Ballast Clamp immediately suggest new deck tricks?"
+      ]
+    },
+    "galleon_r7": {
+      "promise": "Throw your lantern to pin one mirror uphill while stepping on the foot pedal unarmed to roll a second mirror and keg downhill.",
+      "aha": "Your thrown lantern pins one rail object uphill so the foot pedal can split a linked pair apart.",
+      "checks": [
+        "Did pinning one mirror with your lantern while rolling the rest feel brilliant?",
+        "Was using the rolled keg to blast the cracked bulkhead clear?",
+        "Did double banking through both mirrors open the upper wings cleanly?"
+      ]
+    },
+    "galleon_r8": {
+      "promise": "Survive a powder ambush where a Net Caster pins careless lanterns while rolling kegs shatter an Anchor Drowned and crack a moth wall.",
+      "aha": "Clear the Net Caster before throwing your lantern, then turn rolling kegs on armored foes and cracked walls.",
+      "checks": [
+        "Was the Net Caster an urgent threat to your lantern clamping plan?",
+        "Did blasting the Anchor Drowned with a rolling oil keg feel punchy?",
+        "Did you spot the cracked west wall hiding Lost Moth Eight and a ship log?"
+      ]
+    },
+    "galleon_r9": {
+      "promise": "Pull the Master Capsize Wheel to roll the room ninety degrees onto its side, flooding the hull into a skiff canal with a drifting mirror raft.",
+      "aha": "Capsizing the room turns dry walls into a flooded skiff canal where Ballast Clamp steadies a drifting mirror.",
+      "checks": [
+        "Did rolling the whole room ninety degrees into a canal genuinely amaze you?",
+        "Was clamping the drifting mirror raft in front of the porthole eye clear?",
+        "Did the mooring posts make navigating the narrow capsized canal smooth?"
+      ]
+    },
+    "galleon_r10": {
+      "promise": "Tilt the captain's compass table to roll a light orb into its socket while clamping a shield crate inside a resetting beam to win the Boss Key.",
+      "aha": "Clamp a crate mid table to block the resetting beam while stepping on the tilt pedal unarmed to roll the orb.",
+      "checks": [
+        "Was clamping the shield crate to create a safe shadow lane intuitive?",
+        "Did tilting the orb into its socket while unarmed feel nimble and clever?",
+        "Did unlocking the stern winch shortcut back to entry feel earned?"
+      ]
+    },
+    "galleon_r11": {
+      "promise": "Hold a storm lashed forecastle before the boss door by rolling and clamping a central mirror as moving cover against Gull Thieves and a Pistol Shrimp.",
+      "aha": "Clamp the central mirror where it blocks shots and lets you bounce blue bolts around the deck.",
+      "checks": [
+        "Did clamping the moving mirror as shifting cover feel tactical?",
+        "Were the Gull Thieves a sharp warning not to leave your lantern careless?",
+        "Did the prow gauntlet set an exciting pace right before the boss?"
+      ]
+    },
+    "galleon_r12": {
+      "promise": "Fight the Figurehead on a splintering bowsprit as she whips an anchor chain across a listing deck, clamping her fluke and using mirrors and kegs.",
+      "aha": "Clamp her sliding anchor fluke so her own chain yank slams her nose first into the deck.",
+      "checks": [
+        "Did clamping her anchor fluke to make her slam herself feel unforgettable?",
+        "Did the steepening deck tilt and rolling kegs escalate each phase well?",
+        "Did winning Half Lantern One and the Rip Tide pane feel like a big triumph?"
+      ]
+    },
+    "locks_r1": {
+      "promise": "Board the intake skiff and fire east into a dock mirror so the reflected blue bolt powers a portal while recoil shoves your boat straight through it.",
+      "aha": "Shooting a dock mirror powers the waterway portal and pushes your skiff onto it in one single shot.",
+      "checks": [
+        "Did powering the portal and recoiling onto it in one shot feel magical?",
+        "Was the locked spillway return clearly teased from the entry dock?",
+        "Did the mooring posts help keep skiff handling comfortable right away?"
+      ]
+    },
+    "locks_r2": {
+      "promise": "Operate the Master Sluice Organ at a four way canal junction, trading water between west and east basins to swing bridges while teasing the Boss Key.",
+      "aha": "Water only fills one side of the junction at a time, choosing which floating wing bridge connects.",
+      "checks": [
+        "Did trading water between the west and east basins feel easy to read?",
+        "Did seeing the Boss Key across the north grate give a clear long term pull?",
+        "Did this junction anchor the whole lock complex cleanly as loops opened?"
+      ]
+    },
+    "locks_r3": {
+      "promise": "Drain the west lock to step onto the seabed beside a grounded mirror raft, clear a blocking crate and aim the mirror, then re flood to fire across.",
+      "aha": "Drain the lock to move crates and aim the grounded mirror by hand, then flood it back up to firing height.",
+      "checks": [
+        "Was stepping down onto the drained lock floor to clear the crate obvious?",
+        "Did re flooding the basin to lift the aimed mirror into line feel crisp?",
+        "Did the lone Reef Skate react cleanly when the water drained and returned?"
+      ]
+    },
+    "locks_r4": {
+      "promise": "Fight across a canal wharf past drifting rafts, clearing a Net Caster and lamprey before banking blue shots off the quay mirror at two sentries.",
+      "aha": "Stop the Net Caster before tossing your lantern, then use the quay mirror to crack both shielded sentries.",
+      "checks": [
+        "Was eliminating the Net Caster first clearly the smartest opening move?",
+        "Did banking blue bolts off the quay mirror cleanly crack both sentries?",
+        "Did grabbing Key One and looping back to the lock hub feel snappy?"
+      ]
+    },
+    "locks_r5": {
+      "promise": "Work upstream along an S curve sluiceway using mooring post eddies and blue mirror banks to reverse the current and reach a hidden lens shard.",
+      "aha": "Mooring swings let your skiff fight heavy currents until you flip the flow to open side coves.",
+      "checks": [
+        "Did mooring swings feel essential for beating the strong southward current?",
+        "Did reversing the sluice current clearly open the west cove for the shard?",
+        "Was the pace brisk leading up to the mini boss basin?"
+      ]
+    },
+    "locks_r6": {
+      "promise": "Orbit the armored Dredge Hulk in a flooded basin aboard your skiff, batting its wake mines into its glowing stern to win the Sluice Harpoon.",
+      "aha": "Its armored bow shrugs off shots, so swing behind its stern or bat its own sea mines into its rudder.",
+      "checks": [
+        "Did orbiting the Dredge Hulk in your skiff feel like a proper naval duel?",
+        "Was batting wake mines into its brass stern rewarding and readable?",
+        "Did earning the Sluice Harpoon make you excited to tow rafts and mines?"
+      ]
+    },
+    "locks_r7": {
+      "promise": "Aim a floating mirror raft on the west dock, harpoon tow it through a powered blue portal into a sealed hall, and bank a bolt through after it.",
+      "aha": "Both floating mirror rafts and blue bolts warp straight through powered waterway portals.",
+      "checks": [
+        "Did towing a whole mirror raft through a portal spark a genuine aha moment?",
+        "Was banking a blue bolt through the same portal onto the moved raft clear?",
+        "Did unlocking both upper lock wings feel like a clean dungeon turn?"
+      ]
+    },
+    "locks_r8": {
+      "promise": "Power a bulkhead portal in a contraband alley to tow a sea mine and warp behind a Crab Warden and Pistol Shrimps for Key Two and a log.",
+      "aha": "Use the waterway portal mid fight to outflank shielded guards and bring a sea mine right to them.",
+      "checks": [
+        "Did warping through the portal to flank the Crab Warden feel clever?",
+        "Was turning the buoy mine against the ambush pack fun to set up?",
+        "Did claiming Key Two, Ship Log Three, and the drop chute feel packed with value?"
+      ]
+    },
+    "locks_r9": {
+      "promise": "Tow a heavy barge over a submerged west scale pan, then flip lock water east so the grounded barge tips the scale while floating the east mirror.",
+      "aha": "Draining one basin drops a heavy barge onto the scale while the same flip floats the mirror opposite.",
+      "checks": [
+        "Did seeing the grounded barge outweigh you on the scale feel clear?",
+        "Was solving both basins with one single water flip deeply satisfying?",
+        "Did the Reef Skate add light friction without muddying the puzzle?"
+      ]
+    },
+    "locks_r10": {
+      "promise": "Tow two mirror rafts onto corners of an octagonal four portal waterfall abyss and fire one blue bolt into a perpetual loop powering twin capacitors.",
+      "aha": "A blue bolt warping endlessly through four portals stays alive forever to keep both capacitors lit.",
+      "checks": [
+        "Did watching one bolt loop endlessly around four portals blow your mind?",
+        "Was positioning the two mirror rafts with the Sluice Harpoon intuitive?",
+        "Did claiming the Boss Key and spillway shortcut feel like a peak payoff?"
+      ]
+    },
+    "locks_r11": {
+      "promise": "Clear a split customs hall by flipping canal water to strand Brine Lampreys, flanking Pistol Shrimps through portals, and cracking a heavy foe.",
+      "aha": "Flip canal water to strip lampreys of mobility while using portals to outflank heavy ranged fire.",
+      "checks": [
+        "Did flipping the water lever mid battle give you real control over lampreys?",
+        "Were the portals helpful for closing in on the two Pistol Shrimps?",
+        "Did the fight feel like a crisp warm up right before the Twin Lockmasters?"
+      ]
+    },
+    "locks_r12": {
+      "promise": "Face Twin Lockmasters Brine and Bilge across four blue portals as they pass one shared hex shield back and forth while flipping canal water.",
+      "aha": "Watch the shield pass between portals, strike the unshielded twin, and adapt each time the sluices flip.",
+      "checks": [
+        "Could you easily track which twin currently held the shared hex shield?",
+        "Did the twelve second water shifts keep the arena moving without chaos?",
+        "Did beating both Lockmasters feel like a complete Locks finale?"
+      ]
+    },
+    "leviathan_r1": {
+      "promise": "Race your skiff across storm flooded rooftops ahead of the Leviathan's bow wave, shooting flood switches and whipping past a chimney.",
+      "aha": "Keep moving ahead of the rolling wave by shooting chain switches on the fly and anchoring off the chimney.",
+      "checks": [
+        "Did outrunning the smashing bow wave feel urgent and exhilarating?",
+        "Could you read and hit the flood chain switches without halting your sprint?",
+        "Did the quick retry keep mistakes energetic rather than frustrating?"
+      ]
+    },
+    "leviathan_r2": {
+      "promise": "Pick between blasting a northern driftwood dam with a keg or banking south through mirrors to ring the chum bell and get swallowed whole.",
+      "aha": "Instead of running away, ring the glowing chum bell to invite the Leviathan to swallow you and your skiff.",
+      "checks": [
+        "Did spotting two distinct breakwater routes make the sprint feel playful?",
+        "Did ringing the chum bell to get swallowed whole surprise and delight you?",
+        "Were the buoy mine and Reef Skate fun obstacles along the breakwater?"
+      ]
+    },
+    "leviathan_r3": {
+      "promise": "Inside the glowing rib cage bilge, clear two lampreys, aim a grounded mirror at low exhale, raise the heartbeat tide, and open the valve.",
+      "aha": "The whale's heartbeat acts like a living tide that grounds or floats the schooner mirror inside its belly.",
+      "checks": [
+        "Did waking up inside the glowing rib cage feel eerie and memorable?",
+        "Was syncing your mirror rotation with the heartbeat tide intuitive?",
+        "Did opening the return portal and teasing the blowhole orient you cleanly?"
+      ]
+    },
+    "leviathan_r4": {
+      "promise": "Orbit the six segment Gullet Lamprey around the whale's glowing heart, lighting three swallowed ship lanterns to flip it belly up.",
+      "aha": "Igniting the three swallowed ship lanterns stuns the giant parasite off the heart so you can strike freely.",
+      "checks": [
+        "Did fighting around the whale's beating heart feel dramatic and distinct?",
+        "Was lighting the three swallowed ship lanterns clear as the way to stun it?",
+        "Did the two mooring posts help you keep smooth circular motion?"
+      ]
+    },
+    "leviathan_r5": {
+      "promise": "Climb three roaring blowhole water geysers, align two floating mirror rafts to bounce a blue ray overhead, and erupt onto Lighthouse Promontory.",
+      "aha": "Align both floating rafts across the geyser tiers so one reflected blue shot blows open the upper grate.",
+      "checks": [
+        "Did riding the roaring water geysers upward feel grand and kinetic?",
+        "Was chaining the reflected blue bolt across both floating rafts readable?",
+        "Did blasting out of the blowhole onto the promontory feel like a great payoff?"
+      ]
+    },
+    "lighthouse_r1": {
+      "promise": "Enter the four story Lighthouse stair hub with its brass Tide Wheel and central Optic Well, teasing vertical light shafts and return shortcuts.",
+      "aha": "This central stair links every floor of the tower through both water height and rising blue optic shafts.",
+      "checks": [
+        "Did the Tide Wheel and floor Optic Well clearly tease how the tower works?",
+        "Was it obvious which lower wings were open right from the ground floor?",
+        "Did watching the central well light up after solving relays feel great?"
+      ]
+    },
+    "lighthouse_r2": {
+      "promise": "Push and rotate a single movable mirror twice across a tidal basin to bank blue bolts into both the southwest and northeast eyes for Key One.",
+      "aha": "One movable mirror can solve two opposite water switches if you reposition and re angle it in order.",
+      "checks": [
+        "Was sliding and turning one mirror for two different targets clear?",
+        "Did unlocking the southwest arch cleanly hint at the deeper seabed well?",
+        "Did claiming Key One feel like a crisp opening lighthouse puzzle?"
+      ]
+    },
+    "lighthouse_r3": {
+      "promise": "Clear the Pier Ward gallery by batting a mine into a Crab Warden, dropping tide to strand a Reef Skate, and banking off the center mirror.",
+      "aha": "Use the tide lever, drifting mine, and central mirror together to break up a layered coastal squad.",
+      "checks": [
+        "Did dropping the tide mid fight noticeably expose the Reef Skate?",
+        "Was batting the buoy mine into the Crab Warden clean and punchy?",
+        "Did banking blue bolts off the center mirror feel good against the sentry?"
+      ]
+    },
+    "lighthouse_r4": {
+      "promise": "Throw your lantern across a glass chasm to light twin braziers, warp through a blue portal, and leave light behind to slip a north Shadow Gate.",
+      "aha": "Power the blue portal to reach the far side, then leave your lantern behind so the Shadow Gate opens.",
+      "checks": [
+        "Did tossing your lantern across the glass chasm to light both braziers work smoothly?",
+        "Was leaving your lantern behind to slip dark past the north gate intuitive?",
+        "Did the timed brazier add light urgency without feeling punishing?"
+      ]
+    },
+    "lighthouse_r5": {
+      "promise": "Claim Prism Split at the optical shrine, cross an eight tile chasm via mirror bridge, and fire one three ray fan hitting all three north eyes at once.",
+      "aha": "Prism Split fans every bounced bolt into three rays so one aimed shot can strike a three eye triad together.",
+      "checks": [
+        "Did firing your first three ray Prism Split fan feel immediately powerful?",
+        "Was hitting all three north eyes in one simultaneous shot clear to line up?",
+        "Did lighting Optic Well Two and dropping the ground shortcut feel huge?"
+      ]
+    },
+    "lighthouse_r6": {
+      "promise": "Defeat the Tide Captain in a flooded drydock by cracking his claw guard with Prism Split off twin mirrors and riding out his sluice flood.",
+      "aha": "Bank Prism Split fans off the twin mirrors to break his claw guard, and use the skiff once the dock floods.",
+      "checks": [
+        "Did banking Prism Split off the twin mirrors cleanly shatter his guard?",
+        "Did the phase two flood meaningfully change how you crossed the drydock?",
+        "Did having the drydock skiff ready feel like a great reward from the sluice?"
+      ]
+    },
+    "lighthouse_r7": {
+      "promise": "Power a blue portal to warp across an eight tile chasm, then aim a brass focus mirror so one Prism Split fan hits three east eyes at once.",
+      "aha": "Stand at the right focal distance so the three spreading prism rays land squarely on all three eyes.",
+      "checks": [
+        "Did warping across the chasm via the blue portal feel smooth?",
+        "Was lining up the three ray spread onto all three east eyes satisfying?",
+        "Did opening both the main ascent and upper tide hub feel well connected?"
+      ]
+    },
+    "lighthouse_r8": {
+      "promise": "Survive the Gull's Belfry against a Gull Thief, Net Caster, Crab Warden, and Pistol Shrimp using twin movable mirrors for Prism Split fire.",
+      "aha": "Clear the Net Caster and Gull Thief first, then bank wide Prism Split fans around the Crab Warden's shield.",
+      "checks": [
+        "Did the mix of lantern thieves and armored crabs keep you on your toes?",
+        "Were the two movable mirrors genuinely useful for flanking shields?",
+        "Did clearing this hub cleanly link the upper tower wings together?"
+      ]
+    },
+    "lighthouse_r9": {
+      "promise": "Reach the Upper Prism Nave around Optic Well Three, solving a chasm lantern throw and blue mirror bank to claim Keeper's Flame Two and open the crown.",
+      "aha": "Unite a chasm lantern throw with a mirror bank around the glowing central shaft to unlock the final door.",
+      "checks": [
+        "Did seeing the central optic shaft converge here make the climb feel unified?",
+        "Was combining a lantern throw and mirror bank across the abyss crisp?",
+        "Did the waystone and ground shortcut make preparing for the boss painless?"
+      ]
+    },
+    "lighthouse_r10": {
+      "promise": "Duel the Lighthouse Hermit in the Fresnel Crown, bouncing his own beam off four cupola mirrors and clamping drifting mirrors in phase two.",
+      "aha": "Angle the four mirrors to bounce his scorching beam right back into him and clamp them when the tide rises.",
+      "checks": [
+        "Did reflecting the Hermit's own beam back at him feel brilliant?",
+        "Was clamping drifting mirrors during the phase two flood clear under pressure?",
+        "Did relighting Great Lamp Two feel like a triumphant harbor climax?"
+      ]
+    },
+    "lighthouse_r11": {
+      "promise": "Descend to the seabed Lens Well, rotate a mirror dry on its low tide sandbar, then raise tide to float an indoor skiff and bank into the shutter.",
+      "aha": "Adjust the mirror on dry sand at low tide, then spin the Tide Wheel to float your skiff and fire across.",
+      "checks": [
+        "Did stranding the Reef Skate at low tide feel clean and purposeful?",
+        "Was raising the water to float an indoor skiff inside the tower a delight?",
+        "Did banking into the well shutter smoothly lead you to the first relay?"
+      ]
+    },
+    "lighthouse_r12": {
+      "promise": "Clear the north gallery to reach the Tide Wheel, drop tide so a mirror raft seats on its cradle, and aim a golden beam into Optic Well One.",
+      "aha": "Lowering the water seats the floating mirror onto its cradle so it turns the steady beam down the optic shaft.",
+      "checks": [
+        "Was seating the mirror raft onto its cradle by dropping the tide obvious?",
+        "Did watching Optic Well One ignite vertically through the tower feel awesome?",
+        "Did the sentry and skate guard the gallery without bogging down the puzzle?"
+      ]
+    },
+    "lighthouse_r13": {
+      "promise": "Clear Gull Thieves and an Anchor Drowned by a giant brass scale, push a crate onto the west pan to hoist it, and bank blue through sea glass.",
+      "aha": "Weighting the brass scale lifts the sightline so your blue bolt slips through sea glass to latch the brake.",
+      "checks": [
+        "Did clearing the ambush around the giant brass scale feel brisk?",
+        "Was lining up the blue bank through the sea glass slit after hoisting clear?",
+        "Did spotting the drop chute back to the first relay reinforce the tower layout?"
+      ]
+    },
+    "lighthouse_r14": {
+      "promise": "Test Prism Split by fanning three blue rays off a focal mirror through an iron grate to crack three Barnacle Sentries at once and free a skiff.",
+      "aha": "One well angled Prism Split fan cuts right through the iron grate to crack all three sentries together.",
+      "checks": [
+        "Did cracking three shielded sentries behind a grate in one fan feel awesome?",
+        "Was freeing the drydock skiff clearly connected to the upcoming boss room?",
+        "Did this short room make Prism Split click instantly in combat?"
+      ]
+    },
+    "lighthouse_r15": {
+      "promise": "Enter the third story Tide Gallery peering down to floor one, raise tide high to float a mirror raft into plane, and bank blue to open the gallery.",
+      "aha": "Only high tide lifts the west mirror raft up to beam height so your shot can cross the basin.",
+      "checks": [
+        "Did peering through the skylight down to floor one give a real sense of height?",
+        "Was raising the tide to high to align the west mirror raft immediately clear?",
+        "Did the locked door clearly mark this gallery as the upper tower crossroads?"
+      ]
+    },
+    "lighthouse_r16": {
+      "promise": "Watch a shadowy rival smash a lamp behind glass and vanish, then use a mirror twin and one Prism Split fan to power the portal and both eyes.",
+      "aha": "Fire one three ray Prism Split fan that lights the center blue portal and both side eyes at the same instant.",
+      "checks": [
+        "Did watching the shadowy rival smash the lamp across the glass land sharply?",
+        "Was hitting the portal and both flanking eyes in one fan deeply satisfying?",
+        "Did warping across for Key Three and Ship Log Four feel cleanly paced?"
+      ]
+    },
+    "lighthouse_r17": {
+      "promise": "Align two brass mirrors and a floating moat raft in the Catoptric Drum so one Prism Split shot hits both side eyes and chains three bounces north.",
+      "aha": "One Prism Split fan splits left, right, and through a three bounce relay to ignite Optic Well Three at once.",
+      "checks": [
+        "Did watching one shot cascade across the whole drum feel unforgettable?",
+        "Could you trace each mirror angle without getting lost in guesswork?",
+        "Did lighting the third vertical optic shaft feel like the tower's puzzle peak?"
+      ]
+    },
+    "lighthouse_r18": {
+      "promise": "Win a loft ambush around a live Lighthouse beam, then push and angle a mirror into the beam to route a steady blue ray and unshield the Boss Key.",
+      "aha": "Push the movable mirror right into the live vertical beam to bend a steady blue ray into the conduit.",
+      "checks": [
+        "Did fighting around the live Lighthouse beam feel tense and distinct?",
+        "Was sliding the mirror into the live beam to shatter the key dome intuitive?",
+        "Did opening the loop straight into the Upper Prism Nave feel well paced?"
+      ]
+    }
+  }
+}

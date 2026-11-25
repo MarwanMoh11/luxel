@@ -13,10 +13,10 @@ const Palette := preload("res://luxel/editor/ed_palette.gd")
 const SideCard := preload("res://luxel/editor/ed_side.gd")
 const Browser := preload("res://luxel/editor/ed_browser.gd")
 const Vision := preload("res://luxel/editor/ed_vision.gd")
+const Magic := preload("res://luxel/editor/ed_magic.gd")
 
-enum Tool { HAND, STAMP, ERASE, WIRE, NOTE }
+enum Tool { HAND, STAMP, ERASE, WIRE, NOTE, MAGIC }
 
-const SESSION: String = "user://editor/session.json"
 const UI_SIZE := Vector2i(1280, 720)
 const TOP_H: float = 52.0
 const BOTTOM_H: float = 174.0
@@ -32,6 +32,7 @@ var cam: Camera2D = null
 var ui: CanvasLayer = null
 
 var vision: Vision = null
+var magic: Magic = null
 var vision_on: bool = true
 var hot_step: int = -1  # the step under the mouse in the list
 var run_times: Dictionary = {}  # room -> seconds of the last test run
@@ -143,11 +144,15 @@ func set_tool(t: int) -> void:
 	wire_from = {}
 	if t != Tool.HAND and t != Tool.WIRE:
 		select([])
+	if t != Tool.MAGIC and magic.state in [Magic.S.ASK, Magic.S.SHOW]:
+		magic.state = Magic.S.IDLE
+		magic.card.visible = false
 	_palette.sync_tool()
 	canvas._hint()
 	match t:
 		Tool.WIRE: toast("Drag from a switch, plate or lamp to the door it should open.")
 		Tool.NOTE: toast("Click anywhere to pin a note for Claude.")
+		Tool.MAGIC: toast("Drag a box around what you want to change. Click once for the whole room.")
 
 
 func set_tab(t: String) -> void:
@@ -413,6 +418,7 @@ func toggle_wire(a: Dictionary, b: Dictionary) -> void:
 
 
 func undo() -> void:
+	magic.on_undo()
 	var art: Array = room.list("decor").duplicate(true)
 	_time_travel(room.undo(), art)
 

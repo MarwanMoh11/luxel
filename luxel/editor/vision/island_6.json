@@ -1,0 +1,547 @@
+{
+  "island": {
+    "title": "Ashen Kiln",
+    "rule": "A live timetable shifts a ring-rail train and a walking iron giant across the island while tempering anvils reforge your bolts into Skip, Scatter, or Lance.",
+    "feel": "Twilight foundry clockwork over dark basalt and lava, full of roaring rails, tilting footsteps, and crisp anvil clangs.",
+    "arc": "Learn Skip bolts and the timetable at Switchyard Camp, conquer the Ember Express and Iron Colossus in either order, survive the runaway train crash into the Great Kiln, earn Sunflare, and beat the Kilnmother.",
+    "moments": [
+      "Flipping the switchboard shakes the floor as the train shifts onto the viaduct and the giant bridges the caldera.",
+      "Sprinting against howling wind along speeding train roofs, ducking tunnel arches, and dropping into lower cars.",
+      "Jumping mid-air between two moving trains across a lava canyon while shooting a track switch.",
+      "Steering the giant from behind its furnace eyes, then freezing a slime right in its swinging heart's path.",
+      "Riding the runaway train across the giant's braced arm to smash straight through the Great Kiln's obsidian wall."
+    ]
+  },
+  "dungeons": {
+    "ember_express": {
+      "promise": "A speeding iron train where wall-bouncing Skip shots, train momentum, roof winds, and parallel freight cars turn every carriage into a moving puzzle.",
+      "power": "Coupler Hook yanks heavy hitch pins from afar and boosts your lantern zip.",
+      "arc": "Teaches Skip wall bounces and Scatter spreads inside lower cars, moves onto gale-swept roofs for the Coupler Hook, jumps onto a parallel freight train for Lance bolts, and ends at the boiler cab.",
+      "boss": "The Engineer tests live temper swapping through coal volleys, brake lurches, a roof blow-off, and armored boiler chains."
+    },
+    "iron_colossus": {
+      "promise": "The interior of a walking iron giant whose steady footsteps tilt whole rooms, sliding crates, foes, and molten slag across brass decks.",
+      "power": "Cleated Heat-Boots keep you steady on tilting floors and delay crumbling grates.",
+      "arc": "Starts in the tilting ankle boot, teaches trapping crates and cooling basalt bumpers, earns Heat-Boots at the knee, branches through both shoulders to the cockpit helm, and ends with a sprint out.",
+      "boss": "The Colossus Heart swings in the tilting ribcage, testing valve breaks and freezing slimes in its pendulum arc."
+    },
+    "iron_collision": {
+      "promise": "A frantic runaway set piece chasing Hollow Wick across a viaduct, the giant's kneeling forearm, and the speeding locomotive roof.",
+      "power": "",
+      "arc": "Opens with Skip track switching after Hollow Wick cuts the brake chain, blasts a cart across the giant's forearm with Scatter recoil, duels an iron phantom on the roof, and smashes the dam.",
+      "boss": "The Iron Phantom mirrors your tempered shots on the speeding roof, testing counterplay and twin throttle locks."
+    },
+    "great_kiln": {
+      "promise": "A vast basalt foundry where toggling heat flow between low and surge crusts lava paths or pours molten slag so you cast your own bridges.",
+      "power": "Sunflare unleashes a wide radial burst that shatters obsidian seals and armor.",
+      "arc": "Builds from blue mirrors and phantom arches to the Sunflare shrine, opens a heat-controlled casting wing of slag molds and updrafts, and unites all three tempers before the Kilnmother.",
+      "boss": "The Kilnmother tests Sunflare and Lance armor breaks, cooled slag cover against cross beams, and temper swaps."
+    }
+  },
+  "rooms": {
+    "overworld": {
+      "promise": "Explore the central basalt caldera connecting the landing, three furnace beacons, blue portals, and four districts bridged by the train and giant.",
+      "aha": "The central caldera loops outward to every moving-island district and frames the sealed Great Kiln dam.",
+      "checks": [
+        "Did the central caldera layout make the three beacons and side districts clear?",
+        "Were the blue portal shortcuts helpful once you started crossing the caldera?",
+        "Did the sealed obsidian dam clearly set the island's main goal?"
+      ]
+    },
+    "ow_rail_yard": {
+      "promise": "Visit Switchyard Camp to forge your first Skip bolt, flip the timetable switchboard, meet local folk, and board the train at Track One.",
+      "aha": "Flipping the switchboard immediately moves the train and giant across the island to open new bridges.",
+      "checks": [
+        "Did banking your first Skip bolt through the gate click right away?",
+        "Did flipping the timetable clearly show the train and giant changing stations?",
+        "Did Switchyard Camp feel welcoming and easy to orient around?"
+      ]
+    },
+    "ow_giant_stride": {
+      "promise": "Explore colossal bootprint craters holding the Scatter anvil, a timetable switch, the giant's ankle dock, a hide-and-seek kid, and a tilt trial.",
+      "aha": "Setting the timetable to station B brings the giant's ankle dock right into these craters.",
+      "checks": [
+        "Did the giant bootprint craters make this district stand out immediately?",
+        "Was the crate tilt balance trial clear and satisfying to finish?",
+        "Did the Scatter anvil and giant dock both feel easy to spot and use?"
+      ]
+    },
+    "ow_slag_basin": {
+      "promise": "Navigate a braided lava delta with the Lance anvil, a timetable switch, cooled slag secrets, and routes bridged by both the train and giant.",
+      "aha": "Switching the timetable between stations A and C opens different bridges across the same lava canals.",
+      "checks": [
+        "Could you tell which timetable setting bridged to the vault versus the sluice?",
+        "Did cooling the slag nook and spotting the obsidian seal tease later powers well?",
+        "Were the lava crossings readable without ever leaving you stranded?"
+      ]
+    },
+    "ow_cinder_overlook": {
+      "promise": "Stand on a high viaduct holding the convergence signal tower, a train bridge to a trial, a hide-and-seek kid, and the sealed superboss lift.",
+      "aha": "This high viaduct shows where the train, giant, and Great Kiln meet once every beacon and dungeon is done.",
+      "checks": [
+        "Did the signal tower make the trigger for the Iron Collision clear?",
+        "Could you spot the train bridge to the rail trial and the lower forge lift?",
+        "Did the panoramic viaduct feel like a strong landmark connecting all wings?"
+      ]
+    },
+    "cave_temper_foundry": {
+      "promise": "Test all three bolt tempers in a safe three-bay foundry proving Skip bounces, Scatter triple bursts, and Lance armor piercing for a vault reward.",
+      "aha": "Each bolt temper solves a distinct physical lock: walls for Skip, clusters for Scatter, armor for Lance.",
+      "checks": [
+        "Did all three bays clearly contrast how Skip, Scatter, and Lance work?",
+        "Was switching between anvils smooth and punchy?",
+        "Did the ember piece and moth make this short practice cave worth entering?"
+      ]
+    },
+    "cave_slag_sluice": {
+      "promise": "Cool two molten slag blocks with a blue mirror so they break free and ride twin conveyors onto plates to unlock the quest coal and a moth.",
+      "aha": "Refracting a blue shot freezes stuck slag blocks solid so the conveyors can carry them onto the plates.",
+      "checks": [
+        "Was it clear that blue light turned stuck molten blocks into solid weights?",
+        "Did watching both cooled blocks ride the conveyors onto plates feel clean?",
+        "Did earning both the quest coal and moth feel like a fair reward?"
+      ]
+    },
+    "cave_magnet_vault": {
+      "promise": "Outsmart a barred magnet golem by tossing your lantern over a rail onto a cage hook while banking a Skip bolt behind a grate for two secrets.",
+      "aha": "Use the magnet golem's pull or a rail toss to latch the cage hook while a Skip bounce opens the lock.",
+      "checks": [
+        "Did tossing the lantern over the rail or letting the golem pull it click?",
+        "Was banking the Skip shot behind the west grate clean and readable?",
+        "Did claiming the stained glass pane and moth feel worth the detour?"
+      ]
+    },
+    "cave_bellows_trial": {
+      "promise": "Complete a rapid three-temper rail trial beside a looping cart, chaining Skip banks, Scatter bursts, and Lance pierces for a pane and moth.",
+      "aha": "Swap smoothly between all three anvils on the fly to hit each target as the cart loops past.",
+      "checks": [
+        "Did switching across Skip, Scatter, and Lance mid-run feel crisp and brisk?",
+        "Did the looping rail cart add real energy without causing unfair hits?",
+        "Did winning both the stained glass pane and moth feel well earned?"
+      ]
+    },
+    "cave_sunflare_crypt": {
+      "promise": "Return with Sunflare to combine blue slag cooling with a four-corner seal burst, uncovering Hollow Wick's forge message and a vault cache.",
+      "aha": "Cool and place the slag weight, then trigger one centered Sunflare to crack the seal and light all corners.",
+      "checks": [
+        "Did coming back with Sunflare pay off seeing this obsidian seal earlier?",
+        "Did one Sunflare burst break the seal and light all four braziers cleanly?",
+        "Did Hollow Wick's forge inscription add weight to the mystery?"
+      ]
+    },
+    "train_r1": {
+      "promise": "Board the moving caboose, forge Skip bolts at the anvil, and bank shots off both side walls around grates to open the train ahead.",
+      "aha": "Skip bolts ricochet cleanly off solid walls to hit coupler locks hidden behind grates and pillars.",
+      "checks": [
+        "Did the moving windows sell the feel of boarding a speeding train?",
+        "Did both wall-bounce angles click cleanly without guessing?",
+        "Did the luggage nook and sealed roof hatch tease future secrets?"
+      ]
+    },
+    "train_r2": {
+      "promise": "Uncouple a cargo dolly with a Skip bounce so train inertia slides it backward onto a floor plate, while spotting a moth up in the mail loft.",
+      "aha": "Releasing a coupler on a moving train lets its forward motion slide loose cargo straight back onto switches.",
+      "checks": [
+        "Did watching the uncoupled dolly slide back with train inertia delight you?",
+        "Did fighting the rail hopper fit smoothly around the baggage racks?",
+        "Did seeing the unreachable moth in the upper loft make you want to find a way up?"
+      ]
+    },
+    "train_r3": {
+      "promise": "Brawl with stokers, a rail hopper, and a slag slime over a coal conveyor using the new Scatter anvil, then light three dampers in one spread.",
+      "aha": "Scatter's three-bolt fan breaks heavy stoker shovels up close and lights clustered timed braziers at once.",
+      "checks": [
+        "Did Scatter feel punchy against the stokers over the moving coal belt?",
+        "Did lighting all three clustered dampers in one spread feel instant and clean?",
+        "Was the narrow coal car readable despite four foes and a conveyor?"
+      ]
+    },
+    "train_r4": {
+      "promise": "Rest in the plush dining salon hub linking the roof ladder, locked siding, brake return door, and locomotive boss bulkhead.",
+      "aha": "This central carriage connects every wing of the train and offers a cycle anvil to swap tempers freely.",
+      "checks": [
+        "Did the dining salon give a welcome breather and clear sense of layout?",
+        "Were the locked siding, boss door, and north roof ladder easy to tell apart?",
+        "Was swapping bolt tempers at the hub anvil quick and intuitive?"
+      ]
+    },
+    "train_r5": {
+      "promise": "Duel the Brakeman on a wind-swept roof, baiting his charge into spinning brake wheels to calm the gale and win the Coupler Hook and key one.",
+      "aha": "Luring his charge into the twin brake wheels slows the howling roof wind and leaves him stunned.",
+      "checks": [
+        "Did baiting his charge into the brake wheels clearly cut the wind and stun him?",
+        "Was fighting under roof gales exciting without feeling sluggish?",
+        "Did winning the Coupler Hook right here feel like a major milestone?"
+      ]
+    },
+    "train_r6": {
+      "promise": "Sprint across three speeding carriage roofs, yanking gangplanks with the Coupler Hook, ducking tunnel arches, and dropping hatches to lower cars.",
+      "aha": "Use your new Coupler Hook to yank distant gangplanks across gaps and uncouple both roof return hatches.",
+      "checks": [
+        "Did yanking gangplanks across open roof gaps feel snappy and heroic?",
+        "Were the sweeping tunnel arch and wasps fair to read against the gale?",
+        "Did dropping through the mail hatch to grab the earlier moth feel great?"
+      ]
+    },
+    "train_r7": {
+      "promise": "Ride a flatcar over a lava canyon, shoot a switch to align a parallel freight train, jump across mid-air, and pierce three armored locks with Lance.",
+      "aha": "Switch the parallel freight cart onto the inner rail so you dash across, forge Lance, and pierce three locks.",
+      "checks": [
+        "Did dashing mid-air onto the parallel freight flatcar feel bold and fair?",
+        "Was shooting the track switch crystal readable while moving?",
+        "Did piercing all three armored locks in one Lance bolt feel great?"
+      ]
+    },
+    "train_r8": {
+      "promise": "Survive an armored bullion car ambush pairing a piston knight, two wasps, and a barred magnet golem, swapping between Lance and Scatter for key two.",
+      "aha": "Use Lance to crack the knight and shoot through the grate bars, then swap to Scatter to swat the wasps.",
+      "checks": [
+        "Did swapping between Lance and Scatter mid-fight feel smooth and worthwhile?",
+        "Was shooting Lance through the iron bars at the magnet golem clear?",
+        "Did the bullion car feel like a fair escalation before the final puzzle?"
+      ]
+    },
+    "train_r9": {
+      "promise": "Detach an armored coal tender in exact order using Skip, a shuttle cart with Coupler Hook, and a twin Lance pierce to smash open the boss key.",
+      "aha": "Chain Skip on the rear brake, the cart and hook for the shutter, and Lance to drop the tender on the safe.",
+      "checks": [
+        "Could you trace the three-step sequence from rear brake to front safe?",
+        "Did watching the detached tender slam open the boiler safe pay off well?",
+        "Did opening the shortcut back to the dining salon and finding the ember piece shine?"
+      ]
+    },
+    "train_r10": {
+      "promise": "Prep your temper at a blazing smokestack catwalk checkpoint and dash across steam-swept grating past two guards to the locomotive cab.",
+      "aha": "Time dashes between the steam gusts and crumbling ribs while picking your preferred temper for the boss.",
+      "checks": [
+        "Did the rest shrine and anvil give a clean, quick setup before the boss?",
+        "Were the steam gusts and crumbling grating tense without feeling cheap?",
+        "Did this open-sky catwalk build strong tension before the cab?"
+      ]
+    },
+    "train_r11": {
+      "promise": "Face the Engineer in the locomotive cab through shovel spreads, brake lurches, a roof blow-off with a rail drone, and twin boiler chains.",
+      "aha": "Swap tempers to crack the parallel rail drone and snap both boiler pressure chains in the final phase.",
+      "checks": [
+        "Did the roof blowing off in phase two feel like a great surprise?",
+        "Were his shovel spreads, brake lurches, and steam lanes readable?",
+        "Did breaking the final boiler chains give the train a strong finish?"
+      ]
+    },
+    "colossus_r1": {
+      "promise": "Step into the giant's iron ankle boot and feel its first booming footsteps slide an oil crate back and forth across two floor plates over safe ground.",
+      "aha": "Every giant footstep tilts the whole room left or right, sliding heavy crates across grates automatically.",
+      "checks": [
+        "Did the giant's first footstep make the scale and tilt feel immediately clear?",
+        "Did sliding the crate onto both plates over safe ground teach the rhythm cleanly?",
+        "Did the Scatter anvil and sealed upper chute give a clear sense of the space?"
+      ]
+    },
+    "colossus_r2": {
+      "promise": "Desynchronize two sliding shin crates across opposing giant footsteps using a crystal switch so one crate stays trapped while the other slides.",
+      "aha": "Flip the crystal after a left step to pin the top crate while freeing the bottom crate on the right step.",
+      "checks": [
+        "Did using toggle blocks as crate stoppers against the tilt click quickly?",
+        "Was the footstep rhythm slow enough to flip the crystal cleanly?",
+        "Did the slime and sealed ladder tease future loops without clutter?"
+      ]
+    },
+    "colossus_r3": {
+      "promise": "Fight an armored piston knight and two rail hoppers across a tilting calf deck with crushing brass pistons, forging Lance to crack frontal armor.",
+      "aha": "Forge Lance at the entry anvil to pierce the knight's heavy shield while timing movement around the pistons.",
+      "checks": [
+        "Did Lance clearly solve the piston knight's heavy front armor?",
+        "Did the tilting floor and moving pistons add excitement without cheap hits?",
+        "Were the two rail hoppers readable alongside the armored knight?"
+      ]
+    },
+    "colossus_r4": {
+      "promise": "Turn a kneecap gear to bounce a blue beam through a window, cooling a molten slag block into a solid bumper that stops a sliding crate on a plate.",
+      "aha": "A cooled basalt block stays rooted when the floor tilts, acting as a custom backstop for sliding crates.",
+      "checks": [
+        "Did rotating the gear to bounce the blue beam onto the slag block read clearly?",
+        "Was the contrast between rooted basalt and sliding crates obvious right away?",
+        "Did claiming key one and opening the path up feel earned?"
+      ]
+    },
+    "colossus_r5": {
+      "promise": "Duel the Piston Marshal on a tilting knee deck, staying uphill on every step so his downhill lunges jam, to win the Cleated Heat-Boots.",
+      "aha": "Stand uphill before each step so the Marshal slides downhill and jams his jackhammer into the floor.",
+      "checks": [
+        "Could you read the tilt direction fast enough to take the uphill side?",
+        "Did watching his downhill lunge jam open a clear punish window?",
+        "Did winning the Cleated Heat-Boots feel like a big relief for upper decks?"
+      ]
+    },
+    "colossus_r6": {
+      "promise": "Enter the three-tier ribbed Belly Cathedral overlooking the molten heart, test your new Heat-Boots, open return chutes, and pick either shoulder wing.",
+      "aha": "Heat-Boots keep you steady while crates slide, and winches here open shortcuts to the boot and overworld.",
+      "checks": [
+        "Did standing steady on the tilting deck immediately sell the Heat-Boots?",
+        "Did seeing the pulsing molten heart behind the ribs build strong anticipation?",
+        "Were both shoulder wings, the sternum door, and the lift winches easy to read?"
+      ]
+    },
+    "colossus_r7": {
+      "promise": "Solve the left shoulder winch puzzle by cooling two slag bumpers, banking a Skip shot for an orb shutter, and locking every plate on one giant step.",
+      "aha": "Place cooled bumpers to catch sliding crates, use Skip for the shutter, and lock the orb on one right step.",
+      "checks": [
+        "Did standing firm with Heat-Boots make arranging the bumpers feel good?",
+        "Was banking the Skip bolt behind the iron screen clean to line up?",
+        "Did watching all plates lock together on one giant footstep pay off?"
+      ]
+    },
+    "colossus_r8": {
+      "promise": "Fight inside the right shoulder bellows lung where wind pulses with each footstep, swapping Lance for Scatter to clear foes and light three dampers.",
+      "aha": "Crack the magnet golem with Lance, swap to Scatter for the wasps and imp, then light all three dampers.",
+      "checks": [
+        "Did the pulsing bellows gusts sync cleanly with the giant's footsteps?",
+        "Did swapping from Lance to Scatter mid-fight feel snappy and rewarding?",
+        "Did snapping the east shoulder chain match the weight of the west wing?"
+      ]
+    },
+    "colossus_r9": {
+      "promise": "Cross the open-air collarbone high above the caldera, leaving your lantern behind to sprint dark through a shadow gate for the boss key and bridge.",
+      "aha": "Hang your lantern to run dark across crumbling grates through the shadow gate, then pull the bridge ring.",
+      "checks": [
+        "Did crossing the giant's open neck high above the lava give real vertigo?",
+        "Did Heat-Boots give enough grace on crumbling grates while running dark?",
+        "Did finding the Skip-banked moth and ember nook feel like a great secret?"
+      ]
+    },
+    "colossus_r10": {
+      "promise": "Enter the giant's glowing eye cockpit over the caldera, read clues in the glass, shoot four compass orbs, and steer toward the trestle.",
+      "aha": "The glowing pips across the giant's eye windows show the exact order to shoot the four compass orbs.",
+      "checks": [
+        "Did looking out through the giant's furnace eyes feel like a huge payoff?",
+        "Could you read the orb order directly from the eye-window pips?",
+        "Did pulling the rudder lock make you feel in command of the whole giant?"
+      ]
+    },
+    "colossus_r11": {
+      "promise": "Battle the Colossus Heart in the tilting ribcage, breaking its steam valves and freezing dripping slimes right in its pendulum arc to stun it.",
+      "aha": "Bounce blue light off flanking mirrors to freeze a slime directly in the swinging Heart's path so it crashes.",
+      "checks": [
+        "Did smashing the four steam valves open the cage cleanly in phase one?",
+        "Did freezing a slime so the Heart crashed into its own minion feel great?",
+        "Was fighting on a double-speed tilting floor fair with Heat-Boots?"
+      ]
+    },
+    "colossus_r12": {
+      "promise": "Sprint out of the kneeling giant across crumbling spine grates, a steam launch pad, a spinning gear, and a final Skip lock into open sunset air.",
+      "aha": "Chain Heat-Boots footing, the steam pad, a dash past the gear, and one Skip bounce off the hull to escape.",
+      "checks": [
+        "Did the zero-combat escape run feel fast, smooth, and joyful?",
+        "Were the crumbling grates, launch pad, and spinning gear easy to read on sight?",
+        "Did banking the final Skip vent lock cap the giant cleanly?"
+      ]
+    },
+    "crash_r1": {
+      "promise": "Watch Hollow Wick slice the brake chain on the runaway viaduct, then bank Skip shots to switch a flatcar across the chasm past two rail hoppers.",
+      "aha": "Bank Skip bolts off the north viaduct wall to switch the flatcar track and open the east breach in wind.",
+      "checks": [
+        "Did Hollow Wick silently cutting the brake chain set instant urgency?",
+        "Did banking Skip shots off the viaduct wall work smoothly in the wind?",
+        "Did crossing the flatcar chasm feel brisk and readable?"
+      ]
+    },
+    "crash_r2": {
+      "promise": "Rocket a flatcar across the kneeling giant's forearm using Scatter recoil between steam beams, swatting wasps and lighting three valves.",
+      "aha": "Fire Scatter backward to propel the flatcar through steam gaps, then light all three elbow valves in one fan.",
+      "checks": [
+        "Did propelling the flatcar with Scatter recoil feel playful and responsive?",
+        "Could you time crossings cleanly between the giant's pulsing steam beams?",
+        "Did lighting all three elbow valves in one fan keep momentum high?"
+      ]
+    },
+    "crash_r3": {
+      "promise": "Duel Hollow Wick's Iron Phantom atop the speeding locomotive roof, countering mirrored tempers and yanking twin throttle locks to hit ramming speed.",
+      "aha": "Yank both master throttle locks with your Coupler Hook to stun the Phantom and lock the engine at full speed.",
+      "checks": [
+        "Did countering the Phantom's mirrored tempered volleys feel sharp and fair?",
+        "Was yanking both throttle locks clear and impactful mid-duel?",
+        "Did the fight pace fit a fast set-piece climax?"
+      ]
+    },
+    "crash_r4": {
+      "promise": "Ride the aftermath as the runaway train smashes straight through the Great Kiln's obsidian dam, freeing a lost moth and opening the foundry gate.",
+      "aha": "The collision permanently breaches the Great Kiln and opens a clean direct route from the overworld.",
+      "checks": [
+        "Did the breach scene pay off building up both the train and giant?",
+        "Did spotting and rescuing the freed moth feel like a crisp bonus?",
+        "Did stepping straight into the Great Kiln atrium feel seamless?"
+      ]
+    },
+    "kiln_r1": {
+      "promise": "Enter the breached Great Kiln atrium holding the hearth waystone, a cycle anvil, a blue portal treasure vault, and teasing three return shortcuts.",
+      "aha": "The central atrium links both main wings, shows the twin casting clamps, and offers quick temper swaps.",
+      "checks": [
+        "Did entering through the smashed dam make the hub feel earned?",
+        "Was the blue portal shard vault rewarding to open from the hub?",
+        "Did the twin casting clamps and closed shortcuts clearly signpost the wings?"
+      ]
+    },
+    "kiln_r2": {
+      "promise": "Light braziers and angle a blue mirror onto a switch eye to claim key one, while spotting a molten block and an obsidian seam linking upper wings.",
+      "aha": "Aiming the rotatable blue mirror into the eye opens key one, and a blue portal guards a side chest.",
+      "checks": [
+        "Did lighting braziers and banking the blue mirror flow smoothly?",
+        "Was the side blue portal treasure chest a clean optional discovery?",
+        "Did the sealed north seam clearly promise a later shortcut from above?"
+      ]
+    },
+    "kiln_r3": {
+      "promise": "Clear the smelting floor by forging Lance to crack a cinder golem while cooling a slag slime with a mirror for cover against imps and a mole.",
+      "aha": "Lance cracks heavy cinder armor before you own Sunflare, and cooled slag blocks enemy fire.",
+      "checks": [
+        "Did forging Lance at the entrance feel vital against the cinder golem?",
+        "Did cooling slag with the mirror help manage the imps and burrowing mole?",
+        "Was the mixed four-foe brawl fair in the smelting floor space?"
+      ]
+    },
+    "kiln_r4": {
+      "promise": "Swat a wasp and cross a winding phantom arch over magma using True Lens and a mid-arch lantern hook, then drop a permanent iron return bridge.",
+      "aha": "Hang your lantern on the mid-arch hook to anchor phantom footing while you reach the crystal bridge switch.",
+      "checks": [
+        "Did the mid-arch lantern hook make crossing the magma phantom arch fair?",
+        "Did flipping the crystal to lower a permanent bridge feel like a relief?",
+        "Was unlocking the key-one door east toward the shrine clear?"
+      ]
+    },
+    "kiln_r5": {
+      "promise": "Claim Sunflare at the forge shrine and unleash one centered burst to shatter the obsidian seal and ignite all four corner braziers at once.",
+      "aha": "Sunflare blasts in a wide circle, cracking obsidian seals and lighting nearby braziers in a single burst.",
+      "checks": [
+        "Did shattering the seal and lighting all four braziers at once feel punchy?",
+        "Was finding the cracked wall and blue portal chest a fun way to test it?",
+        "Did opening the shortcut straight back to the atrium feel great?"
+      ]
+    },
+    "kiln_r6": {
+      "promise": "Battle the Forge Warden on a basalt anvil, cracking his armor with Sunflare or Lance and cooling boulders to bounce his molten fissure for key two.",
+      "aha": "Freeze his molten boulders with the blue mirror to reflect his ground fissure back at him.",
+      "checks": [
+        "Did breaking his furnace armor with Sunflare or Lance feel impactful?",
+        "Could you read how cooled boulders reflected his phase-two molten fissure?",
+        "Did opening both the north path and the east obsidian arch feel exciting?"
+      ]
+    },
+    "kiln_r7": {
+      "promise": "Cross a central synthesis room combining Sunflare, a blue mirror shot to a north eye, four braziers, and two chests while linking both kiln wings.",
+      "aha": "Crack the seal with Sunflare, bank blue light north, and light all four corners to open the deep wing.",
+      "checks": [
+        "Did combining Sunflare, mirrors, and braziers feel brisk rather than busy?",
+        "Were both side chests and the north casting-wing link clear to spot?",
+        "Did this room tie the lower and upper halves of the kiln together well?"
+      ]
+    },
+    "kiln_r8": {
+      "promise": "Fight a cinder golem, piston knight, twin imps, and a burrowing mole around a blue mirror where one Sunflare unearths the mole and cracks armor.",
+      "aha": "One centered Sunflare cracks both heavy shields and pops the burrowing ash mole straight out of the floor.",
+      "checks": [
+        "Did one Sunflare blast cracking both heavy foes and the mole feel great?",
+        "Were the bellows imp gusts manageable around the magma crossing?",
+        "Did the brawl feel tough enough to guard the Keeper's Flame vault?"
+      ]
+    },
+    "kiln_r9": {
+      "promise": "Burn bramble, bank blue light, and crack obsidian with Sunflare to claim the Keeper's Flame, check the clamps, and open the boss path.",
+      "aha": "Combine beam, blue mirror, and Sunflare for the Keeper's Flame while the twin clamps bless your ascent.",
+      "checks": [
+        "Did claiming the Keeper's Flame tie together your whole Great Kiln kit?",
+        "Was the reward for freeing both casting clamps clearly shown on the plinth?",
+        "Did the atrium shortcut and north boss door make navigation effortless?"
+      ]
+    },
+    "kiln_r10": {
+      "promise": "Confront the Kilnmother across three furnace phases using Sunflare, Lance, blue-cooled slag cover, and a cycle anvil before relighting Great Lamp six.",
+      "aha": "Cool slag boulders to block her four-way furnace beams and crack her core meltdown with Sunflare or Lance.",
+      "checks": [
+        "Did cooling slag with mirrors to block her cross beams click mid-fight?",
+        "Were her three phases clear and rewarding to read and punish?",
+        "Did relighting Great Lamp six feel like a worthy climax to Ashen Kiln?"
+      ]
+    },
+    "kiln_r11": {
+      "promise": "Operate the Master Damper Hub lever to toggle kiln heat between low crusted troughs and molten surge conduits across the whole upper casting wing.",
+      "aha": "Low heat crusts lava walkways solid while surge heat pours molten slag and powers updrafts across upper rooms.",
+      "checks": [
+        "Did flipping the damper lever clearly transform the room's heat state?",
+        "Did the gauge make low heat versus surge heat unmistakable at a glance?",
+        "Did the hub loops back to the atrium and phantom arch save backtracking?"
+      ]
+    },
+    "kiln_r12": {
+      "promise": "Under surge heat, let overhead spouts pour molten blocks into molds, quench them solid with a blue mirror, and slide them to cast a lava bridge.",
+      "aha": "Surge pours molten blocks that blue light freezes into pushable basalt counterweights for the north bridge.",
+      "checks": [
+        "Did casting your own pushable blocks from molten pours feel clever?",
+        "Was rotating the center blue mirror to quench both blocks intuitive?",
+        "Did breaking the obsidian seam back to the sluice hall feel neat?"
+      ]
+    },
+    "kiln_r13": {
+      "promise": "Ride surge thermal updrafts across twin lava canyons, clear two wasps, and bank twin Skip shots off crucible hoods to release the west casting clamp.",
+      "aha": "Under surge heat, updrafts bridge the lava so you can bank Skip bolts off both hoods for clamp one and a key.",
+      "checks": [
+        "Did riding surge thermal updrafts across the twin canyons feel thrilling?",
+        "Were both Skip bounce angles off the crucible hoods easy to line up?",
+        "Did dropping straight back to the damper hub via the chute feel snappy?"
+      ]
+    },
+    "kiln_r14": {
+      "promise": "Fight a piston knight, stoker, and two slag slimes in a horseshoe arena, then cool slimes or molten blocks with blue mirrors to weigh two plates.",
+      "aha": "Clear the heavy foes first, then freeze live slimes or molten blocks with blue light to weigh both plates.",
+      "checks": [
+        "Did turning combat foes or blocks into cooled plate weights click?",
+        "Was fighting the knight and stoker fair in the horseshoe layout?",
+        "Did the return link to the lower foundry loop feel natural?"
+      ]
+    },
+    "kiln_r15": {
+      "promise": "Duel the Crucible Weaver in a glass vat, bouncing the east blue beam off her freshly spun mirrors to freeze her glass hull brittle for key two.",
+      "aha": "Wait for her to spin out glass mirrors, then angle the east blue beam off them to chill her brittle.",
+      "checks": [
+        "Did using the boss's own spun mirrors to freeze her brittle feel clever?",
+        "Was her stunned brittle punish window clear and funny?",
+        "Did the fight length and difficulty suit a second kiln mini-boss?"
+      ]
+    },
+    "kiln_r16": {
+      "promise": "Conquer a four-corner crucible spiral chaining low-heat phantom trenches, Scatter, Lance, Skip, and Sunflare to yank the east casting clamp.",
+      "aha": "Drop heat to low to cross the Lens trench, then match each lock to Scatter, Lance, Skip, and Sunflare in turn.",
+      "checks": [
+        "Did flipping heat low to reveal the phantom trench feel like a smart twist?",
+        "Did chaining all three tempers and Sunflare flow smoothly in one spiral?",
+        "Did yanking the second casting clamp feel like a peak kiln achievement?"
+      ]
+    },
+    "kiln_r17": {
+      "promise": "Push blue glass into a gold emitter beam and steer a mirror statue across a lava trench onto a plate to extend a bridge to the vault and win an ember.",
+      "aha": "Tint the beam blue with stained glass, then guide your mirror statue around the rock onto the far plate.",
+      "checks": [
+        "Did tinting the emitter beam blue with movable glass read cleanly?",
+        "Was steering the mirror statue around the basalt bump smooth and fair?",
+        "Did extending the bridge straight back to the boss vault feel rewarding?"
+      ]
+    },
+    "kiln_r18": {
+      "promise": "Pause above glowing lava at the boss waystone, read the Kilnmother's lore, and hit three temper targets for a full pre-boss heal.",
+      "aha": "Attuning all three tempers on the targets grants a full heal and shards right beside the boss checkpoint.",
+      "checks": [
+        "Did this calm throat above the lava build anticipation before the boss?",
+        "Did the quick three-temper practice trial feel useful and rewarding?",
+        "Was the boss retry waystone close enough to keep attempts painless?"
+      ]
+    },
+    "superboss_first_forge": {
+      "promise": "Challenge the primordial First Forge around three perimeter anvils, reforging between Skip, Scatter, and Lance mid-combat over molten casting grids.",
+      "aha": "Match each forge stance at the three perimeter anvils while dodging molten floor patterns and timing Sunflare.",
+      "checks": [
+        "Did swapping between all three perimeter anvils mid-duel feel intense and fair?",
+        "Could you clearly read which bolt temper countered each boss stance?",
+        "Did claiming the final lost moth and shards feel worthy of a superboss?"
+      ]
+    }
+  }
+}

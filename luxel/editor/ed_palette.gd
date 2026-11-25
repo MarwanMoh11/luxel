@@ -38,7 +38,12 @@ func setup(editor: Node) -> void:
 	for t: Dictionary in ed.catalog.TABS:
 		var b: Button = Style.button(str(t["name"]))
 		b.toggle_mode = true
-		b.add_theme_font_size_override("font_size", 13)
+		b.add_theme_font_size_override("font_size", 12)
+		for st: Array in [["normal", "dusk", "void"], ["hover", "plum", "void"], ["pressed", "gold", "wine"]]:
+			var sb: StyleBoxFlat = Style.box(Style.col(str(st[1])), Style.col(str(st[2])), 3, 5)
+			sb.content_margin_top = 7
+			sb.content_margin_bottom = 7
+			b.add_theme_stylebox_override(str(st[0]), sb)
 		b.set_meta("tab", str(t["id"]))
 		b.pressed.connect(func() -> void: ed.set_tab(str(t["id"])))
 		_tabs.add_child(b)
@@ -50,7 +55,7 @@ func setup(editor: Node) -> void:
 	top.add_child(_all_btn)
 	_search = LineEdit.new()
 	_search.placeholder_text = "Search..."
-	_search.custom_minimum_size = Vector2(130, 0)
+	_search.custom_minimum_size = Vector2(104, 0)
 	_search.text_changed.connect(func(_t: String) -> void: refresh())
 	top.add_child(_search)
 	_scroll = ScrollContainer.new()
@@ -65,6 +70,8 @@ func setup(editor: Node) -> void:
 
 
 func _build_tools() -> Control:
+	var all := HBoxContainer.new()
+	all.add_theme_constant_override("separation", 4)
 	var g := GridContainer.new()
 	g.columns = 2
 	g.add_theme_constant_override("h_separation", 4)
@@ -84,7 +91,19 @@ func _build_tools() -> Control:
 		b.custom_minimum_size = Vector2(66, 64)
 		_tool_btns[t] = b
 		g.add_child(b)
-	return g
+	all.add_child(g)
+	var m: Button = Style.button("Magic", "", "Drag a box and say what you want in plain words (A)", func() -> void: ed.magic_here())
+	m.icon = Style.icon("wand", 3)
+	m.toggle_mode = true
+	m.icon_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	m.vertical_icon_alignment = VERTICAL_ALIGNMENT_TOP
+	m.custom_minimum_size = Vector2(72, 132)
+	m.add_theme_stylebox_override("normal", Style.box(Style.col("wine"), Style.col("void"), 3, 14))
+	m.add_theme_stylebox_override("hover", Style.box(Style.col("coral"), Style.col("void"), 3, 14))
+	m.add_theme_stylebox_override("pressed", Style.box(Style.col("rose"), Style.col("wine"), 3, 14))
+	_tool_btns[ed.Tool.MAGIC] = m
+	all.add_child(m)
+	return all
 
 
 func _on_scroll_input(ev: InputEvent) -> void:

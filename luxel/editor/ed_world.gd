@@ -6,6 +6,8 @@ const Io := preload("res://luxel/editor/ed_io.gd")
 const Room := preload("res://luxel/editor/ed_room.gd")
 const ALL_MOVES: Array[String] = ["bolt", "dash", "throw", "prism", "beam", "wings", "lens", "sunflare"]
 
+const FLAT: Dictionary = {"foliage": "pine", "rail": "dusk", "grate": "dusk", "carpet": "wine", "stairs": "mauve"}
+
 signal paint_started
 signal paint_finished(ok: bool)
 
@@ -74,7 +76,7 @@ func rebuild(room: RefCounted, wick_pos: Vector2) -> void:
 	room.call("write_draft")
 	Lx.state.from_dict(_fresh_state.duplicate(true))
 	loader.discard_loaded()
-	loader.load_region_from_paths(Room.DRAFT_MAP, Room.DRAFT_JSON, main._director as LxAttackDirector, int(room.get("island")), str(room.get("region")))
+	loader.load_region_from_paths(Room.draft_map(), Room.draft_json(), main._director as LxAttackDirector, int(room.get("island")), str(room.get("region")))
 	fresh_ground()
 	place_wick(wick_pos)
 
@@ -139,7 +141,7 @@ func track_tiles(room: RefCounted) -> void:
 
 
 func _record_path(room: RefCounted) -> String:
-	return "user://editor/painted/%s.map" % room.call("file_key")
+	return "%s/painted/%s.map" % [Io.work_dir, room.call("file_key")]
 
 
 func painted_map(room: RefCounted) -> String:
@@ -191,6 +193,8 @@ func _draw_patch() -> void:
 				continue
 			if src.has(t) and src.get("tex") != null:
 				patch.draw_texture_rect_region(src["tex"] as Texture2D, Rect2(x * ts, y * ts, ts, ts), src[t] as Rect2)
+			elif FLAT.has(t):
+				patch.draw_rect(Rect2(x * ts, y * ts, ts, ts), LxInteractable.PAL[str(FLAT[t])] as Color)
 			else:
 				LxRegionLoader.GreyboxDraw.draw_tile(patch, x, y, float(ts), t)
 
@@ -240,7 +244,7 @@ func paint_before_quit() -> void:
 
 
 func _base_copy() -> String:
-	return "user://editor/paint_base.map"
+	return Io.work_dir + "/paint_base.map"
 
 
 func _start_paint() -> void:
@@ -255,7 +259,7 @@ func _start_paint() -> void:
 	Io.write(_base_copy() + ".new", str(_paint_room.call("disk_map")))
 	var root: String = ProjectSettings.globalize_path("res://")
 	_paint_pid = OS.create_process(uv, ["run", "--no-project", "--with", "pillow", "--with", "numpy", "python", root + "tools/epic/editor_paint.py", _paint_key, "--base", ProjectSettings.globalize_path(_base_copy())])
-	Io.write("user://editor/needs_import", "1")
+	Io.write(Io.work_dir + "/needs_import", "1")
 	paint_started.emit()
 
 

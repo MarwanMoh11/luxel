@@ -143,11 +143,31 @@ def room_report(fk: str, draw: bool = False) -> Tuple[List[str], List[str]]:
     return out, warn
 
 
+def wishes() -> Dict[str, List[str]]:
+    """Plain-language requests per room (the AI brush), and whether the result was kept."""
+    out: Dict[str, List[List[Any]]] = collections.defaultdict(list)
+    if (E / "log.jsonl").exists():
+        for ln in (E / "log.jsonl").read_text().splitlines():
+            try:
+                d = json.loads(ln)
+            except ValueError:
+                continue
+            if d.get("op") == "magic":
+                out[d["room"]].append([d, True])
+            elif d.get("op") == "undo" and d.get("undid") == "magic" and out[d["room"]]:
+                for w in reversed(out[d["room"]]):
+                    if w[1]:
+                        w[1] = False
+                        break
+    return {k: [f"WISH {'kept' if ok else 'UNDONE'}: \"{d['ask']}\" in tiles {d.get('area')} -> {d.get('say', '')}" for d, ok in v] for k, v in out.items()}
+
+
 def summary(only: str = "") -> int:
     notes = json.loads((E / "notes.json").read_text()) if (E / "notes.json").exists() else []
     verdicts = json.loads((E / "verdicts.json").read_text()) if (E / "verdicts.json").exists() else {}
     checks = json.loads((E / "checks.json").read_text()) if (E / "checks.json").exists() else {}
-    keys = sorted({key(f) for f in rooms()} | {n["room"] for n in notes} | set(verdicts) | set(checks))
+    asked = wishes()
+    keys = sorted(set(asked) | {key(f) for f in rooms()} | {n["room"] for n in notes} | set(verdicts) | set(checks))
     if only:
         keys = [k for k in keys if k == only] or [only]
     L: List[str] = []
@@ -159,6 +179,7 @@ def summary(only: str = "") -> int:
             ch, warn = room_report(fk, bool(only))
             L += [f"- {c}" if not c.startswith("  ") else c for c in (ch or ["no changes left (undone or reset)"])]
             L += [f"- CHECK: {w}" for w in warn]
+        L += [f"- {w}" for w in asked.get(k, [])]
         for q, a in sorted(checks.get(k, {}).items(), key=lambda x: x[1]):
             L.append(f"- VISION {'MET' if a == 'yes' else 'NOT MET'}: {q}")
         for n in notes:

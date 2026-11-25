@@ -1,0 +1,89 @@
+{
+  "island": {
+    "title": "The Wick House",
+    "rule": "A lamplit island home between voyages that grows brighter and unlocks new rooms, challenges, and friendly folk as you relight Great Lamps.",
+    "feel": "A warm sanctuary where you tinker with builds, play crisp side trials, and watch your world come alive.",
+    "arc": "Arrive at a quiet hearth linked to every island waystone. Rescue lamp folk and moths on your travels to fill the hall, open side wings like the workshop, gallery, pier, and cellar, and sharpen your skills between voyages.",
+    "moments": [
+      "Returning after relighting an island to see the Great Hall noticeably brighter and livelier.",
+      "Fitting new stained glass panes in the workshop and testing your bolt rhythm on the dummy.",
+      "Launching the oarless racing skiff off the garden pier to drift through lagoon buoys.",
+      "Stepping up to the Rematch Mirror to challenge a fallen boss again on your own terms."
+    ]
+  },
+  "dungeons": {},
+  "rooms": {
+    "overworld": {
+      "promise": "Return to the cozy Great Hall that grows visibly brighter and livelier as you relight islands and welcome home rescued lamp folk.",
+      "aha": "The house tracks your whole journey through its journal, music box, waystone, and growing cast of residents.",
+      "checks": [
+        "Does the Great Hall feel noticeably warmer and fuller as you progress?",
+        "Are the journal, music box, and waystone easy to find and use?",
+        "Do the side doors invite you to explore the other wings of the house?"
+      ]
+    },
+    "workshop": {
+      "promise": "Tune your lantern build in a warm craft studio by fitting stained glass panes, upgrading lead slots, picking flame colors, and testing your tempo.",
+      "aha": "Trying out pane combinations on the training dummy lets you feel trade offs before leaving home.",
+      "checks": [
+        "Is switching stained glass panes and checking lead capacity clear right away?",
+        "Does the training dummy give clean feedback on bolt rhythm and build changes?",
+        "Do changing flame colors and upgrading lead feel rewarding to come back for?"
+      ]
+    },
+    "gallery": {
+      "promise": "Sharpen your aim across classic, prism bounce, and gravity curve target sets, or step to the Rematch Mirror to refight fallen bosses.",
+      "aha": "Each shooting set trains a distinct aiming trick, while the mirror lets you revisit any cleared boss.",
+      "checks": [
+        "Do the three shooting sets feel distinct and teach real aiming skills?",
+        "Are the target courses snappy to restart when chasing a higher medal?",
+        "Does stepping up to the Rematch Mirror feel clear and inviting?"
+      ]
+    },
+    "attic": {
+      "promise": "Visit the upper loft where rescued moths gather around a great sanctuary lantern, claim milestone rewards, and try the lantern juggling trial.",
+      "aha": "Keeping your lantern airborne through throw, recall, and zip chains earns higher juggling medals.",
+      "checks": [
+        "Does seeing your rescued moths gather in the loft feel heartwarming?",
+        "Are your next moth lantern reward tiers easy to understand at a glance?",
+        "Does chaining throws and zips in the juggling trial feel crisp and fair?"
+      ]
+    },
+    "observatory": {
+      "promise": "Climb to the open rooftop under the stars to play the three tone bell memory trial and gaze out toward the eight island lamps.",
+      "aha": "Watching and listening to Dawn, Dusk, and War bell patterns trains your ear for longer sequences.",
+      "checks": [
+        "Does the rooftop vista give a calm view of the glowing island lamps?",
+        "Are the three bell tones easy to tell apart during the memory trial?",
+        "Do the two folk requests up here give clear reasons to come back?"
+      ]
+    },
+    "pier": {
+      "promise": "Launch your oarless skiff from the garden dock onto a wide lagoon to chase buoy time trials using bolt recoil and mooring swings.",
+      "aha": "Firing backward for speed while whipping around mooring posts shaves seconds off every lap.",
+      "checks": [
+        "Does steering the skiff with bolt recoil feel playful right off the dock?",
+        "Do mooring swings around buoys feel smooth and worth mastering?",
+        "Do the garden folk by the dock make the waterside feel lived in?"
+      ]
+    },
+    "corridor": {
+      "promise": "Test your dodge timing in a carved stone underpass by chaining perfect dashes through oncoming energy waves for medals and a glass pane.",
+      "aha": "A crisp last moment dodge refreshes your dash so you can weave straight through dense waves.",
+      "checks": [
+        "Can you clearly read each oncoming energy wave before dodging?",
+        "Does chaining perfect dodges feel rhythmic and deeply satisfying?",
+        "Do the medal tiers push you to try one more run?"
+      ]
+    },
+    "cellar": {
+      "promise": "Descend into the stone cellar to test your build against daily seeded endless waves drawn from enemies you have defeated.",
+      "aha": "Surviving shifting enemy pairings tests how well your chosen glass panes hold up under pressure.",
+      "checks": [
+        "Do the enemy pairings feel fair and readable as waves escalate?",
+        "Does fighting only enemies you have already met keep the challenge grounded?",
+        "Does chasing a higher wave for cellar medals make you want another attempt?"
+      ]
+    }
+  }
+}
