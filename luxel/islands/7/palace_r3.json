@@ -453,12 +453,20 @@
     "kind": "puzzle",
     "beat": "sho",
     "teaches": "Calibrating mirror_avatar against walls to line up mirrored bolts off Blue Transformers across glass.",
-    "decisions": 6,
+    "decisions": 7,
     "expert_s": 50,
     "reward": "open_r4+r7_seam_tease",
     "why": "Introduces the Palace's signature mirror_avatar mechanic in a pure safe optical chamber while teasing the East Stairwell key seam.",
     "exit": "exit_r3_north",
     "solution": [
+      {
+        "op": "goto",
+        "to": [
+          48,
+          104
+        ],
+        "tol": 3
+      },
       {
         "op": "goto",
         "to": [

@@ -211,6 +211,20 @@
       }
     },
     {
+      "id": "chest_spire_r7_black",
+      "kind": "chest",
+      "pos": [
+        368,
+        56
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 50,
+        "zone": "spire_r7"
+      }
+    },
+    {
       "id": "lamp_spire_r7_s",
       "kind": "road_lamp",
       "pos": [
@@ -392,8 +406,18 @@
       "when": "world_face==black",
       "theme": "inverted_palace_black",
       "full_frame": true,
-      "tiles": [],
-      "enable": [],
+      "tiles": [
+        [
+          17,
+          3,
+          4,
+          1,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "chest_spire_r7_black"
+      ],
       "disable": []
     }
   ],

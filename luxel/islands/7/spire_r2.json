@@ -165,6 +165,20 @@
       }
     },
     {
+      "id": "chest_spire_r2_black",
+      "kind": "chest",
+      "pos": [
+        368,
+        88
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 40,
+        "zone": "spire_r2"
+      }
+    },
+    {
       "id": "pool_spire_r2",
       "kind": "moon_pool",
       "pos": [
@@ -344,17 +358,27 @@
       "when": "world_face==black",
       "theme": "inverted_palace_black",
       "full_frame": true,
-      "tiles": [],
-      "enable": [],
+      "tiles": [
+        [
+          17,
+          5,
+          1,
+          1,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "chest_spire_r2_black"
+      ],
       "disable": []
     }
   ],
   "design": {
-    "idea": "Crescent Prism Gallery preserving the dual Blue-bank key puzzle for wick_key_7_1 while adding a Moon Pool that unseals the North Black Arch into Spire Cycle 1 (spire_r11).",
+    "idea": "Crescent Prism Gallery preserving the dual Blue-bank key puzzle for wick_key_7_1 while adding a Moon Pool that raises a Black obsidian bridge to a hidden NE vault and unseals the North Black Arch into Spire Cycle 1 (spire_r11).",
     "kind": "puzzle",
     "beat": "ki",
-    "teaches": "Banks Blue Bolts off a rotatable transformer into twin eye switches and flips the Spire Moon Pool to enter the Split-World Atrium.",
-    "decisions": 6,
+    "teaches": "Banks Blue Bolts off a rotatable transformer into twin eye switches and flips the Spire Moon Pool to raise Black bridges and enter the Split-World Atrium.",
+    "decisions": 8,
     "expert_s": 50,
     "reward": "wick_key_7_1+r11_arch",
     "why": "West key wing deepened with Silver/Black arch into Cycle 1.",
@@ -438,6 +462,18 @@
       {
         "op": "expect",
         "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          88
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_spire_r2_black"
       },
       {
         "op": "expect_exit",

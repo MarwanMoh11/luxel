@@ -256,7 +256,7 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	# Real Queen casts crisp warm SE shadow (truth cue in P3!)
-	draw_circle(Vector2(6.0, 5.0), 10.0, Color(PAL["void"] as Color, 0.42))
+	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 5.0), 10.0, 3.5, "se_gold", phase >= 3)
 
 	# Frontal glass mirror pane + silver bounce arrow when direct yellow bolt bounces
 	if _has_active_shield():
@@ -285,6 +285,6 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# P3 NW-shadow mirror clones (visibly cast NW shadow instead of SE!)
 	for cl: Dictionary in _clones:
 		var lp: Vector2 = ((cl["pos"] as Vector2) - pos).round()
-		draw_circle(lp + Vector2(-7.0, -5.0), 9.0, Color(PAL["void"] as Color, 0.45))
+		LxIsland7Rule.draw_truth_shadow(self, lp + Vector2(0.0, 5.0), 9.0, 3.0, "nw_wrong", false)
 		draw_colored_polygon(PackedVector2Array([lp + Vector2(0, -18), lp + Vector2(9, 2), lp + Vector2(-9, 2)]), Color(PAL["sky"] as Color, 0.65))
 		draw_arc(lp + Vector2(0, -10), 8.0, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)

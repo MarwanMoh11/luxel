@@ -142,6 +142,20 @@
       }
     },
     {
+      "id": "chest_spire_r4_black",
+      "kind": "chest",
+      "pos": [
+        384,
+        96
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 45,
+        "zone": "spire_r4"
+      }
+    },
+    {
       "id": "door_spire_r4_east",
       "kind": "door",
       "pos": [
@@ -394,21 +408,34 @@
       "when": "world_face==black",
       "theme": "inverted_palace_black",
       "full_frame": true,
-      "tiles": [],
-      "enable": [],
+      "tiles": [
+        [
+          22,
+          5,
+          1,
+          2,
+          "ground"
+        ]
+      ],
+      "enable": [
+        "chest_spire_r4_black"
+      ],
       "disable": []
     }
   ],
   "design": {
-    "idea": "Lunar Abyss ribbon weaving True Lens phantom-stone crossing, NW Blue Portal Ember Piece vault, Moon Pool flip, and West arrival loop from spire_r11.",
+    "idea": "Lunar Abyss ribbon weaving True Lens phantom-stone crossing, NW Blue Portal Ember Piece vault, Moon Pool flip dissolving the NE Silver wall for a Black vault, and West arrival loop from spire_r11.",
     "kind": "traversal",
     "beat": "sho",
-    "teaches": "Chains True Lens phantom bridges with Blue Portal side-vaulting and key-door unlocking.",
-    "decisions": 7,
+    "teaches": "Chains True Lens phantom bridges with Blue Portal side-vaulting, Black-World wall dissolution, and key-door unlocking.",
+    "decisions": 9,
     "expert_s": 50,
     "reward": "ember_7_spire_abyss+r5_unlock",
-    "why": "Spire Cycle 1 convergence room with D38 floating-shard fixes and upgraded Ember Piece reward.",
+    "why": "Spire Cycle 1 convergence room with D38 floating-shard fixes, Black-World NE cache, and upgraded Ember Piece reward.",
     "start": {
+      "vars": {
+        "island:7:world_face": "silver"
+      },
       "keys": {
         "mirror_spire:wick_key": 1
       },
@@ -421,6 +448,22 @@
       {
         "op": "goto",
         "to": [
+          104,
+          192
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "interact",
+        "target": "pool_spire_r4"
+      },
+      {
+        "op": "expect",
+        "var": "world_face==black"
+      },
+      {
+        "op": "goto",
+        "to": [
           128,
           208
         ],
@@ -428,6 +471,26 @@
       },
       {
         "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          136
+        ],
+        "tol": 16.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          368,
+          96
+        ],
+        "tol": 14.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_spire_r4_black"
       },
       {
         "op": "goto",
