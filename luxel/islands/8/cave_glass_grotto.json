@@ -90,7 +90,7 @@
           16,
           48
         ],
-        "threshold": 0.35
+        "threshold": 0.45
       }
     },
     {
@@ -306,17 +306,12 @@
     "reward": "pane_last_glass+ember_8_grotto+lore_hollow_grotto_8",
     "why": "Rewards full-kit mastery with Island 8's secret stained-glass pane and deep Hollow Wick lore.",
     "target": "pickup_last_glass",
+    "start": {
+      "ember": 100.0
+    },
     "solution": [
       {
-        "op": "goto",
-        "to": [
-          368,
-          176
-        ],
-        "tol": 8.0
-      },
-      {
-        "op": "throw",
+        "op": "interact",
         "target": "hook_grotto"
       },
       {
@@ -330,7 +325,7 @@
         "op": "goto",
         "to": [
           368,
-          152
+          144
         ],
         "tol": 8.0
       },
@@ -338,7 +333,7 @@
         "op": "goto",
         "to": [
           224,
-          152
+          144
         ],
         "tol": 8.0
       },

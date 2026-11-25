@@ -35,7 +35,7 @@
       "to_region": "orrery_r4",
       "to_spawn": [
         272,
-        196
+        184
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -345,7 +345,7 @@
       "prop": "brass_star_globe",
       "pos": [
         56,
-        92
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -357,7 +357,7 @@
       "prop": "constellation_projector",
       "pos": [
         56,
-        200
+        224
       ],
       "layer": "sort",
       "flip_x": false,
@@ -369,7 +369,7 @@
       "prop": "zodiac_pillar_stone",
       "pos": [
         344,
-        104
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -381,7 +381,7 @@
       "prop": "planetarium_lantern",
       "pos": [
         424,
-        184
+        176
       ],
       "layer": "sort",
       "flip_x": true,

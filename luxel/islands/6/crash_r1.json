@@ -34,14 +34,14 @@
     {
       "id": "en_crash_r1_hopper1",
       "kind": "rail_hopper",
-      "pos": [448, 80],
+      "pos": [392, 64],
       "zone": "crash_r1",
       "leash": 120
     },
     {
       "id": "en_crash_r1_hopper2",
       "kind": "rail_hopper",
-      "pos": [488, 176],
+      "pos": [400, 184],
       "zone": "crash_r1",
       "leash": 120
     }

@@ -1,0 +1,682 @@
+{
+  "id": "stair_r3",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R3",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "stair_t1b",
+      "name_key": "ISL8_STAIR_R3",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r3_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r2",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_r3_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r4",
+      "to_spawn": [
+        224,
+        272
+      ],
+      "locked_door_id": "door_r3_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r3_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r3",
+      "kind": "stair_controller",
+      "pos": [
+        224,
+        144
+      ],
+      "props": {
+        "tier": 1,
+        "floor_range": [
+          3,
+          3
+        ],
+        "pool_layers": [
+          "stair_a3",
+          "stair_a4"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r3_north"
+      }
+    },
+    {
+      "id": "door_r3_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r3"
+        ]
+      }
+    },
+    {
+      "id": "bell_r3_dusk",
+      "kind": "bell",
+      "pos": [
+        224,
+        104
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184.0
+      }
+    },
+    {
+      "id": "tb_r3_1",
+      "kind": "timed_brazier",
+      "pos": [
+        104,
+        80
+      ],
+      "props": {
+        "secs": 18.0,
+        "target_id": "gate_r3_braz"
+      }
+    },
+    {
+      "id": "tb_r3_2",
+      "kind": "timed_brazier",
+      "pos": [
+        352,
+        64
+      ],
+      "props": {
+        "secs": 18.0,
+        "target_id": "gate_r3_braz"
+      }
+    },
+    {
+      "id": "tb_r3_3",
+      "kind": "timed_brazier",
+      "pos": [
+        72,
+        200
+      ],
+      "props": {
+        "secs": 18.0,
+        "target_id": "gate_r3_braz"
+      }
+    },
+    {
+      "id": "tb_r3_4",
+      "kind": "timed_brazier",
+      "pos": [
+        328,
+        184
+      ],
+      "props": {
+        "secs": 18.0,
+        "target_id": "gate_r3_braz"
+      }
+    },
+    {
+      "id": "gate_r3_braz",
+      "kind": "logic_gate",
+      "pos": [
+        368,
+        128
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "tb_r3_1",
+          "tb_r3_2",
+          "tb_r3_3",
+          "tb_r3_4"
+        ],
+        "target_id": "chest_r3_bonus"
+      }
+    },
+    {
+      "id": "chest_r3_bonus",
+      "kind": "chest",
+      "pos": [
+        392,
+        128
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25
+      }
+    },
+    {
+      "id": "wind_r3_n",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "size": [
+          144,
+          32
+        ],
+        "dir": [
+          1,
+          0
+        ],
+        "strength": 64.0
+      }
+    },
+    {
+      "id": "wind_r3_s",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "size": [
+          144,
+          32
+        ],
+        "dir": [
+          -1,
+          0
+        ],
+        "strength": 64.0
+      }
+    },
+    {
+      "id": "spin_r3_1",
+      "kind": "spinner",
+      "pos": [
+        136,
+        144
+      ],
+      "props": {
+        "length": 36.0,
+        "speed": 1.35,
+        "arms": 2
+      }
+    },
+    {
+      "id": "bloom_r3_w",
+      "kind": "bounce_bloom",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "dir": [
+          1,
+          -1
+        ],
+        "dist": 64.0
+      }
+    },
+    {
+      "id": "bloom_r3_e",
+      "kind": "bounce_bloom",
+      "pos": [
+        392,
+        104
+      ],
+      "props": {
+        "dir": [
+          -1,
+          1
+        ],
+        "dist": 64.0
+      }
+    },
+    {
+      "id": "lamp_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        224
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1b"
+      }
+    },
+    {
+      "id": "lamp_r3_nw",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1b"
+      }
+    },
+    {
+      "id": "lamp_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        64
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1b"
+      }
+    },
+    {
+      "id": "lamp_r3_e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1b"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r3_a3_cen1",
+      "kind": "censer",
+      "pos": [
+        112,
+        128
+      ],
+      "zone": "stair_t1b",
+      "leash": 140
+    },
+    {
+      "id": "en_r3_a3_cen2",
+      "kind": "censer",
+      "pos": [
+        344,
+        112
+      ],
+      "zone": "stair_t1b",
+      "leash": 140
+    },
+    {
+      "id": "en_r3_a3_gloam",
+      "kind": "choir_gloam",
+      "pos": [
+        368,
+        72
+      ],
+      "zone": "stair_t1b",
+      "leash": 145
+    },
+    {
+      "id": "en_r3_a4_gloam1",
+      "kind": "choir_gloam",
+      "pos": [
+        80,
+        144
+      ],
+      "zone": "stair_t1b",
+      "leash": 145
+    },
+    {
+      "id": "en_r3_a4_gloam2",
+      "kind": "choir_gloam",
+      "pos": [
+        368,
+        120
+      ],
+      "zone": "stair_t1b",
+      "leash": 145
+    },
+    {
+      "id": "en_r3_a4_clerk",
+      "kind": "toll_clerk",
+      "pos": [
+        296,
+        144
+      ],
+      "zone": "stair_t1b",
+      "leash": 140
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        168,
+        220
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        280,
+        220
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        56,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        400,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        168,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        312,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "cracked_step_rubble",
+      "pos": [
+        96,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        144
+      ],
+      "radius": 58,
+      "style": "clock",
+      "color": "gold",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        192,
+        88,
+        64,
+        48
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [
+    {
+      "id": "stair_a3",
+      "when": "stair_layer==stair_a3",
+      "tiles": [
+        [
+          6,
+          5,
+          2,
+          2,
+          "path"
+        ],
+        [
+          20,
+          5,
+          2,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "bell_r3_dusk",
+        "tb_r3_1",
+        "tb_r3_2",
+        "tb_r3_3",
+        "tb_r3_4",
+        "gate_r3_braz",
+        "chest_r3_bonus",
+        "en_r3_a3_cen1",
+        "en_r3_a3_cen2",
+        "en_r3_a3_gloam"
+      ],
+      "disable": [
+        "wind_r3_n",
+        "wind_r3_s",
+        "spin_r3_1",
+        "bloom_r3_w",
+        "bloom_r3_e",
+        "en_r3_a4_gloam1",
+        "en_r3_a4_gloam2",
+        "en_r3_a4_clerk"
+      ]
+    },
+    {
+      "id": "stair_a4",
+      "when": "stair_layer==stair_a4",
+      "tiles": [
+        [
+          10,
+          5,
+          8,
+          2,
+          "path"
+        ],
+        [
+          10,
+          11,
+          8,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "wind_r3_n",
+        "wind_r3_s",
+        "spin_r3_1",
+        "bloom_r3_w",
+        "bloom_r3_e",
+        "en_r3_a4_gloam1",
+        "en_r3_a4_gloam2",
+        "en_r3_a4_clerk"
+      ],
+      "disable": [
+        "bell_r3_dusk",
+        "tb_r3_1",
+        "tb_r3_2",
+        "tb_r3_3",
+        "tb_r3_4",
+        "gate_r3_braz",
+        "chest_r3_bonus",
+        "en_r3_a3_cen1",
+        "en_r3_a3_cen2",
+        "en_r3_a3_gloam"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r3_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f3_clear"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tier I Pool B (Nautilus Star-Ring): stair_controller rolls Brazier Sanctum (stair_a3) with Dusk Bell & censers or Wind Ring (stair_a4) with crosswinds & spinner; clear and draft Boon 2.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Ring-arena zone control with Dusk Bell / Wind Rings + Boon stacking",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "boon_draft_2",
+    "why": "Asymmetric nautilus-stepped ring arena contrasting with stair_r2's S-bridge.",
+    "exit": "exit_r3_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          192
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          168
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 42.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          156
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r3",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r3"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r3_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_north"
+      }
+    ]
+  }
+}

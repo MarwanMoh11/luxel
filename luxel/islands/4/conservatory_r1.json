@@ -136,7 +136,7 @@
         152
       ],
       "props": {
-        "angle_deg": 45,
+        "angle_deg": 315,
         "rotatable": true,
         "movable": true,
         "angle_step_deg": 45,

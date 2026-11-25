@@ -78,7 +78,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["party_done"] = true
 		Lx.state.story_flags["dungeon_done:garden_party"] = true
 	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:party", "party_phase", "escape")
+		Lx.vars.set_var("dungeon:garden_party", "party_phase", "escape")
 		Lx.vars.set_var("island:4", "dusk_hour", 6)
 	if LxIsland4Rule.active_instance != null and is_instance_valid(LxIsland4Rule.active_instance):
 		LxIsland4Rule.active_instance.set_hour(6, true, true)

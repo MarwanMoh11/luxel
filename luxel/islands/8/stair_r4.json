@@ -1,0 +1,475 @@
+{
+  "id": "stair_r4",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R4",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
+  "zones": [
+    {
+      "id": "stair_f4",
+      "name_key": "ISL8_STAIR_R4",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r4_south",
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r3",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_r4_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r5",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r4_north"
+    },
+    {
+      "id": "exit_r4_lift_f4",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "stair_r1",
+      "to_spawn": [
+        80,
+        72
+      ],
+      "requires_flags": [
+        "stair_lift_f4"
+      ],
+      "locked_door_id": "door_r4_lift_f4"
+    },
+    {
+      "id": "exit_r4_east_chute",
+      "rect": [
+        432,
+        128,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "stair_r7",
+      "to_spawn": [
+        56,
+        144
+      ],
+      "requires_flags": [
+        "stair_mid_chute"
+      ],
+      "locked_door_id": "door_r4_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r4_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r4",
+      "kind": "stair_controller",
+      "pos": [
+        224,
+        88
+      ],
+      "props": {
+        "tier": 1,
+        "floor_range": [
+          4,
+          4
+        ],
+        "pool_layers": [
+          "stair_a4"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r4_north"
+      }
+    },
+    {
+      "id": "door_r4_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r4"
+        ]
+      }
+    },
+    {
+      "id": "door_r4_lift_f4",
+      "kind": "door",
+      "pos": [
+        24,
+        160
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "stair_lift_f4"
+        ]
+      }
+    },
+    {
+      "id": "door_r4_chute",
+      "kind": "door",
+      "pos": [
+        424,
+        144
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "stair_mid_chute"
+        ]
+      }
+    },
+    {
+      "id": "pad_r4_lift_f4",
+      "kind": "stair_lift_pad",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "floor_num": 1,
+        "requires_flag": "stair_lift_f4",
+        "to_region": "stair_r1",
+        "to_spawn": [
+          80,
+          72
+        ]
+      }
+    },
+    {
+      "id": "lamp_r4_s",
+      "kind": "road_lamp",
+      "pos": [
+        176,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f4"
+      }
+    },
+    {
+      "id": "lamp_r4_n",
+      "kind": "road_lamp",
+      "pos": [
+        272,
+        72
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f4"
+      }
+    },
+    {
+      "id": "lamp_r4_w",
+      "kind": "road_lamp",
+      "pos": [
+        112,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f4"
+      }
+    },
+    {
+      "id": "lamp_r4_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        144
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f4"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_stair_warden_f4",
+      "kind": "stair_warden",
+      "boss_id": "stair_warden_f4",
+      "tier": 1,
+      "heart": "none",
+      "pos": [
+        224,
+        144
+      ],
+      "zone": "stair_f4",
+      "arena": [
+        112,
+        64,
+        224,
+        192
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        120,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        328,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        160,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        288,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        176,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        272,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        384,
+        124
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        152
+      ],
+      "radius": 62,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "coral"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        184,
+        72,
+        80,
+        32
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r4_win",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f4_clear"
+        },
+        {
+          "set_flag": "stair_lift_f4"
+        },
+        {
+          "narrate": "ISL8_STAIR_LIFT_F4_OK"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Floor 4 Boss Landing: defeat Stair Warden Act I (Brass Halberdier), unlock Express Lift F4 back to Base Hub, and draft Boon 3 to ascend to Tier II.",
+    "kind": "boss",
+    "beat": "sho",
+    "teaches": "Stair Warden Act I (Banister Lunge stagger) + Express Lift F4 checkpoint unlock",
+    "decisions": 6,
+    "expert_s": 80,
+    "reward": "lift_f4+boon_draft_3",
+    "why": "Stepped T-landing arena with F4 Lift bay and r7 Chute return creating Cycle 1.",
+    "exit": "exit_r4_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 80.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_lift_f4"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          100
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r4",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r4"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r4_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
+    ]
+  }
+}

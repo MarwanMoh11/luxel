@@ -14,7 +14,7 @@ func _toy_setup() -> void:
 	size = Vector2(36.0, 16.0)
 	started = powered
 	if Lx.vars != null:
-		var pp: String = str(Lx.vars.get_var("dungeon:party", "party_phase", "scout"))
+		var pp: String = str(Lx.vars.get_var("dungeon:garden_party", "party_phase", "scout"))
 		if pp in ["heist", "escape", "done"]:
 			started = true
 			powered = true
@@ -53,7 +53,7 @@ func _begin_heist() -> bool:
 	started = true
 	_ring_t = 0.55
 	if Lx.vars != null:
-		Lx.vars.set_var("dungeon:party", "party_phase", "heist")
+		Lx.vars.set_var("dungeon:garden_party", "party_phase", "heist")
 		Lx.vars.set_var("island:4", "dusk_hour", 1)
 	if LxIsland4Rule.active_instance != null and is_instance_valid(LxIsland4Rule.active_instance):
 		LxIsland4Rule.active_instance.set_hour(1, true, true)

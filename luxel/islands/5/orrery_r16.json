@@ -173,7 +173,7 @@
       "kind": "star_node",
       "pos": [
         168,
-        92
+        104
       ],
       "props": {
         "pinned": true,
@@ -187,7 +187,7 @@
       "kind": "star_node",
       "pos": [
         312,
-        92
+        104
       ],
       "props": {
         "pinned": true,
@@ -201,7 +201,7 @@
       "kind": "star_node",
       "pos": [
         240,
-        92
+        104
       ],
       "props": {
         "lens_only": true,
@@ -217,7 +217,7 @@
       "kind": "o5_syzygy_conduit",
       "pos": [
         240,
-        124
+        132
       ],
       "props": {
         "stars": [
@@ -237,13 +237,13 @@
       "kind": "door",
       "pos": [
         240,
-        96
+        104
       ],
       "props": {
         "door_kind": "bridge_platform",
         "size": [
           32,
-          64
+          48
         ],
         "starts_open": false,
         "requires_signals": [

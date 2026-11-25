@@ -1,0 +1,558 @@
+{
+  "id": "stair_r1",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R1",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    216,
+    264
+  ],
+  "zones": [
+    {
+      "id": "stair_base",
+      "name_key": "ISL8_STAIR_R1",
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r1_south_ow",
+      "rect": [
+        192,
+        304,
+        48,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_landing",
+      "to_spawn": [
+        288,
+        128
+      ],
+      "one_way": true
+    },
+    {
+      "id": "exit_r1_north",
+      "rect": [
+        192,
+        0,
+        48,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r2",
+      "to_spawn": [
+        224,
+        240
+      ]
+    },
+    {
+      "id": "exit_r1_lift_f4",
+      "rect": [
+        64,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r4",
+      "to_spawn": [
+        64,
+        160
+      ],
+      "requires_flags": [
+        "stair_lift_f4"
+      ],
+      "locked_door_id": "door_r1_lift_f4"
+    },
+    {
+      "id": "exit_r1_lift_f8",
+      "rect": [
+        304,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r8",
+      "to_spawn": [
+        64,
+        160
+      ],
+      "requires_flags": [
+        "stair_lift_f8"
+      ],
+      "locked_door_id": "door_r1_lift_f8"
+    },
+    {
+      "id": "exit_r1_lift_f12",
+      "rect": [
+        432,
+        144,
+        16,
+        48
+      ],
+      "to_island": 8,
+      "to_region": "stair_r10",
+      "to_spawn": [
+        64,
+        176
+      ],
+      "requires_flags": [
+        "stair_lift_f12"
+      ],
+      "locked_door_id": "door_r1_lift_f12"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r1_base",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        264
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ws_stair_base",
+      "kind": "waystone",
+      "pos": [
+        176,
+        176
+      ],
+      "props": {
+        "zone": "stair_base",
+        "name_key": "ISL8_STAIR_R1"
+      }
+    },
+    {
+      "id": "board_r1_iron",
+      "kind": "stair_board",
+      "pos": [
+        352,
+        136
+      ],
+      "props": {}
+    },
+    {
+      "id": "lore_r1_stair",
+      "kind": "lore_stone",
+      "pos": [
+        128,
+        168
+      ],
+      "props": {
+        "string_id": "ISL8_STAIR_LORE_R1",
+        "icon": "star"
+      }
+    },
+    {
+      "id": "pad_r1_f4",
+      "kind": "stair_lift_pad",
+      "pos": [
+        80,
+        64
+      ],
+      "props": {
+        "floor_num": 4,
+        "requires_flag": "stair_lift_f4",
+        "to_region": "stair_r4",
+        "to_spawn": [
+          64,
+          160
+        ]
+      }
+    },
+    {
+      "id": "pad_r1_f8",
+      "kind": "stair_lift_pad",
+      "pos": [
+        320,
+        64
+      ],
+      "props": {
+        "floor_num": 8,
+        "requires_flag": "stair_lift_f8",
+        "to_region": "stair_r8",
+        "to_spawn": [
+          64,
+          160
+        ]
+      }
+    },
+    {
+      "id": "pad_r1_f12",
+      "kind": "stair_lift_pad",
+      "pos": [
+        384,
+        168
+      ],
+      "props": {
+        "floor_num": 12,
+        "requires_flag": "stair_lift_f12",
+        "to_region": "stair_r10",
+        "to_spawn": [
+          64,
+          176
+        ]
+      }
+    },
+    {
+      "id": "door_r1_lift_f4",
+      "kind": "door",
+      "pos": [
+        80,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "stair_lift_f4"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_lift_f8",
+      "kind": "door",
+      "pos": [
+        320,
+        24
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "stair_lift_f8"
+        ]
+      }
+    },
+    {
+      "id": "door_r1_lift_f12",
+      "kind": "door",
+      "pos": [
+        424,
+        168
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "stair_lift_f12"
+        ]
+      }
+    },
+    {
+      "id": "lamp_r1_s",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        248
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_base"
+      }
+    },
+    {
+      "id": "lamp_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        88
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_base"
+      }
+    },
+    {
+      "id": "lamp_r1_w",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_base"
+      }
+    },
+    {
+      "id": "lamp_r1_e",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        192
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_base"
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        216,
+        44
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        176,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        256,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        152,
+        236
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        280,
+        236
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        304,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "ascension_boon_plinth",
+      "pos": [
+        112,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        192,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        240,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        120,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        272,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "cracked_step_rubble",
+      "pos": [
+        368,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        152
+      ],
+      "radius": 52,
+      "style": "astrolabe",
+      "color": "gold",
+      "secondary": "dusk"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        312,
+        112,
+        88,
+        72
+      ],
+      "color": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        184,
+        32,
+        64,
+        48
+      ],
+      "color": "apricot"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r1_enter",
+      "on": "enter",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_entered"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Spiral Base Vestibule: asymmetric crescent nave displaying the Iron Ascent Board, 3 Express Lifts (F4/F8/F12), and the open North Ascent Arch into Floor 1.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Endless Stair hub, Express Lift checkpoints (F4/F8/F12), Iron Ascent score board",
+    "decisions": 4,
+    "expert_s": 35,
+    "reward": "waystone+iron_ascent_board+lifts",
+    "why": "Distinct asymmetric crescent vestibule framing all 3 Express Lift tiers and Iron Ascent climb start.",
+    "optional": true,
+    "exit": "exit_r1_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          176,
+          192
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "ws_stair_base"
+      },
+      {
+        "op": "goto",
+        "to": [
+          336,
+          148
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "board_r1_iron"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_entered"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r1_north"
+      }
+    ]
+  }
+}

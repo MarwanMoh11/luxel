@@ -115,7 +115,7 @@
       "kind": "spinner",
       "pos": [
         368,
-        192
+        200
       ],
       "props": {
         "length": 24.0,
@@ -156,7 +156,7 @@
       "id": "imp_r2_2",
       "kind": "masquerade_dancer",
       "pos": [
-        432,
+        416,
         160
       ],
       "props": {
@@ -164,15 +164,15 @@
         "shadow_mode": "nw_wrong",
         "path": [
           [
-            440,
+            424,
             144
           ],
           [
-            416,
+            400,
             168
           ],
           [
-            440,
+            416,
             184
           ]
         ],
@@ -214,24 +214,24 @@
       "id": "dancer_r2_inn_1",
       "kind": "masquerade_dancer",
       "pos": [
-        168,
-        240
+        176,
+        232
       ],
       "props": {
         "role": "liar",
         "shadow_mode": "se_gold",
         "path": [
           [
-            160,
-            232
+            168,
+            224
           ],
           [
-            200,
+            208,
+            240
+          ],
+          [
+            176,
             248
-          ],
-          [
-            160,
-            256
           ]
         ],
         "speed": 28.0
@@ -241,7 +241,7 @@
       "id": "dancer_r2_inn_2",
       "kind": "masquerade_dancer",
       "pos": [
-        344,
+        328,
         240
       ],
       "props": {
@@ -249,15 +249,15 @@
         "shadow_mode": "se_gold",
         "path": [
           [
-            352,
+            336,
             232
           ],
           [
-            312,
+            304,
             248
           ],
           [
-            352,
+            328,
             256
           ]
         ],
@@ -268,7 +268,7 @@
       "id": "dancer_r2_inn_3",
       "kind": "masquerade_dancer",
       "pos": [
-        336,
+        320,
         72
       ],
       "props": {
@@ -276,15 +276,15 @@
         "shadow_mode": "se_gold",
         "path": [
           [
-            320,
+            304,
             64
           ],
           [
-            352,
+            336,
             80
           ],
           [
-            320,
+            312,
             88
           ]
         ],
@@ -357,8 +357,8 @@
       "id": "lamp_m2_sw",
       "kind": "road_lamp",
       "pos": [
-        104,
-        224
+        168,
+        232
       ],
       "props": {
         "zone": "masq_r2",
@@ -369,8 +369,8 @@
       "id": "lamp_m2_se",
       "kind": "road_lamp",
       "pos": [
-        408,
-        224
+        336,
+        232
       ],
       "props": {
         "zone": "masq_r2",
@@ -393,7 +393,7 @@
       "id": "lamp_m2_ne",
       "kind": "road_lamp",
       "pos": [
-        408,
+        424,
         96
       ],
       "props": {
@@ -451,7 +451,7 @@
     {
       "kind": "inlay",
       "rect": [
-        400,
+        392,
         136,
         56,
         48
@@ -550,24 +550,12 @@
       "prop": "masquerade_mirror_tall",
       "pos": [
         48,
-        208
+        192
       ],
       "layer": "sort",
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
-    },
-    {
-      "sheet": "theme_masquerade",
-      "prop": "masquerade_mirror_tall",
-      "pos": [
-        464,
-        208
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.8
     },
     {
       "sheet": "theme_masquerade",
@@ -625,7 +613,7 @@
               "id": "m2_ass_gk",
               "kind": "glass_knight",
               "pos": [
-                408,
+                384,
                 160
               ],
               "zone": "masq_r2",

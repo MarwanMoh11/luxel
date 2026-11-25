@@ -70,8 +70,8 @@
     {
       "id": "knight_kiln_r8_0",
       "kind": "piston_knight",
-      "pos": [232, 168],
-      "route": [[192, 168], [272, 168]],
+      "pos": [200, 136],
+      "route": [[176, 136], [240, 136]],
       "perches": [],
       "zone": "kiln_r8",
       "leash": 130

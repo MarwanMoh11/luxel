@@ -33,7 +33,7 @@
       "id": "exit_kiln_r12_north",
       "rect": [208, 0, 32, 16],
       "to_region": "kiln_r13",
-      "to_spawn": [112, 240],
+      "to_spawn": [64, 232],
       "requires_moves": [],
       "requires_flags": []
     }

@@ -154,6 +154,8 @@ func on_hit(hit: LxHit) -> bool:
 		return false
 	if hit.source not in ["bolt", "prism_bolt", "beam", "throw", "recall", "zip", "sunflare"]:
 		return false
+	if lit:
+		return false
 	ignite()
 	return true
 

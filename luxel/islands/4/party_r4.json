@@ -521,8 +521,8 @@
     "exit": "exit_party_r4_north",
     "start": {
       "vars": {
-        "dusk_hour": 3,
-        "party_phase": "heist"
+        "island:4:dusk_hour": 3,
+        "dungeon:garden_party:party_phase": "heist"
       }
     },
     "solution": [

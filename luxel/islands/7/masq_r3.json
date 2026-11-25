@@ -52,7 +52,7 @@
       "to_region": "masq_r4",
       "to_spawn": [
         272,
-        304
+        312
       ],
       "locked_door_id": "door_masq_r3_north"
     }
@@ -134,7 +134,7 @@
       "id": "lamp_m3_sw",
       "kind": "road_lamp",
       "pos": [
-        152,
+        168,
         256
       ],
       "props": {
@@ -400,8 +400,8 @@
       "sheet": "theme_masquerade",
       "prop": "gilded_ballroom_pillar",
       "pos": [
-        424,
-        88
+        448,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
@@ -412,8 +412,8 @@
       "sheet": "theme_masquerade",
       "prop": "gilded_ballroom_pillar",
       "pos": [
-        120,
-        264
+        168,
+        280
       ],
       "layer": "sort",
       "flip_x": false,
@@ -461,7 +461,7 @@
       "prop": "ballroom_curtain_drape",
       "pos": [
         72,
-        208
+        192
       ],
       "layer": "sort",
       "flip_x": false,

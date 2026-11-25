@@ -1,0 +1,662 @@
+{
+  "id": "stair_r5",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R5",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "stair_t2a",
+      "name_key": "ISL8_STAIR_R5",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r5_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r4",
+      "to_spawn": [
+        224,
+        48
+      ]
+    },
+    {
+      "id": "exit_r5_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r6",
+      "to_spawn": [
+        240,
+        272
+      ],
+      "locked_door_id": "door_r5_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r5_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r5",
+      "kind": "stair_controller",
+      "pos": [
+        240,
+        80
+      ],
+      "props": {
+        "tier": 2,
+        "floor_range": [
+          5,
+          6
+        ],
+        "pool_layers": [
+          "stair_b1",
+          "stair_b2"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r5_north"
+      }
+    },
+    {
+      "id": "door_r5_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r5"
+        ]
+      }
+    },
+    {
+      "id": "grav_r5_w",
+      "kind": "gravity_well",
+      "pos": [
+        144,
+        152
+      ],
+      "props": {
+        "radius": 52.0,
+        "strength": 130.0,
+        "mode": "pull"
+      }
+    },
+    {
+      "id": "grav_r5_e",
+      "kind": "gravity_well",
+      "pos": [
+        328,
+        176
+      ],
+      "props": {
+        "radius": 52.0,
+        "strength": 130.0,
+        "mode": "pull"
+      }
+    },
+    {
+      "id": "tur_r5_1",
+      "kind": "turret_eye",
+      "pos": [
+        88,
+        80
+      ],
+      "props": {
+        "aim": "wick",
+        "cadence": 2.4,
+        "sight_range": 176.0,
+        "can_disable": true
+      }
+    },
+    {
+      "id": "tur_r5_2",
+      "kind": "turret_eye",
+      "pos": [
+        288,
+        112
+      ],
+      "props": {
+        "aim": "wick",
+        "cadence": 2.6,
+        "sight_range": 176.0,
+        "can_disable": true
+      }
+    },
+    {
+      "id": "hook_r5_1",
+      "kind": "lantern_hook",
+      "pos": [
+        128,
+        192
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "hook_r5_2",
+      "kind": "lantern_hook",
+      "pos": [
+        336,
+        192
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "hook_r5_3",
+      "kind": "lantern_hook",
+      "pos": [
+        176,
+        80
+      ],
+      "props": {
+        "light_radius": 72.0
+      }
+    },
+    {
+      "id": "sg_r5_cache",
+      "kind": "shadow_gate",
+      "pos": [
+        112,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ],
+        "threshold": 0.25
+      }
+    },
+    {
+      "id": "chest_r5_shadow",
+      "kind": "chest",
+      "pos": [
+        88,
+        64
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "lamp_r5_s",
+      "kind": "road_lamp",
+      "pos": [
+        200,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2a"
+      }
+    },
+    {
+      "id": "lamp_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        240
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2a"
+      }
+    },
+    {
+      "id": "lamp_r5_w",
+      "kind": "road_lamp",
+      "pos": [
+        80,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2a"
+      }
+    },
+    {
+      "id": "lamp_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2a"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r5_b1_eye1",
+      "kind": "eclipse_eye",
+      "pos": [
+        104,
+        120
+      ],
+      "zone": "stair_t2a",
+      "leash": 130
+    },
+    {
+      "id": "en_r5_b1_eye2",
+      "kind": "eclipse_eye",
+      "pos": [
+        344,
+        152
+      ],
+      "zone": "stair_t2a",
+      "leash": 130
+    },
+    {
+      "id": "en_r5_b1_clerk",
+      "kind": "toll_clerk",
+      "pos": [
+        168,
+        168
+      ],
+      "zone": "stair_t2a",
+      "leash": 150
+    },
+    {
+      "id": "en_r5_b1_wraith",
+      "kind": "page_wraith",
+      "pos": [
+        368,
+        216
+      ],
+      "zone": "stair_t2a",
+      "leash": 140
+    },
+    {
+      "id": "en_r5_b2_gloam1",
+      "kind": "choir_gloam",
+      "pos": [
+        104,
+        136
+      ],
+      "zone": "stair_t2a",
+      "leash": 150
+    },
+    {
+      "id": "en_r5_b2_gloam2",
+      "kind": "choir_gloam",
+      "pos": [
+        352,
+        160
+      ],
+      "zone": "stair_t2a",
+      "leash": 150
+    },
+    {
+      "id": "en_r5_b2_cen1",
+      "kind": "censer",
+      "pos": [
+        152,
+        160
+      ],
+      "zone": "stair_t2a",
+      "leash": 145
+    },
+    {
+      "id": "en_r5_b2_cen2",
+      "kind": "censer",
+      "pos": [
+        312,
+        152
+      ],
+      "zone": "stair_t2a",
+      "leash": 145
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        240,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        200,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        280,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        72,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        184,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        296,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "ascension_boon_plinth",
+      "pos": [
+        152,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        144,
+        152
+      ],
+      "radius": 38,
+      "style": "astrolabe",
+      "color": "sky",
+      "secondary": "dusk"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        328,
+        176
+      ],
+      "radius": 38,
+      "style": "astrolabe",
+      "color": "sky",
+      "secondary": "dusk"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        200,
+        60,
+        80,
+        40
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [
+    {
+      "id": "stair_b1",
+      "when": "stair_layer==stair_b1",
+      "tiles": [
+        [
+          8,
+          9,
+          3,
+          2,
+          "path"
+        ],
+        [
+          19,
+          10,
+          3,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "grav_r5_w",
+        "grav_r5_e",
+        "tur_r5_1",
+        "tur_r5_2",
+        "en_r5_b1_eye1",
+        "en_r5_b1_eye2",
+        "en_r5_b1_clerk",
+        "en_r5_b1_wraith"
+      ],
+      "disable": [
+        "hook_r5_1",
+        "hook_r5_2",
+        "hook_r5_3",
+        "sg_r5_cache",
+        "chest_r5_shadow",
+        "en_r5_b2_gloam1",
+        "en_r5_b2_gloam2",
+        "en_r5_b2_cen1",
+        "en_r5_b2_cen2"
+      ]
+    },
+    {
+      "id": "stair_b2",
+      "when": "stair_layer==stair_b2",
+      "tiles": [
+        [
+          7,
+          11,
+          2,
+          2,
+          "path"
+        ],
+        [
+          20,
+          11,
+          2,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "hook_r5_1",
+        "hook_r5_2",
+        "hook_r5_3",
+        "sg_r5_cache",
+        "chest_r5_shadow",
+        "en_r5_b2_gloam1",
+        "en_r5_b2_gloam2",
+        "en_r5_b2_cen1",
+        "en_r5_b2_cen2"
+      ],
+      "disable": [
+        "grav_r5_w",
+        "grav_r5_e",
+        "tur_r5_1",
+        "tur_r5_2",
+        "en_r5_b1_eye1",
+        "en_r5_b1_eye2",
+        "en_r5_b1_clerk",
+        "en_r5_b1_wraith"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r5_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f6_clear"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tier II Pool A (Diagonal L-Terrace): stair_controller rolls Gravity Turrets (stair_b1) or Shadow Hooks (stair_b2); fight around center obsidian pillar using stacked boons, draft Boon 4.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Tier II escalation: gravity-bent shots or hung-lantern shadow play with active boons",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "boon_draft_4",
+    "why": "Diagonal stepped L-terrace forcing flanking around central obsidian pillar.",
+    "exit": "exit_r5_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          224
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          192
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          128
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 50.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          96
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r5",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r5"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r5_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
+    ]
+  }
+}

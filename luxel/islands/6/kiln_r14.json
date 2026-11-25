@@ -42,7 +42,7 @@
     {
       "id": "en_r14_knight",
       "kind": "piston_knight",
-      "pos": [240, 88],
+      "pos": [328, 152],
       "zone": "kiln_r14",
       "leash": 130
     },

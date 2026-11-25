@@ -280,7 +280,7 @@
   ],
   "design": {
     "idea": "Pre-boss sanctuary housing the Upper Spire Waystone (6s Hollow Wick retry), a Mirror-Parry Practice Pedestal teaching Phase 3's Dark Lantern Clash, and a dark Shadow-Gate + True Lens vault hiding Pane mirror_ward.",
-    "kind": "secret",
+    "kind": "reward",
     "beat": "ketsu",
     "teaches": "Practices mid-flight dark lantern interception and combines unarmed lantern-hook Shadow Gate passage with True Lens phantom bridges for Pane mirror_ward.",
     "decisions": 8,

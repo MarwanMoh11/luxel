@@ -1,0 +1,653 @@
+{
+  "id": "stair_r6",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R6",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "stair_t2b",
+      "name_key": "ISL8_STAIR_R6",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r6_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r5",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r6_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r7",
+      "to_spawn": [
+        192,
+        240
+      ],
+      "locked_door_id": "door_r6_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r6_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r6_north",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r6",
+      "kind": "stair_controller",
+      "pos": [
+        240,
+        72
+      ],
+      "props": {
+        "tier": 2,
+        "floor_range": [
+          7,
+          7
+        ],
+        "pool_layers": [
+          "stair_b3",
+          "stair_b4"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r6_north"
+      }
+    },
+    {
+      "id": "door_r6_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r6"
+        ]
+      }
+    },
+    {
+      "id": "rose_r6_1",
+      "kind": "echo_rose",
+      "pos": [
+        128,
+        232
+      ],
+      "props": {
+        "secs": 6.0
+      }
+    },
+    {
+      "id": "pp_r6_1",
+      "kind": "pressure_plate",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "lantern"
+        ],
+        "hold": true,
+        "target_id": "gate_r6_echo"
+      }
+    },
+    {
+      "id": "pp_r6_2",
+      "kind": "pressure_plate",
+      "pos": [
+        312,
+        232
+      ],
+      "props": {
+        "by": [
+          "wick",
+          "lantern"
+        ],
+        "hold": true,
+        "target_id": "gate_r6_echo"
+      }
+    },
+    {
+      "id": "gate_r6_echo",
+      "kind": "logic_gate",
+      "pos": [
+        344,
+        232
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "pp_r6_1",
+          "pp_r6_2"
+        ],
+        "target_id": "chest_r6_echo"
+      }
+    },
+    {
+      "id": "chest_r6_echo",
+      "kind": "chest",
+      "pos": [
+        368,
+        232
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 30
+      }
+    },
+    {
+      "id": "cart_r6_1",
+      "kind": "vehicle_cart",
+      "pos": [
+        88,
+        216
+      ],
+      "props": {
+        "rail": [
+          [
+            88,
+            216
+          ],
+          [
+            88,
+            96
+          ],
+          [
+            376,
+            96
+          ],
+          [
+            376,
+            216
+          ]
+        ],
+        "speed": 140.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "crum_r6_1",
+      "kind": "crumble_floor",
+      "pos": [
+        240,
+        152
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "delay": 1.1,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "crum_r6_2",
+      "kind": "crumble_floor",
+      "pos": [
+        240,
+        184
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "delay": 1.1,
+        "respawn": 3.0
+      }
+    },
+    {
+      "id": "lamp_r6_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2b"
+      }
+    },
+    {
+      "id": "lamp_r6_w",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2b"
+      }
+    },
+    {
+      "id": "lamp_r6_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2b"
+      }
+    },
+    {
+      "id": "lamp_r6_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t2b"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r6_b3_clerk1",
+      "kind": "toll_clerk",
+      "pos": [
+        120,
+        88
+      ],
+      "zone": "stair_t2b",
+      "leash": 160
+    },
+    {
+      "id": "en_r6_b3_clerk2",
+      "kind": "toll_clerk",
+      "pos": [
+        384,
+        88
+      ],
+      "zone": "stair_t2b",
+      "leash": 160
+    },
+    {
+      "id": "en_r6_b3_eye",
+      "kind": "eclipse_eye",
+      "pos": [
+        408,
+        64
+      ],
+      "zone": "stair_t2b",
+      "leash": 120
+    },
+    {
+      "id": "en_r6_b3_owl",
+      "kind": "phantom_owl",
+      "pos": [
+        88,
+        144
+      ],
+      "zone": "stair_t2b",
+      "leash": 160
+    },
+    {
+      "id": "en_r6_b4_golem",
+      "kind": "cinder_golem",
+      "pos": [
+        368,
+        160
+      ],
+      "zone": "stair_t2b",
+      "leash": 160
+    },
+    {
+      "id": "en_r6_b4_wraith1",
+      "kind": "page_wraith",
+      "pos": [
+        128,
+        96
+      ],
+      "zone": "stair_t2b",
+      "leash": 150
+    },
+    {
+      "id": "en_r6_b4_wraith2",
+      "kind": "page_wraith",
+      "pos": [
+        384,
+        96
+      ],
+      "zone": "stair_t2b",
+      "leash": 150
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        240,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        168,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        312,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        192,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        288,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        408,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        72
+      ],
+      "radius": 44,
+      "style": "compass",
+      "color": "sky",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        72,
+        208,
+        336,
+        48
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [
+    {
+      "id": "stair_b3",
+      "when": "stair_layer==stair_b3",
+      "tiles": [
+        [
+          13,
+          8,
+          4,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "rose_r6_1",
+        "pp_r6_1",
+        "pp_r6_2",
+        "gate_r6_echo",
+        "chest_r6_echo",
+        "en_r6_b3_clerk1",
+        "en_r6_b3_clerk2",
+        "en_r6_b3_eye",
+        "en_r6_b3_owl"
+      ],
+      "disable": [
+        "cart_r6_1",
+        "crum_r6_1",
+        "crum_r6_2",
+        "en_r6_b4_golem",
+        "en_r6_b4_wraith1",
+        "en_r6_b4_wraith2"
+      ]
+    },
+    {
+      "id": "stair_b4",
+      "when": "stair_layer==stair_b4",
+      "tiles": [
+        [
+          13,
+          8,
+          4,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "cart_r6_1",
+        "crum_r6_1",
+        "crum_r6_2",
+        "en_r6_b4_golem",
+        "en_r6_b4_wraith1",
+        "en_r6_b4_wraith2"
+      ],
+      "disable": [
+        "rose_r6_1",
+        "pp_r6_1",
+        "pp_r6_2",
+        "gate_r6_echo",
+        "chest_r6_echo",
+        "en_r6_b3_clerk1",
+        "en_r6_b3_clerk2",
+        "en_r6_b3_eye",
+        "en_r6_b3_owl"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r6_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f7_clear"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tier II Pool B (Twin-Island Chasm): stair_controller rolls Echo Split (stair_b3) or Slag Rails (stair_b4); cross the star-abyss causeways, clear the sniper deck, draft Boon 5.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Twin-island flank navigation across star-chasm + Echo Rose / Cart rail tactical choices",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "boon_draft_5",
+    "why": "Distinct twin-island chasm silhouette bridged by central span and side causeways.",
+    "exit": "exit_r6_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          144
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          104
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 52.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          84
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r6",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r6"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r6_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r6_north"
+      }
+    ]
+  }
+}

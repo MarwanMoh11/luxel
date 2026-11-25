@@ -51,8 +51,8 @@
       ],
       "to_region": "spire_r1",
       "to_spawn": [
-        352,
-        192
+        368,
+        200
       ],
       "requires_flags": [
         "spire_duchess_seal"
@@ -106,7 +106,7 @@
       "id": "mirror_r13_ne",
       "kind": "blue_transformer",
       "pos": [
-        360,
+        344,
         88
       ],
       "props": {
@@ -120,7 +120,7 @@
       "id": "mirror_r13_sw",
       "kind": "blue_transformer",
       "pos": [
-        120,
+        136,
         264
       ],
       "props": {
@@ -205,7 +205,7 @@
       "id": "lamp_r13_sw",
       "kind": "road_lamp",
       "pos": [
-        88,
+        128,
         224
       ],
       "props": {
@@ -316,7 +316,7 @@
       "sheet": "theme_masquerade",
       "prop": "crystal_candelabra",
       "pos": [
-        168,
+        184,
         304
       ],
       "layer": "sort",
@@ -328,8 +328,8 @@
       "sheet": "theme_masquerade",
       "prop": "crystal_candelabra",
       "pos": [
-        312,
-        304
+        328,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
@@ -385,7 +385,7 @@
     }
   ],
   "design": {
-    "idea": "Octagonal prism rotunda housing Mini-Boss #2 THE KALEIDOSCOPE DUCHESS, splitting into 4 chromatic copies where only the true Duchess casts a warm SE shadow.",
+    "idea": "Faceted prism rotunda housing Mini-Boss #2 THE KALEIDOSCOPE DUCHESS, splitting into 4 chromatic copies where only the true Duchess casts a warm SE shadow.",
     "kind": "boss",
     "beat": "ten",
     "teaches": "Combat stress-test of Shadow-Truth reading and corner Blue-Transformer banking to stagger her spinning Prism Carousel and win Boss Crest #1.",

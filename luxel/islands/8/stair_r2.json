@@ -1,0 +1,620 @@
+{
+  "id": "stair_r2",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R2",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    224,
+    240
+  ],
+  "zones": [
+    {
+      "id": "stair_t1a",
+      "name_key": "ISL8_STAIR_R2",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r2_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r1",
+      "to_spawn": [
+        216,
+        48
+      ]
+    },
+    {
+      "id": "exit_r2_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r3",
+      "to_spawn": [
+        224,
+        240
+      ],
+      "locked_door_id": "door_r2_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r2_south",
+      "kind": "room_anchor",
+      "pos": [
+        224,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r2",
+      "kind": "stair_controller",
+      "pos": [
+        224,
+        128
+      ],
+      "props": {
+        "tier": 1,
+        "floor_range": [
+          1,
+          2
+        ],
+        "pool_layers": [
+          "stair_a1",
+          "stair_a2"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r2_north"
+      }
+    },
+    {
+      "id": "door_r2_north",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r2"
+        ]
+      }
+    },
+    {
+      "id": "conv_r2_w",
+      "kind": "conveyor",
+      "pos": [
+        80,
+        144
+      ],
+      "props": {
+        "size": [
+          48,
+          32
+        ],
+        "dir": [
+          1,
+          0
+        ],
+        "speed": 48.0
+      }
+    },
+    {
+      "id": "conv_r2_e",
+      "kind": "conveyor",
+      "pos": [
+        352,
+        128
+      ],
+      "props": {
+        "size": [
+          48,
+          32
+        ],
+        "dir": [
+          -1,
+          0
+        ],
+        "speed": 48.0
+      }
+    },
+    {
+      "id": "mir_r2_a1",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        176
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mir_r2_a2_1",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        144
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mir_r2_a2_2",
+      "kind": "blue_transformer",
+      "pos": [
+        320,
+        144
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "mir_r2_a2_3",
+      "kind": "blue_transformer",
+      "pos": [
+        224,
+        80
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 0.0
+      }
+    },
+    {
+      "id": "glass_r2_1",
+      "kind": "color_glass",
+      "pos": [
+        160,
+        112
+      ],
+      "props": {
+        "color": "blue",
+        "solid": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "glass_r2_2",
+      "kind": "color_glass",
+      "pos": [
+        288,
+        112
+      ],
+      "props": {
+        "color": "gold",
+        "solid": false,
+        "movable": false
+      }
+    },
+    {
+      "id": "lamp_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        224
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1a"
+      }
+    },
+    {
+      "id": "lamp_r2_w",
+      "kind": "road_lamp",
+      "pos": [
+        64,
+        96
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1a"
+      }
+    },
+    {
+      "id": "lamp_r2_e",
+      "kind": "road_lamp",
+      "pos": [
+        376,
+        104
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1a"
+      }
+    },
+    {
+      "id": "lamp_r2_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t1a"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r2_a1_clerk",
+      "kind": "toll_clerk",
+      "pos": [
+        80,
+        120
+      ],
+      "zone": "stair_t1a",
+      "leash": 140
+    },
+    {
+      "id": "en_r2_a1_warden",
+      "kind": "warden",
+      "pos": [
+        128,
+        128
+      ],
+      "zone": "stair_t1a",
+      "leash": 140
+    },
+    {
+      "id": "en_r2_a1_eye",
+      "kind": "eclipse_eye",
+      "pos": [
+        368,
+        112
+      ],
+      "zone": "stair_t1a",
+      "leash": 120
+    },
+    {
+      "id": "en_r2_a2_eye1",
+      "kind": "eclipse_eye",
+      "pos": [
+        72,
+        104
+      ],
+      "zone": "stair_t1a",
+      "leash": 120
+    },
+    {
+      "id": "en_r2_a2_eye2",
+      "kind": "eclipse_eye",
+      "pos": [
+        384,
+        128
+      ],
+      "zone": "stair_t1a",
+      "leash": 120
+    },
+    {
+      "id": "en_r2_a2_wraith",
+      "kind": "page_wraith",
+      "pos": [
+        328,
+        192
+      ],
+      "zone": "stair_t1a",
+      "leash": 140
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        224,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        184,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        272,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        56,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        408,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        112,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "cracked_step_rubble",
+      "pos": [
+        184,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        128
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "gold",
+      "secondary": "dusk"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        48,
+        88,
+        72,
+        88
+      ],
+      "color": "apricot"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        96,
+        88,
+        96
+      ],
+      "color": "gold"
+    }
+  ],
+  "layers": [
+    {
+      "id": "stair_a1",
+      "when": "stair_layer==stair_a1",
+      "tiles": [
+        [
+          4,
+          8,
+          4,
+          2,
+          "path"
+        ],
+        [
+          20,
+          7,
+          4,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "conv_r2_w",
+        "conv_r2_e",
+        "mir_r2_a1",
+        "en_r2_a1_clerk",
+        "en_r2_a1_warden",
+        "en_r2_a1_eye"
+      ],
+      "disable": [
+        "mir_r2_a2_1",
+        "mir_r2_a2_2",
+        "mir_r2_a2_3",
+        "glass_r2_1",
+        "glass_r2_2",
+        "en_r2_a2_eye1",
+        "en_r2_a2_eye2",
+        "en_r2_a2_wraith"
+      ]
+    },
+    {
+      "id": "stair_a2",
+      "when": "stair_layer==stair_a2",
+      "tiles": [
+        [
+          7,
+          8,
+          3,
+          2,
+          "path"
+        ],
+        [
+          18,
+          8,
+          3,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "mir_r2_a2_1",
+        "mir_r2_a2_2",
+        "mir_r2_a2_3",
+        "glass_r2_1",
+        "glass_r2_2",
+        "en_r2_a2_eye1",
+        "en_r2_a2_eye2",
+        "en_r2_a2_wraith"
+      ],
+      "disable": [
+        "conv_r2_w",
+        "conv_r2_e",
+        "mir_r2_a1",
+        "en_r2_a1_clerk",
+        "en_r2_a1_warden",
+        "en_r2_a1_eye"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r2_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f2_clear"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Tier I Pool A (S-Stepped Crucible): stair_controller rolls Conveyor Nave (stair_a1) or Mirror Gallery (stair_a2); clear foes, draft Boon 1 from 3 pedestals, and ascend.",
+    "kind": "setpiece",
+    "beat": "ki",
+    "teaches": "Seeded Endless Stair pool layers + combat clear -> 3-pedestal Boon Draft",
+    "decisions": 5,
+    "expert_s": 50,
+    "reward": "boon_draft_1",
+    "why": "S-stepped twin-wing silhouette over star-void pits supporting two distinct Tier I pool encounters.",
+    "exit": "exit_r2_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          224,
+          184
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 40.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          140
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r2",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r2"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r2_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r2_north"
+      }
+    ]
+  }
+}

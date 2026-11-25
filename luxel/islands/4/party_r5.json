@@ -256,6 +256,34 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "rail_party_r5_sw",
+      "kind": "rail",
+      "pos": [
+        184,
+        248
+      ],
+      "props": {
+        "size": [
+          64,
+          12
+        ]
+      }
+    },
+    {
+      "id": "rail_party_r5_se",
+      "kind": "rail",
+      "pos": [
+        328,
+        248
+      ],
+      "props": {
+        "size": [
+          64,
+          12
+        ]
+      }
     }
   ],
   "layers": [
@@ -471,16 +499,16 @@
     "exit": "exit_party_r5_escape",
     "start": {
       "vars": {
-        "dusk_hour": 5,
-        "party_phase": "heist"
+        "island:4:dusk_hour": 5,
+        "dungeon:garden_party:party_phase": "heist"
       }
     },
     "solution": [
       {
         "op": "goto",
         "to": [
-          184,
-          216
+          200,
+          176
         ],
         "tol": 14
       },

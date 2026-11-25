@@ -7,16 +7,16 @@
   "music": "island6_dungeon",
   "ambience": ["forge_rumble", "wind_howl"],
   "name_key": "ISL6_KILN_R13",
-  "spawn": [112, 240],
+  "spawn": [64, 232],
   "zones": [
     { "id": "kiln_r13", "name_key": "ISL6_KILN_R13", "rect": [0, 0, 480, 288], "dark": true }
   ],
   "exits": [
     {
       "id": "exit_kiln_r13_south",
-      "rect": [96, 272, 32, 16],
+      "rect": [48, 272, 32, 16],
       "to_region": "kiln_r12",
-      "to_spawn": [224, 48],
+      "to_spawn": [224, 40],
       "requires_moves": [],
       "requires_flags": []
     },
@@ -24,7 +24,7 @@
       "id": "exit_kiln_r13_chute",
       "rect": [400, 272, 32, 16],
       "to_region": "kiln_r11",
-      "to_spawn": [352, 88],
+      "to_spawn": [256, 88],
       "one_way": true,
       "requires_moves": [],
       "requires_flags": ["kiln_cast_west"],
@@ -70,13 +70,13 @@
       "id": "wind_r13_w",
       "kind": "wind_zone",
       "pos": [160, 144],
-      "props": { "size": [96, 48], "dir": "e", "strength": 48.0, "needs_var": "kiln_heat==surge" }
+      "props": { "size": [96, 48], "dir": "e", "strength": 48.0 }
     },
     {
       "id": "wind_r13_e",
       "kind": "wind_zone",
       "pos": [304, 144],
-      "props": { "size": [96, 48], "dir": "e", "strength": 48.0, "needs_var": "kiln_heat==surge" }
+      "props": { "size": [96, 48], "dir": "e", "strength": 48.0 }
     },
     {
       "id": "grate_r13_n",

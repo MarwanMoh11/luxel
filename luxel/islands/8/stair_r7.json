@@ -1,0 +1,450 @@
+{
+  "id": "stair_r7",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R7",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    192,
+    240
+  ],
+  "zones": [
+    {
+      "id": "stair_high_landing",
+      "name_key": "ISL8_STAIR_R7",
+      "rect": [
+        0,
+        0,
+        416,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r7_south",
+      "rect": [
+        176,
+        272,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r6",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r7_north",
+      "rect": [
+        176,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r8",
+      "to_spawn": [
+        240,
+        272
+      ]
+    },
+    {
+      "id": "exit_r7_west_chute",
+      "rect": [
+        0,
+        128,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "stair_r4",
+      "to_spawn": [
+        392,
+        144
+      ],
+      "requires_flags": [
+        "stair_mid_chute"
+      ],
+      "locked_door_id": "door_r7_chute"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r7_base",
+      "kind": "room_anchor",
+      "pos": [
+        192,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "rest_r7_brazier",
+      "kind": "rest_shrine",
+      "pos": [
+        128,
+        112
+      ],
+      "props": {}
+    },
+    {
+      "id": "scale_r7_crowned",
+      "kind": "toll_scale",
+      "pos": [
+        192,
+        128
+      ],
+      "props": {
+        "mode": "boon_toll",
+        "min_weight": 1,
+        "persist": false,
+        "auto_sell_id": "dash_trail"
+      }
+    },
+    {
+      "id": "lore_r7_high",
+      "kind": "lore_stone",
+      "pos": [
+        144,
+        192
+      ],
+      "props": {
+        "string_id": "ISL8_STAIR_LORE_R7",
+        "icon": "wings"
+      }
+    },
+    {
+      "id": "sw_r7_chute",
+      "kind": "switch_eye",
+      "pos": [
+        80,
+        112
+      ],
+      "props": {
+        "target_id": "door_r7_chute"
+      }
+    },
+    {
+      "id": "door_r7_chute",
+      "kind": "door",
+      "pos": [
+        24,
+        144
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "sw_r7_chute"
+        ],
+        "requires_flags": [
+          "stair_mid_chute"
+        ]
+      }
+    },
+    {
+      "id": "moth_8_08",
+      "kind": "moth",
+      "pos": [
+        352,
+        144
+      ],
+      "props": {
+        "id": "moth_8_08",
+        "moth_id": "moth_8_08"
+      }
+    },
+    {
+      "id": "lamp_r7_s",
+      "kind": "road_lamp",
+      "pos": [
+        160,
+        224
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_high_landing"
+      }
+    },
+    {
+      "id": "lamp_r7_n",
+      "kind": "road_lamp",
+      "pos": [
+        224,
+        64
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_high_landing"
+      }
+    },
+    {
+      "id": "lamp_r7_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        168
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_high_landing"
+      }
+    },
+    {
+      "id": "lamp_r7_isl",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_high_landing"
+      }
+    }
+  ],
+  "enemies": [],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        192,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "ascension_boon_plinth",
+      "pos": [
+        232,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        104,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        232,
+        208
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stone_balustrade_rail",
+      "pos": [
+        236,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        344,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        72,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        152,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        128
+      ],
+      "radius": 42,
+      "style": "astrolabe",
+      "color": "gold",
+      "secondary": "sky"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        144
+      ],
+      "radius": 24,
+      "style": "spotlight",
+      "color": "cream",
+      "secondary": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r7_chute",
+      "on": "signal:sw_r7_chute",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_mid_chute"
+        },
+        {
+          "narrate": "ISL8_STAIR_CHUTE_OPEN"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Floor 7.5 The High Landing: serene breather balcony with Rest Brazier, optional Legendary Boon Toll Scale (boon_crowned_toll), West chute back to F4 (Cycle 2), and exterior sky-buttress holding moth_8_08.",
+    "kind": "story",
+    "beat": "ten",
+    "teaches": "Mid-climb rest + Legendary Crowned Toll trade + Wings/Zip moth_8_08 rescue + F4 chute shortcut",
+    "decisions": 8,
+    "expert_s": 40,
+    "reward": "moth_8_08+legendary_toll+chute",
+    "why": "Quiet sky-balcony breather with detached floating island contrast before F8 Warden II.",
+    "optional": true,
+    "exit": "exit_r7_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          128,
+          128
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "rest_r7_brazier"
+      },
+      {
+        "op": "goto",
+        "to": [
+          100,
+          144
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "shoot",
+        "target": "sw_r7_chute"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_mid_chute"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          148
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "scale_r7_crowned"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          144
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "glide",
+        "to": [
+          344,
+          144
+        ],
+        "secs": 1.2
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          144
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "glide",
+        "to": [
+          232,
+          144
+        ],
+        "secs": 1.2
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r7_north"
+      }
+    ]
+  }
+}

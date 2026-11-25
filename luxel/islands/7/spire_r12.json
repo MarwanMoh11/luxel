@@ -37,7 +37,7 @@
       ],
       "to_region": "spire_r5",
       "to_spawn": [
-        320,
+        328,
         200
       ]
     },
@@ -86,16 +86,16 @@
       "id": "pup_r12_2",
       "kind": "puppet",
       "pos": [
-        352,
+        320,
         240
       ],
       "route": [
         [
-          320,
+          288,
           240
         ],
         [
-          384,
+          344,
           240
         ]
       ],
@@ -171,7 +171,7 @@
       "id": "bs_r12_blue",
       "kind": "beam_sensor",
       "pos": [
-        400,
+        384,
         80
       ],
       "props": {
@@ -214,7 +214,7 @@
       "id": "bs_r12_rose",
       "kind": "beam_sensor",
       "pos": [
-        400,
+        384,
         232
       ],
       "props": {
@@ -365,7 +365,7 @@
       "kind": "road_lamp",
       "pos": [
         376,
-        56
+        104
       ],
       "props": {
         "zone": "spire_r12",
@@ -376,7 +376,7 @@
       "id": "lamp_r12_se",
       "kind": "road_lamp",
       "pos": [
-        376,
+        336,
         256
       ],
       "props": {
@@ -462,7 +462,7 @@
       "sheet": "theme_doppel_theatre",
       "prop": "velvet_stage_curtain",
       "pos": [
-        432,
+        368,
         48
       ],
       "layer": "sort",
@@ -486,7 +486,7 @@
       "sheet": "theme_doppel_theatre",
       "prop": "brass_footlight_row",
       "pos": [
-        320,
+        304,
         288
       ],
       "layer": "sort",
@@ -498,8 +498,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "tattered_act_banner",
       "pos": [
-        424,
-        256
+        416,
+        224
       ],
       "layer": "sort",
       "flip_x": true,

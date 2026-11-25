@@ -33,7 +33,7 @@
       "id": "exit_kiln_r11_nw",
       "rect": [0, 48, 16, 48],
       "to_region": "kiln_r4",
-      "to_spawn": [248, 48],
+      "to_spawn": [256, 36],
       "requires_moves": [],
       "requires_flags": ["kiln_r11_grate"],
       "locked_door_id": "door_kiln_r11_grate"
@@ -146,7 +146,7 @@
     {
       "id": "chest_kiln_r11_crust",
       "kind": "chest",
-      "pos": [152, 120],
+      "pos": [80, 120],
       "props": { "reward_kind": "shards", "reward": "shards", "amount": 40, "zone": "kiln_r11" }
     },
     { "id": "lamp_kr11_1", "kind": "road_lamp", "pos": [192, 240], "props": { "lit": true } },
@@ -211,7 +211,7 @@
   ],
   "design": {
     "idea": "The Master Damper Hub: central cruciform foundry valve controlling kiln_heat (low vs surge) across the Upper Casting Wing, crusting side lava troughs on low and flooding casting conduits on surge while opening Cycles 2 and 3 back to kiln_r4 and kiln_r1.",
-    "kind": "hub",
+    "kind": "story",
     "beat": "sho",
     "teaches": "Great Kiln macro Heat Flow state (kiln_heat low <-> surge) and hub loop shortcuts.",
     "decisions": 6,

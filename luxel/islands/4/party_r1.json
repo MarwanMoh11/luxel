@@ -374,8 +374,8 @@
     "exit": "exit_party_r1_north",
     "start": {
       "vars": {
-        "party_phase": "scout",
-        "dusk_hour": 1
+        "island:4:dusk_hour": 1,
+        "dungeon:garden_party:party_phase": "scout"
       }
     },
     "solution": [

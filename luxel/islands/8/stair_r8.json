@@ -1,0 +1,529 @@
+{
+  "id": "stair_r8",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R8",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
+  "zones": [
+    {
+      "id": "stair_f8",
+      "name_key": "ISL8_STAIR_R8",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r8_south",
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r7",
+      "to_spawn": [
+        192,
+        48
+      ]
+    },
+    {
+      "id": "exit_r8_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r9",
+      "to_spawn": [
+        240,
+        336
+      ],
+      "locked_door_id": "door_r8_north"
+    },
+    {
+      "id": "exit_r8_lift_f8",
+      "rect": [
+        0,
+        144,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "stair_r1",
+      "to_spawn": [
+        320,
+        72
+      ],
+      "requires_flags": [
+        "stair_lift_f8"
+      ],
+      "locked_door_id": "door_r8_lift_f8"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r8_south",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r8",
+      "kind": "stair_controller",
+      "pos": [
+        240,
+        80
+      ],
+      "props": {
+        "tier": 2,
+        "floor_range": [
+          8,
+          8
+        ],
+        "pool_layers": [
+          "stair_b4"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r8_north"
+      }
+    },
+    {
+      "id": "door_r8_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r8"
+        ]
+      }
+    },
+    {
+      "id": "door_r8_lift_f8",
+      "kind": "door",
+      "pos": [
+        24,
+        160
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "stair_lift_f8"
+        ]
+      }
+    },
+    {
+      "id": "pad_r8_lift_f8",
+      "kind": "stair_lift_pad",
+      "pos": [
+        64,
+        160
+      ],
+      "props": {
+        "floor_num": 1,
+        "requires_flag": "stair_lift_f8",
+        "to_region": "stair_r1",
+        "to_spawn": [
+          320,
+          72
+        ]
+      }
+    },
+    {
+      "id": "rotor_r8_w",
+      "kind": "rotor",
+      "pos": [
+        144,
+        152
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "rotor_r8_e",
+      "kind": "rotor",
+      "pos": [
+        336,
+        152
+      ],
+      "props": {
+        "size": [
+          32,
+          32
+        ],
+        "quarter_on_signal": true
+      }
+    },
+    {
+      "id": "mir_r8_w",
+      "kind": "blue_transformer",
+      "pos": [
+        144,
+        152
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mir_r8_e",
+      "kind": "blue_transformer",
+      "pos": [
+        336,
+        152
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "lamp_r8_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        256
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f8"
+      }
+    },
+    {
+      "id": "lamp_r8_n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        64
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f8"
+      }
+    },
+    {
+      "id": "lamp_r8_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f8"
+      }
+    },
+    {
+      "id": "lamp_r8_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        160
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f8"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_stair_warden_f8",
+      "kind": "stair_warden",
+      "boss_id": "stair_warden_f8",
+      "tier": 2,
+      "heart": "none",
+      "pos": [
+        240,
+        144
+      ],
+      "zone": "stair_f8",
+      "arena": [
+        112,
+        64,
+        256,
+        192
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        240,
+        42
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        176,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        304,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        176,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        304,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        376,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        104,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        200,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        280,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        152
+      ],
+      "radius": 64,
+      "style": "astrolabe",
+      "color": "sky",
+      "secondary": "ice"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        128,
+        136,
+        32,
+        32
+      ],
+      "color": "sky"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        320,
+        136,
+        32,
+        32
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r8_win",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f8_clear"
+        },
+        {
+          "set_flag": "stair_lift_f8"
+        },
+        {
+          "narrate": "ISL8_STAIR_LIFT_F8_OK"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Floor 8 Boss Terrace: defeat Stair Warden Act II (Prism Lancer) using twin rotor mirrors for blue back-hits, unlock Express Lift F8, and draft Boon 6.",
+    "kind": "boss",
+    "beat": "ten",
+    "teaches": "Stair Warden Act II (Prism Lance blue reflection) + Express Lift F8 checkpoint",
+    "decisions": 8,
+    "expert_s": 90,
+    "reward": "lift_f8+boon_draft_6",
+    "why": "Diamond prism terrace contrasting with F4's T-landing and adding Cycle 3 via Lift F8.",
+    "exit": "exit_r8_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          216
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          176
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "rotate",
+        "target": "mir_r8_w",
+        "steps": 1
+      },
+      {
+        "op": "clear",
+        "timeout": 90.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_lift_f8"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          96
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r8",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r8"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r8_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_north"
+      }
+    ]
+  }
+}

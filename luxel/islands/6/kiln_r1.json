@@ -162,7 +162,7 @@
   "is_2x2_room": true,
   "design": {
     "idea": "Deepened Great Kiln Atrium Hub: preserves the hearth waystone, Blue Portal shard vault, and shortcuts to r5 and r9 while adding a Master Cycle Anvil, Twin Casting Clamp teaser, breached threshold from crash_r4, and the NE Casting Lift shortcut to kiln_r11 (Cycle 3).",
-    "kind": "hub",
+    "kind": "story",
     "beat": "ki",
     "teaches": "Multi-wing dungeon hub orientation, Blue Portal secret, and Master Cycle Anvil access.",
     "decisions": 4,

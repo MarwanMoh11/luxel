@@ -33,7 +33,7 @@
       "id": "exit_kiln_r9_ne",
       "rect": [352, 240, 32, 16],
       "to_region": "kiln_r17",
-      "to_spawn": [176, 232],
+      "to_spawn": [208, 232],
       "requires_moves": [],
       "requires_flags": ["kiln_r17_bridge"],
       "locked_door_id": "door_kiln_r9_ne"

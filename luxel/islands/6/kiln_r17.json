@@ -22,9 +22,9 @@
     },
     {
       "id": "exit_kiln_r17_south",
-      "rect": [160, 272, 32, 16],
+      "rect": [192, 272, 32, 16],
       "to_region": "kiln_r9",
-      "to_spawn": [384, 208],
+      "to_spawn": [368, 208],
       "requires_moves": [],
       "requires_flags": ["kiln_r17_bridge"],
       "locked_door_id": "door_kiln_r17_south"
@@ -94,7 +94,7 @@
     {
       "id": "door_kiln_r17_south",
       "kind": "door",
-      "pos": [176, 264],
+      "pos": [208, 264],
       "props": {
         "door_kind": "switch_door",
         "size": [32, 16],

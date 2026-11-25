@@ -14,10 +14,10 @@ LEGEND + bridge
 LEGEND G mirror
 MAP
 ##############################
-#......OOOOOO...OOOOOO..#####_
-#......OOOOOO...OOOOOO..#...#_
-#......OOOOOO...OOOOOO......#_
-#......OOOOOO...OOOOOO..##..#_
+####...OOOOOO##.OOOOOO..#####_
+###....OOOOOO##.OOOOOO..#...#_
+###....OOOOOO##.OOOOOO......#_
+##.....OOOOOO...OOOOOO..##..#_
 #......OOOOOO...OOOOOO..##..#_
 #......OOOOOO...OOOOOO......#_
 #......OOOOOO...OOOOOO......#_
@@ -25,9 +25,9 @@ MAP
 #......OOOOOO,,,OOOOOO......#_
 #......OOOOOO...OOOOOO......#_
 #......OOOOOO...OOOOOO......#_
-#......OOOOOO...OOOOOO..##..#_
+#....#.OOOOOO...OOOOOO..##..#_
 #......OOOOOO...OOOOOO..##..#_
 #......OOOOOO...OOOOOO......#_
-#......OOOOOO...OOOOOO..#...#_
-#......OOOOOO###OOOOOO###,,##_
-######,,#################,,###
+#........OOOO...OOOO........#_
+#........OOOO...OOOO.....,,.#_
+###,,####################,,###

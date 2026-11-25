@@ -37,7 +37,7 @@
       ],
       "to_region": "spire_r8",
       "to_spawn": [
-        352,
+        360,
         48
       ]
     },
@@ -216,7 +216,7 @@
         "reward_kind": "ember_piece",
         "reward": "ember_piece",
         "amount": 1,
-        "ember_id": "ember_7_temper",
+        "secret_id": "ember_7_temper",
         "zone": "spire_r17"
       }
     },

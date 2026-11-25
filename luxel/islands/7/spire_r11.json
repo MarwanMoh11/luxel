@@ -37,7 +37,7 @@
       ],
       "to_region": "spire_r2",
       "to_spawn": [
-        208,
+        216,
         48
       ]
     },
@@ -52,7 +52,7 @@
       "to_region": "spire_r4",
       "to_spawn": [
         48,
-        136
+        152
       ],
       "locked_door_id": "door_spire_r11_east"
     }
@@ -62,17 +62,17 @@
       "id": "jelly_r11_1",
       "kind": "moon_jelly",
       "pos": [
-        344,
-        184
+        112,
+        160
       ],
       "route": [
         [
-          320,
-          184
+          96,
+          160
         ],
         [
-          376,
-          184
+          160,
+          160
         ]
       ],
       "perches": [],
@@ -131,7 +131,7 @@
       "kind": "carry_orb",
       "pos": [
         104,
-        176
+        184
       ],
       "props": {
         "kind": "light",
@@ -436,7 +436,7 @@
       {
         "op": "goto",
         "to": [
-          248,
+          168,
           184
         ],
         "tol": 18.0

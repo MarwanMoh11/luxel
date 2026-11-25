@@ -1,0 +1,777 @@
+{
+  "id": "stair_r9",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R9",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    240,
+    336
+  ],
+  "zones": [
+    {
+      "id": "stair_t3_apex",
+      "name_key": "ISL8_STAIR_R9",
+      "rect": [
+        0,
+        0,
+        480,
+        384
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r9_south",
+      "rect": [
+        224,
+        368,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r8",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r9_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r10",
+      "to_spawn": [
+        256,
+        304
+      ],
+      "locked_door_id": "door_r9_north"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r9_f9",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        336
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r9_f10",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        192
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "anc_r9_f11",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        104
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "ctrl_r9",
+      "kind": "stair_controller",
+      "pos": [
+        240,
+        64
+      ],
+      "props": {
+        "tier": 3,
+        "floor_range": [
+          9,
+          11
+        ],
+        "pool_layers": [
+          "stair_c1",
+          "stair_c2",
+          "stair_c3",
+          "stair_c4"
+        ],
+        "boon_count": 3,
+        "target_exit_id": "door_r9_north",
+        "include_legendary": true
+      }
+    },
+    {
+      "id": "door_r9_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_type": "switch_door",
+        "size": [
+          48,
+          16
+        ],
+        "requires_signals": [
+          "ctrl_r9"
+        ]
+      }
+    },
+    {
+      "id": "wind_r9_gale",
+      "kind": "wind_zone",
+      "pos": [
+        224,
+        192
+      ],
+      "props": {
+        "size": [
+          192,
+          32
+        ],
+        "dir": [
+          -1,
+          0
+        ],
+        "strength": 66.0
+      }
+    },
+    {
+      "id": "mir_r9_crown_w",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        72
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mir_r9_crown_e",
+      "kind": "blue_transformer",
+      "pos": [
+        352,
+        72
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "grav_r9_mid",
+      "kind": "gravity_well",
+      "pos": [
+        160,
+        192
+      ],
+      "props": {
+        "radius": 48.0,
+        "strength": 120.0,
+        "mode": "pull"
+      }
+    },
+    {
+      "id": "hook_r9_mid",
+      "kind": "lantern_hook",
+      "pos": [
+        304,
+        192
+      ],
+      "props": {
+        "light_radius": 76.0
+      }
+    },
+    {
+      "id": "bell_r9_dusk",
+      "kind": "bell",
+      "pos": [
+        160,
+        312
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 184.0
+      }
+    },
+    {
+      "id": "lamp_r9_s",
+      "kind": "road_lamp",
+      "pos": [
+        192,
+        320
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t3_apex"
+      }
+    },
+    {
+      "id": "lamp_r9_t1e",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        304
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t3_apex"
+      }
+    },
+    {
+      "id": "lamp_r9_t2w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        192
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t3_apex"
+      }
+    },
+    {
+      "id": "lamp_r9_t2e",
+      "kind": "road_lamp",
+      "pos": [
+        368,
+        192
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t3_apex"
+      }
+    },
+    {
+      "id": "lamp_r9_t3n",
+      "kind": "road_lamp",
+      "pos": [
+        288,
+        56
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_t3_apex"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "en_r9_t1_gloam",
+      "kind": "choir_gloam",
+      "pos": [
+        112,
+        296
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 140
+    },
+    {
+      "id": "en_r9_t1_cen",
+      "kind": "censer",
+      "pos": [
+        352,
+        296
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 140
+    },
+    {
+      "id": "en_r9_t2_owl",
+      "kind": "phantom_owl",
+      "pos": [
+        128,
+        192
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 160
+    },
+    {
+      "id": "en_r9_t2_eye",
+      "kind": "eclipse_eye",
+      "pos": [
+        328,
+        184
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 130
+    },
+    {
+      "id": "en_r9_t3_clerk",
+      "kind": "toll_clerk",
+      "pos": [
+        128,
+        96
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 150
+    },
+    {
+      "id": "en_r9_t3_wraith",
+      "kind": "page_wraith",
+      "pos": [
+        352,
+        96
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 150
+    },
+    {
+      "id": "en_r9_c2_gloam",
+      "kind": "choir_gloam",
+      "pos": [
+        224,
+        184
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 150
+    },
+    {
+      "id": "en_r9_c3_eye",
+      "kind": "eclipse_eye",
+      "pos": [
+        112,
+        72
+      ],
+      "zone": "stair_t3_apex",
+      "leash": 130
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        240,
+        40
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        88,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        384,
+        320
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        120,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        360,
+        176
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        192,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        96,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        376,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "ascension_boon_plinth",
+      "pos": [
+        192,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        64
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "rose",
+      "secondary": "gold"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        80,
+        176,
+        320,
+        32
+      ],
+      "color": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        96,
+        288,
+        288,
+        48
+      ],
+      "color": "sky"
+    }
+  ],
+  "layers": [
+    {
+      "id": "stair_c1",
+      "when": "stair_layer==stair_c1",
+      "tiles": [
+        [
+          20,
+          14,
+          5,
+          4,
+          "bridge"
+        ],
+        [
+          5,
+          7,
+          5,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "bell_r9_dusk",
+        "mir_r9_crown_w",
+        "mir_r9_crown_e",
+        "en_r9_t1_gloam",
+        "en_r9_t1_cen",
+        "en_r9_t2_eye",
+        "en_r9_t3_clerk",
+        "en_r9_t3_wraith"
+      ],
+      "disable": [
+        "wind_r9_gale",
+        "grav_r9_mid",
+        "hook_r9_mid",
+        "en_r9_t2_owl",
+        "en_r9_c2_gloam",
+        "en_r9_c3_eye"
+      ]
+    },
+    {
+      "id": "stair_c2",
+      "when": "stair_layer==stair_c2",
+      "tiles": [
+        [
+          20,
+          14,
+          5,
+          4,
+          "bridge"
+        ],
+        [
+          5,
+          7,
+          5,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "wind_r9_gale",
+        "hook_r9_mid",
+        "en_r9_t1_gloam",
+        "en_r9_t2_owl",
+        "en_r9_c2_gloam",
+        "en_r9_t3_clerk",
+        "en_r9_t3_wraith"
+      ],
+      "disable": [
+        "bell_r9_dusk",
+        "grav_r9_mid",
+        "mir_r9_crown_w",
+        "mir_r9_crown_e",
+        "en_r9_t1_cen",
+        "en_r9_t2_eye",
+        "en_r9_c3_eye"
+      ]
+    },
+    {
+      "id": "stair_c3",
+      "when": "stair_layer==stair_c3",
+      "tiles": [
+        [
+          20,
+          14,
+          5,
+          4,
+          "bridge"
+        ],
+        [
+          5,
+          7,
+          5,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "grav_r9_mid",
+        "mir_r9_crown_w",
+        "mir_r9_crown_e",
+        "en_r9_t1_cen",
+        "en_r9_t2_eye",
+        "en_r9_c3_eye",
+        "en_r9_t3_clerk",
+        "en_r9_t3_wraith"
+      ],
+      "disable": [
+        "wind_r9_gale",
+        "bell_r9_dusk",
+        "hook_r9_mid",
+        "en_r9_t1_gloam",
+        "en_r9_t2_owl",
+        "en_r9_c2_gloam"
+      ]
+    },
+    {
+      "id": "stair_c4",
+      "when": "stair_layer==stair_c4",
+      "tiles": [
+        [
+          20,
+          14,
+          5,
+          4,
+          "bridge"
+        ],
+        [
+          5,
+          7,
+          5,
+          4,
+          "bridge"
+        ]
+      ],
+      "enable": [
+        "wind_r9_gale",
+        "bell_r9_dusk",
+        "mir_r9_crown_w",
+        "mir_r9_crown_e",
+        "en_r9_t1_gloam",
+        "en_r9_t1_cen",
+        "en_r9_t2_owl",
+        "en_r9_t3_clerk",
+        "en_r9_t3_wraith"
+      ],
+      "disable": [
+        "grav_r9_mid",
+        "hook_r9_mid",
+        "en_r9_t2_eye",
+        "en_r9_c2_gloam",
+        "en_r9_c3_eye"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_r9_clear",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_f11_clear"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "ASTONISHING \u2014 Tier III 3-Terrace Sky Scramble (F9-11): climb three anchored sky-terraces across 4 seeded pool variants (stair_c1..c4) with stacked boons, then claim a Final Legendary-eligible Boon Draft.",
+    "kind": "setpiece",
+    "beat": "ketsu",
+    "teaches": "Full-kit vertical 3-terrace climax with stacked Endless Stair boons & Legendary draft",
+    "decisions": 9,
+    "expert_s": 65,
+    "reward": "final_boon_draft",
+    "why": "Tall 3-terrace zig-zag sky-staircase silhouette \u2014 the signature visual climb before the F12 summit.",
+    "exit": "exit_r9_north",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          240,
+          304
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          352,
+          240
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          192
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          112,
+          136
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          104
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 65.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          76
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "wait_until",
+        "target": "ctrl_r9",
+        "prop": "state",
+        "value": 1,
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "ctrl_r9"
+      },
+      {
+        "op": "wait_until",
+        "target": "door_r9_north",
+        "prop": "opened",
+        "value": true,
+        "timeout": 3.0
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
+    ]
+  }
+}

@@ -138,8 +138,7 @@
         "reward": "ember_piece",
         "amount": 1,
         "zone": "spire_r4",
-        "secret_id": "spire_r4_abyss_portal",
-        "ember_id": "ember_7_spire_abyss"
+        "secret_id": "ember_7_spire_abyss"
       }
     },
     {

@@ -1,0 +1,492 @@
+{
+  "id": "stair_r10",
+  "island_id": 8,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "name_key": "ISL8_STAIR_R10",
+  "theme": "endless_stair",
+  "music": "isl8_setpiece",
+  "ambience": [
+    "night_breeze",
+    "sanctum_bells"
+  ],
+  "spawn": [
+    256,
+    304
+  ],
+  "zones": [
+    {
+      "id": "stair_f12_crown",
+      "name_key": "ISL8_STAIR_R10",
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_r10_south",
+      "rect": [
+        240,
+        336,
+        32,
+        16
+      ],
+      "to_island": 8,
+      "to_region": "stair_r9",
+      "to_spawn": [
+        240,
+        48
+      ]
+    },
+    {
+      "id": "exit_r10_lift_f12",
+      "rect": [
+        0,
+        160,
+        16,
+        32
+      ],
+      "to_island": 8,
+      "to_region": "stair_r1",
+      "to_spawn": [
+        384,
+        168
+      ],
+      "requires_flags": [
+        "stair_lift_f12"
+      ],
+      "locked_door_id": "door_r10_lift_f12"
+    }
+  ],
+  "interactables": [
+    {
+      "id": "anc_r10_south",
+      "kind": "room_anchor",
+      "pos": [
+        256,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "crown_r10_altar",
+      "kind": "stair_crown_altar",
+      "pos": [
+        256,
+        64
+      ],
+      "props": {}
+    },
+    {
+      "id": "chest_r10_ember",
+      "kind": "chest",
+      "pos": [
+        344,
+        64
+      ],
+      "props": {
+        "reward_kind": "ember_piece",
+        "reward": "ember_piece",
+        "amount": 1,
+        "secret_id": "ember_8_stair"
+      }
+    },
+    {
+      "id": "door_r10_lift_f12",
+      "kind": "door",
+      "pos": [
+        24,
+        176
+      ],
+      "props": {
+        "door_type": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "stair_lift_f12"
+        ]
+      }
+    },
+    {
+      "id": "pad_r10_lift_f12",
+      "kind": "stair_lift_pad",
+      "pos": [
+        64,
+        176
+      ],
+      "props": {
+        "floor_num": 1,
+        "requires_flag": "stair_lift_f12",
+        "to_region": "stair_r1",
+        "to_spawn": [
+          384,
+          168
+        ]
+      }
+    },
+    {
+      "id": "mir_r10_w",
+      "kind": "blue_transformer",
+      "pos": [
+        128,
+        176
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 45.0
+      }
+    },
+    {
+      "id": "mir_r10_e",
+      "kind": "blue_transformer",
+      "pos": [
+        384,
+        176
+      ],
+      "props": {
+        "movable": false,
+        "rotatable": true,
+        "angle_deg": 135.0
+      }
+    },
+    {
+      "id": "lamp_r10_s",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        288
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f12_crown"
+      }
+    },
+    {
+      "id": "lamp_r10_n",
+      "kind": "road_lamp",
+      "pos": [
+        208,
+        72
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f12_crown"
+      }
+    },
+    {
+      "id": "lamp_r10_w",
+      "kind": "road_lamp",
+      "pos": [
+        96,
+        176
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f12_crown"
+      }
+    },
+    {
+      "id": "lamp_r10_e",
+      "kind": "road_lamp",
+      "pos": [
+        384,
+        128
+      ],
+      "props": {
+        "lit": true,
+        "zone": "stair_f12_crown"
+      }
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_stair_warden_f12",
+      "kind": "stair_warden",
+      "tier": 3,
+      "heart": "none",
+      "pos": [
+        256,
+        168
+      ],
+      "zone": "stair_f12_crown",
+      "arena": [
+        128,
+        80,
+        256,
+        192
+      ]
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "arch_landing_gate",
+      "pos": [
+        256,
+        52
+      ],
+      "layer": "over",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        184,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "spiral_newel_pillar",
+      "pos": [
+        328,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        184,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "stair_lantern_candelabra",
+      "pos": [
+        328,
+        272
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        216,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "tattered_climb_banner",
+      "pos": [
+        296,
+        60
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        112,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "floating_stair_shard",
+      "pos": [
+        440,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.8
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        360,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.9
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "ascension_boon_plinth",
+      "pos": [
+        392,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 78,
+      "style": "astrolabe",
+      "color": "rose",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        256,
+        176
+      ],
+      "radius": 44,
+      "style": "ritual",
+      "color": "cream",
+      "secondary": "rose"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        208,
+        48,
+        176,
+        40
+      ],
+      "color": "rose"
+    }
+  ],
+  "layers": [],
+  "events": [
+    {
+      "id": "ev_r10_win",
+      "on": "cleared",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "stair_cleared"
+        },
+        {
+          "set_flag": "stair_lift_f12"
+        },
+        {
+          "set_flag": "dungeon_done:endless_stair"
+        },
+        {
+          "narrate": "ISL8_STAIR_LIFT_F12_OK"
+        }
+      ]
+    }
+  ],
+  "design": {
+    "idea": "Floor 12 Crown Summit: defeat Stair Warden Act III (Eclipse Sovereign) as outer treads crumble into star-void, claim ember_8_stair & stair_cleared, and unlock Express Lift F12.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Stair Warden Act III (Eclipse Sovereign crown shatter + tread drop) + F12 completion",
+    "decisions": 9,
+    "expert_s": 115,
+    "reward": "stair_cleared+ember_8_stair+lift_f12",
+    "why": "Asymmetric spiral-crown starry summit crowning the 12-floor vertical ascent and completing Cycle 4.",
+    "exit": "exit_r10_lift_f12",
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          256,
+          240
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          200
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_cleared"
+      },
+      {
+        "op": "expect",
+        "flag": "stair_lift_f12"
+      },
+      {
+        "op": "goto",
+        "to": [
+          256,
+          80
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "crown_r10_altar"
+      },
+      {
+        "op": "goto",
+        "to": [
+          344,
+          80
+        ],
+        "tol": 10.0
+      },
+      {
+        "op": "interact",
+        "target": "chest_r10_ember"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r10_lift_f12"
+      }
+    ]
+  }
+}

@@ -41,7 +41,7 @@
     {
       "id": "en_crash_r2_wasp2",
       "kind": "smelter_wasp",
-      "pos": [488, 224],
+      "pos": [416, 224],
       "zone": "crash_r2",
       "leash": 124
     }
