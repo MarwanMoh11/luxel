@@ -1,0 +1,5129 @@
+{
+  "version": 1,
+  "objects": {
+    "archive_bookmark_altar": {
+      "name": "Bookmark Altar",
+      "blurb": "Archive pedestal granting Bookmark Sigil after defeating The Indexer.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "archive_hollow_vision": {
+      "name": "Crystal Vision",
+      "blurb": "Wordless crystal-spine tableau in Archive Memory VII when powered.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "archive_rotunda_lamps": {
+      "name": "Rotunda Lamps",
+      "blurb": "Reading Rotunda arc lighting one lantern per cleared island memory.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "archive_warden_spawner": {
+      "name": "Bell-Call Pedestal",
+      "blurb": "Archive Memory I bell stand respawning the patrolling Memory Warden.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "ballast_keg": {
+      "name": "Ballast Keg",
+      "blurb": "Rolling powder keg that floats on floodwater and blasts cracked walls.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "blast_r": {
+          "label": "Blast Radius",
+          "type": "number",
+          "min": 16,
+          "max": 64,
+          "step": 4
+        },
+        "respawn_s": {
+          "label": "Respawn (s)",
+          "type": "number",
+          "min": 1.0,
+          "max": 12.0,
+          "step": 0.5
+        },
+        "tilt_speed": {
+          "label": "Roll Speed",
+          "type": "number",
+          "min": 20,
+          "max": 140,
+          "step": 10
+        },
+        "obey_list": {
+          "label": "Rolls With List",
+          "type": "bool"
+        },
+        "damage": {
+          "label": "Blast Damage",
+          "type": "number",
+          "min": 1.0,
+          "max": 8.0,
+          "step": 0.5
+        }
+      }
+    },
+    "beacon": {
+      "name": "Zone Beacon",
+      "blurb": "Lights up after clearing enemies to lift darkness in this zone.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        },
+        "require_clear": {
+          "label": "Needs Clear",
+          "type": "bool",
+          "help": "Requires zone enemies defeated first."
+        }
+      }
+    },
+    "beam_emitter": {
+      "name": "Beam Emitter",
+      "blurb": "Fires a steady or pulsing beam that bounces off mirrors and glass.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "dir": {
+          "label": "Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "color": {
+          "label": "Beam Color",
+          "type": "choice",
+          "options": [
+            "gold",
+            "blue",
+            "rose"
+          ]
+        },
+        "period": {
+          "label": "Pulse Period",
+          "type": "number",
+          "min": 0.0,
+          "max": 12.0,
+          "step": 0.5,
+          "help": "0 stays always on."
+        },
+        "duty": {
+          "label": "On Duty",
+          "type": "number",
+          "min": 0.1,
+          "max": 0.95,
+          "step": 0.05
+        },
+        "range": {
+          "label": "Range (px)",
+          "type": "number",
+          "min": 32,
+          "max": 640,
+          "step": 16
+        },
+        "harms_wick": {
+          "label": "Hurts Wick",
+          "type": "bool"
+        }
+      }
+    },
+    "beam_sensor": {
+      "name": "Beam Sensor",
+      "blurb": "Crystal receiver powered when hit by a matching-color beam.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "color": {
+          "label": "Color Needed",
+          "type": "choice",
+          "options": [
+            "any",
+            "gold",
+            "blue",
+            "rose"
+          ]
+        },
+        "latch": {
+          "label": "Latch On",
+          "type": "bool",
+          "help": "Stays powered after first hit."
+        },
+        "hold": {
+          "label": "Needs Continuous",
+          "type": "bool",
+          "help": "Turns off when beam leaves."
+        }
+      }
+    },
+    "beetle_mount": {
+      "name": "Sap-Horn Beetle",
+      "blurb": "Rideable sap-striding beetle (tame) or lantern-lured weight (wild).",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "tame": {
+          "label": "Tame Mount",
+          "type": "bool",
+          "help": "Wild beetles follow lantern onto plates."
+        },
+        "dir": {
+          "label": "Start Facing",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "speed": {
+          "label": "Move Speed",
+          "type": "number",
+          "min": 30,
+          "max": 140,
+          "step": 5
+        },
+        "lure_radius": {
+          "label": "Lure Radius",
+          "type": "number",
+          "min": 48,
+          "max": 240,
+          "step": 8
+        },
+        "halted": {
+          "label": "Starts Halted",
+          "type": "bool"
+        }
+      }
+    },
+    "bell": {
+      "name": "Resonant Bell",
+      "blurb": "Strike to ring a Dawn, Dusk, or War sound wave across the room.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "tone": {
+          "label": "Tone",
+          "type": "choice",
+          "options": [
+            "dawn",
+            "dusk",
+            "war"
+          ]
+        },
+        "wave_radius": {
+          "label": "Wave Radius",
+          "type": "number",
+          "min": 48,
+          "max": 360,
+          "step": 16
+        },
+        "speed": {
+          "label": "Wave Speed",
+          "type": "number",
+          "min": 60,
+          "max": 260,
+          "step": 15
+        },
+        "cooldown": {
+          "label": "Cooldown (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 4.0,
+          "step": 0.1
+        },
+        "relay": {
+          "label": "Relay Waves",
+          "type": "bool",
+          "help": "Re-rings when hit by another bell."
+        }
+      }
+    },
+    "bf_crank_relic": {
+      "name": "Belfry Relic",
+      "blurb": "Clockwork gear, crank, or mainspring pedestal in the Grand Belfry.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "blue_portal": {
+      "name": "Blue Portal",
+      "blurb": "Power with blue light or a wire to warp Wick to its paired portal.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "requires_blue": {
+          "label": "Needs Blue Light",
+          "type": "bool"
+        },
+        "starts_powered": {
+          "label": "Starts On",
+          "type": "bool"
+        },
+        "allows_skiff": {
+          "label": "Warps Skiff",
+          "type": "bool",
+          "help": "Also warps boats, rafts, and kegs."
+        },
+        "warps_bolts": {
+          "label": "Warps Bolts",
+          "type": "bool",
+          "help": "Blue bolts pass through and exit."
+        },
+        "pair_sync": {
+          "label": "Sync Pair",
+          "type": "bool",
+          "help": "Powering one powers its partner."
+        },
+        "exit_dir": {
+          "label": "Exit Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        }
+      }
+    },
+    "blue_transformer": {
+      "name": "Blue Transformer",
+      "blurb": "Reflects shots and turns yellow bolts into blue light.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "angle_deg": {
+          "label": "Angle",
+          "type": "number",
+          "min": 0,
+          "max": 315,
+          "step": 45
+        },
+        "rotatable": {
+          "label": "Rotatable",
+          "type": "bool",
+          "help": "Player can turn it in 45-deg steps."
+        },
+        "movable": {
+          "label": "Movable",
+          "type": "bool",
+          "help": "Player can push and pull it."
+        },
+        "double_sided": {
+          "label": "Double-Sided",
+          "type": "bool"
+        },
+        "world_face": {
+          "label": "World Face",
+          "type": "choice",
+          "options": [
+            "",
+            "silver",
+            "black"
+          ],
+          "help": "Blank = active in both worlds."
+        }
+      }
+    },
+    "bounce_bloom": {
+      "name": "Bounce Bloom",
+      "blurb": "Spring pad that launches Wick, orbs, or ice blocks across gaps.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "dir": {
+          "label": "Launch Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "dist": {
+          "label": "Launch Dist",
+          "type": "number",
+          "min": 24,
+          "max": 200,
+          "step": 8
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "bramble": {
+      "name": "Thorn Bramble",
+      "blurb": "Dense thorn barrier that burns away when hit by Beam.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "burned": {
+          "label": "Starts Burned",
+          "type": "bool"
+        }
+      }
+    },
+    "brazier": {
+      "name": "Brazier",
+      "blurb": "Light it with lantern, Beam, or Sunflare to power linked objects.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        },
+        "allow_interact": {
+          "label": "Light With E",
+          "type": "bool"
+        }
+      }
+    },
+    "c4_abbess_vista": {
+      "name": "Belfry Loft Vista",
+      "blurb": "Stained-glass overlook peering down into the Heron Abbess's dome.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "c4_canopy_plinth": {
+      "name": "Canopy Plinth",
+      "blurb": "Drowned Conservatory seal conduit tracking the upper glass canopy.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "car_coupler": {
+      "name": "Car Coupler",
+      "blurb": "Train latch opened by banked shots, piercing Lance, or lantern pull.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lock_type": {
+          "label": "Latch Type",
+          "type": "choice",
+          "options": [
+            "bank",
+            "armoured",
+            "pin"
+          ]
+        },
+        "needs_hook": {
+          "label": "Needs Hook",
+          "type": "bool",
+          "help": "For remote pin pulls."
+        },
+        "hook_vault": {
+          "label": "Zip Vault Boost",
+          "type": "bool"
+        },
+        "uncoupled": {
+          "label": "Starts Open",
+          "type": "bool"
+        }
+      }
+    },
+    "carry_orb": {
+      "name": "Carry Orb",
+      "blurb": "Pick up, carry, or toss onto plates, scales, and growth sockets.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "kind": {
+          "label": "Orb Kind",
+          "type": "choice",
+          "options": [
+            "light",
+            "stone",
+            "seed",
+            "key"
+          ]
+        }
+      }
+    },
+    "chest": {
+      "name": "Treasure Chest",
+      "blurb": "Opens for shards, an Ember Piece, or a dungeon key.",
+      "cat": "reward",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "reward_kind": {
+          "label": "Reward",
+          "type": "choice",
+          "options": [
+            "shards",
+            "ember_piece",
+            "wick_key",
+            "keepers_flame"
+          ]
+        },
+        "amount": {
+          "label": "Amount",
+          "type": "number",
+          "min": 1,
+          "max": 200,
+          "step": 5
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        }
+      }
+    },
+    "clock_gate": {
+      "name": "Clock Gate",
+      "blurb": "Topiary brass gate that opens on set dusk hours or when pinned.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "max_pip": {
+          "label": "Hour Pips",
+          "type": "number",
+          "min": 2,
+          "max": 6,
+          "step": 1
+        },
+        "rotate_deg": {
+          "label": "Swing Angle",
+          "type": "number",
+          "min": 0,
+          "max": 180,
+          "step": 15
+        },
+        "var": {
+          "label": "Clock Var",
+          "type": "choice",
+          "options": [
+            "dusk_hour",
+            "hg_room_hour"
+          ]
+        }
+      }
+    },
+    "clock_hand": {
+      "name": "Clock Hand",
+      "blurb": "Walkable brass clock hand that sweeps or steps 90 deg on Dawn/War rings.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "hand": {
+          "label": "Hand Type",
+          "type": "choice",
+          "options": [
+            "hour",
+            "minute",
+            "bridge"
+          ]
+        },
+        "length": {
+          "label": "Length (px)",
+          "type": "number",
+          "min": 24,
+          "max": 240,
+          "step": 8
+        },
+        "width": {
+          "label": "Width (px)",
+          "type": "number",
+          "min": 12,
+          "max": 32,
+          "step": 2
+        },
+        "speed": {
+          "label": "Sweep Speed",
+          "type": "number",
+          "min": -2.0,
+          "max": 2.0,
+          "step": 0.05
+        },
+        "start_deg": {
+          "label": "Start Angle",
+          "type": "number",
+          "min": 0,
+          "max": 315,
+          "step": 45
+        },
+        "dusk_freezable": {
+          "label": "Dusk Freezes",
+          "type": "bool"
+        }
+      }
+    },
+    "color_glass": {
+      "name": "Color Glass",
+      "blurb": "Stained-glass pane that tints passing bolts and beams.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "color": {
+          "label": "Tint Color",
+          "type": "choice",
+          "options": [
+            "gold",
+            "blue",
+            "rose"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "movable": {
+          "label": "Movable",
+          "type": "bool"
+        },
+        "cycles_color": {
+          "label": "Cycle On E",
+          "type": "bool"
+        },
+        "solid": {
+          "label": "Blocks Walking",
+          "type": "bool"
+        }
+      }
+    },
+    "colossus_boots_altar": {
+      "name": "Heat-Boots Altar",
+      "blurb": "Iron Colossus pedestal granting Cleated Heat-Boots after Piston Marshal.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "colossus_eye_vista": {
+      "name": "Colossus Viewport",
+      "blurb": "Crown cockpit furnace windows overlooking Ashen Kiln's caldera.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "colossus_stride_cam": {
+      "name": "Stride Driver",
+      "blurb": "Drives the Iron Colossus's rhythmic footstep tilts and wind bursts.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "step_period": {
+          "label": "Cycle (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 12.0,
+          "step": 0.4
+        },
+        "axis": {
+          "label": "Tilt Axis",
+          "type": "choice",
+          "options": [
+            "x",
+            "y"
+          ]
+        },
+        "warn_secs": {
+          "label": "Warn Horn (s)",
+          "type": "number",
+          "min": 0.3,
+          "max": 1.5,
+          "step": 0.05
+        },
+        "shake_amp": {
+          "label": "Step Shake",
+          "type": "number",
+          "min": 0.0,
+          "max": 0.3,
+          "step": 0.01
+        },
+        "speed_mult": {
+          "label": "Speed Mult",
+          "type": "number",
+          "min": 0.5,
+          "max": 2.5,
+          "step": 0.1
+        }
+      }
+    },
+    "conveyor": {
+      "name": "Conveyor Belt",
+      "blurb": "Moving belt that pushes Wick, crates, mirrors, and grounded foes.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "dir": {
+          "label": "Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "speed": {
+          "label": "Belt Speed",
+          "type": "number",
+          "min": 12,
+          "max": 140,
+          "step": 4
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "flip_on_signal": {
+          "label": "Flip On Signal",
+          "type": "bool"
+        },
+        "carry_mirrors": {
+          "label": "Carry Mirrors",
+          "type": "bool"
+        }
+      }
+    },
+    "court_relic_pedestal": {
+      "name": "Court Pedestal",
+      "blurb": "Briar Court stand for placing the Heartwood Acorn or Gilded Shuttle.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "court_seed_arch": {
+      "name": "Court Seed-Arch",
+      "blurb": "Briar Court finale monument that blooms after the Arbiter falls.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "court_verdict_brazier": {
+      "name": "Verdict Brazier",
+      "blurb": "Briar Court Mercy or Fire brazier choosing how later rooms mutate.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "cracked_wall": {
+      "name": "Cracked Wall",
+      "blurb": "Fractured stone barrier broken by Beam, Sunflare, kegs, or War bells.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "war_breakable": {
+          "label": "War Bell Breaks",
+          "type": "bool"
+        },
+        "broken": {
+          "label": "Starts Broken",
+          "type": "bool"
+        }
+      }
+    },
+    "crash_breach_scene": {
+      "name": "Locomotive Breach",
+      "blurb": "Wordless spectacle of the Ember Express smashing the Obsidian Dam.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "crash_hollow_cameo": {
+      "name": "Brake-Chain Cameo",
+      "blurb": "Wordless Hollow Wick cameo slicing the train's master brake chain.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "crash_throttle_hook": {
+      "name": "Throttle Link",
+      "blurb": "Locomotive roof controller wiring master pull-rings to Iron Phantom.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "crumble_floor": {
+      "name": "Crumble Floor",
+      "blurb": "Fragile slab over pits that shakes, drops out, and reforms.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "delay": {
+          "label": "Break Delay (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 5.0,
+          "step": 0.1
+        },
+        "respawn": {
+          "label": "Respawn (s)",
+          "type": "number",
+          "min": 0.5,
+          "max": 8.0,
+          "step": 0.2
+        }
+      }
+    },
+    "crystal_toggle": {
+      "name": "Crystal Switch",
+      "blurb": "Hit to flip all paired toggle blocks between gold and blue phases.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "group": {
+          "label": "Link Group",
+          "type": "text",
+          "help": "Matches toggle blocks with same name."
+        },
+        "phase": {
+          "label": "Start Phase",
+          "type": "choice",
+          "options": [
+            0,
+            1
+          ]
+        },
+        "cooldown": {
+          "label": "Cooldown (s)",
+          "type": "number",
+          "min": 0.15,
+          "max": 2.0,
+          "step": 0.05
+        }
+      }
+    },
+    "dew_lens": {
+      "name": "Dew Lens",
+      "blurb": "Rollable droplet focusing yellow shots into Dew Rays; blue freezes it.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "movable": {
+          "label": "Rollable",
+          "type": "bool"
+        },
+        "rail_axis": {
+          "label": "Roll Axis",
+          "type": "choice",
+          "options": [
+            "free",
+            "x",
+            "y",
+            "none"
+          ]
+        },
+        "focus_range": {
+          "label": "Ray Range",
+          "type": "number",
+          "min": 48,
+          "max": 256,
+          "step": 8
+        },
+        "frozen_secs": {
+          "label": "Freeze (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 20.0,
+          "step": 1.0
+        },
+        "max_bounces": {
+          "label": "Max Bounces",
+          "type": "number",
+          "min": 0,
+          "max": 8,
+          "step": 1
+        }
+      }
+    },
+    "door": {
+      "name": "Dungeon Door",
+      "blurb": "Door, gate, or bridge opened by switches, keys, combat, or flags.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "door_kind": {
+          "label": "Door Mode",
+          "type": "choice",
+          "options": [
+            "switch_door",
+            "wick_key",
+            "boss_key",
+            "combat_gate",
+            "ward_barrier",
+            "bridge_platform"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        },
+        "required_count": {
+          "label": "Signals Needed",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "step": 1
+        }
+      }
+    },
+    "dry_root_knot": {
+      "name": "Dry Root-Knot",
+      "blurb": "Tangled tiny-world barrier burned only by Dew Rays, Beam, or Sunflare.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "burned": {
+          "label": "Starts Burned",
+          "type": "bool"
+        }
+      }
+    },
+    "echo_rose": {
+      "name": "Echo Rose",
+      "blurb": "Records Wick's steps and shots, then replays a looping light echo.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "secs": {
+          "label": "Record Time (s)",
+          "type": "number",
+          "min": 1.0,
+          "max": 12.0,
+          "step": 0.5
+        },
+        "loop": {
+          "label": "Loop Replay",
+          "type": "bool"
+        },
+        "max_echoes": {
+          "label": "Max Echoes",
+          "type": "number",
+          "min": 1,
+          "max": 3,
+          "step": 1
+        }
+      }
+    },
+    "eclipse_seal_gate": {
+      "name": "Triple Eclipse Seal",
+      "blurb": "Sanctum Forecourt gate opening once all three Long Night wings clear.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "fall_wind_rig": {
+      "name": "Freefall Wind Rig",
+      "blurb": "Atmospheric vertical star-wind backdrop during the Orrery free-fall.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "falling_bell_platform": {
+      "name": "Falling Bell",
+      "blurb": "Plunging Great Toll bronze bell ride with scrolling hazards and brakes.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "floor_sigil": {
+      "name": "Floor Sigil",
+      "blurb": "One-line floor grid puzzle: step on every tile once without repeating.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "cell_size": {
+          "label": "Cell Size",
+          "type": "number",
+          "min": 12,
+          "max": 32,
+          "step": 2
+        }
+      }
+    },
+    "gal_clamp_altar": {
+      "name": "Clamp Altar",
+      "blurb": "Drowned Galleon pedestal granting Ballast Clamp after Bosun's Rig.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "gal_list_driver": {
+      "name": "Galleon List Driver",
+      "blurb": "Drowned Galleon controller sliding ship ballast when list flips.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "gallery_target": {
+      "name": "Gallery Target",
+      "blurb": "Moving target spawned by Shooting Gallery and Lantern Juggle.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "mode": {
+          "label": "Target Mode",
+          "type": "choice",
+          "options": [
+            "classic",
+            "prism",
+            "curve",
+            "juggle"
+          ]
+        },
+        "points": {
+          "label": "Points",
+          "type": "number",
+          "min": 5,
+          "max": 100,
+          "step": 5
+        },
+        "speed": {
+          "label": "Move Speed",
+          "type": "number",
+          "min": 0,
+          "max": 120,
+          "step": 5
+        }
+      }
+    },
+    "garden_sundial": {
+      "name": "Garden Sundial",
+      "blurb": "Interact to advance the dusk hour, or hold E / Beam to rewind.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "region_hour_lock": {
+          "label": "Room-Only Hour",
+          "type": "bool"
+        },
+        "can_rewind": {
+          "label": "Allow Rewind",
+          "type": "bool"
+        },
+        "max_hour": {
+          "label": "Max Hour",
+          "type": "number",
+          "min": 2,
+          "max": 6,
+          "step": 1
+        },
+        "shootable": {
+          "label": "Shootable",
+          "type": "bool"
+        },
+        "visual_radius": {
+          "label": "Dial Radius",
+          "type": "number",
+          "min": 10,
+          "max": 24,
+          "step": 2
+        }
+      }
+    },
+    "grate": {
+      "name": "Iron Grate",
+      "blurb": "Barred wall solid to Wick and lantern, but bolts and beams shoot through.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "gravity_well": {
+      "name": "Gravity Well",
+      "blurb": "Pulls or pushes bolts, lantern throws, and Wick along curved arcs.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "mode": {
+          "label": "Polarity",
+          "type": "choice",
+          "options": [
+            "pull",
+            "push"
+          ]
+        },
+        "radius": {
+          "label": "Radius (px)",
+          "type": "number",
+          "min": 20,
+          "max": 140,
+          "step": 4
+        },
+        "strength": {
+          "label": "Strength",
+          "type": "number",
+          "min": 60,
+          "max": 1000,
+          "step": 30
+        },
+        "on_signal": {
+          "label": "On Signal",
+          "type": "choice",
+          "options": [
+            "flip",
+            "toggle_active"
+          ]
+        },
+        "orbit_capture": {
+          "label": "Orbit Capture",
+          "type": "bool",
+          "help": "Lets Apogee Clasp orbit lantern."
+        },
+        "lens_only": {
+          "label": "Hidden (Lens)",
+          "type": "bool"
+        }
+      }
+    },
+    "great_lamp": {
+      "name": "Great Lamp",
+      "blurb": "End-of-island great brazier that relights the island when kindled.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        }
+      }
+    },
+    "hg_echo_altar": {
+      "name": "Echo Bud Altar",
+      "blurb": "Hourglass Maze pedestal granting the Echo Bud power.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "hg_rose_ghost": {
+      "name": "Gardener Ghost",
+      "blurb": "Looping golden apparition of the Gardener pruning a glass rose.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "hub_curio": {
+      "name": "House Curio",
+      "blurb": "Cozy Wick House keepsake with a small animation, sound, and line.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "curio": {
+          "label": "Curio",
+          "type": "choice",
+          "options": [
+            "kettle",
+            "telescope",
+            "moth_jar",
+            "ship_bottle",
+            "herb_pot",
+            "star_chart",
+            "anvil_spark",
+            "trophy_rack",
+            "cellar_cask",
+            "chime_rack",
+            "hearth_fire",
+            "tally_board",
+            "pond_lantern",
+            "old_trunk",
+            "porch_bell",
+            "weathervane"
+          ]
+        },
+        "string_id": {
+          "label": "Custom Text Key",
+          "type": "text"
+        }
+      }
+    },
+    "hub_door": {
+      "name": "Hub Station Door",
+      "blurb": "Doorway or station opening a Wick House workshop, desk, or return warp.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "door_role": {
+          "label": "Role",
+          "type": "choice",
+          "options": [
+            "moth_lantern",
+            "pane_workshop",
+            "journal_desk",
+            "music_box",
+            "gallery",
+            "race",
+            "rematch",
+            "return_waystone"
+          ]
+        }
+      }
+    },
+    "hub_npc": {
+      "name": "Hub Resident",
+      "blurb": "Wick House resident who strolls waypoints and reacts to islands relit.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "folk": {
+          "label": "Character ID",
+          "type": "text"
+        },
+        "wander_radius": {
+          "label": "Wander Radius",
+          "type": "number",
+          "min": 0,
+          "max": 64,
+          "step": 4
+        }
+      }
+    },
+    "hub_station": {
+      "name": "Hub Station",
+      "blurb": "Interactive Wick House station (panes, music box, boss rematch, jetty).",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "role": {
+          "label": "Station",
+          "type": "choice",
+          "options": [
+            "moth_lantern",
+            "music_box",
+            "rematch_mirror",
+            "lead_forge",
+            "tailor_loom",
+            "journal_desk",
+            "pane_workbench",
+            "return_jetty"
+          ]
+        }
+      }
+    },
+    "i7_hub_door": {
+      "name": "Silver Hub Door",
+      "blurb": "Moon Shoals glass doorway fast-traveling Wick back to Wick House.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "i7_moon_vista": {
+      "name": "Moon Pool Vista",
+      "blurb": "Sunken Silver Quay overlook viewed in Black World for Mirror Crab.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "i7_shadow_decoy": {
+      "name": "Shadow Decoy",
+      "blurb": "Bust, mirror, or lantern betrayed by a wrong-way NW shadow.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "decoy_style": {
+          "label": "Prop Style",
+          "type": "choice",
+          "options": [
+            "bust",
+            "mirror",
+            "lantern"
+          ]
+        },
+        "truth": {
+          "label": "Is Truth",
+          "type": "bool",
+          "help": "False casts a lying NW shadow."
+        },
+        "silent": {
+          "label": "Silent Unmask",
+          "type": "bool"
+        }
+      }
+    },
+    "i7_spotlight_bench": {
+      "name": "Spotlight Bench",
+      "blurb": "Backstage bench under golden light that refills Ember and heals 1 HP.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "i7_trial_target": {
+      "name": "Lunar Target",
+      "blurb": "Timed optical range target lit by yellow or blue shots.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "requires_blue": {
+          "label": "Needs Blue Light",
+          "type": "bool"
+        },
+        "reset_time": {
+          "label": "Reset Time (s)",
+          "type": "number",
+          "min": 4.0,
+          "max": 60.0,
+          "step": 2.0
+        }
+      }
+    },
+    "isl4_schedule_plaque": {
+      "name": "Dusk Schedule",
+      "blurb": "Obelisk showing Mirefen's six-hour dusk cycle and key hours.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "isl4_seal_plinth": {
+      "name": "Mirefen Seal",
+      "blurb": "Clock Terrace plinth showing one Mirefen dungeon wing seal.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "isl4_trial_medal": {
+      "name": "Trial Medal Stand",
+      "blurb": "Grades a linked Wing Spire trial into Bronze, Silver, or Gold.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {}
+    },
+    "keepers_flame": {
+      "name": "Keeper's Flame",
+      "blurb": "Boss key pickup that unlocks this dungeon's boss door.",
+      "cat": "reward",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "collected": {
+          "label": "Starts Collected",
+          "type": "bool"
+        }
+      }
+    },
+    "kiln_casting_clamps": {
+      "name": "Casting Clamps",
+      "blurb": "Great Kiln conduit tracking both casting wings for a forge blessing.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "kiln_damper_gauge": {
+      "name": "Damper Gauge",
+      "blurb": "Diegetic kiln heat meter showing whether furnace heat is low or surge.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "kiln_hub_door": {
+      "name": "Kiln Hub Door",
+      "blurb": "Switchyard Camp doorway fast-traveling Wick back to Wick House.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "kiln_practice_targets": {
+      "name": "Temper Target",
+      "blurb": "Sanctuary practice plate reacting only to Skip, Scatter, or Lance.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "temper": {
+          "label": "Temper Needed",
+          "type": "choice",
+          "options": [
+            "skip",
+            "scatter",
+            "lance"
+          ]
+        }
+      }
+    },
+    "lantern_hook": {
+      "name": "Lantern Hook",
+      "blurb": "Hang Wick's lantern here to leave permanent light until recalled.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "light_radius": {
+          "label": "Light Radius",
+          "type": "number",
+          "min": 36,
+          "max": 160,
+          "step": 8
+        }
+      }
+    },
+    "lantern_pickup": {
+      "name": "Resting Lantern",
+      "blurb": "Wick's starting brass lantern pickup on Bell Isle's plaza.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "lev_blowhole_geyser": {
+      "name": "Blowhole Geyser",
+      "blurb": "Leviathan belly exit plume that launches Wick skyward when unsealed.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "lev_heartbeat_driver": {
+      "name": "Whale Heartbeat",
+      "blurb": "Leviathan 8-second breath controller pulsing the belly tide.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "lev_maw_swallow": {
+      "name": "Leviathan Jaws",
+      "blurb": "Harbor-mouth whale jaws that open when rung by the Chum Bell.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "lev_wave_chaser": {
+      "name": "Storm Bow-Wave",
+      "blurb": "Sweeping storm wave chasing Wick's skiff across flooded rooftops.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "speed": {
+          "label": "Wave Speed",
+          "type": "number",
+          "min": 10,
+          "max": 90,
+          "step": 5
+        },
+        "grace_s": {
+          "label": "Grace Delay (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 20.0,
+          "step": 1.0
+        }
+      }
+    },
+    "lh_hollow_echo": {
+      "name": "Dark-Glass Echo",
+      "blurb": "Wordless Hollow Wick silhouette vignette in the Lighthouse gallery.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "lh_prism_triad": {
+      "name": "Prism Triad Gate",
+      "blurb": "Fires only when all linked inputs trigger within a brief window.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "window_s": {
+          "label": "Sync Window (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 4.0,
+          "step": 0.1
+        }
+      }
+    },
+    "light_plant": {
+      "name": "Seedlight Plant",
+      "blurb": "Grows into a bridge, bouncer, wall, or light fruit when illuminated.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "grow": {
+          "label": "Growth Form",
+          "type": "choice",
+          "options": [
+            "bridge",
+            "bounce",
+            "wall",
+            "fruit"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "secs": {
+          "label": "Grow Time (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 4.0,
+          "step": 0.1
+        },
+        "decay": {
+          "label": "Wilt Time (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 15.0,
+          "step": 0.5,
+          "help": "0 never wilts."
+        },
+        "frost_secs": {
+          "label": "Freeze Time (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 24.0,
+          "step": 1.0
+        },
+        "bounce_dist": {
+          "label": "Bounce Dist",
+          "type": "number",
+          "min": 24,
+          "max": 160,
+          "step": 8
+        }
+      }
+    },
+    "light_sensor": {
+      "name": "Light Sensor",
+      "blurb": "Charges under steady lantern or beam light, then powers wired targets.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "need_secs": {
+          "label": "Charge Time (s)",
+          "type": "number",
+          "min": 0.15,
+          "max": 5.0,
+          "step": 0.1
+        },
+        "decay_rate": {
+          "label": "Decay Rate",
+          "type": "number",
+          "min": 0.0,
+          "max": 3.0,
+          "step": 0.1
+        },
+        "threshold": {
+          "label": "Light Threshold",
+          "type": "number",
+          "min": 0.1,
+          "max": 1.0,
+          "step": 0.05
+        },
+        "hold": {
+          "label": "Needs Steady Light",
+          "type": "bool"
+        }
+      }
+    },
+    "locks_harpoon_altar": {
+      "name": "Harpoon Altar",
+      "blurb": "Smugglers' Locks pedestal granting Sluice Harpoon after Dredge Hulk.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "locks_orbit_capacitor": {
+      "name": "Orbit Capacitor",
+      "blurb": "Pass-through blue capacitor charged by orbiting prism bolts.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "hold_secs": {
+          "label": "Hold Time (s)",
+          "type": "number",
+          "min": 0.5,
+          "max": 10.0,
+          "step": 0.5
+        },
+        "latch": {
+          "label": "Latch On",
+          "type": "bool"
+        },
+        "requires_blue": {
+          "label": "Needs Blue Light",
+          "type": "bool"
+        }
+      }
+    },
+    "logic_gate": {
+      "name": "Logic Gate",
+      "blurb": "Combines wired signals (all, any, xor, sequence, or count).",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "op": {
+          "label": "Rule",
+          "type": "choice",
+          "options": [
+            "all",
+            "any",
+            "xor",
+            "seq",
+            "count"
+          ]
+        },
+        "n": {
+          "label": "Count Needed",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "step": 1,
+          "help": "Used only when Rule is count."
+        },
+        "invert": {
+          "label": "Invert Output",
+          "type": "bool"
+        }
+      }
+    },
+    "loom_landmark": {
+      "name": "Loom Landmark",
+      "blurb": "Decorative Weaver's Loom backdrop piece (tapestry, bobbin, beam).",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "variant": {
+          "label": "Piece",
+          "type": "choice",
+          "options": [
+            "loom_tapestry",
+            "hanging_bobbin",
+            "overhead_beam",
+            "counterweight"
+          ]
+        },
+        "flip_x": {
+          "label": "Flip Horizontal",
+          "type": "bool"
+        }
+      }
+    },
+    "loom_shuttle_altar": {
+      "name": "Shuttle Altar",
+      "blurb": "Weaver's Loom pedestal granting Brass Shuttle after Thread-Keeper.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "loom_shuttle_spool": {
+      "name": "Shuttle Spool",
+      "blurb": "Weaver's Loom spool that ties a conducting silk wire to Wick's lantern.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "conduct_speed": {
+          "label": "Spark Speed",
+          "type": "number",
+          "min": 48,
+          "max": 240,
+          "step": 12
+        },
+        "state": {
+          "label": "Start State",
+          "type": "choice",
+          "options": [
+            "taut",
+            "slack",
+            "cut",
+            "frozen"
+          ]
+        }
+      }
+    },
+    "loom_warp_wheel": {
+      "name": "Warp Wheel",
+      "blurb": "Heddle Hub wheel that shifts catwalk decks unless locked by silk.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "lore_stone": {
+      "name": "Lore Stone",
+      "blurb": "Carved stele that shows a story inscription when inspected.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "string_id": {
+          "label": "Text Key",
+          "type": "text",
+          "help": "String ID from pack strings."
+        },
+        "icon": {
+          "label": "Emblem",
+          "type": "choice",
+          "options": [
+            "lantern",
+            "bell",
+            "tide",
+            "leaf",
+            "clock",
+            "star",
+            "flame",
+            "moon",
+            "sun",
+            "key"
+          ]
+        },
+        "duration": {
+          "label": "Show Time (s)",
+          "type": "number",
+          "min": 1.5,
+          "max": 8.0,
+          "step": 0.5
+        }
+      }
+    },
+    "lying_portrait": {
+      "name": "Manor Portrait",
+      "blurb": "Whodunit suspect portrait or sweeping lamp-watcher that shifts walls.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "mode": {
+          "label": "Mode",
+          "type": "choice",
+          "options": [
+            "verdict",
+            "watcher"
+          ]
+        },
+        "suspect": {
+          "label": "Suspect",
+          "type": "choice",
+          "options": [
+            "butler",
+            "choir",
+            "steward"
+          ]
+        },
+        "dir": {
+          "label": "Watch Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "cone_range": {
+          "label": "Cone Range",
+          "type": "number",
+          "min": 48,
+          "max": 220,
+          "step": 8
+        },
+        "cone_deg": {
+          "label": "Cone Angle",
+          "type": "number",
+          "min": 20,
+          "max": 140,
+          "step": 5
+        },
+        "freeze_secs": {
+          "label": "Freeze (s)",
+          "type": "number",
+          "min": 0.5,
+          "max": 6.0,
+          "step": 0.5
+        }
+      }
+    },
+    "mask_plinth": {
+      "name": "Mask Plinth",
+      "blurb": "Cages one or more of Wick's moves until shattered or reclaimed.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "act": {
+          "label": "Act Number",
+          "type": "number",
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        "hp": {
+          "label": "Mask HP",
+          "type": "number",
+          "min": 0.0,
+          "max": 10.0,
+          "step": 0.5
+        },
+        "breakable": {
+          "label": "Breakable",
+          "type": "bool"
+        },
+        "interact_reclaim": {
+          "label": "Reclaim With E",
+          "type": "bool"
+        },
+        "auto_steal": {
+          "label": "Auto Steal",
+          "type": "bool"
+        },
+        "mask_icon": {
+          "label": "Icon",
+          "type": "choice",
+          "options": [
+            "bolt",
+            "dash",
+            "throw",
+            "prism",
+            "beam",
+            "wings",
+            "lens",
+            "sunflare"
+          ]
+        }
+      }
+    },
+    "masq_cotillion_ring": {
+      "name": "Cotillion Ring",
+      "blurb": "Midnight Cotillion waltz rings and blackout shuffle director.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "masq_floor_reflection": {
+      "name": "Floor Reflection",
+      "blurb": "Under-glass masquerade floor layer revealing hidden chasms and lies.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "masquerade_dancer": {
+      "name": "Masquerade Guest",
+      "blurb": "Waltzing masked guest; unmask Truth or Hollow by reading its shadow.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "role": {
+          "label": "Guest Role",
+          "type": "choice",
+          "options": [
+            "truth",
+            "liar",
+            "hollow"
+          ]
+        },
+        "shadow_mode": {
+          "label": "Shadow Tell",
+          "type": "choice",
+          "options": [
+            "se_gold",
+            "nw_wrong",
+            "none",
+            "black_lantern"
+          ]
+        },
+        "speed": {
+          "label": "Waltz Speed",
+          "type": "number",
+          "min": 0,
+          "max": 90,
+          "step": 4
+        },
+        "rounds": {
+          "label": "Rounds",
+          "type": "number",
+          "min": 1,
+          "max": 5,
+          "step": 1
+        },
+        "unmask_by_bolt": {
+          "label": "Unmask By Shot",
+          "type": "bool"
+        }
+      }
+    },
+    "memory_plinth": {
+      "name": "Memory Plinth",
+      "blurb": "Temporarily surrenders one move to power targets; tap again to reclaim.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "move_id": {
+          "label": "Move Held",
+          "type": "choice",
+          "options": [
+            "bolt",
+            "dash",
+            "throw",
+            "prism",
+            "beam",
+            "wings",
+            "lens",
+            "sunflare"
+          ]
+        },
+        "auto_return_on_clear": {
+          "label": "Return On Clear",
+          "type": "bool"
+        }
+      }
+    },
+    "meteor_orb": {
+      "name": "Meteor Orb",
+      "blurb": "Heavy boulder slingshotted by Throw or Beam along gravity curves.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "mass": {
+          "label": "Mass",
+          "type": "number",
+          "min": 0.4,
+          "max": 3.0,
+          "step": 0.2
+        },
+        "respawn_s": {
+          "label": "Respawn (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 5.0,
+          "step": 0.2
+        },
+        "breaks_cracked": {
+          "label": "Breaks Cracks",
+          "type": "bool"
+        }
+      }
+    },
+    "mg_bell_choir": {
+      "name": "Bell Choir Game",
+      "blurb": "Roof Observatory minigame controller for repeating Dawn-Dusk-War motifs.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mg_dash_corridor": {
+      "name": "Dash Corridor",
+      "blurb": "Underpass minigame controller for dashing through sweeping waves.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mg_endless_cellar": {
+      "name": "Endless Cellar",
+      "blurb": "Daily-seeded combat wave trial in Wick House's stone cellar.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mg_lantern_juggle": {
+      "name": "Lantern Juggle",
+      "blurb": "Moth Attic minigame controller for chaining Throw, Recall, and Zip.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mg_shooting_gallery": {
+      "name": "Shooting Gallery",
+      "blurb": "Wick House range minigame with classic, prism, and gravity target sets.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mg_skiff_race": {
+      "name": "Skiff Race",
+      "blurb": "Garden Pier lagoon time-trial controller using the Lantern Skiff.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "mimic_statue": {
+      "name": "Mimic Statue",
+      "blurb": "Stone effigy that mirrors Wick's footsteps to press distant plates.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "mirror": {
+          "label": "Mirror Axis",
+          "type": "choice",
+          "options": [
+            "x",
+            "y",
+            "both"
+          ]
+        },
+        "range": {
+          "label": "Link Range",
+          "type": "number",
+          "min": 64,
+          "max": 512,
+          "step": 16
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "can_push": {
+          "label": "Pushes Blocks",
+          "type": "bool"
+        },
+        "reset_on_signal": {
+          "label": "Reset On Signal",
+          "type": "bool"
+        }
+      }
+    },
+    "mirror": {
+      "name": "Brass Mirror",
+      "blurb": "Reflects bolts and beams along its angle, or acts as a stage spotlight.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "angle_deg": {
+          "label": "Angle",
+          "type": "number",
+          "min": 0,
+          "max": 315,
+          "step": 45
+        },
+        "rotatable": {
+          "label": "Rotatable",
+          "type": "bool"
+        },
+        "movable": {
+          "label": "Movable",
+          "type": "bool"
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "cue_spotlight": {
+          "label": "Stage Spotlight",
+          "type": "bool",
+          "help": "Lets Cue Mirror shots pierce curtains."
+        },
+        "cue_curtain": {
+          "label": "Velvet Curtain",
+          "type": "bool",
+          "help": "Blocks shots unless fired from spotlight."
+        }
+      }
+    },
+    "mirror_avatar": {
+      "name": "Mirror Avatar",
+      "blurb": "Living reflection across glass that walks, pushes, and fires with Wick.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "axis": {
+          "label": "Mirror Axis",
+          "type": "choice",
+          "options": [
+            "x",
+            "y",
+            "both"
+          ]
+        },
+        "mirror_world": {
+          "label": "World Side",
+          "type": "choice",
+          "options": [
+            "same",
+            "opposite"
+          ]
+        },
+        "fires_mirror_bolts": {
+          "label": "Mirrors Shots",
+          "type": "bool"
+        },
+        "range": {
+          "label": "Link Range",
+          "type": "number",
+          "min": 80,
+          "max": 600,
+          "step": 20
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "mn_hood_altar": {
+      "name": "Shutter Hood Altar",
+      "blurb": "Manor power pedestal granting the Shutter Hood after Clockwork Valet.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "moon_pool": {
+      "name": "Moon Pool",
+      "blurb": "Quicksilver pool that flips the room between Silver and Black worlds.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "radius_px": {
+          "label": "Pool Radius",
+          "type": "number",
+          "min": 12,
+          "max": 32,
+          "step": 2
+        },
+        "allow_bolt_flip": {
+          "label": "Shoot To Flip",
+          "type": "bool"
+        },
+        "step_flip": {
+          "label": "Step To Flip",
+          "type": "bool"
+        },
+        "carry_bridge": {
+          "label": "Keeps Carried Orb",
+          "type": "bool"
+        },
+        "hidden": {
+          "label": "Hidden (Lens)",
+          "type": "bool"
+        },
+        "locked": {
+          "label": "Starts Locked",
+          "type": "bool"
+        }
+      }
+    },
+    "mooring_post": {
+      "name": "Mooring Post",
+      "blurb": "Water piling that catches thrown lantern for Skiff slingshot turns.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "orbit_r": {
+          "label": "Swing Radius",
+          "type": "number",
+          "min": 24,
+          "max": 88,
+          "step": 4
+        },
+        "allow_dismount": {
+          "label": "Safe Dismount",
+          "type": "bool"
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "moth": {
+      "name": "Lost Moth",
+      "blurb": "Collectible moth hiding in darkness; draw it in with lantern light.",
+      "cat": "reward",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "moth_arch_gate": {
+      "name": "80-Moth Arch",
+      "blurb": "Obsidian eclipse arch guarding The First Dark for 80-moth collectors.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "mover_wall": {
+      "name": "Sliding Wall",
+      "blurb": "Solid wall that slides along a path when signaled or automatically.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "speed": {
+          "label": "Slide Speed",
+          "type": "number",
+          "min": 12,
+          "max": 180,
+          "step": 6
+        },
+        "on_signal": {
+          "label": "Signal Mode",
+          "type": "choice",
+          "options": [
+            "move",
+            "toggle",
+            "auto"
+          ]
+        }
+      }
+    },
+    "moving_platform": {
+      "name": "Moving Platform",
+      "blurb": "Mechanical platform carrying Wick and blocks smoothly over gaps.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "speed": {
+          "label": "Speed",
+          "type": "number",
+          "min": 12,
+          "max": 140,
+          "step": 4
+        },
+        "pingpong": {
+          "label": "Ping-Pong",
+          "type": "bool"
+        },
+        "loop": {
+          "label": "Loop Path",
+          "type": "bool"
+        },
+        "needs_power": {
+          "label": "Needs Signal",
+          "type": "bool"
+        }
+      }
+    },
+    "ms_roofed_brazier": {
+      "name": "Roofed Brazier",
+      "blurb": "Stone-canopied brazier whose flame stays lit even during Rain.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        },
+        "allow_interact": {
+          "label": "Light With E",
+          "type": "bool"
+        },
+        "secs": {
+          "label": "Burn Time (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 20.0,
+          "step": 0.5,
+          "help": "0 stays lit."
+        }
+      }
+    },
+    "ms_vane_pedestal": {
+      "name": "Vane Rod Altar",
+      "blurb": "Rain Mausoleum pedestal granting the Vane Rod to turn Weather Wheels.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ms_weather_buoy": {
+      "name": "Mirror Buoy",
+      "blurb": "Skylight buoy that lifts a docked mirror when flooded by Rain.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "dock_radius": {
+          "label": "Dock Radius",
+          "type": "number",
+          "min": 12,
+          "max": 36,
+          "step": 2
+        },
+        "needs_arm_signal": {
+          "label": "Needs Arm Signal",
+          "type": "bool"
+        },
+        "shoot_latch": {
+          "label": "Shoot To Latch",
+          "type": "bool"
+        }
+      }
+    },
+    "ms_weather_sync": {
+      "name": "Barometer Plaque",
+      "blurb": "Rain Mausoleum barometer keeping room and dungeon weather synced.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "ms_weather_urn": {
+      "name": "Singing Urn",
+      "blurb": "Choral urn silenced in order during its required weather state.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "urn_index": {
+          "label": "Order Number",
+          "type": "number",
+          "min": 1,
+          "max": 6,
+          "step": 1
+        },
+        "total": {
+          "label": "Total Urns",
+          "type": "number",
+          "min": 1,
+          "max": 6,
+          "step": 1
+        },
+        "weather_req": {
+          "label": "Weather Needed",
+          "type": "choice",
+          "options": [
+            "sun",
+            "rain",
+            "wind"
+          ]
+        },
+        "group": {
+          "label": "Choir Group",
+          "type": "text"
+        }
+      }
+    },
+    "mv_apogee_altar": {
+      "name": "Apogee Clasp Altar",
+      "blurb": "Meteor Vault pedestal granting the Apogee Clasp lantern orbit power.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "npc": {
+      "name": "Lamp-Folk NPC",
+      "blurb": "Friendly character with pictogram speech bubbles and optional quest.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "folk": {
+          "label": "Character ID",
+          "type": "text"
+        },
+        "wander_radius": {
+          "label": "Wander Radius",
+          "type": "number",
+          "min": 0,
+          "max": 64,
+          "step": 4
+        },
+        "rescuable": {
+          "label": "Rescuable",
+          "type": "bool",
+          "help": "Joins Wick House once talked to."
+        }
+      }
+    },
+    "o5_hollow_telescope": {
+      "name": "East Telescope",
+      "blurb": "Grand Orrery telescope revealing a wordless Moon Shoals vision.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "o5_syzygy_conduit": {
+      "name": "Syzygy Conduit",
+      "blurb": "Grand Orrery glyph that fires when its three syzygy stars are lit.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "oak_hollow_effigy": {
+      "name": "Amber Effigy",
+      "blurb": "Wordless Hollow Wick amber monument lit by two flanking braziers.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "oak_moving_chamber": {
+      "name": "Moving Chamber",
+      "blurb": "Hollow Oak rotating chamber driven by whichever quadrant stays dark.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "oak_sap_rotor_ctrl": {
+      "name": "Sap Rotor Control",
+      "blurb": "Hollow Oak growth-ring wheel that turns only while sap is high.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "obsidian_seal": {
+      "name": "Obsidian Seal",
+      "blurb": "Heavy dark stone barrier shattered only by Sunflare.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "shattered": {
+          "label": "Starts Broken",
+          "type": "bool"
+        }
+      }
+    },
+    "one_way_gate": {
+      "name": "One-Way Gate",
+      "blurb": "Turnstile shortcut Wick can pass through in only one direction.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "dir": {
+          "label": "Pass Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "flip_on_signal": {
+          "label": "Flip On Signal",
+          "type": "bool"
+        }
+      }
+    },
+    "optic_well": {
+      "name": "Optic Well",
+      "blurb": "Vertical Lighthouse light shaft relaying blue beams between floors.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "role": {
+          "label": "Role",
+          "type": "choice",
+          "options": [
+            "receiver",
+            "emitter"
+          ]
+        },
+        "var_name": {
+          "label": "Relay Channel",
+          "type": "choice",
+          "options": [
+            "relay_f1",
+            "relay_f2",
+            "relay_f3"
+          ]
+        },
+        "emit_dir": {
+          "label": "Emit Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "requires_blue": {
+          "label": "Needs Blue Light",
+          "type": "bool"
+        },
+        "range": {
+          "label": "Beam Range",
+          "type": "number",
+          "min": 48,
+          "max": 512,
+          "step": 16
+        }
+      }
+    },
+    "ow_carillon_trial": {
+      "name": "Carillon Trial",
+      "blurb": "Chime Town ear-test controller for repeating bell motifs.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_chime_relay": {
+      "name": "Estate Chime Trial",
+      "blurb": "Manor Gardens stealth relay controller for ringing four bells unseen.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_compass_totem": {
+      "name": "Wood Compass",
+      "blurb": "Lantern Glade totem showing the Shifting Woods' live turn and pins.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_foundry_trial": {
+      "name": "Foundry Ring Trial",
+      "blurb": "Timed foundry bell sprint trial controller.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_hide_moth": {
+      "name": "Hiding Moth",
+      "blurb": "Midnight hide-and-seek moth revealed by a Dawn bell ring.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_hub_portal": {
+      "name": "Town Hub Door",
+      "blurb": "Chime Town doorway that fast-travels Wick back to Wick House.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_sun_seed": {
+      "name": "Sun-Seed Bud",
+      "blurb": "Quest flower bud that blooms under lantern light for Gardener Frog.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ow_twin_clapper_seal": {
+      "name": "Twin Clapper Seal",
+      "blurb": "Belfry Forecourt seal tracking Undercroft and Manor completion.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "palace_false_key": {
+      "name": "False Boss Key",
+      "blurb": "Counterfeit Silver World boss key with a telltale NW shadow.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "palace_moon_pocket_altar": {
+      "name": "Moon Pocket Altar",
+      "blurb": "Inverted Palace reliquary granting Moon Pocket after Silver-Tide Mimic.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "pane_pickup": {
+      "name": "Stained-Glass Pane",
+      "blurb": "Collectible lantern pane granting a passive build modifier.",
+      "cat": "reward",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "pane": {
+          "label": "Pane ID",
+          "type": "text"
+        }
+      }
+    },
+    "party_heist_board": {
+      "name": "Heist Board",
+      "blurb": "Garden Party lobby board tracking six-hour heist intel medallions.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "party_key_pedestal": {
+      "name": "Clock Key Stand",
+      "blurb": "Garden Party vault pedestal holding the Golden Clock Key.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "party_start_arch": {
+      "name": "Heist Start Arch",
+      "blurb": "Garden Party lobby arch that launches the One-Dusk Heist.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "phantom_platform": {
+      "name": "Phantom Bridge",
+      "blurb": "Hidden bridge that turns solid when lit with True Lens.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "persist_grace": {
+          "label": "Fade Grace (s)",
+          "type": "number",
+          "min": 0.1,
+          "max": 3.0,
+          "step": 0.1
+        },
+        "revealed": {
+          "label": "Starts Shown",
+          "type": "bool"
+        }
+      }
+    },
+    "pl_sextant_altar": {
+      "name": "Sextant Altar",
+      "blurb": "Planetarium pedestal granting the Starlight Sextant power.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "polarity_well": {
+      "name": "Polarity Well",
+      "blurb": "Gravity well flipped between pull and push by shooting its center.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "mode": {
+          "label": "Start Mode",
+          "type": "choice",
+          "options": [
+            "pull",
+            "push"
+          ]
+        },
+        "radius": {
+          "label": "Radius (px)",
+          "type": "number",
+          "min": 24,
+          "max": 140,
+          "step": 4
+        },
+        "strength": {
+          "label": "Strength",
+          "type": "number",
+          "min": 80,
+          "max": 900,
+          "step": 20
+        },
+        "orbit_capture": {
+          "label": "Orbit Capture",
+          "type": "bool"
+        },
+        "orbit_r": {
+          "label": "Orbit Radius",
+          "type": "number",
+          "min": 16,
+          "max": 80,
+          "step": 2
+        },
+        "lens_only": {
+          "label": "Hidden (Lens)",
+          "type": "bool"
+        }
+      }
+    },
+    "pressure_plate": {
+      "name": "Pressure Plate",
+      "blurb": "Floor pad pressed by Wick, blocks, lantern, or foes to power targets.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "by": {
+          "label": "Pressed By",
+          "type": "choice",
+          "options": [
+            [
+              "wick"
+            ],
+            [
+              "block"
+            ],
+            [
+              "wick",
+              "lantern"
+            ],
+            [
+              "block",
+              "wick"
+            ],
+            [
+              "enemy",
+              "wick"
+            ],
+            [
+              "block",
+              "enemy"
+            ],
+            [
+              "wick",
+              "lantern",
+              "block",
+              "enemy"
+            ]
+          ]
+        },
+        "latch": {
+          "label": "Latch On",
+          "type": "bool",
+          "help": "Stays down once pressed."
+        },
+        "hold": {
+          "label": "Hold Required",
+          "type": "bool",
+          "help": "Releases when weight leaves."
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "pull_ring": {
+      "name": "Pull Ring",
+      "blurb": "Throw lantern and recall or zip to yank the ring and power targets.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "axis": {
+          "label": "Pull Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "dist": {
+          "label": "Pull Dist (px)",
+          "type": "number",
+          "min": 8,
+          "max": 64,
+          "step": 4
+        },
+        "latch": {
+          "label": "Latch Pulled",
+          "type": "bool"
+        },
+        "retract_speed": {
+          "label": "Retract Speed",
+          "type": "number",
+          "min": 4,
+          "max": 60,
+          "step": 2
+        }
+      }
+    },
+    "push_block": {
+      "name": "Push Block",
+      "blurb": "Stone, sliding ice, light crate, or molten slag block cooled by blue.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "variant": {
+          "label": "Material",
+          "type": "choice",
+          "options": [
+            "stone",
+            "ice",
+            "crate",
+            "slag"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "cooled": {
+          "label": "Starts Cooled",
+          "type": "bool",
+          "help": "For slag blocks only."
+        }
+      }
+    },
+    "quest_item": {
+      "name": "Quest Relic",
+      "blurb": "Collectible or carry-back item for a Lamp-Folk side quest.",
+      "cat": "reward",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "carry": {
+          "label": "Carry Back",
+          "type": "bool"
+        },
+        "icon": {
+          "label": "Icon ID",
+          "type": "text"
+        }
+      }
+    },
+    "rail": {
+      "name": "Balustrade Rail",
+      "blurb": "Low railing blocking Wick, while shots, lantern throws, and flyers clear it.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "rest_shrine": {
+      "name": "Rest Shrine",
+      "blurb": "Heals Wick and opens the lantern upgrade shop.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "road_lamp": {
+      "name": "Road Lamp",
+      "blurb": "Lantern post that lights up when struck or passed with the lantern.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        }
+      }
+    },
+    "room_anchor": {
+      "name": "Room Anchor",
+      "blurb": "Local checkpoint that saves Wick's safe respawn spot in this room.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "auto": {
+          "label": "Auto Activate",
+          "type": "bool"
+        },
+        "activate_radius": {
+          "label": "Trigger Radius",
+          "type": "number",
+          "min": 12,
+          "max": 48,
+          "step": 4
+        }
+      }
+    },
+    "rotor": {
+      "name": "Floor Rotor",
+      "blurb": "Turntable platform that turns 90 degrees with riders, blocks, and mirrors.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "quarter_on_signal": {
+          "label": "90-Deg Signal",
+          "type": "bool"
+        },
+        "speed": {
+          "label": "Spin Speed",
+          "type": "number",
+          "min": -3.0,
+          "max": 3.0,
+          "step": 0.1,
+          "help": "0 only turns on signal."
+        },
+        "start_quarter": {
+          "label": "Start Facing",
+          "type": "choice",
+          "options": [
+            0,
+            1,
+            2,
+            3
+          ]
+        },
+        "rotate_normals": {
+          "label": "Rotate Mirrors",
+          "type": "bool"
+        }
+      }
+    },
+    "sanctum_bell_chain": {
+      "name": "Eclipse Bell Chain",
+      "blurb": "Bell Sanctum monument tracking the three deepened Sanctum seals.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "sanctum_eclipse_bell": {
+      "name": "Great Eclipse Bell",
+      "blurb": "Sanctum centerpiece bound by three chains testing all eight moves.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {}
+    },
+    "sanctum_hollow_shrine": {
+      "name": "Broken Lantern",
+      "blurb": "Hollow Wick's shattered brass lantern shrine in Bell Sanctum.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "sap_clock": {
+      "name": "Sap Clock",
+      "blurb": "Valve, timer, or cycling clock that floods and drains Hollow Oak sap.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "mode": {
+          "label": "Mode",
+          "type": "choice",
+          "options": [
+            "valve",
+            "timed",
+            "cycle",
+            "dial"
+          ]
+        },
+        "secs": {
+          "label": "Duration (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 40.0,
+          "step": 1.0
+        },
+        "freeze_secs": {
+          "label": "Freeze (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 20.0,
+          "step": 1.0
+        },
+        "shootable": {
+          "label": "Shootable",
+          "type": "bool"
+        }
+      }
+    },
+    "scale": {
+      "name": "Balance Scale",
+      "blurb": "Two-pan weight scale solved by balancing or tipping its pans.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "mode": {
+          "label": "Goal",
+          "type": "choice",
+          "options": [
+            "balance",
+            "left_heavy",
+            "right_heavy",
+            "either"
+          ]
+        },
+        "need_weight": {
+          "label": "Min Weight",
+          "type": "number",
+          "min": 0.5,
+          "max": 6.0,
+          "step": 0.5
+        },
+        "pan_radius": {
+          "label": "Pan Radius",
+          "type": "number",
+          "min": 8,
+          "max": 32,
+          "step": 2
+        },
+        "latch": {
+          "label": "Latch Solved",
+          "type": "bool"
+        }
+      }
+    },
+    "sequence_orbs": {
+      "name": "Sequence Orbs",
+      "blurb": "Row of glowing orbs that must be shot in their shown order.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "count": {
+          "label": "Orb Count",
+          "type": "number",
+          "min": 2,
+          "max": 6,
+          "step": 1
+        },
+        "spacing": {
+          "label": "Spacing (px)",
+          "type": "number",
+          "min": 20,
+          "max": 96,
+          "step": 4
+        }
+      }
+    },
+    "shadow_gate": {
+      "name": "Shadow Gate",
+      "blurb": "Barrier that opens only in darkness\u2014leave your lantern behind.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "threshold": {
+          "label": "Dark Threshold",
+          "type": "number",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.05
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        }
+      }
+    },
+    "shop_npc": {
+      "name": "Shopkeeper NPC",
+      "blurb": "Lamp-Folk merchant who opens Panes, Rest Upgrades, or Journal.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "folk": {
+          "label": "Character ID",
+          "type": "text"
+        },
+        "shop_mode": {
+          "label": "Shop Menu",
+          "type": "choice",
+          "options": [
+            "panes",
+            "upgrades",
+            "journal"
+          ]
+        },
+        "wander_radius": {
+          "label": "Wander Radius",
+          "type": "number",
+          "min": 0,
+          "max": 64,
+          "step": 4
+        }
+      }
+    },
+    "shrine": {
+      "name": "Move Shrine",
+      "blurb": "Pedestal that permanently teaches Wick one core lantern move.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "move_id": {
+          "label": "Move Granted",
+          "type": "choice",
+          "options": [
+            "dash",
+            "prism",
+            "beam",
+            "wings",
+            "lens",
+            "sunflare"
+          ]
+        },
+        "claimed": {
+          "label": "Starts Claimed",
+          "type": "bool"
+        }
+      }
+    },
+    "signal_board": {
+      "name": "Signal Board",
+      "blurb": "High Trestle convergence tracker and express timetable whistle.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "silk_loom_spool": {
+      "name": "Silk Spool",
+      "blurb": "Conducts sparks along silk threads; blue freezes it, dry threads snap.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "state": {
+          "label": "Start State",
+          "type": "choice",
+          "options": [
+            "taut",
+            "slack",
+            "cut",
+            "frozen"
+          ]
+        },
+        "conduct_speed": {
+          "label": "Spark Speed",
+          "type": "number",
+          "min": 32,
+          "max": 240,
+          "step": 8
+        },
+        "dry": {
+          "label": "Dry (Snappable)",
+          "type": "bool"
+        },
+        "walkable": {
+          "label": "Walkable Thread",
+          "type": "bool"
+        },
+        "accepts_shuttle": {
+          "label": "Accepts Shuttle",
+          "type": "bool"
+        },
+        "regrow_secs": {
+          "label": "Regrow (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 15.0,
+          "step": 0.5
+        }
+      }
+    },
+    "skiff_bell": {
+      "name": "Skiff Recall Bell",
+      "blurb": "Ring to summon the region's Lantern Skiff back to this dock.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "skiff_tether": {
+      "name": "Skiff Painter Rope",
+      "blurb": "Harbor mooring rope that unlocks Wick's Lantern Skiff when snapped.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "slag_pourer": {
+      "name": "Slag Pourer",
+      "blurb": "Overhead spout pouring molten slag blocks or slimes into a floor mold.",
+      "cat": "hazard",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "spawn_kind": {
+          "label": "Pours",
+          "type": "choice",
+          "options": [
+            "block",
+            "slime"
+          ]
+        },
+        "auto_pour": {
+          "label": "Auto Pour",
+          "type": "bool"
+        },
+        "max_live": {
+          "label": "Max Live",
+          "type": "number",
+          "min": 1,
+          "max": 4,
+          "step": 1
+        },
+        "cycle_secs": {
+          "label": "Repeat (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 20.0,
+          "step": 0.5
+        },
+        "pour_warn_secs": {
+          "label": "Warn (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 2.0,
+          "step": 0.1
+        },
+        "respawn_delay": {
+          "label": "Refill Delay",
+          "type": "number",
+          "min": 0.5,
+          "max": 10.0,
+          "step": 0.5
+        }
+      }
+    },
+    "spark_hider": {
+      "name": "Hiding Spark-Kid",
+      "blurb": "Spark-Kid hiding spot found by shining lantern light or interacting.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "spike_floor": {
+      "name": "Spike Floor",
+      "blurb": "Floor spikes with a clear glint tell; dash or glide safely over them.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "period": {
+          "label": "Cycle (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 10.0,
+          "step": 0.2,
+          "help": "0 only moves on signal."
+        },
+        "offset": {
+          "label": "Phase Offset",
+          "type": "number",
+          "min": 0.0,
+          "max": 10.0,
+          "step": 0.2
+        },
+        "on_signal": {
+          "label": "Signal Mode",
+          "type": "choice",
+          "options": [
+            "extend",
+            "retract",
+            "toggle"
+          ]
+        },
+        "on": {
+          "label": "Starts Up",
+          "type": "bool"
+        }
+      }
+    },
+    "spinner": {
+      "name": "Flame Spinner",
+      "blurb": "Rotating hazard beam hub; dash or glide through its ember arms.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "arms": {
+          "label": "Arms",
+          "type": "number",
+          "min": 1,
+          "max": 6,
+          "step": 1
+        },
+        "length": {
+          "label": "Arm Length",
+          "type": "number",
+          "min": 14,
+          "max": 96,
+          "step": 2
+        },
+        "speed": {
+          "label": "Spin Speed",
+          "type": "number",
+          "min": -4.0,
+          "max": 4.0,
+          "step": 0.1
+        },
+        "start_deg": {
+          "label": "Start Angle",
+          "type": "number",
+          "min": 0,
+          "max": 315,
+          "step": 45
+        },
+        "on_signal": {
+          "label": "On Signal",
+          "type": "choice",
+          "options": [
+            "stop",
+            "reverse"
+          ]
+        }
+      }
+    },
+    "spire_crest_plinth": {
+      "name": "Spire Crests",
+      "blurb": "Mirror Spire monument tracking the two deepened reflection crests.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "spire_fake_lamp": {
+      "name": "Counterfeit Lamp",
+      "blurb": "Fake Bell Isle Great Lamp with a reversed shadow; shatter to expose.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "spire_parry_pedestal": {
+      "name": "Parry Pedestal",
+      "blurb": "Mirror Spire practice stand launching slow Dark Lantern clash orbs.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "spyglass_chart": {
+      "name": "Spyglass Table",
+      "blurb": "Boathouse sea-chart tracking the three Sea-Glass Lens Shards.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "stair_board": {
+      "name": "Iron Ascent Board",
+      "blurb": "Endless Stair scoreboard tracking best floor, score, and Express Lifts.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "stair_controller": {
+      "name": "Stair Controller",
+      "blurb": "Endless Stair floor director spawning templates and 3-boon drafts.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "stair_crown_altar": {
+      "name": "Eclipse Crown Altar",
+      "blurb": "Endless Stair Floor 12 victory plinth unlocked after Stair Warden.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "stair_lift_pad": {
+      "name": "Express Lift Pad",
+      "blurb": "Endless Stair warp pad jumping between F1 and unlocked milestone floors.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "floor_num": {
+          "label": "Floor",
+          "type": "choice",
+          "options": [
+            1,
+            4,
+            8,
+            12
+          ]
+        },
+        "to_region": {
+          "label": "Dest Region",
+          "type": "text"
+        }
+      }
+    },
+    "star_bell": {
+      "name": "Star Bell",
+      "blurb": "Turns rooms and rotors 90 deg CW on yellow hits or CCW on blue hits.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "var_name": {
+          "label": "Dial Variable",
+          "type": "choice",
+          "options": [
+            "ow_dial",
+            "sky_turn",
+            "orrery_ring"
+          ]
+        },
+        "allow_ccw_blue": {
+          "label": "Blue Reverses",
+          "type": "bool"
+        },
+        "require_sextant_ccw": {
+          "label": "CCW Needs Sextant",
+          "type": "bool"
+        },
+        "allow_interact": {
+          "label": "Ring With E",
+          "type": "bool"
+        },
+        "cooldown": {
+          "label": "Cooldown (s)",
+          "type": "number",
+          "min": 0.3,
+          "max": 2.5,
+          "step": 0.1
+        }
+      }
+    },
+    "star_node": {
+      "name": "Star Node",
+      "blurb": "Shoot to light a star over void; linked stars form walkable bridges.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        },
+        "link_range": {
+          "label": "Link Range",
+          "type": "number",
+          "min": 32,
+          "max": 160,
+          "step": 4
+        },
+        "max_lit": {
+          "label": "Max Lit (FIFO)",
+          "type": "number",
+          "min": 0,
+          "max": 8,
+          "step": 1,
+          "help": "0 means no limit."
+        },
+        "pinned": {
+          "label": "Pinned Lit",
+          "type": "bool"
+        },
+        "lens_only": {
+          "label": "Hidden (Lens)",
+          "type": "bool"
+        }
+      }
+    },
+    "state_lever": {
+      "name": "State Lever",
+      "blurb": "Cycles a world state like tide, ship list, heat, or bell hour.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "var": {
+          "label": "State Variable",
+          "type": "text"
+        },
+        "style": {
+          "label": "Appearance",
+          "type": "choice",
+          "options": [
+            "lever",
+            "tide_organ",
+            "tide_wheel",
+            "ballast_valve",
+            "sluice_organ",
+            "pedal"
+          ]
+        },
+        "shootable": {
+          "label": "Shootable",
+          "type": "bool"
+        },
+        "step_trigger": {
+          "label": "Step Pedal",
+          "type": "bool"
+        },
+        "index": {
+          "label": "Start Index",
+          "type": "number",
+          "min": 0,
+          "max": 5,
+          "step": 1
+        }
+      }
+    },
+    "stump_shrink": {
+      "name": "Shrinking Stump",
+      "blurb": "Hollow stump portal shifting Wick between normal and tiny scale.",
+      "cat": "travel",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "target_size": {
+          "label": "Target Scale",
+          "type": "choice",
+          "options": [
+            "tiny",
+            "normal",
+            "toggle"
+          ]
+        },
+        "powered_by_sap": {
+          "label": "Needs High Sap",
+          "type": "bool"
+        },
+        "to_region": {
+          "label": "Dest Region",
+          "type": "text",
+          "help": "Blank shifts size in place."
+        }
+      }
+    },
+    "switch_door": {
+      "name": "Switch Door",
+      "blurb": "Door wired to switches, plates, or sensors that opens when powered.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        },
+        "required_count": {
+          "label": "Signals Needed",
+          "type": "number",
+          "min": 1,
+          "max": 8,
+          "step": 1
+        }
+      }
+    },
+    "switch_eye": {
+      "name": "Eye Switch",
+      "blurb": "Shoot or strike it to send a signal to wired doors and bridges.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "requires_blue": {
+          "label": "Needs Blue Light",
+          "type": "bool"
+        },
+        "reset_time": {
+          "label": "Reset Time (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 30.0,
+          "step": 0.5,
+          "help": "0 stays on forever."
+        },
+        "activated": {
+          "label": "Starts On",
+          "type": "bool"
+        }
+      }
+    },
+    "temper_anvil": {
+      "name": "Tempering Anvil",
+      "blurb": "Reforges Wick's bolt temper into Skip, Scatter, Lance, or cycles them.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "mode": {
+          "label": "Temper",
+          "type": "choice",
+          "options": [
+            "skip",
+            "scatter",
+            "lance",
+            "base",
+            "cycle"
+          ]
+        },
+        "hit_to_swap": {
+          "label": "Strike To Forge",
+          "type": "bool"
+        },
+        "ceremony": {
+          "label": "Play Ceremony",
+          "type": "bool"
+        },
+        "include_base": {
+          "label": "Include Base",
+          "type": "bool",
+          "help": "For cycle mode."
+        }
+      }
+    },
+    "theatre_cue_mirror_altar": {
+      "name": "Cue Mirror Altar",
+      "blurb": "Doppel Theatre reliquary granting Cue Mirror after The Prompter.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "theatre_ember_motes": {
+      "name": "Stage Ember Motes",
+      "blurb": "Spotlight motes charging Sunflare during Act IV's weapon theft.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "theatre_mask_crests": {
+      "name": "Mask Crest Arch",
+      "blurb": "Velvet Foyer crest board displaying cleared Doppel Theatre acts.",
+      "cat": "special",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "theatre_vanity_mirror": {
+      "name": "Vanity Mirror",
+      "blurb": "Royal Box dressing mirror whose reflection smiles half a beat late.",
+      "cat": "story",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "tide_gate": {
+      "name": "Tidal Boardwalk",
+      "blurb": "Timed boardwalk that rises above water and floods on a cycle.",
+      "cat": "door",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "period": {
+          "label": "Cycle (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 20.0,
+          "step": 0.5
+        },
+        "low_ratio": {
+          "label": "Walkable Ratio",
+          "type": "number",
+          "min": 0.2,
+          "max": 0.85,
+          "step": 0.05
+        },
+        "phase_offset": {
+          "label": "Phase Offset",
+          "type": "number",
+          "min": 0.0,
+          "max": 20.0,
+          "step": 0.5
+        },
+        "warn_time": {
+          "label": "Warn Time (s)",
+          "type": "number",
+          "min": 0.2,
+          "max": 3.0,
+          "step": 0.2
+        }
+      }
+    },
+    "tide_raft": {
+      "name": "Tide Raft",
+      "blurb": "Floats on high tide, grounds on ebb, and can carry a mirror or cargo.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "mounts": {
+          "label": "Cargo Mount",
+          "type": "choice",
+          "options": [
+            "none",
+            "blue_transformer",
+            "cargo"
+          ]
+        },
+        "tide_min": {
+          "label": "Floats At",
+          "type": "choice",
+          "options": [
+            "half",
+            "flood",
+            "mid",
+            "high"
+          ]
+        },
+        "angle_deg": {
+          "label": "Mirror Angle",
+          "type": "number",
+          "min": 0,
+          "max": 315,
+          "step": 45
+        },
+        "rotatable": {
+          "label": "Rotatable",
+          "type": "bool"
+        },
+        "drift_speed": {
+          "label": "Drift Speed",
+          "type": "number",
+          "min": 0,
+          "max": 60,
+          "step": 2
+        },
+        "lock_side": {
+          "label": "Lock Side",
+          "type": "choice",
+          "options": [
+            "",
+            "west",
+            "east"
+          ]
+        }
+      }
+    },
+    "tilt_group": {
+      "name": "Tilting Deck",
+      "blurb": "Periodically tilts the floor to slide crates, ice, orbs, and Wick.",
+      "cat": "hazard",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "axis": {
+          "label": "Tilt Axis",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "period": {
+          "label": "Cycle (s)",
+          "type": "number",
+          "min": 2.0,
+          "max": 14.0,
+          "step": 0.5
+        },
+        "strength": {
+          "label": "Slide Force",
+          "type": "number",
+          "min": 20,
+          "max": 200,
+          "step": 10
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "slide_enemies": {
+          "label": "Slides Foes",
+          "type": "bool"
+        },
+        "on_signal": {
+          "label": "On Signal",
+          "type": "choice",
+          "options": [
+            "stabilize",
+            "flip"
+          ]
+        }
+      }
+    },
+    "timed_brazier": {
+      "name": "Timed Brazier",
+      "blurb": "Burns for a countdown before snuffing out, or resets room puzzles.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "secs": {
+          "label": "Burn Time (s)",
+          "type": "number",
+          "min": 1.0,
+          "max": 30.0,
+          "step": 0.5
+        },
+        "reset": {
+          "label": "Room Resetter",
+          "type": "bool",
+          "help": "Resets room toys when struck."
+        },
+        "allow_interact": {
+          "label": "Light With E",
+          "type": "bool"
+        },
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        }
+      }
+    },
+    "toggle_block": {
+      "name": "Toggle Block",
+      "blurb": "Retractable barrier raised or lowered by matching Crystal Switches.",
+      "cat": "puzzle",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "group": {
+          "label": "Link Group",
+          "type": "text"
+        },
+        "phase": {
+          "label": "Solid Phase",
+          "type": "choice",
+          "options": [
+            0,
+            1
+          ]
+        },
+        "start_phase": {
+          "label": "Start Phase",
+          "type": "choice",
+          "options": [
+            0,
+            1
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "toll_chain_lock": {
+      "name": "Coral Chain-Lock",
+      "blurb": "Chain pinning the Great Bell; shatters when struck by a War ring wave.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "broken": {
+          "label": "Starts Broken",
+          "type": "bool"
+        }
+      }
+    },
+    "toll_clapper_rig": {
+      "name": "Clapper Rigging",
+      "blurb": "Great Bell clapper stand that starts the Great Toll drop sequence.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "toll_gate": {
+      "name": "Toll Gate",
+      "blurb": "Brass archway opened once enough setting weight is sold or wired.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": true,
+      "props": {
+        "min_weight": {
+          "label": "Min Weight",
+          "type": "number",
+          "min": 0,
+          "max": 12,
+          "step": 1
+        },
+        "check": {
+          "label": "Toll Rule",
+          "type": "text",
+          "help": "e.g. sold_count>=2"
+        },
+        "allow_direct_pay": {
+          "label": "Pay At Gate",
+          "type": "bool"
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        }
+      }
+    },
+    "toll_receipt_altar": {
+      "name": "Receipt Altar",
+      "blurb": "Toll House pedestal granting Brass Receipt after Chief Auditor.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "toll_scale": {
+      "name": "Toll Scale",
+      "blurb": "Altar that opens the Toll Ledger to sell a setting or redeem one.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "mode": {
+          "label": "Altar Mode",
+          "type": "choice",
+          "options": [
+            "shop",
+            "gate",
+            "redemption",
+            "boon_toll"
+          ]
+        },
+        "min_weight": {
+          "label": "Min Weight",
+          "type": "number",
+          "min": 1,
+          "max": 12,
+          "step": 1
+        }
+      }
+    },
+    "toll_sensor": {
+      "name": "Toll Sensor",
+      "blurb": "Powers wired targets whenever its sold-setting rule is satisfied.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "check": {
+          "label": "Toll Rule",
+          "type": "text",
+          "help": "e.g. sold:minimap_hud"
+        },
+        "invert": {
+          "label": "Invert Output",
+          "type": "bool"
+        },
+        "show_glyph": {
+          "label": "Show Glyph",
+          "type": "bool"
+        }
+      }
+    },
+    "tone_coffin": {
+      "name": "Tone Coffin",
+      "blurb": "Track coffin: Dawn slides it into a bridge, Dusk freezes, War shatters.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "dir": {
+          "label": "Slide Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "slide_tiles": {
+          "label": "Slide Tiles",
+          "type": "number",
+          "min": 0.5,
+          "max": 14.0,
+          "step": 0.5
+        },
+        "speed": {
+          "label": "Slide Speed",
+          "type": "number",
+          "min": 24,
+          "max": 240,
+          "step": 12
+        },
+        "freeze_secs": {
+          "label": "Freeze (s)",
+          "type": "number",
+          "min": 0.5,
+          "max": 8.0,
+          "step": 0.5
+        },
+        "solid_blocker": {
+          "label": "Solid Blocker",
+          "type": "bool"
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "tone_door": {
+      "name": "Tone Door",
+      "blurb": "Resonant barrier opened by a matching Dawn, Dusk, or War bell wave.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "tone": {
+          "label": "Tone Needed",
+          "type": "choice",
+          "options": [
+            "dawn",
+            "dusk",
+            "war"
+          ]
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "hold_secs": {
+          "label": "Hold Open (s)",
+          "type": "number",
+          "min": 0.0,
+          "max": 20.0,
+          "step": 0.5,
+          "help": "0 stays open."
+        },
+        "toggle": {
+          "label": "Toggle Mode",
+          "type": "bool"
+        },
+        "opened": {
+          "label": "Starts Open",
+          "type": "bool"
+        }
+      }
+    },
+    "train_hook_altar": {
+      "name": "Coupler Hook Altar",
+      "blurb": "Ember Express pedestal granting Coupler Hook after The Brakeman.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "training_dummy": {
+      "name": "Training Dummy",
+      "blurb": "Absorbs hits and displays damage pips, DPS, and combo streaks.",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {}
+    },
+    "trial_gate": {
+      "name": "Trial Gate",
+      "blurb": "Starts a room challenge and opens wired rewards on completion.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "challenge": {
+          "label": "Challenge ID",
+          "type": "text"
+        },
+        "once": {
+          "label": "Complete Once",
+          "type": "bool"
+        },
+        "shoot_to_start": {
+          "label": "Shoot To Start",
+          "type": "bool"
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        }
+      }
+    },
+    "turret_eye": {
+      "name": "Turret Eye",
+      "blurb": "Fires telegraphed bolts that can be blocked, curved, or reflected.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "dir": {
+          "label": "Fire Direction",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "aim": {
+          "label": "Tracks Wick",
+          "type": "bool"
+        },
+        "cadence": {
+          "label": "Fire Rate (s)",
+          "type": "number",
+          "min": 0.8,
+          "max": 6.0,
+          "step": 0.2
+        },
+        "bolt_speed": {
+          "label": "Bolt Speed",
+          "type": "number",
+          "min": 60,
+          "max": 260,
+          "step": 15
+        },
+        "sight_range": {
+          "label": "Sight Range",
+          "type": "number",
+          "min": 48,
+          "max": 320,
+          "step": 16
+        },
+        "can_disable": {
+          "label": "Stunnable",
+          "type": "bool"
+        }
+      }
+    },
+    "uc_echo_altar": {
+      "name": "Echo Clapper Altar",
+      "blurb": "Undercroft power pedestal granting the Echo Clapper after Toll-Hound.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "updraft_vent": {
+      "name": "Updraft Vent",
+      "blurb": "Thermal grate that refills Wings glide stamina and boosts speed.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "radius": {
+          "label": "Plume Radius",
+          "type": "number",
+          "min": 12,
+          "max": 48,
+          "step": 2
+        },
+        "on": {
+          "label": "Starts On",
+          "type": "bool"
+        },
+        "boost_mult": {
+          "label": "Speed Boost",
+          "type": "number",
+          "min": 1.0,
+          "max": 2.0,
+          "step": 0.05
+        },
+        "weather_req": {
+          "label": "Weather Gate",
+          "type": "choice",
+          "options": [
+            "",
+            "sun",
+            "rain",
+            "wind"
+          ]
+        },
+        "period": {
+          "label": "Pulse Period",
+          "type": "number",
+          "min": 0.0,
+          "max": 12.0,
+          "step": 0.5,
+          "help": "0 stays steady."
+        },
+        "duty": {
+          "label": "On Duty",
+          "type": "number",
+          "min": 0.1,
+          "max": 0.95,
+          "step": 0.05
+        }
+      }
+    },
+    "ur_sap_horn_altar": {
+      "name": "Sap-Horn Altar",
+      "blurb": "Under-Root pedestal granting Sap-Horn mastery after Stag Colossus.",
+      "cat": "special",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {}
+    },
+    "ur_tiny_landmark": {
+      "name": "Tiny Landmark",
+      "blurb": "Oversized Under-Root set dressing (acorn boulder, thimble, grass).",
+      "cat": "story",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "variant": {
+          "label": "Piece",
+          "type": "choice",
+          "options": [
+            "grass_cathedral",
+            "acorn_boulder",
+            "shed_exoskeleton",
+            "thimble_tower",
+            "jar_shadow"
+          ]
+        },
+        "flip_x": {
+          "label": "Flip Horizontal",
+          "type": "bool"
+        }
+      }
+    },
+    "vehicle_cart": {
+      "name": "Rail Cart",
+      "blurb": "Rideable minecart along a rail; shoot for recoil or dash to jump carts.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "speed": {
+          "label": "Max Speed",
+          "type": "number",
+          "min": 24,
+          "max": 200,
+          "step": 5
+        },
+        "loop": {
+          "label": "Loop Track",
+          "type": "bool"
+        },
+        "auto": {
+          "label": "Auto Roll",
+          "type": "bool"
+        }
+      }
+    },
+    "vehicle_skiff": {
+      "name": "Lantern Skiff",
+      "blurb": "Oarless boat propelled by bolt recoil; throw lantern to brake or swing.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "dir": {
+          "label": "Start Facing",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        }
+      }
+    },
+    "waystone": {
+      "name": "Waystone",
+      "blurb": "Restores full health, saves progress, and unlocks fast travel.",
+      "cat": "travel",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        }
+      }
+    },
+    "weather_wheel": {
+      "name": "Weather Wheel",
+      "blurb": "Spin by hand or shot to cycle weather between Sun, Rain, and Wind.",
+      "cat": "puzzle",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "start": {
+          "label": "Start Weather",
+          "type": "choice",
+          "options": [
+            "sun",
+            "rain",
+            "wind"
+          ]
+        },
+        "wind_dir": {
+          "label": "Wind Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "reset_on_enter": {
+          "label": "Reset On Enter",
+          "type": "bool"
+        }
+      }
+    },
+    "web": {
+      "name": "Silk Web",
+      "blurb": "Thick web barrier burned away by Beam.",
+      "cat": "door",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "burned": {
+          "label": "Starts Burned",
+          "type": "bool"
+        }
+      }
+    },
+    "wick_key": {
+      "name": "Wick Key",
+      "blurb": "Small dungeon key that unlocks one locked door.",
+      "cat": "reward",
+      "wire_out": false,
+      "wire_in": false,
+      "props": {
+        "key_kind": {
+          "label": "Key Type",
+          "type": "choice",
+          "options": [
+            "wick_key",
+            "keepers_flame"
+          ]
+        },
+        "collected": {
+          "label": "Starts Collected",
+          "type": "bool"
+        }
+      }
+    },
+    "wind_zone": {
+      "name": "Wind Zone",
+      "blurb": "Directional wind stream that bends shots and pushes Wick and crates.",
+      "cat": "hazard",
+      "wire_out": false,
+      "wire_in": true,
+      "props": {
+        "dir": {
+          "label": "Wind Dir",
+          "type": "choice",
+          "options": [
+            "n",
+            "e",
+            "s",
+            "w"
+          ]
+        },
+        "strength": {
+          "label": "Strength",
+          "type": "number",
+          "min": 20,
+          "max": 1600,
+          "step": 20
+        },
+        "size": {
+          "label": "Size",
+          "type": "size"
+        },
+        "on_signal": {
+          "label": "On Signal",
+          "type": "choice",
+          "options": [
+            "flip",
+            "toggle_active"
+          ]
+        }
+      }
+    },
+    "wood_pin_lamp": {
+      "name": "Wood-Pin Lamp",
+      "blurb": "Kindle to pin this Shifting Woods clearing at its current layout.",
+      "cat": "light",
+      "wire_out": true,
+      "wire_in": false,
+      "props": {
+        "clearing": {
+          "label": "Clearing",
+          "type": "choice",
+          "options": [
+            "w",
+            "e",
+            "n"
+          ]
+        },
+        "lit": {
+          "label": "Starts Lit",
+          "type": "bool"
+        },
+        "snuff_on_hit": {
+          "label": "Snuff On Shot",
+          "type": "bool"
+        }
+      }
+    }
+  },
+  "enemies": {
+    "anchor_drowned": {
+      "name": "Anchor Drowned",
+      "blurb": "Heavy sailor dragging an iron anchor that blocks front shots; flank its swing."
+    },
+    "ash_mole": {
+      "name": "Ash Mole",
+      "blurb": "Burrows under ash and surfaces to drag your hung lantern underground."
+    },
+    "barnacle_sentry": {
+      "name": "Barnacle Sentry",
+      "blurb": "Armored turret blocking front bolts; bank blue shots or flank its shell."
+    },
+    "bellows_imp": {
+      "name": "Bellows Imp",
+      "blurb": "Inhales and blows gusts pushing Wick and lanterns back; puncture on tell."
+    },
+    "bramble_knight": {
+      "name": "Bramble Knight",
+      "blurb": "Thorn-shielded guard that counters front hits; pierce its shield with Beam."
+    },
+    "brine_lamprey": {
+      "name": "Brine Lamprey",
+      "blurb": "Stalks under water to leap at piers or latch onto your Skiff; Dash shakes it."
+    },
+    "buoy_mine": {
+      "name": "Buoy Mine",
+      "blurb": "Floating naval mine; shoot or harpoon it to arm a fuse and blast nearby foes."
+    },
+    "burrow_beetle": {
+      "name": "Burrow Beetle",
+      "blurb": "Armored digger whose stationary mirror shell reflects yellow bolts into blue."
+    },
+    "censer": {
+      "name": "Censer",
+      "blurb": "Orbits lamps swinging dusk-smoke clouds that temporarily shrink lantern light."
+    },
+    "choir_gloam": {
+      "name": "Choir Gloam",
+      "blurb": "Drifting eclipse singer firing narrow harmonized bolt volleys from the dark."
+    },
+    "cinder_golem": {
+      "name": "Cinder Golem",
+      "blurb": "Slow furnace giant whose heavy armor resists bolts until cracked by Sunflare."
+    },
+    "comet_hound": {
+      "name": "Comet Hound",
+      "blurb": "Orbital wolf that curves its pounce through gravity wells like a slingshot."
+    },
+    "crab_warden": {
+      "name": "Crab Warden",
+      "blurb": "Sidesteps behind a giant claw shield; open it with blue banks or lantern lure."
+    },
+    "dandelion_drifter": {
+      "name": "Dandelion Drifter",
+      "blurb": "Hovers over pits puffing wind-drifting seed mines that bloom into snares."
+    },
+    "echo_moth": {
+      "name": "Echo Moth",
+      "blurb": "Records Wick's movement and replays a delayed dash or echo-bolt strike."
+    },
+    "eclipse_eye": {
+      "name": "Eclipse Eye",
+      "blurb": "Floating stained-glass turret that scans, locks on, and fires an eclipse beam."
+    },
+    "false_chest": {
+      "name": "False Chest",
+      "blurb": "Silver chest mimic betrayed by its wrong-way NW shadow; throw lantern in jaw."
+    },
+    "false_lantern": {
+      "name": "False Lantern",
+      "blurb": "Flytrap mimicking an unlit lamp post; swallows thrown lanterns unless shot."
+    },
+    "glass_knight": {
+      "name": "Glass Knight",
+      "blurb": "Mirror-buckler tank that reflects yellow bolts back; shatter with blue light."
+    },
+    "gloam": {
+      "name": "Gloam",
+      "blurb": "Shadow stalker intangible in the dark; light it with lantern or Lens to strike."
+    },
+    "grave_hand": {
+      "name": "Grave Hand",
+      "blurb": "Rooted crypt hand that taps the ground and snatches Wick at close range."
+    },
+    "gull_thief": {
+      "name": "Gull Thief",
+      "blurb": "Circles piers to snatch hung lanterns toward water; shoot it to drop them."
+    },
+    "heron_stalker": {
+      "name": "Heron Stalker",
+      "blurb": "Locks a line and lunges with its beak, getting briefly stuck in the mud."
+    },
+    "hollow_wick": {
+      "name": "Hollow Wick",
+      "blurb": "Dark mirror rival wielding Wick's own bolt volley, Flare Dash, and Throw-Zip."
+    },
+    "hour_heron": {
+      "name": "Hour Heron",
+      "blurb": "Marble lancer invulnerable between beats; strike during its 1-second steps."
+    },
+    "jumping_spider": {
+      "name": "Jumping Spider",
+      "blurb": "Paces ledges and vaults over walls or pits, leaving a sticky silk patch."
+    },
+    "lamp_butler": {
+      "name": "Lamp Butler",
+      "blurb": "Sweeps a bullseye lamp cone with a brass front shield; flank or stay unseen."
+    },
+    "lily_hopper": {
+      "name": "Lily Hopper",
+      "blurb": "Leaps pad to pad, landing with a shockwave ring you can glide or dash over."
+    },
+    "magnet_golem": {
+      "name": "Magnet Golem",
+      "blurb": "Iron golem whose magnetic pulse yanks your thrown lantern right to its chest."
+    },
+    "meteor_carrier": {
+      "name": "Meteor Carrier",
+      "blurb": "Brass scarab hurling curving boulders; shoot the rock mid-tell to stagger it."
+    },
+    "mire_snuffer": {
+      "name": "Mire Snuffer",
+      "blurb": "Sprints to snuff hung lanterns; intercept it with bolts before it reaches light."
+    },
+    "mist_eel": {
+      "name": "Mist Eel",
+      "blurb": "Swims pools and arcs through the air; intercept mid-leap for bonus stagger."
+    },
+    "moon_jelly": {
+      "name": "Moon Jelly",
+      "blurb": "Drifts over gaps and splits if hit by yellow bolts; blue or Beam kills clean."
+    },
+    "moonshade_owl": {
+      "name": "Moonshade Owl",
+      "blurb": "Lunar owl sentinel locking twin sightlines before a fast stoop dive."
+    },
+    "moonshade_snatcher": {
+      "name": "Moonshade Snatcher",
+      "blurb": "Swift shadow thief that feints between perches while hunting hung lanterns."
+    },
+    "moonshade_warden": {
+      "name": "Moonshade Warden",
+      "blurb": "Shielded lunar guard that uses a quick sideways blink-feint before lunging."
+    },
+    "net_caster": {
+      "name": "Net Caster",
+      "blurb": "Throws weighted nets that pin Wick's lantern until cut by Dash or Zip."
+    },
+    "null_moth": {
+      "name": "Null Moth",
+      "blurb": "Void halo swallows straight shots; hit it with curved gravity bolts or Beam."
+    },
+    "orrery_sentinel": {
+      "name": "Orrery Sentinel",
+      "blurb": "Glides along rails sweeping a sight cone and fires a beam-bolt on spotting Wick."
+    },
+    "owl": {
+      "name": "Hush Owl",
+      "blurb": "Orbits overhead, locks a sightline, dives fast, then pauses to recover."
+    },
+    "page_wraith": {
+      "name": "Page Wraith",
+      "blurb": "Disguised as a curling floor rug before springing out in an ambush lunge."
+    },
+    "petal_duelist": {
+      "name": "Petal Duelist",
+      "blurb": "Parries front bolts and lunges with a rapier, leaving a repeating rose echo."
+    },
+    "pew_mimic": {
+      "name": "Pew Mimic",
+      "blurb": "Disguised wooden bench with a brass hinge glint; snaps open at close range."
+    },
+    "phantom_owl": {
+      "name": "Phantom Owl",
+      "blurb": "Invisible outside lantern or Lens light; reveal it before its stoop dive."
+    },
+    "pistol_shrimp": {
+      "name": "Pistol Shrimp",
+      "blurb": "Snaps a fast shock-bolt whose recoil kicks it backward\u2014bait near water."
+    },
+    "piston_knight": {
+      "name": "Piston Knight",
+      "blurb": "Boiler-plated vanguard charging in pneumatic lunges; crack armor with Lance."
+    },
+    "portrait_eye": {
+      "name": "Portrait Eye",
+      "blurb": "Gilt wall eye that wakes on light, sweeps a vision cone, and signals traps."
+    },
+    "puppet": {
+      "name": "Marionette Puppet",
+      "blurb": "Hangs from an overhead spool and revives unless you slice its cord."
+    },
+    "rail_hopper": {
+      "name": "Rail Hopper",
+      "blurb": "Spring-heeled locust that coils and vaults over cover onto a marked ring."
+    },
+    "rain_frog": {
+      "name": "Rain Frog",
+      "blurb": "Swells in Rain to spit brazier-snuffing puddles; shrinks timidly in Sun."
+    },
+    "reef_skate": {
+      "name": "Reef Skate",
+      "blurb": "Skims fast across tidewater in hydro-dashes, but strands helpless on ebb."
+    },
+    "reflection": {
+      "name": "Mirror Reflection",
+      "blurb": "Strafes opposite Wick along a silver line and fires a delayed echo bolt."
+    },
+    "satellite_eye": {
+      "name": "Satellite Eye",
+      "blurb": "Orbiting turret armored in front; curve shots or flank its glowing rear lens."
+    },
+    "silvered_owl": {
+      "name": "Silvered Owl",
+      "blurb": "Orbits cloaked except for its floor shadow, then locks twin sniper sights."
+    },
+    "slag_slime": {
+      "name": "Slag Slime",
+      "blurb": "Molten ooze resisting yellow shots; hit with blue light to freeze into a block."
+    },
+    "smelter_wasp": {
+      "name": "Smelter Wasp",
+      "blurb": "Hovering furnace wasp diving over lava with telegraphed ember drops."
+    },
+    "snatcher": {
+      "name": "Magpie Snatcher",
+      "blurb": "Shies from Wick and swallows bolts; chases hung lanterns\u2014throw to stagger."
+    },
+    "snuffer_acolyte": {
+      "name": "Snuffer Acolyte",
+      "blurb": "Moth-monk that sprints to extinguish lit braziers and clamp thrown lanterns."
+    },
+    "sporecap": {
+      "name": "Sporecap",
+      "blurb": "Burrows, pops up with a spore shockwave, then opens its cap for bonus damage."
+    },
+    "star_jelly": {
+      "name": "Star Jelly",
+      "blurb": "Drifts over void pulsing shock-rings; splits on straight bolts, not curves."
+    },
+    "stoker": {
+      "name": "Furnace Stoker",
+      "blurb": "Shovels flaming coal arcs that leave ember puddles and re-melt Slag Slimes."
+    },
+    "thorn_archer": {
+      "name": "Thorn Archer",
+      "blurb": "Fires fast splinter darts and reloads only in darkness\u2014light its perch."
+    },
+    "toll_clerk": {
+      "name": "Toll Clerk",
+      "blurb": "Scale-shielded guard that drops slowing Tax Rings if you spam its front."
+    },
+    "toll_moth": {
+      "name": "Toll Moth",
+      "blurb": "Shooting it blasts a War wave that breaks cracks and alerts foes; throw instead."
+    },
+    "topiary_knight": {
+      "name": "Topiary Knight",
+      "blurb": "Moves only when unseen; freezes into an armored statue under aim or light."
+    },
+    "vine_strangler": {
+      "name": "Vine Strangler",
+      "blurb": "Disguised as pillar ivy; lashes a root tether you can snap with Dash."
+    },
+    "warden": {
+      "name": "Parasol Warden",
+      "blurb": "Blocks front shots with a parasol that ricochets every 3rd bolt; throw or flank."
+    }
+  },
+  "bosses": {
+    "apogee_hound": {
+      "name": "Apogee Hound",
+      "blurb": "Meteor wolf orbiting a polarity well; curve bolts around its iron crest."
+    },
+    "archivist": {
+      "name": "The Archivist",
+      "blurb": "Moth-owl librarian borrowing patterns from all seven island Keepers."
+    },
+    "astronomer": {
+      "name": "The Astronomer",
+      "blurb": "Observatory Keeper aligning planetary rings, eclipses, and orbital beams."
+    },
+    "bell_warden": {
+      "name": "Bell Warden",
+      "blurb": "Parasol-shielded acolyte; crack guard with Throw or War Bell and stop Echo Slam."
+    },
+    "bellkeeper": {
+      "name": "Grand Bellkeeper",
+      "blurb": "Belfry Keeper with crown shield, sweeping clock hand, and three-tone duel."
+    },
+    "boss_cloud_deacon": {
+      "name": "Cloud-Urn Deacon",
+      "blurb": "Rain cleric shielded by three weather-linked urns; shatter urns to stagger."
+    },
+    "boss_drowned_choir": {
+      "name": "The Drowned Choir",
+      "blurb": "Five singing marble busts casting wave lattices; silence them in order."
+    },
+    "boss_gardener_twice": {
+      "name": "The Gardener Twice",
+      "blurb": "Records Wick's past trail and splits into Present and Echo duelists."
+    },
+    "boss_last_hour": {
+      "name": "The Last Hour",
+      "blurb": "Backwards-running clock superboss firing inward rings and rewinding phases."
+    },
+    "boss_shear_keeper": {
+      "name": "Brass Shear-Keeper",
+      "blurb": "Blind topiary hound charging bright targets; jam its blades into cages."
+    },
+    "boss_toastmaster": {
+      "name": "The Toastmaster",
+      "blurb": "Clockwork host tossing boomerang silver trays and popping cork volleys."
+    },
+    "bosun_rig": {
+      "name": "The Bosun's Rig",
+      "blurb": "Crane bosun fighting on a rolling ship deck that floods outer bilge tiles."
+    },
+    "brakeman": {
+      "name": "The Brakeman",
+      "blurb": "Train-roof brawler; bait his charge into Brake Wheels to cut roof gales."
+    },
+    "brass_metronome": {
+      "name": "Brass Metronome",
+      "blurb": "Pendulum knight swinging in strict arcs; ring Dusk Bell to freeze it open."
+    },
+    "briar_arbiter": {
+      "name": "Briar Arbiter",
+      "blurb": "Briar Court judge imposing scale trials shaped by your earlier verdicts."
+    },
+    "briar_matron": {
+      "name": "Briar Matron",
+      "blurb": "Hollow Oak Keeper weaving silk-thorn shields, bramble walls, and root slams."
+    },
+    "chandelier": {
+      "name": "The Chandelier",
+      "blurb": "Ceiling candle tree on chains; ring War Bell to snap chains and Dawn in dark."
+    },
+    "chief_auditor": {
+      "name": "Chief Auditor",
+      "blurb": "Abacus-beetle that penalizes repeating the same move family twice in a row."
+    },
+    "clockwork_valet": {
+      "name": "Clockwork Valet",
+      "blurb": "Silver-tray butler deflecting front bolts; throw lantern behind him to flank."
+    },
+    "clockwork_warden": {
+      "name": "Clockwork Warden",
+      "blurb": "Armored brass orrery sentinel firing orbiting gear volleys; pierce or flank."
+    },
+    "colossus_heart": {
+      "name": "Colossus Heart",
+      "blurb": "Caged furnace core on a pendulum; smash valves and freeze slimes in its path."
+    },
+    "crucible_weaver": {
+      "name": "Crucible Weaver",
+      "blurb": "Molten glass spider spinning rotatable mirrors; bank blue light to freeze her."
+    },
+    "dredge_hulk": {
+      "name": "The Dredge Hulk",
+      "blurb": "Armored turret-barge in a flooded lock; flank or bank shots onto its rudder."
+    },
+    "elder_sporecap": {
+      "name": "Elder Sporecap",
+      "blurb": "Giant mushroom sentinel resisting weak shots until its cap blooms open."
+    },
+    "engineer": {
+      "name": "The Engineer",
+      "blurb": "Locomotive cab boss shifting from coal lanes to boiler meltdown surges."
+    },
+    "event_horizon": {
+      "name": "Event Horizon",
+      "blurb": "Singularity that eats straight shots to heal; curve bolts past lens wells."
+    },
+    "figurehead": {
+      "name": "The Figurehead",
+      "blurb": "Gilded prow moth sweeping the galleon with ballast flips and hull rifts."
+    },
+    "first_dark": {
+      "name": "The First Dark",
+      "blurb": "Primordial eclipse superboss erasing arena floor tiles into spreading void."
+    },
+    "first_forge": {
+      "name": "The First Forge",
+      "blurb": "Primordial anvil deity cycling Skip, Scatter, and Lance forged stances."
+    },
+    "forge_warden": {
+      "name": "Forge Warden",
+      "blurb": "Slag-armored kiln guardian unleashing anvil slams and ember waves."
+    },
+    "great_lily_hopper": {
+      "name": "Great Lily Hopper",
+      "blurb": "Giant pond-lily frog leaping between pads with splash shockwaves."
+    },
+    "gullet_lamprey": {
+      "name": "Gullet Lamprey",
+      "blurb": "Six-segment whale-belly lamprey; break segments and lure lunges into pillars."
+    },
+    "heron_abbess": {
+      "name": "Heron Abbess",
+      "blurb": "Conservatory Keeper sweeping reflection pools with feather lances and dives."
+    },
+    "hollow_ram_phantom": {
+      "name": "Iron Phantom",
+      "blurb": "Train-roof rival mirroring your current Bolt Temper across stance duels."
+    },
+    "hollow_wick_boss": {
+      "name": "Hollow Wick",
+      "blurb": "Unmasked mirror rival matching your entire lantern kit with dark feints."
+    },
+    "hundred_lamps": {
+      "name": "Hundred Lamps",
+      "blurb": "Ten-segment subterranean centipede; strike its sequentially lit segments."
+    },
+    "indexer": {
+      "name": "The Indexer",
+      "blurb": "Five-segment card-catalogue centipede; focus open drawer segments on turns."
+    },
+    "kaleidoscope_duchess": {
+      "name": "Kaleidoscope Duchess",
+      "blurb": "Splits into four chromatic copies; track the real one by her shadow."
+    },
+    "kilnmother": {
+      "name": "The Kilnmother",
+      "blurb": "Great Kiln Keeper forging molten rings and pours; cool armor with blue light."
+    },
+    "knight_spindle": {
+      "name": "Dame Spindle",
+      "blurb": "Silk-tethered joust duelist; shoot her glowing corner spool to unhorse her."
+    },
+    "knight_taproot": {
+      "name": "Sir Taproot",
+      "blurb": "Beetle-mounted lancer charging root lanes; bloom seedlight walls to stop him."
+    },
+    "lighthouse_hermit": {
+      "name": "Lighthouse Hermit",
+      "blurb": "Fresnel-lens Keeper sweeping beams and rotating prism walls across the top."
+    },
+    "loom_widow": {
+      "name": "The Loom Widow",
+      "blurb": "Web spider on a six-spoke silk wheel; ignite her active spool to drop her."
+    },
+    "meridian_weaver": {
+      "name": "Meridian Weaver",
+      "blurb": "Compass-spider weaving meridian tripwires across an eight-star ring."
+    },
+    "mother_root": {
+      "name": "The Mother Root",
+      "blurb": "Canopy heart whose floor grows thorn walls wherever your lantern lingers."
+    },
+    "night_harbinger": {
+      "name": "Night Harbinger",
+      "blurb": "Lunar-shielded Sanctum herald sweeping eclipse crescents and void rings."
+    },
+    "piston_marshal": {
+      "name": "Piston Marshal",
+      "blurb": "Jackhammer sentinel accelerating downhill with the Colossus's stride tilt."
+    },
+    "queen_in_glass": {
+      "name": "Queen in Glass",
+      "blurb": "Mirror-shielded queen immune to raw yellow shots; use blue banks or clones."
+    },
+    "rose_seraph": {
+      "name": "Rose-Window Seraph",
+      "blurb": "Six-winged stained-glass seraph whose halo hue telegraphs prism sweeps."
+    },
+    "sexton": {
+      "name": "The Sexton",
+      "blurb": "Burrowing gravedigger carving crypt pits; ring a bell mid-burrow to cave in."
+    },
+    "shadow_at_noon": {
+      "name": "Shadow at Noon",
+      "blurb": "Your peeled shadow replaying moves; throw lantern sideways to stretch it."
+    },
+    "silent_bell": {
+      "name": "The Silent Bell",
+      "blurb": "Total-silence superboss read by visual ripples; throw lantern into its mouth."
+    },
+    "silver_tide_mimic": {
+      "name": "Silver-Tide Mimic",
+      "blurb": "Liquid-mirror chest copying your last move; break its lid with blue or Beam."
+    },
+    "spire_warden": {
+      "name": "Spire Warden",
+      "blurb": "Mirror-buckler warden sweeping lunar lances across Silver and Black floors."
+    },
+    "stag_colossus": {
+      "name": "Stag Colossus",
+      "blurb": "Mirror-shelled stag beetle reflecting Prism shots; bait charges into walls."
+    },
+    "stair_warden": {
+      "name": "Stair Warden",
+      "blurb": "Three-tier Endless Stair boss evolving from Halberdier to Eclipse Sovereign."
+    },
+    "the_counterweight": {
+      "name": "The Counterweight",
+      "blurb": "Giant brass plumb-bob on three chains over void; sever chains to drop it."
+    },
+    "the_hush": {
+      "name": "The Hush",
+      "blurb": "Four-phase final boss pairing every island's mechanics before dawn."
+    },
+    "the_prompter": {
+      "name": "The Prompter",
+      "blurb": "Stage puppeteer hung on two overhead cords; slice both to crash him down."
+    },
+    "the_understudy": {
+      "name": "The Understudy",
+      "blurb": "Stage rival caging your moves in a hovering Spotlight; smash it to reclaim."
+    },
+    "the_zodiac": {
+      "name": "The Zodiac",
+      "blurb": "Four living constellations turning the dome 90 degrees with each phase."
+    },
+    "thread_keeper": {
+      "name": "Thread-Keeper",
+      "blurb": "Loom-mantis behind silk curtains on three rails; burn its active rail spool."
+    },
+    "tide_captain": {
+      "name": "Tide Captain",
+      "blurb": "Brass-clawed harpoon captain pacing tide lanes; crack guard after slams."
+    },
+    "toll_hound": {
+      "name": "The Toll-Hound",
+      "blurb": "Blind crypt hound hunting sound; ring bells or lure charges into pillars."
+    },
+    "tollmaster": {
+      "name": "The Tollmaster",
+      "blurb": "Ledger-wraith issuing mid-fight invoices; smash his Brass Register in time."
+    },
+    "twin_lockmasters": {
+      "name": "Twin Lockmasters",
+      "blurb": "Two crabs sharing one sea-glass shield tether across lock portals."
+    },
+    "twin_moons": {
+      "name": "The Twin Moons",
+      "blurb": "Sola (push) and Umbra (pull) orbiting as live gravity wells; bend shots."
+    },
+    "undertow": {
+      "name": "The Undertow",
+      "blurb": "Abyssal whirlpool superboss pulling Wick inward; dash out and strike its eye."
+    }
+  },
+  "scenery": {
+    "island1_scenery": "Bell Isle",
+    "island2_scenery": "Tidewater Harbor",
+    "island3_scenery": "Thornwood Hollow",
+    "island4_scenery": "Mirefen Gardens",
+    "island5_scenery": "Starfall Observatory",
+    "island6_scenery": "Ashen Kiln",
+    "island7_scenery": "Moon Shoals",
+    "island8_scenery": "The Long Night",
+    "theme_archive": "Archive of Lost Lamps",
+    "theme_briar_court": "Briar Court",
+    "theme_cave_1": "Bell Isle Grotto",
+    "theme_cave_2": "Tidewater Sea Cave",
+    "theme_cave_3": "Thornwood Burrow",
+    "theme_cave_4": "Mirefen Cistern",
+    "theme_cave_5": "Starfall Geode",
+    "theme_cave_6": "Ashen Lava Tube",
+    "theme_cave_7": "Moon Shoals Grotto",
+    "theme_cave_8": "Obsidian Hollow",
+    "theme_doppel_theatre": "Doppel Theatre",
+    "theme_ember_express": "Ember Express",
+    "theme_ember_express_roof": "Express Roof",
+    "theme_endless_stair": "Endless Stair",
+    "theme_forge_deep": "Deep Forge",
+    "theme_freefall": "Orrery Freefall",
+    "theme_galleon": "Drowned Galleon",
+    "theme_garden_party": "Garden Party",
+    "theme_great_toll_shaft": "Great Toll Shaft",
+    "theme_hourglass_maze": "Hourglass Maze",
+    "theme_inverted_palace_black": "Palace (Black)",
+    "theme_inverted_palace_silver": "Palace (Silver)",
+    "theme_iron_colossus": "Iron Colossus",
+    "theme_leviathan_belly": "Leviathan Belly",
+    "theme_locks": "Smugglers' Locks",
+    "theme_loom": "Weaver's Loom",
+    "theme_manor": "Bellmaker's Manor",
+    "theme_masquerade": "Masquerade",
+    "theme_meteor_vault": "Meteor Vault",
+    "theme_planetarium": "Planetarium",
+    "theme_rain_mausoleum": "Rain Mausoleum",
+    "theme_seabed": "Ebb Seabed",
+    "theme_toll_house": "Toll House",
+    "theme_under_root": "Under-Root",
+    "theme_undercroft": "Undercroft",
+    "theme_wick_house": "Wick House"
+  }
+}
