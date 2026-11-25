@@ -80,7 +80,7 @@
       "props": {
         "swap_group": "cotillion",
         "hollow_id": "dancer_r3_hollow",
-        "shuffle_secs": 9.0,
+        "shuffle_secs": 14.0,
         "radii": [
           44.0,
           76.0,
@@ -170,7 +170,7 @@
           176
         ],
         "rotor_radius": 108.0,
-        "rotor_speed": 0.42
+        "rotor_speed": 0.22
       }
     },
     {
@@ -189,7 +189,7 @@
           176
         ],
         "rotor_radius": 108.0,
-        "rotor_speed": 0.42
+        "rotor_speed": 0.22
       }
     },
     {
@@ -208,7 +208,7 @@
           176
         ],
         "rotor_radius": 108.0,
-        "rotor_speed": 0.42
+        "rotor_speed": 0.22
       }
     },
     {
@@ -227,7 +227,7 @@
           176
         ],
         "rotor_radius": 76.0,
-        "rotor_speed": -0.52
+        "rotor_speed": -0.26
       }
     },
     {
@@ -246,7 +246,7 @@
           176
         ],
         "rotor_radius": 76.0,
-        "rotor_speed": -0.52
+        "rotor_speed": -0.26
       }
     },
     {
@@ -265,7 +265,7 @@
           176
         ],
         "rotor_radius": 44.0,
-        "rotor_speed": 0.64
+        "rotor_speed": 0.3
       }
     },
     {
@@ -284,7 +284,7 @@
           176
         ],
         "rotor_radius": 44.0,
-        "rotor_speed": 0.64
+        "rotor_speed": 0.3
       }
     },
     {
@@ -304,7 +304,7 @@
           176
         ],
         "rotor_radius": 76.0,
-        "rotor_speed": -0.52,
+        "rotor_speed": -0.26,
         "reveal_flag": "masq_r3_done",
         "persist": true,
         "target_id": "door_masq_r3_north"
@@ -540,20 +540,12 @@
       {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 24.0
-      },
-      {
-        "op": "interact",
-        "target": "dancer_r3_hollow"
-      },
-      {
-        "op": "wait",
-        "secs": 1.1
+        "tol": 14.0
       },
       {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 24.0
+        "tol": 8.0
       },
       {
         "op": "interact",
@@ -561,12 +553,17 @@
       },
       {
         "op": "wait",
-        "secs": 1.1
+        "secs": 1.05
       },
       {
         "op": "goto",
         "to": "dancer_r3_hollow",
-        "tol": 24.0
+        "tol": 14.0
+      },
+      {
+        "op": "goto",
+        "to": "dancer_r3_hollow",
+        "tol": 8.0
       },
       {
         "op": "interact",
@@ -574,7 +571,25 @@
       },
       {
         "op": "wait",
-        "secs": 0.25
+        "secs": 1.05
+      },
+      {
+        "op": "goto",
+        "to": "dancer_r3_hollow",
+        "tol": 14.0
+      },
+      {
+        "op": "goto",
+        "to": "dancer_r3_hollow",
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "dancer_r3_hollow"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
       },
       {
         "op": "expect",

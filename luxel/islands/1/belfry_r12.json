@@ -100,27 +100,6 @@
       ],
       "zone": "belfry_pendulum",
       "leash": 64
-    },
-    {
-      "id": "snuffer_r12_c",
-      "kind": "snuffer_acolyte",
-      "pos": [
-        288,
-        240
-      ],
-      "route": [
-        [
-          264,
-          240
-        ],
-        [
-          312,
-          240
-        ]
-      ],
-      "perches": [],
-      "zone": "belfry_pendulum",
-      "leash": 96
     }
   ],
   "interactables": [
@@ -397,24 +376,34 @@
         {
           "wave": [
             {
-              "id": "moth_r12_e1",
-              "kind": "toll_moth",
+              "id": "snuffer_r12_e1",
+              "kind": "snuffer_acolyte",
               "pos": [
                 432,
-                104
+                192
               ],
               "zone": "belfry_pendulum",
-              "leash": 120
+              "leash": 110
             },
             {
               "id": "moth_r12_e2",
               "kind": "toll_moth",
               "pos": [
                 432,
-                184
+                72
               ],
               "zone": "belfry_pendulum",
               "leash": 120
+            },
+            {
+              "id": "gh_r12_e3",
+              "kind": "grave_hand",
+              "pos": [
+                432,
+                216
+              ],
+              "zone": "belfry_pendulum",
+              "leash": 96
             }
           ]
         }
@@ -433,10 +422,6 @@
     "why": "High-tempo traversal wing leading East from the Mainspring Rotunda to Key 3's foundry loft.",
     "exit": "exit_r12_north",
     "solution": [
-      {
-        "op": "interact",
-        "target": "lore_r12_pend"
-      },
       {
         "op": "shoot",
         "from": [

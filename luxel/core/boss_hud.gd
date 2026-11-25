@@ -109,12 +109,16 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 
 static func get_live_bosses(region_loader: Node, limit: int = 2) -> Array[LxEnemyBrain]:
 	var live: Array[LxEnemyBrain] = []
-	if region_loader != null and region_loader.has_method("get_enemies"):
-		for e: LxEnemyBrain in region_loader.call("get_enemies"):
-			if e != null and is_instance_valid(e) and e.is_alive() and e.visible and (e.is_boss or not e.boss_id.is_empty()):
-				live.append(e)
-				if live.size() >= limit:
-					break
+	if region_loader != null and is_instance_valid(region_loader) and region_loader.has_method("get_enemies"):
+		var raw_enemies: Variant = region_loader.call("get_enemies")
+		if raw_enemies is Array:
+			for e_v: Variant in (raw_enemies as Array):
+				if is_instance_valid(e_v) and e_v is LxEnemyBrain:
+					var e: LxEnemyBrain = e_v as LxEnemyBrain
+					if e.is_alive() and e.visible and (e.is_boss or not e.boss_id.is_empty()):
+						live.append(e)
+						if live.size() >= limit:
+							break
 	return live
 
 
@@ -185,12 +189,17 @@ static func handle_boss_defeated(boss_id: String, isl: int, region_loader: Node)
 	if heart_kind.is_empty():
 		var is_major_fb: bool = str(Lx.get_island_data(isl).get("boss", "")) == boss_id or boss_id == "hollow_wick_boss"
 		heart_kind = "full" if is_major_fb else "none"
-	if heart_kind != "none" and not bool(Lx.state.story_flags.get("boss_heart_" + canon, false)):
+	var already_paid: bool = bool(Lx.state.story_flags.get("boss_heart_" + canon, false))
+	if heart_kind == "half":
+		already_paid = already_paid or bool(Lx.state.story_flags.get("boss_reward_" + boss_id, false)) or bool(Lx.state.story_flags.get("boss_reward_" + canon, false))
+	if heart_kind != "none" and not already_paid:
 		Lx.state.story_flags["boss_heart_" + canon] = true
 		if heart_kind == "half":
 			Lx.state.add_half_lantern()
 		else:
 			Lx.state.add_boss_heart()
+	elif heart_kind == "half" and already_paid:
+		Lx.state.story_flags["boss_heart_" + canon] = true
 	var is_major: bool = not bool(bmeta.get("mini", false)) if not bmeta.is_empty() else (heart_kind != "none")
 	var still_fighting: bool = region_has_live_boss(region_loader)
 	if is_major and not still_fighting and Lx.audio != null and Lx.audio._is_boss_cue(Lx.audio.current_track_group):

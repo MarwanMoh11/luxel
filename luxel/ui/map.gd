@@ -403,69 +403,12 @@ func _draw_header_legend() -> void:
 
 
 func _draw_chart_backdrop(chart: Rect2) -> void:
-	LxPixelFont.draw_panel(self, chart, "night", "dusk", "void")
-	# Brass corner rivets on chart frame.
-	for corner: Vector2 in [chart.position + Vector2(1.0, 1.0), Vector2(chart.end.x - 3.0, chart.position.y + 1.0), Vector2(chart.position.x + 1.0, chart.end.y - 3.0), chart.end - Vector2(3.0, 3.0)]:
-		draw_rect(Rect2(corner, Vector2(2.0, 2.0)), LxPalette.PAL["gold"])
-
-	# Deep sky-to-sea chart bands inside inner rect (22..298, 28..90).
-	draw_rect(Rect2(22.0, 28.0, 276.0, 14.0), LxPalette.PAL["void"])
-	draw_rect(Rect2(22.0, 74.0, 276.0, 16.0), LxPalette.PAL["deep"])
-	var dx: float = 22.0
-	while dx < 296.0:
-		draw_rect(Rect2(dx, 42.0, 2.0, 1.0), LxPalette.PAL["void"])
-		draw_rect(Rect2(dx + 2.0, 73.0, 2.0, 1.0), LxPalette.PAL["deep"])
-		dx += 6.0
-
-	# Faint dusk latitude / longitude border ticks & interior crosshairs.
-	var dusk: Color = LxPalette.PAL["dusk"]
-	var gx: float = 36.0
-	while gx <= 284.0:
-		draw_rect(Rect2(gx, 28.0, 1.0, 2.0), dusk)
-		draw_rect(Rect2(gx, 88.0, 1.0, 2.0), dusk)
-		gx += 16.0
-	for gy: float in [38.0, 50.0, 62.0, 74.0]:
-		draw_rect(Rect2(22.0, gy, 2.0, 1.0), dusk)
-		draw_rect(Rect2(296.0, gy, 2.0, 1.0), dusk)
-	for mx: float in [60.0, 124.0, 188.0, 252.0]:
-		for my: float in [44.0, 66.0]:
-			draw_rect(Rect2(mx - 1.0, my, 3.0, 1.0), dusk)
-			draw_rect(Rect2(mx, my - 1.0, 1.0, 3.0), dusk)
-
-	# Subtle chart stars twinkling gently.
-	for s: int in range(18):
-		var sx: float = 26.0 + float((s * 47 + 13) % 268)
-		var sy: float = 30.0 + float((s * 19 + 5) % 44)
-		if sx < 38.0 and sy > 70.0:
-			continue
-		var phase: float = fmod(_elapsed + float(s) * 0.41, 2.4 + float(s % 3) * 0.6)
-		var scol: Color = (LxPalette.PAL["ice"] if s % 3 == 0 else LxPalette.PAL["stone"]) if phase < 0.45 else (LxPalette.PAL["mauve"] if s % 2 == 0 else dusk)
-		draw_rect(Rect2(sx, sy, 1.0, 1.0), scol)
-
-	# Calm sea-chart wave dashes near lower rim.
-	for w: int in range(6):
-		var wx: float = 54.0 + float(w) * 42.0 + roundf(sin(_elapsed * 0.8 + float(w)) * 2.0)
-		var wy: float = 84.0 + float(w % 2) * 3.0
-		draw_rect(Rect2(wx, wy, 5.0, 1.0), dusk)
-
-	_draw_compass_rose(Vector2(29.0, 82.0))
+	LxMapSilhouettes.draw_chart_backdrop(self, chart, _elapsed)
 
 
 func _px(c: Vector2, rects: Array, col: Color) -> void:
 	for r: Array in rects:
 		draw_rect(Rect2(roundf(c.x + float(r[0])), roundf(c.y + float(r[1])), float(r[2]), float(r[3])), col)
-
-
-func _draw_compass_rose(c: Vector2) -> void:
-	var dusk: Color = LxPalette.PAL["dusk"]
-	var apr: Color = LxPalette.PAL["apricot"]
-	var gold: Color = LxPalette.PAL["gold"]
-	var cream: Color = LxPalette.PAL["cream"]
-	_px(c, [[-3, -2, 1, 1], [3, -2, 1, 1], [-3, 2, 1, 1], [3, 2, 1, 1], [-2, -3, 1, 1], [2, -3, 1, 1], [-2, 3, 1, 1], [2, 3, 1, 1], [-2, -2, 1, 1], [2, -2, 1, 1], [-2, 2, 1, 1], [2, 2, 1, 1]], dusk)
-	_px(c, [[-1, -1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [1, 1, 1, 1], [-4, 0, 9, 1], [0, 1, 1, 4]], apr)
-	_px(c, [[-2, 0, 5, 1], [0, 1, 1, 2], [0, -4, 1, 4]], gold)
-	draw_rect(Rect2(c.x, c.y - 5.0, 1.0, 2.0), cream if (LxHudFx.flash_reduced() or fmod(_elapsed, 2.0) < 1.2) else gold)
-	draw_rect(Rect2(c.x, c.y, 1.0, 1.0), cream)
 
 
 func _draw_bridges() -> void:
@@ -528,11 +471,7 @@ func _draw_hub_pin() -> void:
 
 
 func _draw_unexplored_island(c: Vector2, isl_id: int) -> void:
-	_px(c, [[-6, -2, 12, 3], [-4, -4, 8, 2]], LxPalette.PAL["dusk"])
-	_px(c, [[-2, -6, 4, 2], [-7, 0, 14, 2], [-5, 2, 10, 2], [-2, 4, 4, 1]], LxPalette.PAL["night"])
-	for k: int in range(3):
-		var fx: float = roundf(c.x - 5.0 + float(k) * 5.0 + sin(_elapsed * 1.1 + float(isl_id) + float(k) * 2.0) * 1.5)
-		draw_rect(Rect2(fx, c.y - 3.0 - float(k % 2) * 2.0, 1.0, 1.0), LxPalette.PAL["mauve"])
+	LxMapSilhouettes.draw_unexplored_island(self, c, isl_id, _elapsed)
 
 
 func _draw_island_plinth(c: Vector2, isl_id: int, relit: bool) -> void:
@@ -540,66 +479,7 @@ func _draw_island_plinth(c: Vector2, isl_id: int, relit: bool) -> void:
 
 
 func _draw_island_landmark(c: Vector2, isl_id: int, relit: bool) -> void:
-	match isl_id:
-		1: # Bell Isle: peaked Bell Tower belfry + gold bell dot.
-			_px(c, [[-2, -8, 5, 6]], LxPalette.PAL["stone"])
-			_px(c, [[1, -8, 2, 6]], LxPalette.PAL["mauve"])
-			_px(c, [[-1, -7, 3, 3], [-1, -11, 3, 1]], LxPalette.PAL["night"])
-			_px(c, [[-3, -9, 7, 1], [-2, -10, 5, 1]], LxPalette.PAL["plum"])
-			_px(c, [[0, -12, 1, 1]], LxPalette.PAL["gold"])
-			_px(c, [[0, -6, 1, 2]], LxPalette.PAL["cream"] if relit else LxPalette.PAL["gold"])
-		2: # Tidewater Harbor: striped coastal Lighthouse spire + beacon glint.
-			_px(c, [[-2, -8, 4, 6]], LxPalette.PAL["cream"])
-			_px(c, [[-2, -7, 4, 1], [-2, -4, 4, 1]], LxPalette.PAL["coral"])
-			_px(c, [[1, -8, 1, 6]], LxPalette.PAL["stone"])
-			_px(c, [[-3, -9, 6, 1]], LxPalette.PAL["dusk"])
-			_px(c, [[-1, -12, 2, 1]], LxPalette.PAL["night"])
-			var lit: bool = LxHudFx.flash_reduced() or fmod(_elapsed, 1.6) < 0.9
-			_px(c, [[-1, -11, 2, 2]], LxPalette.PAL["cream"] if lit else LxPalette.PAL["gold"])
-			if lit:
-				_px(c, [[-3, -10, 1, 1], [2, -10, 1, 1]], LxPalette.PAL["gold"])
-		3: # Thornwood Hollow: domed ancient Hollow Oak canopy (jade/pine).
-			_px(c, [[-2, -5, 4, 3]], LxPalette.PAL["dusk"])
-			_px(c, [[0, -4, 1, 2]], LxPalette.PAL["apricot"])
-			_px(c, [[-5, -8, 10, 3]], LxPalette.PAL["pine"])
-			_px(c, [[-5, -9, 10, 2]], LxPalette.PAL["teal"])
-			_px(c, [[-4, -10, 8, 2]], LxPalette.PAL["jade"])
-			_px(c, [[-2, -11, 4, 1], [-4, -9, 2, 1]], LxPalette.PAL["lime"])
-		4: # Mirefen Gardens: arched pale glasshouse conservatory dome (ice/sky).
-			_px(c, [[-5, -3, 10, 1]], LxPalette.PAL["mauve"])
-			_px(c, [[-5, -6, 10, 3]], LxPalette.PAL["sky"])
-			_px(c, [[-4, -8, 8, 2], [-2, -9, 4, 1]], LxPalette.PAL["ice"])
-			_px(c, [[-2, -7, 1, 4], [2, -7, 1, 4]], LxPalette.PAL["blue"])
-			_px(c, [[-3, -8, 2, 1], [0, -10, 1, 1]], LxPalette.PAL["cream"])
-		5: # Starfall Observatory: crossed brass Orrery / telescope dome (gold/blue).
-			_px(c, [[-4, -6, 8, 4]], LxPalette.PAL["blue"])
-			_px(c, [[-3, -7, 6, 1]], LxPalette.PAL["sky"])
-			_px(c, [[1, -6, 3, 4]], LxPalette.PAL["deep"])
-			for d: int in range(-3, 4):
-				draw_rect(Rect2(c.x + float(d), roundf(c.y - 8.0 - float(d) * 0.5), 1.0, 1.0), LxPalette.PAL["gold"])
-				draw_rect(Rect2(c.x + float(d), roundf(c.y - 8.0 + float(d) * 0.5), 1.0, 1.0), LxPalette.PAL["apricot"])
-			_px(c, [[0, -11, 1, 2]], LxPalette.PAL["cream"])
-		6: # Ashen Kiln: smoking volcanic forge chimney (coral/apricot ember glow).
-			_px(c, [[-3, -7, 6, 5]], LxPalette.PAL["dusk"])
-			_px(c, [[-2, -9, 4, 2]], LxPalette.PAL["night"])
-			_px(c, [[-3, -9, 6, 1]], LxPalette.PAL["wine"])
-			_px(c, [[-1, -4, 2, 2]], LxPalette.PAL["apricot"] if (LxHudFx.flash_reduced() or fmod(_elapsed * 2.2, 1.0) < 0.5) else LxPalette.PAL["coral"])
-			_px(c, [[0, -3, 1, 1]], LxPalette.PAL["gold"])
-			var puff: float = floorf(fmod(_elapsed * 2.5, 3.0))
-			draw_rect(Rect2(roundf(c.x - 1.0 + puff * 0.5), c.y - 10.0 - puff, 1.0, 1.0), LxPalette.PAL["coral"])
-			draw_rect(Rect2(c.x + 1.0, c.y - 11.0 - fmod(puff + 1.0, 3.0), 1.0, 1.0), LxPalette.PAL["mauve"])
-		7: # Moon Shoals: slender crescent Moon Mirror Spire (ice/cream).
-			_px(c, [[-3, -3, 6, 1]], LxPalette.PAL["blue"])
-			_px(c, [[-1, -8, 2, 5], [1, -11, 1, 1]], LxPalette.PAL["sky"])
-			_px(c, [[-1, -8, 1, 5], [-1, -9, 2, 1]], LxPalette.PAL["ice"])
-			_px(c, [[-2, -11, 1, 3], [-1, -12, 2, 1]], LxPalette.PAL["cream"])
-		8: # The Long Night: twin-spired eclipsed cathedral arch (plum/rose/cream).
-			_px(c, [[-5, -10, 2, 8], [3, -10, 2, 8]], LxPalette.PAL["plum"])
-			_px(c, [[-5, -11, 1, 2], [4, -11, 1, 2], [-2, -10, 4, 4]], LxPalette.PAL["rose"])
-			_px(c, [[-3, -5, 6, 3]], LxPalette.PAL["dusk"])
-			_px(c, [[-1, -4, 2, 2]], LxPalette.PAL["night"])
-			_px(c, [[-1, -10, 2, 1]], LxPalette.PAL["cream"])
-			_px(c, [[-1, -9, 2, 2]], LxPalette.PAL["void"])
+	LxMapSilhouettes.draw_island_landmark(self, c, isl_id, relit, _elapsed)
 
 
 func _draw_relit_sparkle(p: Vector2, isl_id: int) -> void:
@@ -700,3 +580,7 @@ func _play_ui_sfx(sfx_id: String) -> void:
 
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc
+
+
+static func _joy_btn(event: InputEvent, btn: JoyButton) -> bool:
+	return event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed and (event as InputEventJoypadButton).button_index == btn

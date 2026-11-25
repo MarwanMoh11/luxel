@@ -55,9 +55,7 @@
         120
       ],
       "one_way": true,
-      "requires_moves": [
-        "wings"
-      ],
+      "requires_moves": [],
       "requires_flags": [
         "c4_orangerie_shortcut"
       ],

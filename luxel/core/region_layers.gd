@@ -5,11 +5,12 @@ extends Node2D
 
 const GreyboxDraw := preload("res://luxel/world/greybox_draw.gd")
 const SWEEP_DUR: float = 1.2
+const BFS_WALL_TILES: Array[String] = ["wall", "grate", "rail", "bramble", "cracked", "glass", "mirror", "foliage"]
 
 var _region: LxRegionLoader = null
 var _layers: Array[Dictionary] = []
 var _base_grid: Array[PackedStringArray] = []
-var _tile_overrides: Array[Dictionary] = [] # {rect: Rect2i, tile: String}
+var _tile_overrides: Dictionary = {} # Vector2i(tx, ty) -> tile: String
 var _active_ids: PackedStringArray = PackedStringArray()
 var _initialized: bool = false
 
@@ -105,8 +106,23 @@ func get_saved_inter_active(inter_id: String, fallback: bool = true) -> bool:
 	return bool(_saved_inter_active.get(inter_id, fallback))
 
 
-func record_tile_override(rect: Rect2i, tile: String) -> void:
-	_tile_overrides.append({"rect": rect, "tile": tile})
+func record_tile_override(rect: Rect2i, tile: String, rebuild_now: bool = true) -> void:
+	if _region == null or tile.is_empty():
+		return
+	var x0: int = clampi(rect.position.x, 0, _region.width)
+	var y0: int = clampi(rect.position.y, 0, _region.height)
+	var x1: int = clampi(rect.position.x + rect.size.x, 0, _region.width)
+	var y1: int = clampi(rect.position.y + rect.size.y, 0, _region.height)
+	for ty: int in range(y0, y1):
+		for tx: int in range(x0, x1):
+			_tile_overrides[Vector2i(tx, ty)] = tile
+	if rebuild_now:
+		_rebuild_changed_cells()
+		if _greybox_overlay != null:
+			_greybox_overlay.queue_redraw()
+
+
+func flush_tile_overrides() -> void:
 	_rebuild_changed_cells()
 	if _greybox_overlay != null:
 		_greybox_overlay.queue_redraw()
@@ -142,8 +158,10 @@ func apply(allow_animate: bool = true) -> bool:
 				if entry_v is Array and (entry_v as Array).size() >= 5:
 					var e: Array = entry_v as Array
 					_paint_rect(new_grid, Rect2i(int(e[0]), int(e[1]), int(e[2]), int(e[3])), str(e[4]))
-	for ov: Dictionary in _tile_overrides:
-		_paint_rect(new_grid, ov["rect"] as Rect2i, str(ov["tile"]))
+	for cell_v: Variant in _tile_overrides.keys():
+		var c: Vector2i = cell_v as Vector2i
+		if c.y >= 0 and c.y < new_grid.size() and c.x >= 0 and c.x < new_grid[c.y].size():
+			new_grid[c.y][c.x] = str(_tile_overrides[cell_v])
 	_region.grid = new_grid
 
 	# 2. Update overlay PNGs & fallback tile overlay.
@@ -181,6 +199,10 @@ func relocate_wick_if_unsafe() -> void:
 	if (wick_node.get("dead") == true):
 		return
 	var wpos: Vector2 = wick_node.global_position
+	if wick_node.has_method("is_mounted") and bool(wick_node.call("is_mounted")):
+		var mtt: String = _region.tile_at(wpos)
+		if mtt in ["water", "tide"]:
+			return
 	if _is_point_safe(wpos):
 		return
 	var safe: Vector2 = _find_nearest_safe_tile_center(wpos)
@@ -190,13 +212,30 @@ func relocate_wick_if_unsafe() -> void:
 		wick_node.set("_last_safe_pos", safe)
 
 
+func is_point_safe(pt: Vector2) -> bool:
+	return _is_point_safe(pt)
+
+
+func find_nearest_safe_tile_center(from_pos: Vector2) -> Vector2:
+	return _find_nearest_safe_tile_center(from_pos)
+
+
 func _is_point_safe(pt: Vector2) -> bool:
 	if _region == null:
 		return true
+	if _region.bounds.has_area() and not _region.bounds.has_point(pt):
+		return false
 	if _region.is_lethal_void_at(pt):
 		return false
-	if _region.is_solid_tile(_region.tile_at(pt), false, false):
-		return false
+	var tt: String = _region.tile_at(pt)
+	if _region.is_solid_tile(tt, false, false):
+		var supported: bool = false
+		if tt in ["pit", "void", "water", "tide", "phantom"]:
+			var ts: float = float(_region.tile_size)
+			var tc := Vector2((floorf(pt.x / ts) + 0.5) * ts, (floorf(pt.y / ts) + 0.5) * ts)
+			supported = _region._is_tile_supported(tt, pt) or _region._is_tile_supported(tt, tc)
+		if not supported:
+			return false
 	for it: LxInteractable in _region.get_interactables():
 		if it != null and is_instance_valid(it) and it.is_solid() and it.get_solid_rect().grow(3.0).has_point(pt):
 			return false
@@ -206,6 +245,14 @@ func _is_point_safe(pt: Vector2) -> bool:
 func _find_nearest_safe_tile_center(from_pos: Vector2) -> Vector2:
 	if _region == null or _region.width <= 0 or _region.height <= 0:
 		return Vector2(-1.0, -1.0)
+	var found: Vector2 = _bfs_nearest_safe(from_pos, true)
+	if found.x >= 0.0:
+		return found
+	var fallback: Vector2 = _bfs_nearest_safe(from_pos, false)
+	return fallback if fallback.x >= 0.0 else _region.spawn_pos
+
+
+func _bfs_nearest_safe(from_pos: Vector2, respect_walls: bool) -> Vector2:
 	var ts: float = float(_region.tile_size)
 	var sx: int = clampi(int(floorf(from_pos.x / ts)), 0, _region.width - 1)
 	var sy: int = clampi(int(floorf(from_pos.y / ts)), 0, _region.height - 1)
@@ -225,10 +272,23 @@ func _find_nearest_safe_tile_center(from_pos: Vector2) -> Vector2:
 			if nx < 0 or ny < 0 or nx >= _region.width or ny >= _region.height:
 				continue
 			var ncell := Vector2i(nx, ny)
-			if not visited.has(ncell):
-				visited[ncell] = true
-				queue.append(ncell)
-	return _region.spawn_pos
+			if visited.has(ncell):
+				continue
+			if respect_walls:
+				var ntt: String = _region.grid[ny][nx]
+				if BFS_WALL_TILES.has(ntt):
+					continue
+				var ncenter := Vector2((float(nx) + 0.5) * ts, (float(ny) + 0.5) * ts)
+				var blocked_inter: bool = false
+				for it: LxInteractable in _region.get_interactables():
+					if it != null and is_instance_valid(it) and it.is_solid() and it.get_solid_rect().has_point(ncenter):
+						blocked_inter = true
+						break
+				if blocked_inter:
+					continue
+			visited[ncell] = true
+			queue.append(ncell)
+	return Vector2(-1.0, -1.0)
 
 
 func _apply_entity_toggles(active_layers: Array[Dictionary]) -> void:
@@ -368,9 +428,11 @@ func _load_layer_texture(layer: Dictionary, lid: String) -> Texture2D:
 			if res is Texture2D:
 				return res as Texture2D
 		elif FileAccess.file_exists(path):
-			var img := Image.new()
-			if img.load(ProjectSettings.globalize_path(path)) == OK:
-				return ImageTexture.create_from_image(img)
+			var bytes: PackedByteArray = FileAccess.get_file_as_bytes(path)
+			if not bytes.is_empty():
+				var img := Image.new()
+				if img.load_png_from_buffer(bytes) == OK:
+					return ImageTexture.create_from_image(img)
 	return null
 
 

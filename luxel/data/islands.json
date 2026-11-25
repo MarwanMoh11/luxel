@@ -8,7 +8,11 @@
     "aim_assist_allowed": false,
     "hearts_start": 4,
     "hearts_max": 12,
-    "ember_pieces_per_heart": 4,
+    "ember_pieces_per_heart": 8,
+    "half_lanterns_per_heart": 8,
+    "boss_heart_full_below": 5,
+    "boss_heart_pieces": 3,
+    "heart_overflow_shards": 120,
     "language": "en",
     "stop_after_milestone": "M2"
   },

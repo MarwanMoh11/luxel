@@ -100,7 +100,7 @@
       "props": {
         "radius_px": 56,
         "scroll_speed": 68,
-        "duration_s": 13.0,
+        "duration_s": 10.0,
         "brakes_needed": 0,
         "auto_start": true,
         "complete_flag": "toll_r2_survived",
@@ -141,16 +141,6 @@
           {
             "t": 8.0,
             "side": "r",
-            "kind": "beam"
-          },
-          {
-            "t": 9.8,
-            "side": "r",
-            "kind": "grate"
-          },
-          {
-            "t": 11.2,
-            "side": "l",
             "kind": "beam"
           }
         ]
@@ -466,21 +456,11 @@
               "leash": 140
             },
             {
-              "id": "snuffer_tr2_land2",
-              "kind": "snuffer_acolyte",
-              "pos": [
-                232,
-                408
-              ],
-              "zone": "toll_drop",
-              "leash": 140
-            },
-            {
               "id": "moth_tr2_land",
               "kind": "toll_moth",
               "pos": [
-                192,
-                416
+                232,
+                408
               ],
               "zone": "toll_drop",
               "leash": 160
@@ -539,9 +519,28 @@
         "timeout": 28.0
       },
       {
+        "op": "shoot",
+        "from": [
+          160,
+          192
+        ],
+        "target": "bell_toll_r2_k"
+      },
+      {
         "op": "wait_until",
         "flag": "toll_r2_survived",
         "timeout": 18.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          392
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 20.0
       },
       {
         "op": "interact",

@@ -461,31 +461,32 @@
         "secs": 0.6
       },
       {
-        "op": "goto",
+        "op": "push",
+        "target": "transformer_spire_r7_b",
         "to": [
-          216,
+          232,
           48
         ],
-        "tol": 8.0
+        "tol": 6.0
       },
       {
         "op": "rotate",
         "target": "transformer_spire_r7_b",
-        "angle": 315
+        "angle": 45
       },
       {
         "op": "goto",
         "to": [
-          240,
-          40
+          232,
+          72
         ],
         "tol": 6.0
       },
       {
         "op": "shoot",
         "from": [
-          240,
-          40
+          232,
+          72
         ],
         "target": "transformer_spire_r7_b"
       },

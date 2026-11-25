@@ -8,6 +8,7 @@ const MIN_SUMMON_DELAY: float = 0.55
 const MIN_WICK_DIST: float = 36.0
 
 var boss: LxEnemyBrain = null
+var _world_ctx: Node = null
 var _pending: Array[Dictionary] = []
 var _live_adds: Array[LxEnemyBrain] = []
 var _clock: float = 0.0
@@ -20,11 +21,36 @@ func _init(p_boss: LxEnemyBrain = null) -> void:
 func clear_all() -> void:
 	_pending.clear()
 	for a: LxEnemyBrain in _live_adds:
-		if a != null and is_instance_valid(a):
+		if is_instance_valid(a):
 			if a.director != null:
+				a.director.release_light(a)
 				a.director.unregister(a)
+			_erase_from_world(a)
 			a.queue_free()
 	_live_adds.clear()
+
+
+func _erase_from_world(a: LxEnemyBrain) -> void:
+	var ctxs: Array[Node] = []
+	if is_instance_valid(boss) and is_instance_valid(boss.world_ctx):
+		ctxs.append(boss.world_ctx)
+	if is_instance_valid(_world_ctx) and not ctxs.has(_world_ctx):
+		ctxs.append(_world_ctx)
+	if is_instance_valid(Lx.world) and not ctxs.has(Lx.world):
+		ctxs.append(Lx.world)
+	for ctx: Node in ctxs:
+		if ctx.has_method("remove_enemy"):
+			ctx.call("remove_enemy", a)
+		if ctx.has_method("get_enemies"):
+			var el: Variant = ctx.call("get_enemies")
+			if el is Array:
+				(el as Array).erase(a)
+		var ep: Variant = ctx.get("enemies")
+		if ep is Array:
+			(ep as Array).erase(a)
+		var ep2: Variant = ctx.get("_enemies")
+		if ep2 is Array:
+			(ep2 as Array).erase(a)
 
 
 func alive_count() -> int:
@@ -84,6 +110,8 @@ func queue_wave(specs: Array[Dictionary], summon_delay: float = 0.75, max_alive:
 
 func tick(dt: float, world_ctx: Node) -> void:
 	_clock += dt
+	if is_instance_valid(world_ctx):
+		_world_ctx = world_ctx
 	_prune_dead()
 	for i: int in range(_pending.size() - 1, -1, -1):
 		var item: Dictionary = _pending[i]
@@ -94,14 +122,16 @@ func tick(dt: float, world_ctx: Node) -> void:
 
 
 func _spawn_now(spec: Dictionary, world_ctx: Node) -> void:
-	if boss == null or not is_instance_valid(boss) or not boss.is_alive():
+	if not is_instance_valid(boss) or not boss.is_alive():
 		return
+	if is_instance_valid(world_ctx):
+		_world_ctx = world_ctx
 	var dir: LxAttackDirector = boss.director
 	var spawned: LxEnemyBrain = null
-	if world_ctx != null and is_instance_valid(world_ctx):
+	if is_instance_valid(world_ctx):
 		if world_ctx.has_method("spawn_enemy"):
 			var res: Variant = world_ctx.call("spawn_enemy", spec)
-			if res is LxEnemyBrain:
+			if is_instance_valid(res) and res is LxEnemyBrain:
 				spawned = res as LxEnemyBrain
 		elif world_ctx.has_method("add_enemy_node"):
 			var kind: String = str(spec.get("kind", "warden"))
@@ -131,5 +161,5 @@ func draw_summons(ci: CanvasItem, origin_world: Vector2) -> void:
 func _prune_dead() -> void:
 	for i: int in range(_live_adds.size() - 1, -1, -1):
 		var a: LxEnemyBrain = _live_adds[i]
-		if a == null or not is_instance_valid(a) or not a.is_alive():
+		if not is_instance_valid(a) or not a.is_alive():
 			_live_adds.remove_at(i)

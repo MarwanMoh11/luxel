@@ -443,10 +443,6 @@
     "exit": "exit_r3_east",
     "solution": [
       {
-        "op": "interact",
-        "target": "lore_r3_gallery"
-      },
-      {
         "op": "shoot",
         "from": [
           52,

@@ -634,6 +634,48 @@
       ]
     },
     {
+      "id": "ev_m2_reentry_ambush",
+      "on": "enter",
+      "if": "flag:masq_r2_ambush_started && !flag:masq_r2_done",
+      "once": false,
+      "do": [
+        {
+          "wave": [
+            {
+              "id": "m2_re_ref",
+              "kind": "reflection",
+              "pos": [
+                104,
+                160
+              ],
+              "zone": "masq_r2",
+              "leash": 200
+            },
+            {
+              "id": "m2_re_gk",
+              "kind": "glass_knight",
+              "pos": [
+                384,
+                160
+              ],
+              "zone": "masq_r2",
+              "leash": 200
+            },
+            {
+              "id": "m2_re_pup",
+              "kind": "puppet",
+              "pos": [
+                256,
+                80
+              ],
+              "zone": "masq_r2",
+              "leash": 200
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "ev_m2_clear",
       "on": "cleared",
       "if": "flag:masq_r2_ambush_started",

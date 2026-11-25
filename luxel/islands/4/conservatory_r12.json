@@ -54,9 +54,7 @@
         296,
         56
       ],
-      "requires_moves": [
-        "wings"
-      ],
+      "requires_moves": [],
       "requires_flags": [
         "c4_r12_aqueduct_open"
       ],

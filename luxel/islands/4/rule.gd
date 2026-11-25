@@ -381,9 +381,9 @@ func _draw_hud(ci: CanvasItem) -> void:
 				var py: float = roundf(22.0 + float(k) * 26.0 + sin(u * TAU + float(k)) * 5.0)
 				ci.draw_rect(Rect2(px, py, 2.0, 2.0), Color(c_gold if k % 2 == 0 else c_rose, a))
 
-	# 2. Compact 28x12 px 6-petal Dusk Sundial beneath the minimap (x=285, y=62)
+	# 2. Compact 28x12 px 6-petal Dusk Sundial beneath the minimap (x=285, y=63)
 	var ox: float = 285.0
-	var oy: float = 62.0
+	var oy: float = 63.0
 	var bw: float = 28.0
 	var bh: float = 12.0
 	ci.draw_rect(Rect2(ox - 1.0, oy - 1.0, bw + 2.0, bh + 2.0), c_void)

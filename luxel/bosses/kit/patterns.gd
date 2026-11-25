@@ -6,6 +6,10 @@ extends RefCounted
 
 const PAL: Dictionary = LxPalette.PAL
 const POOL_SIZE: int = 96
+const MAX_SPIRALS: int = 16
+const MAX_LANES: int = 24
+const MAX_LIGHTNINGS: int = 16
+const MAX_PILLARS: int = 32
 const MIN_GAP_PX: float = 28.0
 const MIN_TELL_S: float = 0.45
 
@@ -123,6 +127,8 @@ func emit_fan(origin: Vector2, aim_dir: Vector2, count: int, spread_rad: float, 
 
 
 func emit_spiral(origin: Vector2, arms: int, speed: float, base_ang: float, spin_step: float, waves: int, interval: float, cfg: Dictionary = {}) -> void:
+	if _spirals.size() >= MAX_SPIRALS:
+		_spirals.remove_at(0)
 	_spirals.append({
 		"origin": origin, "follow_boss": bool(cfg.get("follow_boss", true)),
 		"arms": clampi(arms, 2, 8), "speed": speed, "ang": base_ang,
@@ -133,6 +139,8 @@ func emit_spiral(origin: Vector2, arms: int, speed: float, base_ang: float, spin
 
 func emit_lane(origin: Vector2, dir: Vector2, count: int, speed: float, stagger_s: float = 0.08, cfg: Dictionary = {}) -> void:
 	var d: Vector2 = dir.normalized() if dir.length_squared() > 0.0001 else Vector2.RIGHT
+	if _lanes.size() >= MAX_LANES:
+		_lanes.remove_at(0)
 	_lanes.append({
 		"origin": origin, "dir": d, "left": clampi(count, 1, 10),
 		"speed": speed, "stagger": maxf(0.04, stagger_s), "timer": 0.0, "cfg": cfg.duplicate(),
@@ -185,6 +193,8 @@ func emit_chain_lightning(points: Array[Vector2], warn_s: float, half_w: float =
 	if points.size() < 2:
 		return
 	var scale: float = _assist_scale()
+	if _lightnings.size() >= MAX_LIGHTNINGS:
+		_lightnings.remove_at(0)
 	_lightnings.append({
 		"pts": points.duplicate(),
 		"warn_dur": maxf(MIN_TELL_S, warn_s) * scale,
@@ -229,6 +239,8 @@ func emit_pillars(points: Array[Vector2], warn_s: float, radius: float = 14.0, l
 	var scale: float = _assist_scale()
 	var w_dur: float = maxf(MIN_TELL_S, warn_s) * scale
 	for i: int in range(points.size()):
+		if _pillars.size() >= MAX_PILLARS:
+			_pillars.remove_at(0)
 		_pillars.append({
 			"pos": points[i],
 			"radius": maxf(10.0, radius),
@@ -336,7 +348,7 @@ func _tick_pillars(dt: float) -> void:
 func _tick_bolts(dt: float, world_ctx: Node, bpos: Vector2, props: LxBossProps) -> void:
 	var wp: Vector2 = _wick_pos()
 	var has_p: bool = _has_wick()
-	var wick_node: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
+	var wick_node: LxWick = Lx.player as LxWick if (is_instance_valid(Lx.player) and Lx.player is LxWick) else null
 	var wick_dashing: bool = wick_node != null and wick_node.is_dashing()
 	var wick_beam_active: bool = wick_node != null and wick_node.move_beam != null and wick_node.move_beam.beam_vis_t > 0.0
 	var wick_lens_active: bool = wick_node != null and wick_node.move_lens != null and wick_node.move_lens.is_pulse_active()
@@ -466,7 +478,7 @@ func _has_wick() -> bool:
 func _wick_pos() -> Vector2:
 	if boss != null and boss.has_method("_get_wick_pos"):
 		return boss.call("_get_wick_pos") as Vector2
-	if Lx.player is Node2D and is_instance_valid(Lx.player):
+	if is_instance_valid(Lx.player) and Lx.player is Node2D:
 		return (Lx.player as Node2D).global_position
 	return Vector2(-9999.0, -9999.0)
 

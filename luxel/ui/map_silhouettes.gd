@@ -182,3 +182,125 @@ static func _draw_island_atmosphere(canvas: CanvasItem, c: Vector2, isl_id: int,
 static func _px(canvas: CanvasItem, c: Vector2, rects: Array, col: Color) -> void:
 	for r: Array in rects:
 		canvas.draw_rect(Rect2(roundf(c.x + float(r[0])), roundf(c.y + float(r[1])), float(r[2]), float(r[3])), col)
+
+
+static func draw_chart_backdrop(canvas: CanvasItem, chart: Rect2, elapsed: float) -> void:
+	LxPixelFont.draw_panel(canvas, chart, "night", "dusk", "void")
+	for corner: Vector2 in [chart.position + Vector2(1.0, 1.0), Vector2(chart.end.x - 3.0, chart.position.y + 1.0), Vector2(chart.position.x + 1.0, chart.end.y - 3.0), chart.end - Vector2(3.0, 3.0)]:
+		canvas.draw_rect(Rect2(corner, Vector2(2.0, 2.0)), LxPalette.PAL["gold"])
+	canvas.draw_rect(Rect2(22.0, 28.0, 276.0, 14.0), LxPalette.PAL["void"])
+	canvas.draw_rect(Rect2(22.0, 74.0, 276.0, 16.0), LxPalette.PAL["deep"])
+	var dx: float = 22.0
+	while dx < 296.0:
+		canvas.draw_rect(Rect2(dx, 42.0, 2.0, 1.0), LxPalette.PAL["void"])
+		canvas.draw_rect(Rect2(dx + 2.0, 73.0, 2.0, 1.0), LxPalette.PAL["deep"])
+		dx += 6.0
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var gx: float = 36.0
+	while gx <= 284.0:
+		canvas.draw_rect(Rect2(gx, 28.0, 1.0, 2.0), dusk)
+		canvas.draw_rect(Rect2(gx, 88.0, 1.0, 2.0), dusk)
+		gx += 16.0
+	for gy: float in [38.0, 50.0, 62.0, 74.0]:
+		canvas.draw_rect(Rect2(22.0, gy, 2.0, 1.0), dusk)
+		canvas.draw_rect(Rect2(296.0, gy, 2.0, 1.0), dusk)
+	for mx: float in [60.0, 124.0, 188.0, 252.0]:
+		for my: float in [44.0, 66.0]:
+			canvas.draw_rect(Rect2(mx - 1.0, my, 3.0, 1.0), dusk)
+			canvas.draw_rect(Rect2(mx, my - 1.0, 1.0, 3.0), dusk)
+	for s: int in range(18):
+		var sx: float = 26.0 + float((s * 47 + 13) % 268)
+		var sy: float = 30.0 + float((s * 19 + 5) % 44)
+		if sx < 38.0 and sy > 70.0:
+			continue
+		var phase: float = fmod(elapsed + float(s) * 0.41, 2.4 + float(s % 3) * 0.6)
+		var scol: Color = (LxPalette.PAL["ice"] if s % 3 == 0 else LxPalette.PAL["stone"]) if phase < 0.45 else (LxPalette.PAL["mauve"] if s % 2 == 0 else dusk)
+		canvas.draw_rect(Rect2(sx, sy, 1.0, 1.0), scol)
+	for w: int in range(6):
+		var wx: float = 54.0 + float(w) * 42.0 + roundf(sin(elapsed * 0.8 + float(w)) * 2.0)
+		var wy: float = 84.0 + float(w % 2) * 3.0
+		canvas.draw_rect(Rect2(wx, wy, 5.0, 1.0), dusk)
+	draw_compass_rose(canvas, Vector2(29.0, 82.0), elapsed)
+
+
+static func draw_compass_rose(canvas: CanvasItem, c: Vector2, elapsed: float) -> void:
+	var dusk: Color = LxPalette.PAL["dusk"]
+	var apr: Color = LxPalette.PAL["apricot"]
+	var gold: Color = LxPalette.PAL["gold"]
+	var cream: Color = LxPalette.PAL["cream"]
+	_px(canvas, c, [[-3, -2, 1, 1], [3, -2, 1, 1], [-3, 2, 1, 1], [3, 2, 1, 1], [-2, -3, 1, 1], [2, -3, 1, 1], [-2, 3, 1, 1], [2, 3, 1, 1], [-2, -2, 1, 1], [2, -2, 1, 1], [-2, 2, 1, 1], [2, 2, 1, 1]], dusk)
+	_px(canvas, c, [[-1, -1, 1, 1], [1, -1, 1, 1], [-1, 1, 1, 1], [1, 1, 1, 1], [-4, 0, 9, 1], [0, 1, 1, 4]], apr)
+	_px(canvas, c, [[-2, 0, 5, 1], [0, 1, 1, 2], [0, -4, 1, 4]], gold)
+	canvas.draw_rect(Rect2(c.x, c.y - 5.0, 1.0, 2.0), cream if (LxHudFx.flash_reduced() or fmod(elapsed, 2.0) < 1.2) else gold)
+	canvas.draw_rect(Rect2(c.x, c.y, 1.0, 1.0), cream)
+
+
+static func draw_unexplored_island(canvas: CanvasItem, c: Vector2, isl_id: int, elapsed: float) -> void:
+	_px(canvas, c, [[-6, -2, 12, 3], [-4, -4, 8, 2]], LxPalette.PAL["dusk"])
+	_px(canvas, c, [[-2, -6, 4, 2], [-7, 0, 14, 2], [-5, 2, 10, 2], [-2, 4, 4, 1]], LxPalette.PAL["night"])
+	for k: int in range(3):
+		var fx: float = roundf(c.x - 5.0 + float(k) * 5.0 + sin(elapsed * 1.1 + float(isl_id) + float(k) * 2.0) * 1.5)
+		canvas.draw_rect(Rect2(fx, c.y - 3.0 - float(k % 2) * 2.0, 1.0, 1.0), LxPalette.PAL["mauve"])
+
+
+static func draw_island_landmark(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool, elapsed: float) -> void:
+	match isl_id:
+		1:
+			_px(canvas, c, [[-2, -8, 5, 6]], LxPalette.PAL["stone"])
+			_px(canvas, c, [[1, -8, 2, 6]], LxPalette.PAL["mauve"])
+			_px(canvas, c, [[-1, -7, 3, 3], [-1, -11, 3, 1]], LxPalette.PAL["night"])
+			_px(canvas, c, [[-3, -9, 7, 1], [-2, -10, 5, 1]], LxPalette.PAL["plum"])
+			_px(canvas, c, [[0, -12, 1, 1]], LxPalette.PAL["gold"])
+			_px(canvas, c, [[0, -6, 1, 2]], LxPalette.PAL["cream"] if relit else LxPalette.PAL["gold"])
+		2:
+			_px(canvas, c, [[-2, -8, 4, 6]], LxPalette.PAL["cream"])
+			_px(canvas, c, [[-2, -7, 4, 1], [-2, -4, 4, 1]], LxPalette.PAL["coral"])
+			_px(canvas, c, [[1, -8, 1, 6]], LxPalette.PAL["stone"])
+			_px(canvas, c, [[-3, -9, 6, 1]], LxPalette.PAL["dusk"])
+			_px(canvas, c, [[-1, -12, 2, 1]], LxPalette.PAL["night"])
+			var lit: bool = LxHudFx.flash_reduced() or fmod(elapsed, 1.6) < 0.9
+			_px(canvas, c, [[-1, -11, 2, 2]], LxPalette.PAL["cream"] if lit else LxPalette.PAL["gold"])
+			if lit:
+				_px(canvas, c, [[-3, -10, 1, 1], [2, -10, 1, 1]], LxPalette.PAL["gold"])
+		3:
+			_px(canvas, c, [[-2, -5, 4, 3]], LxPalette.PAL["dusk"])
+			_px(canvas, c, [[0, -4, 1, 2]], LxPalette.PAL["apricot"])
+			_px(canvas, c, [[-5, -8, 10, 3]], LxPalette.PAL["pine"])
+			_px(canvas, c, [[-5, -9, 10, 2]], LxPalette.PAL["teal"])
+			_px(canvas, c, [[-4, -10, 8, 2]], LxPalette.PAL["jade"])
+			_px(canvas, c, [[-2, -11, 4, 1], [-4, -9, 2, 1]], LxPalette.PAL["lime"])
+		4:
+			_px(canvas, c, [[-5, -3, 10, 1]], LxPalette.PAL["mauve"])
+			_px(canvas, c, [[-5, -6, 10, 3]], LxPalette.PAL["sky"])
+			_px(canvas, c, [[-4, -8, 8, 2], [-2, -9, 4, 1]], LxPalette.PAL["ice"])
+			_px(canvas, c, [[-2, -7, 1, 4], [2, -7, 1, 4]], LxPalette.PAL["blue"])
+			_px(canvas, c, [[-3, -8, 2, 1], [0, -10, 1, 1]], LxPalette.PAL["cream"])
+		5:
+			_px(canvas, c, [[-4, -6, 8, 4]], LxPalette.PAL["blue"])
+			_px(canvas, c, [[-3, -7, 6, 1]], LxPalette.PAL["sky"])
+			_px(canvas, c, [[1, -6, 3, 4]], LxPalette.PAL["deep"])
+			for d: int in range(-3, 4):
+				canvas.draw_rect(Rect2(c.x + float(d), roundf(c.y - 8.0 - float(d) * 0.5), 1.0, 1.0), LxPalette.PAL["gold"])
+				canvas.draw_rect(Rect2(c.x + float(d), roundf(c.y - 8.0 + float(d) * 0.5), 1.0, 1.0), LxPalette.PAL["apricot"])
+			_px(canvas, c, [[0, -11, 1, 2]], LxPalette.PAL["cream"])
+		6:
+			_px(canvas, c, [[-3, -7, 6, 5]], LxPalette.PAL["dusk"])
+			_px(canvas, c, [[-2, -9, 4, 2]], LxPalette.PAL["night"])
+			_px(canvas, c, [[-3, -9, 6, 1]], LxPalette.PAL["wine"])
+			_px(canvas, c, [[-1, -4, 2, 2]], LxPalette.PAL["apricot"] if (LxHudFx.flash_reduced() or fmod(elapsed * 2.2, 1.0) < 0.5) else LxPalette.PAL["coral"])
+			_px(canvas, c, [[0, -3, 1, 1]], LxPalette.PAL["gold"])
+			var puff: float = floorf(fmod(elapsed * 2.5, 3.0))
+			canvas.draw_rect(Rect2(roundf(c.x - 1.0 + puff * 0.5), c.y - 10.0 - puff, 1.0, 1.0), LxPalette.PAL["coral"])
+			canvas.draw_rect(Rect2(c.x + 1.0, c.y - 11.0 - fmod(puff + 1.0, 3.0), 1.0, 1.0), LxPalette.PAL["mauve"])
+		7:
+			_px(canvas, c, [[-3, -3, 6, 1]], LxPalette.PAL["blue"])
+			_px(canvas, c, [[-1, -8, 2, 5], [1, -11, 1, 1]], LxPalette.PAL["sky"])
+			_px(canvas, c, [[-1, -8, 1, 5], [-1, -9, 2, 1]], LxPalette.PAL["ice"])
+			_px(canvas, c, [[-2, -11, 1, 3], [-1, -12, 2, 1]], LxPalette.PAL["cream"])
+		8:
+			_px(canvas, c, [[-5, -10, 2, 8], [3, -10, 2, 8]], LxPalette.PAL["plum"])
+			_px(canvas, c, [[-5, -11, 1, 2], [4, -11, 1, 2], [-2, -10, 4, 4]], LxPalette.PAL["rose"])
+			_px(canvas, c, [[-3, -5, 6, 3]], LxPalette.PAL["dusk"])
+			_px(canvas, c, [[-1, -4, 2, 2]], LxPalette.PAL["night"])
+			_px(canvas, c, [[-1, -10, 2, 1]], LxPalette.PAL["cream"])
+			_px(canvas, c, [[-1, -9, 2, 2]], LxPalette.PAL["void"])

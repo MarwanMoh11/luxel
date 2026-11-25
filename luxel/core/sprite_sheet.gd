@@ -144,11 +144,12 @@ static func _load_texture(png_path: String) -> Texture2D:
 		var res: Resource = ResourceLoader.load(png_path)
 		if res is Texture2D:
 			return res as Texture2D
-	var abs_path: String = ProjectSettings.globalize_path(png_path)
-	if FileAccess.file_exists(abs_path) or FileAccess.file_exists(png_path):
-		var img: Image = Image.load_from_file(abs_path)
-		if img != null and not img.is_empty():
-			return ImageTexture.create_from_image(img)
+	if FileAccess.file_exists(png_path):
+		var bytes: PackedByteArray = FileAccess.get_file_as_bytes(png_path)
+		if not bytes.is_empty():
+			var img := Image.new()
+			if img.load_png_from_buffer(bytes) == OK and not img.is_empty():
+				return ImageTexture.create_from_image(img)
 	return null
 
 

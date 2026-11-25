@@ -43,7 +43,9 @@
         "beacon_5_2",
         "beacon_5_3",
         "meteor_done",
-        "planetarium_done"
+        "planetarium_done",
+        "power_orbit_ring",
+        "power_sextant"
       ],
       "done_flag": "fall_done"
     }

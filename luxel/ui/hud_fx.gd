@@ -153,8 +153,9 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 	var br: LxBiomeRules = LxBiomeRules.active_instance
 	if br == null or not is_instance_valid(br):
 		return
-	var low_two_row: bool = Lx.state != null and Lx.state.max_hearts > 6 and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0
-	var o := Vector2(5.0, 27.0 if low_two_row else 22.0)
+	var max_h: int = clampi(Lx.state.max_hearts if Lx.state != null else 4, 4, 12)
+	var show_h: bool = bool(LxSold.current().get_hud_visibility().get("show_hearts", true))
+	var o := Vector2(5.0, LxHudOverlays.compute_left_stack_y(max_h, show_h, true))
 	var bg: Color = LxPalette.PAL["void"] as Color
 	var night: Color = LxPalette.PAL["night"] as Color
 	var bm: LxBiomeMechanics = LxBiomeMechanics.active_instance
@@ -178,7 +179,8 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					if rung_n >= tot_n:
 						_draw_discovery_crown(hud, Vector2(o.x + float(show_n) * 5.0 + 2.0, o.y + 2.0), LxPalette.PAL["gold"] as Color, blink_t, fred)
 		2:
-			if not br.is_dungeon:
+			var has_epic_tide: bool = LxIsland2Rule.active_instance != null
+			if not br.is_dungeon and not has_epic_tide:
 				has_top_badge = true
 				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
 				draw_biome_crest(hud, 2, o + Vector2(3.0, 3.0), LxPalette.PAL["sky"] as Color, LxPalette.PAL["ice"] as Color)
@@ -196,7 +198,7 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 					hud.draw_rect(Rect2(bo2 + Vector2(2.0, 2.0), Vector2(fill_w, 1.0)), tc)
 			if br.beam_buff_t > 0.0:
 				has_top_badge = true
-				var fo: Vector2 = (o + Vector2(33.0, 0.0)) if not br.is_dungeon else o
+				var fo: Vector2 = (o + Vector2(33.0, 0.0)) if (not br.is_dungeon and not has_epic_tide) else o
 				hud.draw_rect(Rect2(fo, Vector2(7.0, 7.0)), bg)
 				hud.draw_rect(Rect2(fo + Vector2(2.0, 1.0), Vector2(3.0, 5.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(fo + Vector2(1.0, 2.0), Vector2(5.0, 3.0)), LxPalette.PAL["gold"] as Color)
@@ -241,24 +243,28 @@ static func _draw_biome_rule_badge(hud: CanvasItem, blink_t: float, fred: bool) 
 				hud.draw_rect(Rect2(o + Vector2(2.0, 2.0), Vector2(maxf(1.0, sw), 1.0)), LxPalette.PAL["gold"] as Color)
 				hud.draw_rect(Rect2(o + Vector2(2.0 + sw - 1.0, 2.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
 		6:
-			has_top_badge = true
-			hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
-			draw_biome_crest(hud, 6, o + Vector2(3.0, 3.0), LxPalette.PAL["coral"] as Color, LxPalette.PAL["gold"] as Color)
-			if br.vent_cycle >= 0.56:
-				hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
-			var bo6: Vector2 = o + Vector2(8.0, 1.0)
-			var vw: float = floorf(18.0 * clampf(br.vent_cycle, 0.0, 1.0))
-			hud.draw_rect(Rect2(bo6, Vector2(22.0, 5.0)), bg)
-			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), LxPalette.PAL["dusk"] as Color)
-			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 1.0)), LxPalette.PAL["mauve"] as Color)
-			hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(1.0, 3.0)), LxPalette.PAL["mauve"] as Color)
-			hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(18.0, 1.0)), night)
-			var vc: Color = (LxPalette.PAL["gold"] if br.vent_cycle >= 0.56 else LxPalette.PAL["coral"]) as Color
-			if vw > 0.0:
-				hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
+			var has_epic_kiln: bool = LxIsland6Rule.active_instance != null
+			if not has_epic_kiln:
+				has_top_badge = true
+				hud.draw_rect(Rect2(o, Vector2(7.0, 7.0)), bg)
+				draw_biome_crest(hud, 6, o + Vector2(3.0, 3.0), LxPalette.PAL["coral"] as Color, LxPalette.PAL["gold"] as Color)
+				if br.vent_cycle >= 0.56:
+					hud.draw_rect(Rect2(o + Vector2(3.0, 3.0), Vector2.ONE), LxPalette.PAL["cream"] as Color)
+				var bo6: Vector2 = o + Vector2(8.0, 1.0)
+				var vw: float = floorf(18.0 * clampf(br.vent_cycle, 0.0, 1.0))
+				hud.draw_rect(Rect2(bo6, Vector2(22.0, 5.0)), bg)
+				hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 3.0)), LxPalette.PAL["dusk"] as Color)
+				hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(20.0, 1.0)), LxPalette.PAL["mauve"] as Color)
+				hud.draw_rect(Rect2(bo6 + Vector2(1.0, 1.0), Vector2(1.0, 3.0)), LxPalette.PAL["mauve"] as Color)
+				hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(18.0, 1.0)), night)
+				var vc: Color = (LxPalette.PAL["gold"] if br.vent_cycle >= 0.56 else LxPalette.PAL["coral"]) as Color
+				if vw > 0.0:
+					hud.draw_rect(Rect2(bo6 + Vector2(2.0, 2.0), Vector2(vw, 1.0)), vc)
 			if bm != null and is_instance_valid(bm) and bm.molten_charges > 0:
+				has_top_badge = true
+				var mx0: float = o.x if has_epic_kiln else (o.x + 33.0)
 				for k: int in range(bm.molten_charges):
-					var px: float = o.x + 33.0 + float(k) * 5.0
+					var px: float = mx0 + float(k) * 5.0
 					hud.draw_rect(Rect2(px, o.y + 1.0, 4.0, 5.0), bg)
 					hud.draw_rect(Rect2(px + 1.0, o.y + 2.0, 2.0, 3.0), LxPalette.PAL["coral"] as Color)
 					hud.draw_rect(Rect2(px + 1.0, o.y + 2.0, 1.0, 1.0), LxPalette.PAL["cream"] as Color)

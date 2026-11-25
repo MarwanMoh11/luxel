@@ -142,11 +142,50 @@ static func has_owned_temper() -> bool:
 	return false
 
 
-static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts_visible: bool = true) -> void:
+static func is_temper_mark_drawn() -> bool:
 	if Lx.state == null or not has_owned_temper():
-		return
-	# Island 6 rule draws its own combined temper + timetable badge while active.
+		return false
 	if Lx.state.island_id == 6 and LxIsland6Rule.active_instance != null:
+		return false
+	return true
+
+
+static func compute_left_stack_y(max_h: int, hearts_visible: bool = true, include_temper: bool = false) -> float:
+	var y: float = (20.0 if max_h > 6 else 14.0) if hearts_visible else 5.0
+	if Lx.state != null:
+		match Lx.state.island_id:
+			1:
+				if LxIsland1Rule.active_instance != null:
+					var r1: Object = LxIsland1Rule.active_instance
+					var bt: float = float(r1.get("bell_window_t")) if r1.get("bell_window_t") != null else 0.0
+					var rt: float = float(r1.get("resonance_t")) if r1.get("resonance_t") != null else 0.0
+					if bt > 0.01 or rt > 0.01:
+						y = maxf(y, 35.0)
+			2:
+				if LxIsland2Rule.active_instance != null:
+					y = maxf(y, 37.0)
+			3:
+				if LxIsland3Rule.active_instance != null:
+					var r3: Object = LxIsland3Rule.active_instance
+					var rows3: int = 0
+					if r3.has_method("get_turns_left") and int(r3.call("get_turns_left")) >= 0: rows3 += 1
+					if bool(r3.get("is_tiny")): rows3 += 1
+					if float(r3.get("sap_t")) > 0.01 if r3.get("sap_t") != null else false: rows3 += 1
+					if rows3 > 0:
+						y = maxf(y, 20.0 + float(rows3) * 14.0 + 3.0)
+			5:
+				if LxIsland5Rule.active_instance != null:
+					y = maxf(y, 54.0 if max_h > 6 else 47.0)
+			6:
+				if LxIsland6Rule.active_instance != null:
+					y = maxf(y, 47.0)
+	if include_temper and is_temper_mark_drawn():
+		y += 12.0
+	return y
+
+
+static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts_visible: bool = true) -> void:
+	if not is_temper_mark_drawn():
 		return
 	var cur: String = resolve_active_temper()
 	var pal: Dictionary = LxPalette.PAL
@@ -154,7 +193,7 @@ static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts
 	var t_lbl: String = LxStrings.text(t_key) if LxStrings.has_id(t_key) else LxStrings.sanitize(cur.to_upper() if not cur.is_empty() else "BASE", 4)
 	var col_name: String = "gold" if cur == "skip" else ("apricot" if cur == "scatter" else ("coral" if cur == "lance" else "stone"))
 	var col: Color = pal[col_name] as Color
-	var y: float = (22.0 if max_h > 6 else 16.0) if hearts_visible else origin.y
+	var y: float = compute_left_stack_y(max_h, hearts_visible, false)
 	var x: float = origin.x
 	var box_w: float = float(LxPixelFont.width(t_lbl, 1)) + 16.0
 	LxPixelFont.draw_panel(ci, Rect2(x, y, box_w, 10.0), "night", col_name, "void")
@@ -245,13 +284,14 @@ static func draw_dawn_buyback_parade(ci: CanvasItem, t: float, receipts: PackedS
 		LxPixelFont.draw_centered(ci, label, lane_x, py, col, 1)
 
 
-static func draw_ember_meter(ci: CanvasItem, at: Vector2, ember_val: float, ember_max: float, blink_t: float) -> void:
+static func draw_ember_meter(ci: CanvasItem, at: Vector2, ember_val: float, ember_max: float, blink_t: float, idle_dim: bool = false) -> void:
 	var bar_w: float = 68.0
 	var bar_h: float = 8.0
 	var frac: float = clampf(ember_val / maxf(1.0, ember_max), 0.0, 1.0)
 	var ready: bool = frac >= 0.999
-	var border_col: String = "cream" if (ready and (LxHudFx.flash_reduced() or fmod(blink_t, 0.5) < 0.25)) else ("gold" if ready else "mauve")
-	LxPixelFont.draw_panel(ci, Rect2(at, Vector2(bar_w, bar_h)), "night", border_col, "void")
+	var dim: bool = idle_dim and not ready and frac <= 0.01
+	var border_col: String = "dusk" if dim else ("cream" if (ready and (LxHudFx.flash_reduced() or fmod(blink_t, 0.5) < 0.25)) else ("gold" if ready else "mauve"))
+	LxPixelFont.draw_panel(ci, Rect2(at, Vector2(bar_w, bar_h)), "void" if dim else "night", border_col, "void")
 	var inner_w: float = floorf((bar_w - 4.0) * frac)
 	if inner_w > 0.0:
 		var fill_c: Color = LxPalette.PAL["gold"] if ready else (LxPalette.PAL["apricot"] if frac >= 0.5 else LxPalette.PAL["coral"])
@@ -259,7 +299,7 @@ static func draw_ember_meter(ci: CanvasItem, at: Vector2, ember_val: float, embe
 		if ready:
 			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, 1.0)), LxPalette.PAL["cream"])
 	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
-	var label_col: Color = LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"]
+	var label_col: Color = LxPalette.PAL["dusk"] if dim else (LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"])
 	LxPixelFont.draw_right(ci, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
 
 

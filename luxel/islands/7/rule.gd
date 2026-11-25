@@ -121,7 +121,7 @@ class Island7HudOverlay:
 			canvas.draw_rect(Rect2(sx - 3.0, 0.0, 6.0, 180.0), Color(c_rose if flip_to_black else c_ice, alpha * 0.45))
 			canvas.draw_rect(Rect2(sx, 0.0, 1.0, 180.0), Color(c_cream, alpha))
 
-		var y_cur: float = 24.0
+		var y_cur: float = 64.0
 		var bx: float = 246.0; var bw: float = 68.0; var bh: float = 13.0
 		var rim_c: Color = c_cream if (flip_flash_t > 0.6 and not fred) else (c_rose if is_black else c_ice)
 		canvas.draw_rect(Rect2(bx, y_cur, bw, bh), c_void)

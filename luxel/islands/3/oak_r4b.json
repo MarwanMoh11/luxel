@@ -256,6 +256,18 @@
           "knot_r4b_sap"
         ]
       }
+    },
+    {
+      "id": "lore_oak_r4b_bark",
+      "kind": "lore_stone",
+      "pos": [
+        296,
+        176
+      ],
+      "props": {
+        "string_id": "ISL3_LORE_OAK_R4B",
+        "icon": "leaf"
+      }
     }
   ],
   "scenery": [

@@ -89,42 +89,21 @@
       "kind": "toll_moth",
       "pos": [
         208,
-        56
+        152
       ],
       "route": [],
       "perches": [
         [
           208,
-          56
+          152
         ],
         [
           208,
-          120
+          184
         ]
       ],
       "zone": "belfry_chasm",
       "leash": 96
-    },
-    {
-      "id": "snuffer_r2_c",
-      "kind": "snuffer_acolyte",
-      "pos": [
-        208,
-        168
-      ],
-      "route": [
-        [
-          200,
-          152
-        ],
-        [
-          216,
-          184
-        ]
-      ],
-      "perches": [],
-      "zone": "belfry_chasm",
-      "leash": 84
     }
   ],
   "interactables": [
@@ -368,6 +347,16 @@
               ],
               "zone": "belfry_chasm",
               "leash": 110
+            },
+            {
+              "id": "snuffer_r2_amb",
+              "kind": "snuffer_acolyte",
+              "pos": [
+                208,
+                168
+              ],
+              "zone": "belfry_chasm",
+              "leash": 96
             }
           ]
         }
@@ -386,10 +375,6 @@
     "why": "Deepened West Wing opening room preserving Wick Key 1 while opening the F1 West clockwork loop.",
     "exit": "exit_r2_north",
     "solution": [
-      {
-        "op": "interact",
-        "target": "lore_r2_chasm"
-      },
       {
         "op": "shoot",
         "from": [

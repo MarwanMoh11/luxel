@@ -36,10 +36,15 @@ var _blink_t: float = 0.0
 var _hit_cue_cd: float = 0.0
 var _last_shards: int = -1
 var _shard_pop_t: float = 0.0
+var _shard_idle_t: float = 5.0
+var _moves_idle_t: float = 0.0
 var _last_hearts: float = -1.0
 var _heart_pop_t: float = 0.0
 var _zip_cue_alpha: float = 0.0
 var _challenge: Dictionary = {"active": false, "kind": "", "limit": 1.0, "rem": 0.0, "frac": 1.0, "state": 0}
+var _banner_cooldowns: Dictionary = {} # banner_key -> last_shown_s
+var _seen_boss_intros: Dictionary = {} # boss_id -> true
+var ceremony: LxHudCeremony = LxHudCeremony.new()
 var _bound: bool = false
 
 func _ready() -> void:
@@ -54,6 +59,7 @@ func bind_events() -> void:
 		[Lx.events.move_unlocked, _on_move_unlocked], [Lx.events.boss_phase_changed, _on_boss_phase],
 		[Lx.events.boss_defeated, _on_boss_defeated], [Lx.events.ember_piece_collected, _on_ember_piece],
 		[Lx.events.enemy_hit, _on_enemy_hit], [Lx.events.lantern_stolen, _on_lantern_stolen],
+		[Lx.events.great_lamp_relit, _on_great_lamp_relit],
 		[LxSold.current().hud_visibility_changed, _on_hud_visibility_changed],
 	]
 	for p: Array in pairs:
@@ -70,6 +76,7 @@ static func resolve_boss_name_key(boss_id_or_key: String) -> String:
 	return LxBossHud.resolve_name_key(boss_id_or_key)
 
 func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> void:
+	var was_active: bool = _boss_active
 	_boss_active = true
 	_boss_name_key = resolve_boss_name_key(name_key)
 	_boss_max_hp = maxf(1.0, max_hp)
@@ -77,12 +84,16 @@ func show_boss(name_key: String, hp: float, max_hp: float, phase: int = 1) -> vo
 	_boss_trail_hp = _boss_hp
 	_boss_phase = maxi(1, phase)
 	_boss_entries = [{"id": name_key, "name_key": _boss_name_key, "hp": _boss_hp, "max_hp": _boss_max_hp, "trail_hp": _boss_trail_hp, "phase": _boss_phase}]
+	if not was_active and not _seen_boss_intros.has(name_key):
+		_seen_boss_intros[name_key] = true
+		ceremony.trigger_boss_intro(name_key, _boss_name_key, maxi(2, phase))
 	_check_hollow_twist(_boss_name_key)
 	queue_redraw()
 
 func sync_bosses(live_bosses: Array) -> void:
 	if live_bosses.is_empty():
 		hide_boss(); return
+	var was_active: bool = _boss_active
 	var prev_trails: Dictionary = {}
 	for pe: Dictionary in _boss_entries:
 		var tk: String = str(pe.get("iid", pe.get("id", "")))
@@ -106,6 +117,10 @@ func sync_bosses(live_bosses: Array) -> void:
 	var b0: Dictionary = _boss_entries[0]
 	_boss_name_key = str(b0["name_key"]); _boss_hp = float(b0["hp"]); _boss_max_hp = float(b0["max_hp"])
 	_boss_trail_hp = float(b0["trail_hp"]); _boss_phase = int(b0["phase"])
+	var b0_id: String = str(b0["id"])
+	if not was_active and not _seen_boss_intros.has(b0_id):
+		_seen_boss_intros[b0_id] = true
+		ceremony.trigger_boss_intro(b0_id, _boss_name_key, maxi(2, _boss_phase))
 	queue_redraw()
 
 func _check_hollow_twist(nk: String) -> void:
@@ -129,11 +144,31 @@ func update_challenge_timer(rem: float, frac: float, state: int) -> void:
 	_challenge["active"] = true; _challenge["rem"] = rem; _challenge["frac"] = frac; _challenge["state"] = state; queue_redraw()
 func hide_challenge_timer() -> void: _challenge["active"] = false; queue_redraw()
 
-func show_notice(string_id: String, duration: float = 3.5) -> void:
+func show_notice(string_id: String, duration: float = 3.5, force: bool = false) -> void:
+	var is_region_banner: bool = string_id.begins_with("ZONE_") or string_id.begins_with("DUNGEON_") or string_id.begins_with("REGION_") or string_id.begins_with("HUB_")
+	if is_region_banner and not force:
+		var last_t: float = float(_banner_cooldowns.get(string_id, -999.0))
+		if (_blink_t - last_t) < 60.0:
+			return
+		_banner_cooldowns[string_id] = _blink_t
 	_notice_text = LxStrings.text(string_id); _notice_t = 0.0; _notice_dur = maxf(duration, 1.0); queue_redraw()
 	if string_id.begins_with("ZONE_") and Lx.ui != null:
 		var nar: Object = Lx.ui.get("narration") as Object
 		if nar != null and is_instance_valid(nar) and nar.has_method("clear_overworld_caption"): nar.call("clear_overworld_caption")
+
+func show_reward_ceremony(icon_id: String, title_id: String, accent_col: String = "gold", sub_icons: Array[String] = []) -> void:
+	ceremony.trigger_reward(icon_id, title_id, accent_col, sub_icons); queue_redraw()
+
+func show_previously_bar(icons: Array[String]) -> void:
+	ceremony.trigger_previously(icons); queue_redraw()
+
+func try_skip_ceremony(event: InputEvent) -> bool:
+	if ceremony.try_skip(event):
+		queue_redraw(); return true
+	return false
+
+func reset_session_banners() -> void:
+	_banner_cooldowns.clear(); _seen_boss_intros.clear(); ceremony.reset()
 
 func spawn_world_cue(string_id: String, world_pos: Vector2, color_name: String = "gold", duration: float = 1.4, args: Array = []) -> void:
 	var txt: String = LxStrings.fmt(string_id, args) if not args.is_empty() else LxStrings.text(string_id)
@@ -163,8 +198,10 @@ func _on_move_unlocked(move_id: String) -> void:
 	if move_id == "throw" and Lx.state != null and Lx.state.island_id == 1 and not Lx.state.has_move("dash"): return
 	var name_key: String = str(Lx.get_move_data(move_id).get("name_key", "CUE_SHRINE_CLAIMED"))
 	if LxHudFx.narration_has_title(): return
-	spawn_screen_cue(name_key, Vector2(160.0, 144.0), str(MOVE_COLORS.get(move_id, "gold")), 2.2)
-	if not _cues.is_empty(): _cues[_cues.size() - 1]["hide_on_title"] = true
+	ceremony.trigger_reward("move_" + move_id, name_key, str(MOVE_COLORS.get(move_id, "gold")), ["star"])
+
+func _on_great_lamp_relit(island_id: int) -> void:
+	ceremony.trigger_reward("crown", "MAP_DUNGEON_CLEAR", LxBiomePalette.key(island_id, "border"), ["isl_%d" % clampi(island_id, 1, 8), "lantern"])
 
 func _on_boss_phase(boss_id: String, phase: int) -> void:
 	if not boss_id.is_empty(): _boss_name_key = resolve_boss_name_key(boss_id)
@@ -212,10 +249,18 @@ func _process(delta: float) -> void:
 	_shard_pop_t = maxf(0.0, _shard_pop_t - delta)
 	_heart_pop_t = maxf(0.0, _heart_pop_t - delta)
 	if Lx.state != null:
-		if _last_shards >= 0 and Lx.state.shards > _last_shards: _shard_pop_t = 0.28
+		if _last_shards >= 0 and Lx.state.shards != _last_shards:
+			_shard_pop_t = 0.28 if Lx.state.shards > _last_shards else 0.0
+			_shard_idle_t = 0.0
+		else:
+			_shard_idle_t += delta
 		_last_shards = Lx.state.shards
-		if _last_hearts >= 0.0 and not is_equal_approx(Lx.state.hearts, _last_hearts): _heart_pop_t = 0.24
+		if _last_hearts >= 0.0 and not is_equal_approx(Lx.state.hearts, _last_hearts):
+			_heart_pop_t = 0.24
+			_moves_idle_t = 0.0
 		_last_hearts = Lx.state.hearts
+	_moves_idle_t = 0.0 if _boss_active else (_moves_idle_t + delta)
+	ceremony.tick(delta, _boss_active)
 	if _boss_active:
 		if _boss_trail_hp > _boss_hp: _boss_trail_hp = maxf(_boss_hp, _boss_trail_hp - _boss_max_hp * 0.45 * delta)
 		for be: Dictionary in _boss_entries:
@@ -257,9 +302,10 @@ func _draw() -> void:
 	if show_hearts: _draw_hearts(Vector2(5.0, 5.0))
 	LxHudOverlays.draw_temper_mark(self, Vector2(5.0, 5.0), clampi(Lx.state.max_hearts, 4, 12), show_hearts)
 	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
-	if not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active(): _draw_beacon_gauge(160.0, 4.0)
+	var show_beacon: bool = not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active()
+	if show_beacon: _draw_beacon_gauge(160.0, 4.0)
 	if bool(_challenge.get("active", false)):
-		LxHudOverlays.draw_challenge_timer(self, _challenge, _blink_t, 4.0 if (in_dng or _boss_active) else 18.0)
+		LxHudOverlays.draw_challenge_timer(self, _challenge, _blink_t, 16.0 if (show_beacon or notice_r.has_area()) else 4.0)
 	var keys_shown: bool = _draw_shards_and_keys(Vector2(315.0, 5.0))
 	_draw_moves_tray(Vector2(5.0, 160.0))
 	if not _boss_active: _draw_zip_cue(Vector2(5.0, 148.0))
@@ -275,6 +321,7 @@ func _draw() -> void:
 	LxHudFx.draw_cues(self, _cues, prompt_r, notice_r)
 	if notice_r.has_area(): _draw_notice(notice_r, notice_col)
 	LxHudFx.draw_indicators(self, _blink_t, _boss_active, _boss_phase)
+	ceremony.draw(self)
 
 func _draw_hearts(origin: Vector2) -> void:
 	var max_h: int = clampi(Lx.state.max_hearts, 4, 12); var cur_h: float = clampf(Lx.state.hearts, 0.0, float(max_h))
@@ -291,7 +338,9 @@ func _draw_hearts(origin: Vector2) -> void:
 	if Lx.state.half_lanterns > 0:
 		LxHudOverlays.draw_half_lantern(self, origin, max_h, Lx.state.half_lanterns)
 	if cur_h > 0.0 and cur_h <= 1.0 and (LxHudFx.flash_reduced() or fmod(_blink_t, 0.6) < 0.35):
-		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(origin.x, origin.y + (15.0 if max_h > 6 else 8.0)), LxPalette.PAL["coral"], 1)
+		var lh_x: float = origin.x + float(mini(max_h, 6)) * 7.0 + 3.0
+		var lh_y: float = origin.y + (8.0 if Lx.state.half_lanterns > 0 else 0.0)
+		LxPixelFont.draw_left(self, LxStrings.text("HUD_LAST_HEART"), Vector2(lh_x, lh_y), LxPalette.PAL["coral"], 1)
 
 
 func _draw_beacon_gauge(cx: float, y: float) -> void:
@@ -319,12 +368,13 @@ func _draw_shards_and_keys(top_right: Vector2) -> bool:
 	var tw: float = float(LxPixelFont.width(shard_str, 1))
 	var icon_x: float = top_right.x - tw - 8.0
 	var y: float = top_right.y - (1.0 if _shard_pop_t > 0.0 else 0.0)
-	draw_rect(Rect2(icon_x - 2.0, y - 2.0, tw + 12.0, 9.0), Color(LxPalette.PAL["void"] as Color, 0.72))
+	var shard_dim: bool = _shard_idle_t > 4.0 and _shard_pop_t <= 0.0
+	draw_rect(Rect2(icon_x - 2.0, y - 2.0, tw + 12.0, 9.0), Color(LxPalette.PAL["void"] as Color, 0.45 if shard_dim else 0.72))
 	draw_rect(Rect2(icon_x, y - 1.0, 5.0, 7.0), LxPalette.PAL["night"])
-	draw_rect(Rect2(icon_x + 2.0, y, 1.0, 5.0), LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else LxPalette.PAL["gold"])
-	draw_rect(Rect2(icon_x + 1.0, y + 1.0, 3.0, 3.0), LxPalette.PAL["gold"])
-	draw_rect(Rect2(icon_x + 2.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["cream"])
-	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else LxPalette.PAL["gold"], 1)
+	draw_rect(Rect2(icon_x + 2.0, y, 1.0, 5.0), LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else (LxPalette.PAL["apricot"] if shard_dim else LxPalette.PAL["gold"]))
+	draw_rect(Rect2(icon_x + 1.0, y + 1.0, 3.0, 3.0), LxPalette.PAL["apricot"] if shard_dim else LxPalette.PAL["gold"])
+	draw_rect(Rect2(icon_x + 2.0, y + 1.0, 1.0, 2.0), LxPalette.PAL["stone"] if shard_dim else LxPalette.PAL["cream"])
+	LxPixelFont.draw_right(self, shard_str, top_right.x, y, LxPalette.PAL["cream"] if _shard_pop_t > 0.0 else (LxPalette.PAL["stone"] if shard_dim else LxPalette.PAL["gold"]), 1)
 	if Lx.state.region_id != "overworld" or not Lx.state.room_id.is_empty():
 		var dung_id: String = Lx.packs.dungeon_of(Lx.state.island_id, Lx.state.region_id) if Lx.packs != null else ""
 		if dung_id.is_empty(): dung_id = str(Lx.get_island_data(Lx.state.island_id).get("dungeon_id", ""))
@@ -402,7 +452,7 @@ func _draw_moves_tray(origin: Vector2) -> void:
 			elif lens_cd > 0.02:
 				var lfrac: float = clampf(1.0 - lens_cd / maxf(0.1, float(mdata.get("cooldown", 6.0))), 0.0, 1.0)
 				draw_rect(Rect2(slot_x + 2.0, origin.y + 9.0, floorf(9.0 * lfrac), 1.0), LxPalette.PAL["sky"])
-		var g_col: Color = LxPalette.PAL["mauve"] if is_locked else LxPalette.PAL["stone"]
+		var g_col: Color = LxPalette.PAL["mauve"] if (is_locked or (_moves_idle_t > 5.0 and not _boss_active)) else LxPalette.PAL["stone"]
 		if mid == "wings":
 			var raw_dg: String = Lx.input.get_glyph("lx_dash").to_upper() if Lx.input != null else ""
 			var dg: String = "SHF" if raw_dg == "SHIFT" else LxStrings.sanitize(raw_dg, 3)
@@ -464,7 +514,7 @@ func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
 
 
 func _draw_ember_meter(at: Vector2) -> void:
-	LxHudOverlays.draw_ember_meter(self, at, _ember_val, _ember_max, _blink_t)
+	LxHudOverlays.draw_ember_meter(self, at, _ember_val, _ember_max, _blink_t, not _boss_active)
 
 
 func _draw_boss_bar() -> void:

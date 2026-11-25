@@ -7,7 +7,7 @@ extends Node2D
 signal closed()
 signal pane_changed(pane_id: String, equipped: bool)
 
-const PANEL_RECT := Rect2(14.0, 8.0, 292.0, 164.0)
+const PANEL_RECT := Rect2(14.0, 11.0, 292.0, 161.0)
 const SHEET_PATH: String = "res://luxel/art/ui/panes.json"
 const GRID_COLS: int = 8
 const GRID_ROWS: int = 2
@@ -21,6 +21,8 @@ var read_only: bool = false
 var _island_filter: int = 0          # 0 = ALL, 1..8 = island
 var _panes: Array[LxPane] = []
 var _idx: int = 0
+var _focus_slots: bool = false       # keyboard/gamepad focus on top equipped lantern slots
+var _slot_cursor: int = 0
 var _scroll_row: int = 0
 var _elapsed: float = 0.0
 var _close_hover: bool = false
@@ -57,6 +59,8 @@ func open(p_read_only: bool = false) -> void:
 	_island_filter = 0
 	_rebuild_list()
 	_idx = 0
+	_focus_slots = false
+	_slot_cursor = 0
 	_scroll_row = 0
 	_elapsed = 0.0
 	_feedback_txt = ""
@@ -112,6 +116,9 @@ func _process(delta: float) -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if not visible:
 		return
+	if LxUiNav.handle_tab_bar_key(event, 14):
+		get_viewport().set_input_as_handled()
+		return
 	if event is InputEventMouseMotion:
 		_handle_mouse_motion((event as InputEventMouseMotion).position)
 		return
@@ -124,9 +131,11 @@ func _unhandled_input(event: InputEvent) -> void:
 		closed.emit()
 		get_viewport().set_input_as_handled()
 	elif _key_just(event, KEY_Q) or _key_just(event, KEY_PAGEUP) or _joy_btn(event, JOY_BUTTON_LEFT_SHOULDER):
+		_focus_slots = false
 		_switch_island(-1)
 		get_viewport().set_input_as_handled()
 	elif _key_just(event, KEY_E) or _key_just(event, KEY_TAB) or _key_just(event, KEY_PAGEDOWN) or _joy_btn(event, JOY_BUTTON_RIGHT_SHOULDER):
+		_focus_slots = false
 		_switch_island(1)
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_left") or _key_just(event, KEY_LEFT):
@@ -140,6 +149,9 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_move_down") or _key_just(event, KEY_DOWN):
 		_move_cursor(0, 1)
+		get_viewport().set_input_as_handled()
+	elif _key_just(event, KEY_X) or _key_just(event, KEY_DELETE) or _key_just(event, KEY_BACKSPACE) or _joy_btn(event, JOY_BUTTON_X):
+		_quick_unequip()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("lx_ui_accept") or _key_just(event, KEY_ENTER) or _key_just(event, KEY_SPACE):
 		_toggle_selected()
@@ -179,6 +191,9 @@ func _handle_mouse_button(mb: InputEventMouseButton) -> void:
 		return
 
 	if mb.pressed:
+		if LxUiNav.handle_tab_bar_click(pos, 14):
+			get_viewport().set_input_as_handled()
+			return
 		if _close_btn_rect().has_point(pos):
 			_play_sfx("menu_close")
 			closed.emit()
@@ -266,8 +281,20 @@ func _switch_island(dir: int) -> void:
 
 
 func _move_cursor(dx: int, dy: int) -> void:
+	if _focus_slots:
+		if dy > 0:
+			_focus_slots = false
+			_play_sfx("ui_move"); queue_redraw(); return
+		if dx != 0:
+			_slot_cursor = (_slot_cursor + dx + LxPanes.MAX_SLOTS) % LxPanes.MAX_SLOTS
+			_play_sfx("ui_move"); queue_redraw()
+		return
 	if _panes.is_empty():
 		return
+	if dy < 0 and _idx < GRID_COLS:
+		_focus_slots = true
+		_slot_cursor = clampi(_idx, 0, LxPanes.MAX_SLOTS - 1)
+		_play_sfx("ui_move"); queue_redraw(); return
 	var next_i: int = _idx + dx + dy * GRID_COLS
 	if next_i < 0:
 		next_i = _panes.size() - 1
@@ -279,7 +306,27 @@ func _move_cursor(dx: int, dy: int) -> void:
 	queue_redraw()
 
 
+func _quick_unequip() -> void:
+	if read_only:
+		_set_feedback("PANES_READONLY_TIP", "sky"); _play_sfx("denied"); return
+	var pm: LxPanes = LxPanes.current()
+	if _focus_slots:
+		var eq: PackedStringArray = pm.equipped_ids()
+		if _slot_cursor < eq.size():
+			var pid: String = eq[_slot_cursor]
+			if pm.unequip_slot(_slot_cursor):
+				_set_feedback("PANE_REMOVED", "stone"); _play_sfx("ui_back"); pane_changed.emit(pid, false)
+		return
+	if _idx >= 0 and _idx < _panes.size() and pm.is_equipped(_panes[_idx].id):
+		var pid2: String = _panes[_idx].id
+		pm.unequip(pid2)
+		_set_feedback("PANE_REMOVED", "stone"); _play_sfx("ui_back"); pane_changed.emit(pid2, false)
+
+
 func _toggle_selected() -> void:
+	if _focus_slots:
+		_quick_unequip()
+		return
 	if _idx < 0 or _idx >= _panes.size():
 		return
 	if read_only:
@@ -328,25 +375,26 @@ func _draw() -> void:
 	var bdr_k: String = LxBiomePalette.key(isl, "border")
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", bdr_k, "night")
 	_draw_ornaments(isl)
+	LxUiNav.draw_pause_tab_bar(self, 14)
 
 	var pm: LxPanes = LxPanes.current()
 	# Header: Title + Read-only badge + Lead budget pips + Owned count
-	LxPixelFont.draw_left(self, LxFolkData.tr_id("PANES_TITLE"), Vector2(24.0, 14.0), LxPalette.PAL["gold"], 1)
+	LxPixelFont.draw_left(self, LxFolkData.tr_id("PANES_TITLE"), Vector2(24.0, 15.0), LxPalette.PAL["gold"], 1)
 	if read_only:
-		var ro_r := Rect2(94.0, 12.0, 44.0, 9.0)
+		var ro_r := Rect2(94.0, 13.0, 44.0, 9.0)
 		LxPixelFont.draw_panel(self, ro_r, "night", "sky", "void")
-		LxPixelFont.draw_centered(self, LxFolkData.tr_id("PANES_VIEW_ONLY"), ro_r.get_center().x, 14.0, LxPalette.PAL["ice"], 1)
+		LxPixelFont.draw_centered(self, LxFolkData.tr_id("PANES_VIEW_ONLY"), ro_r.get_center().x, 15.0, LxPalette.PAL["ice"], 1)
 
 	var lead_txt: String = LxFolkData.fmt_id("PANES_LEAD_FMT", [pm.used_lead(), pm.get_max_lead()])
-	LxPixelFont.draw_left(self, lead_txt, Vector2(146.0, 14.0), LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_left(self, lead_txt, Vector2(146.0, 15.0), LxPalette.PAL["cream"], 1)
 	for li: int in range(pm.get_max_lead()):
 		var lx: float = 192.0 + float(li * 5)
 		var filled: bool = li < pm.used_lead()
-		draw_rect(Rect2(lx, 14.0, 4.0, 5.0), LxPalette.PAL["void"])
-		draw_rect(Rect2(lx + 1.0, 15.0, 2.0, 3.0), LxPalette.PAL["gold"] if filled else LxPalette.PAL["night"])
+		draw_rect(Rect2(lx, 15.0, 4.0, 5.0), LxPalette.PAL["void"])
+		draw_rect(Rect2(lx + 1.0, 16.0, 2.0, 3.0), LxPalette.PAL["gold"] if filled else LxPalette.PAL["night"])
 
 	var own_txt: String = LxFolkData.fmt_id("PANES_OWNED_FMT", [pm.owned_ids().size(), pm.all_ids().size()])
-	LxPixelFont.draw_right(self, own_txt, 298.0, 14.0, LxPalette.PAL["apricot"], 1)
+	LxPixelFont.draw_right(self, own_txt, 298.0, 15.0, LxPalette.PAL["apricot"], 1)
 
 	# Lantern glass slots row (3..5 arched stained-glass sockets)
 	_draw_lantern_slots(pm)
@@ -382,8 +430,8 @@ func _draw_lantern_slots(pm: LxPanes) -> void:
 		var sr: Rect2 = _slot_rect(si)
 		var locked: bool = si >= slots
 		var filled: bool = si < eq.size()
-		var bdr: String = "night" if locked else ("gold" if filled else "mauve")
-		var fill: String = "void" if locked else ("plum" if filled else "night")
+		var bdr: String = "cream" if (_focus_slots and si == _slot_cursor) else ("night" if locked else ("gold" if filled else "mauve"))
+		var fill: String = "plum" if ((_focus_slots and si == _slot_cursor) or filled) else ("void" if locked else "night")
 		if _spark_t > 0.0 and si == _spark_slot:
 			bdr = "cream"
 		# Arched lantern-glass brass bail & cap
@@ -453,9 +501,18 @@ func _draw_inspector(pm: LxPanes) -> void:
 	if not _feedback_txt.is_empty():
 		LxPixelFont.draw_centered(self, _feedback_txt, box.get_center().x, box.position.y + 11.0, LxPalette.color(_feedback_col), 1)
 		return
-	if _idx < 0 or _idx >= _panes.size():
-		return
-	var p: LxPane = _panes[_idx]
+	var p: LxPane = null
+	if _focus_slots:
+		var eq_s: PackedStringArray = pm.equipped_ids()
+		if _slot_cursor < eq_s.size():
+			p = pm.get_pane(eq_s[_slot_cursor])
+		if p == null:
+			LxPixelFont.draw_centered(self, LxFolkData.tr_id("PANES_HINT_EDIT" if not read_only else "PANES_HINT_VIEW"), box.get_center().x, box.position.y + 11.0, LxPalette.PAL["stone"], 1)
+			return
+	else:
+		if _idx < 0 or _idx >= _panes.size():
+			return
+		p = _panes[_idx]
 	var owned: bool = pm.has_pane(p.id)
 	_draw_pane_sprite(p.id, box.position + Vector2(6.0, 8.0), not owned)
 	if not owned:

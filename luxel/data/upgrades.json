@@ -1,83 +1,268 @@
 {
-  "version": 1,
+  "version": 2,
+  "pages": [
+    {"id": "core", "name_key": "SHOP_PAGE_CORE"},
+    {"id": "lantern", "name_key": "SHOP_PAGE_LANTERN"},
+    {"id": "relics", "name_key": "SHOP_PAGE_RELICS"},
+    {"id": "wares", "name_key": "SHOP_PAGE_WARES"}
+  ],
+  "strings": {
+    "SHOP_PAGE_CORE": "CORE",
+    "SHOP_PAGE_LANTERN": "LANTERN",
+    "SHOP_PAGE_RELICS": "RELICS",
+    "SHOP_PAGE_WARES": "WARES",
+    "SHOP_NEED_ISL_FMT": "REACH ISLAND %d TO FORGE",
+    "SHOP_LOCKED_ISL_FMT": "ISL %d",
+    "SHOP_PAGE_HINT": "A/D PAGE - ENTER BUY - TAB PANES",
+    "SHOP_WICK_READY": "READY",
+    "SHOP_WICK_SPENT": "SPENT - REST OR OIL",
+    "SHOP_WARE_CAP": "AT MAX CAP",
+    "SHOP_WARE_NONE": "NO NEW PANES LEFT",
+    "SHOP_WARE_ARMED": "SPARE WICK ALREADY ARMED",
+    "SHOP_WARE_NEED_WICK": "BUY SPARE WICK FIRST",
+    "SHOP_UNIT_CHG_FMT": "%s CHG",
+    "SHOP_UNIT_HRT_FMT": "%s HRT",
+    "UPG_PICKUP_NAME": "LURE REACH",
+    "UPG_PICKUP_DESC": "WIDER LANTERN LURE AND PICKUP PULL",
+    "UPG_THROW_HANG_NAME": "HANG WICK",
+    "UPG_THROW_HANG_DESC": "THROWN LANTERN HANGS LONGER IN AIR",
+    "UPG_ZIP_BOMB_NAME": "ZIP BURST",
+    "UPG_ZIP_BOMB_DESC": "LARGER ZIP ARRIVAL BLAST AND PUNCH",
+    "UPG_DASH_CHG_NAME": "DASH CHARGES",
+    "UPG_DASH_CHG_DESC": "STORE EXTRA FLARE DASH CHARGES",
+    "UPG_BEAM_W_NAME": "BEAM LENS",
+    "UPG_BEAM_W_DESC": "WIDER PIERCING BEAM AND HEAVIER HIT",
+    "UPG_LENS_R_NAME": "LENS HALO",
+    "UPG_LENS_R_DESC": "EXPAND TRUE LENS PULSE AND ANCHOR",
+    "UPG_SPARE_WICK_NAME": "SPARE WICK",
+    "UPG_SPARE_WICK_DESC": "REVIVE ONCE PER REST ON FATAL HIT",
+    "WARE_LEAD_NAME": "LEAD INGOT",
+    "WARE_LEAD_DESC": "ADD 1 LEAD CAPACITY FOR GLASS PANES",
+    "WARE_SLOT_NAME": "PANE FRAME",
+    "WARE_SLOT_DESC": "ADD 1 EXTRA STAINED-GLASS PANE SLOT",
+    "WARE_PANE_NAME": "GLASS CRATE",
+    "WARE_PANE_DESC": "UNPACK AN UNOWNED STAINED-GLASS PANE",
+    "WARE_WICK_OIL_NAME": "WICK OIL",
+    "WARE_WICK_OIL_DESC": "RE-ARM SPARE WICK WITHOUT RESTING"
+  },
   "upgrades": [
     {
       "id": "bolt_damage",
+      "page": "core",
       "name_key": "UPG_BOLT_DMG_NAME",
       "desc_key": "UPG_BOLT_DMG_DESC",
-      "max_rank": 4,
-      "costs": [25, 60, 110, 165],
-      "values": [0.44, 0.54, 0.64, 0.74]
+      "max_rank": 5,
+      "rank_islands": [1, 2, 4, 6, 8],
+      "costs": [25, 200, 300, 390, 440],
+      "values": [0.44, 0.54, 0.64, 0.74, 0.86]
     },
     {
       "id": "bolt_rate",
+      "page": "core",
       "name_key": "UPG_BOLT_RATE_NAME",
       "desc_key": "UPG_BOLT_RATE_DESC",
-      "max_rank": 3,
-      "costs": [30, 75, 135],
-      "values": [0.145, 0.125, 0.11]
+      "max_rank": 4,
+      "rank_islands": [1, 3, 5, 7],
+      "costs": [130, 240, 320, 380],
+      "values": [0.15, 0.13, 0.115, 0.10]
     },
     {
       "id": "throw_damage",
+      "page": "core",
       "name_key": "UPG_THROW_DMG_NAME",
       "desc_key": "UPG_THROW_DMG_DESC",
-      "max_rank": 2,
-      "costs": [40, 100],
-      "values": [2.6, 3.25]
+      "requires_move": "throw",
+      "max_rank": 3,
+      "rank_islands": [1, 3, 6],
+      "costs": [145, 270, 360],
+      "values": [2.6, 3.3, 4.1]
     },
     {
       "id": "dash_cooldown",
+      "page": "core",
       "name_key": "UPG_DASH_CD_NAME",
       "desc_key": "UPG_DASH_CD_DESC",
       "requires_move": "dash",
+      "max_rank": 3,
+      "rank_islands": [1, 3, 6],
+      "costs": [140, 260, 350],
+      "values": [0.44, 0.34, 0.25]
+    },
+    {
+      "id": "pickup_radius",
+      "page": "core",
+      "name_key": "UPG_PICKUP_NAME",
+      "desc_key": "UPG_PICKUP_DESC",
+      "max_rank": 3,
+      "rank_islands": [1, 2, 4],
+      "costs": [115, 215, 315],
+      "values": [1.25, 1.55, 1.90]
+    },
+    {
+      "id": "throw_hang",
+      "page": "lantern",
+      "name_key": "UPG_THROW_HANG_NAME",
+      "desc_key": "UPG_THROW_HANG_DESC",
+      "requires_move": "throw",
+      "max_rank": 3,
+      "rank_islands": [1, 2, 4],
+      "costs": [130, 230, 320],
+      "values": [6.0, 7.5, 9.5]
+    },
+    {
+      "id": "zip_bomb",
+      "page": "lantern",
+      "name_key": "UPG_ZIP_BOMB_NAME",
+      "desc_key": "UPG_ZIP_BOMB_DESC",
+      "requires_move": "throw",
+      "max_rank": 3,
+      "rank_islands": [1, 3, 5],
+      "costs": [165, 275, 365],
+      "values": [32.0, 42.0, 54.0],
+      "dmg_values": [2.2, 2.7, 3.3]
+    },
+    {
+      "id": "dash_charges",
+      "page": "lantern",
+      "name_key": "UPG_DASH_CHG_NAME",
+      "desc_key": "UPG_DASH_CHG_DESC",
+      "requires_move": "dash",
       "max_rank": 2,
-      "costs": [35, 90],
-      "values": [0.42, 0.32]
+      "rank_islands": [2, 5],
+      "costs": [270, 410],
+      "values": [2, 3]
     },
     {
       "id": "prism_bounce",
+      "page": "lantern",
       "name_key": "UPG_PRISM_NAME",
       "desc_key": "UPG_PRISM_DESC",
       "requires_move": "prism",
-      "max_rank": 1,
-      "costs": [65],
-      "values": [4]
+      "max_rank": 3,
+      "rank_islands": [2, 4, 7],
+      "costs": [185, 295, 395],
+      "values": [4, 5, 7],
+      "mult_values": [1.38, 1.48, 1.60]
     },
     {
       "id": "beam_charge",
+      "page": "lantern",
       "name_key": "UPG_BEAM_NAME",
       "desc_key": "UPG_BEAM_DESC",
       "requires_move": "beam",
+      "max_rank": 3,
+      "rank_islands": [3, 5, 7],
+      "costs": [195, 305, 390],
+      "values": [0.48, 0.38, 0.28]
+    },
+    {
+      "id": "beam_width",
+      "page": "lantern",
+      "name_key": "UPG_BEAM_W_NAME",
+      "desc_key": "UPG_BEAM_W_DESC",
+      "requires_move": "beam",
       "max_rank": 2,
-      "costs": [80, 175],
-      "values": [0.48, 0.38]
+      "rank_islands": [3, 6],
+      "costs": [245, 370],
+      "values": [10.0, 16.0],
+      "dmg_values": [2.95, 3.5]
     },
     {
       "id": "wings_glide",
+      "page": "relics",
       "name_key": "UPG_WINGS_NAME",
       "desc_key": "UPG_WINGS_DESC",
       "requires_move": "wings",
-      "max_rank": 2,
-      "costs": [90, 190],
-      "values": [120.0, 148.0]
+      "max_rank": 3,
+      "rank_islands": [4, 6, 8],
+      "costs": [215, 320, 410],
+      "values": [124.0, 156.0, 192.0]
     },
     {
       "id": "lens_duration",
+      "page": "relics",
       "name_key": "UPG_LENS_NAME",
       "desc_key": "UPG_LENS_DESC",
       "requires_move": "lens",
       "max_rank": 2,
-      "costs": [95, 200],
-      "values": [5.2, 6.5]
+      "rank_islands": [5, 7],
+      "costs": [235, 360],
+      "values": [5.5, 7.5]
+    },
+    {
+      "id": "lens_radius",
+      "page": "relics",
+      "name_key": "UPG_LENS_R_NAME",
+      "desc_key": "UPG_LENS_R_DESC",
+      "requires_move": "lens",
+      "max_rank": 2,
+      "rank_islands": [5, 8],
+      "costs": [250, 385],
+      "values": [132.0, 164.0],
+      "hung_values": [98.0, 122.0]
     },
     {
       "id": "ember_meter",
+      "page": "relics",
       "name_key": "UPG_EMBER_NAME",
       "desc_key": "UPG_EMBER_DESC",
       "requires_move": "sunflare",
       "max_rank": 2,
-      "costs": [50, 110],
-      "values": [80.0, 62.0]
+      "rank_islands": [6, 8],
+      "costs": [265, 395],
+      "values": [78.0, 56.0]
+    },
+    {
+      "id": "spare_wick",
+      "page": "relics",
+      "name_key": "UPG_SPARE_WICK_NAME",
+      "desc_key": "UPG_SPARE_WICK_DESC",
+      "max_rank": 2,
+      "rank_islands": [1, 4],
+      "costs": [195, 355],
+      "values": [2.0, 4.0]
+    }
+  ],
+  "wares": [
+    {
+      "id": "ware_lead",
+      "page": "wares",
+      "name_key": "WARE_LEAD_NAME",
+      "desc_key": "WARE_LEAD_DESC",
+      "effect": "lead",
+      "max_rank": 4,
+      "rank_islands": [1, 3, 5, 7],
+      "costs": [170, 255, 340, 425]
+    },
+    {
+      "id": "ware_slot",
+      "page": "wares",
+      "name_key": "WARE_SLOT_NAME",
+      "desc_key": "WARE_SLOT_DESC",
+      "effect": "slot",
+      "max_rank": 2,
+      "rank_islands": [2, 6],
+      "costs": [290, 450]
+    },
+    {
+      "id": "ware_pane",
+      "page": "wares",
+      "name_key": "WARE_PANE_NAME",
+      "desc_key": "WARE_PANE_DESC",
+      "effect": "pane",
+      "max_rank": 4,
+      "rank_islands": [1, 3, 5, 7],
+      "costs": [180, 265, 345, 420]
+    },
+    {
+      "id": "ware_wick_oil",
+      "page": "wares",
+      "name_key": "WARE_WICK_OIL_NAME",
+      "desc_key": "WARE_WICK_OIL_DESC",
+      "effect": "rearm_wick",
+      "repeatable": true,
+      "requires_upgrade": "spare_wick",
+      "cost": 75
     }
   ]
 }

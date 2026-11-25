@@ -406,7 +406,7 @@ func _draw_hud_badge() -> void:
 		txt = "TOLL:%d S:%d" % [tw, sc]
 	var w_px: float = float(LxPixelFont.width(txt, 1)) + 8.0
 	var bx: float = 315.0 - w_px
-	var by: float = 18.0
+	var by: float = 63.0
 	c.draw_rect(Rect2(bx, by, w_px, 9.0), void_c)
 	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 7.0), night)
 	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 7.0), sky if (stair != null and stair.is_in_stair()) else gold)

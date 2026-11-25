@@ -20,6 +20,23 @@ static var _room_script_checked: bool = false
 static var _ground_missing: Dictionary = {}
 
 
+static func flag_truthy(v: Variant) -> bool:
+	if v == null:
+		return false
+	if v is bool:
+		return bool(v)
+	if v is int or v is float:
+		return not is_zero_approx(float(v))
+	if v is String:
+		var s: String = (v as String).strip_edges().to_lower()
+		return not s.is_empty() and s != "false" and s != "0"
+	if v is Array:
+		return not (v as Array).is_empty()
+	if v is Dictionary:
+		return not (v as Dictionary).is_empty()
+	return true
+
+
 static func check_flag_static(flag: String) -> bool:
 	var trimmed: String = flag.strip_edges()
 	if trimmed.is_empty():
@@ -38,7 +55,7 @@ static func check_flag_static(flag: String) -> bool:
 		return not check_flag_static(trimmed.substr(1))
 	if Lx.state == null:
 		return false
-	if bool(Lx.state.story_flags.get(trimmed, false)):
+	if flag_truthy(Lx.state.story_flags.get(trimmed, false)):
 		return true
 	if Lx.state.lit_beacons.has(trimmed) or Lx.state.claimed_shrines.has(trimmed) \
 			or Lx.state.broken_seals.has(trimmed) or Lx.state.defeated_bosses.has(trimmed) \
@@ -49,7 +66,7 @@ static func check_flag_static(flag: String) -> bool:
 		if Lx.packs != null and not did.is_empty():
 			var dmeta: Dictionary = Lx.packs.dungeon(did)
 			var df: String = str(dmeta.get("done_flag", ""))
-			if not df.is_empty() and df != trimmed and bool(Lx.state.story_flags.get(df, false)):
+			if not df.is_empty() and df != trimmed and flag_truthy(Lx.state.story_flags.get(df, false)):
 				return true
 			var b: String = str(dmeta.get("boss", ""))
 			if not b.is_empty() and Lx.state.defeated_bosses.has(b):
@@ -98,13 +115,22 @@ static func prepare_interactable_spec(spec: Dictionary, island_id: int, region_i
 static func capture_authored_default(item: LxInteractable, spec: Dictionary) -> Dictionary:
 	var base: Dictionary = item.save_state().duplicate(true)
 	var pr: Dictionary = spec.get("props", {}) as Dictionary if spec.get("props") is Dictionary else {}
+	var reads_global_state: bool = item.kind in ["door", "waystone", "beacon", "obsidian_seal", "shrine", "moth", "lantern_pickup"]
 	for k: String in BOOL_PROGRESS_KEYS:
-		if base.has(k):
-			base[k] = bool(pr.get(k, false))
-	if base.has("angle_idx"):
-		base["angle_idx"] = int(pr.get("angle_idx", 0))
-	if base.has("index"):
-		base["index"] = int(pr.get("index", 0))
+		if not base.has(k):
+			continue
+		if pr.has(k):
+			base[k] = bool(pr[k])
+		elif k == "opened" and pr.has("starts_open"):
+			base[k] = bool(pr["starts_open"])
+		elif k in ["powered", "activated", "lit"] and (pr.has("on") or pr.has("starts_on") or pr.has("starts_lit")):
+			base[k] = bool(pr.get("on", pr.get("starts_on", pr.get("starts_lit", false))))
+		elif reads_global_state:
+			base[k] = false
+	if base.has("angle_idx") and pr.has("angle_idx"):
+		base["angle_idx"] = int(pr["angle_idx"])
+	if base.has("index") and pr.has("index"):
+		base["index"] = int(pr["index"])
 	return base
 
 
@@ -279,9 +305,11 @@ static func setup_ground_visual(region: LxRegionLoader) -> Sprite2D:
 		var loaded: Resource = ResourceLoader.load(png_path)
 		if loaded is Texture2D: tex = loaded as Texture2D
 	elif FileAccess.file_exists(png_path):
-		var img := Image.new()
-		if img.load(ProjectSettings.globalize_path(png_path)) == OK:
-			tex = ImageTexture.create_from_image(img)
+		var bytes: PackedByteArray = FileAccess.get_file_as_bytes(png_path)
+		if not bytes.is_empty():
+			var img := Image.new()
+			if img.load_png_from_buffer(bytes) == OK:
+				tex = ImageTexture.create_from_image(img)
 	else:
 		_ground_missing[png_path] = true
 	if tex == null: return null
@@ -321,6 +349,8 @@ static func spawn_enemy_for_region(region: LxRegionLoader, spec: Dictionary, dir
 	brain.position = brain.pos.round()
 	LxRegionArena.tune_boss_ranges(brain, region)
 	list.append(brain)
+	if region.has_method("_on_enemy_tree_exiting"):
+		brain.tree_exiting.connect(region.call_deferred.bind("_on_enemy_tree_exiting", brain), Object.CONNECT_ONE_SHOT)
 	return brain
 
 
@@ -407,7 +437,7 @@ static func check_triggers(region: LxRegionLoader, player_pos: Vector2, fired: D
 		if not unless_flag.is_empty() and check_flag_static(unless_flag): continue
 		var once: bool = bool(trig.get("once", true))
 		var flag_key: String = "trig_%d_%s_%s" % [region.current_island_id, region.current_region_id, tid]
-		if once and (fired.has(tid) or (Lx.state != null and bool(Lx.state.story_flags.get(flag_key, false)))): continue
+		if once and (fired.has(tid) or (Lx.state != null and flag_truthy(Lx.state.story_flags.get(flag_key, false)))): continue
 		if not LxMapFormat.to_rect2(trig.get("rect", [])).has_point(player_pos): continue
 		fired[tid] = true
 		if once and Lx.state != null: Lx.state.story_flags[flag_key] = true

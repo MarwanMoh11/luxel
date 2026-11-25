@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "notes": "Data-driven per-island enemy/boss HP and shard drop scaling for 484-region Luxel Epic (ECON-1).",
+  "enemy_bands": {
+    "default": {"hp_mult": 1.85, "shard_mult": 1.00},
+    "1": {"hp_mult": 1.85, "shard_mult": 0.45},
+    "2": {"hp_mult": 2.05, "shard_mult": 0.65},
+    "3": {"hp_mult": 2.30, "shard_mult": 0.80},
+    "4": {"hp_mult": 2.60, "shard_mult": 0.85},
+    "5": {"hp_mult": 3.35, "shard_mult": 1.00},
+    "6": {"hp_mult": 3.70, "shard_mult": 1.45},
+    "7": {"hp_mult": 2.75, "shard_mult": 1.55},
+    "8": {"hp_mult": 3.60, "shard_mult": 1.60}
+  },
+  "boss_bands": {
+    "default": {"hp_mult": 1.00, "shard_mult": 1.00},
+    "1": {"hp_mult": 1.00, "shard_mult": 0.50},
+    "2": {"hp_mult": 1.00, "shard_mult": 0.70},
+    "3": {"hp_mult": 1.00, "shard_mult": 0.80},
+    "4": {"hp_mult": 1.00, "shard_mult": 0.85},
+    "5": {"hp_mult": 1.00, "shard_mult": 1.00},
+    "6": {"hp_mult": 1.00, "shard_mult": 1.45},
+    "7": {"hp_mult": 1.00, "shard_mult": 1.55},
+    "8": {"hp_mult": 1.00, "shard_mult": 1.60}
+  },
+  "kind_overrides": {
+    "buoy_mine": {"hp_mult": 1.60},
+    "snatcher": {"hp_mult": 1.35},
+    "gull_thief": {"hp_mult": 1.35},
+    "toll_moth": {"hp_mult": 1.25},
+    "bellows_imp": {"hp_mult": 1.30},
+    "ash_mole": {"hp_mult": 1.30},
+    "smelter_wasp": {"hp_mult": 1.30},
+    "mire_snuffer": {"hp_mult": 1.30},
+    "crab_warden": {"hp_mult": 0.90},
+    "anchor_drowned": {"hp_mult": 0.65},
+    "cinder_golem": {"hp_mult": 0.62},
+    "piston_knight": {"hp_mult": 0.72},
+    "hollow_wick": {"hp_mult": 0.78},
+    "bramble_knight": {"hp_mult": 0.80},
+    "warden": {"hp_mult": 0.82},
+    "pew_mimic": {"hp_mult": 0.85}
+  },
+  "home_islands": {
+    "warden": 1, "snatcher": 1, "owl": 1,
+    "barnacle_sentry": 2, "gull_thief": 2, "crab_warden": 2,
+    "sporecap": 3, "bramble_knight": 3, "gloam": 3,
+    "lily_hopper": 4, "heron_stalker": 4, "mire_snuffer": 4,
+    "phantom_owl": 5, "orrery_sentinel": 5, "echo_moth": 5,
+    "cinder_golem": 6, "ash_mole": 6, "bellows_imp": 6,
+    "moonshade_warden": 7, "moonshade_snatcher": 7, "moonshade_owl": 7, "hollow_wick": 7,
+    "bell_warden": 1, "bellkeeper": 1,
+    "tide_captain": 2, "lighthouse_hermit": 2,
+    "elder_sporecap": 3, "briar_matron": 3,
+    "great_lily_hopper": 4, "heron_abbess": 4,
+    "clockwork_warden": 5, "astronomer": 5,
+    "forge_warden": 6, "kilnmother": 6,
+    "spire_warden": 7, "hollow_wick_boss": 7,
+    "night_harbinger": 8, "the_hush": 8
+  },
+  "hard_mode": {
+    "enemy_hp_mult": 1.25,
+    "boss_hp_mult": 1.20,
+    "damage_mult": 1.50,
+    "tell_scale": 0.88
+  }
+}

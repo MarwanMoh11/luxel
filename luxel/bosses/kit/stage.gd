@@ -30,6 +30,10 @@ func reset_stage(world_ctx: Node) -> void:
 	lock_arena(false, world_ctx)
 	chase_active = false
 	chase_traveled = 0.0
+	clear_darkness_pulse()
+
+
+func clear_darkness_pulse() -> void:
 	if _dark_pulse_t > 0.0:
 		_dark_pulse_t = 0.0
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
@@ -80,10 +84,20 @@ func revert_tiles(world_ctx: Node) -> void:
 	if _saved_tiles.is_empty() or world_ctx == null or not is_instance_valid(world_ctx):
 		_saved_tiles.clear()
 		return
-	if world_ctx.has_method("set_tiles"):
+	if world_ctx.has_method("set_tiles_batch"):
+		world_ctx.call("set_tiles_batch", _saved_tiles)
+	elif world_ctx.has_method("set_tiles"):
+		var by_tile: Dictionary = {}
 		for key_v: Variant in _saved_tiles.keys():
 			var k: Vector2i = key_v as Vector2i
-			world_ctx.call("set_tiles", Rect2i(k.x, k.y, 1, 1), str(_saved_tiles[k]))
+			var t: String = str(_saved_tiles[k])
+			if not by_tile.has(t):
+				by_tile[t] = []
+			(by_tile[t] as Array).append(k)
+		for t_v: Variant in by_tile.keys():
+			var tile_s: String = str(t_v)
+			for rect: Rect2i in _coalesce_tile_rects(by_tile[tile_s] as Array):
+				world_ctx.call("set_tiles", rect, tile_s)
 	else:
 		var grid_v: Variant = world_ctx.get("grid")
 		if grid_v is Array:
@@ -100,8 +114,49 @@ func revert_tiles(world_ctx: Node) -> void:
 	_saved_tiles.clear()
 
 
+static func _coalesce_tile_rects(cells: Array) -> Array[Rect2i]:
+	var by_y: Dictionary = {}
+	var ys: Array[int] = []
+	for cv: Variant in cells:
+		var c: Vector2i = cv as Vector2i
+		if not by_y.has(c.y):
+			by_y[c.y] = []
+			ys.append(c.y)
+		(by_y[c.y] as Array).append(c.x)
+	ys.sort()
+	var active: Dictionary = {} # Vector2i(x0, w) -> Rect2i
+	var rects: Array[Rect2i] = []
+	for y: int in ys:
+		var xs: Array = by_y[y] as Array
+		xs.sort()
+		var next_active: Dictionary = {}
+		var i: int = 0
+		while i < xs.size():
+			var x0: int = int(xs[i])
+			var x1: int = x0
+			while i + 1 < xs.size() and int(xs[i + 1]) <= x1 + 1:
+				i += 1
+				x1 = int(xs[i])
+			var span := Vector2i(x0, x1 - x0 + 1)
+			if active.has(span):
+				var prev: Rect2i = active[span] as Rect2i
+				if prev.end.y == y:
+					next_active[span] = Rect2i(prev.position.x, prev.position.y, prev.size.x, prev.size.y + 1)
+					active.erase(span)
+					i += 1
+					continue
+			next_active[span] = Rect2i(x0, y, span.y, 1)
+			i += 1
+		for rem_v: Variant in active.values():
+			rects.append(rem_v as Rect2i)
+		active = next_active
+	for rem2_v: Variant in active.values():
+		rects.append(rem2_v as Rect2i)
+	return rects
+
+
 func _rescue_wick_if_unsafe(world_ctx: Node) -> void:
-	if not (Lx.player is Node2D) or not is_instance_valid(Lx.player):
+	if not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
 	var w: Node2D = Lx.player as Node2D
 	if not world_ctx.has_method("tile_at"):

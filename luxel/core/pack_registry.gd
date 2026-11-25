@@ -49,7 +49,7 @@ func load_all() -> void:
 	_seed_builtins()
 	_discover_disk_regions()
 	_load_dir_packs(DATA_PACKS_DIR, -1)
-	if DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(HUB_PACKS_DIR)):
+	if DirAccess.dir_exists_absolute(HUB_PACKS_DIR):
 		_load_dir_packs(HUB_PACKS_DIR, 0)
 	for isl: int in range(0, island_count() + 1):
 		_load_dir_packs("%s/%d/packs" % [ISLANDS_DIR, isl], isl)
@@ -83,7 +83,7 @@ func _seed_builtins() -> void:
 func _discover_disk_regions() -> void:
 	for isl: int in range(0, island_count() + 1):
 		var dir_path: String = "%s/%d" % [ISLANDS_DIR, isl]
-		if not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(dir_path)):
+		if not DirAccess.dir_exists_absolute(dir_path):
 			_regions_by_island[isl] = []
 			continue
 		var files: PackedStringArray = DirAccess.get_files_at(dir_path)
@@ -98,7 +98,7 @@ func _discover_disk_regions() -> void:
 
 
 func _load_dir_packs(dir_path: String, default_island: int) -> void:
-	if not DirAccess.dir_exists_absolute(ProjectSettings.globalize_path(dir_path)):
+	if not DirAccess.dir_exists_absolute(dir_path):
 		return
 	var files: PackedStringArray = DirAccess.get_files_at(dir_path)
 	if files.is_empty():

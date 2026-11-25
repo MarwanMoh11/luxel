@@ -56,8 +56,11 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 	var wick_dead: bool = Lx.player != null and is_instance_valid(Lx.player) and bool(Lx.player.get("dead"))
 	var has_engaged_boss: bool = false
 	var any_live_lock_boss: bool = false
-	for e: LxEnemyBrain in region.get_enemies():
-		if e == null or not is_instance_valid(e) or not e.is_alive() or not e.visible:
+	for e_v: Variant in region.get_enemies():
+		if not is_instance_valid(e_v) or not (e_v is LxEnemyBrain):
+			continue
+		var e: LxEnemyBrain = e_v as LxEnemyBrain
+		if not e.is_alive() or not e.visible:
 			continue
 		if not (e.is_boss or not e.boss_id.is_empty()):
 			continue

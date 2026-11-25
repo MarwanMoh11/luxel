@@ -421,6 +421,7 @@ func _check_phase_thresholds() -> bool:
 func _begin_death(hit: Object) -> void:
 	hp = 0.0; _release_token(); active_attack_id = ""
 	patterns.clear(); ground.clear(); tethers.discharge_all(); adds.clear_all(); duel.restore_stolen_moves()
+	if stage != null: stage.clear_darkness_pulse()
 	_set_boss_state(BossState.DEATH, clampf(death_duration, 0.2, MAX_DEATH_DURATION))
 	LxDamageFx.spawn_boss_defeat_burst(self)
 	_emit_enemy_hit(hit, HitResult.KILLED); _emit_sfx("boss_kill")
@@ -443,6 +444,7 @@ func _finalize_death() -> void:
 
 func _grant_heart_reward() -> void:
 	if _reward_granted or Lx.state == null or reward_heart == "none": return
+	if Lx.packs != null and not boss_id.is_empty() and not Lx.packs.boss_meta(boss_id).is_empty(): return
 	var flag_k: String = "boss_reward_" + boss_id
 	if bool(Lx.state.story_flags.get(flag_k, false)): return
 	_reward_granted = true; Lx.state.story_flags[flag_k] = true
