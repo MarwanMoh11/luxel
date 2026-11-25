@@ -198,7 +198,7 @@ func _find_active_boss_lead(target: Vector2) -> Vector2:
 	for e: Variant in (enemies as Array):
 		if e is Node2D and is_instance_valid(e):
 			var obj: Object = e as Object
-			if not bool(obj.get("is_boss")):
+			if not (obj.get("is_boss") == true):
 				continue
 			if obj.has_method("is_alive") and not bool(obj.call("is_alive")):
 				continue

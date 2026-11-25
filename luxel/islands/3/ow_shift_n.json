@@ -151,8 +151,8 @@
       "id": "shift_n_strangler",
       "kind": "vine_strangler",
       "pos": [
-        168,
-        120
+        184,
+        152
       ],
       "route": [],
       "zone": "crown_thicket",
@@ -162,17 +162,17 @@
       "id": "shift_n_knight",
       "kind": "bramble_knight",
       "pos": [
-        248,
-        112
+        232,
+        208
       ],
       "route": [
         [
-          216,
-          112
+          200,
+          208
         ],
         [
-          280,
-          112
+          264,
+          208
         ]
       ],
       "zone": "crown_thicket",

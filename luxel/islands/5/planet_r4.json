@@ -370,7 +370,7 @@
     "exit": "exit_pl_r4_n",
     "start": {
       "vars": {
-        "sky_turn": 0
+        "dungeon:planetarium:sky_turn": 0
       }
     },
     "solution": [

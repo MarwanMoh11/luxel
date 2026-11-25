@@ -124,8 +124,22 @@
       ],
       "to_region": "ow_shift_n",
       "to_spawn": [
-        304,
+        344,
         224
+      ]
+    },
+    {
+      "id": "exit_shift_e_loom",
+      "rect": [
+        352,
+        200,
+        32,
+        32
+      ],
+      "to_region": "loom_r1",
+      "to_spawn": [
+        208,
+        216
       ]
     }
   ],
@@ -421,7 +435,8 @@
       ],
       "enable": [],
       "disable": [
-        "lore_shift_e_loom"
+        "lore_shift_e_loom",
+        "exit_shift_e_loom"
       ]
     },
     {

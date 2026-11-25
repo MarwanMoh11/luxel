@@ -265,7 +265,7 @@
       "id": "lamp_r9_e",
       "kind": "road_lamp",
       "pos": [
-        408,
+        440,
         72
       ],
       "props": {
@@ -401,7 +401,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         120,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,

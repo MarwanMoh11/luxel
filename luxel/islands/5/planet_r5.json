@@ -350,7 +350,7 @@
     "exit": "exit_pl_r5_n",
     "start": {
       "vars": {
-        "sky_turn": 0
+        "dungeon:planetarium:sky_turn": 0
       }
     },
     "solution": [
@@ -382,14 +382,14 @@
       {
         "op": "goto",
         "to": [
-          224,
+          248,
           240
         ]
       },
       {
         "op": "throw",
         "target": [
-          224,
+          248,
           84
         ],
         "hold": 0.65

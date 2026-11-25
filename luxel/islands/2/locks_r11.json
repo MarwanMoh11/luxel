@@ -341,7 +341,7 @@
       "sheet": "theme_locks",
       "prop": "smuggler_barrel_stack",
       "pos": [
-        40,
+        120,
         264
       ],
       "layer": "sort",
@@ -353,7 +353,7 @@
       "sheet": "theme_locks",
       "prop": "canal_cargo_crate",
       "pos": [
-        440,
+        392,
         264
       ],
       "layer": "sort",
@@ -413,8 +413,8 @@
       "sheet": "theme_locks",
       "prop": "tide_gauge_pillar",
       "pos": [
-        40,
-        104
+        56,
+        200
       ],
       "layer": "sort",
       "flip_x": false,

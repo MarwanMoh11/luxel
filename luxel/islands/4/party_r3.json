@@ -1,0 +1,533 @@
+{
+  "id": "party_r3",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_PT_R3",
+  "music": "isl4_setpiece",
+  "spawn": [
+    232,
+    248
+  ],
+  "zones": [
+    {
+      "id": "party_r3",
+      "name_key": "ISL4_PT_R3",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_party_r3_south",
+      "rect": [
+        224,
+        272,
+        32,
+        16
+      ],
+      "to_region": "party_r2",
+      "to_spawn": [
+        232,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_party_r3_north",
+      "rect": [
+        352,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r4",
+      "to_spawn": [
+        72,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "party_cellar_3"
+      ],
+      "locked_door_id": "door_party_r3_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "rf_party_r3_1",
+      "kind": "rain_frog",
+      "pos": [
+        232,
+        120
+      ],
+      "route": [
+        [
+          216,
+          120
+        ],
+        [
+          280,
+          120
+        ]
+      ],
+      "zone": "party_r3",
+      "leash": 120
+    },
+    {
+      "id": "rf_party_r3_2",
+      "kind": "rain_frog",
+      "pos": [
+        280,
+        152
+      ],
+      "route": [
+        [
+          248,
+          152
+        ],
+        [
+          280,
+          184
+        ]
+      ],
+      "zone": "party_r3",
+      "leash": 120
+    },
+    {
+      "id": "eel_party_r3",
+      "kind": "mist_eel",
+      "pos": [
+        296,
+        152
+      ],
+      "route": [
+        [
+          296,
+          152
+        ],
+        [
+          360,
+          152
+        ]
+      ],
+      "zone": "party_r3",
+      "leash": 135
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sundial_party_r3",
+      "kind": "garden_sundial",
+      "pos": [
+        168,
+        232
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "lamp_party_r3_patio",
+      "kind": "road_lamp",
+      "pos": [
+        136,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "hook_party_r3",
+      "kind": "lantern_hook",
+      "pos": [
+        56,
+        200
+      ],
+      "props": {
+        "light_radius": 44
+      }
+    },
+    {
+      "id": "sgate_party_r3",
+      "kind": "shadow_gate",
+      "pos": [
+        128,
+        136
+      ],
+      "props": {
+        "size": [
+          32,
+          16
+        ]
+      }
+    },
+    {
+      "id": "item_teacup",
+      "kind": "quest_item",
+      "pos": [
+        72,
+        72
+      ],
+      "props": {
+        "id": "teacup"
+      }
+    },
+    {
+      "id": "sw_party_r3_cellar",
+      "kind": "switch_eye",
+      "pos": [
+        152,
+        72
+      ],
+      "props": {
+        "target_id": "door_party_r3_north",
+        "sets_flag": "party_cellar_3"
+      }
+    },
+    {
+      "id": "door_party_r3_north",
+      "kind": "door",
+      "pos": [
+        368,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "sw_party_r3_cellar"
+        ],
+        "sets_flag": "party_cellar_3"
+      }
+    },
+    {
+      "id": "lamp_pt_r3_s",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        248
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r3_w",
+      "kind": "road_lamp",
+      "pos": [
+        56,
+        168
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r3_mid",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r3_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        56
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hr3_rain_barge",
+      "when": "dusk_hour>=3",
+      "tiles": [
+        [
+          19,
+          12,
+          5,
+          2,
+          "bridge"
+        ],
+        [
+          22,
+          4,
+          2,
+          8,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": [
+        "lamp_party_r3_patio"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_party_r3_teacup",
+      "on": "signal:item_teacup",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "quest_item_teacup"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        48,
+        48,
+        112,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 32,
+      "style": "water"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        168,
+        232
+      ],
+      "radius": 24,
+      "style": "clock"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        136
+      ],
+      "size": [
+        56,
+        34
+      ],
+      "tint": "cool",
+      "shear": 0.45
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        104,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "tea_service_stand",
+      "pos": [
+        64,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        192,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        280,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "hedgerow_lamp_urn",
+      "pos": [
+        288,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        400,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        200,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "hedgerow_lamp_urn",
+      "pos": [
+        272,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        336,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "The Rain Pergola (Hour III): Glass Shower snuffs the patio lamp sealing the Shadow Gate Wine Cellar and floats the eastern Wine-Barge; hang your lantern behind the hedge baffle, steal Grandma's Unbroken Teacup & latch the cellar switch, then cross the barge.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Hour III Rain dousing patio light to open a Shadow Gate + floating a moat barge",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "party_cellar_3, quest_item_teacup",
+    "why": "Hour III heist beat combining shadow-stealth cellar looting with Candle Grandmother's teacup quest.",
+    "exit": "exit_party_r3_north",
+    "start": {
+      "vars": {
+        "dusk_hour": 2,
+        "party_phase": "heist"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": "sundial_party_r3",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r3"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==3"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          200
+        ],
+        "tol": 12
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": "hook_party_r3",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "hook_party_r3"
+      },
+      {
+        "op": "goto",
+        "to": "item_teacup",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "item_teacup"
+      },
+      {
+        "op": "expect",
+        "flag": "quest_item_teacup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          136,
+          88
+        ],
+        "tol": 10
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "target": "sw_party_r3_cellar"
+      },
+      {
+        "op": "expect",
+        "flag": "party_cellar_3"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_party_r3_north"
+      }
+    ]
+  }
+}

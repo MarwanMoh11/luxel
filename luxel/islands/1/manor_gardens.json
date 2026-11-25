@@ -68,6 +68,37 @@
         56,
         128
       ]
+    },
+    {
+      "id": "exit_mg_manor",
+      "rect": [
+        368,
+        80,
+        32,
+        16
+      ],
+      "to_region": "manor_r1",
+      "to_spawn": [
+        256,
+        328
+      ]
+    },
+    {
+      "id": "exit_mg_manor_tunnel",
+      "rect": [
+        560,
+        48,
+        32,
+        16
+      ],
+      "to_region": "manor_r4",
+      "to_spawn": [
+        128,
+        48
+      ],
+      "requires_flags": [
+        "manor_tunnel_open"
+      ]
     }
   ],
   "enemies": [

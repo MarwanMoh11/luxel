@@ -6,7 +6,8 @@
     "i7_hub_door": "res://luxel/islands/7/overworld/i7_hub_door.gd",
     "i7_moon_vista": "res://luxel/islands/7/overworld/i7_moon_vista.gd",
     "i7_shadow_decoy": "res://luxel/islands/7/overworld/i7_shadow_decoy.gd",
-    "i7_spotlight_bench": "res://luxel/islands/7/overworld/i7_spotlight_bench.gd"
+    "i7_spotlight_bench": "res://luxel/islands/7/overworld/i7_spotlight_bench.gd",
+    "i7_trial_target": "res://luxel/islands/7/overworld/i7_trial_target.gd"
   },
   "quests": [
     {

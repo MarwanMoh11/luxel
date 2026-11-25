@@ -412,7 +412,7 @@
       "prop": "canal_cargo_crate",
       "pos": [
         392,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -424,7 +424,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         360,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,

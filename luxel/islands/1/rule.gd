@@ -203,7 +203,7 @@ func can_cone_see_light(
 		for it_v: Variant in (reg.call("get_interactables") as Array):
 			if it_v is LxInteractable and is_instance_valid(it_v):
 				var it: LxInteractable = it_v as LxInteractable
-				if it.active and it.kind == "lantern_hook" and bool(it.get("hooked")):
+				if it.active and it.kind == "lantern_hook" and (it.get("hooked") == true):
 					if _point_in_cone(origin, fdir, cos_lim, max_range, it.pos, reg, ignore_obj):
 						return {"seen": true, "target": "lantern", "pos": it.pos, "alert": "lured"}
 

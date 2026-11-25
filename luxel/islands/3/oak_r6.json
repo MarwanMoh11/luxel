@@ -58,7 +58,7 @@
     {
       "id": "exit_oak_r6_nw_r5b",
       "rect": [
-        240,
+        176,
         0,
         32,
         16
@@ -75,7 +75,7 @@
     {
       "id": "exit_oak_r6_south_r6b",
       "rect": [
-        240,
+        304,
         240,
         32,
         16
@@ -219,7 +219,7 @@
       "id": "door_oak_r6_south_sc",
       "kind": "door",
       "pos": [
-        256,
+        320,
         232
       ],
       "props": {

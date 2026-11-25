@@ -149,7 +149,8 @@
       ],
       "props": {
         "secs": 55.0,
-        "allow_interact": true
+        "allow_interact": true,
+        "target_id": "gate_scales_all"
       }
     },
     {
@@ -161,7 +162,8 @@
       ],
       "props": {
         "secs": 55.0,
-        "allow_interact": true
+        "allow_interact": true,
+        "target_id": "gate_scales_all"
       }
     },
     {
@@ -173,7 +175,8 @@
       ],
       "props": {
         "secs": 55.0,
-        "allow_interact": true
+        "allow_interact": true,
+        "target_id": "gate_scales_all"
       }
     },
     {

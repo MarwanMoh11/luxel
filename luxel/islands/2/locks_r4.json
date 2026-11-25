@@ -188,8 +188,8 @@
       "id": "lamp_r4_ne",
       "kind": "road_lamp",
       "pos": [
-        392,
-        88
+        360,
+        72
       ],
       "props": {
         "zone": "lck_r4",
@@ -332,7 +332,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         424,
-        40
+        72
       ],
       "layer": "sort",
       "flip_x": false,

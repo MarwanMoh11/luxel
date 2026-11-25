@@ -178,7 +178,7 @@ func relocate_wick_if_unsafe() -> void:
 	if _region == null or Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
 	var wick_node: Node2D = Lx.player as Node2D
-	if bool(wick_node.get("dead")):
+	if (wick_node.get("dead") == true):
 		return
 	var wpos: Vector2 = wick_node.global_position
 	if _is_point_safe(wpos):

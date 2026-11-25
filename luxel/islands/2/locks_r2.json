@@ -318,7 +318,7 @@
       "id": "lamp_r2_tease",
       "kind": "road_lamp",
       "pos": [
-        360,
+        344,
         56
       ],
       "props": {
@@ -395,8 +395,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        360,
-        56
+        376,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

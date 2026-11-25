@@ -561,7 +561,7 @@ func _activate_region_mask_plinths() -> void:
 	for it_v: Variant in (Lx.world.call("get_interactables") as Array):
 		if it_v is LxInteractable and (it_v as LxInteractable).kind == "mask_plinth":
 			var mp: LxInteractable = it_v as LxInteractable
-			if bool(mp.get("auto_steal")) and float(mp.get("steal_radius")) <= 0.0 and mp.has_method("apply_room_theft"):
+			if (mp.get("auto_steal") == true) and float(mp.get("steal_radius")) <= 0.0 and mp.has_method("apply_room_theft"):
 				mp.call("apply_room_theft", true)
 
 func _on_player_died() -> void: restore_all_moves("player_died")

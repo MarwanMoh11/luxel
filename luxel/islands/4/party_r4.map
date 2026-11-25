@@ -1,0 +1,33 @@
+# Garden Party r4 - Split-Chasm Chandelier Gallery (32x18)
+TILE_SIZE 16
+LEGEND . ground
+LEGEND # wall
+LEGEND , path
+LEGEND ~ water
+LEGEND O pit
+LEGEND _ void
+LEGEND B bramble
+LEGEND C cracked
+LEGEND T tide
+LEGEND P phantom
+LEGEND + bridge
+LEGEND G glass
+MAP
+#########################,,#####
+#########################,,#####
+#########OOOOO####OOOOO##,,##,##
+#########OOOOO####OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO,,,,OOOOO,,,,,,,##
+##,,,,,,,OOOOO####OOOOO,,,,,,,##
+##.............OOOOOOOO,,,,,,,##
+##.............OOOOOOOO,,,,,,,,,
+##.............OOOOOOOO,,,,,,,,,
+##.............OOOOOOOO,,,,,,,,,
+##.,,,.........OOOOOOOO,,,,,,,##
+##.,,,.........OOOOOOOO#########
+####,,##########################

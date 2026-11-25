@@ -117,13 +117,13 @@
       "id": "well_apron_1",
       "kind": "polarity_well",
       "pos": [
-        408,
+        400,
         272
       ],
       "props": {
         "mode": "pull",
-        "radius": 58.0,
-        "strength": 1850.0,
+        "radius": 84.0,
+        "strength": 560.0,
         "orbit_capture": true,
         "orbit_r": 32.0
       }
@@ -550,13 +550,13 @@
           352,
           248
         ],
-        "tol": 2.0
+        "tol": 2.5
       },
       {
         "op": "shoot",
         "target": [
-          427,
-          221
+          425,
+          214
         ],
         "wait_hit": 0.7
       },

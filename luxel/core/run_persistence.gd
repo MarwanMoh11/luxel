@@ -46,7 +46,7 @@ static func resolve_dungeon_respawn(state: LxGameState, region_loader: Node) -> 
 	return state.spawn_pos if state != null else Vector2(160.0, 90.0)
 
 static func _resolve_safe_player_pos(player: Node, region_loader: Node) -> Vector2:
-	if player == null or not is_instance_valid(player) or not (player is Node2D) or bool(player.get("dead")):
+	if player == null or not is_instance_valid(player) or not (player is Node2D) or (player.get("dead") == true):
 		return Vector2(-1.0, -1.0)
 	var candidates: Array[Vector2] = [(player as Node2D).global_position]
 	var last_safe: Variant = player.get("_last_safe_pos")

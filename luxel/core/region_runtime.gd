@@ -381,7 +381,7 @@ static func is_zone_lit(region: LxRegionLoader, zone_id: String) -> bool:
 	for z: Dictionary in region.zones:
 		if str(z.get("id", "")) == zone_id and not bool(z.get("dark", true)): return true
 	for it: LxInteractable in region.get_interactables():
-		if it != null and it.kind == "beacon" and bool(it.get("lit")):
+		if it != null and it.kind == "beacon" and (it.get("lit") == true):
 			if str(it.props.get("zone", "")) == zone_id: return true
 			var relit: Variant = it.props.get("relit_zones", [])
 			if relit is Array and (relit as Array).has(zone_id): return true

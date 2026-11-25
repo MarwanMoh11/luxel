@@ -68,7 +68,7 @@
       ],
       "to_region": "oak_r4",
       "to_spawn": [
-        232,
+        240,
         192
       ],
       "requires_moves": [],
@@ -85,8 +85,8 @@
       ],
       "to_region": "oak_r2b",
       "to_spawn": [
-        208,
-        48
+        352,
+        72
       ],
       "one_way": true,
       "requires_moves": [],
@@ -117,7 +117,7 @@
       "props": {
         "to_region": "oak_r4",
         "to_spawn": [
-          232,
+          240,
           192
         ],
         "target_size": "normal"
@@ -163,7 +163,11 @@
         ],
         "persist": true,
         "sets_flag": "oak_r4b_knot_burned",
-        "target_id": "door_oak_r4b_chute"
+        "target_id": "door_oak_r4b_chute",
+        "target_ids": [
+          "door_oak_r4b_chute",
+          "bridge_r4b_return"
+        ]
       }
     },
     {
@@ -233,6 +237,25 @@
       "props": {
         "lit": true
       }
+    },
+    {
+      "id": "bridge_r4b_return",
+      "kind": "door",
+      "pos": [
+        304,
+        80
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          32
+        ],
+        "requires_signals": [
+          "knot_r4b_sap"
+        ]
+      }
     }
   ],
   "scenery": [
@@ -241,7 +264,7 @@
       "prop": "colossal_acorn_dome",
       "pos": [
         328,
-        64
+        112
       ],
       "layer": "sort",
       "shadow": true

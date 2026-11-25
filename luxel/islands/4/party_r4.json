@@ -1,0 +1,625 @@
+{
+  "id": "party_r4",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_PT_R4",
+  "music": "isl4_setpiece",
+  "spawn": [
+    72,
+    248
+  ],
+  "zones": [
+    {
+      "id": "party_r4",
+      "name_key": "ISL4_PT_R4",
+      "rect": [
+        0,
+        0,
+        512,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_party_r4_south",
+      "rect": [
+        64,
+        272,
+        32,
+        16
+      ],
+      "to_region": "party_r3",
+      "to_spawn": [
+        360,
+        40
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_party_r4_pantry",
+      "rect": [
+        496,
+        192,
+        16,
+        48
+      ],
+      "to_region": "party_r2",
+      "to_spawn": [
+        424,
+        88
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "party_winch_4"
+      ],
+      "locked_door_id": "door_party_r4_pantry"
+    },
+    {
+      "id": "exit_party_r4_north",
+      "rect": [
+        400,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r5",
+      "to_spawn": [
+        248,
+        280
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "party_winch_4"
+      ],
+      "locked_door_id": "door_party_r4_north"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "pd_party_r4",
+      "kind": "petal_duelist",
+      "pos": [
+        184,
+        216
+      ],
+      "route": [
+        [
+          152,
+          216
+        ],
+        [
+          216,
+          216
+        ]
+      ],
+      "zone": "party_r4",
+      "leash": 120
+    },
+    {
+      "id": "hh_party_r4",
+      "kind": "hour_heron",
+      "pos": [
+        392,
+        152
+      ],
+      "route": [
+        [
+          392,
+          152
+        ],
+        [
+          440,
+          152
+        ]
+      ],
+      "zone": "party_r4",
+      "leash": 115
+    }
+  ],
+  "interactables": [
+    {
+      "id": "sundial_party_r4",
+      "kind": "garden_sundial",
+      "pos": [
+        88,
+        152
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "anchor_party_r4",
+      "kind": "room_anchor",
+      "pos": [
+        104,
+        120
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "grate_party_r4_1",
+      "kind": "grate",
+      "pos": [
+        152,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "grate_party_r4_2",
+      "kind": "grate",
+      "pos": [
+        296,
+        144
+      ],
+      "props": {
+        "size": [
+          16,
+          32
+        ]
+      }
+    },
+    {
+      "id": "bloom_party_r4_1",
+      "kind": "bounce_bloom",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 128
+      }
+    },
+    {
+      "id": "bloom_party_r4_2",
+      "kind": "bounce_bloom",
+      "pos": [
+        264,
+        104
+      ],
+      "props": {
+        "dir": "e",
+        "dist": 128
+      }
+    },
+    {
+      "id": "wind_party_r4_1",
+      "kind": "wind_zone",
+      "pos": [
+        184,
+        104
+      ],
+      "props": {
+        "size": [
+          80,
+          48
+        ],
+        "dir": "e",
+        "strength": 1800
+      }
+    },
+    {
+      "id": "wind_party_r4_2",
+      "kind": "wind_zone",
+      "pos": [
+        328,
+        104
+      ],
+      "props": {
+        "size": [
+          80,
+          48
+        ],
+        "dir": "e",
+        "strength": 1800
+      }
+    },
+    {
+      "id": "hook_party_r4_1",
+      "kind": "lantern_hook",
+      "pos": [
+        248,
+        72
+      ],
+      "props": {
+        "light_radius": 46
+      }
+    },
+    {
+      "id": "ring_party_r4_winch",
+      "kind": "pull_ring",
+      "pos": [
+        456,
+        104
+      ],
+      "props": {
+        "axis": "w",
+        "dist": 24,
+        "latch": true,
+        "sets_flag": "party_winch_4",
+        "target_ids": [
+          "door_party_r4_north",
+          "door_party_r4_pantry",
+          "bridge_party_r4_return"
+        ]
+      }
+    },
+    {
+      "id": "bridge_party_r4_return",
+      "kind": "door",
+      "pos": [
+        304,
+        216
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          128,
+          32
+        ],
+        "requires_signals": [
+          "ring_party_r4_winch"
+        ]
+      }
+    },
+    {
+      "id": "door_party_r4_north",
+      "kind": "door",
+      "pos": [
+        416,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "ring_party_r4_winch"
+        ],
+        "sets_flag": "party_winch_4"
+      }
+    },
+    {
+      "id": "door_party_r4_pantry",
+      "kind": "door",
+      "pos": [
+        488,
+        216
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_signals": [
+          "ring_party_r4_winch"
+        ],
+        "requires_flags": [
+          "party_winch_4"
+        ]
+      }
+    },
+    {
+      "id": "lamp_pt_r4_sw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r4_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r4_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r4_ne",
+      "kind": "road_lamp",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r4_se",
+      "kind": "road_lamp",
+      "pos": [
+        424,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hr4_east_wind",
+      "when": "dusk_hour>=4",
+      "tiles": [],
+      "enable": [
+        "bloom_party_r4_1",
+        "bloom_party_r4_2",
+        "wind_party_r4_1",
+        "wind_party_r4_2"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_party_r4_winch",
+      "on": "signal:ring_party_r4_winch",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "party_winch_4"
+        },
+        {
+          "narrate": "ISL4_PT_PANTRY_OPEN"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "inlay",
+      "rect": [
+        32,
+        64,
+        112,
+        96
+      ]
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        368,
+        48,
+        96,
+        176
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        104
+      ],
+      "size": [
+        76,
+        36
+      ],
+      "tint": "warm",
+      "shear": 0.45
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        152,
+        216
+      ],
+      "radius": 22,
+      "style": "petal"
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "festive_bunting_arch",
+      "pos": [
+        416,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        48,
+        80
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        232,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        120,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        392,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        424,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "masked_statue_plinth",
+      "pos": [
+        456,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        384,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Chandelier Gallery (Hour IV): summon East Wind at the sundial to wake the chandelier bounce blooms and tailwind gusts, soar past the ground duelist over twin ballroom chasms, and yank the Kitchen Winch with Throw+Recall to open the Pantry Shortcut and High Tea Gazebo.",
+    "kind": "setpiece",
+    "beat": "ten",
+    "teaches": "Hour IV East Wind powering twin chandelier bounce-rafter crossings and Kitchen Winch pull_ring",
+    "decisions": 8,
+    "expert_s": 55,
+    "reward": "party_winch_4 (Pantry Shortcut + Gazebo Shutters)",
+    "why": "Hour IV aerial-rafter heist climax bypassing ground security and opening Cycle 1 back to r2.",
+    "exit": "exit_party_r4_north",
+    "start": {
+      "vars": {
+        "dusk_hour": 3,
+        "party_phase": "heist"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": "sundial_party_r4",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r4"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==4"
+      },
+      {
+        "op": "goto",
+        "to": "bloom_party_r4_1",
+        "tol": 10
+      },
+      {
+        "op": "wait",
+        "secs": 0.7
+      },
+      {
+        "op": "goto",
+        "to": "bloom_party_r4_2",
+        "tol": 10
+      },
+      {
+        "op": "wait",
+        "secs": 0.7
+      },
+      {
+        "op": "clear",
+        "timeout": 25.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          408,
+          104
+        ],
+        "tol": 10
+      },
+      {
+        "op": "throw",
+        "target": "ring_party_r4_winch"
+      },
+      {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "expect",
+        "flag": "party_winch_4"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_party_r4_north"
+      }
+    ]
+  }
+}

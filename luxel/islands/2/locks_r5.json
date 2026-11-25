@@ -316,8 +316,8 @@
       "id": "lamp_r5_ne",
       "kind": "road_lamp",
       "pos": [
-        456,
-        152
+        472,
+        168
       ],
       "props": {
         "zone": "lck_r5",
@@ -419,7 +419,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         56,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,

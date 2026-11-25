@@ -100,7 +100,7 @@
       ],
       "to_region": "oak_r9",
       "to_spawn": [
-        112,
+        176,
         192
       ],
       "requires_moves": [
@@ -135,8 +135,8 @@
       "id": "fl_oak_r8b",
       "kind": "false_lantern",
       "pos": [
-        152,
-        80
+        128,
+        88
       ],
       "route": [],
       "zone": "oak_r8b",
@@ -330,7 +330,7 @@
       "kind": "road_lamp",
       "pos": [
         152,
-        48
+        32
       ],
       "props": {
         "lit": true

@@ -34,7 +34,7 @@ func _all_braziers_lit() -> bool:
 		if not (it is LxInteractable):
 			return false
 		var node: LxInteractable = it as LxInteractable
-		if not (bool(node.get("lit")) or bool(node.get("powered"))):
+		if not ((node.get("lit") == true) or (node.get("powered") == true)):
 			return false
 	return true
 

@@ -263,8 +263,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        104,
-        72
+        120,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
@@ -275,8 +275,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        440,
-        72
+        424,
+        88
       ],
       "layer": "sort",
       "flip_x": true,

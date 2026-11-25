@@ -9,6 +9,8 @@ var decoy_style: String = "mirror"
 var is_truth: bool = false
 var silent: bool = false
 var unmasked: bool = false
+var lit: bool = false
+var activated: bool = false
 var _lens_t: float = 0.0
 var _shatter_t: float = 0.0
 
@@ -25,6 +27,8 @@ func _toy_setup() -> void:
 	_lens_t = 0.0
 	_shatter_t = 0.0
 	unmasked = (not reveal_flag.is_empty() and Lx.state != null and bool(Lx.state.story_flags.get(reveal_flag, false)))
+	lit = unmasked
+	activated = unmasked
 	powered = unmasked
 	queue_redraw()
 
@@ -33,6 +37,8 @@ func reset_toy() -> void:
 	if persist and unmasked:
 		return
 	unmasked = false
+	lit = false
+	activated = false
 	_shatter_t = 0.0
 	set_powered(false)
 	queue_redraw()
@@ -69,6 +75,8 @@ func _trigger_unmask() -> bool:
 		_emit_sfx("denied")
 		return false
 	unmasked = true
+	lit = true
+	activated = true
 	_shatter_t = 0.50
 	if not reveal_flag.is_empty() and Lx.state != null:
 		Lx.state.story_flags[reveal_flag] = true
@@ -87,6 +95,12 @@ func _trigger_unmask() -> bool:
 func tick(dt: float) -> void:
 	super.tick(dt)
 	var dirty: bool = false
+	# Keep unmasked synced if LxChallenge._reset_light_targets() resets lit = false
+	if not lit and unmasked and not persist:
+		unmasked = false
+		activated = false
+		set_powered(false)
+		dirty = true
 	if _lens_t > 0.0:
 		_lens_t = maxf(0.0, _lens_t - dt)
 		dirty = true
@@ -116,6 +130,8 @@ func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	if persist and bool(d.get("unmasked", false)):
 		unmasked = true
+		lit = true
+		activated = true
 		powered = true
 	queue_redraw()
 

@@ -70,7 +70,7 @@
       ],
       "to_region": "oak_r6b",
       "to_spawn": [
-        368,
+        384,
         144
       ],
       "requires_moves": [],
@@ -186,7 +186,7 @@
       "kind": "wick_key",
       "pos": [
         240,
-        144
+        120
       ],
       "props": {
         "dungeon_id": "hollow_oak",
@@ -281,11 +281,27 @@
       "id": "lamp_r7b_se",
       "kind": "road_lamp",
       "pos": [
-        400,
+        368,
         240
       ],
       "props": {
         "lit": true
+      }
+    },
+    {
+      "id": "bridge_r7b_rot2",
+      "kind": "door",
+      "pos": [
+        240,
+        208
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "starts_open": false,
+        "size": [
+          32,
+          32
+        ]
       }
     }
   ],
@@ -329,26 +345,6 @@
       ],
       "layer": "sort",
       "shadow": true
-    },
-    {
-      "sheet": "theme_briar_court",
-      "prop": "clipped_rose_urn",
-      "pos": [
-        56,
-        200
-      ],
-      "layer": "sort",
-      "shadow": true
-    },
-    {
-      "sheet": "theme_briar_court",
-      "prop": "clipped_rose_urn",
-      "pos": [
-        424,
-        200
-      ],
-      "layer": "sort",
-      "shadow": true
     }
   ],
   "layers": [
@@ -358,16 +354,9 @@
       "tiles": [
         [
           14,
-          4,
+          12,
           2,
           2,
-          "wall"
-        ],
-        [
-          7,
-          8,
-          2,
-          3,
           "wall"
         ]
       ],
@@ -383,7 +372,14 @@
       "when": "ring_rot==1",
       "tiles": [
         [
-          21,
+          14,
+          12,
+          2,
+          2,
+          "wall"
+        ],
+        [
+          23,
           8,
           2,
           3,
@@ -422,11 +418,25 @@
       "when": "ring_rot==3",
       "tiles": [
         [
+          14,
+          12,
+          2,
+          2,
+          "wall"
+        ],
+        [
           7,
           8,
-          2,
+          4,
           3,
           "bridge"
+        ],
+        [
+          11,
+          5,
+          1,
+          1,
+          "pit"
         ]
       ],
       "enable": [
@@ -538,7 +548,7 @@
         "op": "goto",
         "to": [
           240,
-          144
+          120
         ],
         "tol": 8.0
       },

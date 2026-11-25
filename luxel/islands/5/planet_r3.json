@@ -399,8 +399,34 @@
     "exit": "exit_pl_r3_short",
     "solution": [
       {
+        "op": "shoot",
+        "from": [
+          132,
+          192
+        ],
+        "target": "sn_r3_1",
+        "wait_hit": 0.45
+      },
+      {
+        "op": "beam",
+        "from": [
+          132,
+          192
+        ],
+        "target": "sn_r3_3"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          132,
+          192
+        ],
+        "target": "sn_r3_4",
+        "wait_hit": 0.55
+      },
+      {
         "op": "clear",
-        "timeout": 35.0
+        "timeout": 45.0
       },
       {
         "op": "wait_until",

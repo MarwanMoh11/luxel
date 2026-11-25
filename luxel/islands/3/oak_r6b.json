@@ -70,8 +70,8 @@
       ],
       "to_region": "oak_r6",
       "to_spawn": [
-        248,
-        216
+        320,
+        200
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -311,16 +311,6 @@
       ],
       "layer": "sort",
       "shadow": true
-    },
-    {
-      "sheet": "theme_under_root",
-      "prop": "moss_cap_shroom",
-      "pos": [
-        360,
-        184
-      ],
-      "layer": "sort",
-      "shadow": true
     }
   ],
   "layers": [
@@ -331,7 +321,7 @@
         [
           15,
           8,
-          5,
+          7,
           3,
           "bridge"
         ]

@@ -390,7 +390,7 @@
         "wick_key": 1
       },
       "vars": {
-        "sky_turn": 0
+        "dungeon:planetarium:sky_turn": 0
       }
     },
     "solution": [

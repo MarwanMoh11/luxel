@@ -521,7 +521,7 @@
         "power_sextant"
       ],
       "vars": {
-        "sky_turn": 0
+        "dungeon:planetarium:sky_turn": 0
       }
     },
     "solution": [
@@ -550,13 +550,15 @@
       {
         "op": "goto",
         "to": [
-          388,
-          184
-        ]
+          358,
+          176
+        ],
+        "tol": 2.0
       },
       {
-        "op": "beam",
-        "target": "sn_r9_3"
+        "op": "shoot",
+        "target": "sn_r9_3",
+        "wait_hit": 0.45
       },
       {
         "op": "goto",

@@ -1,0 +1,549 @@
+{
+  "id": "party_r5",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_PT_R5",
+  "music": "isl4_setpiece",
+  "spawn": [
+    248,
+    280
+  ],
+  "zones": [
+    {
+      "id": "party_r5",
+      "name_key": "ISL4_PT_R5",
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_party_r5_south",
+      "rect": [
+        240,
+        304,
+        32,
+        16
+      ],
+      "to_region": "party_r4",
+      "to_spawn": [
+        408,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_party_r5_escape",
+      "rect": [
+        240,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r1",
+      "to_spawn": [
+        344,
+        56
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [
+        "golden_clock_key"
+      ],
+      "locked_door_id": "door_party_r5_escape"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "boss_toastmaster",
+      "kind": "boss_toastmaster",
+      "pos": [
+        264,
+        184
+      ],
+      "route": [
+        [
+          200,
+          184
+        ],
+        [
+          328,
+          184
+        ]
+      ],
+      "zone": "party_r5",
+      "leash": 220
+    }
+  ],
+  "interactables": [
+    {
+      "id": "bell_party_r5",
+      "kind": "bell",
+      "pos": [
+        136,
+        168
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 160,
+        "cooldown": 2.0
+      }
+    },
+    {
+      "id": "rose_party_r5",
+      "kind": "echo_rose",
+      "pos": [
+        152,
+        232
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "orb_party_urn",
+      "kind": "carry_orb",
+      "pos": [
+        360,
+        120
+      ],
+      "props": {
+        "kind": "stone"
+      }
+    },
+    {
+      "id": "scale_party_r5",
+      "kind": "scale",
+      "pos": [
+        264,
+        120
+      ],
+      "props": {
+        "left": [
+          -20,
+          0
+        ],
+        "right": [
+          20,
+          0
+        ],
+        "pan_radius": 18,
+        "mode": "either",
+        "need_weight": 1.0,
+        "latch": true
+      }
+    },
+    {
+      "id": "pedestal_party_key",
+      "kind": "party_key_pedestal",
+      "pos": [
+        264,
+        88
+      ],
+      "props": {
+        "scale_id": "scale_party_r5",
+        "require_flag": "boss_toastmaster_defeated",
+        "target_id": "door_party_r5_escape"
+      }
+    },
+    {
+      "id": "door_party_r5_escape",
+      "kind": "door",
+      "pos": [
+        256,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "golden_clock_key"
+        ]
+      }
+    },
+    {
+      "id": "rail_party_r5_w",
+      "kind": "rail",
+      "pos": [
+        82,
+        176
+      ],
+      "props": {
+        "size": [
+          6,
+          96
+        ]
+      }
+    },
+    {
+      "id": "rail_party_r5_e",
+      "kind": "rail",
+      "pos": [
+        430,
+        176
+      ],
+      "props": {
+        "size": [
+          6,
+          96
+        ]
+      }
+    },
+    {
+      "id": "lamp_pt_r5_sw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        248
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r5_se",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        248
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r5_nw",
+      "kind": "road_lamp",
+      "pos": [
+        152,
+        120
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r5_ne",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        152
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r5_n",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hr6_aqueduct_escape",
+      "when": "flag:golden_clock_key",
+      "tiles": [
+        [
+          15,
+          2,
+          2,
+          3,
+          "bridge"
+        ]
+      ],
+      "enable": [],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_party_r5_p2_dew",
+      "on": "boss_hp:0.56",
+      "once": false,
+      "do": [
+        {
+          "reward": {
+            "kind": "heal"
+          }
+        }
+      ]
+    },
+    {
+      "id": "ev_party_r5_escape_chime",
+      "on": "flag:golden_clock_key",
+      "once": true,
+      "do": [
+        {
+          "sfx": "party_heist_chime"
+        },
+        {
+          "narrate": "ISL4_PT_ESCAPE_BELL"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        264,
+        184
+      ],
+      "radius": 46,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        80,
+        96,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        168
+      ],
+      "size": [
+        84,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "festive_bunting_arch",
+      "pos": [
+        256,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        136,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        400,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        112,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        352,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        184,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "tea_service_stand",
+      "pos": [
+        328,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "music_box_pedestal",
+      "pos": [
+        72,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        408,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        208,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        304,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "High Tea Gazebo (Hours V & VI): ring the Banquet Bell or spawn an Echo guest to force the Toastmaster Automaton into a 2.2s formal bow, defeat him, place the tea-urn counterweight onto the balance scale to swap out the Golden Clock Key, and ride the Hour VI High Aqueduct Escape back to the Veranda Lobby.",
+    "kind": "boss",
+    "beat": "ketsu",
+    "teaches": "Banquet Bell / Echo bow-counterplay against Toastmaster, counterweight scale swap, and Hour VI escape",
+    "decisions": 8,
+    "expert_s": 95,
+    "reward": "golden_clock_key, party_done, boss_toastmaster_defeated",
+    "why": "Climax boss duel, Indiana-Jones key swap, Wordless Banquet scene, and Hour VI aqueduct escape.",
+    "exit": "exit_party_r5_escape",
+    "start": {
+      "vars": {
+        "dusk_hour": 5,
+        "party_phase": "heist"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          184,
+          216
+        ],
+        "tol": 14
+      },
+      {
+        "op": "ring",
+        "target": "bell_party_r5"
+      },
+      {
+        "op": "clear",
+        "timeout": 120.0
+      },
+      {
+        "op": "expect",
+        "flag": "boss_toastmaster_defeated"
+      },
+      {
+        "op": "goto",
+        "to": "orb_party_urn",
+        "tol": 14
+      },
+      {
+        "op": "carry",
+        "target": "orb_party_urn",
+        "action": "pickup"
+      },
+      {
+        "op": "goto",
+        "to": [
+          284,
+          120
+        ],
+        "tol": 10
+      },
+      {
+        "op": "carry",
+        "target": "orb_party_urn",
+        "action": "drop"
+      },
+      {
+        "op": "wait",
+        "secs": 0.4
+      },
+      {
+        "op": "goto",
+        "to": "pedestal_party_key",
+        "tol": 16
+      },
+      {
+        "op": "interact",
+        "target": "pedestal_party_key"
+      },
+      {
+        "op": "expect",
+        "flag": "golden_clock_key"
+      },
+      {
+        "op": "expect",
+        "flag": "party_done"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_party_r5_escape"
+      }
+    ]
+  }
+}

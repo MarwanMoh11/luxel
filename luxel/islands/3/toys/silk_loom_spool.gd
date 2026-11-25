@@ -34,6 +34,7 @@ var regrow_t: float = 0.0
 var burn_warn_t: float = 0.0
 var shuttle_active: bool = false
 var shuttle_end: Vector2 = Vector2.ZERO
+var _shuttle_hook_tied: bool = false
 var _sparks: Array[Dictionary] = [] # [{to: Vector2, target_id: String, t: float, len: float, hit_ids: Dictionary}]
 var _was_lantern_near_on_throw: bool = false
 var _last_lantern_state: int = 0
@@ -69,6 +70,7 @@ func _toy_setup() -> void:
 	burn_warn_t = 0.0
 	shuttle_active = false
 	shuttle_end = pos
+	_shuttle_hook_tied = false
 	_sparks.clear()
 	_was_lantern_near_on_throw = false
 	_last_lantern_state = 0
@@ -84,6 +86,7 @@ func reset_toy() -> void:
 	regrow_t = 0.0
 	burn_warn_t = 0.0
 	shuttle_active = false
+	_shuttle_hook_tied = false
 	_sparks.clear()
 	set_powered(false)
 	emit_power(false)
@@ -267,17 +270,41 @@ func _tick_brass_shuttle() -> bool:
 		if w.global_position.distance_to(pos) <= SHUTTLE_ATTACH_DIST:
 			_was_lantern_near_on_throw = true
 	if st == LxLantern.State.HANGING and _was_lantern_near_on_throw:
-		if not shuttle_active or shuttle_end.distance_squared_to(w.lantern.pos) > 1.0:
+		var end_p: Vector2 = w.lantern.pos
+		var hook_it: LxInteractable = _find_shuttle_hook(end_p)
+		if hook_it != null:
+			end_p = hook_it.pos
+			_shuttle_hook_tied = true
+		if not shuttle_active or shuttle_end.distance_squared_to(end_p) > 1.0:
 			shuttle_active = true
-			shuttle_end = w.lantern.pos
+			shuttle_end = end_p
 			changed = true
 	elif st == LxLantern.State.IN_HAND or st == LxLantern.State.RECALLING:
 		_was_lantern_near_on_throw = false
-		if shuttle_active:
+		if shuttle_active and not _shuttle_hook_tied:
 			shuttle_active = false
 			changed = true
 	_last_lantern_state = st
 	return changed
+
+
+func _find_shuttle_hook(at_pos: Vector2) -> LxInteractable:
+	if region == null or not region.has_method("get_interactables"):
+		return null
+	var best: LxInteractable = null
+	var best_d: float = 28.0
+	for it_v: Variant in (region.call("get_interactables") as Array):
+		if not (it_v is LxInteractable):
+			continue
+		var it: LxInteractable = it_v as LxInteractable
+		if not is_instance_valid(it) or not it.active or it == self:
+			continue
+		if it.kind == "lantern_hook":
+			var d: float = it.pos.distance_to(at_pos)
+			if d <= best_d:
+				best_d = d
+				best = it
+	return best
 
 
 func _tick_sparks(dt: float) -> void:

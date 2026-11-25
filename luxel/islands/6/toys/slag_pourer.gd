@@ -197,7 +197,7 @@ func tick(dt: float) -> void:
 	var can_pour: bool = _var_allows_pour()
 	var any_cooled_block: bool = false
 	for obj: Object in _spawned:
-		if obj is LxInteractable and (obj as LxInteractable).kind == "push_block" and bool(obj.get("cooled")):
+		if obj is LxInteractable and (obj as LxInteractable).kind == "push_block" and (obj.get("cooled") == true):
 			any_cooled_block = true
 			break
 	if any_cooled_block and not _was_cooled_signal:

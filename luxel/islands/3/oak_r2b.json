@@ -95,7 +95,7 @@
       ],
       "to_region": "oak_r3",
       "to_spawn": [
-        120,
+        208,
         48
       ],
       "requires_moves": [],
@@ -137,7 +137,7 @@
       "id": "sap_valve_r2b",
       "kind": "sap_clock",
       "pos": [
-        208,
+        216,
         168
       ],
       "props": {
@@ -196,8 +196,8 @@
       "id": "hook_r2b_south",
       "kind": "lantern_hook",
       "pos": [
-        224,
-        192
+        232,
+        200
       ],
       "props": {}
     },
@@ -250,8 +250,8 @@
       "id": "lamp_r2b_s",
       "kind": "road_lamp",
       "pos": [
-        248,
-        208
+        232,
+        216
       ],
       "props": {
         "lit": true
@@ -281,16 +281,6 @@
     }
   ],
   "scenery": [
-    {
-      "sheet": "island3_scenery",
-      "prop": "spore_brazier_stump",
-      "pos": [
-        192,
-        48
-      ],
-      "layer": "sort",
-      "shadow": true
-    },
     {
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",

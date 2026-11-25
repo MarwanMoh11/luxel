@@ -974,13 +974,13 @@
       "id": "well_ow_5_intro",
       "kind": "polarity_well",
       "pos": [
-        312,
+        304,
         528
       ],
       "props": {
         "mode": "pull",
-        "radius": 58.0,
-        "strength": 1850.0,
+        "radius": 84.0,
+        "strength": 560.0,
         "orbit_capture": true,
         "orbit_r": 32.0,
         "zone": "star_landing"
@@ -2560,13 +2560,13 @@
           256,
           504
         ],
-        "tol": 2.0
+        "tol": 2.5
       },
       {
         "op": "shoot",
         "target": [
-          331,
-          477
+          329,
+          470
         ],
         "wait_hit": 0.65
       },

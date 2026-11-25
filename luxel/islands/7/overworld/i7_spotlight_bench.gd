@@ -35,6 +35,10 @@ func interact(_actor: Node = null) -> bool:
 	if not active or not is_unlocked():
 		return false
 	_flash_t = 0.65
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var w: LxWick = Lx.player as LxWick
+		var emax: float = w.move_sunflare.get_ember_max() if w.move_sunflare != null else 100.0
+		w.ember = maxf(w.ember, emax)
 	if Lx.state != null:
 		Lx.state.ember = maxf(Lx.state.ember, Lx.state.max_ember)
 		Lx.state.hearts = minf(Lx.state.max_hearts, Lx.state.hearts + 1.0)

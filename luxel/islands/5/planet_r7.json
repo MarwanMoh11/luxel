@@ -171,8 +171,8 @@
       ],
       "props": {
         "size": [
-          96,
-          96
+          64,
+          64
         ],
         "quarter_on_signal": true
       }
@@ -181,8 +181,8 @@
       "id": "trans_pl_r7",
       "kind": "blue_transformer",
       "pos": [
-        216,
-        152
+        200,
+        144
       ],
       "props": {
         "angle_deg": 0.0,
@@ -195,7 +195,7 @@
       "kind": "star_bell",
       "pos": [
         304,
-        152
+        144
       ],
       "props": {
         "scope": "dungeon:planetarium",
@@ -450,7 +450,7 @@
         "power_sextant"
       ],
       "vars": {
-        "sky_turn": 0
+        "dungeon:planetarium:sky_turn": 0
       }
     },
     "solution": [
@@ -498,9 +498,10 @@
       {
         "op": "goto",
         "to": [
-          216,
-          170
-        ]
+          200,
+          160
+        ],
+        "tol": 3.0
       },
       {
         "op": "rotate",
@@ -510,8 +511,8 @@
       {
         "op": "shoot",
         "from": [
-          216,
-          196
+          200,
+          188
         ],
         "target": "trans_pl_r7",
         "wait_hit": 0.85

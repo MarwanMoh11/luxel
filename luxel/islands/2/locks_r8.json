@@ -221,8 +221,8 @@
       "id": "lamp_r8_ne",
       "kind": "road_lamp",
       "pos": [
-        376,
-        88
+        344,
+        56
       ],
       "props": {
         "zone": "lck_r8",
@@ -317,7 +317,7 @@
       "prop": "smuggler_barrel_stack",
       "pos": [
         40,
-        216
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -353,7 +353,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         248,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,

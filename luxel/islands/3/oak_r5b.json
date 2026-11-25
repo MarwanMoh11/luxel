@@ -81,8 +81,8 @@
       ],
       "to_region": "oak_r6",
       "to_spawn": [
-        248,
-        48
+        192,
+        40
       ],
       "requires_moves": [
         "beam"

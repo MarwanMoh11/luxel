@@ -363,7 +363,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         168,
-        40
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -410,7 +410,7 @@
       "sheet": "theme_locks",
       "prop": "smuggler_barrel_stack",
       "pos": [
-        40,
+        56,
         88
       ],
       "layer": "sort",
@@ -422,8 +422,8 @@
       "sheet": "theme_locks",
       "prop": "canal_cargo_crate",
       "pos": [
-        456,
-        88
+        440,
+        104
       ],
       "layer": "sort",
       "flip_x": false,

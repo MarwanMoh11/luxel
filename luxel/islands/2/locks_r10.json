@@ -263,7 +263,7 @@
       "id": "gate_r10_orbit",
       "kind": "logic_gate",
       "pos": [
-        272,
+        320,
         360
       ],
       "props": {
@@ -537,7 +537,7 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        56,
+        136,
         88
       ],
       "layer": "sort",
@@ -549,8 +549,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        488,
-        88
+        408,
+        328
       ],
       "layer": "sort",
       "flip_x": true,
@@ -621,8 +621,8 @@
       "sheet": "theme_locks",
       "prop": "canal_buoy_marker",
       "pos": [
-        488,
-        344
+        440,
+        360
       ],
       "layer": "sort",
       "flip_x": false,

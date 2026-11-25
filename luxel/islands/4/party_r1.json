@@ -1,0 +1,414 @@
+{
+  "id": "party_r1",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_PT_R1",
+  "music": "isl4_setpiece",
+  "spawn": [
+    216,
+    248
+  ],
+  "zones": [
+    {
+      "id": "party_r1",
+      "name_key": "ISL4_PT_R1",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_party_r1_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "overworld",
+      "to_spawn": [
+        216,
+        560
+      ],
+      "one_way": true,
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_party_r1_north",
+      "rect": [
+        208,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r2",
+      "to_spawn": [
+        232,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": "door_party_r1_arch"
+    }
+  ],
+  "enemies": [],
+  "interactables": [
+    {
+      "id": "board_party_r1",
+      "kind": "party_heist_board",
+      "pos": [
+        136,
+        72
+      ],
+      "props": {
+        "persist": true
+      }
+    },
+    {
+      "id": "sundial_party_r1",
+      "kind": "garden_sundial",
+      "pos": [
+        168,
+        152
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "arch_party_r1",
+      "kind": "party_start_arch",
+      "pos": [
+        216,
+        72
+      ],
+      "props": {
+        "target_id": "door_party_r1_arch"
+      }
+    },
+    {
+      "id": "door_party_r1_arch",
+      "kind": "door",
+      "pos": [
+        224,
+        24
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "arch_party_r1"
+        ]
+      }
+    },
+    {
+      "id": "anchor_party_r1",
+      "kind": "room_anchor",
+      "pos": [
+        216,
+        232
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "ws_party_lobby",
+      "kind": "waystone",
+      "pos": [
+        280,
+        200
+      ],
+      "props": {
+        "name_key": "ISL4_DNG_PARTY"
+      }
+    },
+    {
+      "id": "lamp_pt_r1_sw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r1_nw",
+      "kind": "road_lamp",
+      "pos": [
+        120,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r1_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        72
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r1_se",
+      "kind": "road_lamp",
+      "pos": [
+        328,
+        200
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r1_n",
+      "kind": "road_lamp",
+      "pos": [
+        232,
+        104
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [],
+  "events": [],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        152
+      ],
+      "radius": 38,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        96,
+        48,
+        80,
+        48
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "inlay",
+      "rect": [
+        304,
+        32,
+        96,
+        64
+      ]
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        152
+      ],
+      "size": [
+        72,
+        40
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "festive_bunting_arch",
+      "pos": [
+        224,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "marble_koi_fountain",
+      "pos": [
+        272,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        104,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        344,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        344,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "tea_service_stand",
+      "pos": [
+        376,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        176,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        264,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "music_box_pedestal",
+      "pos": [
+        112,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        168,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        280,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Hexagonal Veranda Lobby and 6-Hour Heist Schedule Board: scout freely, read permanent Roman-hour intel stamps, and chime the Starting Arch to launch the One-Dusk Heist.",
+    "kind": "story",
+    "beat": "ki",
+    "teaches": "Heist Schedule Board intel stamps and Starting Arch hour-1 launch",
+    "decisions": 4,
+    "expert_s": 40,
+    "reward": "party_board_seen",
+    "why": "Safe scouting hub & Hour VI escape landing anchoring The Garden Party one-dusk heist.",
+    "exit": "exit_party_r1_north",
+    "start": {
+      "vars": {
+        "party_phase": "scout",
+        "dusk_hour": 1
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": "board_party_r1",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "board_party_r1"
+      },
+      {
+        "op": "expect",
+        "flag": "party_board_seen"
+      },
+      {
+        "op": "goto",
+        "to": "arch_party_r1",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "arch_party_r1"
+      },
+      {
+        "op": "expect",
+        "var": "party_phase==heist"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_party_r1_north"
+      }
+    ]
+  }
+}

@@ -366,14 +366,35 @@
     },
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          80,
+          152
+        ]
+      },
+      {
         "op": "shoot",
         "target": "sn_sp_1",
         "wait_hit": 0.4
       },
       {
+        "op": "goto",
+        "to": [
+          112,
+          152
+        ]
+      },
+      {
         "op": "shoot",
         "target": "sn_sp_2",
         "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          152
+        ]
       },
       {
         "op": "shoot",
@@ -393,9 +414,23 @@
         "wait_hit": 0.4
       },
       {
+        "op": "goto",
+        "to": [
+          288,
+          152
+        ]
+      },
+      {
         "op": "shoot",
         "target": "sn_sp_5",
         "wait_hit": 0.4
+      },
+      {
+        "op": "goto",
+        "to": [
+          328,
+          152
+        ]
       },
       {
         "op": "shoot",

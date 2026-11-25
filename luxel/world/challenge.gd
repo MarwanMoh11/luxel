@@ -358,7 +358,7 @@ func _count_lit_targets() -> int:
 	var n: int = 0
 	for tid: String in _target_ids:
 		var it: LxInteractable = _region.call("find_interactable", tid) as LxInteractable
-		if it != null and (bool(it.get("lit")) or bool(it.get("activated")) or bool(it.get("powered"))):
+		if it != null and ((it.get("lit") == true) or (it.get("activated") == true) or (it.get("powered") == true)):
 			n += 1
 	return n
 

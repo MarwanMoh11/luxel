@@ -1,0 +1,611 @@
+{
+  "id": "party_r2",
+  "island_id": 4,
+  "tile_size": 16,
+  "is_dungeon": true,
+  "theme": "garden_party",
+  "name_key": "ISL4_PT_R2",
+  "music": "isl4_setpiece",
+  "spawn": [
+    232,
+    248
+  ],
+  "zones": [
+    {
+      "id": "party_r2",
+      "name_key": "ISL4_PT_R2",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": true
+    }
+  ],
+  "exits": [
+    {
+      "id": "exit_party_r2_south",
+      "rect": [
+        208,
+        272,
+        32,
+        16
+      ],
+      "to_region": "party_r1",
+      "to_spawn": [
+        216,
+        56
+      ],
+      "requires_moves": [],
+      "requires_flags": [],
+      "locked_door_id": ""
+    },
+    {
+      "id": "exit_party_r2_north",
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
+      "to_region": "party_r3",
+      "to_spawn": [
+        232,
+        248
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "party_token_1",
+        "party_fork_2"
+      ],
+      "locked_door_id": "door_party_r2_north"
+    },
+    {
+      "id": "exit_party_r2_pantry",
+      "rect": [
+        464,
+        64,
+        16,
+        48
+      ],
+      "to_region": "party_r4",
+      "to_spawn": [
+        456,
+        232
+      ],
+      "requires_moves": [],
+      "requires_flags": [
+        "party_winch_4"
+      ],
+      "locked_door_id": "door_party_r2_pantry"
+    }
+  ],
+  "enemies": [
+    {
+      "id": "tk_party_r2_w",
+      "kind": "topiary_knight",
+      "pos": [
+        312,
+        136
+      ],
+      "route": [
+        [
+          296,
+          136
+        ],
+        [
+          344,
+          136
+        ]
+      ],
+      "zone": "party_r2",
+      "leash": 120
+    },
+    {
+      "id": "tk_party_r2_e",
+      "kind": "topiary_knight",
+      "pos": [
+        360,
+        168
+      ],
+      "route": [
+        [
+          344,
+          168
+        ],
+        [
+          392,
+          168
+        ]
+      ],
+      "zone": "party_r2",
+      "leash": 120
+    }
+  ],
+  "interactables": [
+    {
+      "id": "hook_party_r2",
+      "kind": "lantern_hook",
+      "pos": [
+        312,
+        152
+      ],
+      "props": {
+        "light_radius": 52
+      }
+    },
+    {
+      "id": "item_party_token",
+      "kind": "quest_item",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "id": "party_token_1"
+      }
+    },
+    {
+      "id": "sundial_party_r2",
+      "kind": "garden_sundial",
+      "pos": [
+        232,
+        152
+      ],
+      "props": {
+        "can_rewind": true,
+        "visual_radius": 14
+      }
+    },
+    {
+      "id": "rose_party_r2",
+      "kind": "echo_rose",
+      "pos": [
+        216,
+        104
+      ],
+      "props": {
+        "secs": 6.0,
+        "loop": true
+      }
+    },
+    {
+      "id": "plate_party_r2",
+      "kind": "pressure_plate",
+      "pos": [
+        200,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "target_id": "bridge_party_r2_lift"
+      }
+    },
+    {
+      "id": "grate_party_r2_nw",
+      "kind": "grate",
+      "pos": [
+        168,
+        64
+      ],
+      "props": {
+        "size": [
+          16,
+          48
+        ]
+      }
+    },
+    {
+      "id": "bridge_party_r2_lift",
+      "kind": "door",
+      "pos": [
+        136,
+        88
+      ],
+      "props": {
+        "door_kind": "bridge_platform",
+        "size": [
+          80,
+          32
+        ],
+        "requires_signals": [
+          "plate_party_r2"
+        ]
+      }
+    },
+    {
+      "id": "door_party_r2_balcony",
+      "kind": "door",
+      "pos": [
+        104,
+        88
+      ],
+      "props": {
+        "door_kind": "shutter",
+        "size": [
+          16,
+          32
+        ],
+        "requires_signals": [
+          "plate_party_r2"
+        ]
+      }
+    },
+    {
+      "id": "item_party_fork",
+      "kind": "quest_item",
+      "pos": [
+        56,
+        72
+      ],
+      "props": {
+        "id": "party_fork_2"
+      }
+    },
+    {
+      "id": "door_party_r2_north",
+      "kind": "door",
+      "pos": [
+        240,
+        24
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "party_token_1",
+          "party_fork_2"
+        ]
+      }
+    },
+    {
+      "id": "door_party_r2_pantry",
+      "kind": "door",
+      "pos": [
+        456,
+        88
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "party_winch_4"
+        ]
+      }
+    },
+    {
+      "id": "lamp_pt_r2_s",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r2_se",
+      "kind": "road_lamp",
+      "pos": [
+        360,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r2_mid",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r2_ne",
+      "kind": "road_lamp",
+      "pos": [
+        392,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pt_r2_nw",
+      "kind": "road_lamp",
+      "pos": [
+        72,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    }
+  ],
+  "layers": [
+    {
+      "id": "hr2_rose_bloom",
+      "when": "dusk_hour==2",
+      "tiles": [],
+      "enable": [
+        "rose_party_r2"
+      ],
+      "disable": []
+    }
+  ],
+  "events": [
+    {
+      "id": "ev_party_token",
+      "on": "signal:item_party_token",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "party_token_1"
+        }
+      ]
+    },
+    {
+      "id": "ev_party_fork",
+      "on": "signal:item_party_fork",
+      "once": true,
+      "do": [
+        {
+          "set_flag": "party_fork_2"
+        }
+      ]
+    }
+  ],
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        232,
+        152
+      ],
+      "radius": 28,
+      "style": "clock"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        32,
+        48,
+        64,
+        64
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        376,
+        136
+      ],
+      "radius": 24,
+      "style": "petal"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        296,
+        104
+      ],
+      "size": [
+        64,
+        36
+      ],
+      "tint": "warm",
+      "shear": 0.42
+    }
+  ],
+  "scenery": [
+    {
+      "sheet": "theme_garden_party",
+      "prop": "banquet_table_cloth",
+      "pos": [
+        336,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "tea_service_stand",
+      "pos": [
+        368,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        192,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "paper_lantern_post",
+      "pos": [
+        280,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "hedgerow_lamp_urn",
+      "pos": [
+        408,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "masked_statue_plinth",
+      "pos": [
+        272,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        192,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "rose_flower_urn",
+      "pos": [
+        408,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    },
+    {
+      "sheet": "theme_garden_party",
+      "prop": "garden_gazebo_pillar",
+      "pos": [
+        112,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true
+    }
+  ],
+  "design": {
+    "idea": "Arrival Parterre (Hours I & II): decoy or clear two Topiary Ushers for the Banquet Token at Hour I, then advance to Hour II Rose Bloom so an Echo holds the dumbwaiter lift plate for the Tuning Fork.",
+    "kind": "setpiece",
+    "beat": "sho",
+    "teaches": "Combining Hour I-II sundial shifts with Coat-Hook decoy and Echo Rose plate holding",
+    "decisions": 6,
+    "expert_s": 50,
+    "reward": "party_token_1, party_fork_2",
+    "why": "First two clock hours of the One-Dusk Heist teaching usher stealth and Hour II rose bloom.",
+    "exit": "exit_party_r2_north",
+    "start": {
+      "vars": {
+        "dusk_hour": 1,
+        "party_phase": "heist"
+      }
+    },
+    "solution": [
+      {
+        "op": "goto",
+        "to": [
+          232,
+          168
+        ],
+        "tol": 12
+      },
+      {
+        "op": "clear",
+        "timeout": 30.0
+      },
+      {
+        "op": "goto",
+        "to": "item_party_token",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "item_party_token"
+      },
+      {
+        "op": "expect",
+        "flag": "party_token_1"
+      },
+      {
+        "op": "goto",
+        "to": "sundial_party_r2",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "sundial_party_r2"
+      },
+      {
+        "op": "expect",
+        "var": "dusk_hour==2"
+      },
+      {
+        "op": "goto",
+        "to": "rose_party_r2",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "rose_party_r2"
+      },
+      {
+        "op": "stand_on",
+        "target": "plate_party_r2",
+        "secs": 7.6
+      },
+      {
+        "op": "wait",
+        "secs": 1.0
+      },
+      {
+        "op": "goto",
+        "to": "item_party_fork",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "item_party_fork"
+      },
+      {
+        "op": "expect",
+        "flag": "party_fork_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_party_r2_north"
+      }
+    ]
+  }
+}

@@ -188,7 +188,7 @@
       "id": "lamp_r3_s",
       "kind": "road_lamp",
       "pos": [
-        168,
+        136,
         248
       ],
       "props": {
@@ -283,7 +283,7 @@
       "prop": "tide_gauge_pillar",
       "pos": [
         72,
-        232
+        200
       ],
       "layer": "sort",
       "flip_x": false,

@@ -27,12 +27,11 @@
         16
       ],
       "to_island": 1,
-      "to_region": "overworld",
+      "to_region": "manor_gardens",
       "to_spawn": [
-        424,
-        184
-      ],
-      "one_way": true
+        384,
+        120
+      ]
     },
     {
       "id": "exit_r1_west",

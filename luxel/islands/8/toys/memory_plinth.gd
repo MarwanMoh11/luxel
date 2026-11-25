@@ -170,7 +170,7 @@ func _live_enemy_count() -> int:
 	for ev: Variant in (arr as Array):
 		if ev is Node2D and is_instance_valid(ev):
 			var en: Node2D = ev as Node2D
-			if en.visible and not bool(en.get("dead")):
+			if en.visible and not (en.get("dead") == true):
 				count += 1
 	return count
 
