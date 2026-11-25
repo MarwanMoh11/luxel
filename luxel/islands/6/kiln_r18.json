@@ -53,19 +53,25 @@
       "id": "prac_r18_skip",
       "kind": "kiln_practice_targets",
       "pos": [168, 88],
-      "props": { "temper": "skip" }
+      "props": { "temper": "skip", "target_id": "gate_r18_mastery" }
     },
     {
       "id": "prac_r18_scat",
       "kind": "kiln_practice_targets",
       "pos": [224, 72],
-      "props": { "temper": "scatter" }
+      "props": { "temper": "scatter", "target_id": "gate_r18_mastery" }
     },
     {
       "id": "prac_r18_lance",
       "kind": "kiln_practice_targets",
       "pos": [280, 88],
-      "props": { "temper": "lance" }
+      "props": { "temper": "lance", "target_id": "gate_r18_mastery" }
+    },
+    {
+      "id": "gate_r18_mastery",
+      "kind": "logic_gate",
+      "pos": [224, 52],
+      "props": { "op": "all", "inputs": ["prac_r18_skip", "prac_r18_scat", "prac_r18_lance"], "persist": true }
     },
     { "id": "lamp_kr18_1", "kind": "road_lamp", "pos": [184, 184], "props": { "lit": true } },
     { "id": "lamp_kr18_2", "kind": "road_lamp", "pos": [264, 184], "props": { "lit": true } },
@@ -93,20 +99,32 @@
       "do": [
         { "set_flag": "kiln_upper_ws" }
       ]
+    },
+    {
+      "id": "ev_r18_mastery_blessing",
+      "on": "signal:gate_r18_mastery",
+      "once": true,
+      "do": [
+        { "set_flag": "kiln_r18_attuned" },
+        { "sfx": "great_lamp_bloom" },
+        { "reward": { "kind": "heal", "amount": 6 } },
+        { "reward": { "kind": "shards", "amount": 50 } },
+        { "narrate": "ISL6_KILN_PRAC_HIT" }
+      ]
     }
   ],
   "design": {
-    "idea": "The Tempering Sanctuary: panoramic caldera throat suspended over glowing lava offering an 8s boss retry waystone, Master Cycle Anvil, three temper practice plates, and the Kilnmother Lore Stone before the grand boss bridge into kiln_r10.",
+    "idea": "The Tempering Sanctuary: panoramic caldera throat suspended over glowing lava offering an 8s boss retry waystone, Master Cycle Anvil, Kilnmother Lore Stone, and a 3-temper practice attunement trial rewarding a full pre-boss heal & 50 shards before kiln_r10.",
     "kind": "story",
     "beat": "ketsu",
-    "teaches": "Boss prelude breather, final temper selection, and Kilnmother narrative framing.",
-    "decisions": 4,
+    "teaches": "Boss prelude breather, 3-temper warmup mastery attunement, and Kilnmother narrative framing.",
+    "decisions": 6,
     "expert_s": 40,
-    "reward": "ws_kiln_upper+boss_prep",
-    "why": "Calm dramatic prelude connecting kiln_r9 to kiln_r10 with an 8s boss retry checkpoint.",
+    "reward": "ws_kiln_upper+kiln_r18_attuned+boss_prep",
+    "why": "Calm dramatic prelude connecting kiln_r9 to kiln_r10 with an 8s boss retry checkpoint and meaningful temper warmup.",
     "optional": true,
     "exit": "exit_kiln_r18_north",
-    "start": { "flags": ["keepers_flame_6", "temper_skip_known", "temper_scatter_known", "temper_lance_known"] },
+    "start": { "flags": ["keepers_flame_6", "temper_skip_known", "temper_scatter_known", "temper_lance_known"], "vars": { "wick_temper": "" } },
     "solution": [
       { "op": "goto", "to": [224, 152], "tol": 6.0 },
       { "op": "interact", "target": "ws_kiln_upper" },
@@ -114,6 +132,12 @@
       { "op": "interact", "target": "lore_kiln_mother" },
       { "op": "goto", "to": [288, 152], "tol": 6.0 },
       { "op": "interact", "target": "anvil_kiln_r18_cycle" },
+      { "op": "shoot", "target": "prac_r18_skip", "wait_hit": 0.45 },
+      { "op": "interact", "target": "anvil_kiln_r18_cycle" },
+      { "op": "shoot", "target": "prac_r18_scat", "wait_hit": 0.45 },
+      { "op": "interact", "target": "anvil_kiln_r18_cycle" },
+      { "op": "shoot", "target": "prac_r18_lance", "wait_hit": 0.55 },
+      { "op": "expect", "flag": "kiln_r18_attuned" },
       { "op": "expect_exit", "exit": "exit_kiln_r18_north" }
     ]
   }

@@ -125,8 +125,52 @@
       ],
       "props": {
         "lock_type": "bank",
+        "target_id": "gate_r1_locks",
+        "persist": true
+      }
+    },
+    {
+      "id": "coupler_r1_south",
+      "kind": "car_coupler",
+      "pos": [
+        120,
+        216
+      ],
+      "props": {
+        "lock_type": "bank",
+        "target_id": "gate_r1_locks",
+        "persist": true
+      }
+    },
+    {
+      "id": "gate_r1_locks",
+      "kind": "logic_gate",
+      "pos": [
+        280,
+        152
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "coupler_r1_bank",
+          "coupler_r1_south"
+        ],
         "target_id": "door_r1_east",
         "persist": true
+      }
+    },
+    {
+      "id": "chest_r1_baggage",
+      "kind": "chest",
+      "pos": [
+        336,
+        216
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "tr_r1"
       }
     },
     {
@@ -143,7 +187,7 @@
           48
         ],
         "requires_signals": [
-          "coupler_r1_bank"
+          "gate_r1_locks"
         ]
       }
     },
@@ -380,16 +424,27 @@
   ],
   "triggers": [],
   "layers": [],
-  "events": [],
+  "events": [
+    {
+      "id": "tr_r1_board_fx",
+      "on": "enter",
+      "once": true,
+      "do": [
+        { "set_flag": "train_entered" },
+        { "sfx": "steam_whistle" },
+        { "shake": 0.14 }
+      ]
+    }
+  ],
   "design": {
-    "idea": "Safe caboose vestibule introducing the Skip Tempering Anvil and wall-ricochet bank coupler behind an iron screen, while teasing the locked north roof hatch from train_r6.",
+    "idea": "Dramatic moving caboose boarding vestibule introducing the Skip Tempering Anvil and dual wall-ricochet bank couplers (north iron-grate baffle + south pillar bounce) to unseal the baggage bulkhead and reveal a luggage nook.",
     "kind": "puzzle",
     "beat": "ki",
-    "teaches": "temper_anvil[skip] + car_coupler[bank] 45-degree wall bounce through iron grate",
-    "decisions": 4,
-    "expert_s": 40,
-    "reward": "ws_train+temper_skip_known+open_r2",
-    "why": "Entry caboose of The Ember Express; establishes moving train windows, Skip bank geometry, and Cycle 1 roof hatch return.",
+    "teaches": "temper_anvil[skip] + dual-wall car_coupler[bank] ricochet geometry (north & south bulkheads)",
+    "decisions": 6,
+    "expert_s": 42,
+    "reward": "ws_train+temper_skip_known+open_r2+baggage_chest",
+    "why": "Entry caboose of The Ember Express; establishes moving train windows, Skip bank mastery in two directions, and Cycle 1 roof hatch return.",
     "exit": "exit_r1_east",
     "solution": [
       {
@@ -411,6 +466,29 @@
       {
         "op": "expect",
         "var": "wick_temper==skip"
+      },
+      {
+        "op": "goto",
+        "to": [
+          192,
+          216
+        ],
+        "tol": 3.0
+      },
+      {
+        "op": "shoot",
+        "target": [
+          156,
+          240
+        ],
+        "wait_hit": 0.7
+      },
+      {
+        "op": "wait_until",
+        "target": "coupler_r1_south",
+        "prop": "uncoupled",
+        "value": true,
+        "timeout": 3.0
       },
       {
         "op": "goto",

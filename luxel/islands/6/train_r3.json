@@ -249,6 +249,15 @@
         168
       ],
       "zone": "tr_r3"
+    },
+    {
+      "id": "en_r3_slime",
+      "kind": "slag_slime",
+      "pos": [
+        312,
+        200
+      ],
+      "zone": "tr_r3"
     }
   ],
   "decor": [

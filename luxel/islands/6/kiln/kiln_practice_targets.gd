@@ -34,11 +34,14 @@ func on_hit(hit: LxHit) -> bool:
 		return false
 	var matched: bool = false
 	if target_temper == "skip":
-		matched = bool(hit.get_meta("wall_bounced", false)) or int(hit.get_meta("bounces", 0)) >= 1 or hit.source == LxHit.SOURCE_PRISM
+		var is_skip_t: bool = Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).temper == "skip"
+		matched = is_skip_t or bool(hit.get_meta("wall_bounced", false)) or int(hit.get_meta("bounces", 0)) >= 1 or hit.source == LxHit.SOURCE_PRISM
 	elif target_temper == "lance":
-		matched = hit.pierce or hit.cracks_armour or hit.source in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE]
+		var is_lance_t: bool = Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).temper == "lance"
+		matched = is_lance_t or hit.pierce or hit.cracks_armour or hit.source in [LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE]
 	else:
-		matched = true
+		var is_scat_t: bool = Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).temper == "scatter"
+		matched = is_scat_t or hit.source in [LxHit.SOURCE_BOLT, LxHit.SOURCE_PRISM, LxHit.SOURCE_BEAM, LxHit.SOURCE_SUNFLARE]
 	_ring_t = 0.55 if matched else 0.25
 	var sfx: String = "anvil_clang_" + target_temper if matched else "shield_clang"
 	_emit_sfx(sfx)

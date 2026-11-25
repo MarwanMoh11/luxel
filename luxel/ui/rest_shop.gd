@@ -256,9 +256,9 @@ func _draw() -> void:
 
 	var prog_txt: String = LxStrings.fmt("SHOP_PROGRESS_FMT", [prog.x, prog.y])
 	var pw: float = float(LxPixelFont.width(prog_txt, 1)) + 8.0
-	var pill_r := Rect2(roundf(gem_x - pw - 5.0), 14.0, pw, 11.0)
+	var pill_r := Rect2(roundf(gem_x - pw - 5.0), 14.0, pw, 10.0)
 	LxPixelFont.draw_panel(self, pill_r, "night", "lime" if all_done else "mauve", "void")
-	LxPixelFont.draw_centered(self, prog_txt, pill_r.get_center().x, 17.0, LxPalette.PAL["lime" if all_done else "cream"], 1)
+	LxPixelFont.draw_centered(self, prog_txt, pill_r.get_center().x, 16.0, LxPalette.PAL["lime" if all_done else "cream"], 1)
 
 	# Page tabs row
 	for ti: int in range(_pages.size()):
@@ -269,7 +269,7 @@ func _draw() -> void:
 		var bdr_t: String = "gold" if active_t else ("apricot" if hov_t else "mauve")
 		LxPixelFont.draw_panel(self, tr, fill_t, bdr_t, "void")
 		var lbl: String = tr_shop(str(_pages[ti].get("name_key", "SHOP_SUBTITLE")))
-		LxPixelFont.draw_centered(self, lbl, tr.get_center().x, tr.position.y + 2.0, LxPalette.PAL["gold" if active_t else "cream"], 1)
+		LxPixelFont.draw_centered(self, lbl, tr.get_center().x, tr.position.y + 3.0, LxPalette.PAL["gold" if active_t else "cream"], 1)
 		if _page_has_affordable(ti):
 			draw_rect(Rect2(tr.end.x - 4.0, tr.position.y + 2.0, 2.0, 2.0), LxPalette.PAL["lime"])
 
@@ -494,7 +494,7 @@ static func fmt_shop(key: String, args: Array) -> String:
 func _tab_rect(ti: int) -> Rect2:
 	var n: int = maxi(1, _pages.size())
 	var w: float = floorf((264.0 - float(n - 1) * 4.0) / float(n))
-	return Rect2(28.0 + float(ti) * (w + 4.0), 26.0, w, 9.0)
+	return Rect2(28.0 + float(ti) * (w + 4.0), 25.0, w, 10.0)
 
 func _row_rect(vis_i: int) -> Rect2:
 	return Rect2(28.0, 39.0 + float(vis_i) * 15.0, 257.0 if _items.size() > VISIBLE_ROWS else 264.0, 13.0)

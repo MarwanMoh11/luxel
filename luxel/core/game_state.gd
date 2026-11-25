@@ -294,7 +294,7 @@ func _pick_unowned_pane() -> String:
 	var keys: Array = all_p.keys(); keys.sort()
 	for kv: Variant in keys:
 		var pid: String = str(kv)
-		if bool(p.call("owns", pid)): continue
+		if bool(p.call("has_pane", pid)): continue
 		if int((all_p[kv] as Dictionary).get("island", 0)) == island_id: return pid
 		if fallback.is_empty(): fallback = pid
 	return fallback

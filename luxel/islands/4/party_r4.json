@@ -115,12 +115,12 @@
       "id": "hh_party_r4",
       "kind": "hour_heron",
       "pos": [
-        392,
+        424,
         152
       ],
       "route": [
         [
-          392,
+          408,
           152
         ],
         [
@@ -155,6 +155,19 @@
       "props": {
         "auto": true,
         "activate_radius": 24,
+        "persist": true
+      }
+    },
+    {
+      "id": "anchor_party_r4_e",
+      "kind": "room_anchor",
+      "pos": [
+        408,
+        120
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 28,
         "persist": true
       }
     },
@@ -626,6 +639,14 @@
       {
         "op": "wait",
         "secs": 0.9
+      },
+      {
+        "op": "goto",
+        "to": [
+          424,
+          120
+        ],
+        "tol": 14
       },
       {
         "op": "clear",

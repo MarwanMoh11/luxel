@@ -177,20 +177,20 @@ static func _format_best_mark_line(is_hard: bool) -> String:
 
 static func draw_results_mode_and_bests(ci: CanvasItem, _panel: Rect2, is_hard: bool, is_new_best: bool, elapsed: float) -> void:
 	var pal: Dictionary = LxPalette.PAL
-	var m_rect := Rect2(34.0, 43.0, 64.0, 10.0)
+	var m_rect := Rect2(34.0, 42.0, 64.0, 11.0)
 	LxPixelFont.draw_panel(ci, m_rect, "wine" if is_hard else "night", "coral" if is_hard else "mauve", "night" if is_hard else "void")
 	var m_txt: String = LxStrings.text("RESULTS_MODE_HARD" if is_hard else "RESULTS_MODE_NORMAL")
 	LxPixelFont.draw_centered(ci, m_txt, m_rect.get_center().x, m_rect.position.y + 3.0, pal["gold"] as Color if is_hard else pal["stone"] as Color, 1)
 	if is_new_best:
-		var nb_rect := Rect2(222.0, 43.0, 64.0, 10.0)
+		var nb_rect := Rect2(222.0, 42.0, 64.0, 11.0)
 		var pulse_nb: bool = LxHudFx.flash_reduced() or fmod(elapsed * 2.4, 1.0) < 0.55
 		LxPixelFont.draw_panel(ci, nb_rect, "pine", "lime" if pulse_nb else "gold", "night")
 		LxPixelFont.draw_centered(ci, LxStrings.text("RESULTS_NEW_BEST"), nb_rect.get_center().x, nb_rect.position.y + 3.0, pal["cream"] as Color if pulse_nb else pal["gold"] as Color, 1)
-	var bar_r := Rect2(34.0, 143.0, 252.0, 10.0)
+	var bar_r := Rect2(34.0, 142.0, 252.0, 11.0)
 	LxPixelFont.draw_panel(ci, bar_r, "night", "coral" if is_hard else "dusk", "void")
-	ci.draw_rect(Rect2(160.0, 145.0, 1.0, 6.0), pal["dusk"] as Color)
-	LxPixelFont.draw_centered(ci, _format_best_mark_line(false), 97.0, 146.0, pal["gold"] as Color if not is_hard else pal["stone"] as Color, 1)
-	LxPixelFont.draw_centered(ci, _format_best_mark_line(true), 223.0, 146.0, pal["coral"] as Color if is_hard else pal["mauve"] as Color, 1)
+	ci.draw_rect(Rect2(160.0, 144.0, 1.0, 7.0), pal["dusk"] as Color)
+	LxPixelFont.draw_centered(ci, _format_best_mark_line(false), 97.0, 145.0, pal["gold"] as Color if not is_hard else pal["stone"] as Color, 1)
+	LxPixelFont.draw_centered(ci, _format_best_mark_line(true), 223.0, 145.0, pal["coral"] as Color if is_hard else pal["mauve"] as Color, 1)
 
 
 static func resolve_active_temper() -> String:

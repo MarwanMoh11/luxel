@@ -99,9 +99,10 @@
         120
       ],
       "props": {
-        "step_period": 6.0,
+        "step_period": 5.6,
         "axis": "x",
-        "shake_amp": 0.06,
+        "shake_amp": 0.11,
+        "offset": 2.1,
         "tilt_group_ids": [
           "tilt_r1_boot"
         ]
@@ -141,6 +142,22 @@
       }
     },
     {
+      "id": "plate_r1_west",
+      "kind": "pressure_plate",
+      "pos": [
+        168,
+        104
+      ],
+      "props": {
+        "by": [
+          "block"
+        ],
+        "latch": true,
+        "persist": true,
+        "target_id": "gate_r1_stride"
+      }
+    },
+    {
       "id": "plate_r1_crate",
       "kind": "pressure_plate",
       "pos": [
@@ -153,7 +170,38 @@
         ],
         "latch": true,
         "persist": true,
-        "target_id": "door_r1_east"
+        "target_id": "gate_r1_stride"
+      }
+    },
+    {
+      "id": "gate_r1_stride",
+      "kind": "logic_gate",
+      "pos": [
+        344,
+        152
+      ],
+      "props": {
+        "op": "all",
+        "inputs": [
+          "plate_r1_west",
+          "plate_r1_crate"
+        ],
+        "target_id": "door_r1_east",
+        "persist": true
+      }
+    },
+    {
+      "id": "chest_r1_ankle",
+      "kind": "chest",
+      "pos": [
+        408,
+        136
+      ],
+      "props": {
+        "reward_kind": "shards",
+        "reward": "shards",
+        "amount": 25,
+        "zone": "col_r1"
       }
     },
     {
@@ -212,7 +260,7 @@
           48
         ],
         "requires_signals": [
-          "plate_r1_crate"
+          "gate_r1_stride"
         ]
       }
     },
@@ -420,21 +468,23 @@
       "on": "enter",
       "once": true,
       "do": [
-        {
-          "set_flag": "colossus_entered"
-        }
+        { "set_flag": "colossus_entered" },
+        { "sfx": "colossus_horn" },
+        { "wait": 0.40 },
+        { "sfx": "colossus_step" },
+        { "shake": 0.20 }
       ]
     }
   ],
   "design": {
-    "idea": "Safe zero-pit ankle boot hub introducing the giant's 6s rhythmic stride tilt: push the oil crate north out of its bumper pocket so the next Right Step slides it onto the east pressure plate, unsealing the Shin Grate.",
+    "idea": "Dramatic zero-pit ankle boot hub staging the giant's thunderous first step: push the oil crate north into the tilting grate so Left Step latches the west boot plate and Right Step slides it across to latch the east plate, unsealing the Shin Grate.",
     "kind": "puzzle",
     "beat": "ki",
-    "teaches": "colossus_stride_cam + tilt_group crate sliding + Scatter anvil + Cycle 2 chute tease",
-    "decisions": 4,
-    "expert_s": 40,
-    "reward": "ws_colossus+temper_scatter_known+open_r2",
-    "why": "Entry boot chamber establishing the walking giant rule in zero-pit safety and teasing the Cycle 2 emergency chute from Belly Hub.",
+    "teaches": "colossus_stride_cam + bidirectional Left/Right tilt_group crate sliding + Scatter anvil + Cycle 2 chute tease",
+    "decisions": 6,
+    "expert_s": 44,
+    "reward": "ws_colossus+temper_scatter_known+open_r2+ankle_chest",
+    "why": "Entry boot chamber making the walking giant's first step unforgettable while teaching both stride directions in zero-pit safety.",
     "exit": "exit_r1_east",
     "solution": [
       {
@@ -464,6 +514,13 @@
           104
         ],
         "tol": 6.0
+      },
+      {
+        "op": "wait_until",
+        "target": "plate_r1_west",
+        "prop": "powered",
+        "value": true,
+        "timeout": 7.0
       },
       {
         "op": "wait_until",

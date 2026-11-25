@@ -14,7 +14,6 @@ const SILK_PATCH_DUR: float = 3.0
 const SILK_CUT_STAGGER: float = 0.95
 const POST_COOLDOWN: float = 1.00
 
-var is_flying: bool = false
 var perches: Array[Vector2] = []
 var perch_i: int = 0
 var pause_t: float = 0.0

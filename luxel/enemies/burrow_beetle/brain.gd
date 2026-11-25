@@ -15,7 +15,6 @@ const FLIP_STAGGER_TIME: float = 1.25
 const BURROW_HOP_TIME: float = 0.55
 const POST_COOLDOWN: float = 0.95
 
-var is_flying: bool = false
 var waypoints: Array[Vector2] = []
 var wp_i: int = 0
 var pause_t: float = 0.0

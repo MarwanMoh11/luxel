@@ -14,7 +14,6 @@ const UNMASK_STAGGER: float = 1.20
 const SWALLOW_TIME: float = 2.50
 const POST_COOLDOWN: float = 1.00
 
-var is_flying: bool = false
 var disguised: bool = true
 var swallowed_lantern: bool = false
 var swallow_t: float = 0.0
