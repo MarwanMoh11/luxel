@@ -38,6 +38,7 @@ var _prompt_t: float = 0.0
 var _prompt_dur: float = 0.0
 var _bound: bool = false
 var _bound_events: Object = null
+var _sim_tick_frame: int = -1
 
 
 func _ready() -> void:
@@ -203,16 +204,45 @@ func _on_narration_requested(string_id: String, style: String, duration: float) 
 		return
 	if not cur_notice.is_empty() and resolved == cur_notice:
 		return
+	if style == "title" and _is_duplicate_boss_title(hud, string_id, resolved):
+		return
 	var slot_name: String = "title" if (style == "title" or style == "warning") else "main"
 	var eff_dur: float = minf(duration, 2.6) if (slot_name == "main" and style == "narration" and not is_letterbox_on()) else duration
 	say_id(string_id, style, eff_dur, -1.0, 1, slot_name)
+
+
+static func _is_duplicate_boss_title(hud: Node, string_id: String, resolved: String) -> bool:
+	if hud == null or not bool(hud.get("_boss_active")):
+		return false
+	if string_id.begins_with("BOSS_") or string_id.begins_with("MINIBOSS_"):
+		return true
+	var entries_v: Variant = hud.get("_boss_entries")
+	if entries_v is Array:
+		for be_v: Variant in (entries_v as Array):
+			if be_v is Dictionary:
+				var rk: String = LxBossHud.resolve_name_key(str((be_v as Dictionary).get("name_key", "")))
+				if not rk.is_empty() and LxStrings.text(rk) == resolved:
+					return true
+	var nk: String = str(hud.get("_boss_name_key"))
+	return not nk.is_empty() and LxStrings.text(LxBossHud.resolve_name_key(nk)) == resolved
 
 
 func _on_prompt_requested(string_id: String, action_id: String, duration: float) -> void:
 	show_prompt(string_id, action_id, duration)
 
 
+func tick_sim(delta: float) -> void:
+	_sim_tick_frame = Engine.get_process_frames()
+	_tick_narration(delta)
+
+
 func _process(delta: float) -> void:
+	if _sim_tick_frame == Engine.get_process_frames():
+		return
+	_tick_narration(delta)
+
+
+func _tick_narration(delta: float) -> void:
 	var dirty: bool = false
 	if _bar != _bar_to:
 		_bar_t += delta

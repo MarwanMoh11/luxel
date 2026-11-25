@@ -4,41 +4,79 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "DUNGEON_4_NAME",
-  "spawn": [48, 136],
+  "spawn": [
+    48,
+    136
+  ],
   "zones": [
     {
       "id": "conservatory_r5",
       "name_key": "DUNGEON_4_NAME",
-      "rect": [0, 0, 512, 288],
+      "rect": [
+        0,
+        0,
+        512,
+        288
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_c4_r5_west",
-      "rect": [0, 112, 16, 48],
+      "rect": [
+        0,
+        112,
+        16,
+        48
+      ],
       "to_region": "conservatory_r4",
-      "to_spawn": [368, 104],
+      "to_spawn": [
+        368,
+        104
+      ],
       "requires_moves": [],
       "requires_flags": [],
       "locked_door_id": ""
     },
     {
       "id": "exit_c4_r5_north",
-      "rect": [336, 0, 32, 16],
+      "rect": [
+        336,
+        0,
+        32,
+        16
+      ],
       "to_region": "conservatory_r6",
-      "to_spawn": [240, 216],
-      "requires_moves": ["wings"],
-      "requires_flags": ["c4_r5_shortcut"],
+      "to_spawn": [
+        240,
+        196
+      ],
+      "requires_moves": [
+        "wings"
+      ],
+      "requires_flags": [
+        "c4_r5_shortcut"
+      ],
       "locked_door_id": "door_c4_r5_exit"
     },
     {
       "id": "exit_c4_r5_shortcut",
-      "rect": [384, 272, 32, 16],
+      "rect": [
+        384,
+        272,
+        32,
+        16
+      ],
       "to_region": "conservatory_r1",
-      "to_spawn": [144, 56],
+      "to_spawn": [
+        144,
+        56
+      ],
       "requires_moves": [],
-      "requires_flags": ["c4_r5_shortcut"],
+      "requires_flags": [
+        "c4_r5_shortcut"
+      ],
       "locked_door_id": "door_c4_r5_shortcut"
     }
   ],
@@ -47,7 +85,10 @@
     {
       "id": "shrine_wings",
       "kind": "shrine",
-      "pos": [72, 104],
+      "pos": [
+        72,
+        104
+      ],
       "props": {
         "move_id": "wings",
         "zone": "conservatory_r5",
@@ -57,127 +98,308 @@
     {
       "id": "plate_c4_r5_1",
       "kind": "pressure_plate",
-      "pos": [104, 136],
-      "props": { "by": ["wick"], "hold": true, "size": [16, 44], "target_id": "gate_c4_r5_stage1" }
+      "pos": [
+        104,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          44
+        ],
+        "target_id": "gate_c4_r5_stage1"
+      }
     },
     {
       "id": "plate_c4_r5_2",
       "kind": "pressure_plate",
-      "pos": [120, 136],
-      "props": { "by": ["wick"], "hold": true, "size": [16, 44], "target_id": "gate_c4_r5_stage1" }
+      "pos": [
+        120,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          44
+        ],
+        "target_id": "gate_c4_r5_stage1"
+      }
     },
     {
       "id": "plate_c4_r5_3",
       "kind": "pressure_plate",
-      "pos": [136, 136],
-      "props": { "by": ["wick"], "hold": true, "size": [16, 44], "target_id": "gate_c4_r5_stage1" }
+      "pos": [
+        136,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          44
+        ],
+        "target_id": "gate_c4_r5_stage1"
+      }
     },
     {
       "id": "plate_c4_r5_4",
       "kind": "pressure_plate",
-      "pos": [152, 136],
-      "props": { "by": ["wick"], "hold": true, "size": [16, 44], "target_id": "gate_c4_r5_stage1" }
+      "pos": [
+        152,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          44
+        ],
+        "target_id": "gate_c4_r5_stage1"
+      }
     },
     {
       "id": "plate_c4_r5_5",
       "kind": "pressure_plate",
-      "pos": [168, 136],
-      "props": { "by": ["wick"], "hold": true, "size": [16, 44], "target_id": "gate_c4_r5_stage1" }
+      "pos": [
+        168,
+        136
+      ],
+      "props": {
+        "by": [
+          "wick"
+        ],
+        "hold": true,
+        "size": [
+          16,
+          44
+        ],
+        "target_id": "gate_c4_r5_stage1"
+      }
     },
     {
       "id": "gate_c4_r5_stage1",
       "kind": "logic_gate",
-      "pos": [184, 96],
+      "pos": [
+        200,
+        104
+      ],
       "props": {
         "op": "any",
         "invert": true,
-        "inputs": ["plate_c4_r5_1", "plate_c4_r5_2", "plate_c4_r5_3", "plate_c4_r5_4", "plate_c4_r5_5"],
+        "inputs": [
+          "plate_c4_r5_1",
+          "plate_c4_r5_2",
+          "plate_c4_r5_3",
+          "plate_c4_r5_4",
+          "plate_c4_r5_5"
+        ],
         "target_id": "glass_gate_c4_r5"
       }
     },
     {
       "id": "glass_gate_c4_r5",
       "kind": "toggle_block",
-      "pos": [184, 136],
-      "props": { "group": "c4_r5_stage1", "phase": 0, "start_phase": 1, "size": [16, 48] }
+      "pos": [
+        184,
+        136
+      ],
+      "props": {
+        "group": "c4_r5_stage1",
+        "phase": 0,
+        "start_phase": 1,
+        "size": [
+          16,
+          48
+        ]
+      }
     },
     {
       "id": "anchor_c4_r5_lip",
       "kind": "room_anchor",
-      "pos": [208, 136],
-      "props": { "auto": true, "activate_radius": 24, "persist": true }
+      "pos": [
+        208,
+        136
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 24,
+        "persist": true
+      }
     },
     {
       "id": "anchor_c4_r5_mid",
       "kind": "room_anchor",
-      "pos": [304, 136],
-      "props": { "auto": true, "activate_radius": 28, "persist": true }
+      "pos": [
+        304,
+        136
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 28,
+        "persist": true
+      }
     },
     {
       "id": "anchor_c4_r5_east",
       "kind": "room_anchor",
-      "pos": [432, 168],
-      "props": { "auto": true, "activate_radius": 28, "persist": true }
+      "pos": [
+        432,
+        168
+      ],
+      "props": {
+        "auto": true,
+        "activate_radius": 28,
+        "persist": true
+      }
     },
     {
       "id": "updraft_c4_r5_main",
       "kind": "updraft_vent",
-      "pos": [384, 136],
-      "props": { "radius": 26, "on": true, "dir": [0, 0], "boost_mult": 1.25 }
+      "pos": [
+        384,
+        136
+      ],
+      "props": {
+        "radius": 26,
+        "on": true,
+        "dir": [
+          0,
+          0
+        ],
+        "boost_mult": 1.25
+      }
     },
     {
       "id": "updraft_c4_r5_ember",
       "kind": "updraft_vent",
-      "pos": [216, 232],
-      "props": { "radius": 26, "on": false, "requires_signals": ["switch_eye_c4_r5"], "dir": [0, 0], "boost_mult": 1.25 }
+      "pos": [
+        216,
+        232
+      ],
+      "props": {
+        "radius": 26,
+        "on": false,
+        "requires_signals": [
+          "switch_eye_c4_r5"
+        ],
+        "dir": [
+          0,
+          0
+        ],
+        "boost_mult": 1.25
+      }
     },
     {
       "id": "updraft_c4_r5_ember_e",
       "kind": "updraft_vent",
-      "pos": [312, 232],
-      "props": { "radius": 26, "on": false, "requires_signals": ["switch_eye_c4_r5"], "dir": [0, 0], "boost_mult": 1.25 }
+      "pos": [
+        312,
+        232
+      ],
+      "props": {
+        "radius": 26,
+        "on": false,
+        "requires_signals": [
+          "switch_eye_c4_r5"
+        ],
+        "dir": [
+          0,
+          0
+        ],
+        "boost_mult": 1.25
+      }
     },
     {
       "id": "fountain_c4_r5_hf",
       "kind": "bell",
-      "pos": [456, 80],
-      "props": { "tone": "dusk", "wave_radius": 68, "cooldown": 1.6 }
+      "pos": [
+        456,
+        80
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 68,
+        "cooldown": 1.6
+      }
     },
     {
       "id": "switch_eye_c4_r5",
       "kind": "switch_eye",
-      "pos": [456, 136],
+      "pos": [
+        456,
+        136
+      ],
       "props": {
-        "target_ids": ["door_c4_r5_exit", "door_c4_r5_shortcut", "updraft_c4_r5_ember", "updraft_c4_r5_ember_e"],
+        "target_ids": [
+          "door_c4_r5_exit",
+          "door_c4_r5_shortcut",
+          "updraft_c4_r5_ember",
+          "updraft_c4_r5_ember_e"
+        ],
         "sets_flag": "c4_r5_shortcut"
       }
     },
     {
       "id": "door_c4_r5_exit",
       "kind": "door",
-      "pos": [352, 24],
+      "pos": [
+        352,
+        24
+      ],
       "props": {
         "door_kind": "shutter",
-        "size": [32, 16],
-        "requires_signals": ["switch_eye_c4_r5"],
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_c4_r5"
+        ],
         "sets_flag": "c4_r5_shortcut"
       }
     },
     {
       "id": "door_c4_r5_shortcut",
       "kind": "door",
-      "pos": [400, 264],
+      "pos": [
+        400,
+        264
+      ],
       "props": {
         "door_kind": "shortcut_door",
-        "size": [32, 16],
-        "requires_signals": ["switch_eye_c4_r5"],
-        "requires_flags": ["c4_r5_shortcut"]
+        "size": [
+          32,
+          16
+        ],
+        "requires_signals": [
+          "switch_eye_c4_r5"
+        ],
+        "requires_flags": [
+          "c4_r5_shortcut"
+        ]
       }
     },
     {
       "id": "chest_c4_r5_secret",
       "kind": "chest",
-      "pos": [104, 232],
+      "pos": [
+        104,
+        232
+      ],
       "props": {
         "reward_kind": "ember_piece",
         "reward": "ember_piece",
@@ -188,8 +410,13 @@
     {
       "id": "lamp_c4_r5_e",
       "kind": "road_lamp",
-      "pos": [312, 96],
-      "props": { "zone": "conservatory_r5" }
+      "pos": [
+        312,
+        96
+      ],
+      "props": {
+        "zone": "conservatory_r5"
+      }
     }
   ],
   "layers": [
@@ -198,7 +425,14 @@
       "when": "flag:c4_r5_stage1",
       "tiles": [],
       "enable": [],
-      "disable": ["plate_c4_r5_1", "plate_c4_r5_2", "plate_c4_r5_3", "plate_c4_r5_4", "plate_c4_r5_5", "glass_gate_c4_r5"]
+      "disable": [
+        "plate_c4_r5_1",
+        "plate_c4_r5_2",
+        "plate_c4_r5_3",
+        "plate_c4_r5_4",
+        "plate_c4_r5_5",
+        "glass_gate_c4_r5"
+      ]
     }
   ],
   "events": [
@@ -207,8 +441,12 @@
       "on": "signal:anchor_c4_r5_lip",
       "once": true,
       "do": [
-        { "set_flag": "c4_r5_stage1" },
-        { "narrate": "ISL4_CUE_STAGE1_CLEAR" }
+        {
+          "set_flag": "c4_r5_stage1"
+        },
+        {
+          "narrate": "ISL4_CUE_STAGE1_CLEAR"
+        }
       ]
     },
     {
@@ -216,22 +454,134 @@
       "on": "signal:chest_c4_r5_secret",
       "once": true,
       "do": [
-        { "set_flag": "ember_4_4" }
+        {
+          "set_flag": "ember_4_4"
+        }
       ]
     }
   ],
   "triggers": [],
   "scenery": [
-    { "sheet": "island4_scenery", "prop": "stained_floor_pool", "pos": [72, 104], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 },
-    { "sheet": "island4_scenery", "prop": "stained_floor_pool", "pos": [312, 136], "layer": "ground", "flip_x": true, "shadow": false, "phase": 0.3 },
-    { "sheet": "island4_scenery", "prop": "conservatory_pillar", "pos": [40, 88], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "island4_scenery", "prop": "conservatory_pillar", "pos": [40, 172], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "island4_scenery", "prop": "heron_lantern_post", "pos": [324, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "island4_scenery", "prop": "heron_lantern_post", "pos": [380, 44], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "island4_scenery", "prop": "rain_basin_fountain", "pos": [472, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "island4_scenery", "prop": "floating_lantern_lily", "pos": [128, 48], "layer": "sort", "flip_x": false, "shadow": false, "phase": 0.4 },
-    { "sheet": "island4_scenery", "prop": "blooming_lotus", "pos": [248, 224], "layer": "sort", "flip_x": false, "shadow": false, "phase": 0.3 },
-    { "sheet": "island4_scenery", "prop": "cattail_reeds", "pos": [56, 224], "layer": "sort", "flip_x": false, "shadow": false, "phase": 0.2 }
+    {
+      "sheet": "island4_scenery",
+      "prop": "stained_floor_pool",
+      "pos": [
+        72,
+        104
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "stained_floor_pool",
+      "pos": [
+        312,
+        136
+      ],
+      "layer": "ground",
+      "flip_x": true,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        40,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "conservatory_pillar",
+      "pos": [
+        40,
+        172
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        324,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "heron_lantern_post",
+      "pos": [
+        380,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "rain_basin_fountain",
+      "pos": [
+        472,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "floating_lantern_lily",
+      "pos": [
+        128,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.4
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "blooming_lotus",
+      "pos": [
+        248,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.3
+    },
+    {
+      "sheet": "island4_scenery",
+      "prop": "cattail_reeds",
+      "pos": [
+        56,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.2
+    }
   ],
   "design": {
     "idea": "Zero-death 4-stage Wings gymnasium: dry-stone glide gate, generous 3-tile water hop with lip anchor, neutral updraft refresh lagoon, harmless ripple fountain preview, and twin-updraft southern ember loop.",
@@ -244,20 +594,89 @@
     "why": "Rebuilt Drowned Conservatory Wings shrine pavilion eliminating blind water deaths.",
     "exit": "exit_c4_r5_north",
     "solution": [
-      { "op": "goto", "to": "shrine_wings", "tol": 14 },
-      { "op": "interact", "target": "shrine_wings" },
-      { "op": "expect", "move": "wings" },
-      { "op": "goto", "to": [80, 136], "tol": 8 },
-      { "op": "glide", "to": [208, 136], "tol": 12 },
-      { "op": "expect", "flag": "c4_r5_stage1" },
-      { "op": "goto", "to": [216, 136], "tol": 8 },
-      { "op": "glide", "to": [296, 136], "tol": 12 },
-      { "op": "goto", "to": [340, 136], "tol": 8 },
-      { "op": "glide", "to": [432, 136], "tol": 12 },
-      { "op": "shoot", "target": "switch_eye_c4_r5" },
-      { "op": "expect", "flag": "c4_r5_shortcut" },
-      { "op": "expect", "interactable": "door_c4_r5_exit", "prop": "opened", "value": true },
-      { "op": "expect_exit", "exit": "exit_c4_r5_north" }
+      {
+        "op": "goto",
+        "to": "shrine_wings",
+        "tol": 14
+      },
+      {
+        "op": "interact",
+        "target": "shrine_wings"
+      },
+      {
+        "op": "expect",
+        "move": "wings"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          136
+        ],
+        "tol": 8
+      },
+      {
+        "op": "glide",
+        "to": [
+          208,
+          136
+        ],
+        "tol": 12
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r5_stage1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          216,
+          136
+        ],
+        "tol": 8
+      },
+      {
+        "op": "glide",
+        "to": [
+          296,
+          136
+        ],
+        "tol": 12
+      },
+      {
+        "op": "goto",
+        "to": [
+          340,
+          136
+        ],
+        "tol": 8
+      },
+      {
+        "op": "glide",
+        "to": [
+          432,
+          136
+        ],
+        "tol": 12
+      },
+      {
+        "op": "shoot",
+        "target": "switch_eye_c4_r5"
+      },
+      {
+        "op": "expect",
+        "flag": "c4_r5_shortcut"
+      },
+      {
+        "op": "expect",
+        "interactable": "door_c4_r5_exit",
+        "prop": "opened",
+        "value": true
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_c4_r5_north"
+      }
     ]
   },
   "is_2x2_room": true

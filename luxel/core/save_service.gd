@@ -486,6 +486,7 @@ func load_settings() -> Dictionary:
 	base["assist_game_speed"] = clampf(float(base.get("assist_game_speed", 1.0)), 0.7, 1.0)
 	base["screen_shake"] = clampi(int(base.get("screen_shake", 100)), 0, 100)
 	base["hard_mode"] = bool(base.get("hard_mode", false))
+	base["next_light_cue"] = bool(base.get("next_light_cue", true))
 	settings = base
 	return settings
 

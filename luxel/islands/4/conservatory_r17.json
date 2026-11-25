@@ -207,7 +207,7 @@
       ],
       "props": {
         "size": [
-          32,
+          16,
           32
         ]
       }
@@ -326,11 +326,11 @@
       "id": "lore_c4_r17",
       "kind": "lore_stone",
       "pos": [
-        440,
-        216
+        424,
+        224
       ],
       "props": {
-        "string_id": "ISL4_C4_CANOPY_HINT"
+        "string_id": "ISL4_C4_SUNDIAL_HINT"
       }
     }
   ],

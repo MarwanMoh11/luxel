@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "LH2_R15_NAME",
-  "theme": "locks",
+  "theme": "lighthouse",
   "music": "island2_dungeon",
   "ambience": [
     "harbor_tide",
@@ -265,7 +265,7 @@
     {
       "id": "r15_low_mid",
       "when": "dungeon:lighthouse.tower_tide==low || dungeon:lighthouse.tower_tide==mid",
-      "theme": "locks",
+      "theme": "lighthouse",
       "tiles": [
         [
           8,
@@ -281,7 +281,7 @@
     {
       "id": "r15_high",
       "when": "dungeon:lighthouse.tower_tide==high",
-      "theme": "locks",
+      "theme": "lighthouse",
       "tiles": [
         [
           8,

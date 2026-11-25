@@ -770,5 +770,6 @@
         "exit": "exit_town_west"
       }
     ]
-  }
+  },
+  "theme": "bell_outer"
 }

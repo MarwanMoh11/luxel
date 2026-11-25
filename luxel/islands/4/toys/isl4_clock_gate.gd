@@ -91,6 +91,7 @@ func pin_open(with_feedback: bool = true) -> void:
 	state = State.PINNED_OPEN
 	_phys_open = true
 	powered = true
+	z_as_relative = false
 	z_index = -4
 	if not was_pinned and with_feedback:
 		_emit_sfx("door_open")
@@ -191,6 +192,7 @@ func _evaluate_gate(with_sfx: bool) -> void:
 		_safe_nudge_wick_clear()
 	_phys_open = want_open
 	powered = want_open
+	z_as_relative = false
 	z_index = -4 if _phys_open else 0
 
 	var warning_now: bool = false

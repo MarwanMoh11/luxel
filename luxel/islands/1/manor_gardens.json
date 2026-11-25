@@ -673,5 +673,6 @@
         "exit": "exit_mg_shed"
       }
     ]
-  }
+  },
+  "theme": "bell_outer"
 }

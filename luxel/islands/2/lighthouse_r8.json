@@ -444,5 +444,6 @@
         "exit": "exit_lh_r8_north"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

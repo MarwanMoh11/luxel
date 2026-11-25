@@ -403,5 +403,6 @@
         "exit": "exit_lh_r3_east"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

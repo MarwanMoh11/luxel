@@ -528,5 +528,6 @@
         "exit": "exit_lh_r9_north"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

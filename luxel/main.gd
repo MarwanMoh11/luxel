@@ -442,6 +442,10 @@ func step_sim(raw_dt: float) -> void:
 		elif _region_loader.has_method("tick"): _region_loader.call("tick", dt, wpos)
 	Lx.audio.tick(raw_dt, engaged_enemies > 0)
 	_sync_boss_hud()
+	if Lx.ui != null:
+		var hud_n: Object = Lx.ui.get("hud") as Object; var nar_n: Object = Lx.ui.get("narration") as Object
+		if hud_n != null and hud_n.has_method("tick_sim"): hud_n.call("tick_sim", raw_dt)
+		if nar_n != null and nar_n.has_method("tick_sim"): nar_n.call("tick_sim", raw_dt)
 	if _wick != null:
 		wpos = _wick.global_position
 		_sync_zone_banner(wpos)

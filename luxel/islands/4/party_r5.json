@@ -8,7 +8,7 @@
   "music": "isl4_setpiece",
   "spawn": [
     248,
-    280
+    258
   ],
   "zones": [
     {
@@ -68,16 +68,16 @@
       "kind": "boss_toastmaster",
       "pos": [
         264,
-        184
+        156
       ],
       "route": [
         [
           200,
-          184
+          156
         ],
         [
           328,
-          184
+          156
         ]
       ],
       "zone": "party_r5",
@@ -206,8 +206,8 @@
       "id": "lamp_pt_r5_sw",
       "kind": "road_lamp",
       "pos": [
-        184,
-        248
+        176,
+        232
       ],
       "props": {
         "lit": true
@@ -217,8 +217,8 @@
       "id": "lamp_pt_r5_se",
       "kind": "road_lamp",
       "pos": [
-        344,
-        248
+        336,
+        232
       ],
       "props": {
         "lit": true

@@ -29,6 +29,7 @@ ALIASES: dict[str, str] = {
     # Island 2 bible aliases
     "drowned_galleon": "galleon",
     "smugglers_locks": "locks",
+    "tidewater_lighthouse": "lighthouse",
     "camp": "locks",
     "caves": "cave_2",
     "superboss": "leviathan_belly",

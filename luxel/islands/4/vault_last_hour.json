@@ -92,8 +92,8 @@
       "id": "lamp_lh_ne",
       "kind": "road_lamp",
       "pos": [
-        344,
-        112
+        360,
+        120
       ],
       "props": {
         "lit": true
@@ -114,8 +114,8 @@
       "id": "lamp_lh_se",
       "kind": "road_lamp",
       "pos": [
-        344,
-        272
+        360,
+        264
       ],
       "props": {
         "lit": true

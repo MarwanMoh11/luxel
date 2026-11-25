@@ -84,14 +84,14 @@
       "kind": "moonshade_owl",
       "variant": "moonshade_owl",
       "pos": [
-        304,
-        144
+        280,
+        112
       ],
       "route": [],
       "perches": [
         [
-          304,
-          144
+          280,
+          112
         ],
         [
           184,
@@ -99,7 +99,7 @@
         ],
         [
           248,
-          176
+          168
         ]
       ],
       "zone": "spire_r3",

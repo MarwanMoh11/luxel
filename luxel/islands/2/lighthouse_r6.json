@@ -424,5 +424,6 @@
         "exit": "exit_lh_r6_east"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

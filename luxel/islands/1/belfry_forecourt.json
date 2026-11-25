@@ -508,5 +508,6 @@
         "exit": "exit_forecourt_toll"
       }
     ]
-  }
+  },
+  "theme": "bell_outer"
 }

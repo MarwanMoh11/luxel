@@ -71,7 +71,7 @@
       "to_region": "party_r5",
       "to_spawn": [
         248,
-        280
+        258
       ],
       "requires_moves": [],
       "requires_flags": [
@@ -85,16 +85,16 @@
       "id": "pd_party_r4",
       "kind": "petal_duelist",
       "pos": [
-        184,
+        204,
         216
       ],
       "route": [
         [
-          152,
+          176,
           216
         ],
         [
-          216,
+          224,
           216
         ]
       ],
@@ -105,8 +105,8 @@
       "id": "rf_party_r4",
       "kind": "rain_frog",
       "pos": [
-        168,
-        232
+        196,
+        236
       ],
       "zone": "party_r4_w",
       "leash": 110
@@ -372,7 +372,7 @@
       "kind": "road_lamp",
       "pos": [
         424,
-        216
+        236
       ],
       "props": {
         "lit": true

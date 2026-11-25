@@ -495,5 +495,6 @@
         "exit": "exit_lh_r4_east"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

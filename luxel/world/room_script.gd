@@ -176,7 +176,7 @@ func _poll_events() -> void:
 			var z: String = on_s.substr(8).strip_edges() if on_s.begins_with("cleared:") else ""
 			var ck: String = ev_id + ":" + z
 			if _is_zone_ready_cleared(z) and not bool(_zone_cleared_fired.get(ck, false)):
-				_zone_cleared_fired[ck] = true; _try_fire_event(ev, {"zone": z})
+				if _try_fire_event(ev, {"zone": z}): _zone_cleared_fired[ck] = true
 		elif on_s.begins_with("boss_hp:"):
 			if not bool(_prev_cond_state.get(ev_id, false)) and _any_boss_below_ratio(clampf(float(on_s.substr(8)), 0.0, 1.0)):
 				_prev_cond_state[ev_id] = true; _try_fire_event(ev, {})

@@ -464,6 +464,22 @@
         "target": "transformer_spire_r2_a"
       },
       {
+        "op": "wait",
+        "secs": 0.25
+      },
+      {
+        "op": "goto",
+        "to": [
+          72,
+          112
+        ],
+        "tol": 12.0
+      },
+      {
+        "op": "expect",
+        "flag": "wick_key_7_1"
+      },
+      {
         "op": "goto",
         "to": [
           240,

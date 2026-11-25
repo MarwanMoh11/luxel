@@ -251,7 +251,7 @@
       "kind": "chest",
       "pos": [
         64,
-        32
+        44
       ],
       "props": {
         "reward_kind": "shards",
@@ -274,8 +274,8 @@
       "id": "lamp_sp_nw",
       "kind": "road_lamp",
       "pos": [
-        176,
-        64
+        192,
+        96
       ],
       "props": {
         "lit": true
@@ -285,8 +285,8 @@
       "id": "lamp_sp_ne",
       "kind": "road_lamp",
       "pos": [
-        320,
-        64
+        304,
+        96
       ],
       "props": {
         "lit": true

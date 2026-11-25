@@ -123,7 +123,7 @@
         "door_kind": "switch_door",
         "size": [
           16,
-          16
+          32
         ],
         "requires_signals": [
           "brazier_r2_open"
@@ -136,7 +136,7 @@
       "kind": "chest",
       "pos": [
         56,
-        104
+        114
       ],
       "props": {
         "reward_kind": "shards",

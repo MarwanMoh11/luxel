@@ -132,7 +132,7 @@
       "props": {
         "door_kind": "switch_door",
         "size": [
-          32,
+          16,
           32
         ],
         "requires_signals": [
@@ -145,7 +145,7 @@
       "id": "rose_c4_r2",
       "kind": "echo_rose",
       "pos": [
-        104,
+        84,
         184
       ],
       "props": {
@@ -191,7 +191,7 @@
       "kind": "chest",
       "pos": [
         360,
-        72
+        84
       ],
       "props": {
         "reward_kind": "shards",

@@ -265,8 +265,9 @@
     "solution": [
       { "op": "shoot", "from": [56, 168], "target": "block_r7_ice1" },
       { "op": "wait_until", "target": "plate_r7_1", "prop": "powered", "value": true, "timeout": 4.0 },
-      { "op": "goto", "to": [240, 224], "tol": 10 },
+      { "op": "goto", "to": [240, 184], "tol": 10 },
       { "op": "clear", "timeout": 60.0 },
+      { "op": "goto", "to": [240, 224], "tol": 10 },
       { "op": "interact", "target": "echo_r7_mid" },
       { "op": "goto", "to": [240, 280], "tol": 6 },
       { "op": "wait", "secs": 1.6 },

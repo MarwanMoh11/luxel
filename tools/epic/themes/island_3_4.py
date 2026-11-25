@@ -826,14 +826,14 @@ class WingSpirePainter(ThemePainter):
         sw = (~west_entry) & (xs < mid_x) & (ys >= mid_y)
         se = (~west_entry) & (xs >= mid_x) & (ys >= mid_y)
 
-        # Base conservatory terrace flagstones (West entry)
+        # Base conservatory terrace flagstones (West entry, calm ~80 luma so 4 ornate pads shine!)
         sh, sw_b = 10, 16
         ox = np.where(((ys // sh) & 1) == 1, 8, 0)
         sx, sy = (xs + ox) % sw_b, ys % sh
         slab_h = hash01_grid((xs + ox) // sw_b, ys // sh, s.seed + 51)
-        out = ramp_blend(("dusk", "plum", "mauve", "stone"), np.clip(nb * 0.45 + slab_h * 0.35 + warm * 0.12, 0.0, 0.999), bg)
+        out = ramp_blend(("dusk", "dusk", "plum", "mauve"), np.clip(nb * 0.45 + slab_h * 0.35 + warm * 0.10, 0.0, 0.999), bg)
         out = np.where((sx == 0) | (sy == 0), IX["night"], out)
-        out = np.where((sy == 1) & (slab_h > 0.50), IX["stone"], out)
+        out = np.where((sy == 1) & (slab_h > 0.52), IX["stone"], out)
 
         # NW pad: warm sunlit limestone octagon with brass diamond inlay
         nw_f = ramp_blend(("plum", "mauve", "stone"), np.clip(nb * 0.45 + slab_h * 0.35 + 0.15, 0.0, 0.999), bg)
@@ -945,12 +945,12 @@ class MirefenCavePainter(ThemePainter):
         warm = ctx["warm"]
         s = self.spec
 
-        # Luminous wet marsh-limestone flagstones (walk_lum ~76-84)
+        # Luminous wet marsh-limestone flagstones (walk_lum ~76-82)
         sh, sw = 10, 16
         ox = np.where(((ys // sh) & 1) == 1, 8, 0)
         sx, sy = (xs + ox) % sw, ys % sh
         slab_h = hash01_grid((xs + ox) // sw, ys // sh, s.seed + 67)
-        out = ramp_blend(("dusk", "plum", "mauve"), np.clip(nb * 0.48 + slab_h * 0.36 + warm * 0.10, 0.0, 0.999), bg)
+        out = ramp_blend(("dusk", "dusk", "plum", "mauve"), np.clip(nb * 0.48 + slab_h * 0.36 + warm * 0.10, 0.0, 0.999), bg)
         is_seam = (sx == 0) | (sy == 0)
         out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.46), IX["stone"], out)
         out = np.where(is_seam & (bg < 0.72), IX["night"], out)
@@ -983,7 +983,7 @@ class MirefenCavePainter(ThemePainter):
         if np.any(m_water):
             cx_l, cy_l = (xs % 12) - 6, (ys % 12) - 6
             lh = hash01_grid(xs // 12, ys // 12, s.seed + 823)
-            thresh = 0.72 if "heron" in rid else 0.84
+            thresh = 0.80 if "heron" in rid else 0.88
             pad = m_water & (lh > thresh) & ((cx_l * cx_l + cy_l * cy_l) <= 11)
             buf[pad] = np.where(cy_l < 0, IX["lime"], IX["jade"])[pad]
             buf[pad & (cx_l == 0) & (cy_l == 0) & (lh > thresh + 0.10)] = IX["rose"]
@@ -1040,14 +1040,17 @@ class ThornwoodCavePainter(ThemePainter):
         # Root-draped abyss depths (fixes stark black rectangles in cave_root_cellar & cave_amber_well!)
         _paint_hollow_oak_pit_roots(buf, ctx, s.seed + 37)
 
-        # Warm amber glow rising softly from the well pit in cave_amber_well
+        # Warm amber glow rising softly from the well pit in cave_amber_well (Bayer-dithered, never blobby)
         if "amber" in rid:
             abyss = ctx["m_pit"] | ctx["m_void"]
             if np.any(abyss):
                 ad = chamfer_dist(abyss)
-                glow = abyss & (ad > 6.0) & (fbm_grid(H, W, 24.0, seed=s.seed + 901, octaves=2) > 0.52) & (ctx["bg"] < 0.42)
-                buf[glow] = IX["wine"]
-                core = abyss & (ad > 12.0) & (fbm_grid(H, W, 20.0, seed=s.seed + 907, octaves=2) > 0.62) & (ctx["bg"] < 0.38)
+                gn = fbm_grid(H, W, 24.0, seed=s.seed + 901, octaves=2)
+                glow = abyss & (ad > 5.0) & (gn > 0.48) & (ctx["bg"] < (gn - 0.35) * 0.85)
+                buf[glow] = IX["dusk"]
+                mid_g = abyss & (ad > 9.0) & (gn > 0.56) & (ctx["bg"] < (gn - 0.44) * 0.75)
+                buf[mid_g] = IX["wine"]
+                core = abyss & (ad > 14.0) & (gn > 0.68) & (ctx["bg"] < 0.32)
                 buf[core] = IX["coral"]
 
         # Organic curving root-cavern wall overhangs breaking straight corners

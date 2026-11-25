@@ -851,7 +851,7 @@
       "kind": "isl4_schedule_plaque",
       "pos": [
         200,
-        528
+        544
       ],
       "props": {
         "highlight_hours": [
@@ -1035,7 +1035,7 @@
       "kind": "quest_item",
       "pos": [
         592,
-        272
+        288
       ],
       "props": {
         "id": "dew_hour_5"

@@ -131,6 +131,7 @@ def _paint_layer_image(
     island_id: int,
     base_theme: str,
     layer: Dict[str, Any],
+    base_buf: Optional[np.ndarray] = None,
 ) -> Image.Image:
     """Paint one dynamic layer overlay into memory (themed or legacy)."""
     h_t = len(grid)
@@ -149,11 +150,14 @@ def _paint_layer_image(
         tint = "midnight"
 
     layer_meta = dict(meta)
-    if isinstance(layer.get("decor"), list):
+    has_custom_decor = isinstance(layer.get("decor"), list)
+    if has_custom_decor:
         layer_meta["decor"] = layer["decor"]
 
     use_theme = layer_theme_id or base_theme
-    if use_theme:
+    if base_buf is not None and not tile_rects and not layer_theme_id and not has_custom_decor:
+        buf = base_buf.copy()
+    elif use_theme:
         painter = get_theme(resolve_theme_id(use_theme))
         buf, _ = painter.paint_buffer(patched_grid, ts=ts, meta=layer_meta)
     else:
@@ -295,15 +299,18 @@ def process_region(
     }
 
     # 1. Ground PNG
+    base_buf: Optional[np.ndarray] = None
     if rkey in HAND_TUNED_GROUNDS and not force_protected and ground_path.exists():
         res["ground"] = "protected"
     else:
         if theme:
             painter = get_theme(resolve_theme_id(theme))
-            gen_ground = painter.paint(grid, ts=ts, meta=meta)
+            base_buf, _ = painter.paint_buffer(grid, ts=ts, meta=meta)
+            gen_ground = buf_to_image(base_buf)
+            verify_image_palette(gen_ground, f"theme:{theme}")
         else:
-            buf = _paint_legacy_buffer(grid, ts=ts, meta=meta, island_id=isl_id)
-            gen_ground = buf_to_image(buf)
+            base_buf = _paint_legacy_buffer(grid, ts=ts, meta=meta, island_id=isl_id)
+            gen_ground = buf_to_image(base_buf)
             verify_image_palette(gen_ground, f"legacy:{rkey}")
 
         if not ground_path.exists():
@@ -331,7 +338,7 @@ def process_region(
             ov_path = art_dir / f"{rid}__{lid}.png"
             if not _layer_needs_png(lay, ov_path):
                 continue
-            gen_lay = _paint_layer_image(grid, ts, meta, isl_id, theme, lay)
+            gen_lay = _paint_layer_image(grid, ts, meta, isl_id, theme, lay, base_buf=base_buf)
             if not ov_path.exists():
                 res["layers_missing"].append(lid)
                 if not check_only:

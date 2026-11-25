@@ -3,12 +3,25 @@
   "island_id": 0,
   "tile_size": 16,
   "is_dungeon": false,
-  "theme": "cave_4",
+  "theme": "wick_cellar",
   "name_key": "ZONE_HUB_CELLAR",
   "music": "hub",
-  "spawn": [240, 48],
+  "spawn": [
+    240,
+    48
+  ],
   "zones": [
-    {"id": "hub_cellar", "name_key": "ZONE_HUB_CELLAR", "rect": [0, 0, 480, 320], "dark": false}
+    {
+      "id": "hub_cellar",
+      "name_key": "ZONE_HUB_CELLAR",
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
+      "dark": false
+    }
   ],
   "design": {
     "idea": "Sunken stone cellar hosting the daily-seeded Endless Cellar combat wave trial using defeated enemy kinds.",
@@ -21,55 +34,312 @@
     "why": "Deep vaulted stone foundation uniting the Hall, Dash Corridor, and Garden Pier.",
     "optional": true,
     "solution": [
-      {"op": "goto", "to": "curio_cel_cask"},
-      {"op": "interact", "target": "curio_cel_cask"},
-      {"op": "goto", "to": "curio_cel_tally"},
-      {"op": "interact", "target": "curio_cel_tally"},
-      {"op": "goto", "to": "curio_cel_trunk"},
-      {"op": "interact", "target": "curio_cel_trunk"},
-      {"op": "goto", "to": "curio_cel_anvil"},
-      {"op": "interact", "target": "curio_cel_anvil"}
+      {
+        "op": "goto",
+        "to": "curio_cel_cask"
+      },
+      {
+        "op": "interact",
+        "target": "curio_cel_cask"
+      },
+      {
+        "op": "goto",
+        "to": "curio_cel_tally"
+      },
+      {
+        "op": "interact",
+        "target": "curio_cel_tally"
+      },
+      {
+        "op": "goto",
+        "to": "curio_cel_trunk"
+      },
+      {
+        "op": "interact",
+        "target": "curio_cel_trunk"
+      },
+      {
+        "op": "goto",
+        "to": "curio_cel_anvil"
+      },
+      {
+        "op": "interact",
+        "target": "curio_cel_anvil"
+      }
     ]
   },
   "decor": [
-    {"kind": "circle", "pos": [240, 168], "radius": 52, "style": "ritual"},
-    {"kind": "grate", "rect": [208, 136, 64, 64], "glow": false},
-    {"kind": "stain", "pos": [104, 112], "radius": 30, "style": "water"},
-    {"kind": "cracks", "pos": [368, 224], "radius": 34, "glow": false}
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        168
+      ],
+      "radius": 52,
+      "style": "ritual"
+    },
+    {
+      "kind": "grate",
+      "rect": [
+        208,
+        136,
+        64,
+        64
+      ],
+      "glow": false
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        104,
+        112
+      ],
+      "radius": 30,
+      "style": "water"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        368,
+        224
+      ],
+      "radius": 34,
+      "glow": false
+    }
   ],
   "exits": [
-    {"id": "ex_cellar_ow", "rect": [224, 0, 48, 16], "to_island": 0, "to_region": "overworld", "to_spawn": [416, 216]},
-    {"id": "ex_cellar_corr", "rect": [0, 144, 16, 48], "to_island": 0, "to_region": "corridor", "to_spawn": [496, 136]},
-    {"id": "ex_cellar_pier", "rect": [464, 144, 16, 48], "to_island": 0, "to_region": "pier", "to_spawn": [48, 184]}
+    {
+      "id": "ex_cellar_ow",
+      "rect": [
+        224,
+        0,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "overworld",
+      "to_spawn": [
+        416,
+        216
+      ]
+    },
+    {
+      "id": "ex_cellar_corr",
+      "rect": [
+        0,
+        144,
+        16,
+        48
+      ],
+      "to_island": 0,
+      "to_region": "corridor",
+      "to_spawn": [
+        496,
+        136
+      ]
+    },
+    {
+      "id": "ex_cellar_pier",
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
+      "to_island": 0,
+      "to_region": "pier",
+      "to_spawn": [
+        48,
+        184
+      ]
+    }
   ],
   "enemies": [],
   "layers": [
     {
       "id": "relit_3",
       "when": "hub_relit>=3",
-      "tiles": [[12, 6, 6, 2, "path"]],
-      "enable": ["lamp_cel_relit_3"]
+      "tiles": [
+        [
+          12,
+          6,
+          6,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_cel_relit_3"
+      ]
     }
   ],
   "interactables": [
-    {"id": "anc_cellar", "kind": "room_anchor", "pos": [240, 56], "props": {"auto": true}},
-    {"id": "hub_mg_cellar", "kind": "mg_endless_cellar", "pos": [240, 168], "props": {}},
-    {"id": "curio_cel_cask", "kind": "hub_curio", "pos": [52, 52], "props": {"curio": "cellar_cask"}},
-    {"id": "curio_cel_tally", "kind": "hub_curio", "pos": [428, 52], "props": {"curio": "tally_board"}},
-    {"id": "curio_cel_trunk", "kind": "hub_curio", "pos": [52, 272], "props": {"curio": "old_trunk"}},
-    {"id": "curio_cel_anvil", "kind": "hub_curio", "pos": [428, 272], "props": {"curio": "anvil_spark"}},
-    {"id": "lamp_cel_nw", "kind": "road_lamp", "pos": [144, 96], "props": {"lit": true}},
-    {"id": "lamp_cel_ne", "kind": "road_lamp", "pos": [344, 96], "props": {"lit": true}},
-    {"id": "lamp_cel_sw", "kind": "road_lamp", "pos": [144, 240], "props": {"lit": true}},
-    {"id": "lamp_cel_se", "kind": "road_lamp", "pos": [344, 240], "props": {"lit": true}},
-    {"id": "lamp_cel_relit_3", "kind": "road_lamp", "pos": [240, 268], "props": {"lit": true}}
+    {
+      "id": "anc_cellar",
+      "kind": "room_anchor",
+      "pos": [
+        240,
+        56
+      ],
+      "props": {
+        "auto": true
+      }
+    },
+    {
+      "id": "hub_mg_cellar",
+      "kind": "mg_endless_cellar",
+      "pos": [
+        240,
+        168
+      ],
+      "props": {}
+    },
+    {
+      "id": "curio_cel_cask",
+      "kind": "hub_curio",
+      "pos": [
+        52,
+        52
+      ],
+      "props": {
+        "curio": "cellar_cask"
+      }
+    },
+    {
+      "id": "curio_cel_tally",
+      "kind": "hub_curio",
+      "pos": [
+        428,
+        52
+      ],
+      "props": {
+        "curio": "tally_board"
+      }
+    },
+    {
+      "id": "curio_cel_trunk",
+      "kind": "hub_curio",
+      "pos": [
+        52,
+        272
+      ],
+      "props": {
+        "curio": "old_trunk"
+      }
+    },
+    {
+      "id": "curio_cel_anvil",
+      "kind": "hub_curio",
+      "pos": [
+        428,
+        272
+      ],
+      "props": {
+        "curio": "anvil_spark"
+      }
+    },
+    {
+      "id": "lamp_cel_nw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_ne",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_sw",
+      "kind": "road_lamp",
+      "pos": [
+        144,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_se",
+      "kind": "road_lamp",
+      "pos": [
+        344,
+        240
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_cel_relit_3",
+      "kind": "road_lamp",
+      "pos": [
+        240,
+        268
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "theme_cave_4", "prop": "cavern_brazier_bowl", "pos": [168, 56], "layer": "sort"},
-    {"sheet": "theme_cave_4", "prop": "cavern_brazier_bowl", "pos": [316, 56], "layer": "sort"},
-    {"sheet": "theme_cave_4", "prop": "subterranean_shroom", "pos": [96, 260], "layer": "sort"},
-    {"sheet": "theme_cave_4", "prop": "glow_mineral_vein", "pos": [396, 112], "layer": "sort"},
-    {"sheet": "theme_cave_4", "prop": "dripping_pool_basin", "pos": [112, 124], "layer": "ground"}
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        316,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "subterranean_shroom",
+      "pos": [
+        96,
+        260
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "glow_mineral_vein",
+      "pos": [
+        396,
+        112
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_cave_4",
+      "prop": "dripping_pool_basin",
+      "pos": [
+        112,
+        124
+      ],
+      "layer": "ground"
+    }
   ]
 }

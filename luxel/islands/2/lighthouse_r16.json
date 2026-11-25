@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "LH2_R16_NAME",
-  "theme": "locks",
+  "theme": "lighthouse",
   "music": "island2_dungeon",
   "ambience": [
     "harbor_rigging"

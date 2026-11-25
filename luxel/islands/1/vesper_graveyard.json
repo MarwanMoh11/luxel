@@ -665,5 +665,6 @@
         "exit": "exit_vg_undercroft"
       }
     ]
-  }
+  },
+  "theme": "bell_outer"
 }

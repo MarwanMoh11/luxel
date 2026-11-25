@@ -18,36 +18,23 @@ const PHASE2_CUES: Dictionary = {
 }
 
 var _cues: Array[Dictionary] = [] # {text, pos, is_world, color, t, dur}
-var _notice_text: String = ""
-var _notice_t: float = 0.0
-var _notice_dur: float = 3.5
+var _notice_text: String = ""; var _notice_t: float = 0.0; var _notice_dur: float = 3.5
 
-var _boss_active: bool = false
-var _boss_name_key: String = ""
-var _boss_hp: float = 0.0
-var _boss_max_hp: float = 1.0
-var _boss_trail_hp: float = 0.0
-var _boss_phase: int = 1
+var _boss_active: bool = false; var _boss_name_key: String = ""; var _boss_phase: int = 1
+var _boss_hp: float = 0.0; var _boss_max_hp: float = 1.0; var _boss_trail_hp: float = 0.0
 var _boss_entries: Array[Dictionary] = [] # [{id, name_key, hp, max_hp, trail_hp, phase}]
 
-var _ember_val: float = 0.0
-var _ember_max: float = 100.0
-var _blink_t: float = 0.0
-var _hit_cue_cd: float = 0.0
-var _last_shards: int = -1
-var _shard_pop_t: float = 0.0
-var _shard_idle_t: float = 5.0
-var _moves_idle_t: float = 0.0
-var _last_hearts: float = -1.0
-var _heart_pop_t: float = 0.0
+var _ember_val: float = 0.0; var _ember_max: float = 100.0
+var _blink_t: float = 0.0; var _hit_cue_cd: float = 0.0
+var _last_shards: int = -1; var _shard_pop_t: float = 0.0; var _shard_idle_t: float = 5.0
+var _moves_idle_t: float = 0.0; var _last_hearts: float = -1.0; var _heart_pop_t: float = 0.0
 var _zip_cue_alpha: float = 0.0
 var _challenge: Dictionary = {"active": false, "kind": "", "limit": 1.0, "rem": 0.0, "frac": 1.0, "state": 0}
 var _banner_cooldowns: Dictionary = {} # banner_key -> last_shown_s
 var _seen_boss_intros: Dictionary = {} # boss_id -> true
 var ceremony: LxHudCeremony = LxHudCeremony.new()
-var _bound: bool = false
-var _bound_events: Object = null
-var _bound_sold: Object = null
+var _bound: bool = false; var _bound_events: Object = null; var _bound_sold: Object = null
+var _sim_tick_frame: int = -1
 
 func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; bind_events()
 
@@ -252,7 +239,13 @@ func _on_lantern_stolen(_thief: Object, pos: Vector2) -> void:
 	spawn_world_cue("CUE_LANTERN_STOLEN", pos, "coral", 1.6)
 
 
+func tick_sim(delta: float) -> void:
+	_sim_tick_frame = Engine.get_process_frames(); _tick_hud(delta)
+
 func _process(delta: float) -> void:
+	if _sim_tick_frame != Engine.get_process_frames(): _tick_hud(delta)
+
+func _tick_hud(delta: float) -> void:
 	if not visible: return
 	_blink_t += delta
 	_hit_cue_cd = maxf(0.0, _hit_cue_cd - delta)

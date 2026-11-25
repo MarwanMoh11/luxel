@@ -567,6 +567,17 @@
     },
     "solution": [
       {
+        "op": "goto",
+        "to": [
+          264,
+          304
+        ]
+      },
+      {
+        "op": "clear",
+        "timeout": 12.0
+      },
+      {
         "op": "push",
         "target": "blk_r9_baffle",
         "to": [

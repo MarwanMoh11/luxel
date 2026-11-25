@@ -5,7 +5,7 @@
   "is_dungeon": true,
   "spawn": [
     240,
-    216
+    196
   ],
   "zones": [
     {
@@ -65,16 +65,16 @@
       "kind": "great_lily_hopper",
       "pos": [
         256,
-        112
+        96
       ],
       "route": [
         [
           192,
-          112
+          96
         ],
         [
           320,
-          112
+          96
         ]
       ],
       "perches": [],
@@ -137,8 +137,8 @@
       "id": "updraft_c4_r6_ne",
       "kind": "updraft_vent",
       "pos": [
-        328,
-        72
+        312,
+        88
       ],
       "props": {
         "radius": 24,
@@ -176,8 +176,8 @@
       "id": "lamp_c4_r6_sw",
       "kind": "road_lamp",
       "pos": [
-        200,
-        200
+        184,
+        196
       ],
       "props": {
         "lit": true

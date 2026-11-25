@@ -412,7 +412,7 @@
       "id": "lamp_orch_nw",
       "kind": "road_lamp",
       "pos": [
-        152,
+        136,
         88
       ],
       "props": {
@@ -445,7 +445,7 @@
       "id": "lamp_orch_se",
       "kind": "road_lamp",
       "pos": [
-        464,
+        480,
         344
       ],
       "props": {

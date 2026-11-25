@@ -515,5 +515,6 @@
         "exit": "exit_lh_r7_north"
       }
     ]
-  }
+  },
+  "theme": "lighthouse"
 }

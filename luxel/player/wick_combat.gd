@@ -215,19 +215,31 @@ static func is_safe_ground(ctx: Node, pt: Vector2) -> bool:
 
 static func _find_void_respawn_pos(w: LxWick, world_ctx: Node) -> Vector2:
 	var ctx: Node = world_ctx if world_ctx != null else w._world_ctx
+	var arena_locked: bool = ctx != null and is_instance_valid(ctx) and ctx.has_method("is_arena_locked") and bool(ctx.call("is_arena_locked"))
+	if arena_locked:
+		var arena_rect: Rect2 = _get_locked_arena_rect(ctx)
+		if arena_rect.has_area():
+			if w._last_safe_pos != Vector2.ZERO and arena_rect.has_point(w._last_safe_pos) and is_safe_ground(ctx, w._last_safe_pos):
+				return w._last_safe_pos
+			var a_pos: Vector2 = _find_active_anchor_pos(w, ctx, arena_rect)
+			if a_pos.is_finite():
+				return a_pos
+			var raw_origin: Vector2 = w._last_safe_pos if w._last_safe_pos != Vector2.ZERO else w.global_position
+			var clamped_origin := Vector2(
+				clampf(raw_origin.x, arena_rect.position.x + 8.0, maxf(arena_rect.position.x + 8.0, arena_rect.end.x - 8.0)),
+				clampf(raw_origin.y, arena_rect.position.y + 8.0, maxf(arena_rect.position.y + 8.0, arena_rect.end.y - 8.0))
+			)
+			var in_bfs: Vector2 = _find_nearest_safe_tile(ctx, clamped_origin, arena_rect)
+			if in_bfs.is_finite():
+				return in_bfs
+			var center_bfs: Vector2 = _find_nearest_safe_tile(ctx, arena_rect.get_center(), arena_rect)
+			if center_bfs.is_finite():
+				return center_bfs
+			return arena_rect.get_center()
 	# 1. Prefer an active room_anchor interactable if set and safe, else last safe ground, else room spawn, else BFS nearest safe tile
-	if ctx != null and is_instance_valid(ctx):
-		for it_v: Variant in w.world_get_interactables(ctx):
-			if is_instance_valid(it_v) and it_v is Object:
-				var it: Object = it_v as Object
-				if str(it.get("kind")) == "room_anchor" and bool(it.get("active")):
-					var is_cur: bool = (it.get("activated") is bool and bool(it.get("activated"))) \
-						or (it.get("lit") is bool and bool(it.get("lit"))) \
-						or (it.get("powered") is bool and bool(it.get("powered")))
-					if is_cur:
-						var ap: Vector2 = w.get_entity_pos(it)
-						if is_safe_ground(ctx, ap):
-							return ap
+	var anchor_pos: Vector2 = _find_active_anchor_pos(w, ctx, Rect2())
+	if anchor_pos.is_finite():
+		return anchor_pos
 	if w._last_safe_pos != Vector2.ZERO and is_safe_ground(ctx, w._last_safe_pos):
 		return w._last_safe_pos
 	var sp: Vector2 = w.global_position
@@ -242,7 +254,36 @@ static func _find_void_respawn_pos(w: LxWick, world_ctx: Node) -> Vector2:
 	return sp
 
 
-static func _find_nearest_safe_tile(ctx: Node, from_pos: Vector2) -> Vector2:
+static func _get_locked_arena_rect(ctx: Node) -> Rect2:
+	for b: LxEnemyBrain in LxBossHud.get_live_bosses(ctx, 4):
+		if b.has_method("get_arena_rect"):
+			var r_v: Variant = b.call("get_arena_rect")
+			if r_v is Rect2 and (r_v as Rect2).has_area():
+				return r_v as Rect2
+	var b_v: Variant = ctx.get("bounds")
+	if b_v is Rect2 and (b_v as Rect2).has_area():
+		return (b_v as Rect2).grow(-12.0)
+	return Rect2()
+
+
+static func _find_active_anchor_pos(w: LxWick, ctx: Node, restrict_rect: Rect2) -> Vector2:
+	if ctx == null or not is_instance_valid(ctx):
+		return Vector2.INF
+	for it_v: Variant in w.world_get_interactables(ctx):
+		if is_instance_valid(it_v) and it_v is Object:
+			var it: Object = it_v as Object
+			if str(it.get("kind")) == "room_anchor" and bool(it.get("active")):
+				var is_cur: bool = (it.get("activated") is bool and bool(it.get("activated"))) \
+					or (it.get("lit") is bool and bool(it.get("lit"))) \
+					or (it.get("powered") is bool and bool(it.get("powered")))
+				if is_cur:
+					var ap: Vector2 = w.get_entity_pos(it)
+					if (not restrict_rect.has_area() or restrict_rect.has_point(ap)) and is_safe_ground(ctx, ap):
+						return ap
+	return Vector2.INF
+
+
+static func _find_nearest_safe_tile(ctx: Node, from_pos: Vector2, restrict_rect: Rect2 = Rect2()) -> Vector2:
 	if ctx == null or not is_instance_valid(ctx) or not ctx.has_method("tile_at"):
 		return Vector2.INF
 	var w_v: Variant = ctx.get("width")
@@ -253,6 +294,7 @@ static func _find_nearest_safe_tile(ctx: Node, from_pos: Vector2) -> Vector2:
 	var ts: float = float(ts_v) if (ts_v is int or ts_v is float) and float(ts_v) > 0.0 else float(LxMapFormat.DEFAULT_TILE_SIZE)
 	if gw <= 0 or gh <= 0:
 		return Vector2.INF
+	var has_restrict: bool = restrict_rect.has_area()
 	var start_c := Vector2i(clampi(int(floor(from_pos.x / ts)), 0, gw - 1), clampi(int(floor(from_pos.y / ts)), 0, gh - 1))
 	for pass_idx: int in range(2):
 		var allow_solid_walk: bool = pass_idx == 1
@@ -265,13 +307,15 @@ static func _find_nearest_safe_tile(ctx: Node, from_pos: Vector2) -> Vector2:
 			head += 1
 			steps += 1
 			var center := Vector2((float(cur.x) + 0.5) * ts, (float(cur.y) + 0.5) * ts)
-			if is_safe_ground(ctx, center):
+			if (not has_restrict or restrict_rect.has_point(center)) and is_safe_ground(ctx, center):
 				return center
 			for d: Vector2i in [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]:
 				var nb: Vector2i = cur + d
 				if nb.x < 0 or nb.x >= gw or nb.y < 0 or nb.y >= gh or visited.has(nb):
 					continue
 				var nc := Vector2((float(nb.x) + 0.5) * ts, (float(nb.y) + 0.5) * ts)
+				if has_restrict and not restrict_rect.has_point(nc):
+					continue
 				if not allow_solid_walk and LxMapFormat.is_solid_tile(str(ctx.call("tile_at", nc)), true, true):
 					continue
 				visited[nb] = true

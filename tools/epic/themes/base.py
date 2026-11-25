@@ -383,20 +383,41 @@ class ThemePainter:
         elif style in ("herringbone_parquet", "archive_parquet", "cottage_hearth"):
             # Warm interior wood planking / herringbone parquet
             if style == "herringbone_parquet":
-                # 16x16 alternating vertical/horizontal wood parquet blocks
+                # Calm 16x16 alternating vertical/horizontal satin-wood parquet blocks
                 bx = xs // 16
                 by = ys // 16
                 horiz = ((bx + by) & 1) == 0
-                pl_i = np.where(horiz, ys % 4, xs % 4)
-                pl_id = np.where(horiz, ys // 4, xs // 4)
+                pl_i = np.where(horiz, ys % 8, xs % 8)
+                pl_id = np.where(horiz, ys // 8, xs // 8)
                 bh = hash01_grid(bx, by * 7 + pl_id, s.seed + 71)
-                out = ramp_blend(s.floor_ramp, np.clip(nb * 0.45 + bh * 0.45 + warm * 0.12, 0.0, 0.999), bg)
-                out = np.where((pl_i == 0) | ((xs % 16 == 0) & (ys % 2 == 0)) | ((ys % 16 == 0) & (xs % 2 == 0)), seam, out)
-                out = np.where((pl_i == 1) & (bh > 0.55), bevel, out)
-                out = np.where((xs % 16 == 8) & (ys % 16 == 8) & (bh > 0.85), acc_a, out)
+                out = ramp_blend(s.floor_ramp, np.clip(nb * 0.45 + bh * 0.30 + warm * 0.10, 0.0, 0.82), bg)
+                is_seam = ((pl_i == 0) & (bg < 0.46)) | (((xs % 16 == 0) | (ys % 16 == 0)) & (bg < 0.55))
+                out = np.where(is_seam, seam, out)
+                out = np.where((pl_i == 1) & (bh > 0.72) & (bg < 0.30), bevel, out)
+                out = np.where((xs % 16 == 8) & (ys % 16 == 8) & (bh > 0.90), acc_a, out)
+            elif style == "cottage_hearth":
+                # Cozy wide honey-oak cottage planks with calm, low-contrast seams (lets rugs/NPCs pop!)
+                ph = 8
+                pr = ys // ph
+                py = ys % ph
+                butt_off = (pr * 19) % 40
+                px_b = (xs + butt_off) % 40
+                plank_h = hash01_grid((xs + butt_off) // 40, pr, s.seed + 77)
+                # Compress tonal range so planks stay in calm warm mid-tone plum/wine without harsh striping
+                pf = np.clip(nb * 0.42 + plank_h * 0.24 + warm * 0.10, 0.05, 0.68)
+                out = ramp_blend(s.floor_ramp, pf, bg)
+                # Soft Bayer-dithered seams one shade darker (never heavy black horizontal stripes)
+                is_hseam = (py == 0) & (bg < 0.44)
+                is_vseam = (px_b == 0) & (py > 0) & (bg < 0.40)
+                out = np.where(is_hseam | is_vseam, SHADE_IX[out], out)
+                # Restrained warm bevel glint only on select sunlit boards
+                out = np.where((py == 1) & (px_b > 2) & (px_b < 37) & (plank_h > 0.80) & (bg < 0.24), IX["coral"], out)
+                # Tiny muted wood peg near plank butt joints
+                peg = (px_b == 3) & (py == 4) & (plank_h > 0.55)
+                out = np.where(peg, IX["dusk"], out)
             else:
-                # Long horizontal planks with staggered butt joints & pegs
-                ph = 5 if style == "cottage_hearth" else 6
+                # archive_parquet: long horizontal planks with staggered butt joints & pegs
+                ph = 6
                 pr = ys // ph
                 py = ys % ph
                 butt_off = (pr * 19) % 32
@@ -405,13 +426,10 @@ class ThemePainter:
                 out = ramp_blend(s.floor_ramp, np.clip(nb * 0.45 + plank_h * 0.45 + warm * 0.12, 0.0, 0.999), bg)
                 out = np.where((py == 0) | (px_b == 0), seam, out)
                 out = np.where((py == 1) & (px_b > 1) & (plank_h > 0.45), bevel, out)
-                # Subtle brass/wood peg dots near plank joints
                 peg = (px_b == 2) & (py == ph // 2) & (plank_h > 0.40)
                 out = np.where(peg, acc_a, out)
-                if style == "archive_parquet":
-                    # Subtle woven archival runner-trim inlaid every 48px
-                    trim_m = ((ys % 48 == 24) & ((xs % 4) < 2))
-                    out = np.where(trim_m, acc_b, out)
+                trim_m = ((ys % 48 == 24) & ((xs % 4) < 2))
+                out = np.where(trim_m, acc_b, out)
 
         elif style in ("ship_planking", "theatre_stage", "radial_shaft_deck"):
             # Caulked deck / stage / shaft planks
