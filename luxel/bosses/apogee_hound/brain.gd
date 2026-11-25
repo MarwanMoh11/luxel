@@ -79,9 +79,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 136.0), 10.0, last_tell_duration, 0.0, "apricot", "gold")
+			var drops: Array[Vector2] = [clamp_to_arena(tgt)]
 			if phase >= 2:
-				var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-				patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 22.0, 1.0, "coral", "gold")
+				drops.append(_nearest_corner(tgt))
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 22.0, 1.0, "coral", "gold")
 			stage.play_sfx("i5_comet_bark", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir

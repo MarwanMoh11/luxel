@@ -30,8 +30,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 192.0
-	hp = 192.0
+	max_hp = 180.0
+	hp = 180.0
 	body_radius = 9.5
 	move_speed = 46.0
 	stagger_threshold = 22.0
@@ -183,22 +183,22 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 			_stretched_t = 4.2
 			if pos.distance_to(orig) > 2.0:
 				_stretch_dir = (pos - orig).normalized()
-			return dmg if is_pierce else dmg * (0.85 if is_punishable() else 0.58)
+			return dmg * 1.15 if is_pierce else dmg * (1.05 if is_punishable() else 0.76)
 		if _stretched_t > 0.0 or is_punishable():
-			return dmg * (0.75 if is_punishable() else 0.48)
+			return dmg * (1.00 if is_punishable() else 0.70)
 		# Zenith 0-deg dot resists unstretched raw yellow bolts!
 		clank_t = 0.10
-		return dmg * 0.25
+		return dmg * 0.30
 
 	if is_pierce:
-		return dmg
+		return dmg * 1.10
 	if boss_state == BossState.STAGGER:
-		return dmg * 0.90
+		return dmg * 1.20
 	if boss_state == BossState.RECOVER:
-		return dmg * 0.72
+		return dmg * 0.95
 	if _merged_t > 0.0:
-		return dmg * 0.60
-	return dmg * 0.40
+		return dmg * 0.80
+	return dmg * 0.48
 
 
 func _on_phase_enter(new_phase: int) -> void:

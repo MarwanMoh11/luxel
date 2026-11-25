@@ -66,7 +66,7 @@
       "id": "switch_eye_kiln_r9",
       "kind": "switch_eye",
       "pos": [280, 72],
-      "props": { "requires_blue": true, "target_id": "door_kiln_r9_vault" }
+      "props": { "requires_blue": true, "target_id": "door_kiln_r9_vault", "target_ids": ["door_kiln_r9_vault", "clamps_kiln_r9"] }
     },
     {
       "id": "door_kiln_r9_vault",

@@ -36,8 +36,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 66.0
-	hp = 66.0
+	max_hp = 56.0
+	hp = 56.0
 	body_radius = 10.5
 	move_speed = 42.0
 	stagger_threshold = 13.0

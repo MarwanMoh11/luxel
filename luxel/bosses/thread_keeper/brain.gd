@@ -32,8 +32,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 64.0
-	hp = 64.0
+	max_hp = 54.0
+	hp = 54.0
 	body_radius = 10.5
 	move_speed = 44.0
 	stagger_threshold = 10.0
@@ -48,9 +48,9 @@ func _init() -> void:
 func _configure_boss(_spec: Dictionary) -> void:
 	configure_phases([0.50])
 
-	# Attack 1: Warp-Rail Needle Fan (5/7 reflectable silk needles + aimed lane)
+	# Attack 1: Warp-Rail Needle Fan (3/5 reflectable silk needles + aimed lane)
 	register_attack("warp_needle_fan", {
-		"weight": 1.25, "tell": 0.48, "commit": 0.44, "recover": 1.05, "cooldown": 1.2,
+		"weight": 1.25, "tell": 0.54, "commit": 0.44, "recover": 1.10, "cooldown": 1.3,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_pick_rail_near(tgt.y)
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
@@ -59,8 +59,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("tk_loom_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 7 if phase >= 2 else 5
-			var spd: float = 152.0 if phase >= 2 else 134.0
+			var cnt: int = 5 if phase >= 2 else 3
+			var spd: float = 124.0 if phase >= 2 else 112.0
 			patterns.emit_fan(pos, aim_d, cnt, 0.88, spd, {
 				"color": "ice" if phase >= 2 else "gold", "reflectable": true, "source": "silk_needle",
 			})
@@ -110,7 +110,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("tk_loom_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim_d, 3 if phase < 2 else 5, 0.62, 136.0, {"color": "apricot", "source": "warp_spark"})
+			patterns.emit_fan(pos, aim_d, 3 if phase < 2 else 4, 0.62, 118.0, {"color": "apricot", "source": "warp_spark"})
 			stage.shake(0.16)
 			stage.play_sfx("tk_silk_needle", pos),
 	})

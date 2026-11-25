@@ -295,14 +295,14 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		stage.play_sfx("i5b_gravity_curve", pos)
 		return dmg * 1.50
 
-	# Mirror-banked Prism / armor-cracking Beams / Reflected bolts -> 1.35x!
+	# Mirror-banked Prism / armor-cracking Beams / Reflected bolts -> 1.35x in punish, 0.85x outside!
 	if src == LxHit.SOURCE_PRISM or bool(h["cracks_armour"]):
 		curved_hits_landed += 1
 		_periapsis_flash_t = 0.24
-		return dmg * 1.35
+		return dmg * (1.35 if is_punishable() else 0.85)
 
 	# Lantern Throw / Recall / Zip / Sunflare strikes pierce the event horizon rim (curved shots stay king!)
-	return dmg * 0.65
+	return dmg * (0.70 if is_punishable() else 0.45)
 
 
 func _ensure_fields() -> void:

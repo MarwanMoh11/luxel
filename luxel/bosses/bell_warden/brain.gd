@@ -53,8 +53,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island1_boss_p1"
 	music_p2_cue = "island1_boss_p2"
-	max_hp = 62.0
-	hp = 62.0
+	max_hp = 72.0
+	hp = 72.0
 	body_radius = 7.0
 	move_speed = 42.0
 	stagger_threshold = 10.0
@@ -68,7 +68,7 @@ func _init() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	var base_hp: float = 62.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 72.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	boss_id = str(spec.get("boss_id", "bell_warden"))
@@ -338,13 +338,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		if src == LxHit.SOURCE_BOLT:
 			_wear_shield(0.24)
 			stage.play_sfx("boss_armour_glint", pos)
-			return dmg * 0.22
-		return dmg * 0.50
+			return dmg * 0.16
+		return dmg * 0.45
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("boss_armour_chip", pos)
-		return dmg * 0.36
-	return dmg * 0.62
+		return dmg * 0.28
+	return dmg * 0.56
 
 
 func _on_phase_enter(new_phase: int) -> void:

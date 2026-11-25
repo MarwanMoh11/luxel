@@ -113,7 +113,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"weight": 1.20, "tell": 0.54, "commit": 0.36, "recover": 1.02, "cooldown": 1.40,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_ring(pos, 64.0, last_tell_duration, 0.0, "sky", "gold")
-			ground.warn_ring(tgt, 22.0, last_tell_duration + 0.05, 0.5, "apricot", "gold")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.05, 1.0, "apricot", "gold")
 			stage.play_sfx("orrery_bell_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
@@ -152,7 +152,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_sector(pos, _fan_dir.angle() - 0.85, _fan_dir.angle() + 0.85, 110.0, last_tell_duration, 0.0, "gold", "coral")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _fan_dir, 5, 0.98, 128.0, {"color": "gold", "source": "escapement_fan", "field_scale": 1.25, "damage": 0.5})
+			patterns.emit_fan(pos, _fan_dir, 5, 0.98, 128.0, {"color": "gold", "source": "escapement_fan", "field_scale": 1.25, "damage": 1.0})
 			patterns.emit_orbit(pos, 3, 42.0, 2.0 * _rail_spin, 1.9, {"color": "ice", "source": "escapement_gear", "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("eclipse_wave", pos),

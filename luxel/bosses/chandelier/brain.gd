@@ -52,78 +52,78 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Pendulum Wax Sweep (swings wide across ballroom tossing burning wax pools!)
 	register_attack("pendulum_wax_sweep", {
-		"phases": [1, 2], "weight": 1.35, "tell": 0.58, "commit": 0.42, "recover": 1.20, "cooldown": 1.4,
+		"phases": [1, 2], "weight": 1.35, "tell": 0.68, "commit": 0.42, "recover": 1.36, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = aim_d.angle()
 			var pools: Array[Vector2] = _build_wax_arc_targets(tgt).slice(0, 2)
-			patterns.emit_rain(ground, pools, last_tell_duration + 0.10, 15.0, 1.0, "coral", "apricot")
-			ground.warn_lane(pos, clamp_to_arena(pos + aim_d * 135.0), 9.0, last_tell_duration, 0.0, "apricot", "gold")
+			patterns.emit_rain(ground, pools, last_tell_duration + 0.16, 12.0, 1.0, "coral", "apricot")
+			ground.warn_lane(pos, clamp_to_arena(pos + aim_d * 130.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("harbor_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_d, 3, 0.78, 98.0, {"color": "apricot", "source": "wax_sweep"})
+			patterns.emit_fan(pos, aim_d, 3, 0.88, 72.0, {"color": "apricot", "source": "wax_sweep"})
 			stage.shake(0.14)
 			stage.play_sfx("chandelier_wax_splash", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _elapsed: float) -> void:
-			var swing_v := Vector2(cos(_swing_t * 4.2), sin(_swing_t * 2.8) * 0.45) * 68.0 * dt
+			var swing_v := Vector2(cos(_swing_t * 4.2), sin(_swing_t * 2.8) * 0.45) * 56.0 * dt
 			move_boss(swing_v, true),
 	})
 
 	# Attack 2: Spotlight Drop (shrinking ring telegraph -> heavy marble crash -> molten core open!)
 	register_attack("spotlight_drop", {
-		"weight": 1.30, "tell": 0.66, "commit": 0.30, "recover": 1.40, "cooldown": 1.7,
+		"weight": 1.30, "tell": 0.72, "commit": 0.30, "recover": 1.50, "cooldown": 1.95,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var approach: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 2.0 else Vector2.from_angle(facing)
-			_drop_target = clamp_to_arena(tgt - approach * 24.0)
+			_drop_target = clamp_to_arena(tgt - approach * 42.0)
 			facing = approach.angle()
-			ground.warn_ring(_drop_target, DROP_SLAM_R * 0.78, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_ring(_drop_target, DROP_SLAM_R * 0.64, last_tell_duration, 1.0, "coral", "gold")
 			stage.play_sfx("bell_slam_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			pos = _drop_target
 			position = pos.round()
-			_core_open_t = 1.40
+			_core_open_t = 1.50
 			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			var cnt: int = 7 if phase >= 2 else 6
-			patterns.emit_gap_ring(pos, cnt, 92.0 if phase >= 2 else 88.0, aim_a + PI * 0.32, 0.92, {"color": "gold", "source": "chandelier_drop"})
+			var cnt: int = 6 if phase >= 2 else 5
+			patterns.emit_gap_ring(pos, cnt, 74.0 if phase >= 2 else 70.0, aim_a + PI * 0.32, 1.24, {"color": "gold", "source": "chandelier_drop"})
 			stage.shake(0.20)
 			stage.play_sfx("bell_slam", pos),
 	})
 
 	# Attack 3 (P2): Blackout Snuff (dims sconces, conjures grinning candle-mask pillars + coral fan)
 	register_attack("blackout_snuff", {
-		"phases": [2], "weight": 2.60, "tell": 0.62, "commit": 0.38, "recover": 1.25, "cooldown": 1.3,
+		"phases": [2], "weight": 2.40, "tell": 0.74, "commit": 0.38, "recover": 1.48, "cooldown": 2.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_snuff_all_sconces()
-			var pts: Array[Vector2] = _build_wax_arc_targets(tgt).slice(0, 2)
-			patterns.emit_pillars(pts, last_tell_duration, 15.0, 0.40, 1.0, "coral")
+			var pts: Array[Vector2] = _build_wax_arc_targets(tgt).slice(1, 3)
+			patterns.emit_pillars(pts, last_tell_duration + 0.14, 12.0, 0.32, 1.0, "coral")
 			stage.darkness_pulse(0.68, 1.2)
 			stage.play_sfx("harbor_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim_d, 3, 0.80, 98.0, {"color": "coral", "source": "blackout_mask"})
+			patterns.emit_fan(pos, aim_d, 3, 0.90, 72.0, {"color": "coral", "source": "blackout_mask"})
 			stage.shake(0.16)
 			stage.play_sfx("chandelier_blackout", pos),
 	})
 
 	# Attack 4 (P3): Carousel Spin (0 chains left! Blazing wrought-iron fire spiral across the marble!)
 	register_attack("carousel_spin", {
-		"phases": [3], "weight": 2.80, "tell": 0.58, "commit": 0.80, "recover": 1.45, "cooldown": 1.1,
+		"phases": [3], "weight": 2.80, "tell": 0.64, "commit": 0.78, "recover": 1.50, "cooldown": 1.4,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_spin_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			ground.warn_ring(pos, 34.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(pos, 32.0, last_tell_duration, 0.0, "coral", "gold")
 			for arm: int in range(3):
 				var ad: Vector2 = Vector2.from_angle(_spin_ang + float(arm) * (TAU / 3.0))
-				ground.warn_lane(pos, clamp_to_arena(pos + ad * 120.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
+				ground.warn_lane(pos, clamp_to_arena(pos + ad * 115.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("bell_slam_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 3, 94.0, _spin_ang, 0.36, 3, 0.25, {"color": "coral", "source": "carousel_fire", "follow_boss": true})
+			patterns.emit_spiral(pos, 3, 74.0, _spin_ang, 0.38, 3, 0.28, {"color": "coral", "source": "carousel_fire", "follow_boss": true})
 			stage.shake(0.18)
 			stage.play_sfx("chandelier_wax_splash", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _elapsed: float) -> void:
 			var to_t: Vector2 = tgt - pos
-			if to_t.length() > 26.0:
-				move_boss(to_t.normalized() * 38.0 * dt, false)
+			if to_t.length() > 30.0:
+				move_boss(to_t.normalized() * 34.0 * dt, false)
 			facing = wrapf(facing + 7.5 * dt, -PI, PI),
 	})
 
@@ -279,16 +279,18 @@ func _on_phase_enter(new_phase: int) -> void:
 				td["cut"] = true
 		_chains_remaining = tethers.active_count()
 		_snuff_all_sconces()
-		var tl_tx: int = maxi(2, int(arena_rect.position.x / 16.0) + 1)
-		var tl_ty: int = maxi(1, int(arena_rect.position.y / 16.0) + 1)
-		var br_tx: int = maxi(tl_tx + 4, int(arena_rect.end.x / 16.0) - 2)
-		var br_ty: int = maxi(tl_ty + 3, int(arena_rect.end.y / 16.0) - 2)
-		stage.set_tiles(world_ctx, Rect2i(tl_tx, tl_ty, 1, 1), "pit")
-		stage.set_tiles(world_ctx, Rect2i(br_tx, br_ty, 1, 1), "pit")
+		var tl_tx: int = maxi(1, int(arena_rect.position.x / 16.0))
+		var tl_ty: int = maxi(1, int(arena_rect.position.y / 16.0))
+		var br_tx: int = maxi(tl_tx + 4, int(arena_rect.end.x / 16.0) - 1)
+		var br_ty: int = maxi(tl_ty + 3, int(arena_rect.end.y / 16.0) - 1)
+		var wp: Vector2 = _get_wick_pos() if _has_player() else Vector2(-9999.0, -9999.0)
+		if wp.distance_to(Vector2((float(tl_tx) + 0.5) * 16.0, (float(tl_ty) + 0.5) * 16.0)) >= 24.0:
+			stage.set_tiles(world_ctx, Rect2i(tl_tx, tl_ty, 1, 1), "pit")
+		if wp.distance_to(Vector2((float(br_tx) + 0.5) * 16.0, (float(br_ty) + 0.5) * 16.0)) >= 24.0:
+			stage.set_tiles(world_ctx, Rect2i(br_tx, br_ty, 1, 1), "pit")
 		adds.queue_wave([
-			{"kind": "snuffer_acolyte", "pos": c + Vector2(-64.0, -28.0)},
-			{"kind": "snuffer_acolyte", "pos": c + Vector2(64.0, 28.0)},
-		], 0.72, 2)
+			{"kind": "snuffer_acolyte", "pos": c + Vector2(-72.0, -32.0), "hp_scale": 0.55},
+		], 0.85, 1)
 		stage.darkness_pulse(0.76, 1.4)
 		stage.shake(0.24)
 		stage.play_sfx("chandelier_chain_snap", pos)
@@ -306,10 +308,10 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	# While high on chains and NOT open/dropped, iron cage cushions bolt chip slightly;
 	# dropped molten wax heart takes 1.35x burst damage!
 	if _core_open_t > 0.0 or boss_state == BossState.STAGGER or boss_state == BossState.RECOVER:
-		return dmg * 1.25
+		return dmg * 1.38
 	var h: Dictionary = _read_hit(hit)
 	if _chains_remaining >= 3 and str(h["source"]) == LxHit.SOURCE_BOLT and not bool(h["pierce"]):
-		return dmg * 0.75
+		return dmg * 0.85
 	return dmg
 
 

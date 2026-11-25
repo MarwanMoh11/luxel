@@ -44,11 +44,33 @@ func get_interact_prompt() -> String:
 	return "ISL6_PROMPT_CLAMPS" if active else ""
 
 
+func on_signal(_from_id: String, is_on: bool) -> void:
+	if not active or not is_on or not grant_blessing:
+		return
+	if Lx.player is LxWick and is_instance_valid(Lx.player) and Lx.state != null:
+		var w: LxWick = Lx.player as LxWick
+		var emax: float = Lx.state.get_effective_ember_max()
+		if w.ember < emax:
+			w.ember = emax
+			_emit_sfx("ember_pickup")
+	queue_redraw()
+
+
 func interact(_actor: Node = null) -> bool:
 	if not active:
 		return false
 	_sync_power()
 	if not _both_free():
+		if grant_blessing and Lx.player is LxWick and is_instance_valid(Lx.player) and Lx.state != null:
+			var w_ref: LxWick = Lx.player as LxWick
+			var emax_ref: float = Lx.state.get_effective_ember_max()
+			if w_ref.ember < emax_ref:
+				w_ref.ember = emax_ref
+				_emit_sfx("ember_pickup")
+				if Lx.events != null and LxStrings.has_id("ISL6_KILN_CLAMP_WAIT"):
+					Lx.events.narration_requested.emit("ISL6_KILN_CLAMP_WAIT", "narration", 3.0)
+				queue_redraw()
+				return true
 		_emit_sfx("shield_clang")
 		if Lx.events != null and LxStrings.has_id("ISL6_KILN_CLAMP_WAIT"):
 			Lx.events.narration_requested.emit("ISL6_KILN_CLAMP_WAIT", "narration", 3.0)

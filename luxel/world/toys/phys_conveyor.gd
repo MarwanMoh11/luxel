@@ -128,7 +128,7 @@ func tick(dt: float) -> void:
 			if e_v is Node2D and is_instance_valid(e_v as Object):
 				var e: Node2D = e_v as Node2D
 				if rect.has_point(e.global_position) and e.has_method("is_alive") and bool(e.call("is_alive")):
-					if bool(e.get("is_flying")):
+					if (e.has_method("is_flying") and bool(e.call("is_flying"))):
 						continue
 					var nxt: Vector2 = e.global_position + d * eff_spd * 0.7 * dt
 					if region.has_method("collide"):

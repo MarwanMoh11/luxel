@@ -57,8 +57,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl8_boss_minor_p1"
 	music_p2_cue = "isl8_boss_minor_p2"
-	max_hp = 220.0
-	hp = 220.0
+	max_hp = 148.0
+	hp = 148.0
 	body_radius = 13.0
 	move_speed = 42.0
 	stagger_threshold = 22.0
@@ -137,12 +137,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 			facing = aim.angle()
 			for ang_off: float in [-0.42, 0.0, 0.42]:
 				var d_v: Vector2 = aim.rotated(ang_off)
-				ground.warn_lane(pos, clamp_to_arena(pos + d_v * 155.0), 8.0, last_tell_duration, 1.0, "jade", "lime", 1.1)
+				ground.warn_lane(pos, clamp_to_arena(pos + d_v * 155.0), 8.0, last_tell_duration, 1.0, "jade", "lime", 0.55)
 			stage.play_sfx("page_turn_heavy", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim, 5, 1.05, 134.0, {"color": "jade", "source": "briar_thorn"})
-			patterns.emit_pillars([clamp_to_arena(tgt), clamp_to_arena(tgt.lerp(pos, 0.42))], 0.52, 15.0, 0.55, 1.0, "lime")
+			patterns.emit_fan(pos, aim, 5, 1.05, 128.0, {"color": "jade", "source": "briar_thorn"})
+			patterns.emit_pillars([clamp_to_arena(tgt.lerp(pos, 0.45)), clamp_to_arena(pos + aim.rotated(0.65) * 64.0)], 0.58, 14.0, 0.45, 1.0, "lime")
 			stage.shake(0.18)
 			stage.play_sfx("thorn_burst", pos),
 	})
@@ -158,10 +158,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("wing_gale", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_main: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim_main, 3, 0.52, 146.0, {"color": "lime", "source": "abbess_gust"})
+			patterns.emit_fan(pos, aim_main, 3, 0.52, 122.0, {"color": "lime", "source": "abbess_gust"})
 			if _echo_silenced_t <= 0.0:
 				var aim_e: Vector2 = (tgt - _echo_pos).normalized() if tgt.distance_to(_echo_pos) > 1.0 else Vector2.RIGHT
-				patterns.emit_fan(_echo_pos, aim_e, 3, 0.48, 138.0, {"color": "ice", "source": "echo_clone"})
+				patterns.emit_fan(_echo_pos, aim_e, 3, 0.48, 114.0, {"color": "ice", "source": "echo_clone"})
 			stage.shake(0.16)
 			stage.play_sfx("gust_whoosh", pos),
 	})
@@ -173,13 +173,13 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var ang: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 			for k: int in range(4):
 				var d_v: Vector2 = Vector2.from_angle(ang + float(k) * (PI * 0.5))
-				ground.warn_lane(pos, clamp_to_arena(pos + d_v * 165.0), 8.5, last_tell_duration, 1.0, "coral", "gold", 1.2)
+				ground.warn_lane(pos, clamp_to_arena(pos + d_v * 165.0), 8.5, last_tell_duration, 1.0, "coral", "gold", 0.55)
 			stage.play_sfx("forge_gust", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_orbit(pos, 5, 48.0, 2.1, 2.2, {"color": "sky", "source": "star_orbit"})
-			patterns.emit_boomerang(pos, aim.rotated(0.32), 146.0, 0.64, 0.80, {"color": "gold", "source": "star_shard"})
-			patterns.emit_boomerang(pos, aim.rotated(-0.32), 146.0, 0.64, -0.80, {"color": "coral", "source": "kiln_shard"})
+			patterns.emit_orbit(pos, 4, 46.0, 1.9, 2.0, {"color": "sky", "source": "star_orbit"})
+			patterns.emit_boomerang(pos, aim.rotated(0.32), 124.0, 0.64, 0.80, {"color": "gold", "source": "star_shard"})
+			patterns.emit_boomerang(pos, aim.rotated(-0.32), 124.0, 0.64, -0.80, {"color": "coral", "source": "kiln_shard"})
 			stage.shake(0.22)
 			stage.play_sfx("forge_gust", pos),
 	})
@@ -190,26 +190,26 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var to_t: Vector2 = tgt - pos
 			var d_v: Vector2 = to_t.normalized() if to_t.length() > 1.0 else Vector2.LEFT
-			_feint_dest = clamp_to_arena(tgt - d_v * 14.0)
+			_feint_dest = clamp_to_arena(tgt - d_v * 18.0)
 			_feint_hit = false
-			ground.warn_lane(pos, _feint_dest, 12.0, last_tell_duration, 0.0, "plum", "rose")
-			ground.warn_ring(_feint_dest, 30.0, last_tell_duration + 0.08, 1.0, "rose", "cream")
+			ground.warn_lane(pos, _feint_dest, 11.0, last_tell_duration, 0.0, "plum", "rose")
+			ground.warn_ring(_feint_dest, 24.0, last_tell_duration + 0.08, 1.0, "rose", "cream")
 			stage.play_sfx("hollow_dash", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.shake(0.18)
 			stage.play_sfx("zip_streak", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, el: float) -> void:
 			if el < 0.28:
-				var step_v: Vector2 = (_feint_dest - pos).limit_length(320.0 * dt)
+				var step_v: Vector2 = (_feint_dest - pos).limit_length(280.0 * dt)
 				move_boss(step_v, true)
-				if not _feint_hit and pos.distance_to(tgt) <= 22.0:
+				if not _feint_hit and pos.distance_to(tgt) <= 20.0:
 					_feint_hit = true
 					var push: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.5 else Vector2.LEFT
 					emit_boss_damage(push, 1.0, "hollow_zip_feint", pos, true)
 			elif not _feint_hit:
 				_feint_hit = true
 				var aim_f: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-				patterns.emit_fan(pos, aim_f, 5, 0.88, 152.0, {"color": "ice", "source": "hollow_ink"})
+				patterns.emit_fan(pos, aim_f, 3, 0.82, 126.0, {"color": "ice", "source": "hollow_ink"})
 	})
 
 
@@ -245,10 +245,12 @@ func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
 		# Spawn central Dusk Bell K to silence the Ch.2 Echo Clone & stagger Tome!
 		props.spawn_bell(c, _on_dusk_bell_rung, "archivist_bell")
-		var cx_t: int = int(c.x / 16.0)
-		var cy_t: int = int(c.y / 16.0)
-		stage.set_tiles(world_ctx, Rect2i(maxi(2, cx_t - 5), maxi(2, cy_t - 2), 1, 1), "pit")
-		stage.set_tiles(world_ctx, Rect2i(cx_t + 4, cy_t + 2, 1, 1), "pit")
+		var tx_l: int = int(floorf((arena_rect.position.x + 8.0) / 16.0))
+		var tx_r: int = int(floorf((arena_rect.end.x - 20.0) / 16.0))
+		var ty_t: int = int(floorf((arena_rect.position.y + 8.0) / 16.0))
+		var ty_b: int = int(floorf((arena_rect.end.y - 20.0) / 16.0))
+		stage.set_tiles(world_ctx, Rect2i(tx_l, ty_t, 1, 1), "pit")
+		stage.set_tiles(world_ctx, Rect2i(tx_r, ty_b, 1, 1), "pit")
 		stage.darkness_pulse(0.62, 1.0)
 		stage.shake(0.24)
 	elif new_phase == 3:

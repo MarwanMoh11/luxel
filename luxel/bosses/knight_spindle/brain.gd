@@ -30,8 +30,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 56.0
-	hp = 56.0
+	max_hp = 48.0
+	hp = 48.0
 	body_radius = 9.5
 	move_speed = 48.0
 	stagger_threshold = 10.0
@@ -125,7 +125,7 @@ func _on_reset_encounter() -> void:
 	_tether_active = false
 	_swing_hit = false
 	_verdict_v1 = str(Lx.vars.get_var("island:3", "court_v1", "none")) if Lx.vars != null else "none"
-	punish_dmg_mult = 1.45 if _verdict_v1 == "fire" else 1.25
+	punish_dmg_mult = 1.45 if _verdict_v1 == "fire" else 1.35
 	move_speed = 60.0 if _verdict_v1 == "fire" else 52.0
 	_build_corner_spools()
 	_apply_verdict_v1_terrain()

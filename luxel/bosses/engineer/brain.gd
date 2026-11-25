@@ -51,6 +51,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var ang: float = _aim_dir.angle()
 			ground.warn_sector(pos, ang - 0.78, ang + 0.78, 74.0, last_tell_duration, 0.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "coral", "gold")
 			stage.play_sfx("furnace_draw", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var cnt: int = 7 if phase >= 2 else 5
@@ -243,15 +244,19 @@ func _drone_pos() -> Vector2:
 
 func _pick_steam_lane_ys(tgt: Vector2) -> Array[float]:
 	var r: Rect2 = arena_rect
-	var y_mid: float = clampf(tgt.y, r.position.y + 24.0, r.end.y - 24.0)
+	var y_tgt: float = clampf(tgt.y, r.position.y + 8.0, r.end.y - 8.0)
 	var y_top: float = r.position.y + 16.0
 	var y_bot: float = r.end.y - 16.0
-	# Ensure wide safe corridors between all 3 steam lanes
-	if absf(y_mid - y_top) < 30.0:
-		y_mid = r.get_center().y
-	elif absf(y_bot - y_mid) < 30.0:
-		y_mid = r.get_center().y
-	return [y_top, y_mid, y_bot]
+	var out: Array[float] = [y_tgt]
+	for cand: float in [y_top, r.get_center().y, y_bot]:
+		var far: bool = true
+		for ex: float in out:
+			if absf(cand - ex) < 34.0:
+				far = false
+				break
+		if far and out.size() < 3:
+			out.append(cand)
+	return out
 
 
 func _build_overpressure_drops(tgt: Vector2) -> Array[Vector2]:

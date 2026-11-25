@@ -35,8 +35,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 68.0
-	hp = 68.0
+	max_hp = 64.0
+	hp = 64.0
 	body_radius = 11.0
 	move_speed = 38.0
 	stagger_threshold = 13.0
@@ -83,7 +83,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_ring(pos, 58.0, last_tell_duration, 1.0, "coral", "gold")
 			var drops: Array[Vector2] = _build_corner_drops(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 22.0, 1.0, "apricot", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 26.0, 1.0, "apricot", "gold")
 			stage.play_sfx("golem_stomp", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
@@ -234,7 +234,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var from_dir: Vector2 = (hit.origin - pos).normalized() if hit.origin.distance_to(pos) > 0.1 else -hit.dir
 	if from_dir.dot(fwd) > 0.35 and hit.source == LxHit.SOURCE_BOLT and not hit.pierce and not hit.cracks_armour:
 		clank_t = 0.10
-		return dmg * 0.78
+		return dmg * 0.58
 	return dmg
 
 
@@ -257,7 +257,9 @@ func _downhill_mult(dir: Vector2) -> float:
 
 
 func _build_corner_drops(tgt: Vector2) -> Array[Vector2]:
-	var out: Array[Vector2] = [clamp_to_arena(tgt)]
+	var reach: Rect2 = arena_rect.grow(10.0)
+	var tgt_clamped := Vector2(clampf(tgt.x, reach.position.x, reach.end.x), clampf(tgt.y, reach.position.y, reach.end.y))
+	var out: Array[Vector2] = [tgt_clamped]
 	var inset: Rect2 = arena_rect.grow(-16.0)
 	var corners: Array[Vector2] = [
 		inset.position, Vector2(inset.end.x, inset.position.y),

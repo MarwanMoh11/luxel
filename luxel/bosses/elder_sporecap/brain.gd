@@ -34,8 +34,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 37.0
-	hp = 37.0
+	max_hp = 42.0
+	hp = 42.0
 	body_radius = 8.5
 	move_speed = 36.0
 	stagger_threshold = 10.5
@@ -258,7 +258,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if _clank_sfx_cd <= 0.0:
 		_clank_sfx_cd = 0.28
 		stage.play_sfx("bramble_thorn_block", pos)
-	return dmg * 0.34
+	return dmg * 0.26
 
 
 func _on_death_start() -> void:

@@ -28,8 +28,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 136.0
-	hp = 136.0
+	max_hp = 68.0
+	hp = 68.0
 	body_radius = 11.5
 	move_speed = 44.0
 	stagger_threshold = 13.0
@@ -57,7 +57,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_spin_live_mirror(m_pos)
 			if phase >= 2:
 				_spin_live_mirror(_pick_mirror_spot(arena_rect.get_center() * 2.0 - m_pos))
-			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.85, 132.0, {"color": "apricot", "source": "weaver_glass_shard"})
+			patterns.emit_fan(pos, _aim_dir, 4 if phase >= 2 else 3, 0.85, 118.0, {"color": "apricot", "source": "weaver_glass_shard"})
 			stage.play_sfx("mirror_ping", m_pos)
 			stage.shake(0.14),
 	})
@@ -78,8 +78,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			for deg: float in [-26.0, 0.0, 26.0]:
 				var d: Vector2 = Vector2.from_angle(base_a + deg_to_rad(deg))
 				var mid: Vector2 = clamp_to_arena(pos + d * 64.0)
-				ground.add_hazard_circle(mid, 14.0, 2.6, 1.0, "coral", true)
-			patterns.emit_fan(pos, Vector2.from_angle(base_a), 3, 0.90, 128.0, {"color": "gold", "source": "weaver_thread"})
+				ground.add_hazard_circle(mid, 11.0, 1.35, 1.0, "coral", true)
+			patterns.emit_fan(pos, Vector2.from_angle(base_a), 3, 0.90, 116.0, {"color": "gold", "source": "weaver_thread"})
 			stage.play_sfx("magma_crack", pos)
 			stage.shake(0.14),
 	})
@@ -93,7 +93,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("weaver_spin_mirror", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
-			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 122.0, gap_a, 0.72, {"color": "apricot", "source": "weaver_droplet"})
+			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 108.0, gap_a, 0.86, {"color": "apricot", "source": "weaver_droplet"})
 			stage.play_sfx("prism_bounce", pos),
 	})
 

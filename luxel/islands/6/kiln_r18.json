@@ -38,34 +38,46 @@
       "props": { "zone": "kiln_r18", "name_key": "ISL6_KILN_R18" }
     },
     {
-      "id": "anvil_kiln_r18_cycle",
+      "id": "anvil_r18_skip",
       "kind": "temper_anvil",
-      "pos": [288, 136],
-      "props": { "mode": "cycle" }
+      "pos": [168, 164],
+      "props": { "mode": "skip" }
+    },
+    {
+      "id": "anvil_r18_scatter",
+      "kind": "temper_anvil",
+      "pos": [224, 172],
+      "props": { "mode": "scatter" }
+    },
+    {
+      "id": "anvil_r18_lance",
+      "kind": "temper_anvil",
+      "pos": [280, 164],
+      "props": { "mode": "lance" }
     },
     {
       "id": "lore_kiln_mother",
       "kind": "lore_stone",
-      "pos": [160, 136],
+      "pos": [128, 144],
       "props": { "string_id": "ISL6_LORE_MOTHER", "icon": "flame" }
     },
     {
       "id": "prac_r18_skip",
       "kind": "kiln_practice_targets",
       "pos": [168, 88],
-      "props": { "temper": "skip", "target_id": "gate_r18_mastery" }
+      "props": { "temper": "skip", "target_id": "gate_r18_mastery", "persist": true }
     },
     {
       "id": "prac_r18_scat",
       "kind": "kiln_practice_targets",
       "pos": [224, 72],
-      "props": { "temper": "scatter", "target_id": "gate_r18_mastery" }
+      "props": { "temper": "scatter", "target_id": "gate_r18_mastery", "persist": true }
     },
     {
       "id": "prac_r18_lance",
       "kind": "kiln_practice_targets",
       "pos": [280, 88],
-      "props": { "temper": "lance", "target_id": "gate_r18_mastery" }
+      "props": { "temper": "lance", "target_id": "gate_r18_mastery", "persist": true }
     },
     {
       "id": "gate_r18_mastery",
@@ -73,10 +85,10 @@
       "pos": [224, 52],
       "props": { "op": "all", "inputs": ["prac_r18_skip", "prac_r18_scat", "prac_r18_lance"], "persist": true }
     },
-    { "id": "lamp_kr18_1", "kind": "road_lamp", "pos": [184, 184], "props": { "lit": true } },
-    { "id": "lamp_kr18_2", "kind": "road_lamp", "pos": [264, 184], "props": { "lit": true } },
-    { "id": "lamp_kr18_3", "kind": "road_lamp", "pos": [168, 112], "props": { "lit": true } },
-    { "id": "lamp_kr18_4", "kind": "road_lamp", "pos": [280, 112], "props": { "lit": true } }
+    { "id": "lamp_kr18_1", "kind": "road_lamp", "pos": [168, 200], "props": { "lit": true } },
+    { "id": "lamp_kr18_2", "kind": "road_lamp", "pos": [280, 200], "props": { "lit": true } },
+    { "id": "lamp_kr18_3", "kind": "road_lamp", "pos": [128, 104], "props": { "lit": true } },
+    { "id": "lamp_kr18_4", "kind": "road_lamp", "pos": [320, 104], "props": { "lit": true } }
   ],
   "decor": [
     { "kind": "circle", "pos": [224, 136], "radius": 54, "style": "ritual" },
@@ -128,15 +140,21 @@
     "solution": [
       { "op": "goto", "to": [224, 152], "tol": 6.0 },
       { "op": "interact", "target": "ws_kiln_upper" },
-      { "op": "goto", "to": [160, 152], "tol": 6.0 },
+      { "op": "goto", "to": [144, 144], "tol": 6.0 },
       { "op": "interact", "target": "lore_kiln_mother" },
-      { "op": "goto", "to": [288, 152], "tol": 6.0 },
-      { "op": "interact", "target": "anvil_kiln_r18_cycle" },
-      { "op": "shoot", "target": "prac_r18_skip", "wait_hit": 0.45 },
-      { "op": "interact", "target": "anvil_kiln_r18_cycle" },
-      { "op": "shoot", "target": "prac_r18_scat", "wait_hit": 0.45 },
-      { "op": "interact", "target": "anvil_kiln_r18_cycle" },
-      { "op": "shoot", "target": "prac_r18_lance", "wait_hit": 0.55 },
+      { "op": "goto", "to": [168, 148], "tol": 5.0 },
+      { "op": "interact", "target": "anvil_r18_skip" },
+      { "op": "goto", "to": [168, 112], "tol": 5.0 },
+      { "op": "shoot", "target": "prac_r18_skip", "wait_hit": 0.55 },
+      { "op": "goto", "to": [224, 156], "tol": 5.0 },
+      { "op": "interact", "target": "anvil_r18_scatter" },
+      { "op": "goto", "to": [224, 112], "tol": 5.0 },
+      { "op": "shoot", "target": "prac_r18_scat", "wait_hit": 0.55 },
+      { "op": "goto", "to": [280, 148], "tol": 5.0 },
+      { "op": "interact", "target": "anvil_r18_lance" },
+      { "op": "goto", "to": [280, 112], "tol": 5.0 },
+      { "op": "shoot", "target": "prac_r18_lance", "wait_hit": 0.65 },
+      { "op": "wait_until", "target": "gate_r18_mastery", "prop": "powered", "value": true, "timeout": 3.0 },
       { "op": "expect", "flag": "kiln_r18_attuned" },
       { "op": "expect_exit", "exit": "exit_kiln_r18_north" }
     ]

@@ -39,6 +39,7 @@ var move_speed: float = 42.0
 
 var arena_rect: Rect2 = Rect2()
 var engaged: bool = false
+var _wick_entered_arena: bool = false
 var active_attack_id: String = ""
 var last_attack_id: String = ""
 var _commit_elapsed: float = 0.0
@@ -147,7 +148,7 @@ func reset_encounter() -> void:
 	_ensure_kit()
 	hp = max_hp; phase = 1; pos = home; position = pos.round()
 	knock = Vector2.ZERO; flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0
-	cooldown = 0.25; stagger_meter = 0.0; stagger_immunity_t = 0.0; engaged = false
+	cooldown = 0.25; stagger_meter = 0.0; stagger_immunity_t = 0.0; engaged = false; _wick_entered_arena = false
 	active_attack_id = ""; last_attack_id = ""
 	_commit_elapsed = 0.0; _commit_hit_done = false
 	_death_emitted = false; _reward_granted = false; _had_telegraph_for_commit = false
@@ -212,6 +213,20 @@ func _step_brain(dt: float) -> void:
 	if not engaged:
 		if _has_player() and arena_rect.has_point(target): engage()
 		return
+	if arena_rect.has_area() and is_instance_valid(Lx.player) and Lx.player is LxWick:
+		var pw: LxWick = Lx.player as LxWick
+		if not pw.dead:
+			var wp_real: Vector2 = pw.global_position
+			if arena_rect.has_point(wp_real):
+				_wick_entered_arena = true
+			elif _wick_entered_arena:
+				var bound: Rect2 = arena_rect.grow(-6.0)
+				if bound.has_area():
+					var clamped: Vector2 = Vector2(clampf(wp_real.x, bound.position.x, bound.end.x), clampf(wp_real.y, bound.position.y, bound.end.y))
+					if LxWickCombat.is_safe_ground(world_ctx, clamped):
+						pw.global_position = clamped
+						pw.last_pos = clamped
+						target = clamped
 
 	stage.tick(dt); ground.tick(dt); patterns.tick(dt, world_ctx, props)
 	props.tick(dt); tethers.tick(dt); adds.tick(dt, world_ctx); segments.tick(dt, pos, facing)

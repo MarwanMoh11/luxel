@@ -36,14 +36,14 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl8_boss_minor_p1"
 	music_p2_cue = "isl8_boss_minor_p2"
-	max_hp = 215.0
-	hp = 215.0
+	max_hp = 165.0
+	hp = 165.0
 	body_radius = 12.5
 	move_speed = 40.0
 	stagger_threshold = 22.0
 	stagger_duration = 1.95
 	post_stagger_immunity = 4.0
-	punish_dmg_mult = 1.38
+	punish_dmg_mult = 1.48
 	post_recover_cd = 0.30
 	intro_duration = 0.65
 	phase_shift_duration = 0.80
@@ -285,7 +285,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if from_front and not bypass and not is_punishable():
 		clank_t = 0.10
 		stage.play_sfx("warden_clank", pos)
-		return out_dmg * 0.62
+		return out_dmg * 0.70
 	return out_dmg
 
 

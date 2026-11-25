@@ -32,12 +32,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 92.0
-	hp = 92.0
+	max_hp = 78.0
+	hp = 78.0
 	body_radius = 13.0
 	move_speed = 28.0
 	stagger_threshold = 17.0
 	stagger_duration = 2.0
+	punish_dmg_mult = 1.45
 	post_recover_cd = 0.30
 	intro_duration = 0.55
 	death_duration = 2.0
@@ -287,10 +288,10 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if phase == 1 and _alive_valve_count() > 0 and _cage_dropped_t <= 0.0:
 		if not hit.cracks_armour and hit.source != LxHit.SOURCE_SUNFLARE:
 			clank_t = 0.08
-			return dmg * 0.78
+			return dmg * 0.86
 	elif phase >= 2 and _slime_bonk_flash_t <= 0.0:
 		if hit.source == LxHit.SOURCE_BOLT and not hit.pierce and not hit.cracks_armour:
-			return dmg * 0.82
+			return dmg * 0.90
 	return dmg
 
 

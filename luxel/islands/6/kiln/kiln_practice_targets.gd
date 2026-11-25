@@ -62,6 +62,12 @@ func tick(dt: float) -> void:
 		queue_redraw()
 
 
+func load_state(d: Dictionary) -> void:
+	super.load_state(d)
+	_lit_once = powered
+	queue_redraw()
+
+
 func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO

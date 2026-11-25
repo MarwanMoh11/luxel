@@ -133,8 +133,8 @@
       "id": "coupler_r1_south",
       "kind": "car_coupler",
       "pos": [
-        120,
-        216
+        128,
+        224
       ],
       "props": {
         "lock_type": "bank",
@@ -341,7 +341,7 @@
       "sheet": "theme_ember_express",
       "prop": "plush_cabin_booth",
       "pos": [
-        136,
+        156,
         176
       ],
       "layer": "sort",
@@ -470,16 +470,16 @@
       {
         "op": "goto",
         "to": [
-          192,
-          216
+          128,
+          176
         ],
         "tol": 3.0
       },
       {
         "op": "shoot",
         "target": [
-          156,
-          240
+          144,
+          200
         ],
         "wait_hit": 0.7
       },

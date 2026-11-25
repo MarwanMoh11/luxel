@@ -67,7 +67,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(pos, pos + _dive_dir * 124.0, 11.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("figurehead_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _dive_dir, 3, 0.72, 132.0, {"color": "apricot", "source": "figurehead_splinter", "field_scale": 0.6})
+			patterns.emit_fan(pos, _dive_dir, 3, 0.72, 114.0, {"color": "apricot", "source": "figurehead_splinter", "field_scale": 0.6})
 			stage.shake(0.16)
 			stage.play_sfx("wood_splinter", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
@@ -91,8 +91,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 				stage.shake(0.24)
 				stage.play_sfx("wood_splinter", pos)
 				return
-			patterns.emit_gap_ring(pos, 8, 108.0, _aim_dir.angle() + PI * 0.55, 0.92, {"color": "ice", "source": "figurehead_chain_ring", "field_scale": 0.5})
-			patterns.emit_fan(pos, _aim_dir, 3, 0.78, 124.0, {"color": "gold", "source": "figurehead_whip", "field_scale": 0.6})
+			patterns.emit_gap_ring(pos, 8, 94.0, _aim_dir.angle() + PI * 0.55, 1.08, {"color": "ice", "source": "figurehead_chain_ring", "field_scale": 0.5})
+			patterns.emit_fan(pos, _aim_dir, 3, 0.78, 110.0, {"color": "gold", "source": "figurehead_whip", "field_scale": 0.6})
 			stage.shake(0.18)
 			stage.play_sfx("anchor_clang", pos),
 	})
@@ -126,7 +126,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			patterns.emit_lane(pos, _aim_dir, 3, 120.0, 0.12, {"color": "coral", "source": "figurehead_kegs", "field_scale": 0.9})
 			if phase >= 3:
-				patterns.emit_expanding_square(pos, 2, 100.0, anim_t, 1, {"color": "apricot", "source": "figurehead_sq", "field_scale": 0.5})
+				patterns.emit_expanding_square(pos, 2, 86.0, anim_t, 1, {"color": "apricot", "source": "figurehead_sq", "field_scale": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("mine_blast", pos),
 	})

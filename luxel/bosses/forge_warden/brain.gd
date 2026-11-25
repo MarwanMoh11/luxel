@@ -47,8 +47,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 78.0
-	hp = 78.0
+	max_hp = 84.0
+	hp = 84.0
 	body_radius = 9.0
 	move_speed = 34.0
 	stagger_threshold = 13.5
@@ -73,7 +73,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_stomp_progress = 0.0
 			_stomp_hit = false
 			ground.warn_ring(pos, FORGE_RING_MAX_R, last_tell_duration, 0.0, "coral", "gold")
-			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 0.5, "apricot", "coral")
+			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.06, 1.0, "apricot", "coral")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_stomp_progress = 0.0
@@ -93,7 +93,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_rush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _rush_dir.angle()
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 0.5, "coral", "gold")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 1.0, "coral", "gold")
 			ground.warn_lane(pos, pos + _rush_dir * 58.0, 8.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
@@ -224,7 +224,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		stage.play_sfx("boss_armour_chip", pos)
 	if armour_intact:
 		_wear_armour(0.12)
-	return dmg * (0.24 if armour_intact else 0.34)
+	return dmg * (0.18 if armour_intact else 0.28)
 
 
 func _wear_armour(amt: float) -> void:

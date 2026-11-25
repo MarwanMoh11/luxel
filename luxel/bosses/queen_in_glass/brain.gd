@@ -27,8 +27,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island7_boss_p1"
 	music_p2_cue = "island7_boss_p2"
-	max_hp = 192.0
-	hp = 192.0
+	max_hp = 204.0
+	hp = 204.0
 	body_radius = 11.0
 	move_speed = 34.0
 	stagger_threshold = 24.0
@@ -190,10 +190,10 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if _is_black_world():
 		return dmg * 1.15
 	if is_punishable():
-		return dmg * 0.78
+		return dmg * 0.52
 	if is_flank_or_open or is_heavy_pierce:
-		return dmg * 0.35
-	return dmg * 0.20
+		return dmg * 0.24
+	return dmg * 0.16
 
 
 func _on_phase_enter(new_phase: int) -> void:

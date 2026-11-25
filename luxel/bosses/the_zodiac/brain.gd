@@ -194,21 +194,21 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, elapsed: float) -> void:
 			_serpent_t += dt * 9.0
 			var perp: Vector2 = _aim_dir.orthogonal()
-			var step_v: Vector2 = (_aim_dir * 205.0 + perp * sin(_serpent_t) * 95.0) * dt
+			var step_v: Vector2 = (_aim_dir * 182.0 + perp * sin(_serpent_t) * 84.0) * dt
 			move_boss(step_v, true)
 			check_contact_damage(body_radius + 6.0, _aim_dir, 1.0, "serpent_slither")
-			if int(elapsed * 5.0) != int((elapsed - dt) * 5.0):
-				ground.add_hazard_circle(pos, 10.0, 1.15, 1.0, "coral"),
+			if int(elapsed * 4.0) != int((elapsed - dt) * 4.0):
+				ground.add_hazard_circle(pos, 9.0, 0.72, 1.0, "coral"),
 	})
 
 	register_attack("venom_spiral", {
-		"phases": [4], "weight": 1.55, "tell": 0.58, "commit": 0.44, "recover": 1.02, "cooldown": 1.00,
+		"phases": [4], "weight": 1.55, "tell": 0.60, "commit": 0.44, "recover": 1.08, "cooldown": 1.05,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(clamp_to_arena(tgt), 23.0, last_tell_duration, 1.0, "coral", "ice")
+			ground.warn_ring(clamp_to_arena(tgt), 21.0, last_tell_duration, 1.0, "coral", "ice")
 			stage.play_sfx("zodiac_chord", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 4, 122.0, (tgt - pos).angle(), 0.42, 3, 0.14, {"color": "coral", "source": "serpent_venom"})
-			patterns.emit_expanding_square(pos, 3, 104.0, anim_t, 1, {"color": "gold", "source": "serpent_star"})
+			patterns.emit_spiral(pos, 4, 108.0, (tgt - pos).angle(), 0.42, 2, 0.16, {"color": "coral", "source": "serpent_venom"})
+			patterns.emit_expanding_square(pos, 2, 94.0, anim_t, 1, {"color": "gold", "source": "serpent_star"})
 			stage.shake(0.18)
 			stage.play_sfx("eclipse_wave", pos),
 	})
@@ -252,29 +252,36 @@ func _redraw_constellation_arena(body_idx: int) -> void:
 	_rebuild_constellation_geometry(body_idx)
 	var ts: float = 16.0
 	var c: Vector2 = arena_rect.get_center()
-	var tx_l: int = int(floorf((arena_rect.position.x + 8.0) / ts))
-	var tx_r: int = int(floorf((arena_rect.end.x - 20.0) / ts))
+	var tx_l: int = int(floorf((arena_rect.position.x + 24.0) / ts))
+	var tx_r: int = int(floorf((arena_rect.end.x - 36.0) / ts))
 	var tx_c: int = int(floorf(c.x / ts))
-	var ty_t: int = int(floorf((arena_rect.position.y + 8.0) / ts))
-	var ty_b: int = int(floorf((arena_rect.end.y - 20.0) / ts))
+	var ty_t: int = int(floorf((arena_rect.position.y + 24.0) / ts))
+	var ty_b: int = int(floorf((arena_rect.end.y - 36.0) / ts))
 	var ty_m: int = int(floorf(c.y / ts))
 	match body_idx:
 		1:
 			# THE RAM (0 deg): Horn cutouts framing outer top corners
-			stage.set_tiles(world_ctx, Rect2i(tx_l, ty_t, 1, 1), "pit")
-			stage.set_tiles(world_ctx, Rect2i(tx_r, ty_t, 1, 1), "pit")
+			_carve_constellation_pit(tx_l, ty_t)
+			_carve_constellation_pit(tx_r, ty_t)
 		2:
 			# THE SCALES (90 deg): Central N/S fulcrum notches framing Twin Pans!
-			stage.set_tiles(world_ctx, Rect2i(tx_c, ty_t, 1, 1), "pit")
-			stage.set_tiles(world_ctx, Rect2i(tx_c, ty_b, 1, 1), "pit")
+			_carve_constellation_pit(tx_c, ty_t)
+			_carve_constellation_pit(tx_c, ty_b)
 		3:
 			# THE ARCHER (180 deg): Bow-arc W/E flank notches around central gravity well!
-			stage.set_tiles(world_ctx, Rect2i(tx_l, ty_m, 1, 1), "pit")
-			stage.set_tiles(world_ctx, Rect2i(tx_r, ty_m, 1, 1), "pit")
+			_carve_constellation_pit(tx_l, ty_m)
+			_carve_constellation_pit(tx_r, ty_m)
 		4:
 			# THE SERPENT (270 deg): Diagonal S-curve opposite void cutouts!
-			stage.set_tiles(world_ctx, Rect2i(tx_l, ty_b, 1, 1), "pit")
-			stage.set_tiles(world_ctx, Rect2i(tx_r, ty_t, 1, 1), "pit")
+			_carve_constellation_pit(tx_l, ty_b)
+			_carve_constellation_pit(tx_r, ty_t)
+
+
+func _carve_constellation_pit(tx: int, ty: int) -> void:
+	var tile_c := Vector2((float(tx) + 0.5) * 16.0, (float(ty) + 0.5) * 16.0)
+	if _has_player() and _get_wick_pos().distance_to(tile_c) < 24.0:
+		return
+	stage.set_tiles(world_ctx, Rect2i(tx, ty, 1, 1), "pit")
 
 
 func _rebuild_constellation_geometry(body_idx: int) -> void:

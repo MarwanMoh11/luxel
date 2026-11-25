@@ -8,6 +8,7 @@ const WALKABLE_TILES: PackedStringArray = ["ground", "path", "bridge"]
 var boss: LxEnemyBrain = null
 var locked: bool = false
 var _saved_tiles: Dictionary = {} # Vector2i -> original tile string
+var _paused_anchors: Array[Dictionary] = [] # [{node, prev_active}]
 var _dark_pulse_t: float = 0.0
 var _dark_pulse_dur: float = 0.0
 var _dark_base: float = 0.36
@@ -46,6 +47,36 @@ func lock_arena(is_locked: bool, world_ctx: Node) -> void:
 	locked = is_locked
 	if world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("lock_exits"):
 		world_ctx.call("lock_exits", is_locked)
+	if is_locked:
+		_pause_exterior_anchors(world_ctx)
+	else:
+		_restore_exterior_anchors()
+
+
+func _pause_exterior_anchors(world_ctx: Node) -> void:
+	_restore_exterior_anchors()
+	if world_ctx == null or not is_instance_valid(world_ctx) or not world_ctx.has_method("get_interactables"):
+		return
+	var ar: Rect2 = (boss as LxBossBase).get_arena_rect() if (boss is LxBossBase) else Rect2()
+	if not ar.has_area():
+		return
+	for it_v: Variant in (world_ctx.call("get_interactables") as Array):
+		if is_instance_valid(it_v) and it_v is Object and str((it_v as Object).get("kind")) == "room_anchor":
+			var it_o: Object = it_v as Object
+			var ap: Variant = it_o.get("pos")
+			if ap is Vector2 and not ar.has_point(ap as Vector2):
+				var prev_act: bool = bool(it_o.get("active"))
+				if prev_act:
+					_paused_anchors.append({"node": it_o, "prev_active": prev_act})
+					it_o.set("active", false)
+
+
+func _restore_exterior_anchors() -> void:
+	for rec: Dictionary in _paused_anchors:
+		var it_v: Variant = rec.get("node")
+		if is_instance_valid(it_v) and it_v is Object:
+			(it_v as Object).set("active", bool(rec.get("prev_active", true)))
+	_paused_anchors.clear()
 
 
 func set_tiles(world_ctx: Node, rect: Rect2i, tile: String) -> void:

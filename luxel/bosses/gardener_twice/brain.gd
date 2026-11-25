@@ -52,8 +52,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 235.0
-	hp = 235.0
+	max_hp = 205.0
+	hp = 205.0
 	body_radius = 10.0
 	move_speed = 44.0
 	stagger_threshold = 22.0
@@ -76,7 +76,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(pos, end_p, 12.0, last_tell_duration, 0.0, "rose", "gold")
 			stage.play_sfx("shear_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _lunge_dir, 3 if phase == 1 else 5, 0.65, 142.0, {"color": "rose", "source": "twin_shear_lunge"})
+			patterns.emit_fan(pos, _lunge_dir, 3, 0.65, 118.0, {"color": "rose", "source": "twin_shear_lunge"})
 			stage.shake(0.14)
 			stage.play_sfx("topiary_cleave", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
@@ -96,8 +96,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 7 if phase >= 2 else 5
-			patterns.emit_fan(pos, d, cnt, 1.18, 132.0 if phase >= 3 else 124.0, {"color": "rose", "source": "rose_thorn_arc"})
+			var cnt: int = 5 if phase >= 2 else 3
+			patterns.emit_fan(pos, d, cnt, 1.10, 112.0 if phase >= 3 else 104.0, {"color": "rose", "source": "rose_thorn_arc"})
 			stage.play_sfx("petal_lunge", pos),
 	})
 
@@ -263,11 +263,11 @@ func _tick_echo_gardener(dt: float, target: Vector2) -> void:
 
 	# Replay Wick's recorded shots ONLY during READY pauses (so Echo never dogpiles a Present commit!)
 	if not shot_trigger.is_empty() and _echo_shot_cd <= 0.0 and boss_state == BossState.READY:
-		_echo_shot_cd = 2.85
+		_echo_shot_cd = 3.65
 		var sdir: Vector2 = (shot_trigger["facing"] as Vector2).normalized()
-		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.50, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
+		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.52, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
 			if boss_state != BossState.DEATH and _echo_active:
-				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 142.0, {"color": "rose", "source": "echo_gardener_bolt"})
+				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 114.0, {"color": "rose", "source": "echo_gardener_bolt"})
 				stage.play_sfx("bolt_fire", _echo_pos)
 		)
 	elif _echo_shot_cd <= 0.0 and _echo_dash_cd <= 0.0 and boss_state == BossState.READY and _rec_clock > 8.0:

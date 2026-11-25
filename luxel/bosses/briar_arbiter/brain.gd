@@ -30,8 +30,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 88.0
-	hp = 88.0
+	max_hp = 102.0
+	hp = 102.0
 	body_radius = 12.5
 	move_speed = 36.0
 	stagger_threshold = 13.0

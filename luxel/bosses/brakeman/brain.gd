@@ -176,7 +176,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	var from_front: bool = from_dir.dot(fwd) > 0.35
 	if from_front and hit.source == LxHit.SOURCE_BOLT and not hit.pierce and not hit.cracks_armour:
 		clank_t = 0.10
-		return dmg * 0.78
+		return dmg * 0.62
 	return dmg
 
 

@@ -146,7 +146,7 @@ func tick(dt: float) -> void:
 					continue
 				if e.has_method("is_alive") and not bool(e.call("is_alive")):
 					continue
-				if (e.get("is_flying") == true):
+				if (e.has_method("is_flying") and bool(e.call("is_flying"))):
 					continue
 				var nxt: Vector2 = e.global_position + slide_vec * 0.24 * dt
 				if region.has_method("collide"):

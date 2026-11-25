@@ -261,8 +261,10 @@ func _on_lantern_recalled(from_pos: Vector2) -> void:
 			if en.pos.distance_to(from_pos) <= HARPOON_CATCH_RADIUS + en.body_radius:
 				if en.has_method("on_harpoon_tow"):
 					en.call("on_harpoon_tow", pull_dir, wick.global_position)
-				else:
-					en.vel = pull_dir * 145.0
+				elif en.has_method("on_lantern_pull"):
+					en.call("on_lantern_pull", pull_dir, "recall")
+				elif "vel" in en:
+					en.set("vel", pull_dir * 145.0)
 				_harpoon_streaks.append({"from": en.pos, "to": wick.global_position, "age": 0.0, "life": 0.28})
 				pulled_any = true
 	if pulled_any and _events != null:

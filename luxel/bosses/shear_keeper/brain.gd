@@ -5,8 +5,8 @@ extends LxBossBase
 ## Charges Wick, hung lanterns, or Echo Rose decoys. Baiting its Shear Charge into
 ## brass-thorn cages snips them open and jams its blades for 1.8 s (1.6x mainspring dmg)!
 
-const CHARGE_DIST: float = 112.0
-const CHARGE_SPEED: float = 285.0
+const CHARGE_DIST: float = 104.0
+const CHARGE_SPEED: float = 215.0
 const JAM_STAGGER_S: float = 1.80
 const JAM_DMG_MULT: float = 1.60
 
@@ -72,10 +72,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("shear_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 7 if phase >= 2 else 5
-			patterns.emit_fan(pos, d, cnt, 0.92, 150.0 if phase >= 2 else 136.0, {"color": "lime", "source": "clippings_fan"})
+			var cnt: int = 5 if phase >= 2 else 3
+			patterns.emit_fan(pos, d, cnt, 0.92, 118.0 if phase >= 2 else 108.0, {"color": "lime", "source": "clippings_fan"})
 			if phase >= 2:
-				patterns.emit_lane(pos, d, 2, 168.0, 0.11, {"color": "gold", "source": "clippings_lance"})
+				patterns.emit_lane(pos, d, 2, 134.0, 0.14, {"color": "gold", "source": "clippings_lance"})
 			stage.play_sfx("topiary_cleave", pos),
 	})
 
@@ -96,7 +96,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			move_boss(desired - pos, true)
 			check_contact_damage(16.0, (_pounce_to - _pounce_from).normalized(), 1.0, "snap_pounce")
 			if u >= 0.95 and not _commit_hit_done:
-				patterns.emit_gap_ring(pos, 8, 118.0, facing + PI * 0.4, 0.78, {"color": "gold", "source": "snap_shards"}),
+				patterns.emit_gap_ring(pos, 8, 96.0, facing + PI * 0.4, 1.05, {"color": "gold", "source": "snap_shards"}),
 	})
 
 	# Attack 4 (Phase 2): Whirlwind Trim — sweeping scissor cyclone + leaf spiral
@@ -116,7 +116,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			var to_w: Vector2 = tgt - pos
 			if to_w.length() > 14.0:
 				move_boss(to_w.normalized() * 34.0 * dt, false)
-			check_contact_damage(32.0, to_w.normalized(), 1.0, "whirlwind_trim"),
+			check_contact_damage(24.0, to_w.normalized(), 1.0, "whirlwind_trim"),
 	})
 
 
