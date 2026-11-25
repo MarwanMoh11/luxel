@@ -155,10 +155,6 @@ func _on_reset_encounter() -> void:
 	_hop_stage = 0
 
 
-func _on_death_start() -> void:
-	_unhook_wick()
-
-
 func _exit_tree() -> void:
 	_unhook_wick()
 
@@ -266,6 +262,7 @@ func _on_phase_enter(new_phase: int) -> void:
 
 
 func _on_death_start() -> void:
+	_unhook_wick()
 	stage.play_sfx("glass_shatter", pos)
 
 

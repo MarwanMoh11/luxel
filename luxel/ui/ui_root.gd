@@ -215,7 +215,7 @@ func _pause_main_if_playing() -> void:
 		return
 	_main.set("flow", 3)
 	if Lx.input != null: Lx.input.clear_all_toggles()
-	if Lx.audio != null: Lx.audio.pause_all(true)
+	if Lx.audio != null: Lx.audio.set_paused(true)
 	if Lx.events != null: Lx.events.pause_toggled.emit(true)
 
 
