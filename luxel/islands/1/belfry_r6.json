@@ -624,6 +624,12 @@
         "op": "expect_exit",
         "exit": "exit_r6_north"
       }
-    ]
+    ],
+    "start": {
+      "flags": [
+        "belfry_mainspring_key",
+        "belfry_spire_crank"
+      ]
+    }
   }
 }

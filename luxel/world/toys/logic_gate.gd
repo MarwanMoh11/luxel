@@ -87,6 +87,10 @@ func _handle_seq_signal(from_id: String, is_on: bool) -> void:
 		_seq_idx = 0
 		for sid: String in inputs:
 			_states[sid] = false
+		# A wrong note that happens to be the first of the sequence already starts the next try.
+		if from_id == inputs[0]:
+			_seq_idx = 1
+			_states[from_id] = true
 		_error_t = 0.30
 		_emit_sfx("denied")
 		_sync_output()
