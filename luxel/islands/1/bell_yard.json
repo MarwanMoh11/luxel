@@ -91,7 +91,7 @@
       "kind": "state_lever",
       "pos": [
         384,
-        304
+        360
       ],
       "props": {
         "scope": "island:1",
@@ -102,15 +102,15 @@
         ],
         "shootable": true,
         "persist": true,
-        "prompt_key": "ISL1_PROMPT_HOUR"
+        "prompt": "ISL1_PROMPT_HOUR"
       }
     },
     {
       "id": "ws_bell_yard",
       "kind": "waystone",
       "pos": [
-        320,
-        368
+        312,
+        396
       ],
       "props": {
         "zone": "bell_yard",
@@ -121,8 +121,8 @@
       "id": "rest_shrine_town",
       "kind": "rest_shrine",
       "pos": [
-        448,
-        368
+        456,
+        396
       ],
       "props": {
         "zone": "bell_yard",
@@ -145,7 +145,7 @@
       "kind": "npc",
       "pos": [
         336,
-        272
+        352
       ],
       "props": {
         "folk": "bell_snail",
@@ -169,8 +169,8 @@
       "id": "npc_moth_kid",
       "kind": "npc",
       "pos": [
-        208,
-        304
+        276,
+        368
       ],
       "props": {
         "folk": "moth_kid",
@@ -451,7 +451,7 @@
       "kind": "circle",
       "pos": [
         384,
-        304
+        360
       ],
       "radius": 44,
       "style": "clock"
@@ -488,7 +488,7 @@
       "kind": "light_shaft",
       "pos": [
         384,
-        304
+        360
       ],
       "size": [
         48,
@@ -504,7 +504,19 @@
       "prop": "bell_tower_arch",
       "pos": [
         384,
-        240
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "belfry_bell_hanging",
+      "pos": [
+        384,
+        344
       ],
       "layer": "sort",
       "flip_x": false,

@@ -119,7 +119,7 @@
       "kind": "bell",
       "pos": [
         288,
-        224
+        288
       ],
       "props": {
         "tone": "dawn",
@@ -130,8 +130,8 @@
       "id": "lore_forecourt_uc",
       "kind": "lore_stone",
       "pos": [
-        192,
-        176
+        184,
+        192
       ],
       "props": {
         "string_id": "ISL1_LORE_UC_HINT",
@@ -142,8 +142,8 @@
       "id": "lore_forecourt_mn",
       "kind": "lore_stone",
       "pos": [
-        384,
-        176
+        392,
+        168
       ],
       "props": {
         "string_id": "ISL1_LORE_MN_HINT",
@@ -281,7 +281,7 @@
       "kind": "circle",
       "pos": [
         288,
-        224
+        288
       ],
       "radius": 44,
       "style": "clock"
@@ -327,7 +327,7 @@
       "prop": "candelabra_tall",
       "pos": [
         232,
-        88
+        92
       ],
       "layer": "sort",
       "flip_x": false,
@@ -338,8 +338,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        344,
-        88
+        348,
+        84
       ],
       "layer": "sort",
       "flip_x": true,
@@ -350,8 +350,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        176,
-        144
+        136,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -362,8 +362,8 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        400,
-        144
+        444,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -374,7 +374,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "cracked_bell_shard",
       "pos": [
-        160,
+        152,
         288
       ],
       "layer": "sort",
@@ -386,8 +386,8 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "iron_chain_winch",
       "pos": [
-        416,
-        288
+        420,
+        296
       ],
       "layer": "sort",
       "flip_x": true,
@@ -398,7 +398,7 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        128,
+        112,
         192
       ],
       "layer": "sort",
@@ -410,8 +410,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        448,
-        192
+        460,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -422,8 +422,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        208,
-        320
+        204,
+        324
       ],
       "layer": "sort",
       "flip_x": false,
@@ -434,8 +434,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        368,
-        320
+        376,
+        312
       ],
       "layer": "sort",
       "flip_x": true,
@@ -499,7 +499,7 @@
         "op": "shoot",
         "from": [
           288,
-          272
+          328
         ],
         "target": "bell_forecourt_dawn"
       },

@@ -122,6 +122,14 @@ func follow(target: Vector2, dt: float) -> void:
 					desired_lead = boss_lead
 					framed = true
 			if not framed:
+				var mv: Variant = Lx.player.call("get_mounted_vehicle") if Lx.player.has_method("get_mounted_vehicle") else null
+				if mv is Node and is_instance_valid(mv):
+					# On the skiff the view leads the way she sails, not the way Wick faces.
+					var mv_vel: Variant = (mv as Node).get("vel")
+					if mv_vel is Vector2 and (mv_vel as Vector2).length() > 12.0:
+						desired_lead = ((mv_vel as Vector2) * 0.22).limit_length(30.0)
+					framed = true
+			if not framed:
 				var is_glide: bool = Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))
 				var is_dash: bool = Lx.player.has_method("is_dashing") and bool(Lx.player.call("is_dashing"))
 				if is_glide or is_dash:
