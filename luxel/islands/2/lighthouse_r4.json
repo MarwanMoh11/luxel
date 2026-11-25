@@ -204,7 +204,7 @@
       "kind": "lore_stone",
       "pos": [
         120,
-        72
+        88
       ],
       "props": {
         "string_id": "LH2_SHADOW_HINT",
@@ -260,8 +260,8 @@
       "id": "lamp_lh_r4_w",
       "kind": "road_lamp",
       "pos": [
-        56,
-        72
+        40,
+        88
       ],
       "props": {
         "zone": "lighthouse_r4",

@@ -316,15 +316,6 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        144,
-        160,
-        64,
-        48
-      ]
-    },
-    {
       "kind": "grate",
       "rect": [
         192,

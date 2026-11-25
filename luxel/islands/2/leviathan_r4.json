@@ -258,7 +258,7 @@
       "prop": "curled_rib_pillar",
       "pos": [
         376,
-        88
+        72
       ],
       "layer": "sort",
       "flip_x": true,
@@ -269,8 +269,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "whale_lantern_jar",
       "pos": [
-        120,
-        296
+        72,
+        264
       ],
       "layer": "sort",
       "flip_x": false,
@@ -281,8 +281,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "whale_lantern_jar",
       "pos": [
-        360,
-        296
+        440,
+        264
       ],
       "layer": "sort",
       "flip_x": true,

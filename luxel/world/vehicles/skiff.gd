@@ -102,35 +102,25 @@ static func restore_mount_carryover(reg: LxRegionLoader, wick: LxWick, spawn_at:
 		return null
 	if is_water_spawn:
 		var place_p: Vector2 = _find_safe_water_entry(reg, target_skiff, spawn_at, data.get("heading", Vector2.RIGHT) as Vector2)
-		if place_p.is_finite():
-			target_skiff.pos = place_p
-			target_skiff.position = place_p.round()
+		if place_p.is_finite(): target_skiff.pos = place_p; target_skiff.position = place_p.round()
 	var saved_h: Vector2 = data.get("heading", target_skiff.heading) as Vector2
-	if saved_h.length_squared() > 0.01:
-		target_skiff.heading = saved_h.normalized()
+	if saved_h.length_squared() > 0.01: target_skiff.heading = saved_h.normalized()
 	target_skiff.vel = ((data.get("vel", Vector2.ZERO) as Vector2).limit_length(MAX_SPEED)) * 0.65
-	wick.mount(target_skiff)
-	wick.global_position = target_skiff.pos
-	wick.last_pos = target_skiff.pos
-	target_skiff.queue_redraw()
-	return target_skiff
+	wick.mount(target_skiff); wick.global_position = target_skiff.pos; wick.last_pos = target_skiff.pos
+	target_skiff.queue_redraw(); return target_skiff
 
 static func _find_safe_water_entry(reg: LxRegionLoader, sk: LxVehicleSkiff, at_pos: Vector2, pref_dir: Vector2) -> Vector2:
-	if sk._can_float_at(reg, at_pos):
-		return at_pos
-	var p0: Vector2 = at_pos
-	var b_v: Variant = reg.get("bounds")
+	if sk._can_float_at(reg, at_pos): return at_pos
+	var p0: Vector2 = at_pos; var b_v: Variant = reg.get("bounds")
 	if b_v is Rect2 and (b_v as Rect2).has_area():
-		var inner: Rect2 = (b_v as Rect2).grow(-(HULL_RADIUS + 1.0))
-		p0 = Vector2(clampf(at_pos.x, inner.position.x, inner.end.x), clampf(at_pos.y, inner.position.y, inner.end.y))
-		if sk._can_float_at(reg, p0):
-			return p0
+		var inn: Rect2 = (b_v as Rect2).grow(-(HULL_RADIUS + 1.0))
+		p0 = Vector2(clampf(at_pos.x, inn.position.x, inn.end.x), clampf(at_pos.y, inn.position.y, inn.end.y))
+		if sk._can_float_at(reg, p0): return p0
 	var base_ang: float = pref_dir.angle() if pref_dir.length_squared() > 0.01 else 0.0
 	for dist: float in [8.0, 14.0, 22.0, 30.0]:
 		for i: int in range(8):
 			var cand: Vector2 = p0 + Vector2.from_angle(base_ang + TAU * float(i) / 8.0) * dist
-			if sk._can_float_at(reg, cand):
-				return cand
+			if sk._can_float_at(reg, cand): return cand
 	return Vector2.INF
 
 static func _find_nearest_skiff(reg: LxRegionLoader, at_pos: Vector2, max_d: float) -> LxVehicleSkiff:
@@ -197,24 +187,15 @@ func on_mounted(w: LxWick) -> void:
 	_spawn_wake(pos, 5.5); _emit_sfx("skiff_dock"); queue_redraw()
 
 func on_dismounted(w: LxWick) -> void:
-	if is_instance_valid(w) and w.fired.is_connected(_on_rider_fired):
-		w.fired.disconnect(_on_rider_fired)
+	if is_instance_valid(w) and w.fired.is_connected(_on_rider_fired): w.fired.disconnect(_on_rider_fired)
 	if rider == w: rider = null
 	_swing_t = 0.0; _release_post_whip()
-	if not is_instance_valid(w) or w.dead:
-		vel = Vector2.ZERO
-	else:
-		vel *= 0.16
-		if vel.length() < 22.0: vel = Vector2.ZERO
-	_cached_dock_pos = Vector2.INF
-	_emit_sfx("footstep_wood"); queue_redraw()
+	vel = Vector2.ZERO if (not is_instance_valid(w) or w.dead) else (vel * 0.16 if vel.length() >= 22.0 else Vector2.ZERO)
+	_cached_dock_pos = Vector2.INF; _emit_sfx("footstep_wood"); queue_redraw()
 
 func _exit_tree() -> void:
-	if is_instance_valid(rider) and rider.fired.is_connected(_on_rider_fired):
-		rider.fired.disconnect(_on_rider_fired)
-	rider = null
-	_swing_t = 0.0
-	_release_post_whip()
+	if is_instance_valid(rider) and rider.fired.is_connected(_on_rider_fired): rider.fired.disconnect(_on_rider_fired)
+	rider = null; _swing_t = 0.0; _release_post_whip()
 
 func try_dismount(w: LxWick) -> bool:
 	var pref: Vector2 = w.get_move_input()
@@ -395,7 +376,9 @@ func tick_mounted(dt: float, w: LxWick, world_ctx: Node) -> void:
 			var new_ang: float = rotate_toward(vel.angle(), steer.angle(), dt * RUDDER_TURN_RATE)
 			vel = Vector2.from_angle(new_ang) * spd
 		elif spd < SCULL_MAX_SPEED:
-			vel = (vel + steer.normalized() * SCULL_ACCEL * dt).limit_length(SCULL_MAX_SPEED)
+			var next_v: Vector2 = (vel + steer.normalized() * SCULL_ACCEL * dt).limit_length(SCULL_MAX_SPEED)
+			if next_v.length() < 4.0: next_v = steer.normalized() * 4.0
+			vel = next_v
 	_step_water_physics(dt, world_ctx)
 	w.global_position = pos; w.velocity = vel
 	_cached_dock_pos = _find_safe_dock_pos(steer if steer.length_squared() > 0.04 else w.facing)
@@ -472,12 +455,14 @@ func _step_water_physics(dt: float, world_ctx: Node) -> void:
 		var bx: bool = not _can_float_at(ctx, Vector2(desired.x, pos.y))
 		var by: bool = not _can_float_at(ctx, Vector2(pos.x, desired.y))
 		var slipped: bool = resolved.distance_to(pos) > 0.45
-		if bx and not slipped: vel.x = 0.0 if absf(vel.x) < 28.0 else -vel.x * BUMP_RESTITUTION
-		elif bx: vel.x = 0.0 if absf(vel.x) < 28.0 else -vel.x * BUMP_RESTITUTION
-		if by: vel.y = 0.0 if absf(vel.y) < 28.0 else -vel.y * BUMP_RESTITUTION
-		if not bx and not by and not slipped: vel = -vel * BUMP_RESTITUTION
-		if _bump_cd <= 0.0 and vel.length() > 22.0 and not slipped:
-			_bump_cd = 0.25; _emit_sfx("skiff_hull_bump"); _spawn_wake(resolved, 5.0)
+		if slipped:
+			vel *= 0.94
+		else:
+			if bx: vel.x = 0.0 if absf(vel.x) < 28.0 else -vel.x * BUMP_RESTITUTION
+			if by: vel.y = 0.0 if absf(vel.y) < 28.0 else -vel.y * BUMP_RESTITUTION
+			if not bx and not by: vel = -vel * BUMP_RESTITUTION
+			if _bump_cd <= 0.0 and vel.length() > 22.0:
+				_bump_cd = 0.25; _emit_sfx("skiff_hull_bump"); _spawn_wake(resolved, 5.0)
 	pos = resolved; position = pos.round()
 
 	var spd_now: float = vel.length()
@@ -520,15 +505,16 @@ func _can_float_at(ctx: Node, p: Vector2) -> bool:
 
 func _resolve_water_step(ctx: Node, from_p: Vector2, to_p: Vector2) -> Vector2:
 	if _can_float_at(ctx, to_p): return to_p
-	if _can_float_at(ctx, Vector2(to_p.x, from_p.y)): return Vector2(to_p.x, from_p.y)
-	if _can_float_at(ctx, Vector2(from_p.x, to_p.y)): return Vector2(from_p.x, to_p.y)
 	var delta: Vector2 = to_p - from_p
 	var step_len: float = delta.length()
-	if step_len > 0.25:
+	if step_len > 0.20:
 		var perp := Vector2(-delta.y, delta.x) / step_len
-		for sgn: float in [1.0, -1.0]:
-			var nudged: Vector2 = to_p + perp * (sgn * 3.0)
-			if _can_float_at(ctx, nudged): return from_p.move_toward(nudged, step_len)
+		for off: float in [2.5, 5.0, 8.0, 11.0]:
+			for sgn: float in [1.0, -1.0]:
+				var nudged: Vector2 = to_p + perp * (sgn * off)
+				if _can_float_at(ctx, nudged): return from_p.move_toward(nudged, step_len)
+	if _can_float_at(ctx, Vector2(to_p.x, from_p.y)): return Vector2(to_p.x, from_p.y)
+	if _can_float_at(ctx, Vector2(from_p.x, to_p.y)): return Vector2(from_p.x, to_p.y)
 	return from_p
 
 func _spawn_wake(at_pos: Vector2, r1: float) -> void:
@@ -537,7 +523,8 @@ func _spawn_wake(at_pos: Vector2, r1: float) -> void:
 
 func get_interact_prompt() -> String:
 	if not active: return ""
-	if rider != null: return "PROMPT_LEAVE_SKIFF" if _find_safe_dock_pos().is_finite() else ""
+	if rider != null:
+		return "PROMPT_LEAVE_SKIFF" if (_cached_dock_pos.is_finite() or _find_safe_dock_pos().is_finite()) else ""
 	return "PROMPT_BOARD_SKIFF"
 
 func save_state() -> Dictionary:
@@ -577,9 +564,13 @@ func _draw() -> void:
 		draw_line(prow_p, lrel, Color(rope_c, 0.92), 1.0)
 
 	if rider != null and _cached_dock_pos.is_finite() and _cached_dock_pos.distance_squared_to(pos) > 4.0:
+		var drel: Vector2 = (_cached_dock_pos - pos).round()
 		var ddir: Vector2 = (_cached_dock_pos - pos).normalized()
 		var dc: Color = (PAL["cream"] if (red or int(floorf(_bob_phase * 2.0)) % 2 == 0) else PAL["gold"]) as Color
 		LxPhysDraw.draw_chevron(self, (ddir * 15.0).round(), ddir, dc, PAL["void"] as Color, 2.5)
+		draw_arc(drel, 4.5, 0.0, TAU, 12, Color(dc, 0.85), 1.0)
+	if rider != null and is_instance_valid(rider) and rider.lantern != null and rider.lantern.is_hanging() and _swing_t <= 0.0 and vel.length() > 8.0:
+		draw_arc((-fwd * 9.0 + base_off).round(), 6.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, 0.72), 1.0)
 
 	var c_out: Color = PAL["void"] as Color
 	var hull_pts := PackedVector2Array([

@@ -322,15 +322,6 @@
       ],
       "radius": 22,
       "style": "water"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        312,
-        96,
-        80,
-        64
-      ]
     }
   ],
   "scenery": [

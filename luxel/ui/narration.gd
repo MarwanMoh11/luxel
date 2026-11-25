@@ -212,10 +212,13 @@ func _on_narration_requested(string_id: String, style: String, duration: float) 
 
 
 static func _is_duplicate_boss_title(hud: Node, string_id: String, resolved: String) -> bool:
-	if hud == null or not bool(hud.get("_boss_active")):
+	var has_boss: bool = (hud != null and bool(hud.get("_boss_active"))) or (Lx.world != null and LxBossHud.region_has_live_boss(Lx.world))
+	if not has_boss:
 		return false
 	if string_id.begins_with("BOSS_") or string_id.begins_with("MINIBOSS_"):
 		return true
+	if hud == null:
+		return false
 	var entries_v: Variant = hud.get("_boss_entries")
 	if entries_v is Array:
 		for be_v: Variant in (entries_v as Array):

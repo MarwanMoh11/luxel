@@ -236,15 +236,6 @@
       "style": "stars"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        96,
-        64,
-        352,
-        256
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         272,

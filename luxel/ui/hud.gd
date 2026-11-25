@@ -116,6 +116,8 @@ func sync_bosses(live_bosses: Array) -> void:
 	if not was_active and not _seen_boss_intros.has(b0_id):
 		_seen_boss_intros[b0_id] = true
 		ceremony.trigger_boss_intro(b0_id, _boss_name_key, maxi(2, _boss_phase))
+		if Lx.ui != null and Lx.ui.get("narration") != null and (Lx.ui.get("narration") as Object).has_method("unsay"):
+			(Lx.ui.get("narration") as Object).call("unsay", "title")
 	queue_redraw()
 
 func _check_hollow_twist(nk: String) -> void:

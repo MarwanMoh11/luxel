@@ -85,7 +85,7 @@
       "id": "drv_r9",
       "kind": "gal_list_driver",
       "pos": [
-        88,
+        136,
         264
       ],
       "props": {
@@ -166,7 +166,7 @@
       "kind": "mooring_post",
       "pos": [
         312,
-        216
+        184
       ],
       "props": {
         "orbit_r": 44.0,

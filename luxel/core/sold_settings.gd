@@ -313,7 +313,11 @@ func restore_all(reason: String = "dawn", keep_history: bool = true) -> void:
 	_dawn_restored = false; _suspended_for_title = false
 	_sold_ids.clear(); _redeemed_ids.clear(); _redemption_used = false
 	_display_pixels_pct = 0.0; _hush_finale_choice = ""; _invoice_count = 0
-	if r == "reset": _write_to_state()
+	if r == "reset":
+		if Lx.state != null:
+			Lx.state.story_flags.erase("dawn_restored_settings")
+			Lx.state.story_flags.erase("dawn_restored_count")
+		_write_to_state()
 	_restore_runtime_overrides(false)
 	display_pixels_changed.emit(0.0); all_restored.emit(r); _emit_hud_and_state()
 

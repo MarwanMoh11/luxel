@@ -390,15 +390,6 @@
       "style": "water"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        152,
-        208,
-        64,
-        48
-      ]
-    },
-    {
       "kind": "grate",
       "rect": [
         304,

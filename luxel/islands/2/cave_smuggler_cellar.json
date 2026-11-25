@@ -186,8 +186,8 @@
       "id": "chest_cellar_smuggle",
       "kind": "chest",
       "pos": [
-        360,
-        200
+        344,
+        184
       ],
       "props": {
         "reward_kind": "shards",
@@ -305,19 +305,10 @@
       "rect": [
         176,
         96,
-        64,
+        48,
         48
       ],
       "glow": false
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        144,
-        48,
-        64
-      ]
     },
     {
       "kind": "stain",

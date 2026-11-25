@@ -231,7 +231,7 @@
       "id": "lamp_bf_4",
       "kind": "road_lamp",
       "pos": [
-        296,
+        280,
         120
       ],
       "props": {
@@ -336,15 +336,6 @@
       ],
       "radius": 34,
       "style": "ritual"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        176,
-        16,
-        112,
-        48
-      ]
     },
     {
       "kind": "cracks",

@@ -539,18 +539,6 @@
       {
         "op": "goto",
         "to": [
-          168,
-          240
-        ],
-        "tol": 8.0
-      },
-      {
-        "op": "interact",
-        "target": "lore_shift_w_rule"
-      },
-      {
-        "op": "goto",
-        "to": [
           216,
           192
         ],
@@ -563,6 +551,18 @@
       {
         "op": "expect",
         "var": "pin_w==1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          168,
+          240
+        ],
+        "tol": 8.0
+      },
+      {
+        "op": "interact",
+        "target": "lore_shift_w_rule"
       },
       {
         "op": "clear"

@@ -415,20 +415,20 @@ func _trigger_seal_shatter() -> void:
 		_events.save_requested.emit("seal_broken_5")
 
 
-func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill: bool) -> void:
+func _on_enemy_killed(enemy: Object, kind: String, _pos: Vector2, _opened_kill: bool) -> void:
 	var st: LxGameState = _get_state()
 	if st == null or st.island_id != ISLAND_ID:
 		return
 	if st.region_id == "orrery_r3":
 		_r3_kills += 1
-		if _r3_kills >= 2 and not bool(st.story_flags.get("o5_r3_cleared", false)):
+		if _zone_enemies_remaining("orrery_r3", enemy) == 0 and not bool(st.story_flags.get("o5_r3_cleared", false)):
 			st.story_flags["o5_r3_cleared"] = true
 			if _events != null:
 				_events.sfx_requested.emit("door_open", Vector2.ZERO, false)
 				_emit_narration("CUE_DOOR_OPEN", "title", 2.5)
 	elif st.region_id == "orrery_r8":
 		_r8_kills += 1
-		if _r8_kills >= 3 and not bool(st.story_flags.get("o5_r8_cleared", false)):
+		if _zone_enemies_remaining("orrery_r8", enemy) == 0 and not bool(st.story_flags.get("o5_r8_cleared", false)):
 			st.story_flags["o5_r8_cleared"] = true
 			if _events != null:
 				_events.sfx_requested.emit("door_open", Vector2.ZERO, false)
@@ -442,6 +442,20 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 			_events.sfx_requested.emit("key_drop", Vector2.ZERO, false)
 			_events.music_mode_requested.emit("island5_dungeon")
 			_events.save_requested.emit("clockwork_warden_defeated")
+
+
+func _zone_enemies_remaining(zone_id: String, just_killed: Object) -> int:
+	var reg: LxRegionLoader = Lx.world as LxRegionLoader if (Lx.world is LxRegionLoader and is_instance_valid(Lx.world)) else null
+	if reg == null:
+		return 0 if ((zone_id == "orrery_r3" and _r3_kills >= 3) or (zone_id == "orrery_r8" and _r8_kills >= 4)) else 1
+	var alive: int = 0
+	for en: LxEnemyBrain in reg.get_enemies():
+		if en == null or not is_instance_valid(en) or en == just_killed or en.dead:
+			continue
+		if not zone_id.is_empty() and not en.zone_id.is_empty() and en.zone_id != zone_id:
+			continue
+		alive += 1
+	return alive
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:

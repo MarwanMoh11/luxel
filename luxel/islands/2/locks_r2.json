@@ -359,15 +359,6 @@
       "style": "spotlight"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        208,
-        128,
-        128,
-        128
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         232,

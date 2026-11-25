@@ -376,6 +376,8 @@ func _sync_interactable_layer(item: LxInteractable) -> void:
 	if item == null or not is_instance_valid(item): return
 	var target: Node2D = _floor_interactables_root if _is_floor_interactable(item) else _interactables_root
 	if target == null: return
+	# The floor root sits at z -6 and floor toys carry -4/-5 of their own: relative, they would end up under the ground (-10).
+	item.z_as_relative = not (target == _floor_interactables_root and item.z_index < 0)
 	if item.get_parent() == null: target.add_child(item)
 	elif item.get_parent() != target: item.reparent(target, false)
 

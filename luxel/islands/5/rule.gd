@@ -9,6 +9,8 @@ extends RefCounted
 const ISLAND_ID: int = 5
 const DIAL_VARS: Array[String] = ["ow_dial", "sky_turn", "orrery_ring"]
 const I5_TOY_KINDS: Array[String] = ["star_node", "star_bell", "meteor_orb", "polarity_well", "gravity_well"]
+const OVERWORLD_REGIONS: Array[String] = ["overworld", "ow_meteor_apron", "ow_dome_causeway", "ow_starfall_cliff"]
+const OW_WICK_FIELD_CAP: float = 42.0
 
 class RuleRuntime:
 	extends LxInteractable
