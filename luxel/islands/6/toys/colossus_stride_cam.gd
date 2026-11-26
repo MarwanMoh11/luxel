@@ -203,37 +203,88 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_stone: Color = PAL["stone"] as Color
-	var c_gold: Color = PAL["gold"] as Color
+	var c_wine: Color = PAL["wine"] as Color
 	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_deep: Color = PAL["deep"] as Color
+	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var calm: bool = state == StrideState.STABILIZED
 	var fred: bool = LxHudFx.flash_reduced()
 
-	# Brass giant-stride pendulum dial (clear greyscale contrast between LEFT, WARN, RIGHT, STABILIZED)
-	var frame := Rect2(-11.0, -9.0, 22.0, 18.0)
-	var rim: Color = c_ice if calm else (c_cream if (is_warning and (fred or fmod(_clock, 0.24) < 0.12)) else c_gold)
-	LxPhysDraw.draw_bevel_box(self, frame, c_night, rim, c_dusk, c_void, c_stone)
+	# Grounded shadow beneath clockwork housing
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 10.0), 13.0, 4.0)
 
-	# L / R step markers at dial corners
-	draw_rect(Rect2(-9.0, -6.0, 3.0, 3.0), c_gold if (not calm and stride_side < 0) else c_dusk)
-	draw_rect(Rect2(6.0, -6.0, 3.0, 3.0), c_gold if (not calm and stride_side > 0) else c_dusk)
+	# Heavy iron mounting feet
+	draw_rect(Rect2(-11.0, 7.0, 6.0, 4.0), c_void)
+	draw_rect(Rect2(-10.0, 8.0, 4.0, 2.0), c_dusk)
+	draw_rect(Rect2(5.0, 7.0, 6.0, 4.0), c_void)
+	draw_rect(Rect2(6.0, 8.0, 4.0, 2.0), c_dusk)
 
-	# Swinging plumb line + brass weight bob
-	var pivot := Vector2(0.0, -6.0)
-	var ang: float = 0.0 if calm else (float(stride_side) * (0.28 if is_warning else 0.65))
-	var bob: Vector2 = (pivot + Vector2(sin(ang) * 9.0, cos(ang) * 10.0)).round()
-	draw_line(pivot, bob, c_ice if calm else c_stone, 1.0)
-	draw_rect(Rect2(bob - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
-	draw_rect(Rect2(bob - Vector2.ONE, Vector2(2.0, 2.0)), c_ice if calm else (c_coral if is_warning else c_cream))
+	# Heavy riveted clockwork iron housing with sunlit top bevel
+	var frame := Rect2(-12.0, -10.0, 24.0, 19.0)
+	var warn_flash: bool = is_warning and (fred or fmod(_clock, 0.24) < 0.12)
+	var top_bevel: Color = c_ice if calm else (c_cream if warn_flash else c_stone)
+	LxPhysDraw.draw_bevel_box(self, frame, c_dusk, top_bevel, c_night, c_void, c_gold if not calm else c_sky)
+	# Crisp sunlit steel crown bevel & extra side rivets
+	draw_rect(Rect2(-10.0, -9.0, 20.0, 1.0), c_ice if calm else (c_cream if warn_flash else c_ice))
+	draw_rect(Rect2(-10.0, -8.0, 20.0, 1.0), c_stone)
+	for rv: Vector2 in [Vector2(-10.0, 0.0), Vector2(9.0, 0.0), Vector2(-10.0, 6.0), Vector2(9.0, 6.0)]:
+		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), c_apr if not calm else c_stone)
 
-	# Warning horn flare or calm center lock
+	# Recessed clockwork gear chamber + warm forge-ember active glow
+	draw_rect(Rect2(-8.0, -6.0, 16.0, 12.0), c_void)
+	var ember_bg: Color = c_deep if calm else (c_coral if (warn_flash or _plant_fx_t > 0.0) else c_wine)
+	draw_rect(Rect2(-7.0, -5.0, 14.0, 10.0), c_night)
+	draw_rect(Rect2(-6.0, -4.0, 12.0, 8.0), Color(ember_bg, 0.55 if calm else (0.72 if fred else 0.65 + 0.20 * step_progress)))
+	# Lower furnace ember grate glow inside chamber
+	if not calm:
+		draw_rect(Rect2(-5.0, 3.0, 10.0, 1.0), c_coral)
+		draw_rect(Rect2(-3.0, 3.0, 6.0, 1.0), c_apr if not is_warning else c_gold)
+
+	# Visible rotating eccentric brass cam gear inside the window
+	var cam_center := Vector2(0.0, -1.0)
+	var cam_ang: float = 0.0 if calm else ((_stride_t / maxf(step_period, 0.5)) * TAU)
+	var gear_rim: Color = c_sky if calm else (c_cream if warn_flash else c_gold)
+	var gear_body: Color = c_ice if calm else c_apr
+	# 8 rotating brass gear teeth around the cam wheel
+	for ti: int in range(8):
+		var ta: float = cam_ang + float(ti) * (TAU / 8.0)
+		var tp := Vector2(roundf(cam_center.x + cos(ta) * 5.0), roundf(cam_center.y + sin(ta) * 4.5))
+		draw_rect(Rect2(tp - Vector2.ONE, Vector2(2.0, 2.0)), gear_rim)
+	# Cam wheel face + dark axle recess
+	draw_circle(cam_center, 4.0, c_void)
+	draw_circle(cam_center, 3.0, gear_body)
+	draw_rect(Rect2(cam_center.x - 2.0, cam_center.y - 2.0, 3.0, 1.0), c_cream if not calm else c_ice)
+	# Eccentric cam lobe bob extending toward current stride side
+	var lobe_dir := Vector2(sin(cam_ang) * 3.0, cos(cam_ang) * 2.5) if not calm else Vector2(0.0, 1.0)
+	var lobe_p: Vector2 = (cam_center + lobe_dir).round()
+	draw_rect(Rect2(lobe_p - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+	draw_rect(Rect2(lobe_p, Vector2(1.0, 1.0)), c_ice if calm else (c_coral if is_warning else c_cream))
+	draw_rect(Rect2(cam_center, Vector2(1.0, 1.0)), c_void)
+
+	# L / R step indicator lamps on upper iron shoulders
+	var l_lit: bool = not calm and stride_side < 0
+	var r_lit: bool = not calm and stride_side > 0
+	draw_rect(Rect2(-10.0, -6.0, 2.0, 3.0), c_void)
+	draw_rect(Rect2(-10.0, -5.0, 2.0, 2.0), c_gold if l_lit else c_night)
+	if l_lit:
+		draw_rect(Rect2(-10.0, -5.0, 1.0, 1.0), c_cream)
+	draw_rect(Rect2(8.0, -6.0, 2.0, 3.0), c_void)
+	draw_rect(Rect2(8.0, -5.0, 2.0, 2.0), c_gold if r_lit else c_night)
+	if r_lit:
+		draw_rect(Rect2(8.0, -5.0, 1.0, 1.0), c_cream)
+
+	# Bottom status crest: calm lock bar or directional stride chevron
 	if calm:
-		draw_rect(Rect2(-2.0, 5.0, 4.0, 2.0), c_ice)
+		draw_rect(Rect2(-3.0, 6.0, 6.0, 2.0), c_void)
+		draw_rect(Rect2(-2.0, 6.0, 4.0, 1.0), c_ice)
 	elif is_warning:
-		LxPhysDraw.draw_chevron(self, Vector2(float(next_side) * 6.0, 5.0), Vector2(float(next_side), 0.0), c_cream, c_void, 2.0)
+		LxPhysDraw.draw_chevron(self, Vector2(float(next_side) * 5.0, 6.0), Vector2(float(next_side), 0.0), c_cream, c_void, 2.0)
 	else:
-		LxPhysDraw.draw_chevron(self, Vector2(float(stride_side) * 6.0, 5.0), Vector2(float(stride_side), 0.0), c_gold, c_void, 2.0)
+		LxPhysDraw.draw_chevron(self, Vector2(float(stride_side) * 5.0, 6.0), Vector2(float(stride_side), 0.0), c_gold, c_void, 2.0)
 
 	# Room-wide diegetic footstep shockwave & tilt-direction dust sweep (makes every step felt!)
 	if not calm:

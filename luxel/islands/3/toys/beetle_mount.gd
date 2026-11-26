@@ -309,9 +309,11 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
 	var c_pine: Color = PAL["pine"] as Color
 	var c_teal: Color = PAL["teal"] as Color
 	var c_jade: Color = PAL["jade"] as Color
+	var c_lime: Color = PAL["lime"] as Color
 	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_gold: Color = PAL["gold"] as Color
@@ -319,36 +321,66 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_plum: Color = PAL["plum"] as Color
 	var c_wine: Color = PAL["wine"] as Color
+	var f: Vector2 = facing_dir.normalized() if facing_dir.length_squared() > 0.001 else Vector2.RIGHT
+	var perp := Vector2(-f.y, f.x)
+	var red: bool = LxHudFx.flash_reduced()
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 9.0, 3.5)
-	# Animated stubby beetle legs (6 pips)
-	var step_o: float = 1.0 if int(floorf(_leg_phase)) % 2 == 0 else -1.0
-	for lx: float in [-6.0, 0.0, 5.0]:
-		draw_rect(Rect2(lx + step_o * 0.5, 4.0, 2.0, 2.0), c_void)
-		draw_rect(Rect2(lx - step_o * 0.5, -7.0, 2.0, 2.0), c_void)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 10.0, 4.0)
+	# 6 articulated beetle legs striding gently along facing axis
+	var step_o: float = 0.0 if red else (1.0 if int(floorf(_leg_phase)) % 2 == 0 else -1.0)
+	for i: int in range(3):
+		var along: float = -5.0 + float(i) * 4.5 + (step_o if i % 2 == 0 else -step_o) * 0.6
+		var base_l: Vector2 = (f * along + perp * 5.0).round()
+		var tip_l: Vector2 = (f * (along + 1.0) + perp * 8.0).round()
+		var base_r: Vector2 = (f * along - perp * 5.0).round()
+		var tip_r: Vector2 = (f * (along - 1.0) - perp * 8.0).round()
+		draw_line(base_l, tip_l, c_void, 2.0)
+		draw_line(base_r, tip_r, c_void, 2.0)
+		draw_rect(Rect2(tip_l, Vector2.ONE), c_apricot if tame else c_gold)
+		draw_rect(Rect2(tip_r, Vector2.ONE), c_apricot if tame else c_gold)
 
-	# Domed carapace: tame = pine/teal/jade + ice mirror sheen; wild = plum/wine + gold stripes
-	draw_rect(Rect2(-9.0, -6.0, 18.0, 11.0), c_void)
-	draw_rect(Rect2(-8.0, -5.0, 16.0, 9.0), c_pine if tame else c_plum)
-	draw_rect(Rect2(-7.0, -4.0, 14.0, 7.0), c_teal if tame else c_wine)
-	# Mirrored Prism crest down back (clearly signals reflective shell!)
+	# Curved serrated stag-horn mandibles projecting ahead of head
+	var h_root: Vector2 = (f * 6.0).round()
+	var h_mid_l: Vector2 = (f * 10.0 + perp * 4.0).round()
+	var h_mid_r: Vector2 = (f * 10.0 - perp * 4.0).round()
+	var h_tip_l: Vector2 = (f * 13.0 + perp * 2.0).round()
+	var h_tip_r: Vector2 = (f * 13.0 - perp * 2.0).round()
+	draw_line(h_root, h_mid_l, c_void, 3.0)
+	draw_line(h_mid_l, h_tip_l, c_void, 3.0)
+	draw_line(h_root, h_mid_r, c_void, 3.0)
+	draw_line(h_mid_r, h_tip_r, c_void, 3.0)
+	var horn_c: Color = c_gold if tame else c_apricot
+	draw_line(h_root, h_mid_l, horn_c, 1.5)
+	draw_line(h_mid_l, h_tip_l, c_cream if _horn_ring_t > 0.0 else horn_c, 1.5)
+	draw_line(h_root, h_mid_r, horn_c, 1.5)
+	draw_line(h_mid_r, h_tip_r, c_cream if _horn_ring_t > 0.0 else horn_c, 1.5)
+
+	# Rounded domed iridescent carapace (abdomen + pronotum head shield)
+	var body_dark: Color = c_pine if tame else c_plum
+	var body_mid: Color = c_teal if tame else c_wine
+	var body_hi: Color = c_jade if tame else c_apricot
+	var body_rim: Color = c_lime if tame else c_gold
+	var rear: Vector2 = (-f * 2.0).round()
+	var head: Vector2 = (f * 5.0).round()
+	draw_circle(rear, 8.0, c_void)
+	draw_circle(head, 5.0, c_void)
+	draw_circle(rear, 7.0, body_dark)
+	draw_circle(head, 4.0, body_dark)
+	draw_circle((rear + Vector2(-0.5, -0.5)).round(), 6.0, body_mid)
+	draw_circle((head + Vector2(-0.5, -0.5)).round(), 3.0, body_hi)
+	# Wing-case elytra dorsal seam + mirrored Prism sheen crest
 	var sheen_c: Color = c_cream if _reflect_flash_t > 0.0 else (c_ice if tame else c_gold)
-	draw_rect(Rect2(-5.0, -3.0, 10.0, 4.0), c_sky if tame else c_apricot)
-	draw_rect(Rect2(-3.0, -3.0, 6.0, 2.0), sheen_c)
-
-	# Forward stag-horn pincers pointing along facing_dir
-	var f_tip: Vector2 = (facing_dir * 10.0).round()
-	var perp := Vector2(-facing_dir.y, facing_dir.x)
-	var h_l: Vector2 = (f_tip + perp * 3.0).round()
-	var h_r: Vector2 = (f_tip - perp * 3.0).round()
-	draw_line((facing_dir * 6.0).round(), h_l, c_void, 3.0)
-	draw_line((facing_dir * 6.0).round(), h_r, c_void, 3.0)
-	draw_line((facing_dir * 6.0).round(), h_l, c_apricot if tame else c_gold, 1.5)
-	draw_line((facing_dir * 6.0).round(), h_r, c_apricot if tame else c_gold, 1.5)
+	draw_circle((rear + Vector2(-1.0, -1.5)).round(), 4.0, c_sky if tame else body_hi)
+	draw_rect(Rect2((rear + Vector2(-2.0, -3.0)).round(), Vector2(4.0, 2.0)), sheen_c)
+	draw_line((rear - f * 5.0).round(), (rear + f * 4.0).round(), c_night, 1.0)
+	draw_rect(Rect2((rear - f * 2.0 + Vector2(-1.0, -2.0)).round(), Vector2(2.0, 1.0)), body_rim)
+	# Bright beetle eyes on head sides
+	draw_rect(Rect2((head + f * 1.5 + perp * 2.5).round(), Vector2(1.0, 1.0)), c_cream)
+	draw_rect(Rect2((head + f * 1.5 - perp * 2.5).round(), Vector2(1.0, 1.0)), c_cream)
 
 	# Halted horn-lock emblem (readable in greyscale!)
 	if halted:
-		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -9.0), 3, true, c_gold, c_cream)
+		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -10.0), 3, true, c_gold, c_cream)
 	elif rider != null:
 		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), c_jade)
 		draw_rect(Rect2(-1.0, -2.0, 2.0, 1.0), c_cream)

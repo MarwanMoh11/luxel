@@ -207,47 +207,113 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if not active:
 		return
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_blue: Color = PAL["blue"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
 	var fr: bool = LxHudFx.flash_reduced()
 	var turning: bool = bell_state == BellState.TURNING and _turn_t > 0.0
 	var swing: float = 0.0
 	if turning:
 		var u: float = clampf(_turn_t / TURN_VISUAL_S, 0.0, 1.0)
-		swing = sin(u * PI * (3.0 if fr else 6.0)) * (1.5 if fr else 3.0) * float(last_turn_dir)
+		swing = sin(u * PI * (2.0 if fr else 6.0)) * (1.2 if fr else 3.0) * float(last_turn_dir)
 
-	_draw_ground_shadow(9.0, 3.5, Vector2(2.0, 7.0))
-	# Stone plinth + 4-quarter compass dial on base
-	LxPhysDraw.draw_bevel_box(self, Rect2(-8.0, 1.0, 16.0, 7.0), PAL["night"] as Color, PAL["mauve"] as Color, PAL["dusk"] as Color, PAL["void"] as Color)
+	# Grounded shadow
+	_draw_ground_shadow(10.0, 4.0, Vector2(1.0, 7.0))
+
+	# Carved stone plinth + inlaid 4-quarter celestial compass dial
+	LxPhysDraw.draw_bevel_box(self, Rect2(-9.0, 1.0, 18.0, 7.0), c_night, c_stone, c_dusk, c_void, c_gold)
+	draw_rect(Rect2(-6.0, 2.0, 12.0, 5.0), c_void)
+	draw_rect(Rect2(-5.0, 3.0, 10.0, 3.0), c_night)
 	var needle_ang: float = deg_to_rad(float(current_angle) - 90.0)
 	var nd: Vector2 = Vector2.from_angle(needle_ang)
-	draw_line(Vector2(0.0, 4.0), (Vector2(0.0, 4.0) + nd * 4.0).round(), PAL["cream"] as Color, 1.0)
+	draw_line(Vector2(0.0, 4.0), (Vector2(0.0, 4.0) + nd * 4.0).round(), c_cream, 1.0)
+	draw_rect(Rect2(-1.0, 4.0, 2.0, 1.0), c_gold)
 	for qi: int in range(4):
 		var qa: float = deg_to_rad(float(qi * 90) - 90.0)
 		var qp: Vector2 = (Vector2(0.0, 4.0) + Vector2.from_angle(qa) * 5.0).round()
-		draw_rect(Rect2(qp, Vector2.ONE), PAL["gold"] as Color if (qi * 90 == current_angle) else PAL["plum"] as Color)
+		var cur_q: bool = (qi * 90 == current_angle)
+		draw_rect(Rect2(qp, Vector2(2.0 if cur_q else 1.0, 1.0)), c_cream if cur_q else c_plum)
 
-	# Flared brass astrolabe bell body
+	# Sculpted celestial brass astrolabe bell body
 	var bell_x: float = roundf(swing * 0.5)
-	var body_c: Color = (PAL["ice"] if (turning and _ring_color_blue) else (PAL["cream"] if turning else PAL["gold"])) as Color
-	var rim_c: Color = (PAL["sky"] if (turning and _ring_color_blue) else PAL["apricot"]) as Color
-	draw_rect(Rect2(bell_x - 3.0, -11.0, 6.0, 2.0), PAL["void"] as Color)
-	draw_rect(Rect2(bell_x - 2.0, -10.0, 4.0, 2.0), rim_c)
-	draw_rect(Rect2(bell_x - 5.0, -9.0, 10.0, 5.0), PAL["void"] as Color)
-	draw_rect(Rect2(bell_x - 4.0, -8.0, 8.0, 4.0), body_c)
-	draw_rect(Rect2(bell_x - 7.0, -4.0, 14.0, 4.0), PAL["void"] as Color)
-	draw_rect(Rect2(bell_x - 6.0, -4.0, 12.0, 3.0), rim_c)
-	draw_rect(Rect2(bell_x - 4.0, -7.0, 2.0, 4.0), PAL["cream"] as Color)
-	# Swinging star clapper underneath
-	var clap_x: float = roundf(swing)
-	draw_rect(Rect2(clap_x - 1.0, -1.0, 3.0, 3.0), PAL["void"] as Color)
-	draw_rect(Rect2(clap_x, 0.0, 1.0, 1.0), PAL["cream"] as Color)
-	# Crown 4-point star finial
-	draw_rect(Rect2(bell_x - 1.0, -13.0, 2.0, 2.0), PAL["cream"] as Color)
-	draw_line(Vector2(bell_x - 3.0, -12.0), Vector2(bell_x + 3.0, -12.0), PAL["gold"] as Color, 1.0)
+	var blue_ring: bool = turning and _ring_color_blue
+	var shade_c: Color = c_blue if blue_ring else c_apr
+	var body_c: Color = c_sky if blue_ring else (c_gold if not turning else c_gold)
+	var hi_c: Color = c_ice if blue_ring else c_cream
+	var rim_c: Color = c_ice if blue_ring else c_gold
 
-	# Expanding turn ripple
+	# Outer void silhouette of flared bell dome & skirt
+	draw_rect(Rect2(bell_x - 3.0, -12.0, 6.0, 2.0), c_void)
+	draw_rect(Rect2(bell_x - 5.0, -10.0, 10.0, 3.0), c_void)
+	draw_rect(Rect2(bell_x - 6.0, -7.0, 12.0, 4.0), c_void)
+	draw_rect(Rect2(bell_x - 8.0, -3.0, 16.0, 4.0), c_void)
+
+	# Shaded celestial brass dome fill (apricot right/bottom shadow -> gold body -> cream left specular)
+	draw_rect(Rect2(bell_x - 2.0, -11.0, 4.0, 2.0), shade_c)
+	draw_rect(Rect2(bell_x - 4.0, -9.0, 8.0, 3.0), body_c)
+	draw_rect(Rect2(bell_x - 5.0, -6.0, 10.0, 3.0), body_c)
+	draw_rect(Rect2(bell_x - 7.0, -3.0, 14.0, 3.0), rim_c)
+	# Right-side brass shadow curve & skirt recess
+	draw_rect(Rect2(bell_x + 2.0, -9.0, 2.0, 3.0), shade_c)
+	draw_rect(Rect2(bell_x + 3.0, -6.0, 2.0, 3.0), shade_c)
+	draw_rect(Rect2(bell_x + 4.0, -3.0, 3.0, 3.0), shade_c)
+	draw_rect(Rect2(bell_x - 6.0, -1.0, 12.0, 1.0), shade_c)
+	# Celestial sunlit brass highlight strip along left curve + upper rim
+	draw_rect(Rect2(bell_x - 2.0, -11.0, 2.0, 1.0), hi_c)
+	draw_rect(Rect2(bell_x - 4.0, -9.0, 2.0, 3.0), hi_c)
+	draw_rect(Rect2(bell_x - 5.0, -6.0, 2.0, 3.0), hi_c)
+	draw_rect(Rect2(bell_x - 7.0, -3.0, 3.0, 2.0), hi_c)
+	draw_rect(Rect2(bell_x - 6.0, -3.0, 12.0, 1.0), hi_c if turning else c_gold)
+
+	# Hollow shadowed bell mouth underside so clapper pops clearly
+	draw_rect(Rect2(bell_x - 5.0, 0.0, 10.0, 2.0), c_void)
+	draw_rect(Rect2(bell_x - 4.0, 0.0, 8.0, 1.0), c_night)
+
+	# Crisp 4-point star crest embossed on bell body
+	var sx: float = bell_x
+	var sy: float = -6.0
+	draw_rect(Rect2(sx - 1.0, sy - 2.0, 3.0, 5.0), c_void)
+	draw_rect(Rect2(sx - 2.0, sy - 1.0, 5.0, 3.0), c_void)
+	draw_rect(Rect2(sx, sy - 2.0, 1.0, 5.0), c_ice if blue_ring else c_gold)
+	draw_rect(Rect2(sx - 2.0, sy, 5.0, 1.0), c_ice if blue_ring else c_gold)
+	draw_rect(Rect2(sx, sy, 1.0, 1.0), c_cream)
+
+	# Swinging star clapper with bright glint
+	var clap_x: float = roundf(swing)
+	draw_rect(Rect2(clap_x - 1.0, -1.0, 3.0, 4.0), c_void)
+	draw_rect(Rect2(clap_x, 0.0, 1.0, 2.0), c_apr)
+	draw_rect(Rect2(clap_x, 1.0, 1.0, 1.0), c_cream)
+	if turning:
+		draw_rect(Rect2(clap_x - 1.0, 1.0, 1.0, 1.0), c_gold)
+		draw_rect(Rect2(clap_x + 1.0, 1.0, 1.0, 1.0), c_gold)
+
+	# Crown 4-point star finial
+	draw_rect(Rect2(bell_x - 1.0, -15.0, 3.0, 4.0), c_void)
+	draw_rect(Rect2(bell_x - 3.0, -14.0, 7.0, 2.0), c_void)
+	draw_rect(Rect2(bell_x, -15.0, 1.0, 4.0), c_gold)
+	draw_rect(Rect2(bell_x - 2.0, -13.0, 5.0, 1.0), c_gold)
+	draw_rect(Rect2(bell_x, -13.0, 1.0, 1.0), c_cream)
+
+	# Clean resonant chime rings + cardinal chime glints when turning
 	if turning:
 		var ru: float = 1.0 - clampf(_turn_t / TURN_VISUAL_S, 0.0, 1.0)
-		var ring_c: Color = (PAL["ice"] if _ring_color_blue else PAL["gold"]) as Color
-		draw_arc(Vector2(0.0, -4.0), lerpf(8.0, 38.0, ru), 0.0, TAU, 24, Color(ring_c, (1.0 - ru) * 0.85), 1.4)
-		draw_arc(Vector2(0.0, -4.0), lerpf(5.0, 26.0, ru), 0.0, TAU, 18, Color(PAL["cream"] as Color, (1.0 - ru) * 0.65), 1.0)
+		var ring_c: Color = c_ice if _ring_color_blue else c_gold
+		var a_outer: float = (1.0 - ru) * (0.50 if fr else 0.85)
+		var a_inner: float = (1.0 - ru) * (0.42 if fr else 0.68)
+		var r1: float = roundf(lerpf(8.0, 36.0, ru))
+		var r2: float = roundf(lerpf(5.0, 24.0, ru))
+		draw_arc(Vector2(0.0, -5.0), r1, 0.0, TAU, 24, Color(ring_c, a_outer), 1.4)
+		draw_arc(Vector2(0.0, -5.0), r2, 0.0, TAU, 18, Color(c_cream, a_inner), 1.0)
+		for ci: int in range(4):
+			var ca: float = float(ci) * (PI * 0.5)
+			var cp := Vector2(roundf(cos(ca) * r1), roundf(-5.0 + sin(ca) * r1))
+			draw_rect(Rect2(cp, Vector2(1.0, 1.0)), Color(c_cream, a_outer))
 	_draw_signal_pulses()

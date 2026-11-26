@@ -427,22 +427,35 @@ func _draw() -> void:
 		draw_rect(Rect2(-hw - 2.0, -2.0 + wave_off, 1.0, 4.0), fc)
 		draw_rect(Rect2(hw + 1.0, -2.0 - wave_off, 1.0, 4.0), fc)
 	# Drop shadow beneath timber deck (deeper when floating)
-	var sh_y: float = 3.0 if floating else 1.0
-	draw_rect(Rect2(-hw + 1.0, -hh + sh_y, size.x, size.y), Color(c_void, 0.42))
+	var sh_y: float = 3.0 if floating else 2.0
+	draw_rect(Rect2(-hw + 1.0, -hh + sh_y, size.x, size.y), Color(c_void, 0.46))
 
-	# Main timber raft body
+	# Main weathered timber raft body (clearly pops against dusk stone even when grounded!)
 	var deck := Rect2(-hw, -hh - lift, size.x, size.y)
-	var base_c: Color = (PAL["wine"] if floating else PAL["dusk"]) as Color
-	var hi_c: Color = (PAL["apricot"] if floating else PAL["stone"]) as Color
+	var base_c: Color = (PAL["wine"] if floating else PAL["plum"]) as Color
+	var hi_c: Color = (PAL["gold"] if floating else PAL["apricot"]) as Color
+	var plank_hi: Color = (PAL["apricot"] if floating else PAL["stone"]) as Color
 	var sh_c: Color = PAL["night"] as Color
-	LxPhysDraw.draw_bevel_box(self, deck, base_c, hi_c, sh_c, c_void, PAL["gold"] as Color if floating else PAL["mauve"] as Color)
-	# Individual horizontal deck planks + lashing ropes
+	LxPhysDraw.draw_bevel_box(self, deck, base_c, hi_c, sh_c, c_void, PAL["gold"] as Color)
+	# Individual horizontal weathered timber planks with sunlit top highlight & dark seam
 	var py: float = deck.position.y + 5.0
+	var p_idx: int = 0
 	while py < deck.end.y - 3.0:
 		draw_line(Vector2(deck.position.x + 2.0, py), Vector2(deck.end.x - 3.0, py), sh_c, 1.0)
+		draw_line(Vector2(deck.position.x + 2.0, py + 1.0), Vector2(deck.end.x - 3.0, py + 1.0), plank_hi, 1.0)
+		var knot_x: float = deck.position.x + (11.0 if p_idx % 2 == 0 else deck.size.x - 13.0)
+		draw_rect(Rect2(knot_x, py - 2.0, 2.0, 1.0), sh_c)
 		py += 5.0
-	draw_line(Vector2(deck.position.x + 5.0, deck.position.y + 2.0), Vector2(deck.position.x + 5.0, deck.end.y - 3.0), PAL["stone"] as Color, 1.0)
-	draw_line(Vector2(deck.end.x - 6.0, deck.position.y + 2.0), Vector2(deck.end.x - 6.0, deck.end.y - 3.0), PAL["stone"] as Color, 1.0)
+		p_idx += 1
+	# Cross-beam lashings + coiled corner rope bindings (apricot/gold)
+	for lx: float in [deck.position.x + 5.0, deck.end.x - 7.0]:
+		draw_rect(Rect2(lx, deck.position.y + 1.0, 2.0, deck.size.y - 2.0), PAL["apricot"] as Color)
+		draw_rect(Rect2(lx, deck.position.y + 1.0, 1.0, deck.size.y - 3.0), PAL["gold"] as Color)
+		draw_rect(Rect2(lx - 1.0, deck.position.y + 2.0, 4.0, 2.0), PAL["cream"] as Color if floating else PAL["gold"] as Color)
+		draw_rect(Rect2(lx - 1.0, deck.end.y - 4.0, 4.0, 2.0), PAL["cream"] as Color if floating else PAL["gold"] as Color)
+	# Brass bow mooring ring on west rail
+	draw_rect(Rect2(deck.position.x - 2.0, deck.position.y + floorf(size.y * 0.5) - 2.0, 3.0, 4.0), c_void)
+	draw_rect(Rect2(deck.position.x - 1.0, deck.position.y + floorf(size.y * 0.5) - 1.0, 2.0, 2.0), PAL["gold"] as Color)
 
 	# Mount payload (cargo crate OR blue_transformer mirror turret)
 	var center := Vector2(0.0, -lift)

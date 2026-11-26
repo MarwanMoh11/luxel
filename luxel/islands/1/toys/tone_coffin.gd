@@ -301,15 +301,21 @@ func _draw() -> void:
 		_draw_signal_pulses()
 		return
 
-	# Coffin body shadow + beveled carved sarcophagus lid
-	draw_rect(Rect2(r.position + Vector2(1.0, 2.0), r.size), Color(c_void, 0.44))
-	var lid_dark: Color = PAL["deep"] as Color if state == State.FROZEN else c_dusk
+	# Coffin body shadow + stepped 3/4 carved sarcophagus plinth & bevelled lid
+	draw_rect(Rect2(r.position + Vector2(2.0, 3.0), r.size), Color(c_void, 0.48))
+	var lid_dark: Color = PAL["deep"] as Color if state == State.FROZEN else c_night
 	var lid_mid: Color = PAL["sky"] as Color if state == State.FROZEN else (PAL["apricot"] as Color if state == State.SLIDING else c_mauve)
 	var lid_hi: Color = PAL["ice"] as Color if state == State.FROZEN else (PAL["gold"] as Color if state == State.SLIDING else c_stone)
-	LxToyDraw.draw_bevel_box(self, r, lid_dark, lid_mid, lid_hi, c_void)
+	var lid_top: Color = PAL["cream"] as Color if state in [State.FROZEN, State.SLIDING] else c_stone
+	# Stepped stone base + raised chamfered sarcophagus lid
+	LxToyDraw.draw_bevel_box(self, r, c_night, c_dusk, c_mauve, c_void)
+	var cap := Rect2(r.position + Vector2(2.0, 1.0), r.size - Vector2(4.0, 3.0))
+	LxToyDraw.draw_bevel_box(self, cap, lid_dark, lid_mid, lid_hi, c_void)
+	# Crisp sunlit WNW ridge along lid top
+	draw_rect(Rect2(cap.position + Vector2(2.0, 1.0), Vector2(maxf(2.0, cap.size.x - 4.0), 1.0)), lid_top)
 
 	# Carved recessed sarcophagus masonry, brass clasps & iron handles
-	var inner := Rect2(r.position + Vector2(3.0, 3.0), r.size - Vector2(6.0, 6.0))
+	var inner := Rect2(cap.position + Vector2(2.0, 2.0), Vector2(maxf(2.0, cap.size.x - 4.0), maxf(2.0, cap.size.y - 4.0)))
 	draw_rect(inner, c_night, false, 1.0)
 	var clasp_col: Color = PAL["gold"] as Color if state == State.SLIDING else (PAL["ice"] as Color if state == State.FROZEN else PAL["apricot"] as Color)
 	draw_rect(Rect2(r.position + Vector2(2.0, 2.0), Vector2(2.0, 2.0)), clasp_col)
@@ -317,19 +323,19 @@ func _draw() -> void:
 	draw_rect(Rect2(Vector2(r.position.x + 2.0, r.end.y - 4.0), Vector2(2.0, 2.0)), clasp_col)
 	draw_rect(Rect2(r.end - Vector2(4.0, 4.0), Vector2(2.0, 2.0)), clasp_col)
 	if size.x >= size.y:
-		draw_line(Vector2(inner.position.x + 2.0, 0.0), Vector2(inner.end.x - 2.0, 0.0), lid_hi, 1.0)
-		draw_line(Vector2(-3.0, inner.position.y + 1.0), Vector2(-3.0, inner.end.y - 1.0), lid_hi, 1.0)
-		draw_rect(Rect2(r.position.x + 6.0, r.position.y - 1.0, 4.0, 2.0), c_stone)
-		draw_rect(Rect2(r.end.x - 10.0, r.position.y - 1.0, 4.0, 2.0), c_stone)
-		draw_rect(Rect2(r.position.x + 6.0, r.end.y - 1.0, 4.0, 2.0), c_dusk)
-		draw_rect(Rect2(r.end.x - 10.0, r.end.y - 1.0, 4.0, 2.0), c_dusk)
+		draw_line(Vector2(inner.position.x + 2.0, -1.0), Vector2(inner.end.x - 2.0, -1.0), lid_top, 1.0)
+		draw_line(Vector2(-3.0, inner.position.y + 1.0), Vector2(-3.0, inner.end.y - 1.0), lid_top, 1.0)
+		draw_rect(Rect2(r.position.x + 6.0, r.position.y - 1.0, 4.0, 2.0), PAL["gold"] as Color)
+		draw_rect(Rect2(r.end.x - 10.0, r.position.y - 1.0, 4.0, 2.0), PAL["gold"] as Color)
+		draw_rect(Rect2(r.position.x + 6.0, r.end.y - 1.0, 4.0, 2.0), PAL["wine"] as Color)
+		draw_rect(Rect2(r.end.x - 10.0, r.end.y - 1.0, 4.0, 2.0), PAL["wine"] as Color)
 	else:
-		draw_line(Vector2(0.0, inner.position.y + 2.0), Vector2(0.0, inner.end.y - 2.0), lid_hi, 1.0)
-		draw_line(Vector2(inner.position.x + 1.0, -3.0), Vector2(inner.end.x - 1.0, -3.0), lid_hi, 1.0)
-		draw_rect(Rect2(r.position.x - 1.0, r.position.y + 6.0, 2.0, 4.0), c_stone)
-		draw_rect(Rect2(r.end.x - 1.0, r.position.y + 6.0, 2.0, 4.0), c_dusk)
-		draw_rect(Rect2(r.position.x - 1.0, r.end.y - 10.0, 2.0, 4.0), c_stone)
-		draw_rect(Rect2(r.end.x - 1.0, r.end.y - 10.0, 2.0, 4.0), c_dusk)
+		draw_line(Vector2(0.0, inner.position.y + 2.0), Vector2(0.0, inner.end.y - 2.0), lid_top, 1.0)
+		draw_line(Vector2(inner.position.x + 1.0, -3.0), Vector2(inner.end.x - 1.0, -3.0), lid_top, 1.0)
+		draw_rect(Rect2(r.position.x - 1.0, r.position.y + 6.0, 2.0, 4.0), PAL["gold"] as Color)
+		draw_rect(Rect2(r.end.x - 1.0, r.position.y + 6.0, 2.0, 4.0), PAL["wine"] as Color)
+		draw_rect(Rect2(r.position.x - 1.0, r.end.y - 10.0, 2.0, 4.0), PAL["gold"] as Color)
+		draw_rect(Rect2(r.end.x - 1.0, r.end.y - 10.0, 2.0, 4.0), PAL["wine"] as Color)
 
 	# State icon & Dusk ice crystal rim + timer bar
 	if state == State.FROZEN:
@@ -338,7 +344,9 @@ func _draw() -> void:
 		draw_rect(Rect2(r.end - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["cream"] as Color)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, r.position.y - 5.0), 14.0, _freeze_left / maxf(0.1, freeze_secs), PAL["ice"] as Color)
 	elif state == State.SLIDING:
-		LxToyDraw.draw_tone_crest(self, Vector2(0.0, 0.0), "dawn", true)
+		LxToyDraw.draw_tone_crest(self, Vector2(0.0, -1.0), "dawn", true)
 	elif solid_blocker:
-		LxToyDraw.draw_tone_crest(self, Vector2(0.0, 0.0), "war", _pulse_t > 0.0)
+		LxToyDraw.draw_tone_crest(self, Vector2(0.0, -1.0), "war", _pulse_t > 0.0)
+	else:
+		LxToyDraw.draw_tone_crest(self, Vector2(0.0, -1.0), "dawn", _pulse_t > 0.0)
 	_draw_signal_pulses()

@@ -206,73 +206,112 @@ func _draw() -> void:
 	var r := Rect2((-size * 0.5).round(), size.round())
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
+	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
-	LxPhysDraw.draw_shadow_rect(self, r, Vector2(1.0, 3.0), 0.44)
+	var red: bool = LxHudFx.flash_reduced()
+
+	# Grounded 3/4 drop shadow
+	LxPhysDraw.draw_shadow_rect(self, r, Vector2(2.0, 3.0), 0.40)
+	draw_rect(Rect2(r.position.x + 1.0, r.end.y, r.size.x, 2.0), Color(c_void, 0.34))
+
 	var base_c: Color = PAL["mauve"] as Color
 	var hi_c: Color = PAL["stone"] as Color
 	var sh_c: Color = PAL["dusk"] as Color
 	var front_c: Color = c_night
-	var riv_c: Color = biome("hi")
+	var front_rib: Color = PAL["dusk"] as Color
+	var riv_c: Color = c_gold
 	match variant:
 		"ice":
 			base_c = PAL["sky"] as Color
 			hi_c = c_cream
 			sh_c = PAL["blue"] as Color
 			front_c = PAL["deep"] as Color
+			front_rib = PAL["blue"] as Color
 			riv_c = PAL["ice"] as Color
 		"crate":
 			base_c = PAL["apricot"] as Color
-			hi_c = PAL["gold"] as Color
+			hi_c = c_gold
 			sh_c = PAL["wine"] as Color
-			front_c = PAL["wine"] as Color
-			riv_c = c_cream
+			front_c = PAL["plum"] as Color
+			front_rib = PAL["wine"] as Color
+			riv_c = c_gold
 		"slag":
 			if not cooled:
-				var hot: bool = LxHudFx.flash_reduced() or fmod(_clock * 4.0, 1.0) < 0.5
+				var hot: bool = red or fmod(_clock * 4.0, 1.0) < 0.5
 				base_c = PAL["coral"] as Color
-				hi_c = PAL["gold"] as Color if hot else PAL["apricot"] as Color
+				hi_c = c_gold if hot else PAL["apricot"] as Color
 				sh_c = PAL["wine"] as Color
 				front_c = PAL["plum"] as Color
+				front_rib = PAL["wine"] as Color
 				riv_c = c_cream
 			else:
 				base_c = PAL["dusk"] as Color
 				hi_c = PAL["mauve"] as Color
 				sh_c = c_night
-				front_c = c_void
-				riv_c = PAL["stone"] as Color
+				front_c = c_night
+				front_rib = PAL["dusk"] as Color
+				riv_c = c_gold
 	if _flash_t > 0.0:
 		hi_c = c_cream
 
-	# 2.5D top-down block: raised top plateau + shaded front face so it reads as a heavy pushable object
-	var face_h: float = minf(5.0, maxf(3.0, floorf(r.size.y * 0.30)))
+	# True Last Light 3/4 depth: darker recessed south face + sunlit bevelled top plateau
+	var face_h: float = clampf(floorf(r.size.y * 0.34), 4.0, 6.0)
 	var top_r := Rect2(r.position.x, r.position.y - 2.0, r.size.x, r.size.y - face_h + 2.0)
 	var front_r := Rect2(r.position.x, top_r.end.y - 1.0, r.size.x, face_h + 1.0)
-	LxPhysDraw.draw_bevel_box(self, front_r, front_c, sh_c, c_void, c_void)
-	LxPhysDraw.draw_bevel_box(self, top_r, base_c, hi_c, sh_c, c_void, riv_c)
-	# Recessed push-grip notches on left & right flanks
-	var mid_y: float = roundf(top_r.get_center().y)
-	draw_rect(Rect2(top_r.position.x + 1.0, mid_y - 2.0, 1.0, 4.0), c_void)
-	draw_rect(Rect2(top_r.end.x - 2.0, mid_y - 2.0, 1.0, 4.0), c_void)
+	# Recessed dark south face with fluted masonry/timber ribs
+	draw_rect(front_r, c_void)
+	draw_rect(Rect2(front_r.position.x + 1.0, front_r.position.y + 1.0, front_r.size.x - 2.0, front_r.size.y - 2.0), front_c)
+	draw_rect(Rect2(front_r.position.x + 1.0, front_r.position.y + 1.0, front_r.size.x - 2.0, 1.0), sh_c)
+	var fx: float = front_r.position.x + 3.0
+	while fx < front_r.end.x - 3.0:
+		draw_rect(Rect2(fx, front_r.position.y + 2.0, 1.0, maxf(1.0, front_r.size.y - 3.0)), front_rib)
+		fx += 4.0
+	# Raised sunlit bevelled top face
+	LxPhysDraw.draw_bevel_box(self, top_r, base_c, hi_c, sh_c, c_void)
+	draw_rect(Rect2(top_r.position.x + 1.0, top_r.position.y + 1.0, 3.0, 1.0), c_cream)
 
-	# Crisp carved top emblem per variant
+	# Carved cross-groove channels with sunlit inner catch-edge
 	var cx: float = floorf(top_r.get_center().x)
 	var cy: float = floorf(top_r.get_center().y)
+	draw_rect(Rect2(top_r.position.x + 2.0, cy, top_r.size.x - 4.0, 1.0), c_void)
+	draw_rect(Rect2(top_r.position.x + 2.0, cy + 1.0, top_r.size.x - 4.0, 1.0), hi_c)
+	draw_rect(Rect2(cx, top_r.position.y + 2.0, 1.0, top_r.size.y - 4.0), c_void)
+	draw_rect(Rect2(cx + 1.0, top_r.position.y + 2.0, 1.0, top_r.size.y - 4.0), hi_c)
+
+	# Brass corner rivets seated in dark pin recesses
+	for rv: Vector2 in [
+		top_r.position + Vector2(2.0, 2.0),
+		Vector2(top_r.end.x - 4.0, top_r.position.y + 2.0),
+		Vector2(top_r.position.x + 2.0, top_r.end.y - 4.0),
+		Vector2(top_r.end.x - 4.0, top_r.end.y - 4.0),
+	]:
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), c_void)
+		draw_rect(Rect2(rv, Vector2.ONE), riv_c)
+
+	# Recessed push-grip notches on left, right, and south flanks
+	draw_rect(Rect2(top_r.position.x + 1.0, cy - 1.0, 1.0, 3.0), c_void)
+	draw_rect(Rect2(top_r.end.x - 2.0, cy - 1.0, 1.0, 3.0), c_void)
+	draw_rect(Rect2(cx - 2.0, front_r.position.y + 2.0, 5.0, 2.0), c_void)
+	draw_rect(Rect2(cx - 1.0, front_r.position.y + 2.0, 3.0, 1.0), riv_c if variant != "ice" else PAL["ice"] as Color)
+
+	# Variant centerpiece detail seated cleanly at cross-groove junction
 	match variant:
 		"stone":
-			draw_rect(Rect2(cx - 3.0, cy - 2.0, 6.0, 5.0), c_void)
-			draw_rect(Rect2(cx - 2.0, cy - 1.0, 4.0, 3.0), sh_c)
-			draw_rect(Rect2(cx - 1.0, cy, 2.0, 1.0), biome("glow"))
-			draw_rect(Rect2(cx - 2.0, front_r.position.y + 2.0, 4.0, 1.0), sh_c)
+			draw_rect(Rect2(cx - 2.0, cy - 2.0, 5.0, 5.0), c_void)
+			draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 3.0), sh_c)
+			draw_rect(Rect2(cx, cy, 1.0, 1.0), biome("glow"))
 		"ice":
-			draw_line(top_r.position + Vector2(3.0, 2.0), top_r.end - Vector2(4.0, 3.0), PAL["ice"] as Color, 1.0)
+			draw_line(top_r.position + Vector2(3.0, 2.0), top_r.end - Vector2(4.0, 3.0), PAL["ice"] as Color, 1.0, false)
 			draw_rect(Rect2(top_r.position + Vector2(3.0, 2.0), Vector2(3.0, 1.0)), c_cream)
-			draw_rect(Rect2(top_r.end - Vector2(5.0, 3.0), Vector2(2.0, 1.0)), c_cream)
+			draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 3.0), c_cream)
 		"crate":
-			draw_line(top_r.position + Vector2(2.0, 2.0), top_r.end - Vector2(3.0, 2.0), sh_c, 1.0)
-			draw_line(Vector2(top_r.end.x - 3.0, top_r.position.y + 2.0), Vector2(top_r.position.x + 2.0, top_r.end.y - 2.0), sh_c, 1.0)
+			draw_line(top_r.position + Vector2(3.0, 3.0), top_r.end - Vector2(4.0, 3.0), sh_c, 1.0, false)
+			draw_line(Vector2(top_r.end.x - 4.0, top_r.position.y + 3.0), Vector2(top_r.position.x + 3.0, top_r.end.y - 3.0), sh_c, 1.0, false)
+			draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 3.0), c_gold)
+			draw_rect(Rect2(cx, cy, 1.0, 1.0), c_cream)
 		"slag":
-			var crack_c: Color = PAL["gold"] as Color if not cooled else c_night
-			draw_line(Vector2(cx - 4.0, cy - 1.0), Vector2(cx, cy + 1.0), crack_c, 1.0)
-			draw_line(Vector2(cx, cy + 1.0), Vector2(cx + 4.0, cy - 2.0), crack_c, 1.0)
+			var crack_c: Color = c_gold if not cooled else c_night
+			draw_line(Vector2(cx - 4.0, cy - 1.0), Vector2(cx, cy + 1.0), crack_c, 1.0, false)
+			draw_line(Vector2(cx, cy + 1.0), Vector2(cx + 4.0, cy - 2.0), crack_c, 1.0, false)
 			if not cooled:
 				draw_rect(Rect2(cx - 1.0, cy, 2.0, 1.0), c_cream)

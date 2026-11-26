@@ -397,26 +397,49 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_deep: Color = PAL["deep"] as Color
 	var c_pine: Color = PAL["pine"] as Color
 	var c_teal: Color = PAL["teal"] as Color
 	var c_jade: Color = PAL["jade"] as Color
 	var c_lime: Color = PAL["lime"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var c_blue: Color = PAL["blue"] as Color
 	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var frz: bool = is_frozen()
+	var red: bool = LxHudFx.flash_reduced()
+	var sh: Color = c_deep if frz else c_pine
+	var md: Color = c_blue if frz else c_teal
+	var hi: Color = c_sky if frz else c_jade
+	var tip: Color = c_ice if frz else c_lime
+	var dew: Color = c_cream if (frz or red or int(floorf(_clock * 4.0)) % 2 == 0) else c_gold
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
 	var x0: float = floorf(-w * 0.5)
 	var y0: float = floorf(-h * 0.5)
 
 	if stage == Stage.SEED:
-		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 4.0), 5.0, 2.0)
-		draw_rect(Rect2(-4.0, -3.0, 8.0, 7.0), c_void)
-		draw_rect(Rect2(-3.0, -2.0, 6.0, 5.0), PAL["deep"] as Color if frz else c_pine)
-		draw_rect(Rect2(-2.0, -1.0, 4.0, 3.0), c_sky if frz else c_teal)
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 1.0), c_ice if frz else c_jade)
+		# Grounded soil shadow & lush coiled bulb with veined basal leaves
+		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 4.0), 7.5, 2.8)
+		draw_rect(Rect2(-6.0, 1.0, 12.0, 4.0), c_void)
+		draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), PAL["night"] as Color)
+		# Left & right veined leaves cradling the coiled bulb
+		draw_rect(Rect2(-7.0, -2.0, 5.0, 5.0), c_void)
+		draw_rect(Rect2(2.0, -2.0, 5.0, 5.0), c_void)
+		draw_rect(Rect2(-6.0, -1.0, 4.0, 3.0), md)
+		draw_rect(Rect2(2.0, -1.0, 4.0, 3.0), md)
+		draw_rect(Rect2(-6.0, -1.0, 3.0, 1.0), hi)
+		draw_rect(Rect2(3.0, -1.0, 3.0, 1.0), hi)
+		draw_rect(Rect2(-5.0, 0.0, 2.0, 1.0), tip)
+		# Coiled teardrop bud in center
+		draw_rect(Rect2(-4.0, -5.0, 8.0, 8.0), c_void)
+		draw_rect(Rect2(-2.0, -7.0, 4.0, 3.0), c_void)
+		draw_rect(Rect2(-3.0, -4.0, 6.0, 6.0), sh)
+		draw_rect(Rect2(-3.0, -4.0, 5.0, 5.0), md)
+		draw_rect(Rect2(-2.0, -5.0, 4.0, 4.0), hi)
+		draw_rect(Rect2(-1.0, -6.0, 2.0, 3.0), tip)
+		draw_rect(Rect2(0.0, -6.0, 1.0, 1.0), dew)
 		if frz:
 			LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -1.0), 1, true, c_sky, c_ice)
 			LxToyDraw.draw_bar(self, Vector2(-6.0, 6.0), 12.0, clampf(frozen_t / frost_secs, 0.0, 1.0), c_ice, c_sky)
@@ -425,69 +448,89 @@ func _draw() -> void:
 		return
 
 	if stage == Stage.SPROUT:
-		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 4.0), 6.0, 2.0)
-		draw_rect(Rect2(-5.0, -5.0, 10.0, 9.0), c_void)
-		draw_rect(Rect2(-4.0, -4.0, 8.0, 7.0), c_teal)
-		draw_rect(Rect2(-3.0, -3.0, 6.0, 5.0), c_jade)
-		draw_rect(Rect2(-1.0, -4.0, 2.0, 3.0), c_lime)
+		# Unfurling luminous bud & twin veined fronds
+		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 8.5, 2.8)
+		draw_rect(Rect2(-9.0, -3.0, 7.0, 6.0), c_void)
+		draw_rect(Rect2(2.0, -3.0, 7.0, 6.0), c_void)
+		draw_rect(Rect2(-8.0, -2.0, 6.0, 4.0), md)
+		draw_rect(Rect2(2.0, -2.0, 6.0, 4.0), md)
+		draw_rect(Rect2(-8.0, -2.0, 5.0, 2.0), hi)
+		draw_rect(Rect2(3.0, -2.0, 5.0, 2.0), hi)
+		draw_rect(Rect2(-7.0, -2.0, 2.0, 1.0), tip)
+		draw_rect(Rect2(5.0, -2.0, 2.0, 1.0), tip)
+		# Rising glowing blossom bud
+		draw_circle(Vector2(0.0, -4.0), 7.0, Color(tip, 0.22))
+		draw_rect(Rect2(-5.0, -7.0, 10.0, 10.0), c_void)
+		draw_rect(Rect2(-3.0, -9.0, 6.0, 3.0), c_void)
+		draw_rect(Rect2(-4.0, -6.0, 8.0, 8.0), md)
+		draw_rect(Rect2(-3.0, -7.0, 6.0, 7.0), hi)
+		draw_rect(Rect2(-2.0, -8.0, 4.0, 5.0), tip)
+		draw_rect(Rect2(-1.0, -7.0, 2.0, 3.0), dew)
+		draw_rect(Rect2(-6.0, -6.0, 1.0, 1.0), dew)
+		draw_rect(Rect2(5.0, -7.0, 1.0, 1.0), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-6.0, 6.0), 12.0, growth, c_lime)
 		return
 
 	match grow_kind:
 		"bridge":
-			draw_rect(Rect2(x0, y0 + h, w, 2.0), c_void)
-			LxToyDraw.draw_bevel_box(
-				self, Rect2(x0, y0, w, h),
-				PAL["deep"] as Color if frz else c_pine,
-				c_sky if frz else c_teal,
-				c_ice if frz else c_lime,
-				c_void
-			)
-			var rx: float = x0 + 4.0
+			# Sculpted multi-petal luminous lily-pad / bridge canopy with veined fronds & dew tips
+			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, floorf(h * 0.5) + 1.0), w * 0.48, 3.0)
+			# Rounded organic canopy silhouette (chamfered corners + stepped underside)
+			draw_rect(Rect2(x0 + 2.0, y0 - 1.0, maxf(4.0, w - 4.0), h + 3.0), c_void)
+			draw_rect(Rect2(x0, y0 + 1.0, w, maxf(4.0, h - 1.0)), c_void)
+			# Deep shaded lower rim
+			draw_rect(Rect2(x0 + 1.0, y0 + h - 2.0, w - 2.0, 3.0), sh)
+			# Overlapping sculpted lily-pad petal lobes
+			draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, maxf(3.0, h - 3.0)), md)
+			draw_rect(Rect2(x0 + 3.0, y0, maxf(4.0, w - 6.0), maxf(3.0, h - 3.0)), hi)
+			draw_rect(Rect2(x0 + 4.0, y0, maxf(4.0, w - 8.0), 2.0), tip)
+			# Central luminous frond spine & radiating leaf veins + petal notches
+			var mid_y: float = floorf(y0 + h * 0.5) - 1.0
+			draw_rect(Rect2(x0 + 3.0, mid_y, maxf(4.0, w - 6.0), 2.0), tip)
+			draw_rect(Rect2(x0 + 4.0, mid_y, maxf(2.0, w - 8.0), 1.0), dew)
+			var rx: float = x0 + 5.0
 			while rx < x0 + w - 4.0:
-				draw_rect(Rect2(rx, y0 + 2.0, 2.0, h - 4.0), c_ice if frz else c_jade)
-				draw_rect(Rect2(rx, y0 + 2.0, 1.0, 2.0), c_cream if frz else c_lime)
+				# Petal notch shadow on north & south edge
+				draw_rect(Rect2(rx + 2.0, y0, 1.0, 2.0), sh)
+				draw_rect(Rect2(rx + 2.0, y0 + h - 3.0, 1.0, 2.0), c_void)
+				# Branching diagonal leaf veins & glowing dew tips
+				draw_rect(Rect2(rx, y0 + 2.0, 1.0, maxf(2.0, h - 5.0)), hi)
+				draw_rect(Rect2(rx - 1.0, y0 + 2.0, 1.0, 2.0), tip)
+				draw_rect(Rect2(rx, y0 + 1.0, 1.0, 1.0), c_cream if frz else dew)
+				draw_rect(Rect2(rx - 1.0, y0 + h - 4.0, 1.0, 1.0), tip)
 				rx += 6.0
 		"bounce":
-			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.5)
+			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.8)
 			draw_rect(Rect2(-4.0, 0.0, 8.0, 6.0), c_void)
-			draw_rect(Rect2(-3.0, 1.0, 6.0, 4.0), c_sky if frz else c_teal)
-			draw_rect(Rect2(-1.0, 1.0, 2.0, 4.0), c_ice if frz else c_jade)
-			LxToyDraw.draw_bevel_box(
-				self, Rect2(-8.0, -7.0, 16.0, 9.0),
-				PAL["deep"] as Color if frz else c_pine,
-				c_sky if frz else c_jade,
-				c_ice if frz else c_lime,
-				c_void
-			)
-			draw_rect(Rect2(-6.0, -8.0, 12.0, 2.0), c_ice if frz else c_lime)
-			draw_rect(Rect2(-4.0, -6.0, 8.0, 2.0), c_cream)
+			draw_rect(Rect2(-3.0, 1.0, 6.0, 4.0), md)
+			draw_rect(Rect2(-1.0, 1.0, 2.0, 4.0), hi)
+			draw_rect(Rect2(-9.0, -7.0, 18.0, 9.0), c_void)
+			draw_rect(Rect2(-7.0, -9.0, 14.0, 11.0), c_void)
+			draw_rect(Rect2(-8.0, -6.0, 16.0, 7.0), md)
+			draw_rect(Rect2(-6.0, -8.0, 12.0, 7.0), hi)
+			draw_rect(Rect2(-5.0, -8.0, 10.0, 3.0), tip)
+			draw_rect(Rect2(-3.0, -7.0, 6.0, 2.0), c_cream)
 			if bounce_dir.length_squared() > 0.01:
-				LxPixelGlyphs.draw_dir_chevron(self, (bounce_dir * 8.0).round(), bounce_dir, c_cream, c_ice if frz else c_lime)
+				LxPixelGlyphs.draw_dir_chevron(self, (bounce_dir * 8.0).round(), bounce_dir, c_cream, tip)
 		"wall":
-			draw_rect(Rect2(x0 + 1.0, y0 + h, w - 2.0, 2.0), c_void)
-			LxToyDraw.draw_bevel_box(
-				self, Rect2(x0, y0 - 3.0, w, h + 3.0),
-				PAL["deep"] as Color if frz else c_pine,
-				c_sky if frz else c_teal,
-				c_ice if frz else c_jade,
-				c_void
-			)
-			draw_rect(Rect2(x0 + 2.0, y0 - 1.0, w - 4.0, 2.0), c_ice if frz else c_lime)
+			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, floorf(h * 0.5) + 1.0), w * 0.46, 2.4)
+			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 - 3.0, w, h + 3.0), sh, md, hi, c_void)
+			draw_rect(Rect2(x0 + 2.0, y0 - 1.0, w - 4.0, 2.0), tip)
 			for tx: float in [x0 + 2.0, -1.0, x0 + w - 4.0]:
 				draw_rect(Rect2(tx, y0 - 5.0, 2.0, 2.0), c_void)
-				draw_rect(Rect2(tx, y0 - 4.0, 1.0, 2.0), c_ice if frz else c_lime)
-			LxToyDraw.draw_shape_glyph(self, Vector2(0.0, 0.0), 1 if frz else 4, true, c_sky if frz else c_pine, c_ice if frz else c_lime)
+				draw_rect(Rect2(tx, y0 - 4.0, 1.0, 2.0), tip)
+			LxToyDraw.draw_shape_glyph(self, Vector2.ZERO, 1 if frz else 4, true, c_sky if frz else c_pine, tip)
 		"fruit":
-			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 7.0, 2.5)
+			LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 7.5, 2.8)
 			draw_rect(Rect2(-3.0, -1.0, 6.0, 7.0), c_void)
-			draw_rect(Rect2(-2.0, 0.0, 4.0, 5.0), c_teal)
-			draw_rect(Rect2(-6.0, 2.0, 12.0, 3.0), c_pine)
-			draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), c_jade)
+			draw_rect(Rect2(-2.0, 0.0, 4.0, 5.0), md)
+			draw_rect(Rect2(-7.0, 1.0, 14.0, 4.0), c_void)
+			draw_rect(Rect2(-6.0, 2.0, 12.0, 2.0), hi)
 			draw_rect(Rect2(-6.0, -10.0, 12.0, 10.0), c_void)
-			draw_rect(Rect2(-5.0, -9.0, 10.0, 8.0), c_sky if frz else c_jade)
+			draw_rect(Rect2(-5.0, -9.0, 10.0, 8.0), c_sky if frz else hi)
 			draw_rect(Rect2(-4.0, -8.0, 8.0, 6.0), c_ice if frz else c_gold)
 			draw_rect(Rect2(-2.0, -7.0, 4.0, 3.0), c_cream)
+			draw_rect(Rect2(-1.0, -11.0, 2.0, 2.0), tip)
 	if frz:
 		LxToyDraw.draw_bar(self, Vector2(-6.0, floorf(h * 0.5) + 3.0), 12.0, clampf(frozen_t / frost_secs, 0.0, 1.0), c_ice, c_sky)
 	elif decay_secs > 0.0 and growth < 0.99:

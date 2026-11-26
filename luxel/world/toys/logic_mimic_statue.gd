@@ -18,6 +18,8 @@ var _move_t: float = 0.0
 var _blocked_t: float = 0.0
 var _last_plat_id: int = -1
 var _last_plat_pos: Vector2 = Vector2.ZERO
+var _vis_awake: bool = false
+var _vis_look_x: int = 0
 
 
 func _toy_setup() -> void:
@@ -109,6 +111,16 @@ func tick(dt: float) -> void:
 	if _ride_moving_platform():
 		dirty = true
 	var wp: Vector2 = wick_pos()
+	var awake_now: bool = wp.x > -9000.0 and wp.distance_to(pos) <= link_range
+	var look_now: int = 0
+	if awake_now:
+		var dx_w: float = wp.x - pos.x
+		if absf(dx_w) > 10.0:
+			look_now = 1 if dx_w > 0.0 else -1
+	if awake_now != _vis_awake or look_now != _vis_look_x:
+		_vis_awake = awake_now
+		_vis_look_x = look_now
+		dirty = true
 	if wp.x < -9000.0:
 		if dirty:
 			queue_redraw()
@@ -252,35 +264,84 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_coral: Color = PAL["coral"] as Color
 	var dim_face: bool = not _world_face_active()
-	var c_glow: Color = PAL["ice"] as Color if _move_t > 0.0 else (PAL["sky"] as Color)
+	var active_mimic: bool = _move_t > 0.0
+	var c_glow: Color = c_gold if active_mimic else (c_ice if _vis_awake else c_sky)
 	var trip: Array[Color] = LxToyDraw.skin_triplet(island_id, skin)
+
 	if dim_face:
-		draw_rect(Rect2(-5.0, -9.0, 10.0, 14.0), Color(PAL["sky"] as Color, 0.25), false, 1.0)
+		draw_rect(Rect2(-6.0, -12.0, 12.0, 17.0), Color(c_sky, 0.28), false, 1.0)
+		draw_rect(Rect2(-5.0, -15.0, 2.0, 3.0), Color(c_sky, 0.28), false, 1.0)
+		draw_rect(Rect2(3.0, -15.0, 2.0, 3.0), Color(c_sky, 0.28), false, 1.0)
 		return
 
+	# Grounded shadow (respects puzzle shadow_mode)
 	if shadow_mode == "nw_wrong":
-		LxToyDraw.draw_contact_shadow(self, Vector2(-3.0, -3.0), 6.0, 2.5)
+		LxToyDraw.draw_contact_shadow(self, Vector2(-3.0, -2.0), 7.0, 3.0)
 	elif shadow_mode != "none":
-		LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 5.0), 6.0, 2.5)
-	# Beveled plinth
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, 0.0, 12.0, 6.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
-	# Cloaked Wick stone statue silhouette (pointed hood + cape shoulders)
-	draw_rect(Rect2(-3.0, -13.0, 6.0, 3.0), c_void)
-	draw_rect(Rect2(-5.0, -10.0, 10.0, 11.0), c_void)
-	draw_rect(Rect2(-2.0, -12.0, 4.0, 2.0), PAL["stone"] as Color)
-	draw_rect(Rect2(-4.0, -9.0, 8.0, 9.0), PAL["dusk"] as Color)
-	draw_rect(Rect2(-3.0, -9.0, 6.0, 8.0), PAL["mauve"] as Color)
-	draw_rect(Rect2(-3.0, -10.0, 5.0, 2.0), PAL["stone"] as Color)
-	draw_rect(Rect2(-4.0, -4.0, 1.0, 4.0), PAL["stone"] as Color)
-	draw_rect(Rect2(3.0, -4.0, 1.0, 4.0), trip[0])
-	# Recessed face + glowing eyes
-	draw_rect(Rect2(-2.0, -7.0, 4.0, 3.0), PAL["night"] as Color)
-	var eye_c: Color = (PAL["coral"] as Color) if _blocked_t > 0.0 else (PAL["cream"] as Color if _move_t > 0.0 else c_glow)
-	draw_rect(Rect2(-2.0, -6.0, 1.0, 1.0), eye_c)
-	draw_rect(Rect2(1.0, -6.0, 1.0, 1.0), eye_c)
+		LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 6.0), 7.0, 3.0)
+
+	# Bevelled stone plinth with carved mirror-axis sigil
+	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, 0.0, 14.0, 6.0), c_night, c_dusk, c_stone, c_void)
+	draw_rect(Rect2(-6.0, 0.0, 12.0, 1.0), c_stone)
+
+	# Carved Owl / Sentinel Bust silhouette: winged shoulders + feathered chest
+	draw_rect(Rect2(-7.0, -7.0, 14.0, 8.0), c_void)
+	draw_rect(Rect2(-6.0, -6.0, 12.0, 6.0), c_dusk)
+	draw_rect(Rect2(-5.0, -6.0, 10.0, 5.0), c_mauve)
+	draw_rect(Rect2(-6.0, -6.0, 2.0, 5.0), c_stone)
+	draw_rect(Rect2(4.0, -5.0, 2.0, 4.0), trip[0])
+	# Sculpted chest feather chevrons
+	draw_rect(Rect2(-3.0, -4.0, 6.0, 1.0), c_night)
+	draw_rect(Rect2(-2.0, -3.0, 4.0, 1.0), c_stone)
+	draw_rect(Rect2(-1.0, -2.0, 2.0, 1.0), c_night)
+
+	# Carved owl head + swept ear-tufts (sentinel horns)
+	draw_rect(Rect2(-6.0, -14.0, 12.0, 8.0), c_void)
+	draw_rect(Rect2(-7.0, -16.0, 4.0, 4.0), c_void)
+	draw_rect(Rect2(3.0, -16.0, 4.0, 4.0), c_void)
+	# Ear-tufts (light up slightly when actively mimicking)
+	var tuft_hi: Color = c_gold if active_mimic else c_stone
+	draw_rect(Rect2(-6.0, -15.0, 2.0, 3.0), c_mauve)
+	draw_rect(Rect2(-6.0, -15.0, 1.0, 2.0), tuft_hi)
+	draw_rect(Rect2(4.0, -15.0, 2.0, 3.0), c_mauve)
+	draw_rect(Rect2(5.0, -15.0, 1.0, 2.0), c_dusk if not active_mimic else c_gold)
+	# Head brow & crown
+	draw_rect(Rect2(-5.0, -13.0, 10.0, 6.0), c_mauve)
+	draw_rect(Rect2(-5.0, -13.0, 8.0, 1.0), c_stone)
+	draw_rect(Rect2(-4.0, -14.0, 8.0, 1.0), c_stone)
+	draw_rect(Rect2(-3.0, -14.0, 4.0, 1.0), c_cream if active_mimic else c_stone)
+
+	# Recessed owl facial discs + glinting tracking eyes (sky / gold)
+	draw_rect(Rect2(-4.0, -12.0, 3.0, 4.0), c_night)
+	draw_rect(Rect2(1.0, -12.0, 3.0, 4.0), c_night)
+	# Carved beak between eyes
+	draw_rect(Rect2(-1.0, -9.0, 2.0, 2.0), c_gold if active_mimic else c_stone)
+	draw_rect(Rect2(0.0, -8.0, 1.0, 1.0), c_void)
+
+	var eye_base: Color = c_coral if _blocked_t > 0.0 else (c_gold if active_mimic else (c_sky if _vis_awake else c_dusk))
+	var eye_glint: Color = c_cream if (_blocked_t <= 0.0 and (active_mimic or _vis_awake)) else (PAL["apricot"] as Color if _blocked_t > 0.0 else c_sky)
+	var gx_off: float = 1.0 if _vis_look_x > 0 else 0.0
+	# Left eye & right eye (2x2 awakened or 2x1 dormant slit)
+	var eh: float = 2.0 if (_vis_awake or active_mimic or _blocked_t > 0.0) else 1.0
+	draw_rect(Rect2(-4.0, -11.0, 2.0, eh), eye_base)
+	draw_rect(Rect2(2.0, -11.0, 2.0, eh), eye_base)
+	if eh >= 2.0:
+		draw_rect(Rect2(-4.0 + gx_off, -11.0, 1.0, 1.0), eye_glint)
+		draw_rect(Rect2(2.0 + gx_off, -11.0, 1.0, 1.0), eye_glint)
+
 	# Mirror axis rune on pedestal (vertical = X mirror, horizontal = Y mirror, cross = both)
+	var rune_c: Color = c_cream if active_mimic else c_glow
 	if mirror_mode == "x" or mirror_mode == "both":
-		draw_rect(Rect2(0.0, 1.0, 1.0, 4.0), c_glow)
+		draw_rect(Rect2(0.0, 1.0, 1.0, 4.0), rune_c)
 	if mirror_mode == "y" or mirror_mode == "both":
-		draw_rect(Rect2(-2.0, 2.0, 5.0, 1.0), c_glow)
+		draw_rect(Rect2(-2.0, 2.0, 5.0, 1.0), rune_c)

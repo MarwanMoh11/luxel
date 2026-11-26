@@ -164,35 +164,75 @@ func _draw() -> void:
 	var h: float = roundf(size.y)
 	var x0: float = floorf(-w * 0.5)
 	var y0: float = floorf(-h * 0.5)
-	var trip: Array[Color] = LxToyDraw.skin_triplet(island_id, skin)
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
-	var c_stone: Color = PAL["stone"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
 	var c_mauve: Color = PAL["mauve"] as Color
-	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var latched_on: bool = latch_mode and powered
 
-	# Outer recessed stone rim
-	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), c_night, PAL["dusk"] as Color, c_mauve, c_void)
-	# Corner bolts
-	for cx: float in [x0 + 2.0, x0 + w - 3.0]:
-		for cy: float in [y0 + 2.0, y0 + h - 3.0]:
-			draw_rect(Rect2(cx, cy, 1.0, 1.0), c_glow if powered else c_stone)
+	# Crisp cream/gold outer halo when latched & solved
+	if latched_on:
+		draw_rect(Rect2(x0 - 1.0, y0 - 1.0, w + 2.0, h + 2.0), c_gold, false, 1.0)
+		var glint_ok: bool = LxHudFx.flash_reduced() or int(floorf(_clock * 4.0)) % 2 == 0
+		if glint_ok:
+			for hx: float in [x0 - 1.0, x0 + w]:
+				for hy: float in [y0 - 1.0, y0 + h]:
+					draw_rect(Rect2(hx, hy, 1.0, 1.0), c_cream)
 
-	# Moving inner slab (drops 2px when pressed)
-	var drop: float = roundf(_press_t * 2.0)
+	# Grounded floor lip shadow for strong contrast on dusk floors
+	draw_rect(Rect2(x0 + 1.0, y0 + h, w, 2.0), Color(c_void, 0.38))
+
+	# Heavy bevelled outer stone socket frame (high-contrast stone highlight rim)
+	var rim_hi: Color = c_cream if latched_on else (c_gold if powered else c_stone)
+	var rim_mid: Color = c_apricot if latched_on else (c_dusk if powered else c_mauve)
+	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), c_night, rim_mid, rim_hi, c_void)
+
+	# Recessed dark pit inside the socket frame
 	var iw: float = maxf(6.0, w - 6.0)
 	var ih: float = maxf(6.0, h - 6.0)
 	var ix: float = floorf(-iw * 0.5)
-	var iy: float = floorf(-ih * 0.5) - 1.0 + drop
-	if drop < 2.0:
-		draw_rect(Rect2(ix, iy + ih, iw, 2.0 - drop), c_void)
-	var slab_mid: Color = trip[1] if powered else c_mauve
-	var slab_hi: Color = c_cream if powered else c_stone
-	var slab_dark: Color = trip[0] if powered else PAL["dusk"] as Color
-	LxToyDraw.draw_bevel_box(self, Rect2(ix, iy, iw, ih), slab_dark, slab_mid, slab_hi, c_void)
+	var pit_y: float = floorf(-ih * 0.5)
+	draw_rect(Rect2(ix - 1.0, pit_y - 1.0, iw + 2.0, ih + 2.0), c_void)
+	draw_rect(Rect2(ix, pit_y, iw, ih), c_night)
 
-	# Greyscale-distinct center glyph: hollow square when up, bright filled diamond when down
+	# Chunky brass corner rivets (apricot idle -> gold pressed -> cream latched)
+	var rivet_c: Color = c_cream if latched_on else (c_gold if powered else c_apricot)
+	for cx: float in [x0 + 1.0, x0 + w - 3.0]:
+		for cy: float in [y0 + 1.0, y0 + h - 3.0]:
+			draw_rect(Rect2(cx, cy, 2.0, 2.0), c_void)
+			draw_rect(Rect2(cx, cy, 1.0, 1.0), rivet_c)
+
+	# Moving inner stone slab (raised proud when unpressed, sunken recessed when pressed)
+	var drop: float = roundf(_press_t * 2.0)
+	var iy: float = pit_y - 2.0 + drop
+	if drop < 2.0:
+		# Raised south skirt wall showing vertical height when unpressed
+		var skirt_h: float = 2.0 - drop
+		draw_rect(Rect2(ix, iy + ih, iw, skirt_h + 1.0), c_void)
+		draw_rect(Rect2(ix + 1.0, iy + ih, iw - 2.0, skirt_h), c_dusk)
+	var slab_dark: Color = c_wine if powered else c_dusk
+	var slab_mid: Color = c_coral if powered else c_mauve
+	var slab_hi: Color = c_gold if powered else c_stone
+	LxToyDraw.draw_bevel_box(self, Rect2(ix, iy, iw, ih), slab_dark, slab_mid, slab_hi, c_void)
+	if not powered:
+		# Sunlit crisp top-left slab bevel for instant readability on dusk tiles
+		draw_rect(Rect2(ix + 1.0, iy + 1.0, iw - 3.0, 1.0), c_stone)
+		draw_rect(Rect2(ix + 1.0, iy + 1.0, 1.0, 1.0), c_cream)
+	else:
+		# Recessed inner press shadow + glowing warm cardinal channels
+		draw_rect(Rect2(ix + 1.0, iy + 1.0, iw - 2.0, 1.0), c_wine)
+		draw_rect(Rect2(ix + 2.0, iy + floorf(ih * 0.5), iw - 4.0, 1.0), c_gold)
+		draw_rect(Rect2(floorf(ix + iw * 0.5), iy + 2.0, 1.0, ih - 4.0), c_gold)
+
+	# Centre sigil: warm coral/gold lit diamond when pressed, crisp carved glyph when up
 	var shape_i: int = 1 if powered else (3 if latch_mode else 0)
-	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, iy + floorf(ih * 0.5)), shape_i, powered, c_glow if powered else c_mauve, c_cream if powered else c_stone)
+	var g_main: Color = c_gold if powered else c_dusk
+	var g_hi: Color = c_cream if powered else c_stone
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, iy + floorf(ih * 0.5)), shape_i, powered, g_main, g_hi)
 	_draw_signal_pulses()

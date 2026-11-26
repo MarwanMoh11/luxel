@@ -401,43 +401,54 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, -14.0, 2.0, 28.0), c_void)
 		draw_rect(Rect2(-1.0, -13.0, 1.0, 26.0), PAL["dusk"] as Color)
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	# Mossy leaf cradle beneath the droplet
-	draw_rect(Rect2(-7.0, 2.0, 14.0, 4.0), c_void)
-	draw_rect(Rect2(-6.0, 3.0, 12.0, 2.0), c_pine)
-	draw_rect(Rect2(-4.0, 3.0, 8.0, 1.0), c_jade)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.5)
+	# Sculpted 3-leaf mossy petal cradle beneath the droplet
+	draw_rect(Rect2(-8.0, 2.0, 16.0, 5.0), c_void)
+	draw_rect(Rect2(-7.0, 3.0, 14.0, 3.0), c_pine)
+	draw_rect(Rect2(-6.0, 2.0, 4.0, 2.0), PAL["teal"] as Color)
+	draw_rect(Rect2(2.0, 2.0, 4.0, 2.0), PAL["teal"] as Color)
+	draw_rect(Rect2(-4.0, 3.0, 8.0, 2.0), c_jade)
+	draw_rect(Rect2(-3.0, 3.0, 4.0, 1.0), PAL["lime"] as Color)
 
 	if is_frozen():
 		# Faceted hexagonal ice crystal prism (clearly distinct from round liquid drop in greyscale)
 		var hex := PackedVector2Array([
-			Vector2(0.0, -8.0), Vector2(7.0, -4.0), Vector2(7.0, 3.0),
-			Vector2(0.0, 7.0), Vector2(-7.0, 3.0), Vector2(-7.0, -4.0),
+			Vector2(0.0, -9.0), Vector2(8.0, -4.0), Vector2(8.0, 3.0),
+			Vector2(0.0, 7.0), Vector2(-8.0, 3.0), Vector2(-8.0, -4.0),
 		])
 		draw_colored_polygon(hex, c_void)
 		var inner := PackedVector2Array([
-			Vector2(0.0, -6.0), Vector2(5.0, -3.0), Vector2(5.0, 2.0),
-			Vector2(0.0, 5.0), Vector2(-5.0, 2.0), Vector2(-5.0, -3.0),
+			Vector2(0.0, -7.0), Vector2(6.0, -3.0), Vector2(6.0, 2.0),
+			Vector2(0.0, 5.0), Vector2(-6.0, 2.0), Vector2(-6.0, -3.0),
 		])
-		draw_colored_polygon(inner, c_sky)
-		draw_rect(Rect2(-2.0, -5.0, 4.0, 4.0), c_ice)
-		draw_rect(Rect2(-1.0, -4.0, 2.0, 2.0), c_cream)
+		draw_colored_polygon(inner, c_blue)
+		var top_facet := PackedVector2Array([
+			Vector2(0.0, -7.0), Vector2(5.0, -3.0), Vector2(0.0, 0.0), Vector2(-5.0, -3.0),
+		])
+		draw_colored_polygon(top_facet, c_sky)
+		draw_rect(Rect2(-2.0, -5.0, 4.0, 3.0), c_ice)
+		draw_rect(Rect2(-2.0, -5.0, 2.0, 2.0), c_cream)
 		# 3-way split pips
-		draw_rect(Rect2(-6.0, -6.0, 2.0, 1.0), c_cream)
-		draw_rect(Rect2(4.0, -6.0, 2.0, 1.0), c_cream)
-		draw_rect(Rect2(-1.0, -9.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-6.0, -7.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(4.0, -7.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, -10.0, 2.0, 1.0), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / frozen_secs, 0.0, 1.0), c_ice, c_sky)
 	else:
-		# Translucent rounded dewdrop orb
-		draw_circle(Vector2(0.0, -1.0), 7.0, c_void)
-		draw_circle(Vector2(0.0, -1.0), 6.0, c_deep)
-		draw_circle(Vector2(0.0, -1.5), 5.0, c_blue)
-		draw_circle(Vector2(-0.5, -2.0), 4.0, c_sky)
+		# Translucent domed water-droplet orb with curved specular crescent & warm caustic base
+		draw_circle(Vector2(0.0, -1.0), 8.0, c_void)
+		draw_circle(Vector2(0.0, -1.0), 7.0, c_deep)
+		draw_circle(Vector2(0.0, -1.5), 6.0, c_blue)
+		draw_circle(Vector2(-0.5, -2.0), 4.5, c_sky)
+		draw_arc(Vector2(0.0, -1.0), 6.0, PI * 0.9, PI * 1.55, 10, c_ice, 1.0)
 		draw_rect(Rect2(-3.0, -5.0, 3.0, 2.0), c_ice)
-		draw_rect(Rect2(-2.0, -5.0, 2.0, 1.0), c_cream)
-		# Subtle caustic reflection at base
-		draw_rect(Rect2(-2.0, 2.0, 4.0, 1.0), c_ice)
+		draw_rect(Rect2(-3.0, -5.0, 2.0, 1.0), c_cream)
+		var shim: bool = LxHudFx.flash_reduced() or int(floorf(_glint_t * 3.0)) % 2 == 0
+		draw_rect(Rect2(-2.0, 2.0, 4.0, 1.0), c_cream if shim else c_ice)
+		draw_rect(Rect2(2.0, 1.0, 2.0, 1.0), c_gold)
 		if is_movable():
-			# Crisp corner push-pips so player immediately reads rollability
+			# Crisp brass/cream corner roll-pips so player immediately reads rollability
+			draw_rect(Rect2(-9.0, -2.0, 2.0, 3.0), c_void)
+			draw_rect(Rect2(7.0, -2.0, 2.0, 3.0), c_void)
 			draw_rect(Rect2(-8.0, -1.0, 1.0, 2.0), c_cream)
 			draw_rect(Rect2(7.0, -1.0, 1.0, 2.0), c_cream)
 

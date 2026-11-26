@@ -31,6 +31,8 @@ func tick(dt: float) -> void:
 	if _pulse_t > 0.0:
 		_pulse_t = maxf(0.0, _pulse_t - dt)
 		queue_redraw()
+	elif hooked and not LxHudFx.flash_reduced():
+		queue_redraw()
 	if not active:
 		return
 	var lan: LxLantern = _get_wick_lantern()
@@ -138,33 +140,94 @@ func get_light_pool() -> Vector4:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
-	var trip: Array[Color] = LxToyDraw.skin_triplet(island_id, skin)
+	var red: bool = LxHudFx.flash_reduced()
+	var tw: int = 0 if red else int(floorf(_clock * 5.0)) % 2
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 6.0, 2.0)
-	# Stone base + wrought-iron shepherd's post
-	LxToyDraw.draw_bevel_box(self, Rect2(-5.0, 1.0, 10.0, 5.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
-	draw_rect(Rect2(-4.0, -14.0, 3.0, 16.0), c_void)
-	draw_rect(Rect2(-3.0, -13.0, 1.0, 14.0), PAL["stone"] as Color)
-	# Curved top hook arm
-	draw_rect(Rect2(-3.0, -15.0, 8.0, 3.0), c_void)
-	draw_rect(Rect2(-2.0, -14.0, 6.0, 1.0), c_glow if hooked else trip[2])
-	draw_rect(Rect2(3.0, -13.0, 2.0, 3.0), c_void)
-	draw_rect(Rect2(3.0, -13.0, 1.0, 2.0), PAL["gold"] as Color)
+	# Grounded contact shadow
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.8)
+
+	# Bevelled 3/4 stone plinth base + brass collar shoe
+	draw_rect(Rect2(-7.0, 0.0, 14.0, 7.0), c_void)
+	draw_rect(Rect2(-6.0, 4.0, 12.0, 2.0), c_night)
+	draw_rect(Rect2(-6.0, 1.0, 12.0, 3.0), c_dusk)
+	draw_rect(Rect2(-6.0, 1.0, 12.0, 1.0), c_stone)
+	draw_rect(Rect2(-6.0, 2.0, 1.0, 2.0), c_mauve)
+	draw_rect(Rect2(-6.0, -1.0, 6.0, 3.0), c_void)
+	draw_rect(Rect2(-5.0, 0.0, 4.0, 1.0), c_apricot)
+	draw_rect(Rect2(-5.0, 0.0, 2.0, 1.0), c_gold)
+
+	# Chunky wrought-iron / brass shepherd's vertical post with brass bands
+	draw_rect(Rect2(-6.0, -15.0, 5.0, 15.0), c_void)
+	draw_rect(Rect2(-5.0, -14.0, 3.0, 14.0), c_dusk)
+	draw_rect(Rect2(-5.0, -14.0, 1.0, 14.0), c_stone)
+	draw_rect(Rect2(-3.0, -14.0, 1.0, 14.0), c_night)
+	# Brass ferrule bands on post
+	draw_rect(Rect2(-5.0, -6.0, 3.0, 1.0), c_apricot)
+	draw_rect(Rect2(-5.0, -6.0, 1.0, 1.0), c_gold)
+	draw_rect(Rect2(-5.0, -12.0, 3.0, 1.0), c_apricot)
+	draw_rect(Rect2(-5.0, -12.0, 1.0, 1.0), c_gold)
+
+	# Decorative wrought-iron scroll bracket under the overhanging arm
+	draw_rect(Rect2(-2.0, -12.0, 4.0, 4.0), c_void)
+	draw_rect(Rect2(-1.0, -11.0, 2.0, 1.0), c_mauve)
+	draw_rect(Rect2(-2.0, -10.0, 2.0, 1.0), c_gold if hooked else c_stone)
+	draw_rect(Rect2(0.0, -12.0, 2.0, 1.0), c_gold if hooked else c_apricot)
+
+	# Curved overhanging shepherd's crook arm + brass hook tip
+	draw_rect(Rect2(-5.0, -17.0, 10.0, 4.0), c_void)
+	draw_rect(Rect2(-4.0, -16.0, 8.0, 2.0), c_dusk)
+	draw_rect(Rect2(-4.0, -16.0, 7.0, 1.0), c_gold if hooked else c_stone)
+	draw_rect(Rect2(-3.0, -16.0, 3.0, 1.0), c_cream if hooked else c_gold)
+	draw_rect(Rect2(3.0, -15.0, 4.0, 5.0), c_void)
+	draw_rect(Rect2(4.0, -14.0, 2.0, 3.0), c_apricot)
+	draw_rect(Rect2(4.0, -14.0, 1.0, 2.0), c_gold)
+	# Up-curled hook tip
+	draw_rect(Rect2(2.0, -12.0, 3.0, 2.0), c_void)
+	draw_rect(Rect2(3.0, -11.0, 2.0, 1.0), c_gold)
 
 	if hooked:
-		# Sculpted hanging brass lantern + warm aura
-		draw_circle(Vector2(3.0, -7.0), 9.0, Color(c_glow, 0.16))
-		draw_rect(Rect2(-1.0, -11.0, 8.0, 9.0), c_void)
-		draw_rect(Rect2(0.0, -10.0, 6.0, 1.0), PAL["dusk"] as Color)
-		draw_rect(Rect2(0.0, -9.0, 6.0, 6.0), PAL["apricot"] as Color)
-		draw_rect(Rect2(1.0, -8.0, 4.0, 4.0), PAL["gold"] as Color)
-		draw_rect(Rect2(2.0, -7.0, 2.0, 2.0), PAL["cream"] as Color)
-		draw_rect(Rect2(0.0, -3.0, 6.0, 1.0), PAL["dusk"] as Color)
+		var lc := Vector2(4.0, -6.0)
+		# Soft layered warm aura + dithered glow pips
+		draw_circle(lc, 11.0, Color(c_glow, 0.16))
+		draw_circle(lc, 7.0, Color(c_gold, 0.24))
+		var pip_pts: Array[Vector2] = [
+			Vector2(-4.0, -8.0), Vector2(12.0, -7.0), Vector2(4.0, -15.0),
+			Vector2(10.0, -2.0), Vector2(-2.0, -2.0), Vector2(11.0, -11.0),
+		]
+		for i: int in range(pip_pts.size()):
+			var bright: bool = red or ((i + tw) % 2 == 0)
+			var pp: Vector2 = pip_pts[i] + Vector2(0.0, -1.0 if (not red and bright) else 0.0)
+			draw_rect(Rect2(pp, Vector2.ONE), c_cream if bright else c_gold)
+		# Sculpted hanging brass & amber glass lantern silhouette
+		draw_rect(Rect2(3.0, -11.0, 2.0, 2.0), c_gold) # bail ring
+		draw_rect(Rect2(1.0, -10.0, 6.0, 2.0), c_void)
+		draw_rect(Rect2(2.0, -9.0, 4.0, 1.0), c_gold) # dome cap
+		draw_rect(Rect2(0.0, -9.0, 8.0, 9.0), c_void)
+		draw_rect(Rect2(1.0, -8.0, 6.0, 1.0), c_wine)
+		draw_rect(Rect2(1.0, -8.0, 5.0, 1.0), c_apricot)
+		draw_rect(Rect2(1.0, -7.0, 6.0, 5.0), c_apricot)
+		draw_rect(Rect2(2.0, -7.0, 4.0, 4.0), c_gold)
+		draw_rect(Rect2(3.0, -6.0, 2.0, 3.0), c_cream)
+		# Vertical brass lantern cage ribs
+		draw_rect(Rect2(1.0, -7.0, 1.0, 5.0), c_wine)
+		draw_rect(Rect2(6.0, -7.0, 1.0, 5.0), c_wine)
+		# Flared brass lantern base
+		draw_rect(Rect2(1.0, -2.0, 6.0, 1.0), c_apricot)
+		draw_rect(Rect2(2.0, -2.0, 4.0, 1.0), c_gold)
 		if _pulse_t > 0.0:
 			var u: float = 1.0 - clampf(_pulse_t / 0.35, 0.0, 1.0)
-			draw_arc(Vector2(3.0, -7.0), roundf(lerpf(4.0, 14.0, u)), 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
+			draw_arc(lc, roundf(lerpf(4.0, 14.0, u)), 0.0, TAU, 14, c_cream, 1.0)
 	else:
-		# Subtle invite glint on empty hook
-		draw_rect(Rect2(3.0, -10.0, 1.0, 1.0), PAL["cream"] as Color)
+		# Subtle inviting brass ring & glint on empty shepherd's crook
+		draw_rect(Rect2(3.0, -10.0, 3.0, 3.0), c_void)
+		draw_rect(Rect2(4.0, -9.0, 1.0, 1.0), c_cream if (red or tw == 0) else c_gold)
 	_draw_signal_pulses()

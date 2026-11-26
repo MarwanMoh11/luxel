@@ -265,52 +265,130 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_plum: Color = PAL["plum"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 	var c_ice: Color = PAL["ice"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
 
 	if state == State.DIM_SWAP:
-		# Blackout silhouette flicker during 0.8s Cotillion shuffle
-		draw_rect(Rect2(-4.0, -10.0, 8.0, 11.0), Color(c_void, 0.72))
-		draw_rect(Rect2(-2.0, -7.0, 4.0, 2.0), Color(c_plum, 0.65))
+		# Graceful blackout silhouette during 0.8s Cotillion shuffle
+		var a_dim: float = 0.68 if fr else (0.55 + 0.25 * absf(sin(_clock * 12.0)))
+		var sh_cloak := PackedVector2Array([
+			Vector2(-3.0, -11.0), Vector2(3.0, -11.0),
+			Vector2(5.0, -5.0), Vector2(6.0, 3.0),
+			Vector2(-6.0, 3.0), Vector2(-5.0, -5.0),
+		])
+		draw_colored_polygon(sh_cloak, Color(c_void, a_dim))
+		draw_rect(Rect2(-3.0, -8.0, 6.0, 2.0), Color(c_plum, a_dim))
 		return
 
 	# Canonical Truth Shadow (SE gold = truth, NW wrong / none = liar, black_lantern = Hollow)
+	# Preserve shadow_mode == "none" strictly so shadow puzzles stay 100% honest!
 	if state == State.WALTZING:
+		if shadow_mode != "none":
+			_draw_ground_shadow(6.5, 2.5, Vector2(0.0, 4.0))
 		LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 4.0), 6.0, 2.5, shadow_mode, _lens_boost_t > 0.0)
 	elif state == State.UNMASKED_TRUTH:
+		_draw_ground_shadow(6.5, 2.5, Vector2(0.0, 4.0))
 		LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 4.0), 6.0, 2.5, "se_gold", true)
 
-	var bob: float = 0.0 if (state != State.WALTZING or LxHudFx.flash_reduced()) else roundf(absf(sin(_clock * 4.2)) * -1.5)
 	if state == State.UNMASKED_LIAR:
-		# Discarded cracked liar mask on floor
-		draw_rect(Rect2(-4.0, 0.0, 8.0, 5.0), c_void)
-		draw_rect(Rect2(-3.0, 1.0, 6.0, 3.0), c_rose)
-		draw_line(Vector2(-2.0, 0.0), Vector2(2.0, 4.0), c_coral, 1.0)
+		# Discarded cracked theatrical liar mask + snapped plume resting on floor
+		_draw_ground_shadow(6.0, 2.5, Vector2(0.0, 3.0))
+		draw_rect(Rect2(-5.0, -1.0, 10.0, 6.0), c_void)
+		draw_rect(Rect2(-4.0, 0.0, 8.0, 4.0), c_rose)
+		draw_rect(Rect2(-4.0, 0.0, 4.0, 1.0), c_cream)
+		draw_rect(Rect2(-3.0, 1.0, 2.0, 1.0), c_void)
+		draw_rect(Rect2(1.0, 1.0, 2.0, 1.0), c_void)
+		draw_line(Vector2(-2.0, -1.0), Vector2(2.0, 4.0), c_coral, 1.0)
+		# Snapped feather beside mask
+		draw_rect(Rect2(4.0, -2.0, 3.0, 2.0), c_wine)
+		draw_rect(Rect2(6.0, -2.0, 1.0, 1.0), c_rose)
 		return
 
-	# Cloaked Masquerade Wick twin
-	var body_c: Color = c_gold if state == State.UNMASKED_TRUTH else c_dusk
-	var hi_c: Color = c_cream if state == State.UNMASKED_TRUTH else c_plum
-	draw_rect(Rect2(-3.0, -13.0 + bob, 6.0, 3.0), c_void)
-	draw_rect(Rect2(-5.0, -10.0 + bob, 10.0, 12.0), c_void)
-	draw_rect(Rect2(-2.0, -12.0 + bob, 4.0, 2.0), hi_c)
-	draw_rect(Rect2(-4.0, -9.0 + bob, 8.0, 10.0), c_night)
-	draw_rect(Rect2(-3.0, -9.0 + bob, 6.0, 9.0), body_c)
-	# Gilded ballroom mask (removed when UNMASKED_TRUTH!)
+	var bob: float = 0.0 if (state != State.WALTZING or fr) else roundf(absf(sin(_clock * 4.2)) * -1.5)
+	var sway: float = 0.0 if (state != State.WALTZING or fr) else roundf(sin(_clock * 3.0) * 1.0)
+	var unmasked: bool = (state == State.UNMASKED_TRUTH)
+	var cloak_dark: Color = c_apr if unmasked else c_night
+	var cloak_mid: Color = c_gold if unmasked else c_dusk
+	var cloak_hi: Color = c_cream if unmasked else c_plum
+	var trim_c: Color = c_cream if unmasked else c_gold
+
+	# Graceful flared cloaked masquerade figure with draped scalloped cape hem
+	var cape_out := PackedVector2Array([
+		Vector2(-3.0, -10.0 + bob), Vector2(3.0, -10.0 + bob),
+		Vector2(6.0, -5.0 + bob), Vector2(7.0 + sway, 3.0 + bob),
+		Vector2(2.0 + sway, 4.0 + bob), Vector2(-2.0 + sway, 4.0 + bob),
+		Vector2(-7.0 + sway, 3.0 + bob), Vector2(-6.0, -5.0 + bob),
+	])
+	var cape_in := PackedVector2Array([
+		Vector2(-2.0, -9.0 + bob), Vector2(2.0, -9.0 + bob),
+		Vector2(5.0, -5.0 + bob), Vector2(6.0 + sway, 2.0 + bob),
+		Vector2(2.0 + sway, 3.0 + bob), Vector2(-2.0 + sway, 3.0 + bob),
+		Vector2(-6.0 + sway, 2.0 + bob), Vector2(-5.0, -5.0 + bob),
+	])
+	draw_colored_polygon(cape_out, c_void)
+	draw_colored_polygon(cape_in, cloak_dark)
+	# Draped inner cape center & sunlit left shoulder fold
+	draw_rect(Rect2(-4.0, -7.0 + bob, 8.0, 9.0), cloak_mid)
+	draw_rect(Rect2(-5.0, -5.0 + bob, 2.0, 6.0), cloak_hi)
+	draw_rect(Rect2(-2.0, -7.0 + bob, 2.0, 9.0), cloak_hi)
+	draw_rect(Rect2(2.0, -5.0 + bob, 2.0, 7.0), cloak_dark)
+	# Draped gilded scalloped cape hem trim
+	draw_rect(Rect2(-5.0 + sway, 2.0 + bob, 10.0, 1.0), trim_c)
+	draw_rect(Rect2(-3.0 + sway, 3.0 + bob, 2.0, 1.0), trim_c)
+	draw_rect(Rect2(1.0 + sway, 3.0 + bob, 2.0, 1.0), trim_c)
+
+	# Sculpted hooded head & theatrical ruffled collar
+	draw_rect(Rect2(-4.0, -14.0 + bob, 8.0, 6.0), c_void)
+	draw_rect(Rect2(-3.0, -13.0 + bob, 6.0, 5.0), cloak_mid)
+	draw_rect(Rect2(-3.0, -13.0 + bob, 3.0, 2.0), cloak_hi)
+	draw_rect(Rect2(-4.0, -8.0 + bob, 8.0, 2.0), c_wine if not unmasked else c_apr)
+	draw_rect(Rect2(-3.0, -8.0 + bob, 6.0, 1.0), trim_c)
+
 	if state == State.WALTZING:
-		draw_rect(Rect2(-3.0, -7.0 + bob, 6.0, 3.0), c_gold)
-		draw_rect(Rect2(-2.0, -6.0 + bob, 1.0, 1.0), c_void)
-		draw_rect(Rect2(1.0, -6.0 + bob, 1.0, 1.0), c_void)
-		# Held gold masquerade lantern
-		draw_rect(Rect2(5.0, -5.0 + bob, 3.0, 3.0), c_gold)
-		draw_rect(Rect2(6.0, -4.0 + bob, 1.0, 1.0), c_cream)
+		# Winged feathered masquerade mask
+		draw_rect(Rect2(-4.0, -11.0 + bob, 8.0, 3.0), c_void)
+		draw_rect(Rect2(-4.0, -11.0 + bob, 8.0, 2.0), c_gold)
+		draw_rect(Rect2(-3.0, -11.0 + bob, 4.0, 1.0), c_cream)
+		draw_rect(Rect2(-2.0, -10.0 + bob, 1.0, 1.0), c_void)
+		draw_rect(Rect2(1.0, -10.0 + bob, 1.0, 1.0), c_void)
+		# Sweeping masquerade feather plume arching up-right from mask temple
+		draw_rect(Rect2(2.0, -16.0 + bob, 4.0, 4.0), c_void)
+		draw_rect(Rect2(3.0, -15.0 + bob, 2.0, 3.0), c_rose)
+		draw_rect(Rect2(4.0, -16.0 + bob, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(2.0, -13.0 + bob, 1.0, 1.0), c_gold)
+		# Held warm masquerade lantern on extended gloved hand
+		draw_rect(Rect2(5.0, -7.0 + bob, 5.0, 6.0), c_void)
+		draw_rect(Rect2(6.0, -6.0 + bob, 3.0, 4.0), c_gold)
+		draw_rect(Rect2(7.0, -5.0 + bob, 1.0, 2.0), c_cream)
+		draw_rect(Rect2(6.0, -7.0 + bob, 3.0, 1.0), c_apr)
 	else:
-		draw_rect(Rect2(-2.0, -7.0 + bob, 4.0, 3.0), c_void)
-		draw_rect(Rect2(-2.0, -6.0 + bob, 1.0, 1.0), c_ice)
-		draw_rect(Rect2(1.0, -6.0 + bob, 1.0, 1.0), c_ice)
+		# Unmasked luminous true guest face
+		draw_rect(Rect2(-3.0, -11.0 + bob, 6.0, 3.0), c_night)
+		draw_rect(Rect2(-2.0, -10.0 + bob, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(1.0, -10.0 + bob, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(-2.0, -9.0 + bob, 1.0, 1.0), c_ice)
+		draw_rect(Rect2(1.0, -9.0 + bob, 1.0, 1.0), c_ice)
+		# Expressive unmasking flourish: golden/cream ribbon arcs, tossed mask glint & starlight sparkles
 		if _reveal_t > 0.0:
-			draw_arc(Vector2(0.0, -5.0), roundf(lerpf(6.0, 20.0, 1.0 - _reveal_t / 0.55)), 0.0, TAU, 16, c_gold, 1.2)
+			var u: float = 1.0 - clampf(_reveal_t / 0.55, 0.0, 1.0)
+			var fa: float = (1.0 - u) * (0.55 if fr else 0.92)
+			var r_out: float = roundf(lerpf(6.0, 22.0, u))
+			var r_in: float = roundf(lerpf(4.0, 14.0, u))
+			draw_arc(Vector2(0.0, -7.0), r_out, 0.0, TAU, 18, Color(c_gold, fa), 1.4)
+			draw_arc(Vector2(0.0, -7.0), r_in, 0.0, TAU, 14, Color(c_cream, fa * 0.85), 1.0)
+			# Tossed gilded mask spinning away up-right
+			var mp := Vector2(roundf(6.0 + u * 10.0), roundf(-12.0 - sin(u * PI) * 8.0 + u * 6.0))
+			draw_rect(Rect2(mp - Vector2(2.0, 1.0), Vector2(4.0, 2.0)), Color(c_gold, fa))
+			draw_rect(Rect2(mp - Vector2(1.0, 1.0), Vector2(2.0, 1.0)), Color(c_cream, fa))
+			# 4-point flourish sparkles
+			for si: int in range(4):
+				var sa: float = float(si) * (PI * 0.5) + (0.4 if fr else u * 2.2)
+				var sp := Vector2(roundf(cos(sa) * r_in), roundf(-7.0 + sin(sa) * r_in))
+				draw_rect(Rect2(sp, Vector2(1.0, 1.0)), Color(c_cream, fa))
 	_draw_signal_pulses()

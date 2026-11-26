@@ -126,6 +126,8 @@ func tick(dt: float) -> void:
 				if fa.length_squared() > 2500.0 and pos.distance_to(cradle_pos) > 8.0:
 					vel = (fa / mass) * dt
 					orb_state = OrbState.FLYING
+			if not LxHudFx.flash_reduced():
+				queue_redraw()
 
 
 func _tick_flight(dt: float) -> void:
@@ -291,37 +293,120 @@ func get_light_pool() -> Vector4:
 func _draw() -> void:
 	if not active:
 		return
-	# Cradle ring always visible at cradle_pos (relative to orb position)
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_blue: Color = PAL["blue"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
+	var is_blue: bool = (light_color == LxHit.COLOR_BLUE)
+
+	# Carved celestial cradle socket at cradle_pos (relative to orb position)
 	var cr: Vector2 = (cradle_pos - pos).round()
-	draw_circle(cr, 8.0, Color(PAL["void"] as Color, 0.45))
-	draw_arc(cr, 7.0, 0.0, TAU, 16, PAL["apricot"] as Color, 1.0)
-	draw_arc(cr, 4.5, 0.0, TAU, 12, PAL["dusk"] as Color, 1.0)
+	draw_circle(cr, 8.0, Color(c_void, 0.48))
+	draw_arc(cr, 7.0, 0.0, TAU, 16, c_apr, 1.0)
+	draw_arc(cr, 4.5, 0.0, TAU, 12, c_dusk, 1.0)
+	for ct: Vector2 in [Vector2(-8.0, 0.0), Vector2(7.0, 0.0), Vector2(0.0, -8.0), Vector2(0.0, 7.0)]:
+		draw_rect(Rect2((cr + ct).round(), Vector2(1.0, 1.0)), c_gold)
 
 	if orb_state == OrbState.RESPAWNING:
 		var u: float = 1.0 - clampf(_respawn_left / maxf(respawn_s, 0.01), 0.0, 1.0)
-		draw_arc(cr, lerpf(14.0, 5.0, u), 0.0, TAU, 14, Color(PAL["gold"] as Color, 0.35 + u * 0.6), 1.0)
-		draw_circle(cr, maxf(1.5, u * 5.0), Color(PAL["coral"] as Color, 0.5 + u * 0.4))
+		var ring_r: float = roundf(lerpf(14.0, 5.0, u))
+		draw_arc(cr, ring_r, 0.0, TAU, 14, Color(c_gold, 0.45 if fr else (0.35 + u * 0.6)), 1.0)
+		draw_circle(cr, roundf(maxf(2.0, u * 5.0)), Color(c_coral, 0.65 if fr else (0.5 + u * 0.4)))
+		draw_rect(Rect2((cr - Vector2.ONE).round(), Vector2(2.0, 2.0)), c_cream)
 		return
 
 	# Blazing comet tail while flying
 	if orb_state == OrbState.FLYING and not _trail.is_empty():
-		var tc: Color = (PAL["ice"] if light_color == LxHit.COLOR_BLUE else PAL["coral"]) as Color
-		var hi_c: Color = (PAL["cream"] if light_color == LxHit.COLOR_BLUE else PAL["gold"]) as Color
+		var tc: Color = c_ice if is_blue else c_coral
+		var mid_c: Color = c_sky if is_blue else c_apr
+		var hi_c: Color = c_cream if is_blue else c_gold
 		for ti: int in range(_trail.size()):
 			var frac: float = float(ti + 1) / float(_trail.size() + 1)
 			var tp: Vector2 = (_trail[ti] - pos).round()
-			draw_circle(tp, lerpf(2.0, 5.5, frac), Color(tc, frac * 0.55))
-			draw_rect(Rect2(tp - Vector2.ONE, Vector2(2.0, 2.0)), Color(hi_c, frac * 0.8))
+			draw_circle(tp, roundf(lerpf(2.0, 5.5, frac)), Color(tc, frac * 0.52))
+			draw_rect(Rect2((tp - Vector2(1.0, 1.0)).round(), Vector2(3.0, 3.0)), Color(mid_c, frac * 0.68))
+			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), Color(hi_c, frac * 0.88))
 
-	# Heavy iron-basalt meteor orb with glowing molten veins
-	_draw_ground_shadow(7.0, 3.0, Vector2(1.0, 5.0))
-	draw_circle(Vector2.ZERO, 7.5, PAL["void"] as Color)
-	draw_circle(Vector2.ZERO, 6.0, PAL["dusk"] as Color)
-	draw_circle(Vector2(-1.0, -1.0), 4.5, PAL["plum"] as Color)
-	var vein_c: Color = (PAL["ice"] if light_color == LxHit.COLOR_BLUE else (PAL["cream"] if orb_state == OrbState.FLYING else PAL["coral"])) as Color
-	var core_c: Color = (PAL["sky"] if light_color == LxHit.COLOR_BLUE else PAL["gold"]) as Color
-	draw_line(Vector2(-4.0, -1.0), Vector2(1.0, 2.0), vein_c, 1.0)
-	draw_line(Vector2(1.0, 2.0), Vector2(4.0, -2.0), core_c, 1.0)
-	draw_line(Vector2(-1.0, -4.0), Vector2(1.0, 2.0), core_c, 1.0)
-	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color if orb_state == OrbState.FLYING else core_c)
+	# Grounded shadow beneath asteroid core
+	_draw_ground_shadow(8.0, 3.5, Vector2(1.0, 6.0))
+
+	# Faceted cosmic asteroid/meteor silhouette (chiseled octagonal rock, not a smooth circle)
+	var hull := PackedVector2Array([
+		Vector2(-3.0, -8.0), Vector2(3.0, -8.0),
+		Vector2(7.0, -4.0), Vector2(8.0, 1.0),
+		Vector2(5.0, 6.0), Vector2(-2.0, 7.0),
+		Vector2(-7.0, 4.0), Vector2(-8.0, -3.0),
+	])
+	var body := PackedVector2Array([
+		Vector2(-3.0, -7.0), Vector2(3.0, -7.0),
+		Vector2(6.0, -3.0), Vector2(7.0, 1.0),
+		Vector2(4.0, 5.0), Vector2(-2.0, 6.0),
+		Vector2(-6.0, 3.0), Vector2(-7.0, -3.0),
+	])
+	var top_facet := PackedVector2Array([
+		Vector2(-3.0, -7.0), Vector2(3.0, -7.0),
+		Vector2(5.0, -3.0), Vector2(0.0, -1.0),
+		Vector2(-5.0, -1.0), Vector2(-6.0, -3.0),
+	])
+	var left_facet := PackedVector2Array([
+		Vector2(-6.0, -3.0), Vector2(-3.0, -2.0),
+		Vector2(-2.0, 4.0), Vector2(-6.0, 3.0),
+	])
+	draw_colored_polygon(hull, c_void)
+	draw_colored_polygon(body, c_night)
+	draw_colored_polygon(top_facet, c_plum)
+	draw_colored_polygon(left_facet, c_dusk)
+	# Crisp sunlit rock bevel on upper-left ridge
+	draw_rect(Rect2(-3.0, -7.0, 5.0, 1.0), c_mauve)
+	draw_rect(Rect2(-6.0, -4.0, 2.0, 1.0), c_mauve)
+	draw_rect(Rect2(-5.0, -5.0, 2.0, 1.0), c_coral if not is_blue else c_sky)
+
+	# Cratered basalt pits with lit inner rims
+	draw_rect(Rect2(-5.0, 1.0, 3.0, 2.0), c_void)
+	draw_rect(Rect2(-5.0, 3.0, 2.0, 1.0), c_plum)
+	draw_rect(Rect2(3.0, -4.0, 2.0, 2.0), c_void)
+	draw_rect(Rect2(2.0, -3.0, 1.0, 2.0), c_coral if not is_blue else c_blue)
+
+	# Glowing star-vein fissures radiating across the rock face
+	var flying: bool = (orb_state == OrbState.FLYING)
+	var pulse_hi: bool = fr or flying or (int(floorf(_clock * 3.5)) % 2 == 0)
+	var fissure_edge: Color = c_blue if is_blue else c_coral
+	var fissure_mid: Color = c_sky if is_blue else c_gold
+	var fissure_hot: Color = c_cream if (flying or pulse_hi) else (c_ice if is_blue else c_apr)
+
+	# Outer fissure glow
+	draw_line(Vector2(-5.0, -2.0), Vector2(1.0, 1.0), fissure_edge, 2.0)
+	draw_line(Vector2(1.0, 1.0), Vector2(5.0, -1.0), fissure_edge, 2.0)
+	draw_line(Vector2(0.0, -5.0), Vector2(1.0, 1.0), fissure_edge, 2.0)
+	draw_line(Vector2(1.0, 1.0), Vector2(2.0, 5.0), fissure_edge, 1.0)
+	# Inner bright star-veins
+	draw_line(Vector2(-4.0, -2.0), Vector2(1.0, 1.0), fissure_mid, 1.0)
+	draw_line(Vector2(1.0, 1.0), Vector2(5.0, -1.0), fissure_mid, 1.0)
+	draw_line(Vector2(0.0, -5.0), Vector2(1.0, 1.0), fissure_mid, 1.0)
+	draw_line(Vector2(1.0, 1.0), Vector2(2.0, 4.0), fissure_mid, 1.0)
+	# Radiant star-vein nexus core
+	draw_rect(Rect2(-1.0, -1.0, 3.0, 3.0), fissure_mid)
+	draw_rect(Rect2(0.0, 0.0, 2.0, 2.0), fissure_hot)
+	draw_rect(Rect2(0.0, -1.0, 1.0, 1.0), c_cream)
+
+	# Orbital cosmic dust pips circling the asteroid
+	var orb_phase: float = 0.0 if fr else _clock * (2.6 if flying else 1.2)
+	for di: int in range(3):
+		var ang: float = orb_phase + float(di) * (TAU / 3.0)
+		var rx: float = 10.5 if di == 0 else 9.5
+		var ry: float = 6.5 if di == 1 else 8.0
+		var dp := Vector2(roundf(cos(ang) * rx), roundf(sin(ang) * ry - 1.0))
+		draw_rect(Rect2(dp - Vector2.ONE, Vector2(3.0, 3.0)), Color(c_void, 0.65))
+		var pip_c: Color = c_cream if di == 0 else (c_ice if is_blue else (c_gold if di == 1 else c_apr))
+		draw_rect(Rect2(dp, Vector2(1.0, 1.0)), pip_c)
+
 	_draw_signal_pulses()

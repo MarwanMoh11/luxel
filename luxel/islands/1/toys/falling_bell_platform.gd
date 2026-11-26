@@ -259,6 +259,9 @@ func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_cream: Color = PAL["cream"] as Color
@@ -273,23 +276,43 @@ func _draw() -> void:
 			var yy: float = -r - 24.0 + off_y
 			while yy < r + 24.0:
 				draw_rect(Rect2(sx - 2.0, yy, 4.0, 12.0), c_dusk)
-				draw_rect(Rect2(sx - 1.0, yy + 1.0, 2.0, 4.0), PAL["mauve"] as Color)
+				draw_rect(Rect2(sx - 1.0, yy + 1.0, 2.0, 4.0), c_mauve)
 				yy += 32.0
 
-	# 7x7 Bronze Bell Crown platform
-	draw_circle(Vector2(0.0, 3.0), r + 2.0, Color(c_void, 0.50))
+	# Grounded drop shadow & stepped 3/4 bronze bell crown platform
+	draw_circle(Vector2(2.0, 4.0), r + 2.0, Color(c_void, 0.50))
 	draw_circle(Vector2.ZERO, r + 1.0, c_void)
-	draw_circle(Vector2.ZERO, r, c_dusk)
-	draw_arc(Vector2.ZERO, r - 2.0, 0.0, TAU, 32, c_apricot if state != State.BRAKED else c_gold, 2.0)
-	draw_arc(Vector2.ZERO, r - 10.0, 0.0, TAU, 24, c_night, 1.0)
-	# Rivets around rim
+	draw_circle(Vector2.ZERO, r, c_night)
+	draw_circle(Vector2(0.0, -1.0), r - 1.0, c_dusk)
+	# Concentric stepped cast-bronze crown rings
+	draw_circle(Vector2(0.0, -1.0), r - 6.0, c_plum)
+	draw_circle(Vector2(0.0, -1.0), r - 12.0, c_dusk)
+	draw_arc(Vector2(0.0, -1.0), r - 2.0, 0.0, TAU, 32, c_gold if state == State.BRAKED else c_apricot, 2.0)
+	# Sunlit WNW rim highlight
+	draw_arc(Vector2(0.0, -1.0), r - 2.0, PI * 0.85, PI * 1.65, 16, c_cream if state != State.IDLE else c_gold, 1.0)
+	draw_arc(Vector2(0.0, -1.0), r - 11.0, 0.0, TAU, 24, c_wine, 1.0)
+	draw_arc(Vector2(0.0, -1.0), r - 12.0, PI * 0.85, PI * 1.65, 14, c_mauve, 1.0)
+
+	# 8 radial cast-bronze bell ribs & brass rim rivets
 	for i: int in range(8):
 		var a: float = (TAU * float(i)) / 8.0
-		var rp := Vector2(roundf(cos(a) * (r - 6.0)), roundf(sin(a) * (r - 6.0)))
-		draw_rect(Rect2(rp - Vector2.ONE, Vector2(2.0, 2.0)), c_gold)
-	# Center boss & progress bar
-	draw_circle(Vector2.ZERO, 9.0, c_night)
-	draw_circle(Vector2.ZERO, 5.0, c_cream if state == State.CRASHED else (c_gold if state == State.BRAKED else c_apricot))
+		var inner_p := Vector2(roundf(cos(a) * 11.0), roundf(sin(a) * 11.0 - 1.0))
+		var outer_p := Vector2(roundf(cos(a) * (r - 5.0)), roundf(sin(a) * (r - 5.0) - 1.0))
+		draw_line(inner_p + Vector2(0.0, 1.0), outer_p + Vector2(0.0, 1.0), c_night, 1.0)
+		draw_line(inner_p, outer_p, c_apricot if (i % 2 == 0) else c_mauve, 1.0)
+		var rp := Vector2(roundf(cos(a) * (r - 5.0)), roundf(sin(a) * (r - 5.0) - 1.0))
+		draw_rect(Rect2(rp - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+		draw_rect(Rect2(rp, Vector2(2.0, 2.0)), c_cream if state == State.BRAKED else c_gold)
+
+	# Sculpted central bronze bell boss with sunlit top-left specular crescent
+	draw_circle(Vector2(1.0, 1.0), 10.0, c_void)
+	draw_circle(Vector2.ZERO, 9.0, c_wine)
+	draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 16, c_apricot, 1.0)
+	var boss_c: Color = c_cream if state == State.CRASHED else (c_gold if state == State.BRAKED else c_apricot)
+	draw_circle(Vector2.ZERO, 5.0, boss_c)
+	draw_rect(Rect2(-3.0, -3.0, 3.0, 2.0), c_cream)
+	if state == State.FALLING and not red and int(floorf(_clock * 10.0)) % 2 == 0:
+		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, c_gold, 1.0)
 	if state in [State.FALLING, State.BRAKED]:
 		LxToyDraw.draw_bar(self, Vector2(-16.0, r + 5.0), 32.0, clampf(elapsed_s / duration_s, 0.0, 1.0), c_gold)
 
@@ -301,7 +324,7 @@ func _draw() -> void:
 		var hy: float = roundf(float(hz["y"]))
 		if hk == "beam":
 			var frozen: bool = _beam_freeze_t > 0.0
-			var bc: Color = PAL["ice"] as Color if frozen else PAL["wine"] as Color
+			var bc: Color = PAL["ice"] as Color if frozen else c_wine
 			var bh: Color = c_cream if frozen else c_apricot
 			LxToyDraw.draw_bevel_box(self, Rect2(-r, hy - 4.0, r * 2.0, 8.0), c_night, bc, bh, c_void)
 		elif hk == "grate":

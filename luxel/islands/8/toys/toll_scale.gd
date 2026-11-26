@@ -277,55 +277,112 @@ func _unbind_menu() -> void:
 
 
 func _draw() -> void:
-	_draw_ground_shadow(11.0, 5.0, Vector2(0.0, 6.0))
 	var void_c: Color = PAL["void"] as Color
 	var night: Color = PAL["night"] as Color
 	var dusk: Color = PAL["dusk"] as Color
-	var gold: Color = PAL["gold"] as Color
+	var mauve: Color = PAL["mauve"] as Color
+	var stone: Color = PAL["stone"] as Color
+	var coral: Color = PAL["coral"] as Color
 	var apricot: Color = PAL["apricot"] as Color
+	var gold: Color = PAL["gold"] as Color
 	var cream: Color = PAL["cream"] as Color
 	var lime: Color = PAL["lime"] as Color
-	var accent: Color = lime if mode == "redemption" else (PAL["sky"] as Color if mode == "boon_toll" else gold)
+	var sky: Color = PAL["sky"] as Color
+	var ice: Color = PAL["ice"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
+	var paid: bool = (state == State.PAID)
+	var weighing: bool = (state == State.OPEN_LEDGER or paid)
+	var accent: Color = lime if mode == "redemption" else (sky if mode == "boon_toll" else gold)
+	var accent_hi: Color = cream if mode != "boon_toll" else ice
 
-	# Stepped stone plinth + central brass pillar
-	draw_rect(Rect2(-10.0, 2.0, 20.0, 5.0), void_c)
-	draw_rect(Rect2(-9.0, 3.0, 18.0, 3.0), dusk)
+	# Grounded contact shadow beneath stone pedestal
+	_draw_ground_shadow(13.0, 5.0, Vector2(1.0, 7.0))
+
+	# Carved stepped stone altar base with brass corner studs
+	draw_rect(Rect2(-11.0, 2.0, 22.0, 6.0), void_c)
+	draw_rect(Rect2(-10.0, 3.0, 20.0, 4.0), dusk)
+	draw_rect(Rect2(-10.0, 3.0, 12.0, 1.0), stone)
+	draw_rect(Rect2(-10.0, 6.0, 20.0, 1.0), night)
+	draw_rect(Rect2(-9.0, 4.0, 1.0, 1.0), gold)
+	draw_rect(Rect2(8.0, 4.0, 1.0, 1.0), gold)
+	# Upper plinth step
+	draw_rect(Rect2(-8.0, 0.0, 16.0, 3.0), void_c)
 	draw_rect(Rect2(-7.0, 1.0, 14.0, 2.0), night)
-	draw_rect(Rect2(-2.0, -11.0, 4.0, 13.0), void_c)
-	draw_rect(Rect2(-1.0, -10.0, 2.0, 11.0), apricot)
-	draw_rect(Rect2(-1.0, -10.0, 1.0, 3.0), cream)
+	draw_rect(Rect2(-7.0, 1.0, 8.0, 1.0), mauve)
 
-	# Balance beam (tilts sharply right when PAID — unmistakable in greyscale!)
+	# Carved fluted stone column supporting the brass balance fulcrum
+	draw_rect(Rect2(-3.0, -10.0, 6.0, 11.0), void_c)
+	draw_rect(Rect2(-2.0, -9.0, 4.0, 10.0), dusk)
+	draw_rect(Rect2(-2.0, -9.0, 1.0, 10.0), stone)
+	draw_rect(Rect2(1.0, -9.0, 1.0, 10.0), night)
+	# Brass column collar & ornamental fulcrum finial crown
+	draw_rect(Rect2(-4.0, -11.0, 8.0, 3.0), void_c)
+	draw_rect(Rect2(-3.0, -10.0, 6.0, 1.0), apricot)
+	draw_rect(Rect2(-2.0, -13.0, 4.0, 3.0), void_c)
+	draw_rect(Rect2(-1.0, -12.0, 2.0, 2.0), gold)
+	draw_rect(Rect2(-1.0, -12.0, 1.0, 1.0), cream)
+
+	# Sculpted brass balance beam (tilts sharply right when PAID — unmistakable in greyscale!)
 	var dy: float = roundf(_tilt * 4.0)
-	var left_p := Vector2(-9.0, -8.0 - dy)
-	var right_p := Vector2(9.0, -8.0 + dy)
-	draw_line(left_p, right_p, void_c, 3.0)
-	draw_line(left_p, right_p, accent, 1.0)
-	draw_rect(Rect2(-2.0, -11.0, 4.0, 3.0), void_c)
-	draw_rect(Rect2(-1.0, -10.0, 2.0, 1.0), cream)
+	var left_p := Vector2(-10.0, -9.0 - dy)
+	var right_p := Vector2(10.0, -9.0 + dy)
+	draw_line(left_p, right_p, void_c, 4.5)
+	draw_line(left_p + Vector2(0.0, 1.0), right_p + Vector2(0.0, 1.0), apricot, 1.5)
+	draw_line(left_p, right_p, accent, 1.5)
+	draw_line(left_p + Vector2(0.0, -1.0), right_p + Vector2(0.0, -1.0), cream, 1.0)
+	# Ornamental brass end-knobs & central diamond fulcrum brooch
+	for ep: Vector2 in [left_p, right_p]:
+		draw_rect(Rect2(ep - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), void_c)
+		draw_rect(Rect2(ep - Vector2.ONE, Vector2(2.0, 2.0)), accent)
+		draw_rect(Rect2(ep - Vector2.ONE, Vector2(1.0, 1.0)), cream)
+	draw_rect(Rect2(-2.0, -11.0, 4.0, 4.0), void_c)
+	draw_rect(Rect2(-1.0, -10.0, 2.0, 2.0), accent)
+	draw_rect(Rect2(-1.0, -10.0, 1.0, 1.0), cream)
 
-	# Left pan (empty or holding stone coin) & Right pan (glowing ember bowl when PAID)
+	# Hanging chain pans on left & right ends
 	for side: int in [-1, 1]:
 		var bp: Vector2 = left_p if side < 0 else right_p
-		var pan_y: float = bp.y + 5.0
-		draw_line(bp, Vector2(bp.x - 2.0, pan_y), dusk, 1.0)
-		draw_line(bp, Vector2(bp.x + 2.0, pan_y), dusk, 1.0)
-		draw_rect(Rect2(bp.x - 4.0, pan_y, 8.0, 3.0), void_c)
-		draw_rect(Rect2(bp.x - 3.0, pan_y + 1.0, 6.0, 1.0), accent if (state == State.PAID or side > 0) else PAL["stone"] as Color)
-		if side > 0 and state == State.PAID:
-			draw_rect(Rect2(bp.x - 2.0, pan_y - 2.0, 4.0, 2.0), gold)
-			draw_rect(Rect2(bp.x - 1.0, pan_y - 3.0, 2.0, 2.0), cream)
+		var pan_y: float = bp.y + 6.0
+		# Twin pixel-snapped suspension chains
+		draw_line(bp + Vector2(0.0, 1.0), Vector2(bp.x - 3.0, pan_y), void_c, 2.0)
+		draw_line(bp + Vector2(0.0, 1.0), Vector2(bp.x + 3.0, pan_y), void_c, 2.0)
+		draw_line(bp + Vector2(0.0, 1.0), Vector2(bp.x - 3.0, pan_y), stone, 1.0)
+		draw_line(bp + Vector2(0.0, 1.0), Vector2(bp.x + 3.0, pan_y), mauve, 1.0)
+		# Sculpted curved brass weighing pan bowl
+		draw_rect(Rect2(bp.x - 5.0, pan_y, 10.0, 3.0), void_c)
+		draw_rect(Rect2(bp.x - 4.0, pan_y + 2.0, 8.0, 2.0), void_c)
+		draw_rect(Rect2(bp.x - 4.0, pan_y + 1.0, 8.0, 1.0), accent if (weighing and side > 0) else gold)
+		draw_rect(Rect2(bp.x - 3.0, pan_y + 2.0, 6.0, 1.0), apricot)
+		draw_rect(Rect2(bp.x - 4.0, pan_y + 1.0, 3.0, 1.0), cream)
 
-	# Weight pips along plinth front
+		if side < 0:
+			# Carved obsidian & stone counterweight coin resting in left pan
+			draw_rect(Rect2(bp.x - 2.0, pan_y - 2.0, 4.0, 3.0), void_c)
+			draw_rect(Rect2(bp.x - 1.0, pan_y - 1.0, 2.0, 2.0), stone)
+			draw_rect(Rect2(bp.x - 1.0, pan_y - 1.0, 1.0, 1.0), cream)
+		elif weighing:
+			# Clear tilted weight glow on right pan when weighing a setting or PAID
+			var glow_r: float = 6.0 if paid else 5.0
+			var ga: float = 0.52 if fr else (0.55 + 0.25 * absf(sin(_clock * 4.0)))
+			draw_arc(Vector2(bp.x, pan_y - 1.0), glow_r, 0.0, TAU, 14, Color(accent, ga), 1.2)
+			draw_rect(Rect2(bp.x - 3.0, pan_y - 2.0, 6.0, 3.0), coral if mode == "shop" or mode == "gate" else accent)
+			draw_rect(Rect2(bp.x - 2.0, pan_y - 3.0, 4.0, 3.0), accent)
+			draw_rect(Rect2(bp.x - 1.0, pan_y - 4.0, 2.0, 3.0), accent_hi)
+			draw_rect(Rect2(bp.x, pan_y - 4.0, 1.0, 1.0), cream)
+
+	# Weight pips inlaid along front stone plinth
 	var pips: int = mini(min_weight, 4) if mode == "gate" else 1
 	var got_w: int = LxSold.current().get_toll_weight()
 	var span: float = float(pips - 1) * 4.0
 	for i: int in range(pips):
 		var px: float = roundf(-span * 0.5 + float(i) * 4.0) - 1.0
-		var lit_p: bool = (state == State.PAID) or (mode == "gate" and i < got_w)
-		draw_rect(Rect2(px, 4.0, 2.0, 2.0), cream if lit_p else void_c)
+		var lit_p: bool = paid or (mode == "gate" and i < got_w)
+		draw_rect(Rect2(px - 1.0, 3.0, 4.0, 4.0), void_c)
+		draw_rect(Rect2(px, 4.0, 2.0, 2.0), cream if lit_p else night)
+		if lit_p:
+			draw_rect(Rect2(px, 5.0, 2.0, 1.0), accent)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - (_pulse_t / 0.55)
-		draw_arc(Vector2(0.0, -4.0), roundf(6.0 + u * 18.0), 0.0, TAU, 16, Color(cream, 1.0 - u), 1.0)
+		draw_arc(Vector2(0.0, -5.0), roundf(6.0 + u * 18.0), 0.0, TAU, 16, Color(cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.2)
 	_draw_signal_pulses()

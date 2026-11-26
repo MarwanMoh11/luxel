@@ -250,16 +250,22 @@ func _draw() -> void:
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_mauve: Color = PAL["mauve"] as Color
 	var c_stone: Color = PAL["stone"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_wine: Color = PAL["wine"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 	var c_apr: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
 	var mold_rel: Vector2 = (spawn_pos - pos).round()
+	var pouring: bool = (state == PourState.POURING)
+	var cooled: bool = (state == PourState.COOLED)
 
 	# 1. Floor casting mold frame at spawn_pos (clearly distinct DORMANT vs POURING vs COOLED in greyscale!)
 	var mold_r := Rect2(mold_rel - Vector2(9.0, 9.0), Vector2(18.0, 18.0))
-	draw_rect(mold_r, Color(c_void, 0.65))
-	var mold_edge: Color = c_gold if state == PourState.POURING else (PAL["ice"] as Color if _was_cooled_signal else (c_stone if state == PourState.COOLED else c_dusk))
+	draw_rect(mold_r, Color(c_void, 0.72))
+	draw_rect(Rect2(mold_r.position + Vector2(2.0, 2.0), mold_r.size - Vector2(4.0, 4.0)), c_night)
+	var mold_edge: Color = c_gold if pouring else (c_ice if _was_cooled_signal else (c_stone if cooled else c_dusk))
 	draw_rect(mold_r, mold_edge, false, 1.0)
 	# Corner foundry mold lugs
 	for corner: Vector2 in [mold_r.position, Vector2(mold_r.end.x - 3.0, mold_r.position.y), Vector2(mold_r.position.x, mold_r.end.y - 3.0), mold_r.end - Vector2(3.0, 3.0)]:
@@ -268,25 +274,93 @@ func _draw() -> void:
 		# Recessed X inside dry empty mold
 		draw_line(mold_r.position + Vector2(4.0, 4.0), mold_r.end - Vector2(5.0, 5.0), c_dusk, 1.0)
 		draw_line(Vector2(mold_r.end.x - 5.0, mold_r.position.y + 4.0), Vector2(mold_r.position.x + 4.0, mold_r.end.y - 5.0), c_dusk, 1.0)
+	elif pouring:
+		# Growing molten pool inside the floor mold
+		var fill_u: float = 1.0 - clampf(_pour_t / maxf(0.05, pour_warn_secs), 0.0, 1.0)
+		var pr: float = roundf(lerpf(3.0, 7.0, fill_u))
+		draw_rect(Rect2(mold_rel.x - pr, mold_rel.y - pr, pr * 2.0, pr * 2.0), c_coral)
+		if pr >= 4.0:
+			draw_rect(Rect2(mold_rel.x - pr + 2.0, mold_rel.y - pr + 2.0, (pr - 2.0) * 2.0, (pr - 2.0) * 2.0), c_gold)
 
-	# 2. Overhead riveted crucible spout housing at origin
-	LxPhysDraw.draw_bevel_box(self, Rect2(-9.0, -7.0, 18.0, 12.0), c_dusk, c_stone if state != PourState.DORMANT else c_mauve, c_night, c_void, c_apr if state == PourState.POURING else c_mauve)
-	# Spout mouth lip
-	var mouth_c: Color = c_cream if state == PourState.POURING else (c_apr if state == PourState.COOLED else c_night)
-	draw_rect(Rect2(-5.0, 3.0, 10.0, 4.0), c_void)
-	draw_rect(Rect2(-4.0, 4.0, 8.0, 2.0), mouth_c)
-	# Valve status pip on front plate
-	var pip_c: Color = c_gold if state == PourState.POURING else (PAL["ice"] as Color if _was_cooled_signal else (c_coral if state == PourState.COOLED else c_night))
-	draw_rect(Rect2(-2.0, -3.0, 4.0, 3.0), pip_c)
+	# Grounded shadow under overhead crucible crane
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 8.0), 11.0, 3.5)
 
-	# 3. Blazing coral-gold warning stream during POURING (0.7s)
-	if state == PourState.POURING:
+	# 2. Overhead forged-iron crane gantry bar & suspension chains
+	draw_rect(Rect2(-12.0, -13.0, 24.0, 4.0), c_void)
+	draw_rect(Rect2(-11.0, -12.0, 22.0, 2.0), c_dusk)
+	draw_rect(Rect2(-11.0, -12.0, 22.0, 1.0), c_stone)
+	draw_rect(Rect2(-9.0, -12.0, 8.0, 1.0), c_ice)
+	# Twin forged suspension rods holding the crucible trunnions
+	for cx: float in [-8.0, 7.0]:
+		draw_rect(Rect2(cx - 1.0, -10.0, 3.0, 4.0), c_void)
+		draw_rect(Rect2(cx, -10.0, 1.0, 4.0), c_stone)
+
+	# 3. Heavy riveted crucible vat with side trunnions & sunlit bevel
+	draw_rect(Rect2(-12.0, -4.0, 24.0, 5.0), c_void)
+	draw_rect(Rect2(-11.0, -3.0, 2.0, 3.0), c_mauve)
+	draw_rect(Rect2(9.0, -3.0, 2.0, 3.0), c_mauve)
+	LxPhysDraw.draw_bevel_box(self, Rect2(-10.0, -8.0, 20.0, 12.0), c_dusk, c_stone if not pouring else c_apr, c_night, c_void, c_stone)
+	# Forged iron reinforcing strap & prominent rivets
+	draw_rect(Rect2(-9.0, -2.0, 18.0, 2.0), c_night)
+	for rx: float in [-8.0, -4.0, 3.0, 7.0]:
+		draw_rect(Rect2(rx, -2.0, 1.0, 1.0), c_stone)
+
+	# Glowing molten crucible lip along top rim
+	if pouring:
+		draw_rect(Rect2(-8.0, -7.0, 16.0, 2.0), c_coral)
+		draw_rect(Rect2(-6.0, -7.0, 12.0, 2.0), c_apr)
+		draw_rect(Rect2(-4.0, -7.0, 8.0, 1.0), c_gold)
+		draw_rect(Rect2(-2.0, -7.0, 4.0, 1.0), c_cream)
+	elif cooled:
+		draw_rect(Rect2(-7.0, -7.0, 14.0, 1.0), c_coral)
+		draw_rect(Rect2(-4.0, -7.0, 8.0, 1.0), c_apr)
+	else:
+		draw_rect(Rect2(-7.0, -7.0, 14.0, 1.0), c_wine)
+
+	# Tapered pouring spout mouth lip at bottom
+	draw_rect(Rect2(-6.0, 3.0, 12.0, 4.0), c_void)
+	draw_rect(Rect2(-5.0, 4.0, 10.0, 2.0), c_coral if pouring else (c_wine if cooled else c_night))
+	if pouring:
+		draw_rect(Rect2(-3.0, 4.0, 6.0, 2.0), c_gold)
+		draw_rect(Rect2(-2.0, 5.0, 4.0, 1.0), c_cream)
+	elif cooled:
+		draw_rect(Rect2(-3.0, 4.0, 6.0, 1.0), c_apr)
+
+	# Valve status pip in riveted bezel on front plate
+	var pip_c: Color = c_gold if pouring else (c_ice if _was_cooled_signal else (c_coral if cooled else c_night))
+	draw_rect(Rect2(-3.0, -5.0, 6.0, 4.0), c_void)
+	draw_rect(Rect2(-2.0, -4.0, 4.0, 2.0), pip_c)
+	if pouring or _was_cooled_signal:
+		draw_rect(Rect2(-1.0, -4.0, 2.0, 1.0), c_cream)
+
+	# 4. Crisp pouring molten slag stream + ember sparks during POURING (0.7s)
+	if pouring:
 		var u: float = 1.0 - clampf(_pour_t / maxf(0.05, pour_warn_secs), 0.0, 1.0)
 		var start_p := Vector2(0.0, 6.0)
-		var end_p: Vector2 = start_p.lerp(mold_rel, clampf(u * 1.35, 0.15, 1.0))
+		var end_p: Vector2 = start_p.lerp(mold_rel, clampf(u * 1.35, 0.15, 1.0)).round()
+		draw_line(start_p, end_p, c_void, 6.0)
 		draw_line(start_p, end_p, c_coral, 4.0)
+		draw_line(start_p, end_p, c_apr, 3.0)
 		draw_line(start_p, end_p, c_gold, 2.0)
-		if not LxHudFx.flash_reduced() or fmod(_clock, 0.25) < 0.15:
-			draw_line(start_p, end_p, c_cream, 1.0)
-		draw_arc(mold_rel, lerpf(2.0, 10.0, u), 0.0, TAU, 12, c_gold, 1.2)
+		draw_line(start_p, end_p, c_cream, 1.0)
+		# Crisp falling bright slag globules along stream
+		var drop_phase: float = 0.0 if fr else fmod(_clock * 14.0, 6.0)
+		var seg_d: float = start_p.distance_to(end_p)
+		if seg_d > 4.0:
+			var s_dir: Vector2 = (end_p - start_p) / seg_d
+			var cur_d: float = drop_phase
+			while cur_d < seg_d - 2.0:
+				var dp: Vector2 = (start_p + s_dir * cur_d).round()
+				draw_rect(Rect2(dp - Vector2(1.0, 0.0), Vector2(2.0, 2.0)), c_cream)
+				cur_d += 6.0
+		# Impact ring + pixel ember sparks bouncing from mold
+		draw_arc(mold_rel, roundf(lerpf(2.0, 10.0, u)), 0.0, TAU, 12, c_gold, 1.2)
+		for si: int in range(5):
+			var sp_u: float = 0.45 if fr else fmod(_clock * 3.8 + float(si) * 0.21, 1.0)
+			var ang: float = -PI * 0.85 + float(si) * 0.42
+			var sp_p := Vector2(
+				roundf(mold_rel.x + cos(ang) * (3.0 + sp_u * 9.0)),
+				roundf(mold_rel.y + sin(ang) * (2.0 + sp_u * 7.0) - sp_u * 3.0)
+			)
+			draw_rect(Rect2(sp_p, Vector2(1.0, 1.0)), c_cream if sp_u < 0.35 else (c_gold if sp_u < 0.7 else c_coral))
 	_draw_signal_pulses()

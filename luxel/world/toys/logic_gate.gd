@@ -156,21 +156,63 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_coral: Color = PAL["coral"] as Color
 	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
-	var c_hi: Color = (PAL["coral"] as Color) if _error_t > 0.0 else (PAL["cream"] as Color if powered else c_glow)
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -7.0, 14.0, 14.0), PAL["night"] as Color, PAL["dusk"] as Color, c_hi if powered else PAL["mauve"] as Color, c_void)
+	var reduced: bool = LxHudFx.flash_reduced()
+	var is_err: bool = _error_t > 0.0
+	var trim_c: Color = c_coral if is_err else (c_gold if powered else c_apricot)
+	var hi_c: Color = c_coral if is_err else (c_cream if powered else c_stone)
 
-	# Distinct pixel shape per operator (greyscale readable)
-	var shape_i: int = 3
-	match op:
-		"all": shape_i = 3   # Square
-		"any": shape_i = 0   # Circle
-		"xor": shape_i = 1   # Diamond
-		"seq": shape_i = 2   # Triangle
-		"count": shape_i = 4 # Plus
-	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -1.0), shape_i, powered, c_glow if powered else PAL["stone"] as Color, PAL["cream"] as Color if powered else PAL["mauve"] as Color)
+	# Grounded shadow beneath arcane brass/stone relay pylon
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 9.0, 3.0)
 
-	# Input status pips along bottom edge
+	# Stepped stone plinth with brass corner anchors
+	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, 2.0, 18.0, 5.0), c_night, c_dusk, c_stone, c_void)
+	draw_rect(Rect2(-8.0, 3.0, 2.0, 2.0), trim_c)
+	draw_rect(Rect2(6.0, 3.0, 2.0, 2.0), trim_c)
+
+	# Side input conduit lugs (distinguishes pylon from flat square sensors)
+	LxToyDraw.draw_bevel_box(self, Rect2(-10.0, -5.0, 4.0, 6.0), c_night, c_dusk, trim_c, c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(6.0, -5.0, 4.0, 6.0), c_night, c_dusk, trim_c, c_void)
+	draw_rect(Rect2(-9.0, -3.0, 2.0, 2.0), c_cream if powered else c_mauve)
+	draw_rect(Rect2(7.0, -3.0, 2.0, 2.0), c_cream if powered else c_mauve)
+
+	# Main stone/brass relay pylon housing
+	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -9.0, 14.0, 12.0), c_night, c_dusk, c_stone if not powered else c_gold, c_void)
+	# Vertical brass circuit trim rails on left and right edges
+	draw_rect(Rect2(-6.0, -8.0, 1.0, 9.0), trim_c)
+	draw_rect(Rect2(5.0, -8.0, 1.0, 9.0), trim_c)
+
+	# Top output conduit finial + radiant emitter pip
+	LxToyDraw.draw_bevel_box(self, Rect2(-4.0, -13.0, 8.0, 5.0), c_night, c_dusk, trim_c, c_void)
+	draw_rect(Rect2(-2.0, -15.0, 4.0, 3.0), c_void)
+	draw_rect(Rect2(-1.0, -14.0, 2.0, 2.0), c_cream if powered else (c_coral if invert else c_mauve))
+	if invert:
+		# Clear NOT-gate inversion ring at output crown
+		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), c_coral if not powered else c_cream)
+	if powered:
+		var pulse_ok: bool = reduced or int(floorf(_clock * 5.0)) % 2 == 0
+		if pulse_ok:
+			draw_arc(Vector2(0.0, -13.0), 4.0, PI, TAU, 10, c_glow, 1.0)
+
+	# Recessed arcane faceplate + radiant powered core
+	draw_rect(Rect2(-5.0, -7.0, 10.0, 8.0), c_void)
+	draw_rect(Rect2(-4.0, -6.0, 8.0, 6.0), c_dusk if powered else c_night)
+	if powered:
+		draw_rect(Rect2(-3.0, -5.0, 6.0, 4.0), Color(c_glow, 0.38))
+
+	# Etched gate emblem (AND / OR / XOR / SEQ / COUNT + NOT bubble if inverted)
+	var em_c: Color = c_coral if is_err else (c_cream if powered else c_gold)
+	_draw_gate_emblem(Vector2(0.0, -3.0), em_c, hi_c)
+
+	# Input conduit pips inlaid across plinth front
 	var n_pips: int = mini(5, inputs.size() if not inputs.is_empty() else _states.size())
 	if n_pips > 0:
 		var span: float = float(n_pips - 1) * 3.0
@@ -178,5 +220,44 @@ func _draw() -> void:
 			var sid: String = inputs[i] if i < inputs.size() else str(_states.keys()[i])
 			var lit_p: bool = bool(_states.get(sid, false))
 			var px: float = roundf(-span * 0.5 + float(i) * 3.0)
-			draw_rect(Rect2(px, 5.0, 2.0, 1.0), PAL["cream"] as Color if lit_p else PAL["night"] as Color)
+			draw_rect(Rect2(px - 1.0, 3.0, 3.0, 3.0), c_void)
+			draw_rect(Rect2(px, 4.0, 1.0, 1.0), c_cream if lit_p else (c_glow if powered else c_mauve))
 	_draw_signal_pulses()
+
+
+func _draw_gate_emblem(center: Vector2, col: Color, hi: Color) -> void:
+	var cx: float = roundf(center.x)
+	var cy: float = roundf(center.y)
+	match op:
+		"any": # OR: curved crescent shield pointing right
+			draw_rect(Rect2(cx - 3.0, cy - 2.0, 3.0, 1.0), col)
+			draw_rect(Rect2(cx - 3.0, cy + 2.0, 3.0, 1.0), col)
+			draw_rect(Rect2(cx - 2.0, cy - 1.0, 1.0, 3.0), col)
+			draw_rect(Rect2(cx, cy - 1.0, 2.0, 1.0), hi)
+			draw_rect(Rect2(cx, cy + 1.0, 2.0, 1.0), hi)
+			draw_rect(Rect2(cx + 2.0, cy, 1.0, 1.0), hi)
+		"xor": # XOR: double arc + pointed tip
+			draw_rect(Rect2(cx - 3.0, cy - 2.0, 1.0, 5.0), col)
+			draw_rect(Rect2(cx - 1.0, cy - 2.0, 2.0, 1.0), hi)
+			draw_rect(Rect2(cx - 1.0, cy + 2.0, 2.0, 1.0), hi)
+			draw_rect(Rect2(cx - 1.0, cy - 1.0, 1.0, 3.0), col)
+			draw_rect(Rect2(cx + 1.0, cy - 1.0, 1.0, 3.0), hi)
+			draw_rect(Rect2(cx + 2.0, cy, 1.0, 1.0), hi)
+		"seq": # SEQ: stepped arrow chevron
+			draw_rect(Rect2(cx - 3.0, cy, 5.0, 1.0), col)
+			draw_rect(Rect2(cx, cy - 2.0, 1.0, 5.0), hi)
+			draw_rect(Rect2(cx + 1.0, cy - 1.0, 1.0, 3.0), hi)
+			draw_rect(Rect2(cx + 2.0, cy, 1.0, 1.0), hi)
+		"count": # COUNT: bold plus tally
+			draw_rect(Rect2(cx, cy - 2.0, 1.0, 5.0), hi)
+			draw_rect(Rect2(cx - 2.0, cy, 5.0, 1.0), col)
+			draw_rect(Rect2(cx, cy, 1.0, 1.0), hi)
+		_: # ALL (AND): classic D-shape block
+			draw_rect(Rect2(cx - 2.0, cy - 2.0, 1.0, 5.0), col)
+			draw_rect(Rect2(cx - 2.0, cy - 2.0, 4.0, 1.0), col)
+			draw_rect(Rect2(cx - 2.0, cy + 2.0, 4.0, 1.0), col)
+			draw_rect(Rect2(cx + 2.0, cy - 1.0, 1.0, 3.0), hi)
+			if powered:
+				draw_rect(Rect2(cx - 1.0, cy - 1.0, 3.0, 3.0), hi)
+	if invert:
+		draw_rect(Rect2(cx + 3.0, cy, 1.0, 1.0), PAL["coral"] as Color if not powered else PAL["cream"] as Color)

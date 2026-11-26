@@ -224,21 +224,41 @@ func _draw() -> void:
 		draw_circle(Vector2.ZERO, 3.0, c_cream if hi else c_dusk)
 		return
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.5)
-	# Amber glass sap reservoir cylinder + brass valve wheel
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -9.0, 14.0, 15.0), c_night, c_dusk, c_sky if frz else c_apricot, c_void)
-	# Inner sap fluid column (rises high or sits low — unmistakable in greyscale!)
-	draw_rect(Rect2(-4.0, -7.0, 8.0, 11.0), c_night)
-	var fill_h: float = 9.0 if hi else 3.0
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 9.0, 3.0)
+	# Stepped carved-wood & brass base plinth
+	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 3.0, 16.0, 5.0), c_night, c_wine, c_apricot, c_void)
+	# Glass amber sap reservoir tube framed by twin vertical brass struts
+	draw_rect(Rect2(-7.0, -10.0, 14.0, 14.0), c_void)
+	draw_rect(Rect2(-6.0, -9.0, 12.0, 12.0), PAL["deep"] as Color if frz else c_night)
+	# Brass frame side pillars + riveted top collar
+	draw_rect(Rect2(-7.0, -9.0, 2.0, 12.0), c_apricot if hi else c_wine)
+	draw_rect(Rect2(5.0, -9.0, 2.0, 12.0), c_wine)
+	draw_rect(Rect2(-7.0, -9.0, 1.0, 11.0), c_gold)
+	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -11.0, 16.0, 4.0), c_wine, c_apricot, c_ice if frz else c_gold, c_void)
+
+	# Inner glowing amber sap fluid column (rises high or sits low — unmistakable in greyscale!)
+	var fill_h: float = 10.0 if hi else 3.0
 	if mode == "timed" and hi:
-		fill_h = maxf(2.0, roundf(9.0 * clampf(timer_left / secs, 0.0, 1.0)))
-	var sap_col: Color = c_ice if frz else (c_coral if (tel and not LxHudFx.flash_reduced()) else (c_gold if hi else c_jade))
-	draw_rect(Rect2(-4.0, 4.0 - fill_h, 8.0, fill_h), sap_col)
-	draw_rect(Rect2(-3.0, 4.0 - fill_h, 6.0, 1.0), c_cream if hi else c_gold)
-	# Top brass valve wheel
-	draw_rect(Rect2(-5.0, -12.0, 10.0, 3.0), c_void)
-	draw_rect(Rect2(-4.0, -11.0, 8.0, 1.0), c_cream if hi else c_apricot)
-	draw_rect(Rect2(-1.0, -13.0, 2.0, 4.0), c_gold)
+		fill_h = maxf(2.0, roundf(10.0 * clampf(timer_left / secs, 0.0, 1.0)))
+	var sap_col: Color = c_ice if frz else (c_coral if (tel and not LxHudFx.flash_reduced()) else (c_apricot if hi else c_jade))
+	var sap_hi: Color = c_cream if (frz or hi) else c_gold
+	draw_rect(Rect2(-4.0, 3.0 - fill_h, 8.0, fill_h), sap_col)
+	draw_rect(Rect2(-3.0, 3.0 - fill_h, 6.0, maxf(1.0, fill_h - 1.0)), c_gold if (hi and not frz) else sap_col)
+	draw_rect(Rect2(-4.0, 3.0 - fill_h, 8.0, 1.0), sap_hi)
+	# Vertical glass reflection streak + tiny rising amber bubble when high
+	draw_rect(Rect2(-3.0, -7.0, 1.0, 9.0), c_cream if hi else c_sky)
+	if hi and not frz:
+		var bub_y: float = -2.0 if LxHudFx.flash_reduced() else roundf(-6.0 + fposmod(-_clock * 6.0, maxf(2.0, fill_h - 2.0)))
+		draw_rect(Rect2(1.0, clampf(bub_y, 3.0 - fill_h + 1.0, 1.0), 2.0, 1.0), c_cream)
+
+	# Ornate spoked brass valve wheel atop stem
+	draw_rect(Rect2(-2.0, -14.0, 4.0, 4.0), c_void)
+	draw_rect(Rect2(-1.0, -13.0, 2.0, 3.0), c_gold)
+	draw_rect(Rect2(-6.0, -15.0, 12.0, 3.0), c_void)
+	draw_rect(Rect2(-5.0, -14.0, 10.0, 2.0), c_apricot)
+	draw_rect(Rect2(-5.0, -14.0, 8.0, 1.0), c_cream if hi else c_gold)
+	draw_rect(Rect2(-6.0, -14.0, 1.0, 2.0), c_gold)
+	draw_rect(Rect2(5.0, -14.0, 1.0, 2.0), c_wine)
 
 	if frz:
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / freeze_secs, 0.0, 1.0), c_ice, c_sky)

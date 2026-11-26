@@ -266,28 +266,91 @@ func _tick_bolts(dt: float) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_sky: Color = PAL["sky"] as Color
 	var trip: Array[Color] = LxToyDraw.color_triplet(bolt_color)
 	var red: bool = LxHudFx.flash_reduced()
-
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -7.0, 14.0, 14.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
-
-	# Eye socket + shutter state
 	var is_stun: bool = _stun_t > 0.0
-	var socket_c: Color = PAL["night"] as Color if (is_stun or phase == Phase.RECOVER) else trip[0]
-	draw_rect(Rect2(-4.0, -4.0, 8.0, 8.0), c_void)
-	draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), socket_c)
-	if not is_stun:
-		var po: Vector2 = (fire_dir * 2.0).round()
-		var p_col: Color = PAL["cream"] as Color if phase == Phase.TELL or phase == Phase.COMMIT else trip[2]
-		draw_rect(Rect2(po.x - 1.0, po.y - 1.0, 3.0, 3.0), trip[1])
-		draw_rect(Rect2(po.x, po.y, 1.0, 1.0), p_col)
+	var is_alert: bool = (phase == Phase.TELL or phase == Phase.COMMIT) and not is_stun
+	var fdir: Vector2 = fire_dir.normalized() if fire_dir.length_squared() > 0.001 else Vector2.RIGHT
+	var perp := Vector2(-fdir.y, fdir.x)
+	var ec := Vector2(0.0, -2.0)
+
+	# Grounded shadow under stone sentry plinth
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.5), 8.5, 3.0)
+
+	# Stepped 3/4 stone sentry pedestal + brass corner rivets
+	draw_rect(Rect2(-8.0, 0.0, 16.0, 7.0), c_void)
+	draw_rect(Rect2(-7.0, 4.0, 14.0, 2.0), c_night)
+	draw_rect(Rect2(-7.0, 1.0, 14.0, 3.0), c_dusk)
+	draw_rect(Rect2(-7.0, 1.0, 14.0, 1.0), c_stone)
+	draw_rect(Rect2(-7.0, 1.0, 1.0, 3.0), c_mauve)
+	draw_rect(Rect2(-6.0, 2.0, 1.0, 1.0), c_gold)
+	draw_rect(Rect2(5.0, 2.0, 1.0, 1.0), c_gold)
+
+	# Rotating brass turret drum + side ear-lugs oriented to fire_dir
+	var lug_a: Vector2 = (ec + perp * 6.5).round()
+	var lug_b: Vector2 = (ec - perp * 6.5).round()
+	for lg: Vector2 in [lug_a, lug_b]:
+		draw_rect(Rect2(lg - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+		draw_rect(Rect2(lg - Vector2.ONE, Vector2(2.0, 2.0)), c_apricot if not is_stun else c_dusk)
+		draw_rect(Rect2(lg - Vector2.ONE, Vector2.ONE), c_gold if not is_stun else c_stone)
+
+	draw_circle(ec, 7.5, c_void)
+	draw_circle(ec, 6.5, c_wine if not is_stun else c_night)
+	draw_circle(ec + Vector2(-0.5, -0.5), 6.0, c_apricot if not is_stun else c_dusk)
+	draw_arc(ec, 6.0, PI * 1.1, PI * 1.9, 10, c_gold if not is_stun else c_stone, 1.0)
+	# Directional brass brow-visor pointing along fire_dir
+	var visor: Vector2 = (ec + fdir * 6.0).round()
+	draw_rect(Rect2(visor - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+	draw_rect(Rect2(visor - Vector2.ONE, Vector2(2.0, 2.0)), c_coral if is_alert else (c_gold if not is_stun else c_mauve))
+
+	# Expressive cyclops eye socket
+	draw_circle(ec, 5.2, c_void)
+	if is_stun:
+		# Closed ribbed brass shutter eyelids + daze pips
+		draw_circle(ec, 4.2, c_dusk)
+		draw_rect(Rect2(-4.0, ec.y - 1.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, ec.y - 3.0, 6.0, 1.0), c_mauve)
+		draw_rect(Rect2(-3.0, ec.y + 1.0, 6.0, 1.0), c_night)
+		var dz_x: float = 0.0 if red else roundf(sin(_clock * 8.0) * 2.0)
+		draw_rect(Rect2(dz_x - 3.0, ec.y - 8.0, 2.0, 2.0), c_sky)
+		draw_rect(Rect2(-dz_x + 2.0, ec.y - 9.0, 1.0, 1.0), c_cream)
+	else:
+		# Sclera (slightly narrowed in RECOVER)
+		var scl_c: Color = c_cream if is_alert else c_stone
+		draw_circle(ec, 4.2, scl_c)
+		draw_circle(ec + Vector2(-0.5, -0.5), 3.4, c_cream)
+		if phase == Phase.RECOVER:
+			draw_rect(Rect2(-4.0, ec.y - 4.0, 8.0, 2.0), c_apricot)
+			draw_rect(Rect2(-4.0, ec.y - 2.0, 8.0, 1.0), c_void)
+		# Directional tracking iris + deep pupil + crisp specular glint
+		var po: Vector2 = (ec + fdir * 1.8).round()
+		draw_rect(Rect2(po - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), trip[0])
+		draw_rect(Rect2(po - Vector2.ONE, Vector2(3.0, 3.0)), trip[1])
+		if is_alert:
+			var hot: bool = red or int(floorf(_clock * 12.0)) % 2 == 0
+			draw_rect(Rect2(po - Vector2.ONE, Vector2(2.0, 2.0)), c_gold if hot else c_coral)
+			draw_rect(Rect2(po, Vector2.ONE), c_cream)
+			draw_arc(ec, 5.8, 0.0, TAU, 14, c_gold if hot else trip[1], 1.0)
+		else:
+			draw_rect(Rect2(po, Vector2(2.0, 2.0)), c_void)
+		# Top-left lens specular glint
+		draw_rect(Rect2(ec + Vector2(-2.0, -3.0), Vector2.ONE), c_cream)
 
 	# Clear dotted aim telegraph during TELL
-	if phase == Phase.TELL:
-		var t_col: Color = PAL["cream"] as Color if (red or int(floorf(_clock * 14.0)) % 2 == 0) else trip[1]
+	if phase == Phase.TELL and not is_stun:
+		var t_col: Color = c_cream if (red or int(floorf(_clock * 14.0)) % 2 == 0) else trip[1]
 		for k: int in range(1, 7):
-			var tp: Vector2 = (fire_dir * (8.0 + float(k) * 6.0)).round()
+			var tp: Vector2 = (ec + fdir * (8.0 + float(k) * 6.0)).round()
 			draw_rect(Rect2(tp, Vector2.ONE), t_col)
 
 	# Active turret bolts
@@ -296,4 +359,4 @@ func _draw() -> void:
 		var bt: Array[Color] = LxToyDraw.color_triplet(str(b["color"]))
 		draw_rect(Rect2(bp - Vector2(2.0, 2.0), Vector2(5.0, 5.0)), c_void)
 		draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), bt[1])
-		draw_rect(Rect2(bp, Vector2.ONE), PAL["cream"] as Color)
+		draw_rect(Rect2(bp, Vector2.ONE), c_cream)

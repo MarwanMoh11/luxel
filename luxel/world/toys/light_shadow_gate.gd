@@ -54,6 +54,8 @@ func tick(dt: float) -> void:
 	if _trans_t > 0.0:
 		_trans_t = maxf(0.0, _trans_t - dt)
 		queue_redraw()
+	elif opened and not LxHudFx.flash_reduced():
+		queue_redraw()
 	_evaluate_light(true)
 
 
@@ -113,6 +115,28 @@ func load_state(d: Dictionary) -> void:
 	queue_redraw()
 
 
+func _draw_gatepost(rect: Rect2, c_void: Color, c_night: Color, c_dusk: Color, c_plum: Color, c_mauve: Color, c_stone: Color, c_sky: Color, c_ice: Color, c_cream: Color) -> void:
+	var r := Rect2(rect.position.round(), rect.size.round())
+	# Grounded drop shadow under obsidian post
+	draw_rect(Rect2(r.position.x + 1.0, r.end.y, r.size.x, 2.0), Color(c_void, 0.38))
+	draw_rect(r, c_void)
+	draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, maxf(1.0, r.size.x - 2.0), maxf(1.0, r.size.y - 2.0)), c_night)
+	draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, maxf(1.0, r.size.x - 2.0), maxf(1.0, r.size.y - 4.0)), c_dusk)
+	draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, maxf(1.0, r.size.x - 2.0), 1.0), c_stone)
+	draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 1.0, maxf(1.0, r.size.y - 3.0)), c_mauve)
+	if r.size.y >= 8.0:
+		draw_rect(Rect2(r.position.x + 1.0, floorf(r.get_center().y), maxf(1.0, r.size.x - 2.0), 1.0), c_plum)
+	# Ornate wrought-iron crescent-moon finial perched atop post
+	var fx: float = floorf(r.get_center().x)
+	var fy: float = r.position.y - 4.0
+	draw_rect(Rect2(fx - 3.0, fy, 7.0, 5.0), c_void)
+	draw_rect(Rect2(fx - 2.0, fy + 3.0, 5.0, 1.0), c_plum)
+	draw_rect(Rect2(fx - 2.0, fy + 1.0, 1.0, 2.0), c_ice)
+	draw_rect(Rect2(fx + 2.0, fy + 1.0, 1.0, 2.0), c_sky)
+	draw_rect(Rect2(fx - 1.0, fy + 2.0, 3.0, 1.0), c_sky)
+	draw_rect(Rect2(fx - 2.0, fy + 1.0, 1.0, 1.0), c_cream)
+
+
 func _draw() -> void:
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
@@ -122,30 +146,72 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_plum: Color = PAL["plum"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var red: bool = LxHudFx.flash_reduced()
+	var horiz: bool = w >= h
+	var pw: float = clampf(floorf(minf(w, h) * 0.34), 5.0, 7.0)
 
 	if opened:
-		var jb: float = minf(5.0, floorf(minf(w, h) * 0.3))
-		if w >= h:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, jb, h), c_night, c_dusk, c_plum, c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - jb, y0, jb, h), c_night, c_dusk, c_plum, c_void)
+		# Recessed threshold sill + ornate obsidian gateposts with crescent-moon finials
+		if horiz:
+			draw_rect(Rect2(x0 + pw, y0 + h - 4.0, maxf(2.0, w - pw * 2.0), 3.0), Color(c_void, 0.36))
+			draw_rect(Rect2(x0 + pw, y0 + h - 3.0, maxf(2.0, w - pw * 2.0), 1.0), c_dusk)
+			_draw_gatepost(Rect2(x0, y0, pw, h), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+			_draw_gatepost(Rect2(x0 + w - pw, y0, pw, h), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
 		else:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, jb), c_night, c_dusk, c_plum, c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 + h - jb, w, jb), c_night, c_dusk, c_plum, c_void)
-		# Subtle dark-moon open pip
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_plum)
+			draw_rect(Rect2(x0 + 2.0, y0 + pw, maxf(2.0, w - 4.0), maxf(2.0, h - pw * 2.0)), Color(c_void, 0.30))
+			_draw_gatepost(Rect2(x0, y0, w, pw), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+			_draw_gatepost(Rect2(x0, y0 + h - pw, w, pw), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+		# Subtle floating shadow-wisp pips drifting between the open gateposts
+		var span: float = maxf(4.0, (w if horiz else h) - pw * 2.0 - 2.0)
+		for wi: int in range(3):
+			var u: float = (float(wi) + 0.5) / 3.0 - 0.5
+			var bob: float = 0.0 if red else roundf(sin(_clock * 2.6 + float(wi) * 2.1) * 1.6)
+			var wp: Vector2 = Vector2(roundf(u * span), bob) if horiz else Vector2(bob, roundf(u * span))
+			draw_rect(Rect2(wp - Vector2.ONE, Vector2(3.0, 3.0)), Color(c_void, 0.45))
+			draw_rect(Rect2(wp, Vector2(2.0, 2.0)), c_plum if wi != 1 else c_mauve)
+			draw_rect(Rect2(wp, Vector2.ONE), c_sky if wi == 1 else c_mauve)
 		return
 
-	# Closed shadow barrier: sealed by ambient light
-	draw_rect(Rect2(x0 + 1.0, y0 + h, w - 2.0, 2.0), c_void)
-	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), c_void, c_night, c_plum, c_void)
-	# Interlocking vertical shadow ribs
-	var sx: float = x0 + 4.0
-	while sx < x0 + w - 4.0:
-		draw_rect(Rect2(sx, y0 + 2.0, 2.0, h - 4.0), c_dusk)
-		sx += 5.0
-	# Moon emblem shows light is sealing it
+	# Solid midnight-stone moon-crest barrier sealed by light
+	draw_rect(Rect2(x0 + 1.0, y0 + h, w - 2.0, 3.0), Color(c_void, 0.40))
+	draw_rect(Rect2(x0, y0, w, h), c_void)
+	# Recessed dark south foundation course
+	var base_h: float = minf(4.0, floorf(h * 0.25))
+	draw_rect(Rect2(x0 + 1.0, y0 + h - base_h, w - 2.0, base_h - 1.0), c_night)
+	# Main midnight-stone wall body + sunlit bevelled coping
+	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, maxf(3.0, h - base_h - 1.0)), c_dusk)
+	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, 1.0), c_mauve)
+	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, 1.0, maxf(2.0, h - base_h - 1.0)), c_plum)
+	# Sculpted staggered masonry stonework courses
+	var row_y: float = y0 + 4.0
+	var row_i: int = 0
+	while row_y < y0 + h - base_h - 1.0:
+		draw_rect(Rect2(x0 + 2.0, row_y, w - 4.0, 1.0), c_night)
+		var bx: float = x0 + 4.0 + (3.0 if row_i % 2 == 1 else 0.0)
+		while bx < x0 + w - 4.0:
+			draw_rect(Rect2(bx, row_y - 3.0, 1.0, 3.0), c_night)
+			draw_rect(Rect2(bx + 1.0, row_y - 3.0, 2.0, 1.0), c_plum)
+			bx += 6.0
+		row_y += 4.0
+		row_i += 1
+	# Flanking obsidian gateposts with crescent-moon finials framing the wall
+	if horiz:
+		_draw_gatepost(Rect2(x0, y0, pw, h), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+		_draw_gatepost(Rect2(x0 + w - pw, y0, pw, h), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+	else:
+		_draw_gatepost(Rect2(x0, y0, w, pw), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+		_draw_gatepost(Rect2(x0, y0 + h - pw, w, pw), c_void, c_night, c_dusk, c_plum, c_mauve, c_stone, c_sky, c_ice, c_cream)
+
+	# Central carved Moon-Crest bezel medallion
+	draw_rect(Rect2(-5.0, -5.0, 10.0, 10.0), c_void)
+	draw_rect(Rect2(-4.0, -4.0, 8.0, 8.0), c_night)
+	draw_rect(Rect2(-4.0, -4.0, 8.0, 1.0), c_plum)
 	LxToyDraw.draw_tone_crest(self, Vector2.ZERO, "dusk", lit_level >= threshold)
 	if lit_level >= threshold:
-		draw_rect(Rect2(-3.0, y0 + 1.0, 6.0, 1.0), c_ice)
+		draw_rect(Rect2(-4.0, y0 + 1.0, 8.0, 1.0), c_cream if (red or int(floorf(_clock * 6.0)) % 2 == 0) else c_ice)
 	_draw_signal_pulses()

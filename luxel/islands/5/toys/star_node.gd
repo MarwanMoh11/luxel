@@ -310,62 +310,132 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if not is_star_active():
 		return
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_deep: Color = PAL["deep"] as Color
+	var c_blue: Color = PAL["blue"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_stone: Color = PAL["stone"] as Color
 	var fr: bool = LxHudFx.flash_reduced()
+
 	if lens_only and _revealed_t <= 0.0:
-		var shimmer: float = 0.28 if fr else (0.18 + 0.16 * sin(_clock * 3.5 + pos.x * 0.05))
-		var ci := Color(PAL["ice"] as Color, shimmer)
-		draw_rect(Rect2(-1.0, -5.0, 2.0, 1.0), ci)
-		draw_rect(Rect2(-1.0, 4.0, 2.0, 1.0), ci)
-		draw_rect(Rect2(-5.0, -1.0, 1.0, 2.0), ci)
-		draw_rect(Rect2(4.0, -1.0, 1.0, 2.0), ci)
+		var shimmer: float = 0.30 if fr else (0.20 + 0.16 * sin(_clock * 3.5 + pos.x * 0.05))
+		var ci := Color(c_ice, shimmer)
+		draw_rect(Rect2(-2.0, -6.0, 4.0, 1.0), ci)
+		draw_rect(Rect2(-2.0, 5.0, 4.0, 1.0), ci)
+		draw_rect(Rect2(-6.0, -2.0, 1.0, 4.0), ci)
+		draw_rect(Rect2(5.0, -2.0, 1.0, 4.0), ci)
 		return
 
 	if not lit:
-		draw_rect(Rect2(-8.0, -8.0, 16.0, 16.0), Color(PAL["void"] as Color, 0.75))
-		draw_rect(Rect2(-7.0, -7.0, 14.0, 14.0), PAL["night"] as Color)
-		draw_rect(Rect2(-7.0, -7.0, 14.0, 14.0), PAL["blue"] as Color if lens_only else PAL["dusk"] as Color, false, 1.0)
-		var cross_c: Color = (PAL["ice"] if lens_only else PAL["mauve"]) as Color
-		draw_line(Vector2(-4.0, 0.0), Vector2(4.0, 0.0), cross_c, 1.0)
-		draw_line(Vector2(0.0, -4.0), Vector2(0.0, 4.0), cross_c, 1.0)
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["void"] as Color)
+		# Crisp carved octagonal celestial floor socket (unmistakable even on dark void!)
+		var oct_out := _oct_poly(10.0, 4.0)
+		var oct_rim := _oct_poly(9.0, 4.0)
+		var oct_in := _oct_poly(7.0, 3.0)
+		draw_colored_polygon(oct_out, c_void)
+		draw_colored_polygon(oct_rim, c_deep)
+		draw_colored_polygon(oct_in, c_night)
+
+		# Sunlit celestial inlaid bevel along upper/left octagon edges + deep lower shadow
+		var rim_hi: Color = c_ice if lens_only else c_sky
+		var rim_mid: Color = c_sky if lens_only else c_blue
+		draw_rect(Rect2(-4.0, -9.0, 8.0, 1.0), rim_hi)
+		draw_rect(Rect2(-9.0, -4.0, 1.0, 8.0), rim_hi)
+		draw_rect(Rect2(-4.0, 8.0, 8.0, 1.0), rim_mid)
+		draw_rect(Rect2(8.0, -4.0, 1.0, 8.0), rim_mid)
+		# Crisp diagonal chamfer inlays so the octagon silhouette pops
+		for ch: Vector2 in [
+			Vector2(-7.0, -7.0), Vector2(-6.0, -8.0), Vector2(-8.0, -6.0),
+			Vector2(6.0, -7.0), Vector2(5.0, -8.0), Vector2(7.0, -6.0),
+			Vector2(-7.0, 6.0), Vector2(-6.0, 7.0), Vector2(-8.0, 5.0),
+			Vector2(6.0, 6.0), Vector2(5.0, 7.0), Vector2(7.0, 5.0),
+		]:
+			draw_rect(Rect2(ch, Vector2(1.0, 1.0)), rim_hi if (ch.y < 0.0 and ch.x < 0.0) else rim_mid)
+		# Sunken inner octagon border
+		draw_polyline(_oct_poly(7.0, 3.0, true), c_dusk, 1.0)
+
+		# Dim carved 4-point star etching recessed inside the socket well
+		draw_line(Vector2(-5.0, 0.0), Vector2(5.0, 0.0), rim_mid, 1.0)
+		draw_line(Vector2(0.0, -5.0), Vector2(0.0, 5.0), rim_mid, 1.0)
+		draw_line(Vector2(-3.0, -3.0), Vector2(3.0, 3.0), c_deep, 1.0)
+		draw_line(Vector2(-3.0, 3.0), Vector2(3.0, -3.0), c_deep, 1.0)
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), rim_hi)
+		# Tiny cardinal socket alignment ticks
+		for tk: Vector2 in [Vector2(-6.0, 0.0), Vector2(5.0, 0.0), Vector2(0.0, -6.0), Vector2(0.0, 5.0)]:
+			draw_rect(Rect2(tk, Vector2(1.0, 1.0)), rim_hi)
+
 		if pinned:
-			_draw_pin_rivets(PAL["mauve"] as Color)
+			_draw_pin_rivets(c_stone)
 		if _snuff_fx_t > 0.0:
 			var su: float = 1.0 - clampf(_snuff_fx_t / 0.28, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, lerpf(10.0, 3.0, su), 0.0, TAU, 12, Color(PAL["stone"] as Color, 1.0 - su), 1.0)
+			draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 3.0, su)), 0.0, TAU, 12, Color(c_stone, 1.0 - su), 1.0)
 		return
 
+	# LIT (or WARN) radiant octagonal starlight platform
 	var is_warn: bool = (star_state == StarState.WARN)
 	var blink: bool = fr or (int(floorf(_clock * 8.0)) % 2 == 0)
-	var rim_c: Color = (PAL["coral"] if (is_warn and blink) else (PAL["ice"] if lens_only else PAL["gold"])) as Color
-	var fill_c: Color = (PAL["wine"] if (is_warn and blink) else PAL["deep"]) as Color
-	var arm_c: Color = (PAL["apricot"] if is_warn else (PAL["ice"] if lens_only else PAL["gold"])) as Color
-	var core_c: Color = (PAL["coral"] if (is_warn and blink) else PAL["cream"]) as Color
+	var rim_c: Color = c_coral if (is_warn and blink) else (c_ice if lens_only else c_gold)
+	var fill_c: Color = c_wine if (is_warn and blink) else c_deep
+	var arm_c: Color = c_apr if is_warn else (c_ice if lens_only else c_gold)
+	var diag_c: Color = c_coral if is_warn else (c_sky if lens_only else c_apr)
+	var core_c: Color = c_coral if (is_warn and blink) else c_cream
 
-	draw_rect(Rect2(-9.0, -9.0, 18.0, 18.0), PAL["void"] as Color)
-	draw_rect(Rect2(-8.0, -8.0, 16.0, 16.0), fill_c)
-	draw_rect(Rect2(-8.0, -8.0, 16.0, 16.0), rim_c, false, 1.0)
-	draw_line(Vector2(-6.0, 0.0), Vector2(6.0, 0.0), arm_c, 2.0)
-	draw_line(Vector2(0.0, -6.0), Vector2(0.0, 6.0), arm_c, 2.0)
-	draw_line(Vector2(-4.0, -4.0), Vector2(4.0, 4.0), rim_c, 1.0)
-	draw_line(Vector2(-4.0, 4.0), Vector2(4.0, -4.0), rim_c, 1.0)
+	draw_colored_polygon(_oct_poly(11.0, 4.0), c_void)
+	draw_colored_polygon(_oct_poly(10.0, 4.0), rim_c)
+	draw_colored_polygon(_oct_poly(8.0, 3.0), fill_c)
+	draw_colored_polygon(_oct_poly(6.0, 2.0), c_night)
+
+	# Radiant 8-point starlight burst
+	draw_line(Vector2(-5.0, -5.0), Vector2(5.0, 5.0), diag_c, 1.0)
+	draw_line(Vector2(-5.0, 5.0), Vector2(5.0, -5.0), diag_c, 1.0)
+	draw_line(Vector2(-8.0, 0.0), Vector2(8.0, 0.0), arm_c, 2.0)
+	draw_line(Vector2(0.0, -8.0), Vector2(0.0, 8.0), arm_c, 2.0)
+	draw_line(Vector2(-7.0, 0.0), Vector2(7.0, 0.0), core_c, 1.0)
+	draw_line(Vector2(0.0, -7.0), Vector2(0.0, 7.0), core_c, 1.0)
+	draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), arm_c)
 	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), core_c)
+	# Cardinal starlight tip glints
+	for tip: Vector2 in [Vector2(-9.0, 0.0), Vector2(8.0, 0.0), Vector2(0.0, -9.0), Vector2(0.0, 8.0)]:
+		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), c_cream)
+
 	if is_warn:
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["void"] as Color)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_void)
+		var w_off: float = 0.0 if fr else _clock * 2.0
 		for wi: int in range(8):
-			var wa: float = _clock * 2.0 + float(wi) * (TAU / 8.0)
-			draw_arc(Vector2.ZERO, 11.0, wa, wa + 0.35, 3, rim_c, 1.0)
+			var wa: float = w_off + float(wi) * (TAU / 8.0)
+			draw_arc(Vector2.ZERO, 12.0, wa, wa + 0.35, 3, rim_c, 1.2)
 	if pinned:
-		_draw_pin_rivets(PAL["cream"] as Color)
+		_draw_pin_rivets(c_cream)
 	if _ignite_fx_t > 0.0:
 		var iu: float = 1.0 - clampf(_ignite_fx_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, lerpf(6.0, 18.0, iu), 0.0, TAU, 16, Color(PAL["cream"] as Color, (1.0 - iu) * 0.9), 1.5)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, iu)), 0.0, TAU, 16, Color(c_cream, (1.0 - iu) * 0.9), 1.5)
 	_draw_signal_pulses()
 
 
+static func _oct_poly(r: float, c: float, close: bool = false) -> PackedVector2Array:
+	var pts := PackedVector2Array([
+		Vector2(-c, -r), Vector2(c, -r),
+		Vector2(r, -c), Vector2(r, c),
+		Vector2(c, r), Vector2(-c, r),
+		Vector2(-r, c), Vector2(-r, -c),
+	])
+	if close:
+		pts.append(pts[0])
+	return pts
+
+
 func _draw_pin_rivets(col: Color) -> void:
-	for cp: Vector2 in [Vector2(-7.0, -7.0), Vector2(6.0, -7.0), Vector2(-7.0, 6.0), Vector2(6.0, 6.0)]:
-		draw_rect(Rect2(cp, Vector2(2.0, 2.0)), col)
+	for cp: Vector2 in [Vector2(-7.0, -7.0), Vector2(5.0, -7.0), Vector2(-7.0, 5.0), Vector2(5.0, 5.0)]:
+		draw_rect(Rect2(cp - Vector2.ONE, Vector2(3.0, 3.0)), PAL["void"] as Color)
+		draw_rect(Rect2(cp, Vector2(1.0, 1.0)), col)
 
 
 static func sync_region_constellations(reg: Node, dt: float = 0.0, force: bool = false) -> void:

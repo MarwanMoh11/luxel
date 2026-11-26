@@ -208,39 +208,109 @@ func _unbind_safety_events() -> void:
 
 
 func _draw() -> void:
-	_draw_ground_shadow(9.0, 4.0, Vector2(0.0, 6.0))
 	var void_c: Color = PAL["void"] as Color
 	var night: Color = PAL["night"] as Color
 	var dusk: Color = PAL["dusk"] as Color
+	var mauve: Color = PAL["mauve"] as Color
+	var stone: Color = PAL["stone"] as Color
+	var apr: Color = PAL["apricot"] as Color
 	var gold: Color = PAL["gold"] as Color
 	var cream: Color = PAL["cream"] as Color
+	var blue: Color = PAL["blue"] as Color
 	var sky: Color = PAL["sky"] as Color
+	var ice: Color = PAL["ice"] as Color
+	var jade: Color = PAL["jade"] as Color
 	var lime: Color = PAL["lime"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
+	var holding: bool = (state == State.HOLDING_MOVE)
+	var returned: bool = (state == State.RETURNED)
 
-	# Pedestal base & fluted shaft
-	draw_rect(Rect2(-8.0, 1.0, 16.0, 6.0), void_c)
-	draw_rect(Rect2(-7.0, 2.0, 14.0, 4.0), dusk)
-	draw_rect(Rect2(-5.0, -5.0, 10.0, 7.0), void_c)
-	draw_rect(Rect2(-4.0, -4.0, 8.0, 5.0), night)
-	draw_rect(Rect2(-7.0, -7.0, 14.0, 3.0), void_c)
-	draw_rect(Rect2(-6.0, -6.0, 12.0, 1.0), gold if state == State.HOLDING_MOVE else PAL["stone"] as Color)
+	# Grounded shadow under sculpted obsidian memory shrine
+	_draw_ground_shadow(11.0, 4.5, Vector2(1.0, 7.0))
 
-	# Carved move initial on plinth front (readable in greyscale!)
+	# Stepped obsidian altar base with gold inlay corners
+	draw_rect(Rect2(-10.0, 2.0, 20.0, 6.0), void_c)
+	draw_rect(Rect2(-9.0, 3.0, 18.0, 4.0), night)
+	draw_rect(Rect2(-9.0, 3.0, 18.0, 1.0), dusk)
+	draw_rect(Rect2(-8.0, 3.0, 6.0, 1.0), gold if holding else stone)
+	draw_rect(Rect2(-9.0, 5.0, 2.0, 1.0), gold if holding else apr)
+	draw_rect(Rect2(7.0, 5.0, 2.0, 1.0), gold if holding else apr)
+
+	# Sculpted obsidian shrine body with gold side pilasters
+	draw_rect(Rect2(-8.0, -7.0, 16.0, 10.0), void_c)
+	draw_rect(Rect2(-7.0, -6.0, 14.0, 9.0), night)
+	draw_rect(Rect2(-7.0, -6.0, 2.0, 9.0), dusk)
+	draw_rect(Rect2(5.0, -6.0, 2.0, 9.0), dusk)
+	draw_rect(Rect2(-6.0, -6.0, 1.0, 8.0), gold if holding else mauve)
+	draw_rect(Rect2(5.0, -6.0, 1.0, 8.0), apr if holding else dusk)
+
+	# Gilded stepped crown cornice + twin spire finials
+	draw_rect(Rect2(-9.0, -9.0, 18.0, 3.0), void_c)
+	draw_rect(Rect2(-8.0, -8.0, 16.0, 2.0), apr if not holding else gold)
+	draw_rect(Rect2(-8.0, -8.0, 10.0, 1.0), cream if holding else gold)
+	draw_rect(Rect2(-8.0, -11.0, 3.0, 3.0), void_c)
+	draw_rect(Rect2(-7.0, -10.0, 1.0, 2.0), gold if holding else stone)
+	draw_rect(Rect2(5.0, -11.0, 3.0, 3.0), void_c)
+	draw_rect(Rect2(6.0, -10.0, 1.0, 2.0), gold if holding else stone)
+
+	# Recessed keystone frame carved into the shrine front
+	var frame_c: Color = gold if holding else (lime if returned else stone)
+	draw_rect(Rect2(-5.0, -6.0, 10.0, 8.0), void_c)
+	draw_rect(Rect2(-4.0, -5.0, 8.0, 6.0), night)
+	# Arch bevel + keystone cap at top center of recess
+	draw_rect(Rect2(-4.0, -5.0, 8.0, 1.0), frame_c)
+	draw_rect(Rect2(-2.0, -6.0, 4.0, 2.0), frame_c)
+	draw_rect(Rect2(-1.0, -6.0, 2.0, 1.0), cream if holding else gold)
+	draw_rect(Rect2(-4.0, -5.0, 1.0, 6.0), dusk if not holding else apr)
+	draw_rect(Rect2(3.0, -5.0, 1.0, 6.0), dusk if not holding else apr)
+	draw_rect(Rect2(-4.0, 1.0, 8.0, 1.0), apr if holding else dusk)
+
+	# Carved move initial centered inside the recessed keystone frame (readable in greyscale!)
 	var letter: String = move_id.left(1).to_upper()
-	LxPixelFont.draw_centered(self, letter, 0.0, -3.0, cream if state == State.HOLDING_MOVE else PAL["stone"] as Color, 1, void_c)
+	LxPixelFont.draw_centered(self, letter, 0.0, -3.0, cream if holding else (lime if returned else stone), 1, void_c)
 
-	if state == State.HOLDING_MOVE:
-		# Hovering sealed orb above the pedestal
-		var bob: float = roundf(sin(_clock * 4.0) * 1.5)
-		var cy: float = -13.0 + bob
-		draw_rect(Rect2(-4.0, cy - 4.0, 8.0, 8.0), void_c)
-		draw_rect(Rect2(-3.0, cy - 3.0, 6.0, 6.0), sky)
-		draw_rect(Rect2(-2.0, cy - 2.0, 4.0, 4.0), cream)
+	if holding:
+		# Soft vertical golden light tether from crown socket to hovering crystal
+		var bob: float = 0.0 if fr else roundf(sin(_clock * 4.0) * 1.5)
+		var cy: float = -16.0 + bob
+		draw_rect(Rect2(-1.0, cy + 5.0, 2.0, maxf(1.0, -8.0 - (cy + 5.0))), Color(gold, 0.45))
+
+		# Faceted hovering memory crystal / sigil above the shrine
+		var crys_out := PackedVector2Array([
+			Vector2(0.0, cy - 6.0), Vector2(5.0, cy),
+			Vector2(0.0, cy + 6.0), Vector2(-5.0, cy),
+		])
+		var crys_l := PackedVector2Array([
+			Vector2(0.0, cy - 5.0), Vector2(0.0, cy + 5.0), Vector2(-4.0, cy),
+		])
+		var crys_r := PackedVector2Array([
+			Vector2(0.0, cy - 5.0), Vector2(4.0, cy), Vector2(0.0, cy + 5.0),
+		])
+		draw_colored_polygon(crys_out, void_c)
+		draw_colored_polygon(crys_l, ice)
+		draw_colored_polygon(crys_r, sky)
+		draw_rect(Rect2(-2.0, cy - 2.0, 2.0, 3.0), cream)
+		draw_rect(Rect2(1.0, cy, 2.0, 2.0), blue)
 		draw_rect(Rect2(-1.0, cy - 1.0, 2.0, 2.0), gold)
-		draw_arc(Vector2(0.0, cy), 6.0, 0.0, TAU, 14, gold, 1.0)
-	elif state == State.RETURNED:
-		# Open checkmark halo indicating move was returned
-		draw_rect(Rect2(-2.0, -10.0, 4.0, 2.0), lime)
-		draw_rect(Rect2(-1.0, -11.0, 2.0, 1.0), cream)
+		draw_rect(Rect2(0.0, cy - 1.0, 1.0, 1.0), cream)
+
+		# Golden sigil halo + orbiting rune motes
+		var halo_a: float = 0.72 if fr else (0.58 + 0.30 * absf(sin(_clock * 3.5)))
+		draw_arc(Vector2(0.0, cy), 7.0, 0.0, TAU, 16, Color(gold, halo_a), 1.0)
+		var orb_a: float = 0.0 if fr else _clock * 2.4
+		for oi: int in range(2):
+			var oa: float = orb_a + float(oi) * PI
+			var op := Vector2(roundf(cos(oa) * 8.0), roundf(cy + sin(oa) * 3.0))
+			draw_rect(Rect2(op, Vector2(1.0, 1.0)), cream if oi == 0 else gold)
+	elif returned:
+		# Serene open emerald/lime lotus crest indicating move was returned
+		draw_rect(Rect2(-4.0, -13.0, 8.0, 4.0), void_c)
+		draw_rect(Rect2(-3.0, -12.0, 6.0, 2.0), jade)
+		draw_rect(Rect2(-2.0, -13.0, 4.0, 3.0), lime)
+		draw_rect(Rect2(-1.0, -13.0, 2.0, 1.0), cream)
+	else:
+		# Empty recessed crown cradle awaiting a lent move
+		draw_rect(Rect2(-3.0, -10.0, 6.0, 2.0), void_c)
+		draw_rect(Rect2(-2.0, -9.0, 4.0, 1.0), dusk)
 
 	_draw_signal_pulses()

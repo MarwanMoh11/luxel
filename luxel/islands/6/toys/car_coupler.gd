@@ -252,47 +252,92 @@ func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
 	var c_stone: Color = PAL["stone"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var c_jade: Color = PAL["jade"] as Color
+	var c_lime: Color = PAL["lime"] as Color
 	var bc: Color = _badge_color()
+	var fr: bool = LxHudFx.flash_reduced()
 	var rattle: Vector2 = Vector2.ZERO
-	if _clank_t > 0.0 and not LxHudFx.flash_reduced():
+	if _clank_t > 0.0 and not fr:
 		rattle = Vector2(roundf(sin(_clock * 60.0) * 1.5), 0.0)
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 8.0, 3.0)
-	# Heavy iron railway jaw housing
-	var spread: float = 4.0 if uncoupled else 0.0
-	var jaw_c: Color = PAL["mauve"] as Color if _clank_t > 0.0 else (c_dusk if not uncoupled else c_night)
-	var rim_c: Color = c_cream if _snap_t > 0.0 else (c_stone if not uncoupled else PAL["mauve"] as Color)
-	# Left & right interlocking coupler jaws (visibly split apart when UNCOUPLED!)
-	var left_j := Rect2(-8.0 - spread + rattle.x, -4.0, 7.0, 8.0)
-	var right_j := Rect2(1.0 + spread + rattle.x, -4.0, 7.0, 8.0)
-	LxPhysDraw.draw_bevel_box(self, left_j, jaw_c, rim_c, c_night, c_void)
-	LxPhysDraw.draw_bevel_box(self, right_j, jaw_c, rim_c, c_night, c_void)
+	# Grounded contact shadow under railway coupler assembly
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 12.0, 4.0)
+
+	# Heavy forged-iron railway coupling jaws & drawbar shanks
+	var spread: float = 5.0 if uncoupled else 0.0
+	var jaw_c: Color = c_mauve if _clank_t > 0.0 else (c_dusk if not uncoupled else c_night)
+	var bevel_c: Color = c_cream if _snap_t > 0.0 else (c_stone if not uncoupled else c_mauve)
+	var glint_c: Color = c_ice if not uncoupled else c_stone
+
+	# Outer rail buffer shanks
+	var lx: float = roundf(-11.0 - spread + rattle.x)
+	var rx: float = roundf(1.0 + spread + rattle.x)
+	draw_rect(Rect2(lx - 2.0, -3.0, 3.0, 6.0), c_void)
+	draw_rect(Rect2(lx - 1.0, -2.0, 2.0, 4.0), c_night)
+	draw_rect(Rect2(lx - 1.0, -2.0, 2.0, 1.0), bevel_c)
+	draw_rect(Rect2(rx + 9.0, -3.0, 3.0, 6.0), c_void)
+	draw_rect(Rect2(rx + 9.0, -2.0, 2.0, 4.0), c_night)
+	draw_rect(Rect2(rx + 9.0, -2.0, 2.0, 1.0), bevel_c)
+
+	# Chunky forged-iron left & right interlocking coupling jaws (10x11 each)
+	var left_j := Rect2(lx, -5.0, 10.0, 11.0)
+	var right_j := Rect2(rx, -5.0, 10.0, 11.0)
+	LxPhysDraw.draw_bevel_box(self, left_j, jaw_c, bevel_c, c_night, c_void, c_stone)
+	LxPhysDraw.draw_bevel_box(self, right_j, jaw_c, bevel_c, c_night, c_void, c_stone)
+	# Sunlit forged steel top bevel highlight along upper knuckle ridge
+	draw_rect(Rect2(left_j.position.x + 2.0, left_j.position.y + 1.0, 6.0, 1.0), glint_c)
+	draw_rect(Rect2(right_j.position.x + 2.0, right_j.position.y + 1.0, 6.0, 1.0), glint_c)
+	# Inner interlocking jaw hooks
+	draw_rect(Rect2(left_j.end.x - 2.0, -2.0, 2.0, 5.0), c_night)
+	draw_rect(Rect2(right_j.position.x, -2.0, 2.0, 5.0), c_night)
 
 	if uncoupled:
-		# Hollow dark gap + crisp jade/cream open pip
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["jade"] as Color)
+		# Sprung open coupling gap + crisp jade/lime released indicator + retracted pin stub
+		draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), c_void)
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_night)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_jade)
+		draw_rect(Rect2(-1.0, -1.0, 1.0, 1.0), c_lime)
 		if _snap_t > 0.0:
 			var u: float = 1.0 - clampf(_snap_t / 0.36, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, lerpf(4.0, 14.0, u), 0.0, TAU, 12, Color(bc, 1.0 - u), 1.5)
+			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, 16.0, u)), 0.0, TAU, 14, Color(bc, 1.0 - u), 1.5)
 	else:
-		# Center lock pin + distinct greyscale-readable badge per lock_type
-		var p := Vector2(rattle.x, 0.0)
+		# Glowing molten/gold locked clamp collar gripping the coupled jaws
+		var p := Vector2(roundf(rattle.x), 0.0)
+		var hot_c: Color = c_cream if (_clank_t > 0.0 or fr) else c_gold
+		draw_rect(Rect2(p.x - 5.0, p.y - 6.0, 10.0, 13.0), c_void)
+		# Molten forge clamp seam along top & bottom collar
+		draw_rect(Rect2(p.x - 4.0, p.y - 5.0, 8.0, 11.0), c_coral)
+		draw_rect(Rect2(p.x - 3.0, p.y - 5.0, 6.0, 11.0), c_apr)
+		draw_rect(Rect2(p.x - 4.0, p.y - 4.0, 8.0, 9.0), c_gold)
+		draw_rect(Rect2(p.x - 4.0, p.y - 4.0, 8.0, 1.0), hot_c)
+
+		# Brass locking pin head protruding above the clamp
+		draw_rect(Rect2(p.x - 3.0, p.y - 9.0, 6.0, 4.0), c_void)
+		draw_rect(Rect2(p.x - 2.0, p.y - 8.0, 4.0, 2.0), c_gold)
+		draw_rect(Rect2(p.x - 2.0, p.y - 8.0, 3.0, 1.0), c_cream)
+		draw_rect(Rect2(p.x - 1.0, p.y - 6.0, 2.0, 1.0), c_apr)
+
+		# Distinct greyscale-readable lock_type badge mounted on the locked clamp
 		match lock_type:
-			"bank": # Bent ricochet chevron (gold)
-				draw_rect(Rect2(p.x - 4.0, p.y - 4.0, 8.0, 8.0), c_void)
-				draw_rect(Rect2(p.x - 3.0, p.y - 3.0, 6.0, 6.0), c_night)
+			"bank": # Bent ricochet chevron (gold/cream)
+				draw_rect(Rect2(p.x - 3.0, p.y - 3.0, 6.0, 7.0), c_night)
 				draw_rect(Rect2(p.x - 2.0, p.y + 1.0, 2.0, 1.0), bc)
 				draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 1.0, 3.0), bc)
 				draw_rect(Rect2(p.x, p.y - 2.0, 2.0, 1.0), c_cream)
 				draw_rect(Rect2(p.x + 1.0, p.y - 1.0, 1.0, 2.0), bc)
-			"pin": # Brass circular hitch ring (apricot)
-				draw_arc(p, 4.0, 0.0, TAU, 12, c_void, 3.0)
-				draw_arc(p, 4.0, 0.0, TAU, 12, c_cream if _clank_t > 0.0 else bc, 1.5)
-				draw_rect(Rect2(p.x - 1.0, p.y - 1.0, 2.0, 2.0), c_cream)
-			"armoured": # Heavy beveled octagonal armor plate (coral)
-				LxPhysDraw.draw_bevel_box(self, Rect2(p.x - 4.0, p.y - 5.0, 8.0, 10.0), PAL["wine"] as Color, bc, c_night, c_void)
-				draw_rect(Rect2(p.x - 1.0, p.y - 3.0, 2.0, 6.0), c_cream if _clank_t > 0.0 else bc)
+			"pin": # Brass circular hitch ring (apricot/cream)
+				draw_rect(Rect2(p.x - 3.0, p.y - 3.0, 6.0, 7.0), c_night)
+				draw_arc(p + Vector2(0.0, 0.5), 3.0, 0.0, TAU, 12, c_cream if _clank_t > 0.0 else bc, 1.5)
+				draw_rect(Rect2(p.x - 1.0, p.y, 2.0, 1.0), c_cream)
+			"armoured": # Heavy beveled octagonal armor plate (coral/wine)
+				LxPhysDraw.draw_bevel_box(self, Rect2(p.x - 4.0, p.y - 4.0, 8.0, 9.0), PAL["wine"] as Color, bc, c_night, c_void)
+				draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 2.0, 5.0), c_cream if _clank_t > 0.0 else bc)
+				draw_rect(Rect2(p.x - 2.0, p.y, 4.0, 1.0), c_cream)
 	_draw_signal_pulses()

@@ -202,29 +202,84 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var reduced: bool = LxHudFx.flash_reduced()
+
+	# Faint floor conduit thread connecting completed steps in order
+	var done_steps: int = order.size() if solved else mini(progress, order.size())
+	for k: int in range(done_steps - 1):
+		var ia: int = order[k]
+		var ib: int = order[k + 1]
+		if ia >= 0 and ia < orb_offsets.size() and ib >= 0 and ib < orb_offsets.size():
+			var pa: Vector2 = orb_offsets[ia].round() + Vector2(0.0, 4.0)
+			var pb: Vector2 = orb_offsets[ib].round() + Vector2(0.0, 4.0)
+			draw_line(pa, pb, Color(c_void, 0.55), 3.0, false)
+			draw_line(pa, pb, c_gold if solved else Color(c_apricot, 0.72), 1.0, false)
+
 	for i: int in range(count):
 		var off: Vector2 = orb_offsets[i].round()
 		var col_key: String = ORB_COLORS[i % ORB_COLORS.size()]
 		var c_main: Color = LxPalette.color(col_key, "gold")
 		var is_done: bool = solved or _is_orb_done(i)
-		var is_lit: bool = is_done or _orb_flash[i] > 0.0
-		LxToyDraw.draw_contact_shadow(self, off + Vector2(1.0, 6.0), 6.0, 2.0)
-		# Pedestal socket
-		LxToyDraw.draw_bevel_box(self, Rect2(off.x - 5.0, off.y + 1.0, 10.0, 5.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["mauve"] as Color, c_void)
-		# Orb casing
-		var fill: Color = (PAL["coral"] as Color) if _error_t > 0.0 else (c_main if is_lit else PAL["dusk"] as Color)
-		draw_rect(Rect2(off.x - 5.0, off.y - 7.0, 10.0, 9.0), c_void)
-		draw_rect(Rect2(off.x - 4.0, off.y - 6.0, 8.0, 7.0), fill)
-		# Distinct geometric shape inside orb (colour-blind safe)
-		LxToyDraw.draw_shape_glyph(self, off + Vector2(0.0, -3.0), i, is_lit, c_main, c_cream if is_lit else PAL["stone"] as Color)
-		# Pip count beneath pedestal (1..count)
+		var is_flashing: bool = _orb_flash[i] > 0.0
+		var is_lit: bool = is_done or is_flashing
+		var is_err: bool = _error_t > 0.0
+
+		# Grounded shadow beneath taller fluted plinth
+		LxToyDraw.draw_contact_shadow(self, off + Vector2(1.0, 7.0), 7.0, 2.5)
+
+		# Stepped base & taller fluted stone plinth
+		LxToyDraw.draw_bevel_box(self, Rect2(off.x - 6.0, off.y + 2.0, 12.0, 5.0), c_night, c_dusk, c_stone, c_void)
+		draw_rect(Rect2(off.x - 5.0, off.y - 4.0, 10.0, 7.0), c_void)
+		draw_rect(Rect2(off.x - 4.0, off.y - 3.0, 8.0, 5.0), c_dusk)
+		for fx: float in [-3.0, 0.0, 3.0]:
+			draw_rect(Rect2(off.x + fx, off.y - 3.0, 1.0, 5.0), c_stone if fx <= 0.0 else c_mauve)
+		for gx: float in [-2.0, 1.0]:
+			draw_rect(Rect2(off.x + gx, off.y - 3.0, 1.0, 5.0), c_night)
+		# Brass/stone cradle cup holding the orb
+		draw_rect(Rect2(off.x - 6.0, off.y - 5.0, 12.0, 2.0), c_void)
+		draw_rect(Rect2(off.x - 5.0, off.y - 4.0, 10.0, 1.0), c_gold if is_lit else c_apricot)
+
+		# Perched crystal orb (rounded pixel sphere centered at off + (0, -10))
+		var orb_c: Vector2 = off + Vector2(0.0, -10.0)
+		draw_rect(Rect2(orb_c.x - 4.0, orb_c.y - 6.0, 9.0, 13.0), c_void)
+		draw_rect(Rect2(orb_c.x - 6.0, orb_c.y - 4.0, 13.0, 9.0), c_void)
+		draw_rect(Rect2(orb_c.x - 5.0, orb_c.y - 5.0, 11.0, 11.0), c_void)
+
+		var glass_fill: Color = c_coral if is_err else (c_main if is_lit else c_dusk)
+		var glass_shade: Color = PAL["wine"] as Color if is_err else (c_dusk if is_lit else c_night)
+		draw_rect(Rect2(orb_c.x - 4.0, orb_c.y - 5.0, 9.0, 11.0), glass_shade)
+		draw_rect(Rect2(orb_c.x - 5.0, orb_c.y - 4.0, 11.0, 9.0), glass_shade)
+		draw_rect(Rect2(orb_c.x - 4.0, orb_c.y - 4.0, 9.0, 8.0), glass_fill)
+		draw_rect(Rect2(orb_c.x - 3.0, orb_c.y - 5.0, 7.0, 9.0), glass_fill)
+		# Dim glass colour-tint rim when unlit + crisp upper-left crystal specular gleam
+		if not is_lit and not is_err:
+			draw_rect(Rect2(orb_c.x - 3.0, orb_c.y - 5.0, 5.0, 1.0), c_main)
+			draw_rect(Rect2(orb_c.x - 4.0, orb_c.y - 4.0, 1.0, 4.0), c_main)
+		draw_rect(Rect2(orb_c.x - 3.0, orb_c.y - 4.0, 2.0, 1.0), c_cream if is_lit else c_stone)
+		draw_rect(Rect2(orb_c.x - 4.0, orb_c.y - 3.0, 1.0, 1.0), c_cream if is_lit else c_stone)
+
+		# Colour-blind safe geometric shape emblem inside crystal orb
+		LxToyDraw.draw_shape_glyph(self, orb_c, i, is_lit, c_main, c_cream if is_lit else c_stone)
+
+		# Framed pip count badge beneath pedestal (1..count)
 		var pip_span: float = float(i) * 2.0
+		var bx0: float = roundf(off.x - pip_span * 0.5) - 1.0
+		draw_rect(Rect2(bx0, off.y + 7.0, pip_span + 3.0, 3.0), c_void)
 		for p: int in range(i + 1):
 			var px: float = roundf(off.x - pip_span * 0.5 + float(p) * 2.0)
-			draw_rect(Rect2(px, off.y + 7.0, 1.0, 1.0), c_cream if is_lit else PAL["stone"] as Color)
-		if _orb_flash[i] > 0.0 and not LxHudFx.flash_reduced():
-			draw_arc(off + Vector2(0.0, -3.0), 8.0, 0.0, TAU, 14, c_cream, 1.0)
+			draw_rect(Rect2(px, off.y + 8.0, 1.0, 1.0), c_cream if is_lit else c_stone)
+
+		if is_flashing:
+			var ring_c: Color = c_main if reduced else c_cream
+			draw_arc(orb_c, 8.0, 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()
 
 

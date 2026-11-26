@@ -173,8 +173,15 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
-	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
-	var trip: Array[Color] = LxToyDraw.skin_triplet(island_id, skin)
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var reduced: bool = LxHudFx.flash_reduced()
 	var lp: Vector2 = left_offset
 	var rp: Vector2 = right_offset
 	if not left_plate_id.is_empty() and region != null and region.has_method("find_interactable"):
@@ -186,41 +193,112 @@ func _draw() -> void:
 		if ri is LxInteractable:
 			rp = (ri as LxInteractable).pos - pos
 
-	# Connecting stone balance channel + tilting crossbar
+	# Recessed stone balance channel connecting pans
 	var l_drop: float = roundf(-_vis_tilt * 3.0)
 	var r_drop: float = roundf(_vis_tilt * 3.0)
-	var la: Vector2 = lp + Vector2(0.0, l_drop)
-	var ra: Vector2 = rp + Vector2(0.0, r_drop)
-	draw_line(lp, rp, PAL["night"] as Color, 3.0, false)
-	draw_line(la, ra, c_glow if solved else trip[1], 1.0, false)
+	var la: Vector2 = (lp + Vector2(0.0, l_drop)).round()
+	var ra: Vector2 = (rp + Vector2(0.0, r_drop)).round()
+	draw_line(lp.round(), rp.round(), c_void, 5.0, false)
+	draw_line(lp.round(), rp.round(), c_night, 3.0, false)
+	draw_line(lp.round(), rp.round(), c_gold if solved else c_dusk, 1.0, false)
 
-	# Pans (only draw local pans if not delegating to external plates)
+	# Weighing pans (only draw local pans if not delegating to external plates)
 	if left_plate_id.is_empty():
-		_draw_pan(la, left_weight, c_glow)
+		_draw_pan(la, left_weight)
 	if right_plate_id.is_empty():
-		_draw_pan(ra, right_weight, c_glow)
+		_draw_pan(ra, right_weight)
 
-	# Central fulcrum indicator + tilt needle
-	LxToyDraw.draw_bevel_box(self, Rect2(-5.0, -5.0, 10.0, 10.0), PAL["night"] as Color, trip[0], trip[2], c_void)
-	var needle_x: float = roundf(_vis_tilt * 3.0)
-	draw_rect(Rect2(-3.0, -7.0, 7.0, 2.0), c_void)
-	draw_rect(Rect2(needle_x, -7.0, 1.0, 3.0), PAL["cream"] as Color if solved else (PAL["coral"] as Color))
-	LxToyDraw.draw_shape_glyph(self, Vector2.ZERO, 1 if solved else 0, solved, c_glow if solved else PAL["mauve"] as Color, PAL["cream"] as Color)
+	# Articulated brass balance beam from central fulcrum to pan linkages
+	var pivot := Vector2(0.0, -7.0)
+	var beam_l: Vector2 = Vector2(roundf(clampf(lp.x * 0.65, -24.0, -10.0)), roundf(-7.0 + l_drop))
+	var beam_r: Vector2 = Vector2(roundf(clampf(rp.x * 0.65, 10.0, 24.0)), roundf(-7.0 + r_drop))
+	draw_line(beam_l, la, c_void, 3.0, false)
+	draw_line(beam_l, la, c_gold if solved else c_apricot, 1.0, false)
+	draw_line(beam_r, ra, c_void, 3.0, false)
+	draw_line(beam_r, ra, c_gold if solved else c_apricot, 1.0, false)
+	draw_line(beam_l, beam_r, c_void, 4.0, false)
+	draw_line(beam_l, beam_r, c_gold if solved else c_apricot, 2.0, false)
+	draw_line(beam_l + Vector2(0.0, -1.0), beam_r + Vector2(0.0, -1.0), c_cream if solved else c_gold, 1.0, false)
+
+	# Ornate central fulcrum column + grounded shadow
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 8.0, 3.0)
+	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, 1.0, 14.0, 6.0), c_night, c_dusk, c_stone, c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(-4.0, -9.0, 8.0, 11.0), c_night, c_dusk, c_mauve, c_void)
+	draw_rect(Rect2(-3.0, -8.0, 1.0, 9.0), c_stone)
+	draw_rect(Rect2(-5.0, -10.0, 10.0, 3.0), c_void)
+	draw_rect(Rect2(-4.0, -9.0, 8.0, 2.0), c_gold if solved else c_apricot)
+	draw_rect(Rect2(-3.0, -9.0, 6.0, 1.0), c_cream if solved else c_gold)
+
+	# Moving equilibrium dial & pointer needle above fulcrum
+	draw_rect(Rect2(-5.0, -14.0, 11.0, 4.0), c_void)
+	draw_rect(Rect2(-4.0, -13.0, 9.0, 2.0), c_night)
+	draw_rect(Rect2(0.0, -14.0, 1.0, 1.0), c_cream if solved else c_gold)
+	var needle_x: float = roundf(_vis_tilt * 4.0)
+	draw_line(pivot, Vector2(needle_x, -13.0), c_cream if solved else c_coral, 1.0, false)
+	draw_rect(Rect2(needle_x, -13.0, 1.0, 2.0), c_cream if solved else c_coral)
+
+	# Central jewel & golden equilibrium glow when balanced
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -2.0), 1 if solved else 0, solved, c_gold if solved else c_apricot, c_cream if solved else c_stone)
+	if solved:
+		var glow_ok: bool = reduced or int(floorf(_clock * 4.0)) % 2 == 0
+		if glow_ok:
+			draw_arc(Vector2(0.0, -4.0), 10.0, 0.0, TAU, 18, Color(c_gold, 0.75), 1.0)
 	_draw_signal_pulses()
 
 
-func _draw_pan(center: Vector2, weight: float, c_glow: Color) -> void:
+func _draw_pan(center: Vector2, weight: float) -> void:
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c: Vector2 = center.round()
 	var r: float = roundf(pan_radius)
-	var rect := Rect2((center - Vector2(r, r)).round(), Vector2(r * 2.0, r * 2.0))
 	var has_w: bool = weight > 0.0
-	LxToyDraw.draw_bevel_box(
-		self,
-		rect,
-		PAL["night"] as Color,
-		PAL["dusk"] as Color if not has_w else LxBiomePalette.col(island_id, "dark"),
-		c_glow if solved else (PAL["stone"] as Color if has_w else PAL["mauve"] as Color)
-	)
-	var pips: int = mini(4, int(roundf(weight)))
-	for i: int in range(pips):
-		var px: float = roundf(center.x - float(pips - 1) * 2.0 + float(i) * 4.0)
-		draw_rect(Rect2(px - 1.0, roundf(center.y) - 1.0, 2.0, 2.0), PAL["cream"] as Color if solved else c_glow)
+
+	# Grounded shadow beneath weighing pan
+	LxToyDraw.draw_contact_shadow(self, c + Vector2(1.0, r * 0.55 + 2.0), r + 1.0, maxf(3.0, roundf(r * 0.42)))
+
+	# Golden equilibrium halo rim when balanced
+	if solved:
+		draw_circle(c, r + 1.0, c_gold)
+
+	# Brass-rimmed circular weighing pan with recessed concave dish depth
+	draw_circle(c, r, c_void)
+	draw_circle(c, maxf(4.0, r - 1.0), c_gold if solved else c_apricot)
+	draw_arc(c, maxf(4.0, r - 1.0), PI * 0.9, PI * 1.9, 16, c_cream if solved else c_gold, 1.0)
+	draw_arc(c, maxf(4.0, r - 1.0), PI * 0.05, PI * 0.85, 14, c_wine, 1.0)
+	# Recessed interior dish: dark upper wall shadow -> dusk mid -> mauve lower basin
+	var ir: float = maxf(3.0, r - 3.0)
+	draw_circle(c, ir, c_night)
+	draw_circle(c + Vector2(0.0, 1.0), maxf(2.0, ir - 1.0), c_dusk)
+	if ir >= 5.0:
+		draw_circle(c + Vector2(0.0, 2.0), maxf(2.0, ir - 3.0), c_mauve if not has_w else c_dusk)
+	# Brass cardinal suspension rivets around rim
+	for rv: Vector2 in [Vector2(0.0, -r + 1.0), Vector2(0.0, r - 2.0), Vector2(-r + 1.0, 0.0), Vector2(r - 2.0, 0.0)]:
+		draw_rect(Rect2((c + rv).round(), Vector2.ONE), c_cream if solved else c_gold)
+
+	# Visible weight stones / faceted gems resting inside the dish
+	var count_w: int = clampi(int(roundf(weight)), 0, 5)
+	if count_w == 0:
+		draw_arc(c + Vector2(0.0, 1.0), maxf(2.0, floorf(ir * 0.5)), 0.0, TAU, 12, c_stone, 1.0)
+	else:
+		var offsets: Array[Vector2] = [
+			Vector2(0.0, 0.0),
+			Vector2(-4.0, 1.0),
+			Vector2(4.0, 1.0),
+			Vector2(-2.0, -3.0),
+			Vector2(3.0, -3.0),
+		]
+		for i: int in range(count_w):
+			var gp: Vector2 = (c + offsets[i]).round()
+			draw_rect(Rect2(gp.x - 2.0, gp.y - 2.0, 5.0, 5.0), c_void)
+			draw_rect(Rect2(gp.x - 1.0, gp.y - 1.0, 3.0, 3.0), c_gold if solved else c_sky)
+			draw_rect(Rect2(gp.x - 1.0, gp.y - 1.0, 2.0, 1.0), c_cream if solved else c_ice)
+			draw_rect(Rect2(gp.x + 1.0, gp.y + 1.0, 1.0, 1.0), c_apricot if solved else PAL["blue"] as Color)

@@ -160,42 +160,125 @@ func _draw() -> void:
 	var y0: float = floorf(-h * 0.5)
 	var trip: Array[Color] = LxToyDraw.color_triplet(tone)
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var reduced: bool = LxHudFx.flash_reduced()
+	var horiz: bool = w >= h
+	var jb: float = clampf(floorf(minf(w, h) * 0.35), 5.0, 7.0)
 
 	if opened:
-		var jb: float = minf(5.0, floorf(minf(w, h) * 0.3))
-		if w >= h:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, jb, h), PAL["night"] as Color, trip[0], trip[1], c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - jb, y0, jb, h), PAL["night"] as Color, trip[0], trip[1], c_void)
+		# Clean open stone doorposts flanking recessed floor threshold
+		if horiz:
+			draw_rect(Rect2(x0 + jb, y0 + 2.0, maxf(2.0, w - jb * 2.0), maxf(2.0, h - 4.0)), Color(c_void, 0.28))
+			draw_rect(Rect2(x0 + jb, y0 + h - 3.0, maxf(2.0, w - jb * 2.0), 1.0), c_dusk)
+			_draw_doorpost(Rect2(x0, y0 - 1.0, jb, h + 1.0), trip)
+			_draw_doorpost(Rect2(x0 + w - jb, y0 - 1.0, jb, h + 1.0), trip)
 		else:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, jb), PAL["night"] as Color, trip[0], trip[1], c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 + h - jb, w, jb), PAL["night"] as Color, trip[0], trip[1], c_void)
+			draw_rect(Rect2(x0 + 2.0, y0 + jb, maxf(2.0, w - 4.0), maxf(2.0, h - jb * 2.0)), Color(c_void, 0.28))
+			_draw_doorpost(Rect2(x0 - 1.0, y0, w + 1.0, jb), trip)
+			_draw_doorpost(Rect2(x0 - 1.0, y0 + h - jb, w + 1.0, jb), trip)
 		if hold_secs > 0.0 and _hold_left > 0.0:
-			LxToyDraw.draw_bar(self, Vector2(-7.0, y0 - 4.0), 14.0, _hold_left / hold_secs, trip[1])
+			LxToyDraw.draw_bar(self, Vector2(-7.0, y0 - 5.0), 14.0, _hold_left / hold_secs, trip[1])
 		if _open_t > 0.0:
 			var u: float = 1.0 - clampf(_open_t / 0.36, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(lerpf(4.0, maxf(w, h) * 0.5, u)), 0.0, TAU, 16, trip[2], 1.0)
+			var alpha: float = (1.0 - u) * (0.60 if reduced else 0.92)
+			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, maxf(w, h) * 0.58, u)), 0.0, TAU, 18, Color(trip[2], alpha), 1.5)
+			if not reduced:
+				draw_arc(Vector2.ZERO, roundf(lerpf(3.0, maxf(w, h) * 0.40, u)), 0.0, TAU, 14, Color(c_cream, alpha), 1.0)
+		_draw_signal_pulses()
 		return
 
-	draw_rect(Rect2(x0 + 1.0, y0 + h, w - 2.0, 2.0), c_void)
-	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), PAL["night"] as Color, PAL["dusk"] as Color, trip[0], c_void)
-	# Resonant inlay pattern (greyscale-distinct per tone: Dawn solid bar, Dusk dotted ribs, War diagonal slashes)
+	# Grounded drop shadow beneath closed temple double doors
+	draw_rect(Rect2(x0 + 1.0, y0 + h, w - 1.0, 3.0), Color(c_void, 0.38))
+
+	# Outer recessed arch jamb surround
+	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), c_night, c_dusk, c_stone, c_void)
+	# Recessed arch lintel shadow
+	draw_rect(Rect2(x0 + 2.0, y0 + 1.0, w - 4.0, 2.0), c_void)
+
+	# Carved stone arch jamb pillars on both ends + inner double door leaves
+	var inner_r: Rect2 = Rect2(x0 + jb, y0 + 2.0, maxf(6.0, w - jb * 2.0), maxf(6.0, h - 3.0)) if horiz else Rect2(x0 + 2.0, y0 + jb, maxf(6.0, w - 3.0), maxf(6.0, h - jb * 2.0))
+	if horiz:
+		_draw_doorpost(Rect2(x0, y0 - 1.0, jb, h + 1.0), trip)
+		_draw_doorpost(Rect2(x0 + w - jb, y0 - 1.0, jb, h + 1.0), trip)
+	else:
+		_draw_doorpost(Rect2(x0 - 1.0, y0, w + 1.0, jb), trip)
+		_draw_doorpost(Rect2(x0 - 1.0, y0 + h - jb, w + 1.0, jb), trip)
+
+	# Carved double door leaves with center seam & coffered panels
+	draw_rect(inner_r, c_void)
+	if horiz:
+		var half_w: float = floorf(inner_r.size.x * 0.5)
+		var l_leaf := Rect2(inner_r.position.x + 1.0, inner_r.position.y + 1.0, maxf(2.0, half_w - 2.0), maxf(2.0, inner_r.size.y - 2.0))
+		var r_leaf := Rect2(inner_r.position.x + half_w + 1.0, inner_r.position.y + 1.0, maxf(2.0, inner_r.size.x - half_w - 2.0), maxf(2.0, inner_r.size.y - 2.0))
+		for leaf: Rect2 in [l_leaf, r_leaf]:
+			draw_rect(leaf, c_dusk)
+			draw_rect(Rect2(leaf.position.x, leaf.position.y, leaf.size.x, 1.0), c_mauve)
+			if leaf.size.x >= 4.0 and leaf.size.y >= 5.0:
+				draw_rect(Rect2(leaf.position.x + 1.0, leaf.position.y + 2.0, leaf.size.x - 2.0, leaf.size.y - 4.0), c_night)
+				draw_rect(Rect2(leaf.position.x + 1.0, leaf.position.y + 2.0, leaf.size.x - 2.0, 1.0), trip[0])
+		# Brass ring handles flanking the center seam
+		draw_rect(Rect2(inner_r.position.x + half_w - 2.0, roundf(inner_r.position.y + inner_r.size.y * 0.5), 1.0, 2.0), trip[1])
+		draw_rect(Rect2(inner_r.position.x + half_w + 1.0, roundf(inner_r.position.y + inner_r.size.y * 0.5), 1.0, 2.0), trip[1])
+	else:
+		var half_h: float = floorf(inner_r.size.y * 0.5)
+		var t_leaf := Rect2(inner_r.position.x + 1.0, inner_r.position.y + 1.0, maxf(2.0, inner_r.size.x - 2.0), maxf(2.0, half_h - 2.0))
+		var b_leaf := Rect2(inner_r.position.x + 1.0, inner_r.position.y + half_h + 1.0, maxf(2.0, inner_r.size.x - 2.0), maxf(2.0, inner_r.size.y - half_h - 2.0))
+		for leaf: Rect2 in [t_leaf, b_leaf]:
+			draw_rect(leaf, c_dusk)
+			draw_rect(Rect2(leaf.position.x, leaf.position.y, leaf.size.x, 1.0), c_mauve)
+			if leaf.size.x >= 5.0 and leaf.size.y >= 4.0:
+				draw_rect(Rect2(leaf.position.x + 2.0, leaf.position.y + 1.0, leaf.size.x - 4.0, leaf.size.y - 2.0), c_night)
+				draw_rect(Rect2(leaf.position.x + 2.0, leaf.position.y + 1.0, 1.0, leaf.size.y - 2.0), trip[0])
+
+	# Resonant tone inlay pattern (greyscale-distinct: Dawn bar, Dusk ribs, War chevrons)
 	if tone == "dusk":
-		var sx: float = x0 + 4.0
-		while sx < x0 + w - 3.0:
-			draw_rect(Rect2(sx, y0 + 2.0, 1.0, h - 4.0), trip[1])
+		var sx: float = inner_r.position.x + 2.0
+		while sx < inner_r.end.x - 2.0:
+			draw_rect(Rect2(sx, inner_r.position.y + 2.0, 1.0, maxf(2.0, inner_r.size.y - 4.0)), trip[1])
 			sx += 4.0
 	elif tone == "war":
-		var wx: float = x0 + 3.0
-		while wx < x0 + w - 5.0:
-			draw_line(Vector2(wx, y0 + h - 3.0), Vector2(wx + 4.0, y0 + 2.0), trip[1], 1.0, false)
-			wx += 6.0
-	elif w >= h:
-		draw_rect(Rect2(x0 + 3.0, -1.0, w - 6.0, 2.0), trip[0])
-		draw_rect(Rect2(x0 + 4.0, -1.0, w - 8.0, 1.0), trip[1])
+		var wx: float = inner_r.position.x + 2.0
+		while wx < inner_r.end.x - 4.0:
+			draw_line(Vector2(wx, inner_r.end.y - 2.0), Vector2(wx + 3.0, inner_r.position.y + 2.0), trip[1], 1.0, false)
+			wx += 5.0
+	elif horiz:
+		draw_rect(Rect2(inner_r.position.x + 2.0, -1.0, maxf(2.0, inner_r.size.x - 4.0), 2.0), trip[0])
+		draw_rect(Rect2(inner_r.position.x + 3.0, -1.0, maxf(2.0, inner_r.size.x - 6.0), 1.0), trip[1])
 	else:
-		draw_rect(Rect2(-1.0, y0 + 3.0, 2.0, h - 6.0), trip[0])
-		draw_rect(Rect2(-1.0, y0 + 4.0, 1.0, h - 8.0), trip[1])
-	LxToyDraw.draw_tone_crest(self, Vector2(rdx, 0.0), tone, _rattle_t <= 0.0)
+		draw_rect(Rect2(-1.0, inner_r.position.y + 2.0, 2.0, maxf(2.0, inner_r.size.y - 4.0)), trip[0])
+		draw_rect(Rect2(-1.0, inner_r.position.y + 3.0, 1.0, maxf(2.0, inner_r.size.y - 6.0)), trip[1])
+
+	# Bold embossed tone crest medallion plate over center seam
+	var crest_c := Vector2(rdx, 0.0)
+	draw_rect(Rect2(crest_c.x - 5.0, crest_c.y - 4.0, 11.0, 9.0), c_void)
+	draw_rect(Rect2(crest_c.x - 4.0, crest_c.y - 5.0, 9.0, 11.0), c_void)
+	draw_rect(Rect2(crest_c.x - 4.0, crest_c.y - 4.0, 9.0, 9.0), trip[0])
+	draw_rect(Rect2(crest_c.x - 3.0, crest_c.y - 3.0, 7.0, 7.0), c_night)
+	draw_rect(Rect2(crest_c.x - 4.0, crest_c.y - 4.0, 5.0, 1.0), trip[2])
+	LxToyDraw.draw_tone_crest(self, crest_c, tone, _rattle_t <= 0.0)
+
+	# Resonant chime wave + reject glyph when struck
 	if _rattle_t > 0.0:
-		LxPixelGlyphs.draw_reject_x(self, Vector2(0.0, -4.0), 1.0 - _rattle_t / 0.28, 1.0, LxHudFx.flash_reduced())
+		var ru: float = 1.0 - clampf(_rattle_t / 0.28, 0.0, 1.0)
+		var r_rad: float = roundf(lerpf(5.0, 14.0, ru))
+		var r_alpha: float = (1.0 - ru) * (0.55 if reduced else 0.88)
+		draw_arc(crest_c, r_rad, 0.0, TAU, 16, Color(trip[1], r_alpha), 1.0)
+		LxPixelGlyphs.draw_reject_x(self, Vector2(0.0, -5.0), ru, 1.0, reduced)
 	_draw_signal_pulses()
+
+
+func _draw_doorpost(r: Rect2, trip: Array[Color]) -> void:
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	draw_rect(Rect2(r.position.x + 1.0, r.end.y, r.size.x, 2.0), Color(c_void, 0.36))
+	LxToyDraw.draw_bevel_box(self, r, c_night, c_dusk, c_stone, c_void)
+	# Tone-inlaid capstone jewel on top of doorpost
+	var cap_w: float = maxf(2.0, r.size.x - 4.0)
+	draw_rect(Rect2(r.position.x + 2.0, r.position.y + 2.0, cap_w, 2.0), trip[1])
+	draw_rect(Rect2(r.position.x + 2.0, r.position.y + 2.0, maxf(1.0, cap_w - 1.0), 1.0), trip[2])

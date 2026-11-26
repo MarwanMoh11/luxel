@@ -40,6 +40,8 @@ func tick(dt: float) -> void:
 		if want:
 			emit_power(true)
 		queue_redraw()
+	elif powered and not LxHudFx.flash_reduced():
+		queue_redraw()
 
 
 func reevaluate(emit_if_changed: bool = true) -> bool:
@@ -88,27 +90,79 @@ func _draw() -> void:
 	var void_c: Color = PAL["void"] as Color
 	var night: Color = PAL["night"] as Color
 	var dusk: Color = PAL["dusk"] as Color
+	var mauve: Color = PAL["mauve"] as Color
+	var stone: Color = PAL["stone"] as Color
+	var coral: Color = PAL["coral"] as Color
+	var apr: Color = PAL["apricot"] as Color
 	var gold: Color = PAL["gold"] as Color
 	var cream: Color = PAL["cream"] as Color
-	var stone: Color = PAL["stone"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
 
-	# Octagonal brass-mounted floor/wall sensor plate
-	draw_rect(Rect2(-7.0, -7.0, 14.0, 14.0), void_c)
-	draw_rect(Rect2(-6.0, -6.0, 12.0, 12.0), gold if powered else dusk)
-	draw_rect(Rect2(-5.0, -5.0, 10.0, 10.0), night)
+	# Grounded recess shadow under brass toll medallion
+	_draw_ground_shadow(9.5, 4.5, Vector2(1.0, 6.0))
+
+	# 4 diagonal carved brass corner prongs framing the medallion plate
+	var prong_body: Color = gold if powered else dusk
+	var prong_hi: Color = cream if powered else stone
+	for sign_x: float in [-1.0, 1.0]:
+		for sign_y: float in [-1.0, 1.0]:
+			var px: float = sign_x * 7.0
+			var py: float = sign_y * 7.0
+			draw_rect(Rect2(px - 2.0, py - 2.0, 4.0, 4.0), void_c)
+			draw_rect(Rect2(px - 1.0, py - 1.0, 2.0, 2.0), prong_body)
+			draw_rect(Rect2(px if sign_x > 0.0 else (px - 1.0), py if sign_y > 0.0 else (py - 1.0), 1.0, 1.0), prong_hi)
+
+	# Carved octagonal brass toll-medallion plate
+	var oct_out := PackedVector2Array([
+		Vector2(-4.0, -9.0), Vector2(4.0, -9.0),
+		Vector2(9.0, -4.0), Vector2(9.0, 4.0),
+		Vector2(4.0, 9.0), Vector2(-4.0, 9.0),
+		Vector2(-9.0, 4.0), Vector2(-9.0, -4.0),
+	])
+	var oct_rim := PackedVector2Array([
+		Vector2(-3.0, -8.0), Vector2(3.0, -8.0),
+		Vector2(8.0, -3.0), Vector2(8.0, 3.0),
+		Vector2(3.0, 8.0), Vector2(-3.0, 8.0),
+		Vector2(-8.0, 3.0), Vector2(-8.0, -3.0),
+	])
+	var oct_in := PackedVector2Array([
+		Vector2(-2.0, -6.0), Vector2(2.0, -6.0),
+		Vector2(6.0, -2.0), Vector2(6.0, 2.0),
+		Vector2(2.0, 6.0), Vector2(-2.0, 6.0),
+		Vector2(-6.0, 2.0), Vector2(-6.0, -2.0),
+	])
+	draw_colored_polygon(oct_out, void_c)
+	draw_colored_polygon(oct_rim, apr if powered else dusk)
+	# Sunlit upper-left medallion bevel
+	draw_rect(Rect2(-3.0, -8.0, 6.0, 1.0), cream if powered else stone)
+	draw_rect(Rect2(-8.0, -3.0, 1.0, 6.0), gold if powered else mauve)
+	draw_rect(Rect2(-3.0, 7.0, 6.0, 1.0), coral if powered else night)
+	draw_colored_polygon(oct_in, night)
+	draw_rect(Rect2(-4.0, -4.0, 8.0, 8.0), void_c)
 
 	if powered:
-		# Open bright diamond eye + 4 cardinal corner sparks (clear in greyscale)
-		draw_rect(Rect2(-3.0, -1.0, 6.0, 2.0), gold)
-		draw_rect(Rect2(-1.0, -3.0, 2.0, 6.0), gold)
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), cream)
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), void_c)
-		draw_rect(Rect2(0.0, 0.0, 1.0, 1.0), cream)
-		for sp: Vector2 in [Vector2(-6.0, 0.0), Vector2(5.0, 0.0), Vector2(0.0, -6.0), Vector2(0.0, 5.0)]:
-			draw_rect(Rect2(sp, Vector2.ONE), cream)
+		# Unmistakable warm gold/cream pulsing toll-eye sigil (steady high-contrast when flash_reduced)
+		var pulse_hi: bool = fr or (sin(_clock * 4.5) > -0.15)
+		var pulse_a: float = 0.72 if fr else (0.50 + 0.35 * absf(sin(_clock * 4.5)))
+		var pulse_r: float = 10.0 if fr else roundf(9.5 + 1.5 * absf(sin(_clock * 4.5)))
+		draw_arc(Vector2.ZERO, pulse_r, 0.0, TAU, 18, Color(gold, pulse_a), 1.2)
+		# Almond / diamond glowing eye sclera & iris
+		draw_rect(Rect2(-5.0, -1.0, 10.0, 2.0), apr)
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), gold)
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 4.0), cream if pulse_hi else gold)
+		draw_rect(Rect2(-2.0, -3.0, 4.0, 6.0), gold)
+		draw_rect(Rect2(-2.0, -1.0, 4.0, 2.0), cream)
+		# Crisp dark vertical toll-eye pupil with bright starlight catchlight
+		draw_rect(Rect2(-1.0, -2.0, 2.0, 4.0), void_c)
+		draw_rect(Rect2(0.0, -1.0, 1.0, 1.0), cream)
+		# 4 cardinal warm gold/cream pulse rays
+		for sp: Vector2 in [Vector2(-8.0, 0.0), Vector2(7.0, 0.0), Vector2(0.0, -8.0), Vector2(0.0, 7.0)]:
+			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), cream if pulse_hi else gold)
 	else:
-		# Closed vertical slit (clearly dark/dormant in greyscale)
-		draw_rect(Rect2(-3.0, -1.0, 6.0, 2.0), dusk)
+		# Dormant closed heavy brass eyelid & recessed dark slit (clear greyscale contrast vs active!)
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), dusk)
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 1.0), mauve)
+		draw_rect(Rect2(-4.0, 0.0, 8.0, 1.0), void_c)
 		draw_rect(Rect2(-1.0, -3.0, 2.0, 6.0), void_c)
 		if show_glyph:
 			draw_rect(Rect2(0.0, -2.0, 1.0, 4.0), stone)

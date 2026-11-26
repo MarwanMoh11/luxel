@@ -447,24 +447,39 @@ func _draw() -> void:
 		draw_line(Vector2(-3.0, -2.0), Vector2(-7.0, 2.0), c_plum, 1.0)
 		draw_line(Vector2(3.0, -2.0), Vector2(7.0, 1.0), c_plum, 1.0)
 
-	# 2. Brass spool bobbin body
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, 2.0, 12.0, 4.0), c_wine, c_apricot, c_gold, c_void)
+	# 2. Turned brass & wound-silk spool bobbin body
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 8.0, 3.0)
+	# Bottom turned brass flange + axle peg
+	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 3.0, 16.0, 4.0), c_wine, c_apricot, c_gold, c_void)
+	draw_rect(Rect2(-6.0, 4.0, 7.0, 1.0), c_cream if not cut else c_gold)
+	# Wound silk core barrel with diagonal glistening thread bands
+	var core_r := Rect2(-6.0, -6.0, 12.0, 10.0)
 	LxToyDraw.draw_bevel_box(
-		self, Rect2(-4.0, -5.0, 8.0, 8.0),
+		self, core_r,
 		PAL["deep"] as Color if frz else (c_dusk if cut else c_plum),
 		c_sky if frz else (c_dusk if cut else (c_apricot if dry else c_stone)),
 		c_ice if frz else (c_plum if cut else c_cream),
 		c_void
 	)
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -7.0, 12.0, 3.0), c_wine, c_apricot, c_gold, c_void)
+	if not cut:
+		var band_hi: Color = c_cream if (frz or not dry) else c_gold
+		var band_sh: Color = c_sky if frz else (c_wine if dry else PAL["mauve"] as Color)
+		for wy: float in [-4.0, -1.0, 2.0]:
+			draw_line(Vector2(-4.0, wy), Vector2(4.0, wy - 1.0), band_hi, 1.0)
+			draw_line(Vector2(-4.0, wy + 1.0), Vector2(4.0, wy), band_sh, 1.0)
+	# Top turned brass flange + center finial pin
+	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -9.0, 16.0, 4.0), c_wine, c_apricot, c_ice if frz else c_gold, c_void)
+	draw_rect(Rect2(-6.0, -8.0, 7.0, 1.0), c_cream)
+	draw_rect(Rect2(-2.0, -11.0, 4.0, 2.0), c_void)
+	draw_rect(Rect2(-1.0, -10.0, 2.0, 1.0), c_cream if frz else c_gold)
 	if accepts_shuttle and not cut:
 		# Brass shuttle diamond crest atop spool
-		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -10.0), 1, shuttle_active, c_apricot, c_cream if shuttle_active else c_gold)
+		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -13.0), 1, shuttle_active, c_apricot, c_cream if shuttle_active else c_gold)
 	if frz:
-		LxToyDraw.draw_bar(self, Vector2(-6.0, 7.0), 12.0, clampf(frozen_t / freeze_secs, 0.0, 1.0), c_ice, c_sky)
+		draw_arc(Vector2(0.0, -1.0), 10.0, 0.0, TAU, 14, c_ice, 1.0)
+		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / freeze_secs, 0.0, 1.0), c_ice, c_sky)
 	elif cut and regrow_secs > 0.0:
-		LxToyDraw.draw_bar(self, Vector2(-6.0, 7.0), 12.0, 1.0 - clampf(regrow_t / regrow_secs, 0.0, 1.0), c_gold, c_plum)
+		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, 1.0 - clampf(regrow_t / regrow_secs, 0.0, 1.0), c_gold, c_plum)
 
 	# 3. Travelling fire sparks along threads
 	for sp: Dictionary in _sparks:

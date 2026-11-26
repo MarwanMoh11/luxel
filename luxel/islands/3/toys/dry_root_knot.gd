@@ -155,15 +155,39 @@ func _draw() -> void:
 		return
 
 	var jx: float = (1.0 if int(floorf(_rustle_t * 36.0)) % 2 == 0 else -1.0) if (_rustle_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, floorf(h * 0.5)), w * 0.46, 2.5)
-	# Tangled amber-brown dry root-knot (clearly distinct from stone cracked_wall in greyscale & colour)
-	LxToyDraw.draw_bevel_box(self, Rect2(x0 + jx, y0, w, h), c_wine, c_plum, c_apricot, c_void)
-	# Diagonal twisted dry root bands + glowing sun-tinder core glyph (signals magnifying fire weakness)
-	draw_line(Vector2(x0 + 2.0 + jx, y0 + 2.0), Vector2(x0 + w - 3.0 + jx, y0 + h - 3.0), c_apricot, 2.0)
-	draw_line(Vector2(x0 + w - 3.0 + jx, y0 + 2.0), Vector2(x0 + 2.0 + jx, y0 + h - 3.0), c_coral, 2.0)
-	draw_rect(Rect2(-2.0 + jx, -2.0, 4.0, 4.0), c_void)
-	draw_rect(Rect2(-1.0 + jx, -1.0, 2.0, 2.0), c_gold)
+	var hw: float = floorf(w * 0.5)
+	var hh: float = floorf(h * 0.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, hh + 1.0), hw * 0.95, 3.0)
+
+	# Organic gnarled dry root-knot thicket (coiled woody limbs + protruding dry twigs)
+	draw_circle(Vector2(jx, 0.0), maxf(hw, hh), c_void)
+	draw_circle(Vector2(jx - 3.0, -2.0), maxf(4.0, hw * 0.65), c_void)
+	draw_circle(Vector2(jx + 3.0, 2.0), maxf(4.0, hw * 0.65), c_void)
+	# Protruding barbed twigs
+	draw_line(Vector2(jx - hw + 1.0, -hh + 1.0), Vector2(jx - hw - 2.0, -hh - 2.0), c_void, 3.0)
+	draw_line(Vector2(jx + hw - 1.0, -hh + 2.0), Vector2(jx + hw + 2.0, -hh - 1.0), c_void, 3.0)
+	draw_line(Vector2(jx - hw + 1.0, hh - 1.0), Vector2(jx - hw - 2.0, hh + 1.0), c_void, 3.0)
+	draw_line(Vector2(jx + hw - 1.0, hh - 1.0), Vector2(jx + hw + 2.0, hh + 2.0), c_void, 3.0)
+	draw_line(Vector2(jx - hw + 1.0, -hh + 1.0), Vector2(jx - hw - 2.0, -hh - 2.0), c_apricot, 1.0)
+	draw_line(Vector2(jx + hw - 1.0, -hh + 2.0), Vector2(jx + hw + 2.0, -hh - 1.0), c_coral, 1.0)
+	draw_line(Vector2(jx - hw + 1.0, hh - 1.0), Vector2(jx - hw - 2.0, hh + 1.0), c_wine, 1.0)
+	draw_line(Vector2(jx + hw - 1.0, hh - 1.0), Vector2(jx + hw + 2.0, hh + 2.0), c_wine, 1.0)
+	# Intertwined braided root mass
+	draw_circle(Vector2(jx, 0.0), maxf(5.0, hw - 1.0), c_night)
+	draw_line(Vector2(jx - hw + 2.0, -hh + 2.0), Vector2(jx + hw - 2.0, hh - 2.0), c_wine, 4.0)
+	draw_line(Vector2(jx + hw - 2.0, -hh + 2.0), Vector2(jx - hw + 2.0, hh - 2.0), c_plum, 4.0)
+	draw_line(Vector2(jx - hw + 2.0, -hh + 2.0), Vector2(jx + hw - 3.0, hh - 3.0), c_coral, 2.0)
+	draw_line(Vector2(jx + hw - 3.0, -hh + 2.0), Vector2(jx - hw + 2.0, hh - 3.0), c_apricot, 2.0)
+	# Sunlit WNW bark ridges
+	draw_rect(Rect2(jx - 5.0, -5.0, 3.0, 2.0), c_apricot)
+	draw_rect(Rect2(jx - 6.0, -1.0, 2.0, 3.0), c_coral)
+	# Glowing amber tinder heart (signals magnifying-ray fire weakness!)
+	draw_rect(Rect2(-3.0 + jx, -3.0, 6.0, 6.0), c_void)
+	draw_rect(Rect2(-2.0 + jx, -2.0, 4.0, 4.0), c_coral if _rustle_t > 0.0 else c_apricot)
+	var ember_hi: Color = c_cream if (_rustle_t > 0.0 or LxHudFx.flash_reduced() or int(floorf(_clock * 3.0)) % 2 == 0) else c_gold
+	draw_rect(Rect2(-1.0 + jx, -1.0, 2.0, 2.0), ember_hi)
 	if _rustle_t > 0.0:
-		draw_rect(Rect2(-5.0, -5.0, 1.0, 1.0), c_cream)
-		draw_rect(Rect2(4.0, -4.0, 1.0, 1.0), c_apricot)
+		draw_rect(Rect2(-6.0, -6.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(5.0, -5.0, 1.0, 2.0), c_gold)
+		draw_rect(Rect2(-5.0, 4.0, 2.0, 1.0), c_apricot)
 	_draw_signal_pulses()

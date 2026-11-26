@@ -157,44 +157,83 @@ func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
+	var c_wine: Color = PAL["wine"] as Color
 	var c_mauve: Color = PAL["mauve"] as Color
 	var c_stone: Color = PAL["stone"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
 	var struck: bool = state == AnvilState.STRUCK
 	var dm: String = _display_mode()
 	var mc: Color = _mode_color(dm)
-
-	# Contact shadow
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 9.0, 3.0)
-
-	# Anvil base plinth & tapered waist
-	draw_rect(Rect2(-7.0, 2.0, 14.0, 4.0), c_void)
-	draw_rect(Rect2(-6.0, 3.0, 12.0, 2.0), c_dusk)
-	draw_rect(Rect2(-4.0, -1.0, 8.0, 4.0), c_void)
-	draw_rect(Rect2(-3.0, 0.0, 6.0, 3.0), c_night)
-
-	# Wrought-iron anvil horn (left) + flat forging face (top)
-	draw_rect(Rect2(-10.0, -5.0, 19.0, 6.0), c_void)
-	draw_rect(Rect2(-9.0, -4.0, 4.0, 2.0), c_stone if struck else c_mauve) # tapered horn tip
-	draw_rect(Rect2(-7.0, -3.0, 2.0, 2.0), c_dusk)
-	draw_rect(Rect2(-5.0, -4.0, 13.0, 4.0), c_mauve if struck else c_dusk)
-	# Bright top forging face (white-hot cream when struck)
-	draw_rect(Rect2(-5.0, -4.0, 13.0, 1.0), c_cream if struck else c_stone)
-	draw_rect(Rect2(-3.0, -3.0, 9.0, 1.0), mc if struck else c_mauve)
-
-	# Active match ring if Wick currently carries this temper
 	var wick_has_this: bool = (Lx.player is LxWick and is_instance_valid(Lx.player) and (Lx.player as LxWick).temper == dm and mode != "cycle")
-	if wick_has_this:
-		draw_rect(Rect2(-6.0, 4.0, 12.0, 1.0), mc)
+
+	# Grounded contact shadow beneath timber stump
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 8.0), 11.0, 3.5)
+
+	# Sturdy blacksmith timber stump base with bark grain & forged-iron hoop band
+	draw_rect(Rect2(-9.0, 2.0, 18.0, 7.0), c_void)
+	draw_rect(Rect2(-8.0, 3.0, 16.0, 5.0), c_wine)
+	draw_rect(Rect2(-8.0, 3.0, 16.0, 1.0), c_apr)
+	draw_rect(Rect2(-8.0, 6.0, 16.0, 2.0), c_night)
+	# Vertical timber grain striations
+	for gx: float in [-6.0, -2.0, 2.0, 6.0]:
+		draw_rect(Rect2(gx, 3.0, 1.0, 5.0), c_dusk)
+	# Iron binding hoop wrapping the stump
+	draw_rect(Rect2(-8.0, 5.0, 16.0, 2.0), c_dusk)
+	draw_rect(Rect2(-8.0, 5.0, 10.0, 1.0), c_stone)
+	draw_rect(Rect2(-5.0, 5.0, 1.0, 1.0), c_ice)
+	draw_rect(Rect2(4.0, 5.0, 1.0, 1.0), c_ice)
+
+	# Anvil forged base foot & sculpted tapered waist
+	draw_rect(Rect2(-7.0, 0.0, 14.0, 3.0), c_void)
+	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), c_dusk)
+	draw_rect(Rect2(-6.0, 1.0, 5.0, 1.0), c_stone)
+	draw_rect(Rect2(-4.0, -2.0, 8.0, 3.0), c_void)
+	draw_rect(Rect2(-3.0, -2.0, 6.0, 3.0), c_night)
+	draw_rect(Rect2(-3.0, -2.0, 2.0, 2.0), c_dusk)
+
+	# Sculpted wrought-iron anvil body + tapered steel horn (left) & hardy heel (right)
+	draw_rect(Rect2(-11.0, -6.0, 21.0, 5.0), c_void)
+	draw_rect(Rect2(-7.0, -2.0, 15.0, 2.0), c_void)
+	# Tapered left horn with crisp sunlit steel top bevel (stone/ice)
+	draw_rect(Rect2(-10.0, -5.0, 5.0, 2.0), c_stone)
+	draw_rect(Rect2(-10.0, -5.0, 5.0, 1.0), c_cream if struck else c_ice)
+	draw_rect(Rect2(-8.0, -3.0, 3.0, 1.0), c_dusk)
+	# Heavy anvil body & sunlit steel top forging face
+	draw_rect(Rect2(-5.0, -5.0, 14.0, 4.0), c_mauve if struck else c_dusk)
+	draw_rect(Rect2(-5.0, -2.0, 12.0, 1.0), c_night)
+	draw_rect(Rect2(-5.0, -5.0, 14.0, 1.0), c_cream if struck else c_ice)
+	draw_rect(Rect2(-4.0, -4.0, 12.0, 1.0), c_gold if struck else c_stone)
+	# Hardy hole notch on right heel
+	draw_rect(Rect2(6.0, -5.0, 2.0, 1.0), c_void)
+
+	# Bright molten tempering glow & rising forge sparks on anvil face when active or struck
+	if struck or wick_has_this:
+		var glow_hot: bool = struck or fr or (int(floorf(_clock * 5.0)) % 2 == 0)
+		draw_rect(Rect2(-4.0, -5.0, 9.0, 1.0), c_cream if struck else (c_gold if glow_hot else c_apr))
+		draw_rect(Rect2(-3.0, -4.0, 7.0, 1.0), c_apr if struck else c_coral)
+		if wick_has_this:
+			draw_rect(Rect2(-6.0, 2.0, 12.0, 1.0), mc)
+		# Crisp pixel forge sparks rising off the tempering face
+		var spark_n: int = 5 if struck else 3
+		for si: int in range(spark_n):
+			var su: float = (0.35 + float(si) * 0.14) if fr else fmod(_clock * (3.6 if struck else 1.8) + float(si) * 0.27, 1.0)
+			var sx: float = roundf(-3.0 + float(si) * 2.2 + (0.0 if fr else sin(_clock * 6.0 + float(si) * 1.7) * 1.5))
+			var sy: float = roundf(-6.0 - su * (8.0 if struck else 5.0))
+			draw_rect(Rect2(sx, sy, 1.0, 1.0), c_cream if su < 0.35 else (c_gold if su < 0.7 else c_coral))
 
 	# Floating forged bolt glyph above anvil (distinct silhouette per temper for greyscale legibility!)
-	var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 4.0) * 1.2)
-	var gy: float = -12.0 + bob
+	var bob: float = 0.0 if fr else roundf(sin(_clock * 4.0) * 1.2)
+	var gy: float = -13.0 + bob
 	var gc := Vector2(1.0, gy)
 	if struck:
 		var u: float = 1.0 - clampf(_struck_t / STRUCK_DUR, 0.0, 1.0)
-		var rr: float = lerpf(4.0, 15.0, u)
-		draw_arc(Vector2(1.0, -4.0), rr, 0.0, TAU, 14, Color(c_cream, 1.0 - u), 1.5)
+		var rr: float = roundf(lerpf(4.0, 16.0, u))
+		draw_arc(Vector2(1.0, -4.0), rr, 0.0, TAU, 14, Color(c_cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.5)
 	_draw_forged_glyph(gc, dm, c_cream if struck else mc, c_void, c_cream)
 	_draw_signal_pulses()
 

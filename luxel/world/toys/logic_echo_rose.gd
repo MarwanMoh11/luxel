@@ -488,28 +488,72 @@ func get_light_pool() -> Vector4:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
-	var c_rose: Color = PAL["rose"] as Color
-	var c_wine: Color = PAL["wine"] as Color
-	var c_cream: Color = PAL["cream"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_pine: Color = PAL["pine"] as Color
 	var c_jade: Color = PAL["jade"] as Color
-
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, 0.0, 12.0, 6.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
-	draw_rect(Rect2(-6.0, -3.0, 12.0, 3.0), PAL["pine"] as Color)
-	draw_rect(Rect2(-5.0, -3.0, 10.0, 2.0), c_jade)
-
+	var c_lime: Color = PAL["lime"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_rose: Color = PAL["rose"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var reduced: bool = LxHudFx.flash_reduced()
 	var blooming: bool = mode != Mode.IDLE
-	draw_rect(Rect2(-4.0, -10.0, 8.0, 7.0), c_void)
-	draw_rect(Rect2(-3.0, -9.0, 6.0, 5.0), c_rose if blooming else c_wine)
-	draw_rect(Rect2(-2.0, -8.0, 4.0, 3.0), c_cream if mode == Mode.PLAYING else (PAL["coral"] as Color if mode == Mode.RECORDING else c_rose))
+	var pulse_on: bool = blooming and (reduced or int(floorf(_clock * 6.0)) % 2 == 0)
+
+	# Grounded shadow + fluted stone pedestal
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 3.0)
+	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, 2.0, 14.0, 4.0), c_night, c_dusk, c_stone, c_void)
+	draw_rect(Rect2(-5.0, -3.0, 10.0, 6.0), c_void)
+	draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), c_dusk)
+	for fx: float in [-3.0, 0.0, 3.0]:
+		draw_rect(Rect2(fx, -2.0, 1.0, 4.0), c_mauve if fx > 0.0 else c_stone)
+	for gx: float in [-2.0, 1.0]:
+		draw_rect(Rect2(gx, -2.0, 1.0, 4.0), c_night)
+	draw_rect(Rect2(-6.0, -3.0, 12.0, 1.0), c_stone)
+
+	# Leafy calyx & side leaves (pine / jade / lime)
+	draw_rect(Rect2(-9.0, -6.0, 5.0, 4.0), c_void)
+	draw_rect(Rect2(4.0, -6.0, 5.0, 4.0), c_void)
+	draw_rect(Rect2(-8.0, -5.0, 4.0, 2.0), c_jade)
+	draw_rect(Rect2(-8.0, -5.0, 3.0, 1.0), c_lime)
+	draw_rect(Rect2(-6.0, -3.0, 2.0, 1.0), c_pine)
+	draw_rect(Rect2(4.0, -5.0, 4.0, 2.0), c_jade)
+	draw_rect(Rect2(5.0, -5.0, 3.0, 1.0), c_lime)
+	draw_rect(Rect2(4.0, -3.0, 2.0, 1.0), c_pine)
+	draw_rect(Rect2(-5.0, -6.0, 10.0, 4.0), c_void)
+	draw_rect(Rect2(-4.0, -5.0, 8.0, 2.0), c_pine)
+	draw_rect(Rect2(-3.0, -5.0, 6.0, 1.0), c_jade)
+
+	# Sculpted layered rose petals (wider & luminous when recording/playing)
+	var ex: float = 1.0 if blooming else 0.0
+	draw_rect(Rect2(-5.0 - ex, -12.0 - ex, 10.0 + ex * 2.0, 7.0 + ex), c_void)
+	draw_rect(Rect2(-4.0 - ex, -13.0 - ex, 8.0 + ex * 2.0, 2.0), c_void)
+	var c_outer: Color = c_coral if blooming else c_wine
+	var c_mid: Color = c_rose if blooming else c_coral
+	var c_heart: Color = c_cream if mode == Mode.PLAYING else (PAL["gold"] as Color if mode == Mode.RECORDING else c_rose)
+	draw_rect(Rect2(-4.0 - ex, -11.0 - ex, 8.0 + ex * 2.0, 5.0 + ex), c_wine)
+	draw_rect(Rect2(-4.0 - ex, -11.0 - ex, 3.0, 4.0), c_outer)
+	draw_rect(Rect2(1.0 + ex, -11.0 - ex, 3.0, 4.0), c_outer)
+	draw_rect(Rect2(-3.0, -12.0 - ex, 6.0, 5.0), c_mid)
+	draw_rect(Rect2(-3.0, -12.0 - ex, 2.0, 1.0), c_cream if blooming else c_rose)
+	draw_rect(Rect2(1.0, -12.0 - ex, 2.0, 1.0), c_rose)
+	draw_rect(Rect2(-2.0, -10.0 - ex, 4.0, 3.0), c_wine if not blooming else c_coral)
+	draw_rect(Rect2(-1.0, -11.0 - ex, 3.0, 2.0), c_heart)
+	draw_rect(Rect2(0.0, -10.0 - ex, 1.0, 1.0), c_cream if blooming else c_wine)
+
 	if mode == Mode.RECORDING:
 		var frac: float = clampf(_rec_t / maxf(_active_rec_secs, 0.1), 0.0, 1.0)
-		LxToyDraw.draw_bar(self, Vector2(-7.0, 7.0), 14.0, frac, PAL["coral"] as Color, c_rose)
-		if not LxHudFx.flash_reduced() and int(floorf(_clock * 6.0)) % 2 == 0:
-			draw_arc(Vector2(0.0, -6.0), 8.0, 0.0, TAU, 16, c_rose, 1.0)
+		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, frac, c_coral, c_rose)
+		if pulse_on:
+			draw_arc(Vector2(0.0, -9.0), 9.0, 0.0, TAU, 16, c_rose, 1.0)
 	elif mode == Mode.PLAYING and echo_active:
+		if pulse_on:
+			draw_arc(Vector2(0.0, -9.0), 8.0, 0.0, TAU, 16, Color(c_cream, 0.65), 1.0)
 		var ep: Vector2 = (echo_pos - pos).round()
-		var alpha: float = 0.45 if _disperse_t > 0.0 else (0.76 if LxHudFx.flash_reduced() else 0.90)
+		var alpha: float = 0.45 if _disperse_t > 0.0 else (0.76 if reduced else 0.90)
 		LxToyDraw.draw_contact_shadow(self, ep + Vector2(0.0, 4.0), 5.0, 2.0)
 		draw_rect(Rect2(ep.x - 3.0, ep.y - 12.0, 6.0, 3.0), Color(c_void, alpha * 0.85))
 		draw_rect(Rect2(ep.x - 5.0, ep.y - 9.0, 10.0, 11.0), Color(c_void, alpha * 0.85))
@@ -519,7 +563,6 @@ func _draw() -> void:
 		draw_rect(Rect2(ep.x - 2.0, ep.y - 6.0, 4.0, 3.0), Color(c_void, alpha))
 		draw_rect(Rect2(ep.x - 1.0, ep.y - 5.0, 1.0, 1.0), Color(c_cream, alpha))
 		draw_rect(Rect2(ep.x + 1.0, ep.y - 5.0, 1.0, 1.0), Color(c_cream, alpha))
-		# Echo index pip badge (1..3 pips above hood, readable in greyscale)
 		var pips: int = clampi(echo_slot_index, 1, MAX_ACTIVE_ECHOES)
 		var p_span: float = float(pips - 1) * 3.0
 		for pi: int in range(pips):

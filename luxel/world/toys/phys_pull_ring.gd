@@ -118,28 +118,83 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var red: bool = LxHudFx.flash_reduced()
 	var anchor_rel: Vector2 = (origin_pos - pos).round()
-	# Wall socket mount plate at origin_pos
-	var plate := Rect2(anchor_rel - Vector2(6.0, 6.0), Vector2(12.0, 12.0))
-	LxPhysDraw.draw_bevel_box(self, plate, PAL["dusk"] as Color, PAL["stone"] as Color, PAL["night"] as Color, PAL["void"] as Color, biome("hi"))
-	# Drawn chain links from anchor to ring
+	var pull_a: Vector2 = axis.normalized() if axis.length_squared() > 0.001 else Vector2.RIGHT
+
+	# Riveted stone & brass mounting plate anchored at origin_pos
+	var plate := Rect2(anchor_rel - Vector2(8.0, 8.0), Vector2(16.0, 16.0))
+	LxPhysDraw.draw_shadow_rect(self, plate, Vector2(1.0, 3.0), 0.38)
+	draw_rect(plate, c_void)
+	draw_rect(Rect2(plate.position.x + 1.0, plate.end.y - 4.0, 14.0, 3.0), c_night)
+	draw_rect(Rect2(plate.position.x + 1.0, plate.position.y + 1.0, 14.0, 11.0), c_dusk)
+	draw_rect(Rect2(plate.position.x + 1.0, plate.position.y + 1.0, 14.0, 1.0), c_stone)
+	draw_rect(Rect2(plate.position.x + 1.0, plate.position.y + 1.0, 1.0, 11.0), c_mauve)
+	# Inset brass escutcheon collar + 4 riveted corners
+	draw_rect(Rect2(anchor_rel - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), c_void)
+	draw_rect(Rect2(anchor_rel - Vector2(3.0, 3.0), Vector2(6.0, 6.0)), c_wine)
+	draw_rect(Rect2(anchor_rel - Vector2(3.0, 3.0), Vector2(5.0, 5.0)), c_apricot)
+	draw_rect(Rect2(anchor_rel - Vector2(2.0, 2.0), Vector2(4.0, 1.0)), c_gold)
+	for rv: Vector2 in [
+		plate.position + Vector2(2.0, 2.0),
+		Vector2(plate.end.x - 4.0, plate.position.y + 2.0),
+		Vector2(plate.position.x + 2.0, plate.end.y - 5.0),
+		Vector2(plate.end.x - 4.0, plate.end.y - 5.0),
+	]:
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), c_void)
+		draw_rect(Rect2(rv, Vector2.ONE), c_gold)
+
+	# Drawn heavy chain links from mounting plate to ring when pulled
 	var chain_len: float = anchor_rel.length()
 	if chain_len > 1.0:
-		draw_line(anchor_rel + Vector2(0.0, 2.0), Vector2(0.0, 2.0), Color(PAL["void"] as Color, 0.45), 2.0)
-		draw_line(anchor_rel, Vector2.ZERO, PAL["mauve"] as Color, 2.0)
-		var step: float = 4.0
+		draw_line(anchor_rel + Vector2(0.0, 2.0), Vector2(0.0, 2.0), Color(c_void, 0.42), 3.0, false)
+		draw_line(anchor_rel, Vector2.ZERO, c_void, 4.0, false)
+		draw_line(anchor_rel, Vector2.ZERO, c_dusk, 2.0, false)
+		var step: float = 3.0
 		var cdir: Vector2 = -anchor_rel / chain_len
+		var link_i: int = 0
 		while step < chain_len:
 			var lp: Vector2 = (anchor_rel + cdir * step).round()
-			draw_rect(Rect2(lp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["stone"] as Color)
-			step += 5.0
-	# Brass pull ring
-	var ring_c: Color = PAL["cream"] as Color if (_tug_fx_t > 0.0 or _was_triggered) else PAL["gold"] as Color
-	draw_arc(Vector2(1.0, 2.0), 6.0, 0.0, TAU, 14, Color(PAL["void"] as Color, 0.45), 2.0)
-	draw_arc(Vector2.ZERO, 6.0, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
-	draw_arc(Vector2.ZERO, 6.0, 0.0, TAU, 16, ring_c, 1.6)
-	draw_rect(Rect2(-2.0, -6.0, 3.0, 1.0), PAL["cream"] as Color)
-	# Subtle pull direction chevron when retracted
-	if pull_dist < dist * 0.25:
-		LxPhysDraw.draw_chevron(self, axis * 11.0, axis, biome("glow"), PAL["void"] as Color, 2.5)
+			draw_rect(Rect2(lp - Vector2.ONE, Vector2(2.0, 2.0)), c_apricot if link_i % 2 == 0 else c_stone)
+			draw_rect(Rect2(lp - Vector2.ONE, Vector2.ONE), c_gold if link_i % 2 == 0 else c_cream)
+			step += 4.0
+			link_i += 1
+
+	# Chunky metallic pull-ring anchored onto the brass staple lug
+	var ring_off: Vector2 = (pull_a * 3.0).round() if chain_len <= 1.0 else Vector2.ZERO
+	var rc: Vector2 = ring_off
+	var engaged: bool = _tug_fx_t > 0.0 or _was_triggered
+	var ring_body: Color = c_cream if engaged else c_gold
+	var ring_sh: Color = c_gold if engaged else c_apricot
+	# Grounded ring shadow + chunky dark outline + metallic shaded torus
+	draw_arc(rc + Vector2(1.0, 2.0), 5.5, 0.0, TAU, 16, Color(c_void, 0.42), 3.2)
+	draw_arc(rc, 5.5, 0.0, TAU, 16, c_void, 4.6)
+	draw_arc(rc, 5.5, 0.0, TAU, 16, c_wine, 2.8)
+	draw_arc(rc, 5.5, PI * 0.85, PI * 2.15, 14, ring_sh, 2.4)
+	draw_arc(rc, 5.5, PI * 1.05, PI * 1.90, 12, ring_body, 1.8)
+	# Crisp top-left metallic specular glint on ring
+	draw_rect(Rect2(rc + Vector2(-3.0, -6.0), Vector2(4.0, 1.0)), c_cream)
+	draw_rect(Rect2(rc + Vector2(-5.0, -4.0), Vector2(1.0, 2.0)), c_cream)
+	# Brass staple clasp pinning ring to plate/chain
+	var clasp: Vector2 = (rc - pull_a * 5.0).round()
+	draw_rect(Rect2(clasp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+	draw_rect(Rect2(clasp - Vector2.ONE, Vector2(2.0, 2.0)), c_gold)
+	draw_rect(Rect2(clasp - Vector2.ONE, Vector2.ONE), c_cream)
+
+	# Directional pull ticks indicating pull direction
+	if pull_dist < dist * 0.85:
+		var hi_idx: int = 0 if red else int(floorf(_clock * 4.0)) % 3
+		for ti: int in range(3):
+			var tp: Vector2 = (rc + pull_a * (10.0 + float(ti) * 4.0)).round()
+			var tc: Color = c_cream if (ti == hi_idx or engaged) else (c_gold if ti == 0 else c_stone)
+			LxPhysDraw.draw_chevron(self, tp, pull_a, tc, c_void, 2.2)
 	_draw_signal_pulses()

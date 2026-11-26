@@ -293,28 +293,78 @@ func _draw_tide_wheel(c_void: Color, c_glow: Color, c_cream: Color) -> void:
 
 
 func _draw_pedal(c_void: Color, trip: Array[Color], c_glow: Color, c_cream: Color) -> void:
-	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -5.0, 16.0, 10.0), PAL["night"] as Color, PAL["dusk"] as Color, trip[1], c_void)
-	var tilt_x: float = -3.0 if current_index == 0 else 2.0
-	draw_rect(Rect2(-5.0, -2.0, 10.0, 4.0), c_void)
-	draw_rect(Rect2(tilt_x, -2.0, 4.0, 4.0), c_glow if current_index > 0 else PAL["apricot"] as Color)
-	draw_rect(Rect2(tilt_x, -2.0, 2.0, 2.0), c_cream)
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 9.0, 2.5)
+	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -5.0, 18.0, 10.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
+	for rx: float in [-8.0, 7.0]:
+		for ry: float in [-4.0, 3.0]:
+			draw_rect(Rect2(rx, ry, 1.0, 1.0), c_gold if current_index > 0 else c_apricot)
+	var tilt_x: float = -4.0 if current_index == 0 else 1.0
+	draw_rect(Rect2(-6.0, -2.0, 12.0, 4.0), c_void)
+	draw_rect(Rect2(-5.0, -1.0, 10.0, 2.0), PAL["night"] as Color)
+	draw_rect(Rect2(tilt_x - 1.0, -3.0, 6.0, 6.0), c_void)
+	draw_rect(Rect2(tilt_x, -2.0, 4.0, 4.0), c_glow if current_index > 0 else c_apricot)
+	draw_rect(Rect2(tilt_x, -2.0, 3.0, 1.0), c_cream if current_index > 0 else c_gold)
+	draw_rect(Rect2(tilt_x + 3.0, -1.0, 1.0, 3.0), trip[0])
 
 
 func _draw_lever(c_void: Color, trip: Array[Color], c_glow: Color, c_cream: Color) -> void:
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -2.0, 14.0, 8.0), PAL["night"] as Color, PAL["dusk"] as Color, trip[1], c_void)
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var is_on: bool = current_index > 0
 	var n_vals: int = maxi(2, values.size())
 	var frac: float = float(current_index) / float(n_vals - 1)
-	var angle: float = lerpf(-0.65, 0.65, frac)
-	var base := Vector2(0.0, -2.0)
-	var knob: Vector2 = (base + Vector2(sin(angle) * 10.0, -cos(angle) * 10.0)).round()
-	draw_line(base, knob, c_void, 3.0, false)
-	draw_line(base, knob, PAL["stone"] as Color, 1.0, false)
-	draw_rect(Rect2(knob.x - 2.0, knob.y - 2.0, 5.0, 5.0), c_void)
-	draw_rect(Rect2(knob.x - 1.0, knob.y - 1.0, 3.0, 3.0), c_glow if current_index > 0 else trip[1])
-	draw_rect(Rect2(knob.x - 1.0, knob.y - 1.0, 1.0, 1.0), c_cream)
-	var span: float = float(n_vals - 1) * 3.0
+
+	# Grounded drop shadow beneath chunky housing
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 10.0, 3.0)
+
+	# Chunky riveted stone/brass floor housing
+	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -3.0, 18.0, 9.0), c_night, c_dusk, c_stone, c_void)
+	# Brass side cheek plates & corner rivets
+	draw_rect(Rect2(-8.0, -2.0, 2.0, 6.0), c_apricot if not is_on else c_gold)
+	draw_rect(Rect2(6.0, -2.0, 2.0, 6.0), c_apricot if not is_on else c_gold)
+	for rx: float in [-8.0, 7.0]:
+		for ry: float in [-2.0, 4.0]:
+			draw_rect(Rect2(rx, ry, 1.0, 1.0), c_cream if is_on else c_gold)
+
+	# Recessed slot track across housing top
+	draw_rect(Rect2(-6.0, -2.0, 12.0, 4.0), c_void)
+	draw_rect(Rect2(-5.0, -1.0, 10.0, 2.0), c_night)
+	draw_rect(Rect2(-5.0, -2.0, 10.0, 1.0), c_mauve)
+
+	# Sliding pivot collar & bold tilted lever shaft
+	var pivot_x: float = roundf(lerpf(-3.0, 3.0, frac))
+	var base := Vector2(pivot_x, -1.0)
+	var angle: float = lerpf(-0.72, 0.72, frac)
+	var knob: Vector2 = (base + Vector2(sin(angle) * 12.0, -cos(angle) * 12.0)).round()
+	draw_rect(Rect2(pivot_x - 2.0, -2.0, 5.0, 4.0), c_void)
+	draw_rect(Rect2(pivot_x - 1.0, -1.0, 3.0, 2.0), c_gold if is_on else c_apricot)
+
+	# Thick shadowed handle rod with bright metallic catch-light
+	draw_line(base, knob, c_void, 4.0, false)
+	draw_line(base, knob, c_mauve, 2.0, false)
+	draw_line(base + Vector2(-1.0, 0.0), knob + Vector2(-1.0, 0.0), c_gold if is_on else c_stone, 1.0, false)
+
+	# Bright sculpted pommel knob at handle tip
+	draw_rect(Rect2(knob.x - 3.0, knob.y - 3.0, 7.0, 7.0), c_void)
+	draw_rect(Rect2(knob.x - 2.0, knob.y - 2.0, 5.0, 5.0), c_apricot if is_on else trip[0])
+	draw_rect(Rect2(knob.x - 2.0, knob.y - 2.0, 4.0, 4.0), c_gold if is_on else c_apricot)
+	draw_rect(Rect2(knob.x - 2.0, knob.y - 2.0, 2.0, 2.0), c_cream)
+
+	# Glowing state pip bezel along front edge of housing
+	var span: float = float(n_vals - 1) * 4.0
+	var bz_x: float = roundf(-span * 0.5) - 2.0
+	draw_rect(Rect2(bz_x, 2.0, span + 5.0, 4.0), c_void)
 	for i: int in range(n_vals):
-		var px: float = roundf(-span * 0.5 + float(i) * 3.0)
+		var px: float = roundf(-span * 0.5 + float(i) * 4.0)
 		var is_cur: bool = i == current_index
-		draw_rect(Rect2(px, 2.0, 2.0, 2.0), c_cream if is_cur else PAL["night"] as Color)
+		if is_cur:
+			draw_rect(Rect2(px - 1.0, 3.0, 3.0, 2.0), c_glow if is_on else c_gold)
+			draw_rect(Rect2(px, 3.0, 1.0, 2.0), c_cream)
+		else:
+			draw_rect(Rect2(px, 3.0, 1.0, 2.0), c_dusk)

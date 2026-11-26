@@ -231,13 +231,23 @@ func _draw() -> void:
 	var c_rose: Color = PAL["rose"] as Color
 
 	var r: float = roundf(visual_radius)
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), r * 0.85, 3.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 8.0), r * 0.92, 4.0)
 
-	# Carved octagonal stone pedestal + brass dial plate
-	LxToyDraw.draw_bevel_box(self, Rect2(-r + 1.0, -r + 3.0, (r - 1.0) * 2.0, (r - 1.0) * 2.0), c_night, c_dusk, c_stone, c_void)
-	draw_circle(Vector2(0.0, 1.0), r - 2.0, c_void)
-	draw_circle(Vector2(0.0, 1.0), r - 3.0, c_dusk)
-	draw_arc(Vector2(0.0, 1.0), r - 3.0, 0.0, TAU, 16, c_gold if state != State.IDLE else c_apricot, 1.0)
+	# Stepped sunlit limestone pedestal plinth (3/4 south face + bevelled top)
+	LxToyDraw.draw_bevel_box(self, Rect2(-r + 1.0, -r + 5.0, (r - 1.0) * 2.0, (r - 1.0) * 2.0 - 2.0), c_night, c_dusk, c_mauve, c_void)
+	draw_circle(Vector2(0.0, 2.0), r, c_void)
+	draw_circle(Vector2(0.0, 2.0), r - 1.0, c_mauve)
+	draw_circle(Vector2(0.0, 0.0), r - 1.0, c_void)
+	# Engraved circular limestone & inlaid brass dial plate
+	draw_circle(Vector2(0.0, 0.0), r - 2.0, c_stone)
+	draw_circle(Vector2(0.0, 0.0), r - 4.0, c_dusk)
+	draw_arc(Vector2(0.0, 0.0), r - 2.0, PI * 0.85, PI * 1.65, 14, c_cream, 1.0)
+	draw_arc(Vector2(0.0, 0.0), r - 4.0, 0.0, TAU, 18, c_gold if state != State.IDLE else c_apricot, 1.0)
+	# Subtle carved radial hour spokes on inner dial
+	for si: int in range(max_hour):
+		var sa: float = -PI * 0.5 + (TAU * float(si)) / float(max_hour)
+		var sp_e := Vector2(roundf(cos(sa) * (r - 6.0)), roundf(sin(sa) * (r - 6.0)))
+		draw_line(Vector2.ZERO, sp_e, c_night, 1.0)
 
 	# 6-pip (or 4-pip) hour markers around rim, distinct in greyscale
 	var hand_ang: float = -PI * 0.5
@@ -245,7 +255,7 @@ func _draw() -> void:
 		var h_i: int = i + 1
 		var ang: float = -PI * 0.5 + (TAU * float(i)) / float(max_hour)
 		var pr: float = r - 5.0
-		var pp := Vector2(roundf(cos(ang) * pr), roundf(1.0 + sin(ang) * pr))
+		var pp := Vector2(roundf(cos(ang) * pr), roundf(sin(ang) * pr))
 		var is_cur: bool = (h_i == current_hour)
 		if is_cur:
 			hand_ang = ang
@@ -253,15 +263,19 @@ func _draw() -> void:
 			draw_rect(Rect2(pp - Vector2.ONE, Vector2(3.0, 3.0)), c_gold)
 			draw_rect(Rect2(pp, Vector2.ONE), c_cream)
 		else:
-			var pc: Color = c_apricot if h_i < current_hour else c_mauve
-			draw_rect(Rect2(pp - Vector2.ONE, Vector2(2.0, 2.0)), pc)
+			var pc: Color = c_apricot if h_i < current_hour else c_stone
+			draw_rect(Rect2(pp - Vector2.ONE, Vector2(2.0, 2.0)), c_void)
+			draw_rect(Rect2(pp - Vector2.ONE, Vector2(1.0, 1.0)), pc)
 
-	# Gnomon brass needle & shadow pointing to current hour
-	var tip := Vector2(roundf(cos(hand_ang) * (r - 5.0)), roundf(1.0 + sin(hand_ang) * (r - 5.0)))
-	draw_line(Vector2(1.0, 2.0), tip + Vector2(1.0, 1.0), c_void, 2.0)
-	draw_line(Vector2(0.0, 1.0), tip, c_cream if state != State.IDLE else c_gold, 1.0)
-	draw_rect(Rect2(-2.0, -1.0, 4.0, 4.0), c_void)
-	draw_rect(Rect2(-1.0, 0.0, 2.0, 2.0), c_cream)
+	# Raised triangular brass gnomon fin casting directional shadow to current hour
+	var tip := Vector2(roundf(cos(hand_ang) * (r - 5.0)), roundf(sin(hand_ang) * (r - 5.0)))
+	draw_line(Vector2(1.0, 2.0), tip + Vector2(1.0, 1.0), Color(c_void, 0.72), 2.0)
+	var fin := PackedVector2Array([Vector2(-1.0, 0.0), Vector2(0.0, -5.0), tip])
+	draw_colored_polygon(fin, PAL["wine"] as Color)
+	draw_line(Vector2(0.0, -5.0), tip, c_cream if state != State.IDLE else c_gold, 1.0)
+	draw_line(Vector2(0.0, -5.0), Vector2(0.0, 1.0), c_apricot, 1.0)
+	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
+	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_cream)
 
 	# Hold-to-rewind progress arc
 	if _hold_t > 0.05 and can_rewind:

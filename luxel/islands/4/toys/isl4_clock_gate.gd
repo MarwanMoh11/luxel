@@ -271,34 +271,57 @@ func _draw() -> void:
 	if state == State.WARNING and not LxHudFx.flash_reduced():
 		rustle = 1.0 if int(floorf(_clock * 14.0)) % 2 == 0 else -1.0
 
+	var c_teal: Color = PAL["teal"] as Color
+	var c_wine: Color = PAL["wine"] as Color
 	if _phys_open:
-		# Pivoted / retracted topiary gate pockets at both ends + open threshold line
-		var jb: float = minf(6.0, floorf(minf(w, h) * 0.35))
+		# Pivoted / retracted topiary gate piers with brass finials + inlaid threshold strip
+		var jb: float = minf(7.0, floorf(minf(w, h) * 0.35))
 		var post_hi: Color = c_cream if state == State.PINNED_OPEN else c_gold
 		if w >= h:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, jb, h), c_pine, c_jade, post_hi, c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - jb, y0, jb, h), c_pine, c_jade, post_hi, c_void)
+			draw_line(Vector2(x0 + jb, 0.0), Vector2(x0 + w - jb, 0.0), Color(c_gold, 0.38), 1.0)
+			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, jb, h), c_pine, c_teal, post_hi, c_void)
+			LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - jb, y0, jb, h), c_pine, c_teal, post_hi, c_void)
 		else:
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, jb), c_pine, c_jade, post_hi, c_void)
-			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 + h - jb, w, jb), c_pine, c_jade, post_hi, c_void)
+			draw_line(Vector2(0.0, y0 + jb), Vector2(0.0, y0 + h - jb), Color(c_gold, 0.38), 1.0)
+			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, jb), c_pine, c_teal, post_hi, c_void)
+			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 + h - jb, w, jb), c_pine, c_teal, post_hi, c_void)
 		_draw_brass_plaque(Vector2(0.0, y0 + 3.0 if h > w else 0.0))
 		return
 
-	# Closed topiary hedge + wrought brass clockwork bars
-	draw_rect(Rect2(x0 + 1.0, y0 + h, w - 2.0, 2.0), Color(c_void, 0.55))
+	# Grounded drop shadow + ornate conservatory topiary hedge & wrought-brass clockwork gate
+	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w, h), Color(c_void, 0.45))
 	var hi_c: Color = c_coral if state == State.WARNING else c_lime
-	LxToyDraw.draw_bevel_box(self, Rect2(x0 + rustle, y0, w, h), c_pine, c_jade, hi_c, c_void)
-	# Vertical/horizontal brass trellis ribs
+	LxToyDraw.draw_bevel_box(self, Rect2(x0 + rustle, y0, w, h), c_pine, c_teal, hi_c, c_void)
+	# Sculpted conservatory leaf clusters & brass finial end-caps
+	var bar_c: Color = c_gold if state == State.WARNING else c_apricot
 	if h >= w:
-		var gy: float = y0 + 6.0
-		while gy < y0 + h - 5.0:
-			draw_rect(Rect2(x0 + 2.0 + rustle, gy, w - 4.0, 2.0), c_apricot if state != State.WARNING else c_gold)
-			gy += 8.0
+		# Top & bottom brass cornice caps
+		LxToyDraw.draw_bevel_box(self, Rect2(x0 + rustle, y0, w, 5.0), c_wine, bar_c, c_gold, c_void)
+		LxToyDraw.draw_bevel_box(self, Rect2(x0 + rustle, y0 + h - 5.0, w, 5.0), c_wine, bar_c, c_gold, c_void)
+		var gy: float = y0 + 7.0
+		var bi: int = 0
+		while gy < y0 + h - 6.0:
+			draw_rect(Rect2(x0 + 2.0 + rustle, gy - 2.0, 4.0, 3.0), c_jade)
+			draw_rect(Rect2(x0 + 2.0 + rustle, gy - 2.0, 2.0, 1.0), c_lime)
+			draw_rect(Rect2(x0 + w - 6.0 + rustle, gy - 1.0, 3.0, 2.0), c_pine)
+			draw_rect(Rect2(x0 + 1.0 + rustle, gy, w - 2.0, 2.0), c_void)
+			draw_rect(Rect2(x0 + 2.0 + rustle, gy, w - 4.0, 1.0), c_cream if (bi % 2 == 0 and state == State.WARNING) else bar_c)
+			gy += 7.0
+			bi += 1
 	else:
-		var gx: float = x0 + 6.0
-		while gx < x0 + w - 5.0:
-			draw_rect(Rect2(gx + rustle, y0 + 2.0, 2.0, h - 4.0), c_apricot if state != State.WARNING else c_gold)
-			gx += 8.0
+		LxToyDraw.draw_bevel_box(self, Rect2(x0 + rustle, y0, 5.0, h), c_wine, bar_c, c_gold, c_void)
+		LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - 5.0 + rustle, y0, 5.0, h), c_wine, bar_c, c_gold, c_void)
+		var gx: float = x0 + 7.0
+		while gx < x0 + w - 6.0:
+			draw_rect(Rect2(gx - 2.0 + rustle, y0 + 2.0, 3.0, 4.0), c_jade)
+			draw_rect(Rect2(gx - 2.0 + rustle, y0 + 2.0, 1.0, 2.0), c_lime)
+			draw_rect(Rect2(gx + rustle, y0 + 1.0, 2.0, h - 2.0), c_void)
+			draw_rect(Rect2(gx + rustle, y0 + 2.0, 1.0, h - 4.0), bar_c)
+			gx += 7.0
+	# Central ornate brass clock-lock ring framing the hour plaque
+	draw_circle(Vector2(rustle, 0.0), 7.0, c_void)
+	draw_circle(Vector2(rustle, 0.0), 6.0, c_wine)
+	draw_arc(Vector2(rustle, 0.0), 5.0, 0.0, TAU, 14, c_gold, 1.0)
 	_draw_brass_plaque(Vector2(rustle, 0.0))
 	_draw_signal_pulses()
 

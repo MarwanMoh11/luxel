@@ -138,6 +138,8 @@ func tick(dt: float) -> void:
 	# Light orb radiates real illumination to nearby on_light interactables!
 	if orb_kind == "light" and region != null and region.has_method("apply_light"):
 		region.call("apply_light", pos, 44.0, "carry_orb")
+	if (orb_kind == "light" or orb_kind == "key") and not LxHudFx.flash_reduced():
+		queue_redraw()
 
 
 func _flight_blocked(from_p: Vector2, to_p: Vector2) -> bool:
@@ -207,34 +209,82 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
-	var lift: float = -4.0 if airborne else 0.0
-	if carrier == null:
-		_draw_ground_shadow(6.0, 3.0, Vector2(1.0, 4.0))
+	var red: bool = LxHudFx.flash_reduced()
+	var hovers: bool = (orb_kind == "light" or orb_kind == "key") and carrier == null and not airborne
+	var bob: float = 0.0 if (red or not hovers) else roundf(sin(_clock * 3.2) * 1.0)
+	var lift: float = (-4.0 if airborne else (-1.0 if hovers else 0.0)) + bob
 	var c_out: Color = PAL["void"] as Color
-	var c_mid: Color = PAL["gold"] as Color
-	var c_hi: Color = PAL["cream"] as Color
-	var c_sh: Color = PAL["apricot"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_mid: Color = c_gold
+	var c_hi: Color = c_cream
+	var c_sh: Color = c_apricot
+	var band_sh: Color = c_wine
+	var band_hi: Color = c_gold
 	match orb_kind:
 		"stone":
 			c_mid = PAL["stone"] as Color
-			c_hi = PAL["cream"] as Color
+			c_hi = c_cream
 			c_sh = PAL["dusk"] as Color
+			band_sh = PAL["night"] as Color
+			band_hi = c_apricot
 		"seed":
 			c_mid = PAL["jade"] as Color
 			c_hi = PAL["lime"] as Color
 			c_sh = PAL["pine"] as Color
+			band_sh = PAL["pine"] as Color
+			band_hi = c_gold
 		"key":
 			c_mid = PAL["sky"] as Color
 			c_hi = PAL["ice"] as Color
 			c_sh = PAL["deep"] as Color
-	var c := Vector2(0.0, lift)
-	draw_circle(c, 6.5, c_out)
-	draw_circle(c, 5.5, c_sh)
-	draw_circle(c + Vector2(-0.5, -0.5), 4.5, c_mid)
-	draw_rect(Rect2(c + Vector2(-2.0, -3.0), Vector2(2.0, 2.0)), c_hi)
+			band_sh = c_wine
+			band_hi = c_gold
+
+	# Grounded elliptical shadow (shrinks slightly when lifted/airborne)
+	if carrier == null:
+		var srx: float = 5.0 if airborne else 6.8
+		var sry: float = 2.2 if airborne else 3.0
+		_draw_ground_shadow(srx, sry, Vector2(1.0, 5.0))
+
+	var c := Vector2(0.0, roundf(lift))
+	# Soft hover/active radiance aura
+	if orb_kind == "light" or orb_kind == "key" or carrier != null:
+		var aura_c: Color = c_gold if orb_kind == "light" else (PAL["ice"] as Color if orb_kind == "key" else c_hi)
+		draw_circle(c, 9.0, Color(aura_c, 0.16 if red else 0.22))
+
+	# Shaded pixel-crisp sphere
+	draw_circle(c, 6.8, c_out)
+	draw_circle(c, 5.8, c_sh)
+	draw_circle(c + Vector2(-0.5, -0.5), 4.8, c_mid)
+	draw_circle(c + Vector2(-1.0, -1.5), 3.0, c_hi if orb_kind == "light" else c_mid)
+
+	# Equatorial brass filigree band with clasp medallion
+	draw_rect(Rect2(c.x - 6.0, c.y, 12.0, 2.0), c_out)
+	draw_rect(Rect2(c.x - 5.0, c.y, 10.0, 1.0), band_sh)
+	draw_rect(Rect2(c.x - 4.0, c.y, 8.0, 1.0), band_hi)
+	draw_rect(Rect2(c.x - 2.0, c.y - 1.0, 4.0, 3.0), c_out)
+	draw_rect(Rect2(c.x - 1.0, c.y, 2.0, 1.0), c_cream if orb_kind == "light" else c_gold)
+
+	# Crisp top-left specular crescent
+	draw_rect(Rect2(c + Vector2(-3.0, -4.0), Vector2(3.0, 1.0)), c_hi)
+	draw_rect(Rect2(c + Vector2(-4.0, -3.0), Vector2(2.0, 1.0)), c_hi)
+	draw_rect(Rect2(c + Vector2(-4.0, -2.0), Vector2(1.0, 1.0)), c_hi)
+	draw_rect(Rect2(c + Vector2(-3.0, -3.0), Vector2(1.0, 1.0)), c_cream)
+
+	# Kind-specific crown crest & gentle hover shimmer pips
 	if orb_kind == "key":
-		draw_rect(Rect2(c + Vector2(-1.0, 0.0), Vector2(2.0, 3.0)), PAL["gold"] as Color)
+		draw_rect(Rect2(c + Vector2(-1.0, 1.0), Vector2(2.0, 3.0)), c_gold)
+		draw_rect(Rect2(c + Vector2(-1.0, 1.0), Vector2(1.0, 1.0)), c_cream)
 	elif orb_kind == "seed":
-		draw_line(c + Vector2(0.0, -5.0), c + Vector2(2.0, -8.0), PAL["lime"] as Color, 1.0)
-	elif orb_kind == "light":
-		draw_arc(c, 8.0, 0.0, TAU, 14, Color(PAL["gold"] as Color, 0.35), 1.0)
+		draw_rect(Rect2(c + Vector2(-1.0, -8.0), Vector2(3.0, 3.0)), c_out)
+		draw_rect(Rect2(c + Vector2(0.0, -7.0), Vector2(2.0, 1.0)), PAL["lime"] as Color)
+		draw_rect(Rect2(c + Vector2(-2.0, -7.0), Vector2(2.0, 1.0)), PAL["jade"] as Color)
+	elif orb_kind == "light" or carrier != null:
+		var ang_base: float = 0.78 if red else (_clock * 1.8)
+		for si: int in range(3):
+			var a: float = ang_base + float(si) * (TAU / 3.0)
+			var sp: Vector2 = (c + Vector2(cos(a) * 8.2, sin(a) * 6.2)).round()
+			draw_rect(Rect2(sp, Vector2.ONE), c_cream if si == 0 else c_gold)

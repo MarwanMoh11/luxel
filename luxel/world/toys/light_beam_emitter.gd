@@ -409,23 +409,79 @@ func get_light_pool() -> Vector4:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var trip: Array[Color] = LxToyDraw.color_triplet(beam_color)
 	var red: bool = LxHudFx.flash_reduced()
+	var lit: bool = beam_on or telegraphing
+	var pulse_hi: bool = red or int(floorf(_clock * 5.0)) % 2 == 0
+	var d: Vector2 = emit_dir.normalized() if emit_dir.length_squared() > 0.001 else Vector2.RIGHT
+	var perp := Vector2(-d.y, d.x)
 
-	# Emitter stone housing + glowing crystal core
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -7.0, 14.0, 14.0), PAL["night"] as Color, PAL["dusk"] as Color, trip[1], c_void)
-	draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), c_void)
-	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), trip[1] if (beam_on or telegraphing) else trip[0])
-	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color if beam_on else trip[2])
-	# Aperture muzzle pointing along emit_dir
-	var muz: Vector2 = (emit_dir * 6.0).round()
+	# Grounded contact shadow under optical plinth
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.8)
+
+	# Carved 3/4 stone plinth base (recessed south face + bevelled side ledges)
+	draw_rect(Rect2(-8.0, -5.0, 16.0, 13.0), c_void)
+	draw_rect(Rect2(-7.0, 3.0, 14.0, 4.0), c_night)
+	draw_rect(Rect2(-6.0, 4.0, 12.0, 2.0), c_dusk)
+	draw_rect(Rect2(-7.0, -4.0, 14.0, 8.0), c_dusk)
+	draw_rect(Rect2(-6.0, -4.0, 12.0, 1.0), c_stone)
+	draw_rect(Rect2(-7.0, -4.0, 1.0, 7.0), c_mauve)
+	draw_rect(Rect2(6.0, -3.0, 1.0, 6.0), c_night)
+
+	# Upper carved brass optical housing + corner rivets
+	draw_rect(Rect2(-6.0, -8.0, 12.0, 10.0), c_void)
+	draw_rect(Rect2(-5.0, -7.0, 10.0, 8.0), c_wine)
+	draw_rect(Rect2(-5.0, -7.0, 9.0, 7.0), c_apricot)
+	draw_rect(Rect2(-5.0, -7.0, 10.0, 1.0), c_gold)
+	draw_rect(Rect2(-5.0, -7.0, 1.0, 7.0), c_gold)
+	draw_rect(Rect2(-5.0, -7.0, 2.0, 1.0), c_cream)
+	# Subtle active rim highlight on brass crown
+	if lit:
+		var rim_c: Color = trip[2] if pulse_hi else trip[1]
+		draw_rect(Rect2(-4.0, -8.0, 8.0, 1.0), rim_c)
+		draw_rect(Rect2(-6.0, -5.0, 1.0, 4.0), trip[1])
+		draw_rect(Rect2(5.0, -5.0, 1.0, 4.0), trip[1])
+	# Corner brass rivets on stone plinth
+	for rv: Vector2 in [Vector2(-6.0, -2.0), Vector2(5.0, -2.0), Vector2(-6.0, 2.0), Vector2(5.0, 2.0)]:
+		draw_rect(Rect2(rv, Vector2.ONE), c_gold if lit else c_stone)
+
+	# Recessed crystal condenser dome inside optical housing
+	draw_rect(Rect2(-3.0, -6.0, 6.0, 6.0), c_void)
+	draw_rect(Rect2(-2.0, -5.0, 4.0, 4.0), trip[1] if lit else trip[0])
+	draw_rect(Rect2(-2.0, -5.0, 3.0, 2.0), trip[2] if lit else trip[1])
+	draw_rect(Rect2(-1.0, -4.0, 2.0, 2.0), c_cream if beam_on else (trip[2] if telegraphing else trip[1]))
+	draw_rect(Rect2(-2.0, -5.0, 1.0, 1.0), c_cream)
+
+	# Directional brass nozzle barrel + flared flanges + glowing firing lens
+	var neck: Vector2 = (Vector2(0.0, -2.0) + d * 4.0).round()
+	var muz: Vector2 = (Vector2(0.0, -2.0) + d * 7.0).round()
+	var fl_a: Vector2 = (neck + perp * 3.0).round()
+	var fl_b: Vector2 = (neck - perp * 3.0).round()
+	draw_rect(Rect2(fl_a - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+	draw_rect(Rect2(fl_b - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+	draw_rect(Rect2(fl_a, Vector2.ONE), c_gold)
+	draw_rect(Rect2(fl_b, Vector2.ONE), c_apricot)
+	draw_rect(Rect2(neck - Vector2(2.0, 2.0), Vector2(5.0, 5.0)), c_void)
+	draw_rect(Rect2(neck - Vector2.ONE, Vector2(3.0, 3.0)), c_apricot)
+	draw_rect(Rect2(neck - Vector2.ONE, Vector2(2.0, 1.0)), c_gold)
+	# Glowing focusing crystal lens on the firing face
 	draw_rect(Rect2(muz - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
-	draw_rect(Rect2(muz - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color if (beam_on or telegraphing) else trip[0])
+	draw_rect(Rect2(muz - Vector2.ONE, Vector2(2.0, 2.0)), trip[2] if lit else trip[0])
+	draw_rect(Rect2(muz - Vector2.ONE, Vector2.ONE), c_cream if lit else trip[2])
+	if beam_on:
+		draw_circle(muz, 4.0, Color(trip[1], 0.24 if red else (0.30 if pulse_hi else 0.20)))
 
 	# Telegraph dotted warning line (for hazard beams)
 	if telegraphing and not beam_on:
-		var t_col: Color = PAL["coral"] as Color if (red or int(floorf(_clock * 12.0)) % 2 == 0) else PAL["cream"] as Color
+		var t_col: Color = PAL["coral"] as Color if (red or int(floorf(_clock * 12.0)) % 2 == 0) else c_cream
 		for seg: Dictionary in segments:
 			var a: Vector2 = (seg["start"] as Vector2) - pos
 			var b: Vector2 = (seg["end"] as Vector2) - pos
@@ -444,8 +500,9 @@ func _draw() -> void:
 		var a: Vector2 = (seg["start"] as Vector2) - pos
 		var b: Vector2 = (seg["end"] as Vector2) - pos
 		var st: Array[Color] = LxToyDraw.color_triplet(str(seg["color"]))
-		draw_line(a, b, Color(st[0], 0.55 if red else 0.72), outer_w + 1.0, false)
-		draw_line(a, b, st[1], outer_w - 1.0, false)
-		draw_line(a, b, PAL["cream"] as Color, 1.0, false)
-		draw_rect(Rect2(b.round() - Vector2.ONE, Vector2(3.0, 3.0)), st[2])
-		draw_rect(Rect2(b.round(), Vector2.ONE), PAL["cream"] as Color)
+		draw_line(a.round(), b.round(), Color(st[0], 0.55 if red else 0.72), outer_w + 1.0, false)
+		draw_line(a.round(), b.round(), st[1], outer_w - 1.0, false)
+		draw_line(a.round(), b.round(), c_cream, 1.0, false)
+		var bp: Vector2 = b.round()
+		draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), st[2])
+		draw_rect(Rect2(bp, Vector2.ONE), c_cream)

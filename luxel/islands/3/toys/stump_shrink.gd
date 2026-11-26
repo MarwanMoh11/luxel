@@ -159,23 +159,36 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var shrink_mode: bool = _resolved_size() == "tiny"
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.5)
-	# Sculpted hollow tree stump outer bark ring (roots + knotty rim)
-	draw_rect(Rect2(-10.0, -5.0, 20.0, 12.0), c_void)
-	draw_rect(Rect2(-9.0, -6.0, 18.0, 12.0), c_void)
-	draw_rect(Rect2(-9.0, -4.0, 18.0, 10.0), c_dusk if not open else c_wine)
-	draw_rect(Rect2(-8.0, -5.0, 16.0, 9.0), c_plum if not open else c_apricot)
-	# Bark root buttresses
-	draw_rect(Rect2(-11.0, 3.0, 4.0, 4.0), c_void)
-	draw_rect(Rect2(-10.0, 3.0, 3.0, 3.0), c_dusk if not open else c_wine)
-	draw_rect(Rect2(7.0, 3.0, 4.0, 4.0), c_void)
-	draw_rect(Rect2(7.0, 3.0, 3.0, 3.0), c_dusk if not open else c_wine)
-	# Top cut timber rim
-	draw_rect(Rect2(-8.0, -6.0, 16.0, 2.0), c_void)
-	draw_rect(Rect2(-7.0, -5.0, 14.0, 2.0), PAL["stone"] as Color if not open else c_gold)
-	# Inner hollow opening
-	draw_rect(Rect2(-6.0, -3.0, 12.0, 7.0), c_void)
-	draw_rect(Rect2(-5.0, -2.0, 10.0, 5.0), c_night)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 8.0), 12.0, 4.0)
+	# Organic flared hollow tree stump with gnarled root buttresses & bark grain
+	draw_rect(Rect2(-12.0, 2.0, 24.0, 6.0), c_void)
+	draw_rect(Rect2(-10.0, -6.0, 20.0, 13.0), c_void)
+	draw_rect(Rect2(-9.0, -7.0, 18.0, 13.0), c_void)
+	var bark_sh: Color = c_dusk if not open else c_night
+	var bark_mid: Color = c_plum if not open else c_wine
+	var bark_hi: Color = PAL["mauve"] as Color if not open else c_apricot
+	# Root buttress feet
+	draw_rect(Rect2(-11.0, 3.0, 4.0, 4.0), bark_mid)
+	draw_rect(Rect2(-11.0, 3.0, 2.0, 2.0), bark_hi)
+	draw_rect(Rect2(7.0, 3.0, 4.0, 4.0), bark_sh)
+	draw_rect(Rect2(-9.0, -5.0, 18.0, 11.0), bark_mid)
+	draw_rect(Rect2(-9.0, -5.0, 4.0, 10.0), bark_hi)
+	draw_rect(Rect2(5.0, -4.0, 4.0, 10.0), bark_sh)
+	# Vertical bark furrows + mossy emerald shelf tufts
+	draw_rect(Rect2(-6.0, -2.0, 1.0, 7.0), bark_sh)
+	draw_rect(Rect2(6.0, -1.0, 1.0, 6.0), c_void)
+	draw_rect(Rect2(-10.0, -3.0, 3.0, 3.0), c_pine)
+	draw_rect(Rect2(-10.0, -3.0, 2.0, 2.0), c_jade)
+	draw_rect(Rect2(-10.0, -3.0, 1.0, 1.0), c_lime)
+	draw_rect(Rect2(8.0, 0.0, 3.0, 3.0), c_pine)
+	draw_rect(Rect2(8.0, 0.0, 2.0, 1.0), c_jade)
+	# Top cut timber heartwood rim
+	draw_rect(Rect2(-8.0, -7.0, 16.0, 3.0), c_void)
+	draw_rect(Rect2(-7.0, -6.0, 14.0, 2.0), PAL["stone"] as Color if not open else c_gold)
+	draw_rect(Rect2(-6.0, -6.0, 7.0, 1.0), c_cream if open else PAL["stone"] as Color)
+	# Inner hollow burrow opening
+	draw_rect(Rect2(-6.0, -4.0, 12.0, 8.0), c_void)
+	draw_rect(Rect2(-5.0, -3.0, 10.0, 6.0), c_night)
 
 	if not open:
 		# Dormant dry bark seal + hollow sap drop glyph (readable in greyscale)

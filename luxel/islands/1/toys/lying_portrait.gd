@@ -348,19 +348,39 @@ func _draw() -> void:
 		_draw_signal_pulses()
 		return
 
-	# Gilt frame
+	# Grounded drop shadow & hanging cord/nail
+	draw_rect(Rect2(r.position + Vector2(2.0, 3.0), r.size), Color(c_void, 0.44))
+	draw_line(Vector2(0.0, r.position.y - 4.0), Vector2(r.position.x + 4.0, r.position.y), c_night, 1.0)
+	draw_line(Vector2(0.0, r.position.y - 4.0), Vector2(r.end.x - 5.0, r.position.y), c_night, 1.0)
+	draw_rect(Rect2(-1.0, r.position.y - 5.0, 2.0, 2.0), c_gold)
+
+	# Ornate gilded picture frame with corner medallions
 	var frame_mid: Color = PAL["sky"] as Color if state == State.FROZEN else (c_coral if state in [State.ACCUSED_WRONG, State.ALERTED] else PAL["apricot"] as Color)
 	var frame_hi: Color = c_ice if state == State.FROZEN else (c_cream if _flare_t > 0.0 else c_gold)
 	LxToyDraw.draw_bevel_box(self, r, PAL["wine"] as Color, frame_mid, frame_hi, c_void)
-	# Velvet canvas interior
+	for cx: float in [r.position.x, r.end.x - 3.0]:
+		for cy: float in [r.position.y, r.end.y - 3.0]:
+			draw_rect(Rect2(cx, cy, 3.0, 3.0), c_void)
+			draw_rect(Rect2(cx + 1.0, cy + 1.0, 1.0, 1.0), frame_hi)
+	# Velvet canvas interior with subtle moody backdrop gradient
 	var inner := Rect2(r.position + Vector2(3.0, 3.0), r.size - Vector2(6.0, 6.0))
 	draw_rect(inner, c_night)
-	var coat_c: Color = c_coral if suspect == "steward" else (PAL["sky"] as Color if suspect == "choir" else PAL["plum"] as Color)
-	draw_rect(Rect2(-5.0, 2.0, 10.0, 7.0), coat_c)
-	# Head silhouette
-	draw_rect(Rect2(-4.0, -6.0, 8.0, 8.0), PAL["dusk"] as Color)
+	draw_rect(Rect2(inner.position + Vector2(1.0, 1.0), Vector2(inner.size.x - 2.0, 5.0)), PAL["dusk"] as Color)
+	# Sculpted bust: shoulders, collar/cravat, and shaped head silhouette
+	var coat_c: Color = c_coral if suspect == "steward" else (PAL["blue"] as Color if suspect == "choir" else PAL["plum"] as Color)
+	var coat_hi: Color = PAL["apricot"] as Color if suspect == "steward" else (PAL["sky"] as Color if suspect == "choir" else PAL["mauve"] as Color)
+	draw_rect(Rect2(-6.0, 3.0, 12.0, 6.0), coat_c)
+	draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), coat_hi)
+	draw_rect(Rect2(-2.0, 2.0, 4.0, 3.0), PAL["stone"] as Color)
+	draw_rect(Rect2(-1.0, 3.0, 2.0, 3.0), c_cream if suspect == "choir" else c_gold)
+	# Head + subtle hair/hat crown
+	draw_rect(Rect2(-4.0, -7.0, 8.0, 9.0), c_void)
+	draw_rect(Rect2(-3.0, -6.0, 6.0, 7.0), PAL["mauve"] as Color)
+	draw_rect(Rect2(-3.0, -6.0, 2.0, 6.0), PAL["stone"] as Color)
+	draw_rect(Rect2(-4.0, -8.0, 8.0, 3.0), c_night)
+	draw_rect(Rect2(-3.0, -8.0, 5.0, 1.0), PAL["dusk"] as Color)
 
-	# Eyes (closed when frozen/cracked, bright open when alert/verdict)
+	# Eyes (closed when frozen/cracked, bright tracking sclera+pupil when alert/verdict)
 	if state == State.FROZEN:
 		draw_rect(Rect2(-3.0, -3.0, 6.0, 1.0), c_ice)
 		draw_rect(r.grow(1.0), c_ice, false, 1.0)
@@ -371,8 +391,17 @@ func _draw() -> void:
 		LxToyDraw.draw_bar(self, Vector2(-7.0, r.position.y - 5.0), 14.0, _crack_left / 3.0, c_coral)
 	else:
 		var eye_c: Color = c_coral if state in [State.ALERTED, State.ACCUSED_WRONG] else c_cream
-		draw_rect(Rect2(-3.0 + _eye_offset.x * 0.5, -4.0 + _eye_offset.y * 0.5, 2.0, 2.0), eye_c)
-		draw_rect(Rect2(1.0 + _eye_offset.x * 0.5, -4.0 + _eye_offset.y * 0.5, 2.0, 2.0), eye_c)
+		var ex: float = roundf(_eye_offset.x * 0.5)
+		var ey: float = roundf(_eye_offset.y * 0.5)
+		draw_rect(Rect2(-3.0, -4.0, 2.0, 2.0), c_night)
+		draw_rect(Rect2(1.0, -4.0, 2.0, 2.0), c_night)
+		draw_rect(Rect2(-3.0 + ex, -4.0 + ey, 2.0, 2.0), eye_c)
+		draw_rect(Rect2(1.0 + ex, -4.0 + ey, 2.0, 2.0), eye_c)
+		draw_rect(Rect2(-2.0 + ex, -3.0 + ey, 1.0, 1.0), c_void if state == State.IDLE else c_gold)
+		draw_rect(Rect2(2.0 + ex, -3.0 + ey, 1.0, 1.0), c_void if state == State.IDLE else c_gold)
+		# Subtle eerie glint on portrait frame when active/exposed
+		if (state in [State.EXPOSED, State.ALERTED]) and (LxHudFx.flash_reduced() or int(floorf(_clock * 4.0)) % 2 == 0):
+			draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 3.0, 1.0), c_cream)
 
 	# Evidence lectern pip beneath portrait when EXPOSED
 	if state == State.EXPOSED:

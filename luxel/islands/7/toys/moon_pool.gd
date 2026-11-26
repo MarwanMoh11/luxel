@@ -111,6 +111,8 @@ func tick(dt: float) -> void:
 			trigger_flip()
 			dirty = true
 		_wick_was_in = in_now
+	if active and not hidden_pool and not LxHudFx.flash_reduced():
+		dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -249,35 +251,81 @@ func _draw() -> void:
 		return
 	var r: float = roundf(radius_px)
 	var is_blk: bool = get_world_face() == "black"
+	var fr: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
 	var c_deep: Color = PAL["deep"] as Color
 	var c_blue: Color = PAL["blue"] as Color
 	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var c_plum: Color = PAL["plum"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = c_stone_col()
 	var c_wine: Color = PAL["wine"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 
-	# Outer beveled moonstone rim
-	draw_circle(Vector2(1.0, 2.0), r + 1.0, Color(c_void, 0.42))
-	draw_circle(Vector2.ZERO, r, c_void)
-	draw_circle(Vector2.ZERO, r - 1.5, c_plum if is_blk else c_stone_col())
-	draw_circle(Vector2.ZERO, r - 3.0, c_night if is_blk else c_deep)
-	# Pool mirror liquid (SILVER = luminous ice/sky quicksilver; BLACK = obsidian void/night + rose sheen)
-	draw_circle(Vector2.ZERO, r - 4.0, c_void if is_blk else c_blue)
-	draw_circle(Vector2(-1.0, -1.0), maxf(4.0, r - 6.0), c_night if is_blk else c_sky)
+	# Grounded basin shadow
+	draw_circle(Vector2(1.0, 2.0), r + 2.0, Color(c_void, 0.38))
+
+	# Crisp bevelled stone basin rim with carved masonry keystone seams
+	draw_circle(Vector2.ZERO, r + 1.0, c_void)
+	draw_circle(Vector2.ZERO, r, c_dusk if is_blk else c_mauve)
+	# Upper-left sunlit stone bevel arc & lower-right shaded bevel arc
+	draw_arc(Vector2.ZERO, r - 0.5, PI * 0.85, PI * 1.85, 18, c_rose if is_blk else c_ice, 1.2)
+	draw_arc(Vector2.ZERO, r - 0.5, -PI * 0.15, PI * 0.85, 18, c_night if is_blk else c_dusk, 1.2)
+	draw_circle(Vector2.ZERO, r - 2.0, c_plum if is_blk else c_stone)
+	draw_circle(Vector2.ZERO, r - 3.5, c_void)
+	# 8 carved stone rim masonry joints & cardinal keystones
+	for ki: int in range(8):
+		var ka: float = float(ki) * (TAU / 8.0)
+		var p_in := Vector2(roundf(cos(ka) * (r - 3.0)), roundf(sin(ka) * (r - 3.0)))
+		var p_out := Vector2(roundf(cos(ka) * r), roundf(sin(ka) * r))
+		draw_line(p_in, p_out, c_void, 1.0)
+		if ki % 2 == 0:
+			var kp := Vector2(roundf(cos(ka) * (r - 1.5)), roundf(sin(ka) * (r - 1.5)))
+			draw_rect(Rect2(kp - Vector2.ONE, Vector2(2.0, 2.0)), c_rose if is_blk else c_cream)
+
+	# Concentric water rings inside the basin
+	var wr: float = maxf(6.0, r - 4.0)
+	draw_circle(Vector2.ZERO, wr, c_night if is_blk else c_deep)
+	draw_circle(Vector2.ZERO, maxf(5.0, wr - 1.5), c_void if is_blk else c_blue)
+	draw_arc(Vector2.ZERO, roundf(wr * 0.78), 0.0, TAU, 20, c_dusk if is_blk else c_sky, 1.0)
+	draw_arc(Vector2.ZERO, roundf(wr * 0.56), 0.0, TAU, 16, c_plum if is_blk else c_ice, 1.0)
+
+	# Clearer Silver Full Moon vs Obsidian Eclipsed Moon reflection disc
+	var mr: float = roundf(maxf(4.0, r * 0.36))
 	if not is_blk:
-		# Full silver moon crest inside pool (high-value filled disc: readable in greyscale!)
-		draw_circle(Vector2.ZERO, maxf(3.0, r * 0.34), c_ice)
-		draw_rect(Rect2(-2.0, -3.0, 3.0, 2.0), c_cream)
+		# High-contrast luminous full silver moon disc with specular lunar glint
+		draw_circle(Vector2.ZERO, mr + 1.0, c_sky)
+		draw_circle(Vector2.ZERO, mr, c_ice)
+		draw_arc(Vector2.ZERO, mr, PI * 0.85, PI * 1.75, 12, c_cream, 1.2)
+		draw_rect(Rect2(-mr + 2.0, -mr + 2.0, 3.0, 2.0), c_cream)
+		draw_rect(Rect2(1.0, 1.0, 2.0, 2.0), c_sky)
+		draw_rect(Rect2(-1.0, 2.0, 1.0, 1.0), c_sky)
 	else:
-		# Hollow obsidian eclipsed crescent inside Black pool (dark center + bright rose rim!)
-		draw_arc(Vector2.ZERO, maxf(3.5, r * 0.36), 0.0, TAU, 16, c_rose, 1.5)
-		draw_circle(Vector2(1.5, 0.0), maxf(2.5, r * 0.28), c_void)
-		draw_rect(Rect2(-roundf(r * 0.36), -1.0, 2.0, 2.0), c_cream)
+		# Dramatic pitch-black obsidian eclipsed moon framed by razor-sharp rose/cream corona crescent
+		draw_circle(Vector2.ZERO, mr + 1.0, c_wine)
+		draw_arc(Vector2.ZERO, mr + 0.5, 0.0, TAU, 18, c_rose, 1.4)
+		draw_circle(Vector2(1.0, 0.0), mr, c_void)
+		draw_arc(Vector2.ZERO, mr, PI * 0.65, PI * 1.45, 12, c_cream, 1.2)
+		# Diamond-ring eclipse flare on upper-left limb
+		var dx: float = roundf(-mr)
+		draw_rect(Rect2(dx - 1.0, -2.0, 2.0, 3.0), c_coral)
+		draw_rect(Rect2(dx, -1.0, 1.0, 2.0), c_cream)
+
+	# Subtle pixel caustic glints shimmering along the concentric water ring
+	var caustic_r: float = roundf(wr * 0.72)
+	for ci: int in range(5):
+		var phase: float = 0.0 if fr else (_clock * (0.45 if is_blk else 0.70))
+		var ca: float = phase + float(ci) * (TAU / 5.0) + 0.35
+		var cx: float = roundf(cos(ca) * caustic_r)
+		var cy: float = roundf(sin(ca) * caustic_r)
+		var glint_c: Color = (c_rose if (ci % 2 == 0) else c_cream) if is_blk else (c_cream if (ci % 2 == 0) else c_ice)
+		var tw: float = 2.0 if (ci % 2 == 0) else 1.0
+		draw_rect(Rect2(cx, cy, tw, 1.0), Color(glint_c, 0.75 if fr else (0.50 + 0.38 * absf(sin(_clock * 2.2 + float(ci))))))
 
 	# Cross-world hung lantern reflection ghost inside pool
 	if region != null and region.has_method("is_lantern_hung") and bool(region.call("is_lantern_hung")):
@@ -287,8 +335,7 @@ func _draw() -> void:
 	# 1.2s expanding ripple transition waves
 	if _ripple_t > 0.0:
 		var u: float = 1.0 - clampf(_ripple_t / RIPPLE_DUR, 0.0, 1.0)
-		var fred: bool = LxHudFx.flash_reduced()
-		var a: float = (1.0 - u) * (0.55 if fred else 0.92)
+		var a: float = (1.0 - u) * (0.55 if fr else 0.92)
 		var wr1: float = roundf(lerpf(4.0, r * 1.55, u))
 		var wr2: float = roundf(lerpf(2.0, r * 1.15, clampf(u * 1.25, 0.0, 1.0)))
 		draw_arc(Vector2.ZERO, wr1, 0.0, TAU, 24, Color(c_rose if is_blk else c_ice, a), 1.5)

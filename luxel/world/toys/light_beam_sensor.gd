@@ -53,7 +53,7 @@ func tick(dt: float) -> void:
 			set_powered(false)
 			emit_power(false)
 			dirty = true
-	if dirty:
+	if dirty or (powered and not LxHudFx.flash_reduced()):
 		queue_redraw()
 
 
@@ -112,12 +112,83 @@ func _shape_for_color() -> int:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var c_deep: Color = PAL["deep"] as Color
+	var c_blue: Color = PAL["blue"] as Color
+	var c_sky: Color = PAL["sky"] as Color
+	var c_ice: Color = PAL["ice"] as Color
 	var trip: Array[Color] = LxToyDraw.color_triplet(req_color if req_color != "any" else "gold")
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -7.0, 14.0, 14.0), PAL["night"] as Color, PAL["dusk"] as Color, trip[1] if powered else PAL["mauve"] as Color, c_void)
-	var main_c: Color = (PAL["coral"] as Color) if _reject_t > 0.0 else (trip[1] if powered else trip[0])
-	var hi_c: Color = PAL["cream"] as Color if powered else trip[2]
-	LxToyDraw.draw_shape_glyph(self, Vector2.ZERO, _shape_for_color(), powered, main_c, hi_c)
-	if powered and not LxHudFx.flash_reduced():
-		draw_arc(Vector2.ZERO, 9.0, _clock * 2.0, _clock * 2.0 + PI, 10, trip[2], 1.0)
+	var red: bool = LxHudFx.flash_reduced()
+	var rej: bool = _reject_t > 0.0
+
+	# Grounded contact shadow
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.8)
+
+	# Carved 3/4 octagonal stone plinth base
+	draw_rect(Rect2(-8.0, -3.0, 16.0, 10.0), c_void)
+	draw_rect(Rect2(-6.0, -7.0, 12.0, 14.0), c_void)
+	draw_rect(Rect2(-7.0, 3.0, 14.0, 3.0), c_night)
+	draw_rect(Rect2(-7.0, -2.0, 14.0, 5.0), c_dusk)
+	draw_rect(Rect2(-5.0, -6.0, 10.0, 11.0), c_dusk)
+	# Sunlit top & left plinth lip
+	draw_rect(Rect2(-5.0, -6.0, 10.0, 1.0), c_stone)
+	draw_rect(Rect2(-7.0, -2.0, 1.0, 5.0), c_mauve)
+	draw_rect(Rect2(-5.0, 4.0, 10.0, 1.0), c_night)
+
+	# Faceted crystal dish receptor recessed into plinth
+	var dish_out: Color = (PAL["coral"] as Color) if rej else (trip[1] if powered else (c_blue if req_color == "any" else trip[0]))
+	var dish_mid: Color = (PAL["apricot"] as Color) if rej else (c_gold if (powered and req_color == "any") else (trip[2] if powered else (c_mauve if req_color == "any" else trip[1])))
+	var dish_hi: Color = c_cream if powered else (c_sky if req_color == "any" else trip[2])
+	var dish_sh: Color = c_deep if (not powered and req_color == "any") else (trip[0] if powered else c_night)
+
+	draw_rect(Rect2(-5.0, -5.0, 10.0, 9.0), c_void)
+	draw_rect(Rect2(-4.0, -4.0, 8.0, 7.0), dish_sh)
+	# Chamfered crystal facets
+	draw_rect(Rect2(-3.0, -4.0, 6.0, 6.0), dish_out)
+	draw_rect(Rect2(-4.0, -3.0, 8.0, 4.0), dish_out)
+	draw_rect(Rect2(-3.0, -3.0, 5.0, 4.0), dish_mid)
+	draw_rect(Rect2(-3.0, -3.0, 3.0, 2.0), dish_hi)
+	draw_rect(Rect2(-3.0, -3.0, 1.0, 1.0), c_cream if powered else c_ice)
+
+	# Four corner retaining prongs clasping the crystal dish
+	var prong_c: Color = c_gold if powered else c_stone
+	var prong_sh: Color = PAL["apricot"] as Color if powered else c_mauve
+	for pr: Vector2 in [Vector2(-7.0, -7.0), Vector2(5.0, -7.0), Vector2(-7.0, 3.0), Vector2(5.0, 3.0)]:
+		draw_rect(Rect2(pr, Vector2(3.0, 3.0)), c_void)
+		draw_rect(Rect2(pr.x + 1.0, pr.y + 1.0, 1.0, 1.0), prong_c if pr.y < 0.0 else prong_sh)
+	# Inner claw tips biting onto the dish rim
+	draw_rect(Rect2(-5.0, -5.0, 1.0, 1.0), prong_c)
+	draw_rect(Rect2(4.0, -5.0, 1.0, 1.0), prong_c)
+	draw_rect(Rect2(-5.0, 3.0, 1.0, 1.0), prong_sh)
+	draw_rect(Rect2(4.0, 3.0, 1.0, 1.0), prong_sh)
+
+	# Colour-blind safe inner receptor socket glyph
+	var g_main: Color = (PAL["coral"] as Color) if rej else (trip[1] if powered else dish_out)
+	var g_hi: Color = c_cream if powered else dish_hi
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -1.0), _shape_for_color(), powered, g_main, g_hi)
+
+	# Radiant gold/cream core glow + cardinal optical rays when powered
+	if powered:
+		var ray_len: float = 4.0 if (red or int(floorf(_clock * 6.0)) % 2 == 0) else 3.0
+		var ray_c: Color = c_gold if req_color == "any" else trip[1]
+		draw_circle(Vector2(0.0, -1.0), 8.0, Color(ray_c, 0.22))
+		# Cardinal rays (N, S, E, W)
+		draw_rect(Rect2(-1.0, -7.0 - ray_len, 2.0, ray_len), ray_c)
+		draw_rect(Rect2(0.0, -7.0 - ray_len, 1.0, ray_len), c_cream)
+		draw_rect(Rect2(-1.0, 6.0, 2.0, ray_len), ray_c)
+		draw_rect(Rect2(0.0, 6.0, 1.0, ray_len), c_cream)
+		draw_rect(Rect2(-7.0 - ray_len, -2.0, ray_len, 2.0), ray_c)
+		draw_rect(Rect2(-7.0 - ray_len, -1.0, ray_len, 1.0), c_cream)
+		draw_rect(Rect2(7.0, -2.0, ray_len, 2.0), ray_c)
+		draw_rect(Rect2(7.0, -1.0, ray_len, 1.0), c_cream)
+		if not red:
+			var ang: float = _clock * 2.4
+			for k: int in range(2):
+				var sp: Vector2 = (Vector2(0.0, -1.0) + Vector2(cos(ang + float(k) * PI), sin(ang + float(k) * PI)) * 9.0).round()
+				draw_rect(Rect2(sp, Vector2.ONE), c_cream)
 	_draw_signal_pulses()

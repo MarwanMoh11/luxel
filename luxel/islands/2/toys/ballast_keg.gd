@@ -385,17 +385,34 @@ func _draw() -> void:
 		var f_flash: bool = red or int(floorf(_clock * 18.0)) % 2 == 0
 		draw_arc(Vector2.ZERO, blast_r, 0.0, TAU, 24, Color(PAL["cream"] as Color if f_flash else PAL["coral"] as Color, 0.72), 1.0)
 
-	# Banded oil keg barrel body (14x14 centered)
-	var body := Rect2(-7.0, -7.0 - bob, 14.0, 14.0)
+	# Sculpted rounded oil keg barrel silhouette (tapered top/bottom staves + 3/4 cap)
 	var flash_det: bool = state == "detonating" and (red or int(floorf(_clock * 18.0)) % 2 == 0)
-	var wood_c: Color = (PAL["coral"] if flash_det else PAL["wine"]) as Color
-	var hi_c: Color = (PAL["cream"] if flash_det else PAL["apricot"]) as Color
-	LxPhysDraw.draw_bevel_box(self, body, wood_c, hi_c, PAL["night"] as Color, c_void)
-	# Twin iron barrel hoops
-	draw_rect(Rect2(-7.0, -4.0 - bob, 14.0, 2.0), PAL["deep"] as Color)
-	draw_rect(Rect2(-7.0, 2.0 - bob, 14.0, 2.0), PAL["deep"] as Color)
-	draw_rect(Rect2(-6.0, -4.0 - bob, 4.0, 1.0), PAL["stone"] as Color)
-	draw_rect(Rect2(-6.0, 2.0 - bob, 4.0, 1.0), PAL["stone"] as Color)
+	var wood_dark: Color = (PAL["coral"] if flash_det else PAL["night"]) as Color
+	var wood_mid: Color = (PAL["apricot"] if flash_det else PAL["wine"]) as Color
+	var wood_hi: Color = (PAL["cream"] if flash_det else PAL["coral"]) as Color
+	var hoop_c: Color = (PAL["gold"] if clamped else PAL["deep"]) as Color
+	var hoop_hi: Color = (PAL["cream"] if clamped else PAL["ice"]) as Color
+	draw_rect(Rect2(-6.0, -8.0 - bob, 12.0, 16.0), c_void)
+	draw_rect(Rect2(-8.0, -6.0 - bob, 16.0, 12.0), c_void)
+	draw_rect(Rect2(-5.0, -7.0 - bob, 10.0, 14.0), wood_mid)
+	draw_rect(Rect2(-7.0, -5.0 - bob, 14.0, 10.0), wood_mid)
+	# Vertical stave shading (sunlit left, shaded right)
+	draw_rect(Rect2(-6.0, -5.0 - bob, 3.0, 10.0), wood_hi)
+	draw_rect(Rect2(4.0, -5.0 - bob, 3.0, 10.0), wood_dark)
+	draw_rect(Rect2(-2.0, -6.0 - bob, 1.0, 12.0), wood_dark)
+	draw_rect(Rect2(2.0, -6.0 - bob, 1.0, 12.0), wood_dark)
+	# Top barrel lid oval with sunlit rim & fuse/bung plug
+	draw_rect(Rect2(-5.0, -7.0 - bob, 10.0, 3.0), PAL["apricot"] as Color if not flash_det else PAL["cream"] as Color)
+	draw_rect(Rect2(-4.0, -7.0 - bob, 6.0, 1.0), PAL["gold"] as Color if not flash_det else PAL["cream"] as Color)
+	# Twin riveted iron/brass barrel hoops
+	draw_rect(Rect2(-7.0, -4.0 - bob, 14.0, 2.0), hoop_c)
+	draw_rect(Rect2(-7.0, 2.0 - bob, 14.0, 2.0), hoop_c)
+	draw_rect(Rect2(-6.0, -4.0 - bob, 5.0, 1.0), hoop_hi)
+	draw_rect(Rect2(-6.0, 2.0 - bob, 5.0, 1.0), hoop_hi)
+	# Sparking fuse cord on top when detonating
+	if state == "detonating":
+		draw_rect(Rect2(-1.0, -10.0 - bob, 2.0, 3.0), PAL["apricot"] as Color)
+		draw_rect(Rect2(-2.0, -12.0 - bob, 4.0, 3.0), PAL["cream"] as Color if flash_det else PAL["gold"] as Color)
 	# Hazard oil diamond emblem in center (shifts slightly with roll phase)
 	var r_off: float = roundf(sin(_roll_phase) * 2.0) if state == "rolling" else 0.0
 	LxToyDraw.draw_shape_glyph(self, Vector2(r_off, -bob), 1, state == "detonating", PAL["coral"] as Color, PAL["gold"] as Color)

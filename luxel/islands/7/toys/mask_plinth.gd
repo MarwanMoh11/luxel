@@ -135,6 +135,8 @@ func tick(dt: float) -> void:
 		if wp.x > -9000.0 and wp.distance_to(pos) <= steal_radius:
 			apply_room_theft()
 			dirty = true
+	if active and state != State.RECLAIMED and not LxHudFx.flash_reduced():
+		dirty = true
 	if dirty:
 		queue_redraw()
 
@@ -232,49 +234,129 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_plum: Color = PAL["plum"] as Color
 	var c_wine: Color = PAL["wine"] as Color
 	var c_coral: Color = PAL["coral"] as Color
+	var c_apr: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var c_rose: Color = PAL["rose"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
+	var fr: bool = LxHudFx.flash_reduced()
 
-	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 5.0), 8.0, 3.0, "se_gold", false)
-	# Velvet theatrical plinth
-	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -2.0, 16.0, 8.0), c_night, c_wine, c_gold, c_void)
-	draw_rect(Rect2(-6.0, 0.0, 12.0, 4.0), c_wine)
+	# Grounded contact shadow + Island 7 canonical Truth Shadow
+	_draw_ground_shadow(10.0, 4.0, Vector2(1.0, 6.0))
+	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 6.0), 8.0, 3.0, "se_gold", false)
+
+	# Refined marble & obsidian theatrical pedestal
+	# Stepped obsidian base
+	draw_rect(Rect2(-10.0, 3.0, 20.0, 5.0), c_void)
+	draw_rect(Rect2(-9.0, 4.0, 18.0, 3.0), c_night)
+	draw_rect(Rect2(-9.0, 4.0, 18.0, 1.0), c_dusk)
+	draw_rect(Rect2(-8.0, 4.0, 5.0, 1.0), c_stone)
+	# Fluted obsidian/marble column shaft with velvet drape
+	draw_rect(Rect2(-8.0, -3.0, 16.0, 7.0), c_void)
+	draw_rect(Rect2(-7.0, -2.0, 14.0, 6.0), c_night)
+	draw_rect(Rect2(-7.0, -2.0, 3.0, 6.0), c_dusk)
+	draw_rect(Rect2(-6.0, -2.0, 1.0, 5.0), c_plum)
+	draw_rect(Rect2(4.0, -2.0, 3.0, 6.0), c_dusk)
+	draw_rect(Rect2(-4.0, -2.0, 8.0, 5.0), c_wine)
+	draw_rect(Rect2(-4.0, 3.0, 8.0, 1.0), c_gold)
+	# Pale marble & gold capital ledge
+	draw_rect(Rect2(-9.0, -5.0, 18.0, 3.0), c_void)
+	draw_rect(Rect2(-8.0, -4.0, 16.0, 2.0), c_stone)
+	draw_rect(Rect2(-8.0, -4.0, 10.0, 1.0), c_ice)
+	draw_rect(Rect2(-8.0, -3.0, 16.0, 1.0), c_gold)
 
 	if state == State.RECLAIMED:
-		# Broken porcelain shards + warm open cushion
-		draw_rect(Rect2(-4.0, -3.0, 3.0, 2.0), c_cream)
-		draw_rect(Rect2(2.0, -2.0, 3.0, 2.0), c_ice)
-		draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), c_gold)
+		# Broken porcelain mask shards + fallen rose plume resting on open velvet cushion
+		draw_rect(Rect2(-6.0, -6.0, 5.0, 2.0), c_void)
+		draw_rect(Rect2(-5.0, -6.0, 3.0, 2.0), c_ice)
+		draw_rect(Rect2(-5.0, -6.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(2.0, -5.0, 5.0, 2.0), c_void)
+		draw_rect(Rect2(3.0, -5.0, 3.0, 1.0), c_gold)
+		draw_rect(Rect2(-1.0, -7.0, 3.0, 2.0), c_rose)
+		draw_rect(Rect2(0.0, -7.0, 1.0, 1.0), c_cream)
 		if _reclaim_burst_t > 0.0:
 			var u: float = 1.0 - clampf(_reclaim_burst_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -6.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, 1.0 - u), 1.5)
+			draw_arc(Vector2(0.0, -8.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.5)
 		_draw_signal_pulses()
 		return
 
-	# Hovering Porcelain Move Mask
-	var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.2) * 1.5)
-	var my: float = -12.0 + bob
-	var rim_c: Color = c_cream if _hit_flash_t > 0.0 else (c_coral if state == State.CRACKING else c_gold)
-	if boss_mode:
-		draw_arc(Vector2(0.0, my + 2.0), 11.0, 0.0, TAU, 18, Color(c_gold, 0.45), 1.0)
-	draw_rect(Rect2(-6.0, my - 5.0, 12.0, 11.0), c_void)
-	draw_rect(Rect2(-5.0, my - 4.0, 10.0, 9.0), c_cream if _hit_flash_t > 0.0 else c_ice)
-	draw_rect(Rect2(-5.0, my - 4.0, 10.0, 1.0), rim_c)
-	# Move glyph inside mask
+	# Stolen move icon inset neatly as a pedestal medallion (keeps mask face 100% legible!)
 	var shape_i: int = _move_shape_index(mask_icon)
-	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, my), shape_i, true, c_coral if state == State.CRACKING else c_wine, c_gold)
-	# Iron cage bars over sealed mask (clearly distinct from reclaimed!)
-	for bx: float in [-3.0, 0.0, 3.0]:
-		draw_rect(Rect2(bx, my - 5.0, 1.0, 11.0), c_coral if state == State.CRACKING else c_void)
-	if state == State.CRACKING:
-		draw_line(Vector2(-4.0, my - 3.0), Vector2(3.0, my + 4.0), c_coral, 1.0)
-		draw_line(Vector2(4.0, my - 2.0), Vector2(-2.0, my + 3.0), c_rose, 1.0)
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, 1.0), shape_i, true, c_coral if state == State.CRACKING else c_gold, c_cream)
+
+	# Hovering unmistakable theatrical masquerade mask
+	var bob: float = 0.0 if fr else roundf(sin(_clock * 3.2) * 1.5)
+	var my: float = -13.0 + bob
+	var hit_f: bool = _hit_flash_t > 0.0
+	var cracking: bool = state == State.CRACKING
+
+	if boss_mode:
+		draw_arc(Vector2(0.0, my + 1.0), 12.0, 0.0, TAU, 18, Color(c_gold, 0.48), 1.0)
+
+	# Theatrical crest plume fanning up from the brow jewel
+	var plume_main: Color = c_gold if boss_mode else c_rose
+	var plume_dark: Color = c_apr if boss_mode else c_wine
+	draw_rect(Rect2(-2.0, my - 9.0, 5.0, 5.0), c_void)
+	draw_rect(Rect2(-4.0, my - 8.0, 9.0, 3.0), c_void)
+	draw_rect(Rect2(0.0, my - 9.0, 1.0, 4.0), c_cream)
+	draw_rect(Rect2(-1.0, my - 8.0, 3.0, 3.0), plume_main)
+	draw_rect(Rect2(-3.0, my - 7.0, 2.0, 2.0), plume_dark)
+	draw_rect(Rect2(2.0, my - 7.0, 2.0, 2.0), plume_dark)
+	draw_rect(Rect2(-3.0, my - 7.0, 1.0, 1.0), c_cream)
+	draw_rect(Rect2(3.0, my - 7.0, 1.0, 1.0), c_cream)
+
+	# Curved masquerade mask silhouette (swept winged temples, arched brow, tapered cheeks & chin)
+	var mask_out := PackedVector2Array([
+		Vector2(-7.0, my - 4.0), Vector2(-3.0, my - 5.0), Vector2(0.0, my - 4.0),
+		Vector2(3.0, my - 5.0), Vector2(7.0, my - 4.0), Vector2(6.0, my + 1.0),
+		Vector2(4.0, my + 4.0), Vector2(0.0, my + 5.0), Vector2(-4.0, my + 4.0),
+		Vector2(-6.0, my + 1.0),
+	])
+	var left_half := PackedVector2Array([
+		Vector2(-6.0, my - 3.0), Vector2(-3.0, my - 4.0), Vector2(0.0, my - 3.0),
+		Vector2(0.0, my + 4.0), Vector2(-3.0, my + 3.0), Vector2(-5.0, my + 1.0),
+	])
+	var right_half := PackedVector2Array([
+		Vector2(0.0, my - 3.0), Vector2(3.0, my - 4.0), Vector2(6.0, my - 3.0),
+		Vector2(5.0, my + 1.0), Vector2(3.0, my + 3.0), Vector2(0.0, my + 4.0),
+	])
+	draw_colored_polygon(mask_out, c_void)
+	# Distinct silver-ice (left) vs gilded gold (right) two-tone theatrical mask sheen
+	draw_colored_polygon(left_half, c_cream if hit_f else c_ice)
+	draw_colored_polygon(right_half, c_cream if hit_f else (c_coral if cracking else c_gold))
+	# Brow specular highlights & cheek shading
+	draw_rect(Rect2(-5.0, my - 3.0, 4.0, 1.0), c_cream)
+	draw_rect(Rect2(-4.0, my + 2.0, 3.0, 1.0), c_sky)
+	draw_rect(Rect2(1.0, my - 3.0, 4.0, 1.0), c_cream if not cracking else c_rose)
+	draw_rect(Rect2(1.0, my + 2.0, 3.0, 1.0), c_wine if cracking else c_apr)
+	# Forehead crest brooch
+	draw_rect(Rect2(-1.0, my - 4.0, 2.0, 2.0), c_coral if cracking else c_gold)
+	draw_rect(Rect2(-1.0, my - 4.0, 1.0, 1.0), c_cream)
+
+	# Crisp almond theatrical eye slits with subtle glint
+	draw_rect(Rect2(-4.0, my - 1.0, 3.0, 2.0), c_void)
+	draw_rect(Rect2(1.0, my - 1.0, 3.0, 2.0), c_void)
+	draw_rect(Rect2(-4.0, my - 1.0, 1.0, 1.0), c_sky if not cracking else c_coral)
+	draw_rect(Rect2(3.0, my - 1.0, 1.0, 1.0), c_apr if not cracking else c_coral)
+	if cracking:
+		# Glowing cracks across porcelain mask
+		draw_line(Vector2(-3.0, my - 3.0), Vector2(2.0, my + 4.0), c_coral, 1.0)
+		draw_line(Vector2(4.0, my - 2.0), Vector2(-1.0, my + 3.0), c_rose, 1.0)
+		draw_rect(Rect2(-3.0, my, 1.0, 1.0), c_coral)
+		draw_rect(Rect2(2.0, my, 1.0, 1.0), c_coral)
+	else:
+		# Subtle seal-chain anchor bars flanking the mask chin (clearly marks it as sealed without hiding eyes)
+		draw_line(Vector2(-5.0, my + 3.0), Vector2(-7.0, -4.0), Color(c_gold, 0.72), 1.0)
+		draw_line(Vector2(5.0, my + 3.0), Vector2(7.0, -4.0), Color(c_gold, 0.72), 1.0)
+
 	if breakable and max_hp > 0.0:
-		LxToyDraw.draw_bar(self, Vector2(-7.0, 7.0), 14.0, cur_hp / max_hp, c_coral, c_rose)
+		LxToyDraw.draw_bar(self, Vector2(-7.0, 9.0), 14.0, cur_hp / max_hp, c_coral, c_rose)
 	_draw_signal_pulses()
 
 

@@ -11,6 +11,7 @@ var duration: float = 4.0
 var style: String = "narration"
 var read_done: bool = false
 var _glow_t: float = 0.0
+var _hover: bool = false
 
 
 func _toy_setup() -> void:
@@ -22,6 +23,7 @@ func _toy_setup() -> void:
 	radius = maxf(12.0, radius)
 	read_done = powered
 	_glow_t = 0.0
+	_hover = false
 	queue_redraw()
 
 
@@ -30,6 +32,7 @@ func reset_toy() -> void:
 		return
 	read_done = false
 	_glow_t = 0.0
+	_hover = false
 	if powered:
 		set_powered(false)
 		emit_power(false)
@@ -38,8 +41,16 @@ func reset_toy() -> void:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _glow_t > 0.0:
 		_glow_t = maxf(0.0, _glow_t - dt)
+		dirty = true
+	var wp: Vector2 = wick_pos()
+	var want_hover: bool = active and wp.x > -9000.0 and wp.distance_to(pos) <= radius + 12.0
+	if want_hover != _hover:
+		_hover = want_hover
+		dirty = true
+	if dirty:
 		queue_redraw()
 
 
@@ -94,19 +105,65 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_pine: Color = PAL["pine"] as Color
+	var c_jade: Color = PAL["jade"] as Color
+	var c_lime: Color = PAL["lime"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
 	var lit: bool = read_done or _glow_t > 0.0
+	var glow_on: bool = lit or _hover
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 7.0, 2.5)
-	# Beveled arched monolith
-	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, 1.0, 14.0, 5.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -13.0, 12.0, 15.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["mauve"] as Color, c_void)
-	draw_rect(Rect2(-4.0, -14.0, 8.0, 2.0), PAL["stone"] as Color)
-	# Carved icon glyph
-	var c_ic: Color = PAL["cream"] as Color if _glow_t > 0.0 else (c_glow if lit else PAL["stone"] as Color)
-	_draw_icon(Vector2(0.0, -6.0), c_ic, lit)
-	# Subtle inscribed lines below icon
-	draw_rect(Rect2(-3.0, -1.0, 6.0, 1.0), c_glow if lit else PAL["mauve"] as Color)
+	# Grounded drop shadow
+	LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 6.0), 8.0, 3.0)
+
+	# Stepped ancient stone plinth base
+	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 1.0, 16.0, 5.0), c_night, c_dusk, c_stone, c_void)
+	draw_rect(Rect2(-3.0, 3.0, 1.0, 2.0), c_night)
+	draw_rect(Rect2(4.0, 2.0, 1.0, 3.0), c_night)
+
+	# Monolith body with sunlit chamfered top crown
+	draw_rect(Rect2(-4.0, -17.0, 8.0, 3.0), c_void)
+	draw_rect(Rect2(-6.0, -15.0, 12.0, 4.0), c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -14.0, 12.0, 16.0), c_night, c_dusk, c_stone, c_void)
+	# Chamfered cap stones catching sunlight on top-left
+	draw_rect(Rect2(-5.0, -14.0, 10.0, 2.0), c_mauve)
+	draw_rect(Rect2(-3.0, -16.0, 6.0, 2.0), c_stone)
+	draw_rect(Rect2(-3.0, -16.0, 4.0, 1.0), c_cream)
+	draw_rect(Rect2(-5.0, -14.0, 3.0, 1.0), c_cream)
+	# Inner carved tablet face
+	draw_rect(Rect2(-4.0, -12.0, 8.0, 12.0), c_night)
+	draw_rect(Rect2(-4.0, -12.0, 8.0, 1.0), c_mauve if not glow_on else c_gold)
+
+	# Mossy base tufts hugging the plinth corners
+	draw_rect(Rect2(-8.0, 3.0, 3.0, 3.0), c_pine)
+	draw_rect(Rect2(-7.0, 2.0, 2.0, 2.0), c_jade)
+	draw_rect(Rect2(-7.0, 2.0, 1.0, 1.0), c_lime)
+	draw_rect(Rect2(5.0, 3.0, 3.0, 3.0), c_pine)
+	draw_rect(Rect2(5.0, 2.0, 2.0, 2.0), c_jade)
+	draw_rect(Rect2(6.0, 2.0, 1.0, 1.0), c_lime)
+
+	# Carved pictogram icon (glows clearly on hover or read)
+	var c_ic: Color = c_cream if _glow_t > 0.0 else (c_gold if _hover and not lit else (c_glow if lit else c_stone))
+	_draw_icon(Vector2(0.0, -8.0), c_ic, glow_on)
+
+	# Two etched rune lines below the icon that illuminate on hover/read
+	var rune_c: Color = c_cream if _glow_t > 0.0 else (c_gold if glow_on else c_mauve)
+	var rune_hi: Color = c_cream if glow_on else c_stone
+	draw_rect(Rect2(-3.0, -3.0, 2.0, 1.0), rune_hi)
+	draw_rect(Rect2(0.0, -3.0, 3.0, 1.0), rune_c)
+	draw_rect(Rect2(-3.0, -1.0, 4.0, 1.0), rune_c)
+	draw_rect(Rect2(2.0, -1.0, 1.0, 1.0), rune_hi)
+
+	# Subtle steady hover/read crown glint (flash_reduced-safe)
+	if glow_on:
+		var glint_on: bool = LxHudFx.flash_reduced() or _glow_t > 0.0 or int(floorf(_clock * 4.0)) % 2 == 0
+		if glint_on:
+			draw_rect(Rect2(-1.0, -15.0, 2.0, 1.0), c_cream)
 	_draw_signal_pulses()
 
 

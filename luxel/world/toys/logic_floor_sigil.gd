@@ -174,30 +174,76 @@ func load_state(d: Dictionary) -> void:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
-	var c_glow: Color = LxBiomePalette.col(island_id, "glow")
-	var c_hi: Color = LxBiomePalette.col(island_id, "hi")
-	var c_dark: Color = LxBiomePalette.col(island_id, "dark")
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
+	var c_stone: Color = PAL["stone"] as Color
+	var c_wine: Color = PAL["wine"] as Color
+	var c_coral: Color = PAL["coral"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var cs: float = roundf(cell_size)
 	var half: float = floorf(cs * 0.5)
+	var is_err: bool = _error_t > 0.0
+	var reduced: bool = LxHudFx.flash_reduced()
+	var tip_cell: Vector2i = visited[visited.size() - 1] if not visited.is_empty() else Vector2i(-9999, -9999)
 
 	for c: Vector2i in cells:
-		var center := Vector2(float(c.x) * cs, float(c.y) * cs)
-		var rect := Rect2(center.x - half + 1.0, center.y - half + 1.0, cs - 2.0, cs - 2.0)
+		var center := Vector2(roundf(float(c.x) * cs), roundf(float(c.y) * cs))
+		var rx: float = center.x - half + 1.0
+		var ry: float = center.y - half + 1.0
+		var rw: float = cs - 2.0
+		var rh: float = cs - 2.0
 		var is_lit: bool = solved or visited.has(c)
-		var is_err: bool = _error_t > 0.0
-		var fill: Color = (PAL["coral"] as Color) if is_err else (c_hi if solved else (c_dark if is_lit else PAL["night"] as Color))
-		var rim: Color = (PAL["cream"] as Color) if solved else (c_glow if is_lit else PAL["dusk"] as Color)
-		LxToyDraw.draw_bevel_box(self, rect, PAL["night"] as Color, fill, rim, c_void)
-		if is_lit:
-			draw_rect(Rect2(center.x - 2.0, center.y - 2.0, 4.0, 4.0), PAL["cream"] as Color if solved else c_glow)
-		elif has_start and c == start_cell:
-			LxToyDraw.draw_shape_glyph(self, center, 2, false, c_glow, PAL["cream"] as Color)
-		else:
-			draw_rect(Rect2(center.x - 1.0, center.y - 1.0, 2.0, 2.0), PAL["dusk"] as Color)
+		var is_tip: bool = (not solved) and (not visited.is_empty()) and c == tip_cell
 
-	# Connected line along visited sequence
+		# Grounded recessed drop lip so each stone medallion stands out cleanly on dusk floors
+		draw_rect(Rect2(rx + 1.0, ry + rh, rw - 1.0, 1.0), Color(c_void, 0.36))
+
+		var frame_dark: Color = c_wine if is_err else (c_apricot if solved else (c_wine if is_lit else c_dusk))
+		var frame_mid: Color = c_coral if is_err else (c_gold if solved else (c_apricot if is_lit else c_mauve))
+		var frame_hi: Color = c_apricot if is_err else (c_cream if solved else (c_gold if is_lit else c_stone))
+		LxToyDraw.draw_bevel_box(self, Rect2(rx, ry, rw, rh), frame_dark, frame_mid, frame_hi, c_void)
+
+		# Inner carved medallion bed
+		var inset: float = 3.0
+		var bed_c: Color = c_wine if is_err else (c_apricot if solved else (c_dusk if is_lit else c_night))
+		if rw > inset * 2.0 + 2.0:
+			draw_rect(Rect2(rx + inset, ry + inset, rw - inset * 2.0, rh - inset * 2.0), bed_c)
+
+		# Corner inlay rivets (high contrast stone / gold / cream)
+		var stud_c: Color = c_cream if solved else (c_gold if is_lit else c_stone)
+		for sx: float in [rx + 2.0, rx + rw - 3.0]:
+			for sy: float in [ry + 2.0, ry + rh - 3.0]:
+				draw_rect(Rect2(sx, sy, 1.0, 1.0), stud_c)
+
+		# Inner carved diamond rune (ember when visited, luminous gold/cream when solved, crisp stone idle)
+		if is_err:
+			LxToyDraw.draw_shape_glyph(self, center, 1, true, c_coral, c_apricot)
+		elif solved:
+			LxToyDraw.draw_shape_glyph(self, center, 1, true, c_gold, c_cream)
+		elif is_lit:
+			var ember_hi: Color = c_cream if is_tip else c_gold
+			LxToyDraw.draw_shape_glyph(self, center, 1, true, c_apricot, ember_hi)
+		elif has_start and c == start_cell:
+			var start_hi: Color = c_cream if (reduced or int(floorf(_clock * 3.0)) % 2 == 0) else c_gold
+			LxToyDraw.draw_shape_glyph(self, center, 2, false, c_apricot, start_hi)
+		else:
+			LxToyDraw.draw_shape_glyph(self, center, 1, false, c_stone, c_mauve)
+
+	# Connected luminous rune thread along visited sequence
 	for i: int in range(visited.size() - 1):
-		var a := Vector2(float(visited[i].x) * cs, float(visited[i].y) * cs)
-		var b := Vector2(float(visited[i + 1].x) * cs, float(visited[i + 1].y) * cs)
-		draw_line(a, b, PAL["cream"] as Color if solved else c_glow, 2.0, false)
+		var a := Vector2(roundf(float(visited[i].x) * cs), roundf(float(visited[i].y) * cs))
+		var b := Vector2(roundf(float(visited[i + 1].x) * cs), roundf(float(visited[i + 1].y) * cs))
+		draw_line(a, b, c_void, 4.0, false)
+		draw_line(a, b, c_gold if solved else c_apricot, 2.0, false)
+		draw_line(a, b, c_cream if solved else c_gold, 1.0, false)
+
+	# Re-stamp bright diamond heart nodes over link junctions so runes read crisp
+	for c: Vector2i in visited:
+		var vc := Vector2(roundf(float(c.x) * cs), roundf(float(c.y) * cs))
+		draw_rect(Rect2(vc.x - 1.0, vc.y - 1.0, 3.0, 3.0), c_cream if solved else c_gold)
+		if (not solved) and c == tip_cell:
+			draw_rect(Rect2(vc, Vector2.ONE), c_cream)
 	_draw_signal_pulses()
