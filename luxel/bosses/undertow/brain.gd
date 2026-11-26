@@ -65,7 +65,7 @@ func _init() -> void:
 	stagger_threshold = 18.0
 	stagger_duration = 1.85
 	punish_dmg_mult = 1.38
-	post_recover_cd = 0.34
+	post_recover_cd = 0.40
 	shard_drop = 60
 	intro_duration = 0.85
 	phase_shift_duration = 0.85
@@ -81,37 +81,37 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Spoke Sweeps (4 rotating sky spokes + eye volley + targeted whirlpool burst)
 	register_attack("spoke_sweeps", {
-		"weight": 1.25, "tell": 0.58, "commit": 0.40, "recover": 1.10, "cooldown": 1.45,
+		"weight": 1.25, "tell": 0.60, "commit": 0.40, "recover": 1.12, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_spoke_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else 0.0
 			for k: int in range(4):
 				var sa: float = _spoke_ang + float(k) * (PI * 0.5)
 				var sd: Vector2 = Vector2.from_angle(sa)
 				ground.warn_lane(pos, pos + sd * 184.0, 8.5, last_tell_duration, 0.0, "sky", "ice")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.04, 1.0, "sky", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 19.0, last_tell_duration + 0.04, 0.5, "sky", "gold")
 			stage.play_sfx("maelstrom_drone", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.RIGHT
-			patterns.emit_spiral(pos, 4, 148.0 if phase >= 2 else 132.0, _spoke_ang, 0.30, 3 if phase >= 2 else 2, 0.14, {"color": "sky", "source": "undertow_spoke", "field_scale": 0.30})
-			patterns.emit_fan(pos, aim, 3, 0.44, 168.0, {"color": "gold", "source": "undertow_fang", "field_scale": 0.20})
+			patterns.emit_spiral(pos, 4, 128.0 if phase >= 2 else 118.0, _spoke_ang, 0.30, 3 if phase >= 2 else 2, 0.15, {"color": "sky", "source": "undertow_spoke", "field_scale": 0.30, "damage": 0.5})
+			patterns.emit_fan(pos, aim, 3, 0.48, 144.0, {"color": "gold", "source": "undertow_fang", "field_scale": 0.20, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("riptide_crack", pos),
 	})
 
 	# Attack 2: Abyssal Gulp (coral double-pull + perimeter rain -> Blue/Prism hits stun 1.6x!)
 	register_attack("abyssal_gulp", {
-		"weight": 1.25, "tell": 0.66, "commit": 0.55, "recover": 1.35, "cooldown": 1.65,
+		"weight": 1.25, "tell": 0.68, "commit": 0.55, "recover": 1.35, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_gulp_active = true
 			ground.warn_ring(pos, 64.0, last_tell_duration, 0.0, "coral", "gold")
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 24.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 20.0, 0.5, "coral", "gold")
 			stage.play_sfx("undertow_inhale", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			if _main_well != null:
 				_main_well.radial_strength = 140.0
 				_main_well.is_push = false
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else 0.0
-			patterns.emit_gap_ring(pos, 16 if phase >= 2 else 12, 138.0, gap_a, 0.72, {"color": "coral", "source": "undertow_gulp", "field_scale": 0.25})
+			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 122.0, gap_a, 0.88, {"color": "coral", "source": "undertow_gulp", "field_scale": 0.25, "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("riptide_crack", pos),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
@@ -123,12 +123,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 3 (P2/P3): Mine Orbit (3 spiraling mines + expanding vortex wave — bat/harpoon mine into eye!)
 	register_attack("mine_orbit", {
-		"phases": [2, 3], "weight": 1.45, "tell": 0.56, "commit": 0.42, "recover": 1.15, "cooldown": 1.65,
+		"phases": [2, 3], "weight": 1.45, "tell": 0.60, "commit": 0.42, "recover": 1.15, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			for k: int in range(3):
 				var ma: float = anim_t + float(k) * (TAU / 3.0)
 				ground.warn_ring(clamp_to_arena(pos + Vector2.from_angle(ma) * 56.0), 16.0, last_tell_duration, 0.0, "gold", "coral")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 19.0, last_tell_duration + 0.06, 0.5, "coral", "gold")
 			stage.play_sfx("mine_clang", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_orbit_mines.clear()
@@ -136,24 +136,24 @@ func _configure_boss(_spec: Dictionary) -> void:
 				var ma: float = anim_t + float(k) * (TAU / 3.0)
 				_orbit_mines.append({"ang": ma, "r": 58.0, "batted": false, "pos": pos + Vector2.from_angle(ma) * 58.0, "vel": Vector2.ZERO})
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim, 5, 0.78, 152.0, {"color": "ice", "source": "undertow_mine_spray", "field_scale": 0.30})
+			patterns.emit_fan(pos, aim, 4, 0.84, 132.0, {"color": "ice", "source": "undertow_mine_spray", "field_scale": 0.30, "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("tide_surge", pos),
 	})
 
 	# Attack 4 (P3): Twin-Eye Riptide (figure-8 dual-vortex lanes + twin counter-rotating spirals!)
 	register_attack("twin_eye_riptide", {
-		"phases": [3], "weight": 2.40, "tell": 0.68, "commit": 0.52, "recover": 1.30, "cooldown": 1.15,
+		"phases": [3], "weight": 2.40, "tell": 0.70, "commit": 0.52, "recover": 1.30, "cooldown": 1.25,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_lane(pos, _twin_eye_pos, 11.0, last_tell_duration, 0.0, "sky", "gold")
-			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration + 0.04, 1.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 20.0, last_tell_duration + 0.04, 0.5, "coral", "gold")
 			ground.warn_ring(_twin_eye_pos, 32.0, last_tell_duration, 0.0, "sky", "cream")
 			stage.play_sfx("maelstrom_drone", arena_rect.get_center()),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var a1: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else 0.0
 			var a2: float = (tgt - _twin_eye_pos).angle() if tgt.distance_to(_twin_eye_pos) > 1.0 else PI
-			patterns.emit_spiral(pos, 3, 126.0, a1, 0.36, 3, 0.14, {"color": "sky", "source": "riptide_eye_a", "field_scale": 0.85})
-			patterns.emit_spiral(_twin_eye_pos, 3, 122.0, a2, -0.36, 3, 0.14, {"color": "gold", "source": "riptide_eye_b", "field_scale": 0.85})
+			patterns.emit_spiral(pos, 3, 114.0, a1, 0.36, 2, 0.16, {"color": "sky", "source": "riptide_eye_a", "field_scale": 0.85, "damage": 0.5})
+			patterns.emit_spiral(_twin_eye_pos, 3, 110.0, a2, -0.36, 2, 0.16, {"color": "gold", "source": "riptide_eye_b", "field_scale": 0.85, "damage": 0.5})
 			stage.shake(0.22)
 			stage.play_sfx("riptide_crack", arena_rect.get_center()),
 	})

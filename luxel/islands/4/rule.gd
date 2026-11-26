@@ -154,7 +154,6 @@ func _physics_process(delta: float) -> void:
 		return
 	_last_phys_frame = f
 	if Lx.root != null and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
-		_update_pause_state()
 		_redraw_hud()
 		return
 	var dt: float = delta
@@ -318,8 +317,6 @@ func _compute_paused() -> bool:
 	if st != null and (st.relit_islands.has(ISLAND_ID) or bool(st.story_flags.get("island_4_relit", false))):
 		return true
 	if reg == "party_r1" and Lx.vars != null and str(Lx.vars.get_var(SCOPE_PARTY, "party_phase", "scout")) == "scout":
-		return true
-	if Lx.root != null and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
 		return true
 	if Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("get_enemies"):
 		for e_v: Variant in (Lx.world.call("get_enemies") as Array):

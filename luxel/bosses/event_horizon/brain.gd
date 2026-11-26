@@ -97,7 +97,7 @@ func _init() -> void:
 	phase_shift_duration = 0.85
 	stagger_threshold = 13.5
 	stagger_duration = 1.50
-	post_recover_cd = 0.28
+	post_recover_cd = 0.36
 	shard_drop = 45
 
 
@@ -110,40 +110,40 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Accretion Jet — twin polar flares + rotating double polar beam across the ring!
 	register_attack("accretion_jet", {
-		"weight": 1.25, "tell": 0.62, "commit": 0.50, "recover": 1.00, "cooldown": 1.25,
+		"weight": 1.25, "tell": 0.64, "commit": 0.50, "recover": 1.06, "cooldown": 1.35,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_jet_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing
 			var d1: Vector2 = Vector2.from_angle(_jet_ang)
 			ground.warn_lane(pos, pos + d1 * 180.0, 10.0, last_tell_duration, 0.0, "sky", "cream")
 			ground.warn_lane(pos, pos - d1 * 180.0, 10.0, last_tell_duration, 0.0, "sky", "cream")
-			ground.warn_ring(tgt.lerp(pos, 0.22), 24.0, last_tell_duration + 0.05, 1.0, "sky", "gold")
+			ground.warn_ring(tgt.lerp(pos, 0.22), 20.0, last_tell_duration + 0.05, 0.5, "sky", "gold")
 			stage.play_sfx("horizon_pull", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var d1: Vector2 = Vector2.from_angle(_jet_ang)
 			var p1: Vector2 = pos + d1 * 170.0
 			var p2: Vector2 = pos - d1 * 170.0
-			patterns.emit_chain_lightning([p1, pos, p2], 0.45, 10.0, 0.28, 1.0)
-			patterns.emit_lane(pos, d1, 4, 174.0, 0.07, {"color": "ice", "source": "accretion_jet", "field_scale": 0.0})
-			patterns.emit_lane(pos, -d1, 3, 152.0, 0.08, {"color": "gold", "source": "accretion_jet", "field_scale": 0.0})
+			patterns.emit_chain_lightning([p1, pos, p2], 0.52, 9.0, 0.28, 0.5)
+			patterns.emit_lane(pos, d1, 3, 152.0, 0.08, {"color": "ice", "source": "accretion_jet", "field_scale": 0.0, "damage": 0.5})
+			patterns.emit_lane(pos, -d1, 3, 138.0, 0.09, {"color": "gold", "source": "accretion_jet", "field_scale": 0.0, "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("star_lance", pos),
 	})
 
 	# Attack 2: Tidal Shred — intensifies vortex rings + curving debris orbit & targeted crush ring!
 	register_attack("tidal_shred", {
-		"weight": 1.20, "tell": 0.70, "commit": 0.55, "recover": 1.10, "cooldown": 1.45,
+		"weight": 1.20, "tell": 0.72, "commit": 0.55, "recover": 1.15, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			if _singularity != null:
 				_singularity.strength = 860.0 if phase >= 3 else 780.0
 			ground.warn_ring(pos, 32.0, last_tell_duration, 0.0, "plum" if phase < 3 else "gold", "cream")
-			ground.warn_ring(tgt, 24.0, last_tell_duration + 0.05, 1.0, "coral", "gold")
-			ground.warn_ring(tgt.lerp(pos, 0.26), 24.0, last_tell_duration + 0.08, 1.0, "plum", "coral")
+			ground.warn_ring(tgt, 20.0, last_tell_duration + 0.05, 0.5, "coral", "gold")
+			ground.warn_ring(tgt.lerp(pos, 0.26), 20.0, last_tell_duration + 0.08, 0.5, "plum", "coral")
 			stage.play_sfx("horizon_pull", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			patterns.emit_fan(pos, aim, 3, 0.42, 154.0, {"color": "coral", "source": "tidal_lance", "field_scale": 0.0})
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 10, 118.0, aim.angle() + 0.45, 0.78, {"color": "gold" if phase >= 3 else "plum", "source": "tidal_shred", "field_scale": 0.65})
-			patterns.emit_orbit(pos, 5 if phase >= 2 else 4, 48.0, -2.2 if phase >= 3 else 2.2, 2.3, {"color": "ice" if phase >= 3 else "gold", "source": "accretion_debris"})
+			patterns.emit_fan(pos, aim, 3, 0.46, 136.0, {"color": "coral", "source": "tidal_lance", "field_scale": 0.0, "damage": 0.5})
+			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 106.0, aim.angle() + 0.45, 0.96, {"color": "gold" if phase >= 3 else "plum", "source": "tidal_shred", "field_scale": 0.65, "damage": 0.5})
+			patterns.emit_orbit(pos, 4, 48.0, -2.0 if phase >= 3 else 2.0, 2.1, {"color": "ice" if phase >= 3 else "gold", "source": "accretion_debris", "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("eclipse_wave", pos),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
@@ -153,35 +153,35 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 3: Hawking Rain — curving star-shards targeting Wick & perimeter corners!
 	register_attack("hawking_rain", {
-		"weight": 1.15, "tell": 0.60, "commit": 0.45, "recover": 1.05, "cooldown": 1.35,
+		"weight": 1.15, "tell": 0.64, "commit": 0.45, "recover": 1.10, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = [tgt, tgt.lerp(pos, 0.24), _nearest_corner(tgt)]
 			if phase >= 2:
 				drops.append(arena_rect.get_center().lerp(tgt, 0.55))
 			if phase >= 3:
 				drops.append(_farthest_corner(tgt))
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "ice" if phase >= 3 else "gold", "cream")
+			patterns.emit_rain(ground, drops, last_tell_duration, 19.0, 0.5, "ice" if phase >= 3 else "gold", "cream")
 			stage.play_sfx("i5b_gravity_curve", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_boomerang(pos, aim.rotated(0.38), 146.0, 0.66, 0.90, {"color": "gold", "source": "hawking_shard", "field_scale": 1.15})
-			patterns.emit_boomerang(pos, aim.rotated(-0.38), 146.0, 0.66, -0.90, {"color": "ice", "source": "hawking_shard", "field_scale": 1.15})
+			patterns.emit_boomerang(pos, aim.rotated(0.38), 130.0, 0.66, 0.90, {"color": "gold", "source": "hawking_shard", "field_scale": 1.15, "damage": 0.5})
+			patterns.emit_boomerang(pos, aim.rotated(-0.38), 130.0, 0.66, -0.90, {"color": "ice", "source": "hawking_shard", "field_scale": 1.15, "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("orrery_beam_bolt", pos),
 	})
 
 	# Attack 4 (P2/P3): White Hole Supernova — blinding contraction -> safe-zone inversion + burst!
 	register_attack("white_hole_supernova", {
-		"phases": [2, 3], "weight": 1.55, "tell": 0.78, "commit": 0.52, "recover": 1.25, "cooldown": 1.65,
+		"phases": [2, 3], "weight": 1.55, "tell": 0.82, "commit": 0.52, "recover": 1.28, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var to_c: Vector2 = (c - tgt).normalized() if tgt.distance_to(c) > 4.0 else Vector2.RIGHT
 			var s1: Vector2 = clamp_to_arena(tgt + to_c * 44.0)
 			var s2: Vector2 = clamp_to_arena(c + (c - s1).limit_length(56.0))
-			ground.warn_safe_inversion(arena_rect, [s1, s2], 28.0, last_tell_duration, 0.28, 1.0, "gold" if phase >= 3 else "ice", "coral" if phase >= 3 else "plum")
+			ground.warn_safe_inversion(arena_rect, [s1, s2], 34.0, last_tell_duration, 0.24, 0.5, "gold" if phase >= 3 else "ice", "coral" if phase >= 3 else "plum")
 			stage.play_sfx("white_hole_flip" if phase >= 3 else "horizon_pull", c),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_expanding_square(pos, 3, 108.0, anim_t, 1, {"color": "cream" if phase >= 3 else "gold", "source": "supernova_wave", "field_scale": 0.75})
+			patterns.emit_expanding_square(pos, 2, 96.0, anim_t, 1, {"color": "cream" if phase >= 3 else "gold", "source": "supernova_wave", "field_scale": 0.75, "damage": 0.5})
 			stage.light_burst(pos, 108.0, 1.55, 0.42)
 			stage.shake(0.24)
 			stage.play_sfx("sunflare_burst", pos),

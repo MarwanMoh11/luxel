@@ -121,7 +121,10 @@
         240,
         296
       ],
-      "locked_door_id": "door_r1_boss"
+      "locked_door_id": "door_r1_boss",
+      "requires_flags": [
+        "toll_chute_short"
+      ]
     }
   ],
   "interactables": [
@@ -366,6 +369,24 @@
       "props": {
         "zone": "toll_narthex",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r1_north_chute_seal",
+      "kind": "door",
+      "pos": [
+        240,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "toll_chute_short"
+        ]
       }
     }
   ],

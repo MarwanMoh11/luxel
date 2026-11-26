@@ -73,8 +73,7 @@
         248
       ],
       "requires_moves": [
-        "dash",
-        "throw"
+        "dash"
       ],
       "requires_flags": [
         "keepers_flame"
@@ -178,8 +177,7 @@
         "key_kind": "keepers_flame",
         "flag_id": "keepers_flame",
         "requires_moves": [
-          "dash",
-          "throw"
+          "dash"
         ],
         "requires_flag": "belfry_vault_unsealed"
       }

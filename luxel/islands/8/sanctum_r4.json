@@ -71,7 +71,9 @@
         208
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "sanctum_east_bridge"
+      ],
       "locked_door_id": "door_sanctum_r4_east"
     }
   ],
@@ -189,6 +191,24 @@
       "props": {
         "zone": "sanctum_r4",
         "lit": true
+      }
+    },
+    {
+      "id": "door_sanctum_r4_east_sc",
+      "kind": "door",
+      "pos": [
+        440,
+        176
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_east_bridge"
+        ]
       }
     }
   ],

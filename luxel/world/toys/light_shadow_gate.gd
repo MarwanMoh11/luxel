@@ -63,8 +63,10 @@ func _evaluate_light(with_sfx: bool) -> void:
 		sampled = maxf(sampled, 0.85)
 		_direct_lit = false
 	lit_level = sampled
+	var unlock_flag: String = str(props.get("unlock_flag", "")).strip_edges()
+	var flag_open: bool = not unlock_flag.is_empty() and Lx.state != null and bool(Lx.state.story_flags.get(unlock_flag, false))
 	var hyst: float = 0.04 if with_sfx else 0.0
-	var want_open: bool = (lit_level < threshold - hyst) if not opened else (lit_level < threshold + hyst)
+	var want_open: bool = true if flag_open else ((lit_level < threshold - hyst) if not opened else (lit_level < threshold + hyst))
 	if want_open == opened:
 		return
 	if with_sfx and _toggle_cd > 0.0:

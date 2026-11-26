@@ -7,7 +7,7 @@ extends LxBossBase
 
 const BOW_STAGGER_S: float = 2.20
 const BOW_DMG_MULT: float = 2.00
-const CHARGE_DIST: float = 92.0
+const CHARGE_DIST: float = 72.0
 
 var _charge_dir: Vector2 = Vector2.RIGHT
 var _bowing: bool = false
@@ -29,83 +29,85 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 64.0
-	hp = 64.0
+	max_hp = 72.0
+	hp = 72.0
 	body_radius = 10.0
-	move_speed = 46.0
+	move_speed = 38.0
 	stagger_threshold = 12.5
 	stagger_duration = 1.85
-	post_recover_cd = 0.28
+	punish_dmg_mult = 1.45
+	post_recover_cd = 0.50
 	shard_drop = 50
 	death_duration = 2.4
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.56])
+	configure_phases([0.55])
 
 	# Attack 1: Silver Tray — boomerang platter throw (twin trays in P2) + teacup splash
 	register_attack("silver_tray", {
-		"weight": 1.30, "tell": 0.48, "commit": 0.36, "recover": 0.90, "cooldown": 1.3,
+		"weight": 1.30, "tell": 0.60, "commit": 0.36, "recover": 1.18, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = d.angle()
 			ground.warn_lane(pos, clamp_to_arena(pos + d * 138.0), 10.0, last_tell_duration, 0.0, "ice", "gold")
+			ground.warn_ring(tgt, 16.0, last_tell_duration + 0.08, 1.0, "gold", "cream")
 			stage.play_sfx("toast_glass_clink", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			patterns.emit_boomerang(pos, d, 162.0, 0.68, 0.55, {"color": "ice", "radius": 5.5, "source": "silver_tray"})
+			patterns.emit_boomerang(pos, d, 102.0, 0.55, 0.50, {"color": "ice", "radius": 4.0, "source": "silver_tray", "damage": 0.5})
 			if phase >= 2:
-				patterns.emit_boomerang(pos, d.rotated(0.28), 152.0, 0.72, -0.55, {"color": "sky", "radius": 5.0, "source": "silver_tray"})
-			ground.warn_ring(clamp_to_arena(tgt), 20.0, 0.50, 1.0, "gold", "cream")
+				patterns.emit_boomerang(pos, d.rotated(0.42), 96.0, 0.58, -0.50, {"color": "sky", "radius": 4.0, "source": "silver_tray", "damage": 0.5})
 			stage.play_sfx("toast_tray_fling", pos),
 	})
 
-	# Attack 2: Cork Volley — celebratory 5-cork (7 in P2) fan + corner champagne splashes
+	# Attack 2: Cork Volley — celebratory 3-4 cork fan + corner champagne splashes
 	register_attack("cork_volley", {
-		"weight": 1.25, "tell": 0.54, "commit": 0.30, "recover": 1.00, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.62, "commit": 0.30, "recover": 1.18, "cooldown": 1.85,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = d.angle()
 			ground.warn_sector(pos, d.angle() - 0.66, d.angle() + 0.66, 98.0, last_tell_duration, 0.0, "gold", "apricot")
-			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration + 0.04, 22.0, 1.0, "apricot", "gold")
+			var drops: Array[Vector2] = [tgt, _nearest_corner(tgt)]
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.06, 16.0, 1.0, "apricot", "gold")
 			stage.play_sfx("toast_glass_clink", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
-			var cnt: int = 7 if phase >= 2 else 5
-			patterns.emit_fan(pos, d, cnt, 0.96, 146.0 if phase >= 2 else 134.0, {"color": "gold", "source": "cork_volley"})
+			var cnt: int = 4 if phase >= 2 else 3
+			patterns.emit_fan(pos, d, cnt, 1.15, 96.0 if phase >= 2 else 90.0, {"color": "gold", "source": "cork_volley", "damage": 0.5})
 			stage.shake(0.12)
 			stage.play_sfx("toast_cork_pop", pos),
 	})
 
-	# Attack 3: Etiquette Charge — crisp 92 px formal waiter sweep + trailing toast bolts
+	# Attack 3: Etiquette Charge — crisp 72 px formal waiter sweep + trailing toast bolts
 	register_attack("etiquette_charge", {
-		"weight": 1.20, "tell": 0.52, "commit": 0.34, "recover": 1.15, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.62, "commit": 0.36, "recover": 1.25, "cooldown": 1.95,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_charge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _charge_dir.angle()
-			ground.warn_lane(pos, clamp_to_arena(pos + _charge_dir * CHARGE_DIST), 13.0, last_tell_duration, 0.0, "wine", "gold")
+			ground.warn_lane(pos, clamp_to_arena(pos + _charge_dir * CHARGE_DIST), 12.0, last_tell_duration, 0.0, "wine", "gold")
+			ground.warn_ring(tgt, 16.0, last_tell_duration + 0.08, 1.0, "wine", "gold")
 			stage.play_sfx("toast_bow_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			stage.shake(0.14)
 			stage.play_sfx("hollow_dash", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, elapsed: float) -> void:
-			move_boss(_charge_dir * (CHARGE_DIST / 0.34) * dt, false)
-			check_contact_damage(16.0, _charge_dir, 1.0, "etiquette_charge")
+			move_boss(_charge_dir * (CHARGE_DIST / 0.36) * dt, false)
+			check_contact_damage(12.5, _charge_dir, 0.5, "etiquette_charge")
 			if elapsed >= 0.16 and elapsed - dt < 0.16:
-				patterns.emit_fan(pos, -_charge_dir, 3, 0.78, 118.0, {"color": "rose", "source": "etiquette_trail"}),
+				patterns.emit_fan(pos, -_charge_dir, 3, 0.90, 88.0, {"color": "rose", "source": "etiquette_trail", "damage": 0.5}),
 	})
 
 	# Attack 4 (Phase 2): Banquet Toast — Final Course! 4-table perimeter rain + cork gap ring
 	register_attack("banquet_toast", {
-		"phases": [2], "weight": 1.65, "tell": 0.58, "commit": 0.40, "recover": 1.10, "cooldown": 1.8,
+		"phases": [2], "weight": 1.85, "tell": 0.66, "commit": 0.40, "recover": 1.25, "cooldown": 2.0,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _build_banquet_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 16.0, 1.0, "coral", "gold")
 			stage.play_sfx("toast_glass_clink", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() + 0.45
-			patterns.emit_gap_ring(pos, 12, 126.0, gap_a, 0.72, {"color": "gold", "source": "banquet_toast"})
+			patterns.emit_gap_ring(pos, 8, 88.0, gap_a, 1.40, {"color": "gold", "source": "banquet_toast", "damage": 0.5})
 			stage.light_burst(pos, 88.0, 1.35, 0.32)
 			stage.shake(0.18)
 			stage.play_sfx("toast_cork_pop", pos),
@@ -126,8 +128,8 @@ func _on_phase_enter(new_phase: int) -> void:
 	if new_phase == 2:
 		var c: Vector2 = arena_rect.get_center()
 		# Ornate tea-fountain pools & 2 banquet tables (rolled back cleanly on reset!)
-		stage.set_tiles(world_ctx, Rect2i(3, 7, 1, 2), "water")
-		stage.set_tiles(world_ctx, Rect2i(16, 2, 1, 2), "water")
+		stage.set_tiles(world_ctx, Rect2i(8, 6, 1, 1), "water")
+		stage.set_tiles(world_ctx, Rect2i(23, 6, 1, 1), "water")
 		props.spawn_pillar(clamp_to_arena(c + Vector2(-46.0, 22.0)), 4.0, "banquet_table_w")
 		props.spawn_pillar(clamp_to_arena(c + Vector2(46.0, -22.0)), 4.0, "banquet_table_e")
 		stage.darkness_pulse(0.54, 0.90)
@@ -210,7 +212,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		var h: Dictionary = _read_hit(hit)
 		var to_hit: Vector2 = (h["origin"] as Vector2) - pos
 		if to_hit.length_squared() > 1.0 and Vector2.from_angle(facing).dot(to_hit.normalized()) > 0.35:
-			return dmg * 0.72
+			return dmg * 0.65
 	return dmg
 
 

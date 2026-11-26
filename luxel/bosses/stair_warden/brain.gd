@@ -34,15 +34,15 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl8_boss_minor_p1"
 	music_p2_cue = "isl8_boss_minor_p2"
-	max_hp = 195.0
-	hp = 195.0
+	max_hp = 208.0
+	hp = 208.0
 	body_radius = 12.5
-	move_speed = 44.0
+	move_speed = 42.0
 	stagger_threshold = 20.0
 	stagger_duration = 1.80
 	post_stagger_immunity = 4.0
 	punish_dmg_mult = 1.35
-	post_recover_cd = 0.30
+	post_recover_cd = 0.40
 	intro_duration = 0.55
 	phase_shift_duration = 0.65
 	death_duration = 2.2
@@ -61,59 +61,60 @@ func _configure_boss(spec: Dictionary) -> void:
 		configure_phases([0.50])
 	elif tier == 3:
 		boss_name_key = "ISL8_BOSS_STAIR3"
-		max_hp = 195.0
+		max_hp = 208.0
 		configure_phases([0.66, 0.33])
 	else:
 		# Full 3-Act Ascension (F4 Halberdier -> F8 Prism Lancer -> F12 Eclipse Sovereign)
 		boss_name_key = "ISL8_BOSS_STAIR1"
-		max_hp = 195.0
+		max_hp = 208.0
 		configure_phases([0.66, 0.33])
 	hp = max_hp
 
-	# Shared Act I / All-Tier: Halberd Cleave (tell 0.52s, commit 0.26s, recover 1.15s)
+	# Shared Act I / All-Tier: Halberd Cleave (tell 0.56s, commit 0.26s, recover 1.20s)
 	register_attack("halberd_cleave", {
-		"weight": 1.05, "tell": 0.52, "commit": 0.26, "recover": 1.15, "cooldown": 1.5,
+		"weight": 1.05, "tell": 0.56, "commit": 0.26, "recover": 1.20, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_cleave_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _cleave_dir.angle()
 			_cleave_hit = false
 			var tc: String = _act_color()
 			ground.warn_sector(pos, facing - 1.25, facing + 1.25, CLEAVE_R, last_tell_duration, 0.0, "coral", tc)
-			ground.warn_lane(pos, clamp_to_arena(pos + _cleave_dir * 145.0), 9.0, last_tell_duration, 0.0, tc, "cream")
+			ground.warn_lane(pos, pos + _cleave_dir * maxf(145.0, pos.distance_to(tgt) + 18.0), 9.0, last_tell_duration, 0.0, tc, "cream")
+			ground.warn_ring(tgt, 20.0, last_tell_duration + 0.06, 0.5, "coral", tc)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _cleave_dir, 5 if _current_act() >= 2 else 3, 0.85, 138.0 + float(_current_act()) * 8.0, {"color": _act_color(), "source": "halberd_wave"})
+			patterns.emit_fan(pos, _cleave_dir, 4 if _current_act() >= 2 else 3, 0.90, 116.0 + float(_current_act()) * 5.0, {"color": _act_color(), "source": "halberd_wave", "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _el: float) -> void:
-			move_boss(_cleave_dir * 110.0 * dt, false)
+			move_boss(_cleave_dir * 104.0 * dt, false)
 			if not _cleave_hit and pos.distance_to(tgt) <= CLEAVE_R:
 				var rel: Vector2 = tgt - pos
 				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 1.28:
 					_cleave_hit = true
-					emit_boss_damage(_cleave_dir, 1.0, "halberd_cleave", pos, true),
+					emit_boss_damage(_cleave_dir, 0.5, "halberd_cleave", pos, true),
 	})
 
 	# Act I (F4 Halberdier): Banister Lunge + Step-Shockwave
 	if tier == 0 or tier == 1:
 		var act1_phases: Array = [1] if tier == 0 else []
 		register_attack("banister_lunge", {
-			"phases": act1_phases, "weight": 1.45, "tell": 0.56, "commit": 0.40, "recover": 1.20, "cooldown": 1.3,
+			"phases": act1_phases, "weight": 1.45, "tell": 0.58, "commit": 0.40, "recover": 1.22, "cooldown": 1.4,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				_lunge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 				facing = _lunge_dir.angle()
 				_lunge_hit = false
 				ground.warn_lane(pos, clamp_to_arena(pos + _lunge_dir * 120.0), 12.0, last_tell_duration, 0.0, "coral", "gold")
-				patterns.emit_rain(ground, [clamp_to_arena(tgt)], last_tell_duration + 0.06, 20.0, 1.0, "gold", "coral")
+				patterns.emit_rain(ground, [tgt], last_tell_duration + 0.06, 19.0, 0.5, "gold", "coral")
 				stage.play_sfx("bell_slam", pos),
 			"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 				stage.shake(0.16)
 				stage.play_sfx("warden_swing", pos),
 			"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _el: float) -> void:
 				move_boss(_lunge_dir * LUNGE_SPEED * dt, false)
-				if not _lunge_hit and pos.distance_to(tgt) <= 22.0:
+				if not _lunge_hit and pos.distance_to(tgt) <= 20.0:
 					_lunge_hit = true
-					emit_boss_damage(_lunge_dir, 1.0, "banister_lunge", pos, true)
+					emit_boss_damage(_lunge_dir, 0.5, "banister_lunge", pos, true)
 				# Crashing into a stone banister pillar shatters it -> 1.8s stagger!
 				for p: Dictionary in props.props:
 					if str(p["state"]) == "idle" and str(p["kind"]) == "pillar" and pos.distance_to(p["pos"] as Vector2) <= 20.0:
@@ -123,14 +124,14 @@ func _configure_boss(spec: Dictionary) -> void:
 						break,
 		})
 		register_attack("step_shockwave", {
-			"phases": act1_phases, "weight": 1.35, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.4,
+			"phases": act1_phases, "weight": 1.35, "tell": 0.58, "commit": 0.34, "recover": 1.20, "cooldown": 1.5,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-				ground.warn_ring(pos, 68.0, last_tell_duration, 1.0, "gold", "coral")
-				patterns.emit_rain(ground, [clamp_to_arena(tgt), clamp_to_arena(tgt.lerp(arena_rect.get_center(), 0.4))], last_tell_duration + 0.05, 20.0, 1.0, "apricot", "gold")
+				ground.warn_ring(pos, 64.0, last_tell_duration, 0.5, "gold", "coral")
+				patterns.emit_rain(ground, [tgt, clamp_to_arena(tgt.lerp(arena_rect.get_center(), 0.4))], last_tell_duration + 0.05, 19.0, 0.5, "apricot", "gold")
 				stage.play_sfx("bell_slam", pos),
 			"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				var aa: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_gap_ring(pos, 10, 126.0, aa + 0.55, 0.78, {"color": "gold", "source": "step_shockwave"})
+				patterns.emit_gap_ring(pos, 8, 112.0, aa + 0.55, 1.00, {"color": "gold", "source": "step_shockwave", "damage": 0.5})
 				stage.shake(0.22)
 				stage.play_sfx("stone_break", pos),
 		})
@@ -139,61 +140,66 @@ func _configure_boss(spec: Dictionary) -> void:
 	if tier == 0 or tier == 2 or tier == 3:
 		var act2_phases: Array = [2] if tier == 0 else ([1, 2] if tier == 2 else [1])
 		register_attack("prism_lance", {
-			"phases": act2_phases, "weight": 1.45, "tell": 0.56, "commit": 0.42, "recover": 1.25, "cooldown": 1.5,
+			"phases": act2_phases, "weight": 1.45, "tell": 0.58, "commit": 0.42, "recover": 1.28, "cooldown": 1.6,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				_lance_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 				facing = _lance_ang
 				var d1: Vector2 = Vector2.from_angle(_lance_ang)
-				ground.warn_lane(pos, clamp_to_arena(pos + d1 * 170.0), 8.5, last_tell_duration, 0.0, "sky", "cream")
+				var reach: float = maxf(175.0, pos.distance_to(tgt) + 20.0)
+				set_meta("_lance_reach", reach)
+				ground.warn_lane(pos, pos + d1 * reach, 8.5, last_tell_duration, 0.0, "sky", "cream")
+				ground.warn_ring(tgt, 19.0, last_tell_duration + 0.04, 0.5, "sky", "cream")
 				stage.play_sfx("beam_charge", pos),
 			"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 				var d1: Vector2 = Vector2.from_angle(_lance_ang)
-				patterns.emit_chain_lightning([pos, clamp_to_arena(pos + d1 * 165.0)], 0.45, 8.0, 0.26, 0.5)
-				patterns.emit_lane(pos, d1, 3, 142.0, 0.08, {"color": "sky", "source": "prism_lance", "reflectable": true})
+				var reach: float = float(get_meta("_lance_reach", 175.0))
+				patterns.emit_chain_lightning([pos, pos + d1 * reach], 0.52, 8.0, 0.26, 0.5)
+				patterns.emit_lane(pos, d1, 3, 124.0, 0.09, {"color": "sky", "source": "prism_lance", "reflectable": true, "damage": 0.5})
 				stage.shake(0.18)
 				stage.play_sfx("beam_fire", pos),
 		})
 		register_attack("star_rift_dash", {
-			"phases": act2_phases, "weight": 1.40, "tell": 0.52, "commit": 0.38, "recover": 1.20, "cooldown": 1.6,
+			"phases": act2_phases, "weight": 1.40, "tell": 0.56, "commit": 0.38, "recover": 1.25, "cooldown": 1.7,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				_rift_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 				facing = _rift_dir.angle()
 				_rift_drop_t = 0.0
 				ground.warn_lane(pos, clamp_to_arena(pos + _rift_dir * 110.0), 10.0, last_tell_duration, 0.0, "sky", "coral")
+				ground.warn_ring(tgt, 18.0, last_tell_duration + 0.06, 0.5, "sky", "gold")
 				stage.play_sfx("hollow_dash", pos),
 			"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				var aa: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-				patterns.emit_spiral(pos, 3, 118.0, aa, 0.40, 1, 0.14, {"color": "sky", "source": "spiral_volley"})
+				patterns.emit_spiral(pos, 3, 106.0, aa, 0.40, 1, 0.14, {"color": "sky", "source": "spiral_volley", "damage": 0.5})
 				stage.shake(0.15)
 				stage.play_sfx("zip_streak", pos),
 			"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-				move_boss(_rift_dir * 195.0 * dt, true)
+				move_boss(_rift_dir * 185.0 * dt, true)
 				_rift_drop_t -= dt
 				if _rift_drop_t <= 0.0:
 					_rift_drop_t = 0.18
-					ground.add_hazard_circle(pos, 11.5, 1.6, 0.5, "sky", true),
+					ground.add_hazard_circle(pos, 10.5, 1.3, 0.5, "sky", true),
 		})
 
 	# Act III (F12 Eclipse Sovereign): Sovereign Eclipse Sweep + Crown Burst
 	if tier == 0 or tier == 3:
 		var act3_phases: Array = [3] if tier == 0 else [2, 3]
 		register_attack("sovereign_eclipse_sweep", {
-			"phases": act3_phases, "weight": 1.50, "tell": 0.62, "commit": 0.40, "recover": 1.35, "cooldown": 1.5,
+			"phases": act3_phases, "weight": 1.50, "tell": 0.64, "commit": 0.40, "recover": 1.38, "cooldown": 1.6,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
 				facing = aim.angle()
-				ground.warn_sector(pos, facing - 1.25, facing + 1.25, 54.0, last_tell_duration, 0.5, "rose", "cream")
-				patterns.emit_rain(ground, [clamp_to_arena(tgt)], last_tell_duration + 0.06, 20.0, 0.5, "rose", "gold")
+				ground.warn_sector(pos, facing - 1.25, facing + 1.25, 52.0, last_tell_duration, 0.5, "rose", "cream")
+				patterns.emit_rain(ground, [tgt], last_tell_duration + 0.06, 19.0, 0.5, "rose", "gold")
 				stage.play_sfx("beam_charge", pos),
 			"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-				patterns.emit_fan(pos, aim, 5, 0.96, 136.0, {"color": "rose", "source": "eclipse_sweep"})
-				patterns.emit_orbit(pos, 3, 40.0, 2.0, 1.8, {"color": "gold", "source": "orbit_tread"})
+				patterns.emit_fan(pos, aim, 4, 0.98, 118.0, {"color": "rose", "source": "eclipse_sweep", "damage": 0.5})
+				patterns.emit_orbit(pos, 3, 40.0, 1.9, 1.7, {"color": "gold", "source": "orbit_tread", "damage": 0.5})
 				stage.shake(0.22)
 				stage.play_sfx("beam_fire", pos),
 		})
 		register_attack("crown_burst", {
-			"phases": act3_phases, "weight": 1.35, "tell": 0.62, "commit": 0.40, "recover": 1.35, "cooldown": 2.2,
+			"phases": act3_phases, "weight": 1.35, "tell": 0.66, "commit": 0.40, "recover": 1.38, "cooldown": 2.2,
 			"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 				var c: Vector2 = arena_rect.get_center()
 				var s1: Vector2 = clamp_to_arena(c + (tgt - c).limit_length(48.0))
@@ -201,7 +207,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				ground.warn_safe_inversion(arena_rect, [s1, s2], 36.0, last_tell_duration + 0.14, 0.24, 0.5, "gold", "rose")
 				stage.play_sfx("stair_tread_drop", pos),
 			"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-				patterns.emit_expanding_square(pos, 3, 108.0, anim_t, 1, {"color": "cream", "source": "crown_burst"})
+				patterns.emit_expanding_square(pos, 2, 96.0, anim_t, 1, {"color": "cream", "source": "crown_burst", "damage": 0.5})
 				stage.light_burst(pos, 96.0, 1.45, 0.35)
 				stage.shake(0.22)
 				stage.play_sfx("sunflare_burst", pos),

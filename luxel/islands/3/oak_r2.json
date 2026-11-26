@@ -52,7 +52,9 @@
         104
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "oak_sap_unlocked"
+      ],
       "locked_door_id": "door_oak_r2_east"
     },
     {
@@ -271,6 +273,24 @@
       "props": {
         "string_id": "ISL3_LORE_OAK_R2",
         "icon": "leaf"
+      }
+    },
+    {
+      "id": "door_oak_r2_sap_seal",
+      "kind": "door",
+      "pos": [
+        376,
+        88
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "oak_sap_unlocked"
+        ]
       }
     }
   ],
@@ -491,6 +511,9 @@
         "dash",
         "throw",
         "prism"
+      ],
+      "flags": [
+        "oak_sap_unlocked"
       ]
     },
     "solution": [

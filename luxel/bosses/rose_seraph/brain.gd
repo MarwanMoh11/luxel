@@ -26,14 +26,14 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl8_boss_minor_p1"
 	music_p2_cue = "isl8_boss_minor_p2"
-	max_hp = 128.0
-	hp = 128.0
+	max_hp = 88.0
+	hp = 88.0
 	body_radius = 12.0
 	move_speed = 46.0
-	stagger_threshold = 14.0
+	stagger_threshold = 11.5
 	stagger_duration = 2.00
 	post_stagger_immunity = 3.8
-	punish_dmg_mult = 1.40
+	punish_dmg_mult = 1.45
 	post_recover_cd = 0.30
 	intro_duration = 0.50
 	phase_shift_duration = 0.60
@@ -171,11 +171,11 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 			_shatter_flash_t = 0.65
 			stage.play_sfx("seraph_glass_shatter", pos)
 			add_stagger(stagger_threshold)
-		return dmg * 1.40
+		return dmg * 1.50
 	if _wings_shattered_t > 0.0 or is_punishable():
-		return dmg * 1.25
+		return dmg * 1.35
 	# Unfiltered bolts glance partially through intact stained-glass wings
-	return dmg * 0.72
+	return dmg * 0.88
 
 
 func _on_death_start() -> void:

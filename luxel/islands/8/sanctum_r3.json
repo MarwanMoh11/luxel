@@ -74,8 +74,10 @@
         192
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "sanctum_r9_cleared"
+      ],
+      "locked_door_id": "door_sanctum_r3_west_sc"
     }
   ],
   "enemies": [
@@ -186,13 +188,13 @@
       "kind": "door",
       "pos": [
         160,
-        24
+        12
       ],
       "props": {
         "door_kind": "combat_gate",
         "size": [
           32,
-          16
+          24
         ],
         "clear_zone": "sanctum_r3"
       }
@@ -281,6 +283,24 @@
       "props": {
         "zone": "sanctum_r3",
         "lit": true
+      }
+    },
+    {
+      "id": "door_sanctum_r3_west_sc",
+      "kind": "door",
+      "pos": [
+        8,
+        208
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_r9_cleared"
+        ]
       }
     }
   ],

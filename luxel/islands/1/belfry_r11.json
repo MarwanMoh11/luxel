@@ -36,7 +36,9 @@
       "to_spawn": [
         288,
         48
-      ]
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
     },
     {
       "id": "exit_r11_west",
@@ -50,7 +52,9 @@
       "to_spawn": [
         420,
         152
-      ]
+      ],
+      "requires_flags": [],
+      "locked_door_id": ""
     },
     {
       "id": "exit_r11_east",
@@ -81,7 +85,12 @@
       ],
       "requires_flags": [
         "belfry_key_3",
-        "belfry_gear_1"
+        "belfry_gear_1",
+        "r3_shutter_open",
+        "r4_cleared",
+        "bell_warden_defeated",
+        "belfry_r9_cleared",
+        "belfry_rope_shortcut"
       ],
       "locked_door_id": "door_r11_north"
     }
@@ -241,6 +250,18 @@
       }
     },
     {
+      "id": "bell_r11_west_dawn",
+      "kind": "bell",
+      "pos": [
+        80,
+        232
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 240
+      }
+    },
+    {
       "id": "door_r11_north",
       "kind": "door",
       "pos": [
@@ -257,7 +278,12 @@
         ],
         "requires_flags": [
           "belfry_key_3",
-          "belfry_gear_1"
+          "belfry_gear_1",
+          "r3_shutter_open",
+          "r4_cleared",
+          "bell_warden_defeated",
+          "belfry_r9_cleared",
+          "belfry_rope_shortcut"
         ]
       }
     },
@@ -331,6 +357,28 @@
       "props": {
         "zone": "belfry_mainspring",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r11_north_seal",
+      "kind": "door",
+      "pos": [
+        288,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "r3_shutter_open",
+          "r4_cleared",
+          "bell_warden_defeated",
+          "belfry_r9_cleared",
+          "belfry_rope_shortcut"
+        ]
       }
     }
   ],

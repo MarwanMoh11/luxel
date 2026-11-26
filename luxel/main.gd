@@ -7,6 +7,7 @@ extends Node2D
 enum Flow { TITLE, INTRO, PLAY, PAUSE, MAP, REST_SHOP, DEATH, ENDING, CREDITS }
 
 const VIEW_SIZE := Vector2(320.0, 180.0)
+const LaunchPad := preload("res://luxel/islands/1/overworld/ow_launch_pad.gd")
 
 var flow: int = Flow.TITLE
 var active_slot: int = 1
@@ -27,9 +28,7 @@ var _last_zone_id: String = ""
 var _pending_ending_t: float = 0.0
 
 
-func _ready() -> void:
-	_boot_services()
-	_apply_debug_args()
+func _ready() -> void: _boot_services(); _apply_debug_args()
 
 
 func _boot_services() -> void:
@@ -120,7 +119,7 @@ func _apply_debug_args() -> void:
 func enter_title() -> void:
 	_mark_ending_seen()
 	_pending_ending_t = 0.0
-	LxVehicleSkiff.clear_mount_carryover()
+	LxVehicleSkiff.clear_mount_carryover(); LaunchPad.cancel_active()
 	flow = Flow.TITLE
 	LxSold.current().restore_all("title", true)
 	Lx.audio.set_paused(false)
@@ -134,7 +133,7 @@ func flush_and_save(reason: String = "exit") -> void:
 func start_new_game(slot_num: int, play_intro: bool = true) -> void:
 	if Lx.save != null: Lx.save.flush_pending()
 	_pending_ending_t = 0.0
-	LxVehicleSkiff.clear_mount_carryover()
+	LxVehicleSkiff.clear_mount_carryover(); LaunchPad.cancel_active()
 	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
 	if _region_loader != null and _region_loader.has_method("discard_loaded"): _region_loader.call("discard_loaded")
@@ -163,7 +162,7 @@ func finish_intro() -> void:
 
 func continue_slot(slot_num: int) -> bool:
 	_pending_ending_t = 0.0
-	LxVehicleSkiff.clear_mount_carryover()
+	LxVehicleSkiff.clear_mount_carryover(); LaunchPad.cancel_active()
 	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	active_slot = clampi(slot_num, 1, LxSaveService.SLOT_COUNT)
 	if not Lx.save.load_slot(active_slot, Lx.state): return false
@@ -267,7 +266,7 @@ func fast_travel_waystone(island_id: int, waystone_id: String) -> bool:
 	if island_id == 0 and waystone_id == "ws_hub" and not Lx.state.lit_waystones.has("ws_hub"):
 		Lx.state.lit_waystones.append("ws_hub")
 	if not Lx.state.lit_waystones.has(waystone_id): return false
-	LxVehicleSkiff.clear_mount_carryover()
+	LxVehicleSkiff.clear_mount_carryover(); LaunchPad.cancel_active()
 	if _wick != null and _wick.has_method("dismount"): _wick.call("dismount")
 	Lx.state.last_waystone_island = island_id
 	Lx.state.last_waystone_id = waystone_id
@@ -298,21 +297,13 @@ func toggle_pause() -> void:
 	_sync_ui_flow()
 
 func open_map() -> void:
-	if flow == Flow.PLAY or flow == Flow.PAUSE:
-		flow = Flow.MAP
-		Lx.audio.set_paused(true)
-		_sync_ui_flow()
-	elif flow == Flow.MAP:
-		flow = Flow.PLAY
-		Lx.audio.set_paused(false)
-		_sync_ui_flow()
+	if (flow == Flow.PLAY or flow == Flow.PAUSE) and not LaunchPad.is_any_launching():
+		flow = Flow.MAP; Lx.audio.set_paused(true); _sync_ui_flow()
+	elif flow == Flow.MAP: flow = Flow.PLAY; Lx.audio.set_paused(false); _sync_ui_flow()
 
 func open_rest_shop() -> void:
-	if flow == Flow.PLAY:
-		flow = Flow.REST_SHOP
-		Lx.audio.set_paused(false)
-		Lx.audio.play_cue("hub")
-		_sync_ui_flow()
+	if flow == Flow.PLAY and not LaunchPad.is_any_launching():
+		flow = Flow.REST_SHOP; Lx.audio.set_paused(false); Lx.audio.play_cue("hub"); _sync_ui_flow()
 
 func retry_from_death() -> void:
 	LxVehicleSkiff.clear_mount_carryover()
@@ -336,7 +327,7 @@ func retry_from_death() -> void:
 	_sync_ui_flow()
 
 func trigger_ending(mode: String = "") -> void:
-	_pending_ending_t = 0.0
+	_pending_ending_t = 0.0; LaunchPad.cancel_active()
 	ending_mode = _resolve_ending_mode(mode)
 	var sold: LxSold = LxSold.current()
 	if sold.get_sold_count() > 0 or not sold.get_active_and_redeemed_ids().is_empty():
@@ -425,11 +416,10 @@ func step_sim(raw_dt: float) -> void:
 	Lx.state.record_zone_time("%d:%s" % [Lx.state.island_id, Lx.state.region_id], raw_dt)
 	if _pending_ending_t > 0.0:
 		_pending_ending_t = maxf(0.0, _pending_ending_t - raw_dt)
-		if _pending_ending_t <= 0.0:
-			trigger_ending()
-			return
-	if dt <= 0.0:
-		return
+		if _pending_ending_t <= 0.0: trigger_ending(); return
+	if dt <= 0.0: return
+	var lp: LaunchPad = LaunchPad.active_instance
+	if lp != null and is_instance_valid(lp) and lp.is_launching(): _step_launch_pad(lp, dt, raw_dt); return
 
 	if _wick != null and _wick.has_method("tick_sim"): _wick.call("tick_sim", dt, _region_loader)
 	if Lx.panes != null and Lx.panes.has_method("tick"): Lx.panes.call("tick", dt)
@@ -460,21 +450,31 @@ func step_sim(raw_dt: float) -> void:
 					var parts: PackedStringArray = next_reg.split(":", false, 1)
 					var parsed_isl: int = int(parts[0].substr(6))
 					if parsed_isl >= 0:
-						next_isl = parsed_isl
-						next_reg = parts[1] if parts.size() > 1 and not parts[1].is_empty() else "overworld"
+						next_isl = parsed_isl; next_reg = parts[1] if parts.size() > 1 and not parts[1].is_empty() else "overworld"
 				var sp_arr: Array = ex.get("to_spawn", [-1.0, -1.0]) as Array
 				var sp_vec := Vector2(float(sp_arr[0]), float(sp_arr[1])) if sp_arr.size() >= 2 else Vector2(-1.0, -1.0)
-				if not next_reg.is_empty(): load_island_region(next_isl, next_reg, sp_vec, true)
+				if not next_reg.is_empty():
+					if str(ex.get("id", "")) == "exit_to_island_2" and Lx.state.island_id == 1 and Lx.state.region_id == "overworld" and lp != null and is_instance_valid(lp) and lp.can_start_launch():
+						lp.begin_launch(_wick, next_isl, next_reg, sp_vec)
+					else: load_island_region(next_isl, next_reg, sp_vec, true)
 
+func _step_launch_pad(lp: LaunchPad, dt: float, raw_dt: float) -> void:
+	if _region_loader != null and _region_loader.has_method("tick"): _region_loader.call("tick", dt, Vector2(-9999.0, -9999.0))
+	Lx.audio.tick(raw_dt, false)
+	if Lx.ui != null:
+		var hud_n: Object = Lx.ui.get("hud") as Object; var nar_n: Object = Lx.ui.get("narration") as Object
+		if hud_n != null and hud_n.has_method("tick_sim"): hud_n.call("tick_sim", raw_dt)
+		if nar_n != null and nar_n.has_method("tick_sim"): nar_n.call("tick_sim", raw_dt)
+	var res: Dictionary = lp.step_launch(dt, raw_dt, _wick)
+	Lx.camera.follow(lp.get_camera_target(), raw_dt)
+	if _darkness_layer != null and _darkness_layer.has_method("sync"): _darkness_layer.call("sync", raw_dt, _region_loader)
+	if bool(res.get("done", false)): load_island_region(int(res.get("island", 2)), str(res.get("region", "overworld")), res.get("spawn", Vector2(-1.0, -1.0)) as Vector2, true)
 
 func _on_save_failed(_reason: String) -> void:
-	if _ui_root != null and _ui_root.has_method("show_notice") and LxStrings.has_id("NOTICE_SAVE_FAILED"):
-		_ui_root.call("show_notice", "NOTICE_SAVE_FAILED", 4.5)
-
+	if _ui_root != null and _ui_root.has_method("show_notice") and LxStrings.has_id("NOTICE_SAVE_FAILED"): _ui_root.call("show_notice", "NOTICE_SAVE_FAILED", 4.5)
 
 func _on_enemy_attack_landed(_enemy: Object, kind: String, pos: Vector2, dir: Vector2, damage: float) -> void:
-	if _wick != null and _wick.has_method("take_damage"):
-		_wick.call("take_damage", damage, pos, dir, kind)
+	if _wick != null and not LaunchPad.is_any_launching() and _wick.has_method("take_damage"): _wick.call("take_damage", damage, pos, dir, kind)
 
 func _on_player_damaged(_amount: float, _from_pos: Vector2, _knock_dir: Vector2, _source: String) -> void:
 	pass # LxWick already increments Lx.state.hits_taken once.

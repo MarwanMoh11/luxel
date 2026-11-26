@@ -480,6 +480,13 @@
         "secs": 4.4
       },
       {
+        "op": "wait_until",
+        "interactable": "rose_hg_r8",
+        "prop": "powered",
+        "value": true,
+        "timeout": 6.0
+      },
+      {
         "op": "interact",
         "target": "hook_hg_r8"
       },
@@ -489,6 +496,21 @@
         "prop": "opened",
         "value": true,
         "timeout": 4.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          192
+        ],
+        "tol": 8
+      },
+      {
+        "op": "wait_until",
+        "interactable": "plate_hg_r8_a",
+        "prop": "powered",
+        "value": true,
+        "timeout": 9.0
       },
       {
         "op": "stand_on",

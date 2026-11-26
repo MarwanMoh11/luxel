@@ -52,7 +52,11 @@
         184
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "oak_r8b_pinhole_open",
+        "oak_r7b_solved",
+        "wick_key_3_3"
+      ],
       "locked_door_id": "door_oak_r8_combat"
     },
     {
@@ -72,7 +76,7 @@
         "beam"
       ],
       "requires_flags": [
-        "oak_r7_loom_open"
+        "oak_r7b_solved"
       ],
       "locked_door_id": "door_oak_r8_east_r7b"
     },
@@ -231,7 +235,7 @@
           48
         ],
         "requires_flags": [
-          "oak_r7_loom_open"
+          "oak_r7b_solved"
         ]
       }
     },
@@ -312,6 +316,26 @@
       "props": {
         "string_id": "ISL3_LORE_OAK_R8",
         "icon": "flame"
+      }
+    },
+    {
+      "id": "door_oak_r8_north_seal",
+      "kind": "door",
+      "pos": [
+        192,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r8b_pinhole_open",
+          "oak_r7b_solved",
+          "wick_key_3_3"
+        ]
       }
     }
   ],
@@ -478,6 +502,11 @@
         "throw",
         "prism",
         "beam"
+      ],
+      "flags": [
+        "oak_r8b_pinhole_open",
+        "oak_r7b_solved",
+        "wick_key_3_3"
       ]
     },
     "solution": [

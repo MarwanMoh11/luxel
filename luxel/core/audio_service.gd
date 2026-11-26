@@ -15,7 +15,7 @@ const AMB_INDOOR_LP_HZ: float = 1400.0
 const AMB_BOSS_LP_HZ: float = 1100.0
 const SILENT_DB: float = -80.0
 const BASE_MUSIC_DB: float = -5.0
-const BASE_AMBIENCE_DB: float = -10.5
+const BASE_AMBIENCE_DB: float = -12.0
 const AMB_LAYER2_OFFSET_DB: float = -2.5
 const AMB_COMBAT_DUCK_DB: float = -5.5
 const AMB_INDOOR_DUCK_DB: float = -3.5
@@ -51,6 +51,8 @@ var _music_fade: float = 1.0
 var _music_fade_target: float = 1.0
 var _music_fade_rate: float = 1.0 / CUE_XFADE_S
 var _fade_out_gain: float = 0.0
+var _fade_out_rate: float = 1.0 / CUE_XFADE_S
+var _fade_out_trim_db: float = 0.0
 
 # Primary (explore/track), outgoing crossfade deck, and synced combat stem players.
 var _explore_player: AudioStreamPlayer = null
@@ -119,9 +121,6 @@ func _setup_buses() -> void:
 		_lowpass = AudioEffectLowPassFilter.new(); _lowpass.cutoff_hz = OPEN_LP_HZ
 		AudioServer.add_bus_effect(_music_bus_idx, _lowpass)
 
-	AudioMix.ensure_limiter(_sfx_bus_idx, -2.0, -4.5, 2.0)
-	AudioMix.ensure_limiter(_ui_bus_idx, -4.0, -6.0, 1.5)
-
 	_sfx_reverb = null
 	for i: int in range(AudioServer.get_bus_effect_count(_sfx_bus_idx)):
 		if AudioServer.get_bus_effect(_sfx_bus_idx, i) is AudioEffectReverb:
@@ -129,6 +128,8 @@ func _setup_buses() -> void:
 	if _sfx_reverb == null:
 		_sfx_reverb = AudioEffectReverb.new(); _sfx_reverb.room_size = 0.24; _sfx_reverb.damping = 0.72; _sfx_reverb.wet = 0.03; _sfx_reverb.dry = 1.0
 		AudioServer.add_bus_effect(_sfx_bus_idx, _sfx_reverb)
+	AudioMix.ensure_limiter(_sfx_bus_idx, -2.2, -5.0, 2.0)
+	AudioMix.ensure_limiter(_ui_bus_idx, -4.0, -6.0, 1.5)
 
 	_amb_lowpass = null
 	for i: int in range(AudioServer.get_bus_effect_count(_amb_bus_idx)):
@@ -179,14 +180,15 @@ func _setup_players() -> void:
 		add_child(sp2); _sfx_2d_pool.append(sp2); _sfx_2d_pool_ids[i] = ""
 
 
-func _handoff_to_fade_deck() -> void:
-	if _fade_player == null or _explore_player == null or not _explore_player.playing or _explore_player.stream == null:
-		return
-	var pos: float = _explore_player.get_playback_position()
-	_fade_player.stream = _explore_player.stream
-	_fade_out_gain = clampf(_music_fade, 0.0, 1.0)
-	_fade_player.volume_db = _explore_player.volume_db
-	_fade_player.play(pos)
+func _handoff_to_fade_deck(fade_rate: float = 1.0 / CUE_XFADE_S, prev_blend: float = 0.0, prev_cue: String = "") -> void:
+	if _fade_player == null: return
+	var use_cmb: bool = prev_blend > 0.5 and _combat_player != null and _combat_player.playing and _combat_player.stream != null
+	var src: AudioStreamPlayer = _combat_player if use_cmb else _explore_player
+	if src == null or not src.playing or src.stream == null: return
+	var stem_w: float = sin(prev_blend * PI * 0.5) if use_cmb else cos(prev_blend * PI * 0.5)
+	_fade_player.stream = src.stream; _fade_out_gain = clampf(_music_fade * stem_w, 0.0, 1.0); _fade_out_rate = maxf(fade_rate, 0.1)
+	_fade_out_trim_db = AudioMix.cue_trim_db(prev_cue if not prev_cue.is_empty() else current_track_group)
+	_fade_player.volume_db = src.volume_db; _fade_player.play(src.get_playback_position())
 
 
 func apply_settings(cfg: Dictionary) -> void:
@@ -219,6 +221,8 @@ func start_island_music(island_id: int) -> void:
 	var group: String = "island%d" % island_id
 	if current_track_group == group and _explore_player.playing:
 		_music_fade_target = 1.0; _set_indoor_acoustics(false); _start_island_ambience(island_id); return
+	var prev_group: String = current_track_group
+	var prev_blend: float = combat_blend
 	if current_track_group != "" and _explore_player.playing:
 		_saved_positions[current_track_group] = _explore_player.get_playback_position()
 	current_track_group = group; current_mode = "explore"
@@ -227,7 +231,7 @@ func start_island_music(island_id: int) -> void:
 	var cmb_stream: AudioStream = _load_music_stream("island%d_combat" % island_id, "island1_combat")
 	var resume_pos: float = float(_saved_positions.get(group, 0.0))
 	if exp_stream != null:
-		_handoff_to_fade_deck()
+		_handoff_to_fade_deck(1.0 / CUE_XFADE_S, prev_blend, prev_group)
 		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = exp_stream; _explore_player.volume_db = SILENT_DB; _explore_player.play(resume_pos)
 	if cmb_stream != null:
@@ -337,7 +341,7 @@ func play_cue(cue_name: String) -> void:
 	if cue_name == "silence":
 		if current_track_group != "" and current_track_group != "silence" and _explore_player != null and _explore_player.playing:
 			_saved_positions[current_track_group] = _explore_player.get_playback_position()
-			_handoff_to_fade_deck()
+			_handoff_to_fade_deck(1.0 / CUE_XFADE_S, combat_blend, current_track_group)
 		current_track_group = "silence"; current_mode = "silence"
 		_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
 		_music_fade = 0.0; _music_fade_target = 0.0; _music_fade_rate = 1.0 / CUE_XFADE_S
@@ -357,6 +361,8 @@ func play_cue(cue_name: String) -> void:
 		_set_indoor_acoustics(true, true)
 	if current_track_group == cue_name and _explore_player.playing:
 		_music_fade_target = 1.0; return
+	var prev_group: String = current_track_group
+	var prev_blend: float = combat_blend
 	var boss_carry: bool = _is_phase_pair(current_track_group, cue_name)
 	var carry_pos: float = _explore_player.get_playback_position() if (boss_carry and _explore_player.playing) else -1.0
 	if current_track_group != "" and _explore_player.playing:
@@ -365,12 +371,13 @@ func play_cue(cue_name: String) -> void:
 	_target_combat_blend = 0.0; combat_blend = 0.0; _combat_request_timer = 0.0; _combat_tail_timer = 0.0
 	var st: AudioStream = _load_music_stream(cue_name, "title")
 	if st != null:
-		_handoff_to_fade_deck()
+		var xfade_rate: float = 1.0 / (0.35 if boss_carry else CUE_XFADE_S)
+		_handoff_to_fade_deck(xfade_rate, prev_blend, prev_group)
 		if _explore_player.playing: _explore_player.stop()
 		_explore_player.stream = st
 		_music_fade = 0.0
 		_music_fade_target = 1.0
-		_music_fade_rate = 1.0 / (0.35 if boss_carry else CUE_XFADE_S)
+		_music_fade_rate = xfade_rate
 		_explore_player.volume_db = SILENT_DB
 		var pos: float = carry_pos if carry_pos >= 0.0 else float(_saved_positions.get(cue_name, 0.0))
 		_explore_player.play(pos)
@@ -387,43 +394,32 @@ func silence_music(fade_s: float = 0.85) -> void:
 func set_music_mode(mode: String, immediate: bool = false) -> void:
 	mode_switch_count += 1
 	if mode == "combat":
-		if not _is_overworld_layer_active():
-			return
-		current_mode = "combat"
-		_combat_tail_timer = COMBAT_TAIL_S
-		if immediate or _combat_request_timer >= COMBAT_DWELL_S:
-			_target_combat_blend = 1.0
+		if not _is_overworld_layer_active(): return
+		current_mode = "combat"; _combat_tail_timer = COMBAT_TAIL_S
+		if immediate or _combat_request_timer >= COMBAT_DWELL_S: _target_combat_blend = 1.0
 	elif mode == "explore":
 		if not _is_overworld_layer_active() and _current_island_id > 0:
-			start_island_music(_current_island_id)
-			return
+			start_island_music(_current_island_id); return
 		current_mode = "explore"
-		if immediate or _combat_tail_timer <= 0.0:
-			_target_combat_blend = 0.0
+		if immediate or _combat_tail_timer <= 0.0: _target_combat_blend = 0.0
 	else:
 		play_cue(mode)
 
 
 func set_paused(paused: bool) -> void:
-	if is_paused == paused:
-		return
-	is_paused = paused
-	pause_switch_count += 1
-	if _lowpass != null:
-		_lowpass.cutoff_hz = PAUSE_LP_HZ if paused else OPEN_LP_HZ
+	if is_paused == paused: return
+	is_paused = paused; pause_switch_count += 1
+	if _lowpass != null: _lowpass.cutoff_hz = PAUSE_LP_HZ if paused else OPEN_LP_HZ
 	_update_layer_volumes()
 
 
 func tick(dt: float, in_combat: bool = false) -> void:
 	_sfx_clock += dt
 	_stinger_duck_t = maxf(0.0, _stinger_duck_t - dt)
-	if _sfx_duck_t > 0.0:
-		_sfx_duck_t = maxf(0.0, _sfx_duck_t - dt)
-	else:
-		_sfx_duck_db = move_toward(_sfx_duck_db, 0.0, dt * 7.5)
+	if _sfx_duck_t > 0.0: _sfx_duck_t = maxf(0.0, _sfx_duck_t - dt)
+	else: _sfx_duck_db = move_toward(_sfx_duck_db, 0.0, dt * 7.5)
 	_music_fade = move_toward(_music_fade, _music_fade_target, dt * _music_fade_rate)
-	if _fade_out_gain > 0.0:
-		_fade_out_gain = move_toward(_fade_out_gain, 0.0, dt / CUE_XFADE_S)
+	if _fade_out_gain > 0.0: _fade_out_gain = move_toward(_fade_out_gain, 0.0, dt * _fade_out_rate)
 	if _is_overworld_layer_active():
 		if in_combat:
 			_combat_request_timer += dt; _combat_tail_timer = COMBAT_TAIL_S
@@ -444,18 +440,20 @@ func _update_layer_volumes() -> void:
 	var stinger_duck: float = 6.0 * clampf(_stinger_duck_t / 0.8, 0.0, 1.0)
 	var cue_trim: float = AudioMix.cue_trim_db(current_track_group)
 	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - maxf(stinger_duck, _sfx_duck_db)
-	var exp_gain: float = cos(combat_blend * PI * 0.5) * _music_fade
-	var cmb_gain: float = sin(combat_blend * PI * 0.5) * _music_fade
+	var in_curve: float = sin(clampf(_music_fade, 0.0, 1.0) * PI * 0.5)
+	var out_curve: float = sin(clampf(_fade_out_gain, 0.0, 1.0) * PI * 0.5)
+	var exp_gain: float = cos(combat_blend * PI * 0.5) * in_curve
+	var cmb_gain: float = sin(combat_blend * PI * 0.5) * in_curve
 	if _explore_player != null:
 		_explore_player.volume_db = BASE_MUSIC_DB + cue_trim + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
 	if _fade_player != null:
-		if _fade_out_gain > 0.001:
-			_fade_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(_fade_out_gain)
+		if out_curve > 0.001:
+			_fade_player.volume_db = BASE_MUSIC_DB + _fade_out_trim_db + duck + linear_to_db(out_curve)
 		else:
 			_fade_player.volume_db = SILENT_DB
 			if _fade_player.playing: _fade_player.stop()
 	if _combat_player != null and _combat_player.stream != null:
-		_combat_player.volume_db = BASE_MUSIC_DB + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
+		_combat_player.volume_db = BASE_MUSIC_DB + cue_trim + duck + linear_to_db(maxf(cmb_gain, 0.0001)) if cmb_gain > 0.001 else SILENT_DB
 	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0) + (AMB_INDOOR_DUCK_DB if _is_indoor else 0.0)
 	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if _is_boss_cue(current_track_group) else combat_blend)
 	for i: int in range(_amb_players.size()):

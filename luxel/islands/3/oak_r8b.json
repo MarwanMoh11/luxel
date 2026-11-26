@@ -106,7 +106,10 @@
       "requires_moves": [
         "beam"
       ],
-      "requires_flags": [],
+      "requires_flags": [
+        "oak_r7b_solved",
+        "wick_key_3_3"
+      ],
       "locked_door_id": "door_oak_r8b_key"
     }
   ],
@@ -383,6 +386,25 @@
         "string_id": "ISL3_LORE_OAK_R8B",
         "icon": "leaf"
       }
+    },
+    {
+      "id": "door_oak_r8b_key_seal",
+      "kind": "door",
+      "pos": [
+        224,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r7b_solved",
+          "wick_key_3_3"
+        ]
+      }
     }
   ],
   "scenery": [
@@ -552,7 +574,8 @@
         "hollow_oak:wick_key": 1
       },
       "flags": [
-        "wick_key_3_3"
+        "wick_key_3_3",
+        "oak_r7b_solved"
       ],
       "moves": [
         "bolt",

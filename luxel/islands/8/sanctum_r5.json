@@ -95,8 +95,10 @@
         160
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "sanctum_seal_w"
+      ],
+      "locked_door_id": "door_sanctum_r5_west_sc"
     },
     {
       "id": "exit_sanctum_r5_east_gallery",
@@ -112,8 +114,10 @@
         176
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "sanctum_seal_e"
+      ],
+      "locked_door_id": "door_sanctum_r5_east_sc"
     },
     {
       "id": "exit_sanctum_r5_ne",
@@ -357,6 +361,42 @@
         "zone": "sanctum_r5",
         "lit": true
       }
+    },
+    {
+      "id": "door_sanctum_r5_west_sc",
+      "kind": "door",
+      "pos": [
+        8,
+        256
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_seal_w"
+        ]
+      }
+    },
+    {
+      "id": "door_sanctum_r5_east_sc",
+      "kind": "door",
+      "pos": [
+        472,
+        96
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_seal_e"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -591,7 +631,10 @@
     "reward": "keepers_flame_8+shortcut+bell_chain",
     "why": "Unites the legacy synthesis climax with both deepened upper wings and the Belfry threshold.",
     "start": {
-      "ember": 100
+      "ember": 100,
+      "flags": [
+        "sanctum_seal_w"
+      ]
     },
     "exit": "exit_sanctum_r5_north",
     "solution": [

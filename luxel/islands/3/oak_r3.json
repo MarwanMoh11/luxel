@@ -69,8 +69,10 @@
         120
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "oak_sap_unlocked"
+      ],
+      "locked_door_id": "door_oak_r3_nw_sc"
     }
   ],
   "enemies": [
@@ -262,6 +264,24 @@
       "props": {
         "string_id": "ISL3_LORE_OAK_R3",
         "icon": "flame"
+      }
+    },
+    {
+      "id": "door_oak_r3_nw_sc",
+      "kind": "door",
+      "pos": [
+        208,
+        8
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_sap_unlocked"
+        ]
       }
     }
   ],

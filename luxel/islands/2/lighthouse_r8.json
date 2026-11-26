@@ -87,8 +87,10 @@
         216
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "wick_key_2_3"
+      ],
+      "locked_door_id": "door_lh_r8_ne_sc"
     }
   ],
   "enemies": [
@@ -267,6 +269,24 @@
       "props": {
         "zone": "lighthouse_r8",
         "lit": true
+      }
+    },
+    {
+      "id": "door_lh_r8_ne_sc",
+      "kind": "door",
+      "pos": [
+        408,
+        88
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_2_3"
+        ]
       }
     }
   ],

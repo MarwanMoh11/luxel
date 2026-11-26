@@ -9,7 +9,7 @@ class RoofWellField:
 	extends RefCounted
 	var pos: Vector2 = Vector2.ZERO
 	var radius: float = 68.0
-	var strength: float = 540.0
+	var strength: float = 340.0
 	var is_push: bool = false
 	var active: bool = true
 
@@ -55,13 +55,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl5_boss_minor_p1"
 	music_p2_cue = "isl5_boss_minor_p2"
-	max_hp = 108.0
-	hp = 108.0
+	max_hp = 148.0
+	hp = 148.0
 	body_radius = 12.5
 	move_speed = 48.0
-	stagger_threshold = 11.5
+	stagger_threshold = 15.0
 	stagger_duration = 1.45
-	post_recover_cd = 0.26
+	post_recover_cd = 0.44
 	shard_drop = 26
 
 
@@ -74,26 +74,26 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Plumb Slam — looming shadow circle + shockwave ring (Wings/Dash over, curve Throw/Beam!)
 	register_attack("plumb_slam", {
-		"weight": 1.25, "tell": 0.65, "commit": 0.38, "recover": 1.15, "cooldown": 1.25,
+		"weight": 1.25, "tell": 0.68, "commit": 0.38, "recover": 1.20, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_slam_target = tgt
-			ground.warn_ring(_slam_target, 28.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_ring(_slam_target, 24.0, last_tell_duration, 0.5, "coral", "gold")
 			if phase >= 2:
-				ground.warn_ring(_nearest_corner(tgt), 22.0, last_tell_duration + 0.08, 1.0, "apricot", "gold")
+				ground.warn_ring(_nearest_corner(tgt), 18.0, last_tell_duration + 0.08, 0.5, "apricot", "gold")
 			stage.play_sfx("chain_groan", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var step: Vector2 = (_slam_target - pos).limit_length(54.0)
 			move_boss(step, true)
-			var cnt: int = 12 if phase >= 2 else 10
+			var cnt: int = 10 if phase >= 2 else 8
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing
-			patterns.emit_gap_ring(pos, cnt, 118.0 + float(phase) * 8.0, gap_a, 0.78, {"color": "gold", "source": "plumb_wave", "field_scale": 0.85})
+			patterns.emit_gap_ring(pos, cnt, 104.0 + float(phase) * 6.0, gap_a, 1.02, {"color": "gold", "source": "plumb_wave", "field_scale": 0.45, "damage": 0.5})
 			stage.shake(0.24)
 			stage.play_sfx("anchor_slam", pos),
 	})
 
 	# Attack 2: Chain Whip Arc — taut chain whine -> 180 deg sweeping bar + curved fan!
 	register_attack("chain_whip_arc", {
-		"weight": 1.20, "tell": 0.58, "commit": 0.48, "recover": 1.00, "cooldown": 1.35,
+		"weight": 1.20, "tell": 0.62, "commit": 0.48, "recover": 1.12, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_whip_ang = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing
 			ground.warn_sector(pos, _whip_ang - 1.05, _whip_ang + 1.05, 76.0, last_tell_duration, 0.0, "apricot", "gold")
@@ -101,44 +101,44 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var tip: Vector2 = clamp_to_arena(pos + Vector2.from_angle(_whip_ang) * 96.0)
-			patterns.emit_chain_lightning([c, pos, tip], 0.45, 9.0, 0.26, 1.0)
-			patterns.emit_fan(pos, Vector2.from_angle(_whip_ang), 5 if phase >= 2 else 3, 1.05, 136.0, {"color": "apricot", "source": "chain_whip", "field_scale": 1.15})
+			patterns.emit_chain_lightning([c, pos, tip], 0.60, 7.0, 0.24, 0.5)
+			patterns.emit_fan(pos, Vector2.from_angle(_whip_ang), 5 if phase >= 2 else 3, 1.10, 114.0, {"color": "apricot", "source": "chain_whip", "field_scale": 0.55, "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("crystal_clank", pos),
 	})
 
 	# Attack 3: Debris Shed — roof shakes, fracturing falling stone rings across Wick & corners!
 	register_attack("debris_shed", {
-		"weight": 1.15, "tell": 0.56, "commit": 0.42, "recover": 0.95, "cooldown": 1.40,
+		"weight": 1.15, "tell": 0.62, "commit": 0.42, "recover": 1.10, "cooldown": 1.70,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = [tgt, _nearest_corner(tgt)]
 			if phase >= 2:
 				drops.append(arena_rect.get_center().lerp(tgt, 0.5))
 			if phase >= 3:
 				drops.append(_farthest_corner(tgt))
-			patterns.emit_rain(ground, drops, last_tell_duration, 23.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "coral", "gold")
 			stage.play_sfx("chain_groan", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_boomerang(pos, aim.rotated(0.32), 142.0, 0.68, 0.78, {"color": "coral", "source": "roof_debris", "field_scale": 1.10})
+			patterns.emit_boomerang(pos, aim.rotated(0.32), 116.0, 0.68, 0.72, {"color": "coral", "source": "roof_debris", "field_scale": 0.55, "damage": 0.5})
 			if phase >= 2:
-				patterns.emit_boomerang(pos, aim.rotated(-0.32), 142.0, 0.68, -0.78, {"color": "gold", "source": "roof_debris", "field_scale": 1.10})
+				patterns.emit_boomerang(pos, aim.rotated(-0.32), 116.0, 0.68, -0.72, {"color": "gold", "source": "roof_debris", "field_scale": 0.55, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("stone_break", pos),
 	})
 
 	# Attack 4 (P2/P3): Pendulum Maelstrom — reverses well polarity & sweeps orbiting weights + wall!
 	register_attack("pendulum_maelstrom", {
-		"phases": [2, 3], "weight": 1.55, "tell": 0.70, "commit": 0.50, "recover": 1.10, "cooldown": 1.55,
+		"phases": [2, 3], "weight": 1.65, "tell": 0.74, "commit": 0.50, "recover": 1.22, "cooldown": 1.80,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_flip_well()
 			ground.warn_ring(pos, 34.0, last_tell_duration, 0.0, "gold", "ice")
-			ground.warn_ring(clamp_to_arena(tgt), 24.0, last_tell_duration + 0.06, 1.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 20.0, last_tell_duration + 0.06, 0.5, "coral", "gold")
 			stage.play_sfx("chain_groan", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
-			patterns.emit_orbit(pos, 4 if phase >= 3 else 3, 44.0, 2.2 if phase >= 3 else 1.8, 2.0, {"color": "gold", "source": "pendulum_weight"})
-			patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 8.0), Vector2.DOWN, arena_rect.size.x - 28.0, 9, 3, 3, 102.0, {"color": "ice", "source": "chain_wall"})
+			patterns.emit_orbit(pos, 3, 38.0, 1.6, 1.6, {"color": "gold", "source": "pendulum_weight", "damage": 0.5})
+			patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 8.0), Vector2.DOWN, arena_rect.size.x - 28.0, 8, 3, 3, 90.0, {"color": "ice", "source": "chain_wall", "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("eclipse_wave", pos),
 	})

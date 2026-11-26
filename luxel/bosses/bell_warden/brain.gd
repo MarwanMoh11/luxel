@@ -24,9 +24,9 @@ const LUNGE_SPEED: float = 205.0
 
 enum SlamStage { NONE, RING_1, ECHO_PAUSE, RING_2 }
 
-var shield_max: float = 2.4
-var shield_hp: float = 2.4
-var shield_gone_duration: float = 4.5
+var shield_max: float = 2.6
+var shield_hp: float = 2.6
+var shield_gone_duration: float = 3.6
 var shield_gone_t: float = 0.0
 
 var slam_tone: String = "dawn"
@@ -53,14 +53,15 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island1_boss_p1"
 	music_p2_cue = "island1_boss_p2"
-	max_hp = 72.0
-	hp = 72.0
+	max_hp = 76.0
+	hp = 76.0
 	body_radius = 7.0
 	move_speed = 42.0
-	stagger_threshold = 10.0
-	stagger_duration = 1.65
-	punish_dmg_mult = 1.30
-	post_recover_cd = 0.30
+	stagger_threshold = 14.0
+	stagger_duration = 1.55
+	post_stagger_immunity = 5.5
+	punish_dmg_mult = 1.15
+	post_recover_cd = 0.36
 	intro_duration = 0.15
 	phase_shift_duration = 0.65
 	death_duration = 1.8
@@ -68,7 +69,7 @@ func _init() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	var base_hp: float = 72.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	var base_hp: float = 76.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	max_hp = base_hp
 	hp = base_hp
 	boss_id = str(spec.get("boss_id", "bell_warden"))
@@ -77,16 +78,16 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 1: Parasol Cleave — wide directional bell-parasol sweep + 3-bolt gold fan
 	register_attack("parasol_sweep", {
-		"weight": 1.25, "tell": 0.50, "commit": 0.28, "recover": 1.05, "cooldown": 1.3,
+		"weight": 1.25, "tell": 0.54, "commit": 0.28, "recover": 1.10, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
-			ground.warn_sector(pos, facing - 1.15, facing + 1.15, 42.0, last_tell_duration, 1.0, "gold", "coral")
+			ground.warn_sector(pos, facing - 1.15, facing + 1.15, 42.0, last_tell_duration, 0.5, "gold", "coral")
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 160.0), 8.0, last_tell_duration, 0.0, "apricot", "gold")
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.72, 134.0 if phase >= 2 else 118.0, {"color": "gold", "source": "bell_warden_sweep", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.78, 118.0 if phase >= 2 else 108.0, {"color": "gold", "source": "bell_warden_sweep", "reflectable": true, "damage": 0.5})
 			stage.shake(0.12)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
@@ -95,7 +96,7 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 2: Belfry Lunge — telegraphed hop-lunge spear thrust + closing coral chime fan
 	register_attack("belfry_lunge", {
-		"weight": 1.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.58, "commit": 0.34, "recover": 1.15, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _aim_dir.angle()
@@ -104,20 +105,20 @@ func _configure_boss(spec: Dictionary) -> void:
 			stage.play_sfx("warden_lunge_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_lunge_hit = false
-			patterns.emit_fan(pos, _aim_dir, 3, 0.52, 128.0, {"color": "coral", "source": "bell_warden_lunge", "reflectable": true})
+			patterns.emit_fan(pos, _aim_dir, 3, 0.56, 116.0, {"color": "coral", "source": "bell_warden_lunge", "reflectable": true, "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
-			var spd: float = LUNGE_SPEED * (0.48 if _dusk_slow_t > 0.0 else (1.10 if phase >= 2 else 1.0))
+			var spd: float = LUNGE_SPEED * (0.48 if _dusk_slow_t > 0.0 else (1.06 if phase >= 2 else 1.0))
 			move_boss(_aim_dir * spd * dt, false)
 			if not _lunge_hit:
-				_lunge_hit = check_contact_damage(20.0, _aim_dir, 1.0, "bell_warden_lunge"),
+				_lunge_hit = check_contact_damage(20.0, _aim_dir, 0.5, "bell_warden_lunge"),
 	})
 
 	# Attack 3: Tone Slam — alternates DAWN (wide gold ring) vs WAR (fast coral spike ring + gap-ring);
 	# P2 adds 0.55s Echo Pause before Ring 2 (cancellable by bell ring or heavy/pedestal hit for 1.80s stagger!).
 	register_attack("tone_slam", {
-		"weight": 1.35, "tell": 0.60, "commit": 1.08, "recover": 1.25, "cooldown": 1.6,
+		"weight": 1.35, "tell": 0.62, "commit": 1.08, "recover": 1.25, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			slam_tone = "war" if slam_tone == "dawn" else "dawn"
 			slam_stage = SlamStage.NONE
@@ -143,15 +144,15 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 4 (P2): Resonance Chimes — Belfry floor rains bell impacts on Wick & perimeter corners
 	register_attack("resonance_chimes", {
-		"phases": [2], "weight": 2.20, "tell": 0.54, "commit": 0.34, "recover": 1.15, "cooldown": 1.2,
+		"phases": [2], "weight": 2.20, "tell": 0.58, "commit": 0.34, "recover": 1.18, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			var drops: Array[Vector2] = _perimeter_targets(tgt, 4)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "coral", "gold")
 			stage.play_sfx("clockwork_chime", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else _aim_dir
-			patterns.emit_fan(pos, d, 5, 0.78, 134.0, {"color": "gold", "source": "bell_warden_chime", "reflectable": true})
+			patterns.emit_fan(pos, d, 5, 0.84, 118.0, {"color": "gold", "source": "bell_warden_chime", "reflectable": true, "damage": 0.5})
 			_resonance_pulse_t = 0.75
 			stage.shake(0.16)
 			stage.play_sfx("bell_slam_fire", pos),
@@ -206,7 +207,7 @@ func _step_tone_slam_commit(dt: float) -> void:
 				if absf(wv.length() - ring_r) <= SLAM_BAND:
 					_slam_hit = true
 					var push: Vector2 = wv.normalized() if wv.length() > 0.01 else Vector2.from_angle(facing)
-					emit_boss_damage(push, 1.0, "bell_warden_slam", pos, true)
+					emit_boss_damage(push, 0.5, "bell_warden_slam", pos, true)
 			if _is_lantern_out() and _get_lantern_pos().distance_to(pos) <= ring_r and Lx.events != null:
 				Lx.events.lantern_struck.emit(_get_lantern_pos())
 			if _slam_stage_t <= 0.0:
@@ -235,10 +236,10 @@ func _step_tone_slam_commit(dt: float) -> void:
 func _fire_tone_bolts() -> void:
 	var aim_a: float = (_get_wick_pos() - pos).angle() if _has_player() else facing
 	if slam_tone == "war":
-		patterns.emit_gap_ring(pos, 8 if phase >= 2 else 6, 128.0 if phase >= 2 else 112.0, aim_a + PI * 0.45, 0.72, {"color": "coral", "source": "bell_warden_war", "reflectable": true})
+		patterns.emit_gap_ring(pos, 8 if phase >= 2 else 6, 114.0 if phase >= 2 else 104.0, aim_a + PI * 0.45, 0.88, {"color": "coral", "source": "bell_warden_war", "reflectable": true, "damage": 0.5})
 	else:
 		var aim_d: Vector2 = (_get_wick_pos() - pos).normalized() if (_has_player() and _get_wick_pos().distance_to(pos) > 1.0) else Vector2.from_angle(facing)
-		patterns.emit_fan(pos, aim_d, 5 if phase >= 2 else 3, 0.72, 122.0, {"color": "gold", "source": "bell_warden_dawn", "reflectable": true})
+		patterns.emit_fan(pos, aim_d, 5 if phase >= 2 else 3, 0.78, 112.0, {"color": "gold", "source": "bell_warden_dawn", "reflectable": true, "damage": 0.5})
 
 
 func on_ring(tone: String, _dir: Vector2) -> void:
@@ -338,13 +339,13 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		if src == LxHit.SOURCE_BOLT:
 			_wear_shield(0.24)
 			stage.play_sfx("boss_armour_glint", pos)
-			return dmg * 0.16
-		return dmg * 0.45
+			return dmg * 0.14
+		return dmg * 0.36
 	clank_t = 0.10
 	if src == LxHit.SOURCE_BOLT:
 		stage.play_sfx("boss_armour_chip", pos)
-		return dmg * 0.28
-	return dmg * 0.56
+		return dmg * 0.24
+	return dmg * 0.46
 
 
 func _on_phase_enter(new_phase: int) -> void:

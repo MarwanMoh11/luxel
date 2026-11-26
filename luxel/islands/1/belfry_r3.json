@@ -54,7 +54,7 @@
         104
       ],
       "requires_moves": [
-        "throw"
+        "dash"
       ],
       "requires_flags": [
         "r3_shutter_open"
@@ -75,7 +75,7 @@
         272
       ],
       "requires_moves": [
-        "throw"
+        "dash"
       ],
       "requires_flags": [],
       "locked_door_id": "door_r3_north"
@@ -247,7 +247,7 @@
         "reward": "shards",
         "amount": 40,
         "requires_moves": [
-          "throw"
+          "dash"
         ]
       }
     },

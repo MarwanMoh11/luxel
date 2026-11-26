@@ -42,14 +42,14 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 38.0
-	hp = 38.0
+	max_hp = 58.0
+	hp = 58.0
 	body_radius = 12.0
 	move_speed = 34.0
-	stagger_threshold = 9.0
+	stagger_threshold = 11.0
 	stagger_duration = 1.60
-	punish_dmg_mult = 1.40
-	post_recover_cd = 0.30
+	punish_dmg_mult = 1.35
+	post_recover_cd = 0.34
 	shard_drop = 18
 	intro_duration = 0.70
 	phase_shift_duration = 0.75
@@ -61,62 +61,62 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Cargo Drop Slam (targets Wick + nearest perimeter corner/edge so no safe spot!)
 	register_attack("cargo_drop_slam", {
-		"weight": 1.25, "tell": 0.62, "commit": 0.26, "recover": 1.15, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.62, "commit": 0.26, "recover": 1.15, "cooldown": 1.45,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _cargo_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 20.0, 0.5, "coral", "gold")
 			stage.play_sfx("bosun_whistle", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.72, 134.0, {"color": "sky", "source": "bosun_cargo_spray", "field_scale": 0.85})
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.78, 122.0, {"color": "sky", "source": "bosun_cargo_spray", "field_scale": 0.85, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("anchor_slam", pos),
 	})
 
 	# Attack 2: Anchor Fluke Drag (84px+ sweeping lane + wake wave across deck)
 	register_attack("anchor_fluke_drag", {
-		"weight": 1.20, "tell": 0.54, "commit": 0.38, "recover": 1.20, "cooldown": 1.6,
+		"weight": 1.20, "tell": 0.56, "commit": 0.38, "recover": 1.20, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			ground.warn_lane(pos, pos + _aim_dir * 136.0, 12.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_lane(pos, pos + _aim_dir * 136.0, 12.0, last_tell_duration, 0.5, "coral", "gold")
 			stage.play_sfx("harbor_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _aim_dir, 4 if phase >= 2 else 3, 148.0, 0.08, {"color": "ice", "source": "bosun_fluke_wave", "field_scale": 0.75})
+			patterns.emit_lane(pos, _aim_dir, 4 if phase >= 2 else 3, 134.0, 0.09, {"color": "ice", "source": "bosun_fluke_wave", "field_scale": 0.75, "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("anchor_clang", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			move_boss(_aim_dir * 96.0 * dt, false)
-			check_contact_damage(body_radius + 11.0, _aim_dir, 1.0, "bosun_drag"),
+			check_contact_damage(body_radius + 11.0, _aim_dir, 0.5, "bosun_drag"),
 	})
 
 	# Attack 3: Bilge Swash Volley (pressures flanks & perimeter; obeys ship roll!)
 	register_attack("bilge_swash_volley", {
-		"weight": 1.10, "tell": 0.56, "commit": 0.34, "recover": 1.05, "cooldown": 1.5,
+		"weight": 1.10, "tell": 0.58, "commit": 0.34, "recover": 1.08, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			ground.warn_sector(pos, _aim_dir.angle() - 0.62, _aim_dir.angle() + 0.62, 118.0, last_tell_duration, 0.0, "sky", "gold")
 			stage.play_sfx("tide_surge", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			patterns.emit_fan(pos, _aim_dir, 7 if phase >= 2 else 5, 0.96, 138.0, {"color": "sky", "source": "bosun_swash", "field_scale": 1.0})
+			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 4, 0.96, 122.0, {"color": "sky", "source": "bosun_swash", "field_scale": 1.0, "damage": 0.5})
 			if phase >= 2:
-				patterns.emit_gap_ring(pos, 10, 104.0, _aim_dir.angle() + PI * 0.5, 0.72, {"color": "gold", "source": "bosun_ring", "field_scale": 0.6})
+				patterns.emit_gap_ring(pos, 10, 98.0, _aim_dir.angle() + PI * 0.5, 0.90, {"color": "gold", "source": "bosun_ring", "field_scale": 0.6, "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("tide_wave", pos),
 	})
 
 	# Attack 4 (P2): 180-degree Boom Sweep (snapped crane brake sweeps deck + bulkhead slam!)
 	register_attack("boom_sweep_180", {
-		"phases": [2], "weight": 1.45, "tell": 0.65, "commit": 0.55, "recover": 1.30, "cooldown": 1.8,
+		"phases": [2], "weight": 1.45, "tell": 0.65, "commit": 0.55, "recover": 1.30, "cooldown": 1.85,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			_boom_start_ang = _aim_dir.angle()
 			_boom_sweep_hit = false
-			ground.warn_sector(pos, _boom_start_ang - 1.35, _boom_start_ang + 1.35, 96.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_sector(pos, _boom_start_ang - 1.35, _boom_start_ang + 1.35, 96.0, last_tell_duration, 0.5, "coral", "gold")
 			stage.play_sfx("bosun_whistle", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_gap_ring(pos, 12, 118.0, _boom_start_ang + PI, 0.75, {"color": "coral", "source": "bosun_boom_bolts", "field_scale": 0.8})
+			patterns.emit_gap_ring(pos, 10, 108.0, _boom_start_ang + PI, 0.92, {"color": "coral", "source": "bosun_boom_bolts", "field_scale": 0.8, "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("anchor_clang", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, el: float) -> void:
@@ -125,7 +125,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			if not _boom_sweep_hit and el >= 0.18 and pos.distance_to(tgt) <= 84.0:
 				if absf(angle_difference(_boom_start_ang, (tgt - pos).angle())) <= 1.25:
 					_boom_sweep_hit = true
-					emit_boss_damage((tgt - pos).normalized(), 1.0, "bosun_boom", pos, true),
+					emit_boss_damage((tgt - pos).normalized(), 0.5, "bosun_boom", pos, true),
 	})
 
 

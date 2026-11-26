@@ -95,11 +95,11 @@ func on_hit(hit: LxHit) -> bool:
 		_resonate_t = 0.22
 		_emit_sfx("shield_clang")
 		queue_redraw()
-		# Prevent combat Ember-battery farming (D33): only grant resonance when room has no live foes and off cooldown
+		# Prevent combat Ember-battery farming (D33): only grant resonance when no nearby live foes and off cooldown
 		var has_live_foe: bool = false
 		if region != null and region.has_method("get_enemies"):
 			for e: Variant in (region.call("get_enemies") as Array):
-				if is_instance_valid(e) and e is LxEnemyBrain and (e as LxEnemyBrain).is_alive():
+				if is_instance_valid(e) and e is LxEnemyBrain and (e as LxEnemyBrain).is_alive() and (e as LxEnemyBrain).pos.distance_to(pos) <= 200.0:
 					has_live_foe = true
 					break
 		if not has_live_foe and _ember_cd <= 0.0:

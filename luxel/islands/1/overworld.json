@@ -264,46 +264,21 @@
       "kind": "snatcher",
       "pos": [
         576,
-        540
+        512
       ],
       "route": [],
       "perches": [
         [
           568,
-          534
+          512
         ],
         [
           568,
-          572
+          544
         ],
         [
-          612,
-          534
-        ]
-      ],
-      "zone": "glasshouse",
-      "leash": 158
-    },
-    {
-      "id": "snatcher_glasshouse_1",
-      "kind": "snatcher",
-      "pos": [
-        696,
-        540
-      ],
-      "route": [],
-      "perches": [
-        [
-          704,
-          534
-        ],
-        [
-          704,
-          572
-        ],
-        [
-          668,
-          534
+          624,
+          504
         ]
       ],
       "zone": "glasshouse",
@@ -423,8 +398,8 @@
       "id": "ws_plaza",
       "kind": "waystone",
       "pos": [
-        736,
-        404
+        728,
+        408
       ],
       "props": {
         "zone": "plaza",
@@ -477,23 +452,11 @@
       }
     },
     {
-      "id": "ws_orchard",
-      "kind": "waystone",
-      "pos": [
-        312,
-        112
-      ],
-      "props": {
-        "zone": "orchard",
-        "name_key": "ZONE_ORCHARD"
-      }
-    },
-    {
       "id": "beacon_observatory",
       "kind": "beacon",
       "pos": [
         184,
-        376
+        368
       ],
       "props": {
         "index": 1,
@@ -506,23 +469,11 @@
       }
     },
     {
-      "id": "ws_observatory",
-      "kind": "waystone",
-      "pos": [
-        120,
-        344
-      ],
-      "props": {
-        "zone": "observatory",
-        "name_key": "ZONE_OBSERVATORY"
-      }
-    },
-    {
       "id": "chest_ember_1",
       "kind": "chest",
       "pos": [
-        88,
-        520
+        56,
+        488
       ],
       "props": {
         "reward": "ember_piece",
@@ -539,7 +490,7 @@
       "kind": "chest",
       "pos": [
         640,
-        560
+        536
       ],
       "props": {
         "reward": "shards",
@@ -602,8 +553,8 @@
       "id": "beacon_bridge",
       "kind": "beacon",
       "pos": [
-        1156,
-        344
+        1136,
+        360
       ],
       "props": {
         "index": 2,
@@ -620,8 +571,8 @@
       "id": "ws_bridge",
       "kind": "waystone",
       "pos": [
-        888,
-        326
+        864,
+        328
       ],
       "props": {
         "zone": "moonlit_bridge",
@@ -632,7 +583,7 @@
       "id": "chest_ember_2",
       "kind": "chest",
       "pos": [
-        1128,
+        1136,
         552
       ],
       "props": {
@@ -673,7 +624,7 @@
       "id": "bridge_of_light_1",
       "kind": "door",
       "pos": [
-        1176,
+        1192,
         168
       ],
       "props": {
@@ -703,8 +654,8 @@
       "id": "lamp_orchard_turn",
       "kind": "road_lamp",
       "pos": [
-        448,
-        304
+        456,
+        288
       ],
       "props": {
         "zone": "plaza"
@@ -714,8 +665,8 @@
       "id": "lamp_orchard_e",
       "kind": "road_lamp",
       "pos": [
-        424,
-        216
+        456,
+        200
       ],
       "props": {
         "zone": "orchard"
@@ -725,8 +676,8 @@
       "id": "lamp_plaza_e",
       "kind": "road_lamp",
       "pos": [
-        776,
-        344
+        784,
+        328
       ],
       "props": {
         "zone": "plaza"
@@ -749,17 +700,6 @@
       "pos": [
         364,
         342
-      ],
-      "props": {
-        "zone": "observatory"
-      }
-    },
-    {
-      "id": "lamp_west_s",
-      "kind": "road_lamp",
-      "pos": [
-        284,
-        444
       ],
       "props": {
         "zone": "observatory"
@@ -791,8 +731,8 @@
       "id": "lamp_river_w",
       "kind": "road_lamp",
       "pos": [
-        948,
-        336
+        944,
+        328
       ],
       "props": {
         "zone": "moonlit_bridge"
@@ -843,8 +783,8 @@
       "id": "bell_glass_dusk",
       "kind": "bell",
       "pos": [
-        672,
-        576
+        664,
+        600
       ],
       "props": {
         "tone": "dusk",
@@ -947,22 +887,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        756,
-        424
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        594,
-        294
+        576,
+        300
       ],
       "layer": "sort",
       "flip_x": false,
@@ -973,37 +901,13 @@
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        686,
-        294
+        704,
+        300
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        616,
-        440
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.15
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_lantern_garden",
-      "pos": [
-        664,
-        440
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.55
     },
     {
       "sheet": "island1_scenery",
@@ -1139,30 +1043,6 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "flower_bed_warm",
-      "pos": [
-        552,
-        120
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.2
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_cool",
-      "pos": [
-        728,
-        120
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
         132,
@@ -1223,30 +1103,6 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "flower_bed_warm",
-      "pos": [
-        168,
-        134
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_warm",
-      "pos": [
-        356,
-        132
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.45
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
         124,
@@ -1261,8 +1117,8 @@
       "sheet": "island1_scenery",
       "prop": "orchard_tree_bloom",
       "pos": [
-        124,
-        218
+        128,
+        232
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1274,7 +1130,7 @@
       "prop": "stone_lantern_garden",
       "pos": [
         136,
-        184
+        164
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1283,33 +1139,9 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "stone_bench",
-      "pos": [
-        286,
-        156
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_warm",
-      "pos": [
-        268,
-        166
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.25
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
-        332,
+        328,
         256
       ],
       "layer": "sort",
@@ -1319,22 +1151,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "orchard_tree_bloom",
-      "pos": [
-        392,
-        252
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.75
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "stone_lantern_garden",
       "pos": [
-        392,
-        224
+        404,
+        236
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1369,8 +1189,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_bench",
       "pos": [
-        96,
-        404
+        68,
+        408
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1381,8 +1201,8 @@
       "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
-        138,
-        404
+        92,
+        408
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1487,30 +1307,6 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "flower_bed_cool",
-      "pos": [
-        420,
-        472
-      ],
-      "layer": "ground",
-      "flip_x": false,
-      "shadow": false,
-      "phase": 0.35
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_warm",
-      "pos": [
-        358,
-        388
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.6
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "glasshouse_arch",
       "pos": [
         576,
@@ -1547,18 +1343,6 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "orchard_tree_bloom",
-      "pos": [
-        498,
-        444
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.5
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "orchard_tree_warm",
       "pos": [
         784,
@@ -1571,34 +1355,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "stone_bench",
-      "pos": [
-        536,
-        536
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "stone_bench",
-      "pos": [
-        744,
-        536
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "flower_bed_warm",
       "pos": [
-        536,
-        554
+        560,
+        432
       ],
       "layer": "ground",
       "flip_x": false,
@@ -1607,34 +1367,10 @@
     },
     {
       "sheet": "island1_scenery",
-      "prop": "flower_bed_cool",
-      "pos": [
-        744,
-        554
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.55
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "flower_bed_cool",
-      "pos": [
-        744,
-        496
-      ],
-      "layer": "ground",
-      "flip_x": true,
-      "shadow": false,
-      "phase": 0.75
-    },
-    {
-      "sheet": "island1_scenery",
       "prop": "broken_column",
       "pos": [
         808,
-        556
+        548
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1693,8 +1429,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_lantern_garden",
       "pos": [
-        1156,
-        124
+        1172,
+        140
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1705,8 +1441,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_lantern_garden",
       "pos": [
-        1156,
-        212
+        1172,
+        204
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1729,8 +1465,8 @@
       "sheet": "island1_scenery",
       "prop": "weeping_willow",
       "pos": [
-        904,
-        194
+        888,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1741,8 +1477,8 @@
       "sheet": "island1_scenery",
       "prop": "weeping_willow",
       "pos": [
-        944,
-        260
+        940,
+        272
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1753,8 +1489,8 @@
       "sheet": "island1_scenery",
       "prop": "weeping_willow",
       "pos": [
-        888,
-        468
+        876,
+        488
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1765,8 +1501,8 @@
       "sheet": "island1_scenery",
       "prop": "weeping_willow",
       "pos": [
-        948,
-        552
+        924,
+        532
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1784,42 +1520,6 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.1
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        1084,
-        196
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "broken_column",
-      "pos": [
-        1162,
-        264
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
-    },
-    {
-      "sheet": "island1_scenery",
-      "prop": "mossy_column",
-      "pos": [
-        1084,
-        474
-      ],
-      "layer": "sort",
-      "flip_x": true,
-      "shadow": true,
-      "phase": 0.0
     },
     {
       "sheet": "island1_scenery",
@@ -1945,8 +1645,8 @@
       "sheet": "island1_scenery",
       "prop": "flower_bed_cool",
       "pos": [
-        1160,
-        392
+        1168,
+        400
       ],
       "layer": "ground",
       "flip_x": false,
@@ -1964,6 +1664,42 @@
       "flip_x": true,
       "shadow": false,
       "phase": 0.7
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        1208,
+        148
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "bridge_balustrade",
+      "pos": [
+        1208,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island1_scenery",
+      "prop": "flower_bed_cool",
+      "pos": [
+        1148,
+        140
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "design": {
@@ -1976,5 +1712,15 @@
     "reward": "bolt+dash+throw+3beacons+bell_arch_seal+moth_1_01",
     "why": "Opening island hub and 10-minute browser demo onboarding spine.",
     "optional": true
-  }
+  },
+  "decor": [
+    {
+      "kind": "compass",
+      "radius": 20,
+      "pos": [
+        1160,
+        168
+      ]
+    }
+  ]
 }

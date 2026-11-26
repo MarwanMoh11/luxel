@@ -33,13 +33,13 @@ func _init() -> void:
 	reward_heart = "none" # Pack JSON heart="half" awarded once via LxBossHud (avoids double-award)
 	music_cue = "isl1_boss_minor_p1"
 	music_p2_cue = "isl1_boss_minor_p2"
-	max_hp = 68.0
-	hp = 68.0
+	max_hp = 64.0
+	hp = 64.0
 	body_radius = 12.0
 	move_speed = 32.0
 	stagger_threshold = 12.0
 	stagger_duration = 1.75
-	post_recover_cd = 0.36
+	post_recover_cd = 0.44
 	intro_duration = 0.65
 	phase_shift_duration = 0.72
 	death_duration = 2.4
@@ -47,11 +47,11 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.60, 0.32])
+	configure_phases([0.64, 0.36])
 
 	# Attack 1: Tunnel Carve (burrows invulnerable digging erupting pits; ring bell to cave-in!)
 	register_attack("tunnel_carve", {
-		"weight": 1.25, "tell": 0.65, "commit": 1.15, "recover": 1.35, "cooldown": 2.0,
+		"weight": 1.25, "tell": 0.65, "commit": 1.15, "recover": 1.35, "cooldown": 2.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_tunnel_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _tunnel_dir.angle()
@@ -60,7 +60,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("earth_burrow", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_burrowed = true
-			_tunnel_pit_cd = 0.18
+			_tunnel_pit_cd = 0.22
 			stage.shake(0.14)
 			stage.play_sfx("earth_burrow", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _elapsed: float) -> void:
@@ -74,7 +74,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 2: Spade Cleave (130 deg bronze bell-spade sweep + earth-wave bolts)
 	register_attack("spade_cleave", {
-		"weight": 1.20, "tell": 0.52, "commit": 0.26, "recover": 1.15, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.56, "commit": 0.26, "recover": 1.18, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_cleave_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _cleave_dir.angle()
@@ -84,7 +84,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var cnt: int = 3
-			patterns.emit_fan(pos, _cleave_dir, cnt, 0.88, 96.0 if phase >= 2 else 88.0, {"color": "apricot", "source": "spade_wave"})
+			patterns.emit_fan(pos, _cleave_dir, cnt, 0.92, 92.0 if phase >= 2 else 84.0, {"color": "apricot", "source": "spade_wave", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("sexton_cleave", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, _elapsed: float) -> void:
@@ -93,35 +93,35 @@ func _configure_boss(_spec: Dictionary) -> void:
 				var rel: Vector2 = tgt - pos
 				if rel.length() < 1.0 or absf(angle_difference(facing, rel.angle())) <= 1.10:
 					_cleave_hit = true
-					emit_boss_damage(_cleave_dir, 1.0, "spade_cleave", pos, true),
+					emit_boss_damage(_cleave_dir, 0.5, "spade_cleave", pos, true),
 	})
 
 	# Attack 3: Dirt Volley (3-4 lobbed crypt clods targeting Wick + nearest corner + P2+ scatter)
 	register_attack("dirt_volley", {
-		"weight": 1.15, "tell": 0.58, "commit": 0.34, "recover": 1.15, "cooldown": 1.6,
+		"weight": 1.15, "tell": 0.62, "commit": 0.34, "recover": 1.18, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _build_clod_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 20.0, 1.0, "coral", "apricot")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "coral", "apricot")
 			stage.play_sfx("earth_burrow", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			if phase >= 2:
-				patterns.emit_fan(pos, aim_d, 3, 0.86, 94.0, {"color": "coral", "source": "dirt_clod"})
+				patterns.emit_fan(pos, aim_d, 3, 0.90, 90.0, {"color": "coral", "source": "dirt_clod", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("stone_break", pos),
 	})
 
 	# Attack 4: P3 Coffin Slam (52px shockwave + gap ring; War Bell breaks coffin-lid shield!)
 	register_attack("coffin_slam", {
-		"phases": [3], "weight": 2.60, "tell": 0.58, "commit": 0.30, "recover": 1.28, "cooldown": 1.2,
+		"phases": [3], "weight": 2.60, "tell": 0.62, "commit": 0.30, "recover": 1.28, "cooldown": 1.35,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(pos, COFFIN_RING_R, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_ring(pos, COFFIN_RING_R, last_tell_duration, 0.5, "coral", "gold")
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			ground.warn_lane(pos, clamp_to_arena(pos + aim_d * 140.0), 9.0, last_tell_duration, 0.0, "coral", "cream")
 			stage.play_sfx("bell_slam_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
-			patterns.emit_gap_ring(pos, 7, 94.0, aim_a + PI * 0.38, 0.92, {"color": "gold", "source": "coffin_ring"})
+			patterns.emit_gap_ring(pos, 7, 88.0, aim_a + PI * 0.38, 1.05, {"color": "gold", "source": "coffin_ring", "damage": 0.5})
 			stage.shake(0.24)
 			stage.play_sfx("bell_slam_fire", pos),
 	})
@@ -164,8 +164,8 @@ func _step_tunnel_commit(tgt: Vector2, dt: float) -> void:
 	move_boss(_tunnel_dir * TUNNEL_SPEED * dt, false)
 	_tunnel_pit_cd -= dt
 	if _tunnel_pit_cd <= 0.0:
-		_tunnel_pit_cd = 0.44
-		ground.warn_ring(pos, 15.0, 0.68, 1.0, "coral", "apricot", 0.0)
+		_tunnel_pit_cd = 0.54
+		ground.warn_ring(pos, 14.0, 0.70, 0.5, "coral", "apricot", 0.0)
 		stage.play_sfx("earth_burrow", pos)
 
 

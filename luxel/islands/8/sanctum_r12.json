@@ -74,7 +74,10 @@
         336
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "sanctum_seal_w",
+        "sanctum_seal_e"
+      ],
       "locked_door_id": "door_r12_to_r13"
     }
   ],
@@ -271,6 +274,25 @@
       "props": {
         "zone": "sanctum_r12",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r12_to_r13_seal",
+      "kind": "door",
+      "pos": [
+        8,
+        80
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_seal_w",
+          "sanctum_seal_e"
+        ]
       }
     }
   ],
@@ -539,6 +561,11 @@
         "op": "expect_exit",
         "exit": "exit_sanctum_r12_nw"
       }
-    ]
+    ],
+    "start": {
+      "flags": [
+        "sanctum_seal_w"
+      ]
+    }
   }
 }

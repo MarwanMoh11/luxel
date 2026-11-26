@@ -53,14 +53,14 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl5_boss_minor_p1"
 	music_p2_cue = "isl5_boss_minor_p2"
-	max_hp = 108.0
-	hp = 108.0
+	max_hp = 136.0
+	hp = 136.0
 	body_radius = 12.0
-	move_speed = 46.0
+	move_speed = 44.0
 	phase_shift_duration = 0.90
 	stagger_threshold = 13.0
 	stagger_duration = 1.45
-	post_recover_cd = 0.24
+	post_recover_cd = 0.42
 	shard_drop = 32
 
 
@@ -69,77 +69,77 @@ func _exit_tree() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	max_hp = 112.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = 136.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	hp = max_hp
 	configure_phases([0.75, 0.50, 0.25]) # 4 Bodies: Ram(1), Scales(2), Archer(3), Serpent(4)
 
 	# Shared All-Phase Attack: Constellation Flare (star pillars + perimeter pressure across all 8 spots!)
 	register_attack("constellation_flare", {
-		"weight": 0.90, "tell": 0.56, "commit": 0.36, "recover": 0.92, "cooldown": 1.85,
+		"weight": 0.72, "tell": 0.60, "commit": 0.36, "recover": 1.05, "cooldown": 2.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var pts: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
 			if phase >= 3:
 				pts.append(arena_rect.get_center().lerp(tgt, 0.55))
-			patterns.emit_pillars(pts, last_tell_duration, 17.0, 0.35, 1.0, "gold")
+			patterns.emit_pillars(pts, last_tell_duration, 15.5, 0.32, 0.5, "gold")
 			stage.play_sfx("star_ignite", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var ang: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing
-			patterns.emit_gap_ring(pos, 10 + phase, 114.0 + float(phase) * 5.0, ang + 0.50, 0.76, {"color": "gold", "source": "zodiac_flare"})
+			patterns.emit_gap_ring(pos, 8 + phase, 102.0 + float(phase) * 4.0, ang + 0.50, 1.05, {"color": "gold", "source": "zodiac_flare", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("zodiac_chord", pos),
 	})
 
 	# ---- BODY 1 (P1): THE RAM (0 deg, Horn Arena) ----
 	register_attack("horn_charge", {
-		"phases": [1], "weight": 1.60, "tell": 0.55, "commit": 0.44, "recover": 1.00, "cooldown": 0.95,
+		"phases": [1], "weight": 1.85, "tell": 0.58, "commit": 0.44, "recover": 1.08, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 138.0), 12.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("star_ignite", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			_charge_vel = _aim_dir * 238.0
+			_charge_vel = _aim_dir * 224.0
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			var prev_p: Vector2 = pos
 			move_boss(_charge_vel * dt, false)
-			check_contact_damage(body_radius + 7.0, _aim_dir, 1.0, "ram_horn")
+			check_contact_damage(body_radius + 5.5, _aim_dir, 0.5, "ram_horn")
 			if prev_p.distance_to(pos) < _charge_vel.length() * dt * 0.35:
-				patterns.emit_fan(pos, -_aim_dir, 5, 1.05, 116.0, {"color": "gold", "source": "ram_sparks"})
+				patterns.emit_fan(pos, -_aim_dir, 4, 1.05, 104.0, {"color": "gold", "source": "ram_sparks", "damage": 0.5})
 				stage.shake(0.18),
 	})
 
 	register_attack("star_stamp", {
-		"phases": [1], "weight": 1.50, "tell": 0.58, "commit": 0.36, "recover": 0.95, "cooldown": 1.00,
+		"phases": [1], "weight": 1.80, "tell": 0.62, "commit": 0.36, "recover": 1.05, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt), arena_rect.get_center()]
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "apricot", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "apricot", "gold")
 			stage.play_sfx("bellkeeper_slam_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_fan(pos, aim, 5, 0.85, 134.0, {"color": "apricot", "source": "ram_stamp"})
+			patterns.emit_fan(pos, aim, 4, 0.92, 114.0, {"color": "apricot", "source": "ram_stamp", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("bellkeeper_slam_fire", pos),
 	})
 
 	# ---- BODY 2 (P2): THE SCALES (90 deg, Twin-Pan Arena) ----
 	register_attack("counterweight_beam", {
-		"phases": [2], "weight": 1.65, "tell": 0.72, "commit": 0.42, "recover": 1.00, "cooldown": 1.00,
+		"phases": [2], "weight": 1.85, "tell": 0.78, "commit": 0.42, "recover": 1.08, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
 			var to_c: Vector2 = (c - tgt).normalized() if tgt.distance_to(c) > 4.0 else Vector2.RIGHT
 			var s1: Vector2 = clamp_to_arena(tgt + to_c * 44.0)
 			var s2: Vector2 = _scales_pan_r if tgt.x < c.x else _scales_pan_l
-			ground.warn_safe_inversion(arena_rect, [s1, clamp_to_arena(s2)], 28.0, last_tell_duration, 0.26, 1.0, "gold", "plum")
+			ground.warn_safe_inversion(arena_rect, [s1, clamp_to_arena(s2)], 34.0, last_tell_duration, 0.22, 0.5, "gold", "plum")
 			stage.play_sfx("star_bell_turn", c),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var c: Vector2 = arena_rect.get_center()
-			patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 8.0), Vector2.DOWN, arena_rect.size.x - 28.0, 9, 4, 2, 114.0, {"color": "gold", "source": "scales_beam"})
+			patterns.emit_sweep_wall(Vector2(c.x, arena_rect.position.y + 8.0), Vector2.DOWN, arena_rect.size.x - 28.0, 9, 4, 3, 102.0, {"color": "gold", "source": "scales_beam", "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("eclipse_wave", pos),
 	})
 
 	register_attack("fulcrum_swing", {
-		"phases": [2], "weight": 1.55, "tell": 0.56, "commit": 0.40, "recover": 0.95, "cooldown": 0.95,
+		"phases": [2], "weight": 1.80, "tell": 0.60, "commit": 0.40, "recover": 1.05, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			ground.warn_lane(_scales_pan_l, _scales_pan_r, 8.0, last_tell_duration, 0.0, "ice", "gold")
@@ -147,45 +147,45 @@ func _configure_boss(spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d1: Vector2 = (tgt - _scales_pan_l).normalized() if tgt.distance_to(_scales_pan_l) > 0.1 else Vector2.RIGHT
 			var d2: Vector2 = (tgt - _scales_pan_r).normalized() if tgt.distance_to(_scales_pan_r) > 0.1 else Vector2.LEFT
-			patterns.emit_fan(_scales_pan_l, d1, 3, 0.55, 130.0, {"color": "gold", "source": "scales_pan"})
-			patterns.emit_fan(_scales_pan_r, d2, 3, 0.55, 130.0, {"color": "ice", "source": "scales_pan"})
-			patterns.emit_orbit(pos, 4, 42.0, 2.2, 2.0, {"color": "gold", "source": "fulcrum_orb"})
+			patterns.emit_fan(_scales_pan_l, d1, 3, 0.65, 114.0, {"color": "gold", "source": "scales_pan", "damage": 0.5})
+			patterns.emit_fan(_scales_pan_r, d2, 3, 0.65, 114.0, {"color": "ice", "source": "scales_pan", "damage": 0.5})
+			patterns.emit_orbit(pos, 3, 42.0, 2.0, 1.8, {"color": "gold", "source": "fulcrum_orb", "damage": 0.5})
 			stage.play_sfx("orrery_beam_bolt", pos),
 	})
 
 	# ---- BODY 3 (P3): THE ARCHER (180 deg, Bow-Arc Arena + Gravity Well!) ----
 	register_attack("curved_star_volley", {
-		"phases": [3], "weight": 1.65, "tell": 0.58, "commit": 0.42, "recover": 1.00, "cooldown": 0.95,
+		"phases": [3], "weight": 1.85, "tell": 0.60, "commit": 0.42, "recover": 1.08, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 145.0), 9.0, last_tell_duration, 0.0, "sky", "cream")
 			stage.play_sfx("i5b_gravity_curve", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			patterns.emit_fan(pos, aim, 3, 0.72, 134.0, {"color": "sky", "source": "archer_arrow", "field_scale": 1.25})
-			patterns.emit_boomerang(pos, aim.rotated(0.42), 138.0, 0.65, 0.85, {"color": "ice", "source": "archer_curve", "field_scale": 1.15})
+			patterns.emit_fan(pos, aim, 3, 0.78, 118.0, {"color": "sky", "source": "archer_arrow", "field_scale": 1.25, "damage": 0.5})
+			patterns.emit_boomerang(pos, aim.rotated(0.42), 120.0, 0.65, 0.85, {"color": "ice", "source": "archer_curve", "field_scale": 1.15, "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("star_lance", pos),
 	})
 
 	register_attack("bowstring_snap", {
-		"phases": [3], "weight": 1.55, "tell": 0.62, "commit": 0.38, "recover": 1.05, "cooldown": 1.05,
+		"phases": [3], "weight": 1.80, "tell": 0.64, "commit": 0.38, "recover": 1.12, "cooldown": 0.95,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration, 21.0, 1.0, "sky", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "sky", "gold")
 			stage.play_sfx("orrery_bell_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var perp: Vector2 = ((tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.RIGHT).orthogonal()
 			var p1: Vector2 = clamp_to_arena(pos + perp * 68.0)
 			var p2: Vector2 = clamp_to_arena(pos - perp * 68.0)
-			patterns.emit_chain_lightning([p1, pos, p2], 0.50, 7.5, 0.22, 1.0)
-			patterns.emit_lane(pos, (tgt - pos).normalized(), 2, 142.0, 0.10, {"color": "ice", "source": "bowstring_shot", "field_scale": 1.20})
+			patterns.emit_chain_lightning([p1, pos, p2], 0.54, 7.0, 0.22, 0.5)
+			patterns.emit_lane(pos, (tgt - pos).normalized(), 2, 124.0, 0.11, {"color": "ice", "source": "bowstring_shot", "field_scale": 1.20, "damage": 0.5})
 			stage.play_sfx("star_lance", pos),
 	})
 
 	# ---- BODY 4 (P4): THE SERPENT (270 deg, S-Curve Arena + Star Tail Segments!) ----
 	register_attack("ouroboros_slither", {
-		"phases": [4], "weight": 1.65, "tell": 0.52, "commit": 0.62, "recover": 1.05, "cooldown": 0.95,
+		"phases": [4], "weight": 1.85, "tell": 0.56, "commit": 0.62, "recover": 1.12, "cooldown": 0.90,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 136.0), 11.0, last_tell_duration, 0.0, "coral", "gold")
@@ -196,21 +196,21 @@ func _configure_boss(spec: Dictionary) -> void:
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, elapsed: float) -> void:
 			_serpent_t += dt * 9.0
 			var perp: Vector2 = _aim_dir.orthogonal()
-			var step_v: Vector2 = (_aim_dir * 182.0 + perp * sin(_serpent_t) * 84.0) * dt
+			var step_v: Vector2 = (_aim_dir * 172.0 + perp * sin(_serpent_t) * 78.0) * dt
 			move_boss(step_v, true)
-			check_contact_damage(body_radius + 6.0, _aim_dir, 1.0, "serpent_slither")
+			check_contact_damage(body_radius + 5.0, _aim_dir, 0.5, "serpent_slither")
 			if int(elapsed * 4.0) != int((elapsed - dt) * 4.0):
-				ground.add_hazard_circle(pos, 9.0, 0.72, 1.0, "coral"),
+				ground.add_hazard_circle(pos, 8.5, 0.65, 0.5, "coral"),
 	})
 
 	register_attack("venom_spiral", {
-		"phases": [4], "weight": 1.55, "tell": 0.60, "commit": 0.44, "recover": 1.08, "cooldown": 1.05,
+		"phases": [4], "weight": 1.80, "tell": 0.64, "commit": 0.44, "recover": 1.15, "cooldown": 0.95,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			ground.warn_ring(clamp_to_arena(tgt), 21.0, last_tell_duration, 1.0, "coral", "ice")
+			ground.warn_ring(clamp_to_arena(tgt), 18.0, last_tell_duration, 0.5, "coral", "ice")
 			stage.play_sfx("zodiac_chord", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 4, 108.0, (tgt - pos).angle(), 0.42, 2, 0.16, {"color": "coral", "source": "serpent_venom"})
-			patterns.emit_expanding_square(pos, 2, 94.0, anim_t, 1, {"color": "gold", "source": "serpent_star"})
+			patterns.emit_spiral(pos, 3, 98.0, (tgt - pos).angle(), 0.45, 2, 0.18, {"color": "coral", "source": "serpent_venom", "damage": 0.5})
+			patterns.emit_expanding_square(pos, 2, 88.0, anim_t, 1, {"color": "gold", "source": "serpent_star", "damage": 0.5})
 			stage.shake(0.18)
 			stage.play_sfx("eclipse_wave", pos),
 	})

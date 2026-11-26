@@ -52,25 +52,25 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 192.0
-	hp = 192.0
+	max_hp = 180.0
+	hp = 180.0
 	body_radius = 10.0
 	move_speed = 44.0
-	stagger_threshold = 22.0
+	stagger_threshold = 20.0
 	stagger_duration = 1.75
-	post_recover_cd = 0.34
+	post_recover_cd = 0.42
 	shard_drop = 65
 	death_duration = 2.4
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	max_hp = 192.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = 180.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	hp = max_hp
 	configure_phases([0.66, 0.33])
 
 	# Attack 1: Twin-Shear Lunge (84 px sweeping cross-shear slash)
 	register_attack("twin_shear_lunge", {
-		"weight": 1.25, "tell": 0.58, "commit": 0.38, "recover": 1.15, "cooldown": 1.5,
+		"weight": 1.25, "tell": 0.60, "commit": 0.38, "recover": 1.18, "cooldown": 1.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_lunge_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = _lunge_dir.angle()
@@ -78,42 +78,42 @@ func _configure_boss(spec: Dictionary) -> void:
 			ground.warn_lane(pos, end_p, 12.0, last_tell_duration, 0.0, "rose", "gold")
 			stage.play_sfx("shear_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _lunge_dir, 3, 0.65, 96.0, {"color": "rose", "source": "twin_shear_lunge"})
+			patterns.emit_fan(pos, _lunge_dir, 3, 0.68, 90.0, {"color": "rose", "source": "twin_shear_lunge", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("topiary_cleave", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			move_boss(_lunge_dir * (LUNGE_DIST / 0.38) * dt, false)
-			check_contact_damage(15.0, _lunge_dir, 1.0, "twin_shear_lunge"),
+			check_contact_damage(14.5, _lunge_dir, 1.0, "twin_shear_lunge"),
 	})
 
 	# Attack 2: Rose-Thorn Arc (petal spread + corner-pressuring thorn rain)
 	register_attack("rose_thorn_arc", {
-		"weight": 1.15, "tell": 0.58, "commit": 0.28, "recover": 1.05, "cooldown": 1.65,
+		"weight": 1.15, "tell": 0.60, "commit": 0.28, "recover": 1.10, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			facing = d.angle()
 			ground.warn_sector(pos, d.angle() - 0.72, d.angle() + 0.72, 102.0, last_tell_duration, 0.0, "wine", "rose")
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration + 0.12, 18.0, 1.0, "rose", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.12, 16.5, 0.5, "rose", "gold")
 			stage.play_sfx("warden_windup", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			var cnt: int = 4 if phase >= 2 else 3
-			patterns.emit_fan(pos, d, cnt, 1.10, 92.0 if phase >= 3 else 86.0, {"color": "rose", "source": "rose_thorn_arc"})
+			patterns.emit_fan(pos, d, cnt, 1.12, 88.0 if phase >= 3 else 82.0, {"color": "rose", "source": "rose_thorn_arc", "damage": 0.5})
 			stage.play_sfx("petal_lunge", pos),
 	})
 
 	# Attack 3: Memory Lantern (rose halo recording Wick's past + hourglass ring)
 	register_attack("memory_lantern", {
-		"weight": 1.10, "tell": 0.72, "commit": 0.36, "recover": 1.12, "cooldown": 2.2,
+		"weight": 1.10, "tell": 0.74, "commit": 0.36, "recover": 1.16, "cooldown": 2.3,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			ground.warn_ring(pos, 48.0, last_tell_duration, 0.0, "rose", "cream")
 			var drops: Array[Vector2] = [clamp_to_arena(tgt), _nearest_corner(tgt)]
-			patterns.emit_rain(ground, drops, last_tell_duration + 0.10, 18.0, 1.0, "gold", "rose")
+			patterns.emit_rain(ground, drops, last_tell_duration + 0.10, 16.5, 0.5, "gold", "rose")
 			stage.play_sfx("gardener_record", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() + 0.48
-			patterns.emit_gap_ring(pos, 8, 96.0, gap_a, 1.05, {"color": "gold", "source": "memory_lantern"})
+			patterns.emit_gap_ring(pos, 8, 90.0, gap_a, 1.20, {"color": "gold", "source": "memory_lantern", "damage": 0.5})
 			if _echo_active:
 				_fire_echo_gardener_volley(tgt)
 			stage.light_burst(pos, 86.0, 1.35, 0.32)
@@ -122,7 +122,7 @@ func _configure_boss(spec: Dictionary) -> void:
 
 	# Attack 4 (Phase 2 & 3): Pruned Scissor Cross — Present & Echo Gardener converge; clash = 2.4s Stagger!
 	register_attack("pruned_scissor_cross", {
-		"phases": [2, 3], "weight": 1.40, "tell": 0.68, "commit": 0.40, "recover": 1.25, "cooldown": 2.5,
+		"phases": [2, 3], "weight": 1.40, "tell": 0.70, "commit": 0.40, "recover": 1.28, "cooldown": 2.6,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_cross_clashed = false
 			var meet: Vector2 = clamp_to_arena(tgt)
@@ -149,7 +149,7 @@ func _configure_boss(spec: Dictionary) -> void:
 					_trigger_cloche_stagger(CLASH_STAGGER_S, "gardener_clash")
 				elif _has_player() and _echo_pos.distance_to(_get_wick_pos()) <= 13.0 and not _commit_hit_done:
 					_commit_hit_done = true
-					emit_boss_damage((_cross_echo_to - _cross_echo_from).normalized(), 1.0, "pruned_scissor_cross", _echo_pos, true),
+					emit_boss_damage((_cross_echo_to - _cross_echo_from).normalized(), 0.5, "pruned_scissor_cross", _echo_pos, true),
 	})
 
 
@@ -265,27 +265,27 @@ func _tick_echo_gardener(dt: float, target: Vector2) -> void:
 
 	# Replay Wick's recorded shots ONLY during READY pauses (so Echo never dogpiles a Present commit!)
 	if not shot_trigger.is_empty() and _echo_shot_cd <= 0.0 and boss_state == BossState.READY:
-		_echo_shot_cd = 4.8
+		_echo_shot_cd = 5.2
 		var sdir: Vector2 = (shot_trigger["facing"] as Vector2).normalized()
-		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.54, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
+		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + sdir * 120.0), 6.0, 0.56, 0.0, "rose", "cream", 0.0, func(_d: Dictionary) -> void:
 			if boss_state != BossState.DEATH and _echo_active:
-				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 92.0, {"color": "rose", "source": "echo_gardener_bolt"})
+				patterns.emit_fan(_echo_pos, sdir, 1, 0.0, 88.0, {"color": "rose", "source": "echo_gardener_bolt", "damage": 0.5})
 				stage.play_sfx("bolt_fire", _echo_pos)
 		)
 	elif _echo_shot_cd <= 0.0 and _echo_dash_cd <= 0.0 and boss_state == BossState.READY and _rec_clock > 8.0:
 		# Fallback if Wick fired 0 bolts: telegraphed Rose Shear-Dash from Echo Gardener
-		_echo_dash_cd = 5.5
+		_echo_dash_cd = 6.0
 		var d: Vector2 = (target - _echo_pos).normalized() if target.distance_to(_echo_pos) > 1.0 else _echo_facing
-		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + d * 80.0), 9.0, 0.56, 0.0, "rose", "gold", 0.0, func(_d: Dictionary) -> void:
+		ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + d * 80.0), 9.0, 0.58, 0.0, "rose", "gold", 0.0, func(_d: Dictionary) -> void:
 			if boss_state != BossState.DEATH and _echo_active:
-				patterns.emit_fan(_echo_pos, d, 2, 0.36, 98.0, {"color": "rose", "source": "echo_shear_dash"})
+				patterns.emit_fan(_echo_pos, d, 2, 0.36, 92.0, {"color": "rose", "source": "echo_shear_dash", "damage": 0.5})
 				stage.play_sfx("petal_echo", _echo_pos)
 		)
 
 
 func _fire_echo_gardener_volley(tgt: Vector2) -> void:
 	var d: Vector2 = (tgt - _echo_pos).normalized() if tgt.distance_to(_echo_pos) > 1.0 else _echo_facing
-	patterns.emit_fan(_echo_pos, d, 1, 0.0, 98.0, {"color": "rose", "source": "echo_gardener_bolt"})
+	patterns.emit_fan(_echo_pos, d, 1, 0.0, 92.0, {"color": "rose", "source": "echo_gardener_bolt", "damage": 0.5})
 
 
 func _check_mirror_reflections() -> void:
@@ -327,7 +327,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 		return dmg
 	if not is_punishable():
 		# Intact glass bell-jar cloche wards off unfocused bolts; Beam pierces, recover & cloche break pay big!
-		return dmg * 0.38
+		return dmg * 0.40
 	return dmg
 
 

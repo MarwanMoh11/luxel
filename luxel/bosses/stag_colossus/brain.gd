@@ -11,7 +11,7 @@ extends LxBossBase
 ##     shooting a Dew Lens or banking Prism off its shell triggers Overheat Stagger!
 
 const CHARGE_SPEED: float = 230.0
-const FLIP_STAGGER_S: float = 1.70
+const FLIP_STAGGER_S: float = 1.45
 const OVERHEAT_STAGGER_S: float = 1.50
 const CLEAVE_R: float = 46.0
 const FRONT_SHELL_HALF: float = 1.15
@@ -34,15 +34,15 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 64.0
-	hp = 64.0
+	max_hp = 71.0
+	hp = 71.0
 	body_radius = 12.5
 	move_speed = 38.0
-	stagger_threshold = 26.0
+	stagger_threshold = 28.0
 	stagger_duration = FLIP_STAGGER_S
-	post_stagger_immunity = 6.5
+	post_stagger_immunity = 8.5
 	punish_dmg_mult = 1.15
-	post_recover_cd = 0.34
+	post_recover_cd = 0.36
 	shard_drop = 18
 	death_duration = 2.2
 
@@ -72,7 +72,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				_trigger_flip_stagger()
 				return
 			if phase >= 2 and int(elapsed * 5.0) != int((elapsed - dt) * 5.0):
-				ground.add_hazard_circle(pos, 10.0, 1.1, 1.0, "apricot"),
+				ground.add_hazard_circle(pos, 10.0, 1.1, 0.5, "apricot"),
 	})
 
 	# Attack 2: Pincer Cleave (tell 0.56s, commit 0.28s, recover 1.15s)
@@ -86,7 +86,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("stag_horn_scrape", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _cleave_dir
-			patterns.emit_fan(pos, aim, 3, 0.56, 126.0 if phase >= 2 else 116.0, {"color": "apricot", "source": "stag_cleave"})
+			patterns.emit_fan(pos, aim, 3, 0.62, 118.0 if phase >= 2 else 110.0, {"color": "apricot", "source": "stag_cleave", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, _el: float) -> void:
@@ -94,7 +94,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				var rel: Vector2 = tgt - pos
 				if rel.length() <= CLEAVE_R and absf(angle_difference(_cleave_dir.angle(), rel.angle())) <= 1.00:
 					_commit_hit_done = true
-					emit_boss_damage(rel.normalized(), 1.0, "stag_cleave", pos, true),
+					emit_boss_damage(rel.normalized(), 0.5, "stag_cleave", pos, true),
 	})
 
 	# Attack 3: Acorn Hail (tell 0.68s, commit 0.68s, recover 1.25s — pressures corners & edges!)
@@ -103,17 +103,17 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_acorn_wave_done = false
 			var drops: Array[Vector2] = _build_acorn_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 21.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 19.0, 0.5, "coral", "gold")
 			stage.play_sfx("golem_stomp", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_gap_ring(pos, 8, 108.0, aim.angle() + 0.55, 0.88, {"color": "gold", "source": "stag_acorn"})
+			patterns.emit_gap_ring(pos, 8, 102.0, aim.angle() + 0.55, 0.92, {"color": "gold", "source": "stag_acorn", "damage": 0.5})
 			stage.shake(0.18),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, elapsed: float) -> void:
 			if phase >= 2 and not _acorn_wave_done and elapsed >= 0.34:
 				_acorn_wave_done = true
 				var aim2: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.RIGHT
-				patterns.emit_lane(pos, aim2, 1, 134.0, 0.10, {"color": "coral", "source": "stag_acorn"}),
+				patterns.emit_lane(pos, aim2, 1, 126.0, 0.10, {"color": "coral", "source": "stag_acorn", "damage": 0.5}),
 	})
 
 	# Attack 4 (P2): Mirror Prism Flare (reflects sun-shards across arena)
@@ -127,8 +127,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("prism_chain", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_gap_ring(pos, 9, 112.0, aim.angle() + 0.60, 0.88, {"color": "ice", "source": "stag_mirror"})
-			patterns.emit_boomerang(pos, aim, 122.0, 0.65, 0.44, {"color": "sky", "source": "stag_mirror"})
+			patterns.emit_gap_ring(pos, 9, 106.0, aim.angle() + 0.60, 0.92, {"color": "ice", "source": "stag_mirror", "damage": 0.5})
+			patterns.emit_boomerang(pos, aim, 114.0, 0.65, 0.44, {"color": "sky", "source": "stag_mirror", "damage": 0.5})
 			stage.shake(0.16),
 	})
 
@@ -227,18 +227,18 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if hit == null:
 		return dmg
 	if _flipped or boss_state == BossState.STAGGER:
-		return dmg * 1.05
+		return dmg * 0.95
 	if hit.source == LxHit.SOURCE_PRISM or hit.source == LxHit.SOURCE_BEAM or hit.source == "dew_ray":
 		return dmg * 1.15
 	if boss_state == BossState.RECOVER:
-		return dmg * 0.54
+		return dmg * 0.44
 	var rel: Vector2 = hit.origin - pos
 	var from_front: bool = rel.length() > 0.01 and absf(angle_difference(facing, rel.angle())) < FRONT_SHELL_HALF + 0.20
 	if from_front:
 		clank_t = 0.12
 		stage.play_sfx("burrow_beetle_clank", pos)
-		return dmg * 0.16
-	return dmg * 0.36
+		return dmg * 0.14
+	return dmg * 0.28
 
 
 func _build_acorn_targets(tgt: Vector2) -> Array[Vector2]:

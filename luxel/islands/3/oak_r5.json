@@ -54,7 +54,9 @@
       "requires_moves": [
         "beam"
       ],
-      "requires_flags": [],
+      "requires_flags": [
+        "oak_r5b_solved"
+      ],
       "locked_door_id": "door_oak_r5_shutter"
     },
     {
@@ -349,6 +351,24 @@
         "string_id": "ISL3_LORE_OAK_R5",
         "icon": "sun"
       }
+    },
+    {
+      "id": "door_oak_r5_r5b_seal",
+      "kind": "door",
+      "pos": [
+        440,
+        88
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "oak_r5b_solved"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -517,6 +537,9 @@
         "dash",
         "throw",
         "prism"
+      ],
+      "flags": [
+        "oak_r5b_solved"
       ]
     },
     "solution": [

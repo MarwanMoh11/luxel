@@ -51,14 +51,14 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 116.0
-	hp = 116.0
+	max_hp = 120.0
+	hp = 120.0
 	body_radius = 11.0
 	move_speed = 42.0
 	stagger_threshold = 15.0
 	stagger_duration = 1.55
 	punish_dmg_mult = 1.40
-	post_recover_cd = 0.32
+	post_recover_cd = 0.38
 	shard_drop = 32
 	intro_duration = 0.75
 	phase_shift_duration = 0.80
@@ -74,25 +74,25 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Brine Cleaver (wide coral cleaver sector + shell fan)
 	register_attack("brine_cleaver", {
-		"weight": 1.20, "tell": 0.54, "commit": 0.26, "recover": 1.15, "cooldown": 1.45,
+		"weight": 1.20, "tell": 0.56, "commit": 0.26, "recover": 1.15, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			ground.warn_sector(pos, _aim_dir.angle() - 0.95, _aim_dir.angle() + 0.95, 58.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_sector(pos, _aim_dir.angle() - 0.95, _aim_dir.angle() + 0.95, 58.0, last_tell_duration, 0.5, "coral", "gold")
 			ground.warn_lane(pos, clamp_to_arena(pos + _aim_dir * 124.0), 8.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("crab_shell_clank", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.82, 144.0, {"color": "coral", "source": "brine_cleave", "field_scale": 0.85})
+			patterns.emit_fan(pos, _aim_dir, 5 if phase >= 2 else 3, 0.86, 130.0, {"color": "coral", "source": "brine_cleave", "field_scale": 0.85, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("crab_shell_clank", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			move_boss(_aim_dir * 108.0 * dt, false)
-			check_contact_damage(body_radius + 11.0, _aim_dir, 1.0, "brine_cleaver"),
+			check_contact_damage(body_radius + 11.0, _aim_dir, 0.5, "brine_cleaver"),
 	})
 
 	# Attack 2: Bilge Portal Snipe (glows exit portal & snipes blue lane through portal!)
 	register_attack("bilge_portal_snipe", {
-		"weight": 1.25, "tell": 0.58, "commit": 0.24, "recover": 1.10, "cooldown": 1.45,
+		"weight": 1.25, "tell": 0.60, "commit": 0.24, "recover": 1.10, "cooldown": 1.55,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var ex_i: int = _pick_portal_nearest(tgt)
 			_portal_glow_idx = ex_i
@@ -105,7 +105,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var ex_p: Vector2 = _portals[_portal_glow_idx] if (_portal_glow_idx >= 0 and _portal_glow_idx < _portals.size()) else _bilge_pos
 			var s_dir: Vector2 = (tgt - ex_p).normalized() if tgt.distance_to(ex_p) > 2.0 else Vector2.LEFT
-			patterns.emit_lane(ex_p, s_dir, 4 if phase >= 2 else 3, 138.0, 0.09, {"color": "sky", "source": "bilge_snipe", "field_scale": 0.65})
+			patterns.emit_lane(ex_p, s_dir, 4 if phase >= 2 else 3, 126.0, 0.10, {"color": "sky", "source": "bilge_snipe", "field_scale": 0.65, "damage": 0.5})
 			# Bilge warps to the opposite portal!
 			if _portals.size() >= 4:
 				_bilge_pos = _portals[(_portal_glow_idx + 2) % _portals.size()]
@@ -115,22 +115,22 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 3: Twin Lock Volley (pressures Wick + perimeter corners so zero safe spots!)
 	register_attack("twin_lock_volley", {
-		"weight": 1.15, "tell": 0.56, "commit": 0.30, "recover": 1.05, "cooldown": 1.5,
+		"weight": 1.15, "tell": 0.58, "commit": 0.30, "recover": 1.08, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 22.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, _perimeter_targets(tgt), last_tell_duration, 19.0, 0.5, "coral", "gold")
 			stage.play_sfx("tide_surge", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var d_br: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
 			var d_bi: Vector2 = (tgt - _bilge_pos).normalized() if tgt.distance_to(_bilge_pos) > 1.0 else Vector2.RIGHT
-			patterns.emit_fan(pos, d_br, 3 if phase < 3 else 5, 0.65, 136.0, {"color": "coral", "source": "brine_volley", "field_scale": 0.8})
-			patterns.emit_fan(_bilge_pos, d_bi, 3 if phase < 3 else 5, 0.65, 136.0, {"color": "sky", "source": "bilge_volley", "field_scale": 0.8})
+			patterns.emit_fan(pos, d_br, 3 if phase < 3 else 4, 0.72, 124.0, {"color": "coral", "source": "brine_volley", "field_scale": 0.8, "damage": 0.5})
+			patterns.emit_fan(_bilge_pos, d_bi, 3 if phase < 3 else 4, 0.72, 124.0, {"color": "sky", "source": "bilge_volley", "field_scale": 0.8, "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("barnacle_fire", _bilge_pos),
 	})
 
 	# Attack 4 (P2/P3): Shield Swap (blue sea-glass shield arcs between twins — lantern knocks it down!)
 	register_attack("shield_swap", {
-		"phases": [2, 3], "weight": 1.45, "tell": 0.50, "commit": 0.30, "recover": 1.05, "cooldown": 1.7,
+		"phases": [2, 3], "weight": 1.45, "tell": 0.54, "commit": 0.30, "recover": 1.08, "cooldown": 1.80,
 		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			ground.warn_lane(pos, _bilge_pos, 9.0, last_tell_duration, 0.0, "ice", "cream")
 			stage.play_sfx("portal_swap_chime", pos.lerp(_bilge_pos, 0.5)),
@@ -141,14 +141,14 @@ func _configure_boss(_spec: Dictionary) -> void:
 				return
 			_shield_holder = "bilge" if _shield_holder == "brine" else "brine"
 			_shield_fly_u = 1.0
-			patterns.emit_gap_ring(mid, 12, 118.0, (tgt - mid).angle(), 0.75, {"color": "ice", "source": "shield_arc", "field_scale": 0.7})
+			patterns.emit_gap_ring(mid, 10, 108.0, (tgt - mid).angle(), 0.90, {"color": "ice", "source": "shield_arc", "field_scale": 0.7, "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("portal_swap_chime", mid),
 	})
 
 	# Attack 5 (P3): Portal Pincer (both twins charge through twin coral portals — dodge so they collide & bicker!)
 	register_attack("portal_pincer", {
-		"phases": [3], "weight": 1.65, "tell": 0.66, "commit": 0.38, "recover": 1.35, "cooldown": 1.75,
+		"phases": [3], "weight": 1.65, "tell": 0.68, "commit": 0.38, "recover": 1.35, "cooldown": 1.80,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_pincer_mid = clamp_to_arena(tgt)
 			_pincer_hit = false
@@ -159,12 +159,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_bilge_pos = flank_e
 			ground.warn_ring(flank_w, 16.0, last_tell_duration, 0.0, "coral", "gold")
 			ground.warn_ring(flank_e, 16.0, last_tell_duration, 0.0, "coral", "sky")
-			ground.warn_lane(flank_w, flank_e, 13.0, last_tell_duration, 1.0, "coral", "gold")
+			ground.warn_lane(flank_w, flank_e, 13.0, last_tell_duration, 0.5, "coral", "gold")
 			stage.play_sfx("portal_swap_chime", _pincer_mid),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, dt: float, el: float) -> void:
 			move_boss((_pincer_mid - pos).normalized() * 145.0 * dt, true)
 			_bilge_pos = clamp_to_arena(_bilge_pos.move_toward(_pincer_mid, 145.0 * dt))
-			if check_contact_damage(body_radius + 10.0, (_pincer_mid - pos).normalized(), 1.0, "pincer_brine"):
+			if check_contact_damage(body_radius + 10.0, (_pincer_mid - pos).normalized(), 0.5, "pincer_brine"):
 				_pincer_hit = true
 			if not _pincer_hit and el >= 0.30 and pos.distance_to(_bilge_pos) <= 28.0:
 				if tgt.distance_to(_pincer_mid) > 22.0:

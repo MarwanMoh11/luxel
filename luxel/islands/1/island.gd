@@ -28,6 +28,7 @@ const OUTDOOR_RELIT_REGIONS: PackedStringArray = [
 const TutorialCuesScript := preload("res://luxel/islands/1/tutorial_cues.gd")
 const RuleScript := preload("res://luxel/islands/1/rule.gd")
 const RelitFxScript := preload("res://luxel/islands/1/overworld/ow_relit_fx.gd")
+const LaunchPadScript := preload("res://luxel/islands/1/overworld/ow_launch_pad.gd")
 
 var _events: LxEventBus = null
 var _state: LxGameState = null
@@ -36,6 +37,7 @@ var _r4_kills: int = 0
 var _tutorial_cues: Node2D = null
 var _rule: LxIsland1Rule = null
 var _relit_fx: Node2D = null
+var _launch_pad: Node2D = null
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -65,6 +67,7 @@ func detach() -> void:
 		_rule = null
 	_unmount_tutorial_cues()
 	_unmount_relit_fx()
+	_unmount_launch_pad()
 	if not _attached or _events == null:
 		_attached = false
 		return
@@ -92,17 +95,29 @@ func on_region_loaded(region_id: String) -> void:
 		_mark_belfry_entered()
 		_unmount_tutorial_cues()
 		_unmount_relit_fx()
+		_unmount_launch_pad()
 	elif region_id == "overworld":
 		_mount_tutorial_cues()
+		_mount_launch_pad()
 		_unmount_relit_fx()
 	else:
 		_unmount_tutorial_cues()
+		_unmount_launch_pad()
 		if OUTDOOR_RELIT_REGIONS.has(region_id):
 			_mount_relit_fx()
 		else:
 			_unmount_relit_fx()
 	if _rule != null:
 		_rule.on_region_loaded(region_id)
+
+
+func _mount_launch_pad() -> void:
+	_launch_pad = LaunchPadScript.mount_on(Lx.world, _launch_pad, LaunchPadScript)
+
+
+func _unmount_launch_pad() -> void:
+	LaunchPadScript.unmount_from(Lx.world, _launch_pad)
+	_launch_pad = null
 
 
 func _mount_relit_fx() -> void:
@@ -233,7 +248,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_glasshouse_magpies",
 			"region": "overworld",
 			"zone": "glasshouse",
-			"pos": [640.0, 548.0],
+			"pos": [576.0, 512.0],
 			"action": "clear_encounter",
 			"target": "snatcher_glasshouse_0",
 			"requires_moves": ["bolt", "dash", "throw"],
@@ -379,6 +394,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 	var st: LxGameState = _get_state()
 	if region_id == "overworld":
 		_mount_tutorial_cues()
+		_mount_launch_pad()
 		if Lx.root != null and int(Lx.root.get("flow")) == LxMain.Flow.INTRO:
 			return
 		if st != null and not bool(st.story_flags.get("isl1_arrived", false)):
@@ -388,7 +404,9 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 				_events.sfx_requested.emit("bell_toll", Vector2.ZERO, false)
 		if _events != null:
 			_events.music_mode_requested.emit("explore")
-	elif region_id == "belfry_r7":
+		return
+	_unmount_launch_pad()
+	if region_id == "belfry_r7":
 		_mark_belfry_entered()
 		_unmount_tutorial_cues()
 		if st != null and not st.defeated_bosses.has(BOSS_ID):

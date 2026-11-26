@@ -56,7 +56,11 @@
       "to_spawn": [
         456,
         240
-      ]
+      ],
+      "requires_flags": [
+        "mem_7_lit"
+      ],
+      "locked_door_id": "door_r11_north"
     },
     {
       "id": "exit_r11_east_short",
@@ -163,6 +167,24 @@
       "props": {
         "lit": true,
         "zone": "archive_errata"
+      }
+    },
+    {
+      "id": "door_r11_north",
+      "kind": "door",
+      "pos": [
+        208,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "mem_7_lit"
+        ]
       }
     }
   ],

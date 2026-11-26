@@ -49,7 +49,11 @@
       "to_spawn": [
         240,
         48
-      ]
+      ],
+      "requires_flags": [
+        "r3_shutter_open"
+      ],
+      "locked_door_id": "door_r9_south_sc"
     },
     {
       "id": "exit_r9_east",
@@ -63,7 +67,11 @@
       "to_spawn": [
         64,
         48
-      ]
+      ],
+      "requires_flags": [
+        "r4_cleared"
+      ],
+      "locked_door_id": "door_r9_east_sc"
     },
     {
       "id": "exit_r9_north",
@@ -303,6 +311,42 @@
       "props": {
         "zone": "belfry_escapement",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r9_south_sc",
+      "kind": "door",
+      "pos": [
+        240,
+        312
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "r3_shutter_open"
+        ]
+      }
+    },
+    {
+      "id": "door_r9_east_sc",
+      "kind": "door",
+      "pos": [
+        472,
+        168
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "r4_cleared"
+        ]
       }
     }
   ],

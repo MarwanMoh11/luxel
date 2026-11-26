@@ -224,6 +224,24 @@
       }
     },
     {
+      "id": "reset_r7_ice2",
+      "kind": "timed_brazier",
+      "pos": [
+        264,
+        232
+      ],
+      "props": {
+        "secs": 3.0,
+        "reset": true,
+        "allow_interact": true,
+        "target_ids": [
+          "block_r7_ice1",
+          "block_r7_ice2",
+          "echo_r7_mid"
+        ]
+      }
+    },
+    {
       "id": "plate_r7_2",
       "kind": "pressure_plate",
       "pos": [
@@ -554,6 +572,10 @@
         "timeout": 60.0
       },
       {
+        "op": "interact",
+        "target": "reset_r7_ice2"
+      },
+      {
         "op": "goto",
         "to": [
           216,
@@ -575,7 +597,7 @@
       },
       {
         "op": "wait",
-        "secs": 3.0
+        "secs": 4.5
       },
       {
         "op": "interact",

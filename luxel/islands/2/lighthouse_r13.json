@@ -76,8 +76,10 @@
       ],
       "one_way": true,
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "relay_f1"
+      ],
+      "locked_door_id": "door_lh_r13_chute_sc"
     }
   ],
   "enemies": [
@@ -314,6 +316,24 @@
       "props": {
         "zone": "lh_r13",
         "lit": true
+      }
+    },
+    {
+      "id": "door_lh_r13_chute_sc",
+      "kind": "door",
+      "pos": [
+        352,
+        280
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "relay_f1"
+        ]
       }
     }
   ],

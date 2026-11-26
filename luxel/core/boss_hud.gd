@@ -173,6 +173,16 @@ static func handle_boss_phase_changed(boss_id: String, phase: int) -> void:
 static func handle_boss_defeated(boss_id: String, isl: int, region_loader: Node) -> void:
 	var bmeta: Dictionary = Lx.packs.boss_meta(boss_id) if Lx.packs != null else {}
 	var canon: String = str(bmeta.get("id", boss_id))
+	var bm_reg: String = str(bmeta.get("region", "")).strip_edges()
+	var cur_reg: String = str(region_loader.get("current_region_id")) if region_loader != null else ""
+	var is_earlier_gauntlet_room: bool = (
+		not bm_reg.is_empty()
+		and not cur_reg.is_empty()
+		and cur_reg != bm_reg
+		and cur_reg.begins_with(bm_reg.get_slice("_", 0) + "_")
+	)
+	if is_earlier_gauntlet_room:
+		return
 	if not Lx.state.defeated_bosses.has(canon):
 		Lx.state.defeated_bosses.append(canon)
 	var bflag: String = str(bmeta.get("flag", ""))

@@ -67,7 +67,11 @@
       "to_spawn": [
         496,
         288
-      ]
+      ],
+      "requires_flags": [
+        "uc_backdoor_open"
+      ],
+      "locked_door_id": "door_vg_uc_back"
     },
     {
       "id": "exit_vg_whisper",
@@ -303,6 +307,24 @@
       "props": {
         "zone": "vesper_graveyard",
         "lit": true
+      }
+    },
+    {
+      "id": "door_vg_uc_back",
+      "kind": "door",
+      "pos": [
+        160,
+        456
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "uc_backdoor_open"
+        ]
       }
     }
   ],

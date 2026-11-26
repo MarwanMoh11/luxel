@@ -7,7 +7,7 @@ extends LxBossBase
 ## P2 (<= 50% HP): Dims workshop lamps, cracks outer corner grates, adds Twin Spotlight Waltz.
 
 const FRONT_GUARD_HALF: float = 1.02
-const FRONT_CHIP_MULT: float = 0.44
+const FRONT_CHIP_MULT: float = 0.55
 const BACK_CRIT_MULT: float = 1.55
 const LUNGE_SPEED: float = 195.0
 const LUNGE_HIT_R: float = 22.0
@@ -34,12 +34,13 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "isl1_boss_minor_p1"
 	music_p2_cue = "isl1_boss_minor_p2"
-	max_hp = 44.0
-	hp = 44.0
+	max_hp = 28.0
+	hp = 28.0
 	body_radius = 10.5
 	move_speed = 42.0
-	stagger_threshold = 9.0
+	stagger_threshold = 8.5
 	stagger_duration = 1.75
+	punish_dmg_mult = 1.40
 	post_recover_cd = 0.30
 	intro_duration = 0.55
 	phase_shift_duration = 0.65

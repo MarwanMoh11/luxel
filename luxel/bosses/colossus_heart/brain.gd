@@ -32,13 +32,13 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 78.0
-	hp = 78.0
+	max_hp = 68.0
+	hp = 68.0
 	body_radius = 13.0
 	move_speed = 28.0
-	stagger_threshold = 17.0
+	stagger_threshold = 13.0
 	stagger_duration = 2.0
-	punish_dmg_mult = 1.45
+	punish_dmg_mult = 1.65
 	post_recover_cd = 0.30
 	intro_duration = 0.55
 	death_duration = 2.0
@@ -46,11 +46,11 @@ func _init() -> void:
 
 
 func _configure_boss(_spec: Dictionary) -> void:
-	configure_phases([0.60, 0.30])
+	configure_phases([0.64, 0.36])
 
 	# Attack 1 (P1+P2+P3): Heartbeat Shockwave (lub-dub 84px ring + expanding gap volley!)
 	register_attack("heartbeat_shockwave", {
-		"weight": 1.30, "tell": 0.58, "commit": 0.32, "recover": 1.15, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.58, "commit": 0.32, "recover": 1.15, "cooldown": 1.9,
 		"on_tell_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			ground.warn_ring(pos, 82.0, last_tell_duration, 1.0, "coral", "cream")
 			stage.play_sfx("heart_thump", pos),
@@ -72,7 +72,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.DOWN
 			patterns.emit_fan(pos, aim, 5 if phase >= 2 else 3, 0.78, 134.0, {"color": "apricot", "source": "heart_artery"})
-			if phase >= 2:
+			if phase >= 2 and _drip_cd <= 0.0:
+				_drip_cd = 10.5
 				_try_drip_slag_slime()
 			stage.play_sfx("magma_crack", pos)
 			stage.shake(0.14),
@@ -127,7 +128,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 	# Attack 5 (P3): Double-Beat Surge (2 rapid heartbeat rings 0.40s apart + molten scatter!)
 	register_attack("double_beat_surge", {
 		"phases": [3],
-		"weight": 2.10, "tell": 0.54, "commit": 0.64, "recover": 1.35, "cooldown": 1.6,
+		"weight": 3.40, "tell": 0.54, "commit": 0.64, "recover": 1.35, "cooldown": 1.1,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_double_beat_fired = false
 			ground.warn_ring(pos, 84.0, last_tell_duration, 1.0, "coral", "cream")
@@ -263,7 +264,7 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	if phase >= 2 and engaged and boss_state != BossState.DEATH:
 		_drip_cd -= dt
 		if _drip_cd <= 0.0 and adds.alive_count() + adds.pending_count() == 0:
-			_drip_cd = 6.5
+			_drip_cd = 10.5
 			_try_drip_slag_slime()
 
 
@@ -288,10 +289,7 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 	if phase == 1 and _alive_valve_count() > 0 and _cage_dropped_t <= 0.0:
 		if not hit.cracks_armour and hit.source != LxHit.SOURCE_SUNFLARE:
 			clank_t = 0.08
-			return dmg * 0.86
-	elif phase >= 2 and _slime_bonk_flash_t <= 0.0:
-		if hit.source == LxHit.SOURCE_BOLT and not hit.pierce and not hit.cracks_armour:
-			return dmg * 0.90
+			return dmg * 0.96
 	return dmg
 
 

@@ -32,8 +32,8 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island3_boss_p1"
 	music_p2_cue = "island3_boss_p2"
-	max_hp = 52.0
-	hp = 52.0
+	max_hp = 70.0
+	hp = 70.0
 	body_radius = 10.5
 	move_speed = 44.0
 	stagger_threshold = 10.0
@@ -47,13 +47,13 @@ func _init() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	max_hp = 52.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = 70.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	hp = max_hp
 	configure_phases([0.50])
 
 	# Attack 1: Warp-Rail Needle Fan (3/5 reflectable silk needles + aimed lane)
 	register_attack("warp_needle_fan", {
-		"weight": 1.25, "tell": 0.54, "commit": 0.44, "recover": 1.10, "cooldown": 1.3,
+		"weight": 1.25, "tell": 0.54, "commit": 0.44, "recover": 1.10, "cooldown": 1.35,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_pick_rail_near(tgt.y)
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
@@ -63,9 +63,9 @@ func _configure_boss(spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			var cnt: int = 5 if phase >= 2 else 3
-			var spd: float = 124.0 if phase >= 2 else 112.0
-			patterns.emit_fan(pos, aim_d, cnt, 0.88, spd, {
-				"color": "ice" if phase >= 2 else "gold", "reflectable": true, "source": "silk_needle",
+			var spd: float = 120.0 if phase >= 2 else 110.0
+			patterns.emit_fan(pos, aim_d, cnt, 0.90, spd, {
+				"color": "ice" if phase >= 2 else "gold", "reflectable": true, "source": "silk_needle", "damage": 0.5,
 			})
 			stage.shake(0.12)
 			stage.play_sfx("tk_silk_needle", pos),
@@ -94,26 +94,26 @@ func _configure_boss(spec: Dictionary) -> void:
 			move_boss(step_v, false)
 			if not _cleave_hit and pos.distance_to(tgt) <= 26.0:
 				_cleave_hit = true
-				emit_boss_damage(_cleave_dir, 1.0, "shuttle_cleave", pos, true),
+				emit_boss_damage(_cleave_dir, 0.5, "shuttle_cleave", pos, true),
 		"on_recover": func(_b: LxBossBase, _dt: float) -> void:
 			pass,
 	})
 
 	# Attack 3: Cross-Warp Snare (2 vertical silk tripwires + targeted loom-bobbin drops on Wick & corners)
 	register_attack("cross_warp_snare", {
-		"weight": 1.15, "tell": 0.58, "commit": 0.38, "recover": 1.12, "cooldown": 1.6,
+		"weight": 1.15, "tell": 0.58, "commit": 0.38, "recover": 1.12, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var x1: float = clampf(tgt.x, arena_rect.position.x + 18.0, arena_rect.end.x - 18.0)
 			var x2: float = clampf(arena_rect.get_center().x + (arena_rect.get_center().x - x1) * 0.65, arena_rect.position.x + 18.0, arena_rect.end.x - 18.0)
-			patterns.emit_chain_lightning([Vector2(x1, arena_rect.position.y + 8.0), Vector2(x1, arena_rect.end.y - 8.0)], last_tell_duration, 8.0, 0.28, 1.0)
+			patterns.emit_chain_lightning([Vector2(x1, arena_rect.position.y + 8.0), Vector2(x1, arena_rect.end.y - 8.0)], last_tell_duration, 7.0, 0.24, 0.5)
 			if phase >= 2:
-				patterns.emit_chain_lightning([Vector2(x2, arena_rect.position.y + 8.0), Vector2(x2, arena_rect.end.y - 8.0)], last_tell_duration + 0.08, 8.0, 0.28, 1.0)
+				patterns.emit_chain_lightning([Vector2(x2, arena_rect.position.y + 8.0), Vector2(x2, arena_rect.end.y - 8.0)], last_tell_duration + 0.08, 7.0, 0.24, 0.5)
 			var drops: Array[Vector2] = _perimeter_drops(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 19.0, 0.5, "coral", "gold")
 			stage.play_sfx("tk_loom_clack", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var aim_d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.LEFT
-			patterns.emit_fan(pos, aim_d, 3 if phase < 2 else 4, 0.62, 118.0, {"color": "apricot", "source": "warp_spark"})
+			patterns.emit_fan(pos, aim_d, 3 if phase < 2 else 4, 0.68, 114.0, {"color": "apricot", "source": "warp_spark", "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("tk_silk_needle", pos),
 	})

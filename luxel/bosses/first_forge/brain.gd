@@ -32,13 +32,13 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island6_boss_p1"
 	music_p2_cue = "island6_boss_p2"
-	max_hp = 215.0
-	hp = 215.0
+	max_hp = 200.0
+	hp = 200.0
 	body_radius = 13.5
 	move_speed = 32.0
 	stagger_threshold = 18.0
 	stagger_duration = 2.25
-	post_recover_cd = 0.40
+	post_recover_cd = 0.48
 	intro_duration = 0.60
 	death_duration = 2.2
 	shard_drop = 60
@@ -49,65 +49,65 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1 (P1+P2+P3): World-Hammer Grid Slam (checker/lane cracks; P2+ melts lanes into molten channels!)
 	register_attack("world_hammer_grid", {
-		"weight": 1.25, "tell": 0.62, "commit": 0.32, "recover": 1.25, "cooldown": 1.8,
+		"weight": 1.25, "tell": 0.64, "commit": 0.32, "recover": 1.28, "cooldown": 1.9,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_grid_axis_h = not _grid_axis_h
 			var rects: Array[Rect2] = _build_grid_lanes(tgt)
 			set_meta("_grid_rects", rects)
 			for rr: Rect2 in rects:
-				ground.warn_rect(rr, last_tell_duration, 1.0, "coral", "cream", 1.35 if phase >= 2 else 0.0)
+				ground.warn_rect(rr, last_tell_duration, 0.5, "coral", "cream", 0.85 if phase >= 2 else 0.0)
 			stage.play_sfx("anvil_clang_heavy", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
-			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 114.0, gap_a, 0.78, {"color": "gold", "source": "forge_grid"})
+			patterns.emit_gap_ring(pos, 8, 102.0, gap_a, 1.05, {"color": "gold", "source": "forge_grid", "damage": 0.5})
 			stage.play_sfx("magma_crack", pos)
 			stage.shake(0.24),
 	})
 
 	# Attack 2 (P1+P2+P3): Stance-Wall Shield (SKIP stance — curved gold shields guard front; rear quench valve open!)
 	register_attack("stance_wall_shield", {
-		"weight": 1.25, "tell": 0.54, "commit": 0.36, "recover": 1.30, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.58, "commit": 0.36, "recover": 1.32, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.SKIP_SHIELD)
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
 			var ang: float = _aim_dir.angle()
-			ground.warn_sector(pos, ang - 0.72, ang + 0.72, 82.0, last_tell_duration, 1.0, "gold", "cream")
+			ground.warn_sector(pos, ang - 0.72, ang + 0.72, 82.0, last_tell_duration, 0.5, "gold", "cream")
 			stage.play_sfx("anvil_clang_skip", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var cnt: int = 5 if phase >= 2 else 3
-			patterns.emit_fan(pos, _aim_dir, cnt, 1.05, 126.0, {"color": "gold", "source": "forge_shield_wave", "bounces": 1})
+			var cnt: int = 4 if phase >= 2 else 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 1.08, 112.0, {"color": "gold", "source": "forge_shield_wave", "bounces": 1, "damage": 0.5})
 			stage.play_sfx("warden_swing", pos)
 			stage.shake(0.18),
 	})
 
 	# Attack 3 (P1+P2+P3): Ember-Swarm Volley (SCATTER stance — orbiting sparks + perimeter rain!)
 	register_attack("ember_swarm_volley", {
-		"weight": 1.25, "tell": 0.54, "commit": 0.35, "recover": 1.25, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.58, "commit": 0.35, "recover": 1.28, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.SCATTER_SWARM)
 			var drops: Array[Vector2] = _build_perimeter_drops(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 22.0, 1.0, "apricot", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 18.0, 0.5, "apricot", "gold")
 			stage.play_sfx("anvil_clang_scatter", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_orbit(pos, 4, 42.0, 2.3, 1.8, {"color": "apricot", "source": "forge_swarm"})
+			patterns.emit_orbit(pos, 4, 42.0, 2.0, 1.7, {"color": "apricot", "source": "forge_swarm", "damage": 0.5})
 			var d: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.LEFT
-			patterns.emit_fan(pos, d, 3, 0.72, 124.0, {"color": "coral", "source": "forge_swarm_shot"})
+			patterns.emit_fan(pos, d, 3, 0.78, 110.0, {"color": "coral", "source": "forge_swarm_shot", "damage": 0.5})
 			stage.play_sfx("forge_gust", pos)
 			stage.shake(0.16),
 	})
 
-	# Attack 4 (P1+P2+P3): Obsidian Anvil Drop (LANCE stance — levitates slag-anvil over Wick -> 38px slam!)
+	# Attack 4 (P1+P2+P3): Obsidian Anvil Drop (LANCE stance — levitates slag-anvil over Wick -> 30px slam!)
 	register_attack("obsidian_anvil_drop", {
-		"weight": 1.25, "tell": 0.60, "commit": 0.30, "recover": 1.40, "cooldown": 1.7,
+		"weight": 1.25, "tell": 0.64, "commit": 0.30, "recover": 1.40, "cooldown": 1.8,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_set_stance(Stance.LANCE_PLATE)
 			var drop_p: Vector2 = clamp_to_arena(tgt)
 			set_meta("_anvil_drop_p", drop_p)
-			ground.warn_ring(drop_p, 38.0, last_tell_duration, 1.0, "coral", "cream")
+			ground.warn_ring(drop_p, 30.0, last_tell_duration, 0.5, "coral", "cream")
 			stage.play_sfx("anvil_clang_lance", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			var drop_p: Vector2 = get_meta("_anvil_drop_p", pos) as Vector2
-			patterns.emit_ring(drop_p, 6, 118.0, 0.25, {"color": "coral", "source": "forge_anvil_ring"})
+			patterns.emit_ring(drop_p, 6, 104.0, 0.25, {"color": "coral", "source": "forge_anvil_ring", "damage": 0.5})
 			stage.light_burst(drop_p, 76.0, 1.35, 0.28)
 			stage.play_sfx("anvil_clang_heavy", drop_p)
 			stage.shake(0.24),
@@ -116,7 +116,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 	# Attack 5 (P3): Crucible Spin (twin rotating molten slag streams + overdrive gap ring!)
 	register_attack("crucible_spin", {
 		"phases": [3],
-		"weight": 2.10, "tell": 0.58, "commit": SPIN_COMMIT_S, "recover": 1.45, "cooldown": 1.7,
+		"weight": 2.30, "tell": 0.62, "commit": SPIN_COMMIT_S, "recover": 1.45, "cooldown": 1.5,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_spin_base_ang = (tgt - pos).angle() + 0.55 if tgt.distance_to(pos) > 0.1 else 0.0
 			_spin_hit = false
@@ -125,9 +125,9 @@ func _configure_boss(_spec: Dictionary) -> void:
 				ground.warn_lane(pos, pos + Vector2.from_angle(ba) * SPIN_RANGE, 10.0, last_tell_duration, 0.0, "coral", "cream")
 			stage.play_sfx("boss_kilnmother_roar", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
-			patterns.emit_spiral(pos, 2, 118.0, _spin_base_ang, 0.34, 4, 0.18, {"color": "coral", "source": "forge_crucible_spin"})
+			patterns.emit_spiral(pos, 2, 104.0, _spin_base_ang, 0.34, 3, 0.20, {"color": "coral", "source": "forge_crucible_spin", "damage": 0.5})
 			var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else 0.0
-			patterns.emit_gap_ring(pos, 10, 114.0, gap_a, 0.78, {"color": "gold", "source": "forge_spin_ring"})
+			patterns.emit_gap_ring(pos, 8, 102.0, gap_a, 1.05, {"color": "gold", "source": "forge_spin_ring", "damage": 0.5})
 			stage.play_sfx("beam_fire", pos)
 			stage.shake(0.22),
 	})

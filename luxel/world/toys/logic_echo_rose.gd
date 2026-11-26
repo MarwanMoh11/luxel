@@ -17,6 +17,7 @@ const ECHO_BOLT_RANGE: float = 128.0
 const ECHO_BOLT_MAX_BOUNCES: int = 3
 const MAX_ACTIVE_ECHOES: int = 3
 const HOUR_TWO_BLOOM_SECS: float = 8.0
+const PLAYBACK_GRACE_SECS: float = 1.0
 
 static var _seq_counter: int = 0
 
@@ -41,6 +42,7 @@ var _next_shot_idx: int = 0
 var _bolts: Array[Dictionary] = []   # [{pos, prev, dir, dist, max_range, hit_ids, bounces, color, is_prism, curve_deg}]
 var _cd: float = 0.0
 var _disperse_t: float = 0.0
+var _play_grace_t: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -62,6 +64,7 @@ func _toy_setup() -> void:
 	_play_t = 0.0
 	_cd = 0.0
 	_disperse_t = 0.0
+	_play_grace_t = 0.0
 	add_to_group("lx_echo_decoys")
 	add_to_group("lx_boss_targets")
 	queue_redraw()
@@ -80,6 +83,7 @@ func stop_echo() -> void:
 	_rec_t = 0.0
 	_play_t = 0.0
 	_disperse_t = 0.0
+	_play_grace_t = 0.0
 	if powered:
 		set_powered(false)
 		emit_power(false)
@@ -174,6 +178,8 @@ func _activate() -> bool:
 	if mode == Mode.RECORDING and _rec_t >= 0.35 and not _samples.is_empty():
 		_start_playback()
 		return true
+	if mode == Mode.PLAYING and echo_active and _play_grace_t > 0.0:
+		return true
 	_start_recording()
 	return true
 
@@ -181,6 +187,10 @@ func _activate() -> bool:
 func _start_recording() -> void:
 	mode = Mode.RECORDING
 	echo_active = false
+	_play_grace_t = 0.0
+	if powered:
+		set_powered(false)
+		emit_power(false)
 	_active_rec_secs = get_effective_secs()
 	_samples.clear()
 	_bolts.clear()
@@ -202,6 +212,7 @@ func _start_playback() -> void:
 	mode = Mode.PLAYING
 	echo_active = true
 	_play_t = 0.0
+	_play_grace_t = PLAYBACK_GRACE_SECS
 	_next_shot_idx = 0
 	echo_pos = _samples[0]["pos"] as Vector2
 	echo_facing = _samples[0]["facing"] as Vector2
@@ -236,6 +247,8 @@ func tick(dt: float) -> void:
 		return
 	if _cd > 0.0:
 		_cd = maxf(0.0, _cd - dt)
+	if _play_grace_t > 0.0:
+		_play_grace_t = maxf(0.0, _play_grace_t - dt)
 	if _disperse_t > 0.0:
 		_disperse_t = maxf(0.0, _disperse_t - dt)
 		queue_redraw()

@@ -259,6 +259,24 @@
         "zone": "lh_r15",
         "lit": true
       }
+    },
+    {
+      "id": "door_lh_r15_east_seal",
+      "kind": "door",
+      "pos": [
+        472,
+        184
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "wick_key_2_3"
+        ]
+      }
     }
   ],
   "layers": [

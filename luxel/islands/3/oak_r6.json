@@ -69,8 +69,10 @@
         152
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "oak_r5b_solved"
+      ],
+      "locked_door_id": "door_oak_r6_nw_sc"
     },
     {
       "id": "exit_oak_r6_south_r6b",
@@ -292,6 +294,24 @@
           "oak_r6_cleared"
         ]
       }
+    },
+    {
+      "id": "door_oak_r6_nw_sc",
+      "kind": "door",
+      "pos": [
+        192,
+        8
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "oak_r5b_solved"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -477,6 +497,13 @@
       {
         "op": "clear",
         "timeout": 120.0
+      },
+      {
+        "op": "wait_until",
+        "interactable": "door_oak_r6_combat",
+        "prop": "opened",
+        "value": true,
+        "timeout": 4.0
       },
       {
         "op": "expect",

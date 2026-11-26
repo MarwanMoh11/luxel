@@ -51,14 +51,14 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 58.0
-	hp = 58.0
+	max_hp = 60.0
+	hp = 60.0
 	body_radius = 13.0
 	move_speed = 36.0
 	stagger_threshold = 11.0
 	stagger_duration = 1.45
-	punish_dmg_mult = 1.40
-	post_recover_cd = 0.30
+	punish_dmg_mult = 1.30
+	post_recover_cd = 0.38
 	shard_drop = 18
 	intro_duration = 0.70
 	phase_shift_duration = 0.75
@@ -74,7 +74,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 
 	# Attack 1: Broadside Volley (3 sightlines -> aimed fan + splash)
 	register_attack("broadside_volley", {
-		"weight": 1.25, "tell": 0.56, "commit": 0.28, "recover": 1.10, "cooldown": 1.4,
+		"weight": 1.25, "tell": 0.60, "commit": 0.28, "recover": 1.15, "cooldown": 1.65,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
 			for off_a: float in [-0.34, 0.0, 0.34]:
@@ -83,21 +83,21 @@ func _configure_boss(_spec: Dictionary) -> void:
 			stage.play_sfx("dredge_whistle", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else _aim_dir
-			var cnt: int = 7 if phase >= 2 else 5
-			patterns.emit_fan(pos, _aim_dir, cnt, 0.86, 144.0, {"color": "coral", "source": "dredge_broadside", "field_scale": 0.85})
+			var cnt: int = 5 if phase >= 2 else 3
+			patterns.emit_fan(pos, _aim_dir, cnt, 0.94, 122.0, {"color": "coral", "source": "dredge_broadside", "field_scale": 0.85, "damage": 0.5})
 			stage.shake(0.16)
 			stage.play_sfx("barnacle_fire", pos),
 	})
 
 	# Attack 2: Mine Wake Drop (drops 2 interactive stern mines + gap ring + perimeter rain)
 	register_attack("mine_wake_drop", {
-		"weight": 1.20, "tell": 0.50, "commit": 0.25, "recover": 1.00, "cooldown": 1.5,
+		"weight": 1.20, "tell": 0.56, "commit": 0.25, "recover": 1.10, "cooldown": 1.70,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var back: Vector2 = -Vector2.from_angle(facing)
 			var perp := Vector2(-back.y, back.x)
 			for sgn: float in [-1.0, 1.0]:
 				ground.warn_ring(clamp_to_arena(pos + back * 24.0 + perp * (sgn * 18.0)), 18.0, last_tell_duration, 0.0, "gold", "coral")
-			ground.warn_ring(clamp_to_arena(tgt), 22.0, last_tell_duration + 0.06, 1.0, "coral", "gold")
+			ground.warn_ring(clamp_to_arena(tgt), 18.0, last_tell_duration + 0.06, 0.5, "coral", "gold")
 			stage.play_sfx("mine_clang", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var back: Vector2 = -Vector2.from_angle(facing)
@@ -105,40 +105,40 @@ func _configure_boss(_spec: Dictionary) -> void:
 			for sgn: float in [-1.0, 1.0]:
 				_spawn_wake_mine(clamp_to_arena(pos + back * 24.0 + perp * (sgn * 18.0)), back * 24.0 + perp * (sgn * 18.0))
 			var aim_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 0.1 else facing
-			patterns.emit_gap_ring(pos, 12 if phase >= 2 else 9, 114.0, aim_a + 0.55, 0.72, {"color": "sky", "source": "dredge_wake", "field_scale": 0.8})
+			patterns.emit_gap_ring(pos, 10 if phase >= 2 else 8, 104.0, aim_a + 0.55, 0.92, {"color": "sky", "source": "dredge_wake", "field_scale": 0.8, "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("tide_wave", pos),
 	})
 
 	# Attack 3: Sluice Mortar (pressures Wick + nearest perimeter corners so zero safe spots!)
 	register_attack("sluice_mortar", {
-		"weight": 1.15, "tell": 0.58, "commit": 0.34, "recover": 1.08, "cooldown": 1.5,
+		"weight": 1.15, "tell": 0.62, "commit": 0.34, "recover": 1.15, "cooldown": 1.75,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			var drops: Array[Vector2] = _perimeter_targets(tgt)
-			patterns.emit_rain(ground, drops, last_tell_duration, 24.0, 1.0, "coral", "gold")
+			patterns.emit_rain(ground, drops, last_tell_duration, 19.0, 0.5, "coral", "gold")
 			stage.play_sfx("harbor_creak", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_aim_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			patterns.emit_lane(pos, _aim_dir, 4 if phase >= 2 else 3, 152.0, 0.08, {"color": "gold", "source": "dredge_mortar", "field_scale": 0.85})
+			patterns.emit_lane(pos, _aim_dir, 3, 128.0, 0.09, {"color": "gold", "source": "dredge_mortar", "field_scale": 0.85, "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("barnacle_fire", pos),
 	})
 
 	# Attack 4 (P2): Bilge Ram (high-speed foam ram charge + twin wake spreads)
 	register_attack("bilge_ram", {
-		"phases": [2], "weight": 2.25, "tell": 0.62, "commit": 0.44, "recover": 1.30, "cooldown": 1.15,
+		"phases": [2], "weight": 2.40, "tell": 0.64, "commit": 0.44, "recover": 1.30, "cooldown": 1.25,
 		"on_tell_start": func(_b: LxBossBase, tgt: Vector2) -> void:
 			_ram_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 0.1 else Vector2.from_angle(facing)
-			ground.warn_lane(pos, clamp_to_arena(pos + _ram_dir * 144.0), 14.0, last_tell_duration, 1.0, "sky", "coral")
+			ground.warn_lane(pos, clamp_to_arena(pos + _ram_dir * 144.0), 14.0, last_tell_duration, 0.5, "sky", "coral")
 			stage.play_sfx("dredge_whistle", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _ram_dir.rotated(PI * 0.45), 3, 0.55, 118.0, {"color": "ice", "source": "dredge_bow_wake", "field_scale": 0.9})
-			patterns.emit_fan(pos, _ram_dir.rotated(-PI * 0.45), 3, 0.55, 118.0, {"color": "ice", "source": "dredge_bow_wake", "field_scale": 0.9})
+			patterns.emit_fan(pos, _ram_dir.rotated(PI * 0.45), 2, 0.55, 108.0, {"color": "ice", "source": "dredge_bow_wake", "field_scale": 0.9, "damage": 0.5})
+			patterns.emit_fan(pos, _ram_dir.rotated(-PI * 0.45), 2, 0.55, 108.0, {"color": "ice", "source": "dredge_bow_wake", "field_scale": 0.9, "damage": 0.5})
 			stage.shake(0.20)
 			stage.play_sfx("tide_surge", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
 			move_boss(_ram_dir * 138.0 * dt, true)
-			check_contact_damage(body_radius + 11.0, _ram_dir, 1.0, "dredge_ram"),
+			check_contact_damage(body_radius + 11.0, _ram_dir, 0.5, "dredge_ram"),
 	})
 
 

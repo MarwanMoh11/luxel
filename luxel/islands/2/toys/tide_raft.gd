@@ -166,8 +166,8 @@ func on_ballast_clamp(pinned: bool, _anchor_pos: Vector2 = Vector2.ZERO) -> void
 	queue_redraw()
 
 
-func on_lantern_pull(pull_dir: Vector2, _source: String = "recall") -> void:
-	if not active or clamped or not floating:
+func on_lantern_pull(pull_dir: Vector2, source: String = "recall") -> void:
+	if not active or clamped or not floating or source == "zip":
 		return
 	if not _is_harpoon_allowed():
 		return

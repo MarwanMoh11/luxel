@@ -45,7 +45,10 @@
         272,
         304
       ],
-      "locked_door_id": "door_r6_north"
+      "locked_door_id": "door_r6_north",
+      "requires_flags": [
+        "item_shutter_hood"
+      ]
     }
   ],
   "interactables": [
@@ -225,6 +228,24 @@
       "props": {
         "zone": "mn_choir",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r6_hood_ward",
+      "kind": "door",
+      "pos": [
+        368,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "item_shutter_hood"
+        ]
       }
     }
   ],

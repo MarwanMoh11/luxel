@@ -53,8 +53,10 @@
         136
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "lh_r13_shaft_open"
+      ],
+      "locked_door_id": "door_lh_r5_nw_sc"
     },
     {
       "id": "exit_lh_r5_ne",
@@ -91,7 +93,9 @@
       "requires_moves": [
         "prism"
       ],
-      "requires_flags": [],
+      "requires_flags": [
+        "lh_r14_cleared"
+      ],
       "locked_door_id": "door_lh_r5_shutter"
     },
     {
@@ -383,6 +387,42 @@
         "zone": "lighthouse_r5",
         "lit": true
       }
+    },
+    {
+      "id": "door_lh_r5_nw_sc",
+      "kind": "door",
+      "pos": [
+        112,
+        8
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "lh_r13_shaft_open"
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r5_r14_seal",
+      "kind": "door",
+      "pos": [
+        504,
+        136
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "lh_r14_cleared"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -594,7 +634,12 @@
         "op": "expect_exit",
         "exit": "exit_lh_r5_east"
       }
-    ]
+    ],
+    "start": {
+      "flags": [
+        "lh_r14_cleared"
+      ]
+    }
   },
   "theme": "lighthouse"
 }

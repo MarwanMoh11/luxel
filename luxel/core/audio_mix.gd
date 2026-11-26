@@ -68,10 +68,30 @@ const MIN_INTERVAL_BY_ID: Dictionary = {
 	"mirror_ping": 0.09,
 	"prism_bounce": 0.09,
 	"prop_chime": 0.12,
-	"bell_toll_heavy": 0.20,
+	"bell_toll": 0.22,
+	"bell_toll_heavy": 0.22,
 	"bell_dawn_ring": 0.16,
 	"bell_dusk_ring": 0.16,
 	"bell_war_ring": 0.16,
+	"clock_gate_warn": 0.24,
+	"dandelion_bloom": 0.16,
+	"hour_heron_tick": 0.22,
+	"i5_comet_bark": 0.18,
+	"mist_eel_arc": 0.16,
+	"marsh_splash": 0.14,
+	"sporecap_burrow": 0.24,
+	"sporecap_surface": 0.24,
+	"thorn_burst": 0.14,
+	"spore_pop": 0.14,
+	"furnace_draw": 0.18,
+	"forge_gust": 0.18,
+	"golem_stomp": 0.18,
+	"boss_armour_chip": 0.12,
+	"star_lance": 0.14,
+	"hush_pulse": 0.18,
+	"void_hum": 0.22,
+	"boss_kill": 0.25,
+	"boss_victory": 0.25,
 	"lens_reveal": 0.14,
 	"moon_pool_silver": 0.16,
 	"moon_pool_black": 0.16,
@@ -87,6 +107,13 @@ const SINGLE_VOICE_IDS: Dictionary = {
 	"sunflare_burst": true,
 	"dawn_burst": true,
 	"great_lamp_bloom": true,
+	"earth_burrow": true,
+	"dusk_clock_chime": true,
+	"hour_heron_tick": true,
+	"boss_kill": true,
+	"boss_victory": true,
+	"void_hum": true,
+	"furnace_draw": true,
 	"footstep_stone": true,
 	"footstep_grass": true,
 	"footstep_wood": true,
@@ -100,6 +127,8 @@ const SINGLE_VOICE_IDS: Dictionary = {
 
 const BOSS_ROAR_SUBSTR: Array[String] = [
 	"_roar", "phase_shift_crown", "boss_awaken", "boss_kill", "boss_victory", "stagger_break",
+	"kilnmother_phase", "astronomer_phase", "briar_matron_phase", "heron_abbess_phase",
+	"hollow_wick_phase", "hush_phase_shift", "great_lamp_bloom", "dawn_burst",
 ]
 const TELL_SUBSTR: Array[String] = [
 	"_tell", "_windup", "_inhale", "_swell", "_crouch", "_mark", "owl_lock",
@@ -139,10 +168,19 @@ static func max_polyphony_for(base_id: String) -> int:
 
 
 static func cue_trim_db(cue_name: String) -> float:
-	if cue_name == "title" or cue_name == "hub":
+	if cue_name == "title":
+		return 2.0
+	if cue_name == "hub" or cue_name == "credits":
 		return 1.5
-	if cue_name == "ending_dawn" or cue_name == "credits":
-		return 0.5
+	if cue_name == "ending_dawn":
+		return -1.0
+	if cue_name.begins_with("island6_boss") or cue_name.begins_with("island7_boss") or cue_name.begins_with("island8_boss"):
+		return -1.5
+	if cue_name.begins_with("isl6_") or cue_name.begins_with("isl7_") or cue_name.begins_with("isl8_") \
+			or cue_name in ["island6_dungeon", "island7_dungeon", "island8_dungeon"]:
+		return -1.0
+	if cue_name == "island6" or cue_name == "island6_explore" or cue_name == "island6_combat":
+		return -0.8
 	return 0.0
 
 
@@ -150,10 +188,10 @@ static func dynamic_music_duck(sfx_id: String, base_id: String) -> Vector2:
 	# Returns Vector2(duck_db, hold_secs) to carve brief clarity in music for tells & roars.
 	for tok: String in BOSS_ROAR_SUBSTR:
 		if sfx_id.contains(tok) or base_id.contains(tok):
-			return Vector2(2.6, 0.45)
+			return Vector2(2.8, 0.50)
 	for tok: String in TELL_SUBSTR:
 		if sfx_id.contains(tok) or base_id.contains(tok):
-			return Vector2(1.8, 0.28)
+			return Vector2(2.0, 0.30)
 	return Vector2.ZERO
 
 

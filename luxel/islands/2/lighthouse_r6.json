@@ -70,8 +70,10 @@
         136
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "lh_r14_cleared"
+      ],
+      "locked_door_id": "door_lh_r6_nw_sc"
     }
   ],
   "enemies": [
@@ -236,6 +238,24 @@
       "props": {
         "zone": "lighthouse_r6",
         "lit": true
+      }
+    },
+    {
+      "id": "door_lh_r6_nw_sc",
+      "kind": "door",
+      "pos": [
+        144,
+        8
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "lh_r14_cleared"
+        ]
       }
     }
   ],

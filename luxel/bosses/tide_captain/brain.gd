@@ -51,14 +51,14 @@ func _init() -> void:
 	reward_heart = "none"
 	music_cue = "island2_boss_p1"
 	music_p2_cue = "island2_boss_p2"
-	max_hp = 72.0
-	hp = 72.0
+	max_hp = 90.0
+	hp = 90.0
 	body_radius = 8.0
 	move_speed = 38.0
-	stagger_threshold = 11.0
+	stagger_threshold = 14.0
 	stagger_duration = 1.55
-	punish_dmg_mult = 1.30
-	post_recover_cd = 0.28
+	punish_dmg_mult = 1.18
+	post_recover_cd = 0.36
 	shard_drop = 18
 	intro_duration = 0.60
 	phase_shift_duration = 0.65
@@ -88,7 +88,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_surge_progress = 0.0
 			_surge_hit = false
 			_surge_dir = Vector2.from_angle(facing)
-			patterns.emit_fan(pos, _surge_dir, 5 if phase >= 2 else 3, 0.78, 138.0, {"color": "sky", "source": "tide_surge_bolt", "damage": 0.5})
+			patterns.emit_fan(pos, _surge_dir, 5 if phase >= 2 else 3, 0.82, 126.0, {"color": "sky", "source": "tide_surge_bolt", "damage": 0.5})
 			_boss_impact(0.18, 84.0, 88.0)
 			stage.play_sfx("tide_captain_slam_fire", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, _dt: float, el: float) -> void:
@@ -118,7 +118,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 					facing = _rush_dir.angle()
 				stage.play_sfx("tide_captain_feint", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_fan(pos, _rush_dir, 5 if phase >= 2 else 3, 0.68, 140.0, {"color": "coral", "source": "claw_cleave", "damage": 0.5})
+			patterns.emit_fan(pos, _rush_dir, 5 if phase >= 2 else 3, 0.74, 128.0, {"color": "coral", "source": "claw_cleave", "damage": 0.5})
 			stage.shake(0.15)
 			stage.play_sfx("warden_swing", pos),
 		"on_commit": func(_b: LxBossBase, _tgt: Vector2, dt: float, _el: float) -> void:
@@ -136,7 +136,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(pos, pos + _rush_dir * 58.0, 8.0, last_tell_duration, 0.0, "ice", "gold")
 			stage.play_sfx("tide_captain_slam_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			patterns.emit_lane(pos, _rush_dir, 4 if phase >= 2 else 3, 146.0, 0.08, {"color": "ice", "source": "harbor_squall", "damage": 0.5})
+			patterns.emit_lane(pos, _rush_dir, 4 if phase >= 2 else 3, 134.0, 0.09, {"color": "ice", "source": "harbor_squall", "damage": 0.5})
 			stage.shake(0.14)
 			stage.play_sfx("tide_surge", pos),
 	})

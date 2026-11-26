@@ -132,8 +132,7 @@
         "size": [
           16,
           16
-        ],
-        "target_id": "scale_r7"
+        ]
       }
     },
     {
@@ -168,8 +167,7 @@
         "size": [
           16,
           16
-        ],
-        "target_id": "scale_r7"
+        ]
       }
     },
     {
@@ -230,7 +228,8 @@
           32,
           16
         ],
-        "threshold": 0.3
+        "threshold": 0.3,
+        "unlock_flag": "sanctum_r7_solved"
       }
     },
     {

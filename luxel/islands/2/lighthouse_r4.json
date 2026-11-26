@@ -53,7 +53,9 @@
         136
       ],
       "requires_moves": [],
-      "requires_flags": [],
+      "requires_flags": [
+        "lh_r13_shaft_open"
+      ],
       "locked_door_id": "door_lh_r4_shutter"
     },
     {
@@ -279,6 +281,24 @@
         "zone": "lighthouse_r4",
         "lit": true
       }
+    },
+    {
+      "id": "door_lh_r4_shaft_seal",
+      "kind": "door",
+      "pos": [
+        408,
+        104
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "lh_r13_shaft_open"
+        ]
+      }
     }
   ],
   "triggers": [],
@@ -393,7 +413,8 @@
         "wick_key": 1
       },
       "flags": [
-        "wick_key_2_1"
+        "wick_key_2_1",
+        "lh_r13_shaft_open"
       ]
     },
     "solution": [

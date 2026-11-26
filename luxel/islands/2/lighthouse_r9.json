@@ -59,7 +59,9 @@
       "requires_flags": [
         "keepers_flame_2",
         "relay_f2",
-        "relay_f3"
+        "relay_f3",
+        "relay_f1",
+        "lh_flame_unshielded"
       ],
       "locked_door_id": "door_boss_2"
     },
@@ -96,8 +98,10 @@
         136
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "lh_flame_unshielded"
+      ],
+      "locked_door_id": "door_lh_r9_east_sc"
     },
     {
       "id": "exit_lh_r9_ne",
@@ -113,8 +117,10 @@
         56
       ],
       "requires_moves": [],
-      "requires_flags": [],
-      "locked_door_id": ""
+      "requires_flags": [
+        "relay_f3"
+      ],
+      "locked_door_id": "door_lh_r9_ne_sc"
     }
   ],
   "enemies": [],
@@ -283,6 +289,63 @@
       "props": {
         "zone": "lighthouse_r9",
         "lit": true
+      }
+    },
+    {
+      "id": "door_lh_r9_relay_seal",
+      "kind": "door",
+      "pos": [
+        224,
+        8
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "relay_f1",
+          "relay_f2",
+          "relay_f3",
+          "lh_flame_unshielded"
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r9_ne_sc",
+      "kind": "door",
+      "pos": [
+        400,
+        8
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          32,
+          16
+        ],
+        "requires_flags": [
+          "relay_f3"
+        ]
+      }
+    },
+    {
+      "id": "door_lh_r9_east_sc",
+      "kind": "door",
+      "pos": [
+        440,
+        120
+      ],
+      "props": {
+        "door_kind": "shortcut_door",
+        "size": [
+          16,
+          48
+        ],
+        "requires_flags": [
+          "lh_flame_unshielded"
+        ]
       }
     }
   ],

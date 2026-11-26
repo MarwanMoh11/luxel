@@ -94,7 +94,8 @@
       ],
       "requires_moves": [],
       "requires_flags": [
-        "sanctum_seal_w"
+        "sanctum_seal_w",
+        "sanctum_seal_e"
       ],
       "locked_door_id": "door_r11_to_r13"
     }
@@ -224,7 +225,8 @@
           32,
           16
         ],
-        "threshold": 0.3
+        "threshold": 0.3,
+        "unlock_flag": "sanctum_seal_w"
       }
     },
     {
@@ -366,6 +368,25 @@
       "props": {
         "zone": "sanctum_r11",
         "lit": true
+      }
+    },
+    {
+      "id": "door_r11_to_r13_seal",
+      "kind": "door",
+      "pos": [
+        472,
+        48
+      ],
+      "props": {
+        "door_kind": "ward_barrier",
+        "size": [
+          16,
+          32
+        ],
+        "requires_flags": [
+          "sanctum_seal_w",
+          "sanctum_seal_e"
+        ]
       }
     }
   ],
@@ -587,6 +608,11 @@
         "op": "expect_exit",
         "exit": "exit_sanctum_r11_ne"
       }
-    ]
+    ],
+    "start": {
+      "flags": [
+        "sanctum_seal_e"
+      ]
+    }
   }
 }
