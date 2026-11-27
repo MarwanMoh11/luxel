@@ -27,7 +27,7 @@ func on_light(light_radius: float, source: String) -> void:
 	if not active or light_radius <= 0.0:
 		return
 	var allow: bool = source == "lens" or (
-		(source == "lantern_hung" or source == "lens_anchor")
+		(source == "lantern_hung" or source == "lens_anchor" or source == "pip_light")
 		and Lx.state != null and Lx.state.has_move("lens")
 	)
 	if not allow:
@@ -47,27 +47,38 @@ func _is_reveal_warning() -> bool:
 		return false
 	if _reveal_left > 0.0 and _reveal_left < 0.14:
 		return true
-	if Lx.player == null or not is_instance_valid(Lx.player):
-		return false
-	var ml: Variant = Lx.player.get("move_lens")
-	var lan: Variant = Lx.player.get("lantern")
+	var has_player: bool = Lx.player != null and is_instance_valid(Lx.player)
+	var ml: Variant = Lx.player.get("move_lens") if has_player else null
+	var lan: Variant = Lx.player.get("lantern") if has_player else null
 	var pulse_active: bool = ml is Object and (ml as Object).has_method("is_pulse_active") and bool((ml as Object).call("is_pulse_active"))
 	var pulse_warn: bool = ml is Object and (ml as Object).has_method("is_warning") and bool((ml as Object).call("is_warning"))
+	var has_lens: bool = Lx.state != null and Lx.state.has_move("lens")
 	var anchor_in_range: bool = false
 	var anchor_warn: bool = false
 	if lan is Object and (lan as Object).has_method("is_lure_active") and bool((lan as Object).call("is_lure_active")) \
-			and Lx.state != null and Lx.state.has_move("lens"):
+			and has_lens:
 		var lpos_v: Variant = (lan as Object).get("pos")
 		var hung_r: float = float(Lx.get_move_data("lens").get("hung_radius", 78.0))
 		if lpos_v is Vector2 and (lpos_v as Vector2).distance_to(pos) <= hung_r + radius:
 			anchor_in_range = true
 			if (lan as Object).has_method("is_hanging") and bool((lan as Object).call("is_hanging")):
 				anchor_warn = float((lan as Object).get("hang_timer")) <= 1.1
+	var pip_in_range: bool = false
+	var pip_warn: bool = false
+	if Lx.companion != null and is_instance_valid(Lx.companion) and Lx.companion.has_method("is_perched") \
+			and bool(Lx.companion.call("is_perched")) and has_lens:
+		var ppos_v: Variant = Lx.companion.get("pos")
+		var pip_r: float = LxFireflyState.get_light_radius() * 0.72
+		if ppos_v is Vector2 and (ppos_v as Vector2).distance_to(pos) <= pip_r + radius:
+			pip_in_range = true
+			pip_warn = float(Lx.companion.get("perch_timer")) <= 1.1
 	if pulse_active and not pulse_warn:
 		return false
 	if anchor_in_range and not anchor_warn:
 		return false
-	return pulse_warn or anchor_warn
+	if pip_in_range and not pip_warn:
+		return false
+	return pulse_warn or anchor_warn or pip_warn
 
 
 func tick(dt: float) -> void:

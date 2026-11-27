@@ -483,3 +483,69 @@ static func draw_move_icon(ci: CanvasItem, move_id: String, at: Vector2, col: Co
 			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), cream)
 		_:
 			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(3.0, 3.0)), col)
+
+
+static func draw_firefly_slot(ci: CanvasItem, slot_x: float, origin_y: float, blink_t: float, idle_dim: bool) -> void:
+	if Lx.companion == null or not is_instance_valid(Lx.companion) or not Lx.companion.has_method("get_hud_state"):
+		return
+	var st: Dictionary = Lx.companion.call("get_hud_state") as Dictionary
+	if not bool(st.get("joined", false)):
+		return
+	var pal: Dictionary = LxPalette.PAL
+	var sx: float = roundf(slot_x)
+	var oy: float = roundf(origin_y)
+	var fred: bool = LxHudFx.flash_reduced()
+	var pulse: bool = fred or fmod(blink_t, 0.44) < 0.22
+	var tethered: bool = bool(st.get("tethered", st.get("tether_active", false)))
+	var state_s: String = str(st.get("state", "")).to_lower()
+	var perch_frac: float = clampf(float(st.get("perch_frac", st.get("perch_ratio", 0.0))), 0.0, 1.0)
+	if perch_frac <= 0.0 and float(st.get("perch_max", 0.0)) > 0.01:
+		perch_frac = clampf(float(st.get("perch_left", 0.0)) / float(st.get("perch_max", 1.0)), 0.0, 1.0)
+	var is_out: bool = bool(st.get("perched", st.get("out", st.get("is_out", false)))) or perch_frac > 0.001 or (state_s in ["perched", "dart", "darting", "returning", "out", "orbit_target"])
+	var cd: float = float(st.get("cooldown", st.get("cooldown_left", st.get("cd", 0.0))))
+	var cd_max: float = maxf(0.1, float(st.get("cooldown_max", st.get("cd_max", 1.5))))
+	var on_cd: bool = not is_out and cd > 0.02
+	var bond_rank: int = clampi(int(st.get("bond_rank", st.get("rank", st.get("bond", 1)))), 1, 4)
+	# Bond rank pips (1..4) above the slot
+	ci.draw_rect(Rect2(sx + 2.0, oy - 4.0, 9.0, 3.0), Color(pal["void"] as Color, 0.72))
+	for i: int in range(4):
+		var pip_c: Color = (pal["lime"] if i == bond_rank - 1 else pal["gold"]) as Color if i < bond_rank else (pal["dusk"] as Color)
+		ci.draw_rect(Rect2(sx + 3.0 + float(i) * 2.0, oy - 3.0, 1.0, 1.0), pip_c)
+	# 13x11 beveled moves-tray slot
+	var bdr_col: String = "cream" if (tethered and pulse) else ("lime" if is_out else ("dusk" if on_cd else "lime"))
+	LxPixelFont.draw_panel(ci, Rect2(sx, oy, 13.0, 11.0), "night", bdr_col, "void")
+	# Crisp 7x7 pixel Firefly icon at (slot_x + 3, origin_y + 2)
+	var ix: float = sx + 3.0
+	var iy: float = oy + 2.0
+	var wing_dy: float = 0.0 if (on_cd or fred or fmod(blink_t, 0.36) < 0.18) else 1.0
+	var wing_c: Color = (pal["dusk"] if on_cd else pal["ice"]) as Color
+	var wing_hi: Color = (pal["mauve"] if on_cd else pal["cream"]) as Color
+	ci.draw_rect(Rect2(ix + 2.0, iy + 1.0, 3.0, 5.0), pal["void"] as Color)
+	ci.draw_rect(Rect2(ix + 1.0, iy + 3.0, 5.0, 2.0), pal["void"] as Color)
+	ci.draw_rect(Rect2(ix, iy + wing_dy, 2.0, 2.0), wing_c)
+	ci.draw_rect(Rect2(ix + 1.0, iy + wing_dy, 1.0, 1.0), wing_hi)
+	ci.draw_rect(Rect2(ix + 5.0, iy + wing_dy, 2.0, 2.0), wing_c)
+	ci.draw_rect(Rect2(ix + 5.0, iy + wing_dy, 1.0, 1.0), wing_hi)
+	ci.draw_rect(Rect2(ix + 3.0, iy + 1.0, 1.0, 2.0), (pal["mauve"] if on_cd else pal["apricot"]) as Color)
+	ci.draw_rect(Rect2(ix + 2.0, iy + 3.0, 3.0, 2.0), (pal["mauve"] if on_cd else pal["lime"]) as Color)
+	ci.draw_rect(Rect2(ix + 3.0, iy + 3.0, 1.0, 2.0), (pal["dusk"] if on_cd else pal["gold"]) as Color)
+	ci.draw_rect(Rect2(ix + 3.0, iy + 5.0, 1.0, 1.0), (pal["mauve"] if on_cd else (pal["cream"] if (tethered and pulse) else pal["lime"])) as Color)
+	# Perch remaining bar or cooldown recharge bar along origin_y + 9.0
+	if is_out:
+		var pw: float = floorf(9.0 * perch_frac)
+		if pw > 0.0:
+			ci.draw_rect(Rect2(sx + 2.0, oy + 9.0, pw, 1.0), (pal["gold"] if perch_frac < 0.3 else pal["lime"]) as Color)
+			if pw >= 2.0:
+				ci.draw_rect(Rect2(sx + 1.0 + pw, oy + 9.0, 1.0, 1.0), pal["gold"] as Color)
+	elif on_cd:
+		var cfrac: float = clampf(1.0 - cd / cd_max, 0.0, 1.0)
+		ci.draw_rect(Rect2(sx + 2.0, oy + 9.0, 9.0, 1.0), pal["dusk"] as Color)
+		var cw: float = floorf(9.0 * cfrac)
+		if cw > 0.0:
+			ci.draw_rect(Rect2(sx + 2.0, oy + 9.0, cw, 1.0), pal["sky"] as Color)
+	# Live input glyph over dark void backing strip matching the moves tray
+	ci.draw_rect(Rect2(sx - 1.0, oy + 11.0, 15.0, 7.0), Color(pal["void"] as Color, 0.62))
+	if Lx.input != null:
+		var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_firefly").to_upper(), 5)
+		var g_col: Color = (pal["mauve"] if (on_cd or idle_dim) else (pal["lime"] if is_out else pal["stone"])) as Color
+		LxPixelFont.draw_centered(ci, glyph, sx + 6.5, oy + 12.0, g_col, 1)

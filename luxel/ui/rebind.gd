@@ -16,6 +16,7 @@ const ACTION_ROWS: Array[Array] = [
 	["lx_beam", "ACT_BEAM"],
 	["lx_lens", "ACT_LENS"],
 	["lx_sunflare", "ACT_SUNFLARE"],
+	["lx_firefly", "ACT_FIREFLY"],
 	["lx_interact", "ACT_INTERACT"],
 	["lx_pause", "ACT_PAUSE"],
 	["lx_map", "ACT_MAP"],
@@ -284,7 +285,7 @@ func _draw() -> void:
 				draw_rect(Rect2(r.position.x + 3.0, r.position.y + 3.0, 2.0, 6.0), LxPalette.PAL["gold"])
 				draw_rect(Rect2(r.position.x + 3.0, r.position.y + 4.0, 1.0, 4.0), LxPalette.PAL["cream"])
 			var lx: float = 8.0 if sel else 6.0
-			LxPixelFont.draw_left(self, LxStrings.text(lbl_id), r.position + Vector2(lx, 3.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
+			LxPixelFont.draw_left(self, LxFolkData.tr_id(lbl_id), r.position + Vector2(lx, 3.0), LxPalette.PAL["gold"] if sel else LxPalette.PAL["cream"], 1)
 			_draw_keycap(r, _binding_glyph(act_id), sel)
 
 	# Scrollbar indicator.

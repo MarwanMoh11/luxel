@@ -538,6 +538,15 @@ const EPIC_EXACT: Dictionary = {
 	"enemy_alert": {"id": "warden_alert", "pitch": 1.02, "db": -1.0},
 	"switch_on": {"id": "switch_eye", "pitch": 1.06, "db": -2.0},
 	"weather_shift_": {"id": "weather_shift_wind", "pitch": 1.00, "db": -1.5},
+	"pip_chirp": {"id": "folk_chirp_bright", "pitch": 1.38, "db": -3.5},
+	"pip_send": {"id": "feather_flutter", "pitch": 1.32, "db": -2.5},
+	"pip_tag": {"id": "prop_chime", "pitch": 1.28, "db": -2.0},
+	"pip_pop": {"id": "spore_pop", "pitch": 1.24, "db": -1.5},
+	"pip_recall": {"id": "zip_streak", "pitch": 1.34, "db": -3.5},
+	"pip_bloom": {"id": "seed_bloom", "pitch": 1.18, "db": -1.5},
+	"pip_bell": {"id": "bell_dawn_ring", "pitch": 1.32, "db": -2.0},
+	"pip_bond_up": {"id": "shrine_claimed", "pitch": 1.16, "db": -1.5},
+	"pip_tether": {"id": "silk_spark_run", "pitch": 1.15, "db": -4.0},
 }
 
 

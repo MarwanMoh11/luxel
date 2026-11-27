@@ -79,6 +79,8 @@ static func press_interact(wick: LxWick, world_ctx: Node) -> void:
 		return
 	var cands: Array[Dictionary] = get_interact_candidates(wick, world_ctx)
 	if cands.is_empty():
+		if world_ctx != null and world_ctx.has_method("try_interact_firefly"):
+			world_ctx.call("try_interact_firefly", wick, wick.global_position)
 		return
 	var top: Object = cands[0].get("obj") as Object
 	if is_obj_movable(top):
@@ -231,6 +233,8 @@ static func try_interact(wick: LxWick, world_ctx: Node) -> bool:
 		var cand_obj: Object = cand.get("obj") as Object
 		if call_interact_on(wick, cand_obj, world_ctx):
 			return true
+	if world_ctx != null and world_ctx.has_method("try_interact_firefly"):
+		return bool(world_ctx.call("try_interact_firefly", wick, wick.global_position))
 	return false
 
 

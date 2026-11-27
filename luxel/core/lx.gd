@@ -19,6 +19,7 @@ static var panes: Object = null
 
 static var world: Node = null
 static var player: Node = null
+static var companion: Node = null
 static var ui: Node = null
 static var director: RefCounted = null
 
@@ -45,6 +46,7 @@ static func reset() -> void:
 	panes = null
 	world = null
 	player = null
+	companion = null
 	ui = null
 	director = null
 

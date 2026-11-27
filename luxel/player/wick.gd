@@ -14,6 +14,7 @@ const WickFx := preload("res://luxel/player/wick_fx.gd")
 const WickWorld := preload("res://luxel/player/wick_world.gd")
 const WickGrab := preload("res://luxel/player/wick_grab.gd")
 const WickCombat := preload("res://luxel/player/wick_combat.gd")
+const FIREFLY_SCRIPT_PATH: String = "res://luxel/companion/firefly_companion.gd"
 
 const MOVE_SPEED: float = 92.0
 const BODY_RADIUS: float = 4.0
@@ -60,6 +61,7 @@ var _local_hearts: float = 4.0
 var _local_max_hearts: int = 4
 
 var lantern: LxLantern = null
+var firefly: Node2D = null
 var move_bolt: LxMoveBolt = null
 var move_dash: LxMoveDash = null
 var move_throw: LxMoveThrow = null
@@ -172,6 +174,15 @@ func _ensure_kit() -> void:
 		lantern.name = "LxLantern"
 		add_child(lantern)
 		lantern.setup(self)
+	if (firefly == null or not is_instance_valid(firefly)) and ResourceLoader.exists(FIREFLY_SCRIPT_PATH):
+		var fsc: Variant = ResourceLoader.load(FIREFLY_SCRIPT_PATH)
+		if fsc is GDScript:
+			var finst: Variant = (fsc as GDScript).new()
+			if finst is Node2D:
+				firefly = finst as Node2D
+				firefly.name = "LxFireflyCompanion"
+				add_child(firefly)
+				if firefly.has_method("setup"): firefly.call("setup", self)
 	if move_bolt == null: move_bolt = LxMoveBolt.new(); register_move(move_bolt, "bolt")
 	if move_dash == null: move_dash = LxMoveDash.new(); register_move(move_dash, "dash")
 	if move_throw == null: move_throw = LxMoveThrow.new(); register_move(move_throw, "throw")
@@ -202,9 +213,11 @@ func sync_unlocks_from_state() -> void:
 
 func has_lantern() -> bool: return Lx.state == null or Lx.state.has_lantern()
 func _on_move_unlocked(_move_id: String) -> void: sync_unlocks_from_state()
-func _on_lantern_picked_up(_pickup_id: String, _at_pos: Vector2) -> void:
+func _on_lantern_picked_up(_pickup_id: String, pickup_pos: Vector2) -> void:
 	sync_unlocks_from_state()
 	if lantern != null: lantern.reset_to_hand(global_position)
+	if firefly != null and is_instance_valid(firefly) and firefly.has_method("on_lantern_picked_up"):
+		firefly.call("on_lantern_picked_up", pickup_pos)
 	catch_anim_t = 0.28
 	_fx.trigger_lantern_ignite(self)
 	queue_redraw()
@@ -232,6 +245,8 @@ func reset_for_room(at_pos: Vector2) -> void:
 		facing = Vector2.LEFT
 		if Lx.input != null: Lx.input.last_aim_dir = Vector2.LEFT
 	if lantern != null: lantern.reset_to_hand(at_pos)
+	if firefly != null and is_instance_valid(firefly) and firefly.has_method("reset_for_room"):
+		firefly.call("reset_for_room", at_pos)
 	queue_redraw()
 
 
@@ -293,7 +308,8 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 			desired_vel = Vector2.ZERO
 		elif bounce_t <= 0.0:
 			var surge_m: float = 1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0
-			var move_spd: float = MOVE_SPEED * surge_m
+			var pip_m: float = 1.12 if (firefly != null and is_instance_valid(firefly) and bool(firefly.get("sanctuary_buff_active"))) else 1.0
+			var move_spd: float = MOVE_SPEED * surge_m * pip_m
 			var panes_m: LxPanes = LxPanes.current()
 			if panes_m != null and not panes_m.equipped_ids().is_empty():
 				move_spd = panes_m.modify_stat("move_speed", move_spd, {"wick": self})
@@ -321,6 +337,8 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 		queue_redraw()
 		return
 	if lantern != null: lantern.tick_sim(dt, self, world_ctx)
+	if firefly != null and is_instance_valid(firefly) and firefly.has_method("tick_sim"):
+		firefly.call("tick_sim", dt, self, world_ctx)
 	if move_lens != null and has_lantern(): move_lens.tick_lens(dt, world_ctx)
 	if move_bolt != null: move_bolt.tick_bolts(dt, world_ctx)
 	queue_redraw()
@@ -342,7 +360,7 @@ func _update_manual_aim() -> void:
 
 func _poll_inputs(world_ctx: Node) -> void:
 	if Lx.input == null: return
-	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_interact"]:
+	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_firefly", "lx_interact"]:
 		var now: bool = Lx.input.is_action_active(act)
 		var was: bool = bool(_prev_act.get(act, false))
 		_prev_act[act] = now
@@ -354,6 +372,7 @@ func _poll_inputs(world_ctx: Node) -> void:
 				"lx_beam": press_beam()
 				"lx_lens": press_lens()
 				"lx_sunflare": press_sunflare()
+				"lx_firefly": press_firefly()
 				"lx_interact": WickGrab.press_interact(self, world_ctx)
 		elif not now and was:
 			match act:
@@ -367,7 +386,7 @@ func prime_input_edges() -> void:
 	if Lx.input == null: return
 	Lx.input.clear_all_toggles()
 	release_fire()
-	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_interact"]:
+	for act: String in ["lx_fire", "lx_throw", "lx_dash", "lx_beam", "lx_lens", "lx_sunflare", "lx_firefly", "lx_interact"]:
 		if Lx.input.is_action_active(act): _prev_act[act] = true
 
 
@@ -482,6 +501,11 @@ func press_lens() -> bool:
 	move_lens.set_world_ctx(_world_ctx)
 	return move_lens.press()
 
+func press_firefly() -> bool:
+	_ensure_kit()
+	if dead or is_grabbing() or firefly == null or not is_instance_valid(firefly): return false
+	return bool(firefly.call("press_command", _world_ctx)) if firefly.has_method("press_command") else false
+
 func try_zip() -> bool:
 	_ensure_kit()
 	if dead or is_grabbing() or not has_lantern() or move_throw == null: return false
@@ -554,7 +578,11 @@ func get_entity_pos(entity: Object) -> Vector2: return _world_q.get_entity_pos(e
 func get_entity_radius(entity: Object, fallback: float = 8.0) -> float: return _world_q.get_entity_radius(entity, fallback)
 func is_entity_alive(entity: Object) -> bool: return _world_q.is_entity_alive(entity)
 func is_snatcher_entity(entity: Object) -> bool: return _world_q.is_snatcher_entity(entity)
-func apply_hit_to_entity(entity: Object, hit: LxHit) -> int: return _world_q.apply_hit_to_entity(entity, hit)
+func apply_hit_to_entity(entity: Object, hit: LxHit) -> int:
+	var res: int = _world_q.apply_hit_to_entity(entity, hit)
+	if res >= 0 and firefly != null and is_instance_valid(firefly) and firefly.has_method("on_wick_hit_enemy"):
+		firefly.call("on_wick_hit_enemy", self, entity, hit, res, get_entity_pos(entity), _world_ctx)
+	return res
 func get_method_arity(obj: Object, method_name: String) -> int: return _world_q.get_method_arity(obj, method_name)
 
 func spawn_afterimage(col: Color) -> void: _fx.spawn_afterimage(global_position, col, facing, "zip" if is_zipping() else "dash")

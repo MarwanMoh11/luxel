@@ -46,6 +46,10 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		LxPixelFont.draw_left(ci, LxStrings.text("MAP_HUB_LABEL"), box.position + Vector2(14.0, 4.0), LxPalette.PAL["gold"], 1)
 		if Lx.state != null and Lx.state.island_id == 0:
 			LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 4.0, LxPalette.PAL["cream"], 1)
+		if LxFireflyState.is_joined():
+			var hub_pip: String = LxFolkData.fmt_id("PIP_HUB_MAP_FMT", [LxFireflyState.get_bond_rank(), LxFireflyState.get_nectar_count()])
+			_draw_pip_dot(ci, box.position + Vector2(6.0, 17.0))
+			LxPixelFont.draw_left(ci, hub_pip, box.position + Vector2(11.0, 16.0), LxPalette.PAL["lime"], 1)
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_SECRETS", [count_secrets()]), box.position + Vector2(6.0, 26.0), LxPalette.PAL["sky"], 1)
 		_draw_footer_counts(ci, box)
 		return
@@ -87,9 +91,69 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		if not dngs.is_empty():
 			_draw_dungeon_pips(ci, box.end.x - 6.0, box.position.y + 21.0, dngs[0], isl_glow)
 		_draw_relic_and_harmony(ci, box, isl_id, data)
+		if LxFireflyState.is_joined():
+			_draw_island_pip_row(ci, box, isl_id)
 	else:
 		_draw_multi_dungeons(ci, box, dngs, isl_glow)
+		if LxFireflyState.is_joined():
+			_draw_island_pip_strip(ci, box, isl_id)
 	_draw_footer_counts(ci, box)
+
+
+static func _draw_pip_dot(ci: CanvasItem, pos: Vector2) -> void:
+	var p: Vector2 = pos.round()
+	ci.draw_rect(Rect2(p, Vector2(3.0, 3.0)), LxPalette.PAL["lime"])
+	ci.draw_rect(Rect2(p + Vector2.ONE, Vector2.ONE), LxPalette.PAL["cream"])
+
+
+static func _draw_island_pip_row(ci: CanvasItem, box: Rect2, isl_id: int) -> void:
+	var blooms: Vector2i = LxFireflyState.get_island_bloom_counts(isl_id)
+	var perches: Vector2i = LxFireflyState.get_island_perch_counts(isl_id)
+	var relay_done: bool = LxFireflyState.is_island_relay_done(isl_id)
+	var py: float = roundf(box.position.y + 40.0)
+	_draw_pip_dot(ci, Vector2(box.position.x + 6.0, py + 1.0))
+	var all_done: bool = blooms.x >= maxi(1, blooms.y) and perches.x >= maxi(1, perches.y)
+	var txt_col: Color = LxPalette.PAL["lime"] if all_done else (LxPalette.PAL["ice"] if (blooms.x > 0 or perches.x > 0) else LxPalette.PAL["stone"])
+	var pip_txt: String = LxFolkData.fmt_id("PIP_MAP_FMT", [blooms.x, perches.x])
+	LxPixelFont.draw_left(ci, pip_txt, Vector2(box.position.x + 11.0, py), txt_col, 1)
+	var r_txt: String = LxFolkData.tr_id("PIP_MAP_RELAY_OK" if relay_done else "PIP_MAP_RELAY_OPEN")
+	var r_col: Color = LxPalette.PAL["gold"] if relay_done else LxPalette.PAL["stone"]
+	var rw: float = float(LxPixelFont.width(r_txt, 1))
+	var dx: float = roundf(box.end.x - 6.0 - rw - 5.0)
+	var dc_out: Color = LxPalette.PAL["gold"] if relay_done else LxPalette.PAL["night"]
+	var dc_in: Color = LxPalette.PAL["cream"] if relay_done else LxPalette.PAL["mauve"]
+	ci.draw_rect(Rect2(dx, py + 2.0, 3.0, 1.0), dc_out)
+	ci.draw_rect(Rect2(dx + 1.0, py + 1.0, 1.0, 3.0), dc_out)
+	ci.draw_rect(Rect2(dx + 1.0, py + 2.0, 1.0, 1.0), dc_in)
+	LxPixelFont.draw_right(ci, r_txt, box.end.x - 6.0, py, r_col, 1)
+
+
+static func _draw_island_pip_strip(ci: CanvasItem, box: Rect2, isl_id: int) -> void:
+	var blooms: Vector2i = LxFireflyState.get_island_bloom_counts(isl_id)
+	var perches: Vector2i = LxFireflyState.get_island_perch_counts(isl_id)
+	var relay_done: bool = LxFireflyState.is_island_relay_done(isl_id)
+	var bloom_cap: int = clampi(blooms.y if blooms.y > 0 else 3, 1, 3)
+	var perch_cap: int = clampi(perches.y if perches.y > 0 else 2, 1, 2)
+	var strip_w: float = float(bloom_cap * 4 - 1) + 3.0 + 3.0 + 3.0 + float(perch_cap * 4 - 1)
+	var cx: float = roundf(box.end.x - 6.0 - strip_w)
+	var py: float = roundf(box.position.y + 20.0)
+	for bi: int in range(bloom_cap):
+		var lit: bool = bi < blooms.x
+		ci.draw_rect(Rect2(cx, py, 3.0, 3.0), LxPalette.PAL["lime" if lit else "night"])
+		ci.draw_rect(Rect2(cx + 1.0, py + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit else "mauve"])
+		cx += 4.0
+	cx += 2.0
+	var r_out: Color = LxPalette.PAL["gold"] if relay_done else LxPalette.PAL["night"]
+	var r_in: Color = LxPalette.PAL["cream"] if relay_done else LxPalette.PAL["mauve"]
+	ci.draw_rect(Rect2(cx, py + 1.0, 3.0, 1.0), r_out)
+	ci.draw_rect(Rect2(cx + 1.0, py, 1.0, 3.0), r_out)
+	ci.draw_rect(Rect2(cx + 1.0, py + 1.0, 1.0, 1.0), r_in)
+	cx += 6.0
+	for pi: int in range(perch_cap):
+		var lit_p: bool = pi < perches.x
+		ci.draw_rect(Rect2(cx, py, 3.0, 3.0), LxPalette.PAL["sky" if lit_p else "night"])
+		ci.draw_rect(Rect2(cx + 1.0, py + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if lit_p else "mauve"])
+		cx += 4.0
 
 
 static func get_island_dungeons(isl_id: int) -> Array[Dictionary]:

@@ -458,25 +458,22 @@ func _draw_moves_tray(origin: Vector2) -> void:
 		else:
 			draw_rect(Rect2(slot_x + 5.0, origin.y + 13.0, 3.0, 2.0), LxPalette.color(col_name))
 		slot_x += step_x
+	LxHudOverlays.draw_firefly_slot(self, slot_x, origin.y, _blink_t, _moves_idle_t > 5.0 and not _boss_active)
 
 func _draw_zip_cue(origin: Vector2) -> void:
 	LxHudOverlays.draw_zip_cue(self, origin, _zip_cue_alpha)
 
-
 func _draw_move_icon(move_id: String, at: Vector2, col: Color) -> void:
 	LxHudOverlays.draw_move_icon(self, move_id, at, col)
 
-
 func _draw_ember_meter(at: Vector2) -> void:
 	LxHudOverlays.draw_ember_meter(self, at, _ember_val, _ember_max, _blink_t, not _boss_active)
-
 
 func _draw_boss_bar() -> void:
 	if _boss_entries.is_empty():
 		LxBossHud.draw_boss_bars(self, [{"id": _boss_name_key, "name_key": _boss_name_key, "hp": _boss_hp, "max_hp": _boss_max_hp, "trail_hp": _boss_trail_hp, "phase": _boss_phase}], _blink_t)
 	else:
 		LxBossHud.draw_boss_bars(self, _boss_entries, _blink_t)
-
 
 func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D): return Rect2()
@@ -517,6 +514,11 @@ func _draw_interact_prompt(notice_rect: Rect2 = Rect2()) -> Rect2:
 		var d2: float = it_pos.distance_squared_to(ppos)
 		if d2 <= reach * reach and d2 < best_d2:
 			best_d2 = d2; best_pid = pid; best_pos = it_pos
+	if best_pid.is_empty() and Lx.world != null and Lx.world.has_method("get_firefly_prompt_near"):
+		var fp: Dictionary = Lx.world.call("get_firefly_prompt_near", ppos, 24.0) as Dictionary
+		if not fp.is_empty():
+			best_pid = str(fp.get("prompt", ""))
+			best_pos = fp.get("pos", ppos) as Vector2
 	if best_pid.is_empty(): return Rect2()
 	if _boss_active and best_pid == "PROMPT_TRANSFORMER": best_pid = "PROMPT_TURN_MIRROR"
 	var label: String = LxStrings.text(best_pid) if LxStrings.has_id(best_pid) else LxStrings.sanitize(best_pid)

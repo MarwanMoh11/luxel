@@ -279,6 +279,14 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 			var d2_pp: float = pp_v.distance_squared_to(cam_center)
 			if d2_pp <= lim_pp * lim_pp:
 				candidates.append({"d": d2_pp + 900.0, "v": Vector4(ppool.x, ppool.y, ppool.z * flicker, ppool.w)})
+	if region != null and region.has_method("get_firefly_light_pools"):
+		for fpool: Vector4 in (region.call("get_firefly_light_pools") as Array):
+			if fpool.z <= 1.0 or fpool.w <= 0.001: continue
+			var fp_v := Vector2(fpool.x, fpool.y)
+			var lim_fp: float = 300.0 + fpool.z
+			var d2_fp: float = fp_v.distance_squared_to(cam_center)
+			if d2_fp <= lim_fp * lim_fp:
+				candidates.append({"d": d2_fp + 400.0, "v": Vector4(fpool.x, fpool.y, fpool.z * flicker, fpool.w)})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:
@@ -488,6 +496,10 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float, is_dungeo
 		var hung_r: float = (144.0 if has_lens else 116.0) if is_dungeon else (136.0 if has_lens else 104.0)
 		var base_hung: float = (maxf(hung_r, custom_r) + b_boost.x) * lscale
 		lights.append(Vector4(lan_pos.x, lan_pos.y - 6.0, base_hung * flicker, (1.45 + b_boost.y) * iscale))
+	if Lx.companion != null and is_instance_valid(Lx.companion) and Lx.companion.has_method("get_light_pool"):
+		var pip_lp: Vector4 = Lx.companion.call("get_light_pool") as Vector4
+		if pip_lp.z > 1.0 and pip_lp.w > 0.001:
+			lights.append(Vector4(pip_lp.x, pip_lp.y, pip_lp.z * flicker, pip_lp.w))
 
 
 func _biome_and_harmony_light_boost() -> Vector2:

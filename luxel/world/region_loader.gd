@@ -49,6 +49,7 @@ var _signal_conduits: LxSignalConduits = null
 var _visual_teaching: LxVisualTeachingFx = null
 var _failure_teaching: LxFailureTeachingFx = null
 var _ambient_life: LxAmbientLife = null
+var _firefly_content: Node2D = null
 var _interactables_root: Node2D = null
 var _enemies_root: Node2D = null
 var _enemies: Array[LxEnemyBrain] = []
@@ -105,6 +106,10 @@ func _ensure_containers() -> void:
 	if _interactables_root == null: _interactables_root = _make_layer("Interactables", 0, true, _world_ysort_root)
 	if _enemies_root == null: _enemies_root = _make_layer("Enemies", 0, true, _world_ysort_root)
 	if _ambient_life == null: _ambient_life = LxAmbientLife.new(); _ambient_life.name = "AmbientLife"; _ambient_life.z_index = 3; add_child(_ambient_life)
+	if _firefly_content == null and ResourceLoader.exists("res://luxel/companion/firefly_world_content.gd"):
+		var fwc_sc: Variant = ResourceLoader.load("res://luxel/companion/firefly_world_content.gd")
+		if fwc_sc is GDScript: _firefly_content = (fwc_sc as GDScript).new() as Node2D
+		if _firefly_content != null: _firefly_content.name = "FireflyWorldContent"; _firefly_content.z_index = 2; add_child(_firefly_content)
 	if _scenery_over_root == null: _scenery_over_root = _make_layer("SceneryOver", 4, false)
 	if _layers == null: _layers = LxRegionLayers.new(); _layers.name = "RegionLayers"; add_child(_layers)
 	if _arena == null: _arena = LxRegionArena.new(); _arena.name = "RegionArena"; add_child(_arena)
@@ -183,6 +188,7 @@ func load_region_from_paths(
 	var cam_p: Vector2 = Lx.camera.global_position if Lx.camera != null else spawn_pos
 	if _water_fx != null: _water_fx.configure(grid, tile_size, current_island_id, is_dungeon); _water_fx.tick(0.0, cam_p)
 	if _ambient_life != null: _ambient_life.configure(current_island_id, bounds, is_dungeon); _ambient_life.tick(0.0, cam_p)
+	if _firefly_content != null and _firefly_content.has_method("setup_for_region"): _firefly_content.call("setup_for_region", current_island_id, current_region_id, self)
 	_redraw_ground()
 	if Lx.events != null: Lx.events.region_entered.emit(current_island_id, current_region_id)
 	return true
@@ -205,6 +211,7 @@ func _clear_loaded() -> void:
 	if _signal_conduits != null: _signal_conduits.clear()
 	if _visual_teaching != null: _visual_teaching.clear()
 	if _failure_teaching != null: _failure_teaching.clear()
+	if _firefly_content != null and _firefly_content.has_method("clear_content"): _firefly_content.call("clear_content")
 	_lens_circles.clear(); _fired_triggers.clear()
 	_current_room_id = ""; _current_room_rect = Rect2()
 	_room_anchor_pos = Vector2(-1.0, -1.0); _exits_locked = false
@@ -234,20 +241,14 @@ func _clear_loaded() -> void:
 
 func apply_layers(animate: bool = true) -> void:
 	if _layers != null and _layers.apply(animate): _on_tiles_mutated()
-
 func _on_tiles_mutated() -> void:
 	if _water_fx != null: _water_fx.configure(grid, tile_size, current_island_id, is_dungeon)
 	_redraw_ground()
-
-func _on_enemy_tree_exiting(brain: LxEnemyBrain) -> void:
-	_enemies.erase(brain)
-
+func _on_enemy_tree_exiting(brain: LxEnemyBrain) -> void: _enemies.erase(brain)
 func prune_freed_enemies() -> void:
 	for i: int in range(_enemies.size() - 1, -1, -1):
 		var e_v: Variant = _enemies[i]
-		if e_v == null or not is_instance_valid(e_v) or (e_v is Node and (e_v as Node).is_queued_for_deletion()):
-			_enemies.remove_at(i)
-
+		if e_v == null or not is_instance_valid(e_v) or (e_v is Node and (e_v as Node).is_queued_for_deletion()): _enemies.remove_at(i)
 func _rebuild_active_enemies() -> void:
 	prune_freed_enemies()
 	if _layers == null: return
@@ -256,7 +257,6 @@ func _rebuild_active_enemies() -> void:
 		var e: LxEnemyBrain = e_v as LxEnemyBrain
 		var eid: String = e.enemy_id if not e.enemy_id.is_empty() else (str(e.get("id")) if e.get("id") != null else "")
 		e.visible = not (not eid.is_empty() and _layers.is_enemy_disabled(eid))
-
 func _redraw_ground() -> void:
 	if _greybox_ground != null and is_instance_valid(_greybox_ground): _greybox_ground.queue_redraw()
 	queue_redraw()
@@ -494,6 +494,7 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	var cam_pos: Vector2 = Lx.camera.global_position if Lx.camera != null else (player_pos if player_pos.x > -9000.0 else spawn_pos)
 	if _water_fx != null: _water_fx.tick(dt, cam_pos)
 	if _ambient_life != null: _ambient_life.tick(dt, cam_pos)
+	if _firefly_content != null and _firefly_content.has_method("tick"): _firefly_content.call("tick", dt, player_pos)
 	if _signal_conduits != null: _signal_conduits.tick(dt)
 	if _visual_teaching != null: _visual_teaching.tick(dt, cam_pos)
 	if _failure_teaching != null: _failure_teaching.tick(dt, cam_pos)
@@ -532,9 +533,7 @@ func tick_region(dt: float, player_pos: Vector2 = Vector2.ZERO) -> int:
 func get_spawn_pos() -> Vector2: return spawn_pos
 func collide_fly(pos: Vector2, radius: float) -> Vector2: return collide(pos, radius, true, true, "", true)
 func get_bounds() -> Rect2: return bounds
-func get_enemies() -> Array[LxEnemyBrain]:
-	prune_freed_enemies()
-	return _enemies
+func get_enemies() -> Array[LxEnemyBrain]: prune_freed_enemies(); return _enemies
 func get_interactables() -> Array[LxInteractable]: return _interactables
 func get_zones() -> Array[Dictionary]: return zones
 func is_lantern_hung() -> bool: return get_lantern_state() == 2
@@ -542,7 +541,6 @@ func is_lantern_out() -> bool: return get_lantern_state() in [1, 2]
 func get_wick_pos() -> Vector2: return LxRegionRuntime.wick_pos()
 func get_lantern_state() -> int: return LxRegionRuntime.lantern_state()
 func get_lantern_pos() -> Vector2: return LxRegionRuntime.lantern_pos()
-
 func apply_light(world_pos: Vector2, light_radius: float, source: String) -> void:
 	if light_radius <= 0.0: return
 	if source == "lens" or source == "lens_anchor": _lens_circles.append(Vector3(world_pos.x, world_pos.y, light_radius))
@@ -550,9 +548,7 @@ func apply_light(world_pos: Vector2, light_radius: float, source: String) -> voi
 		if it != null and it.active:
 			var reach: float = light_radius + it.radius
 			if it.pos.distance_squared_to(world_pos) <= reach * reach:
-				if source == "lens" or source == "lens_anchor" or LxRegionArena.clear_view_world(self, world_pos, it.pos, it):
-					it.on_light(light_radius, source)
-
+				if source == "lens" or source == "lens_anchor" or LxRegionArena.clear_view_world(self, world_pos, it.pos, it): it.on_light(light_radius, source)
 func try_interact(actor: Node, actor_pos: Vector2, reach: float = 20.0) -> LxInteractable:
 	var best: LxInteractable = null; var best_d2: float = INF
 	for it: LxInteractable in _interactables:
@@ -560,18 +556,13 @@ func try_interact(actor: Node, actor_pos: Vector2, reach: float = 20.0) -> LxInt
 		var max_r: float = reach + it.radius
 		var d2: float = it.pos.distance_squared_to(actor_pos)
 		if d2 <= max_r * max_r and d2 < best_d2: best = it; best_d2 = d2
-	if best != null and best.interact(actor):
-		save_interactables_to_state(); return best
+	if best != null and best.interact(actor): save_interactables_to_state(); return best
 	return null
-
 func hit_interactables(hit: LxHit, hit_pos: Vector2, hit_radius: float = 8.0) -> LxInteractable:
 	for it: LxInteractable in _interactables:
 		if it == null or not it.active: continue
-		var hit_ok: bool = it.get_solid_rect().grow(hit_radius).has_point(hit_pos) if it.is_solid() else (
-			it.pos.distance_squared_to(hit_pos) <= (it.radius + hit_radius) * (it.radius + hit_radius)
-		)
-		if hit_ok and it.on_hit(hit):
-			save_interactables_to_state(); return it
+		var hit_ok: bool = it.get_solid_rect().grow(hit_radius).has_point(hit_pos) if it.is_solid() else (it.pos.distance_squared_to(hit_pos) <= (it.radius + hit_radius) * (it.radius + hit_radius))
+		if hit_ok and it.on_hit(hit): save_interactables_to_state(); return it
 	return null
 
 func is_zone_cleared(zone_id: String = "") -> bool:
@@ -585,6 +576,11 @@ func is_zone_cleared(zone_id: String = "") -> bool:
 
 func is_zone_lit(zone_id: String) -> bool: return LxRegionRuntime.is_zone_lit(self, zone_id)
 func get_light_pools() -> Array[Vector4]: return LxRegionRuntime.get_light_pools(_interactables, _scenery_props)
+func get_firefly_light_pools() -> Array[Vector4]: return _firefly_content.call("get_light_pools") as Array[Vector4] if (_firefly_content != null and _firefly_content.has_method("get_light_pools")) else []
+func try_interact_firefly(actor: Node, actor_pos: Vector2, reach: float = 24.0) -> bool: return bool(_firefly_content.call("try_interact", actor, actor_pos, reach)) if (_firefly_content != null and _firefly_content.has_method("try_interact")) else false
+func get_firefly_prompt_near(actor_pos: Vector2, reach: float = 24.0) -> Dictionary:
+	var p: String = str(_firefly_content.call("get_interact_prompt_near", actor_pos, reach)) if (_firefly_content != null and _firefly_content.has_method("get_interact_prompt_near")) else ""
+	return {} if p.is_empty() else {"prompt": p, "pos": Vector2(232.0, 184.0)}
 func is_flag_set(flag: String) -> bool: return check_flag_static(flag)
 static func check_flag_static(flag: String) -> bool: return LxRegionRuntime.check_flag_static(flag)
 

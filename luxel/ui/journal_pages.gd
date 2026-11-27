@@ -89,6 +89,14 @@ static func draw_moths(ci: CanvasItem, area: Rect2, sel: int = 0) -> void:
 	var hdr: String = LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [total_caught, 80])
 	LxBubble.draw_icon(ci, "moth", area.position + Vector2(4.0, 2.0), 1.0)
 	LxPixelFont.draw_left(ci, hdr, area.position + Vector2(16.0, 4.0), LxPalette.PAL["gold"], 1)
+	if LxFireflyState.is_joined():
+		var pip_txt: String = LxFolkData.fmt_id("PIP_JOURNAL_FMT", [LxFireflyState.get_bond_rank(), LxFireflyState.get_nectar_count()])
+		var pip_w: float = float(LxPixelFont.width(pip_txt, 1))
+		var dot_x: float = roundf(area.end.x - 4.0 - pip_w - 5.0)
+		var dot_y: float = roundf(area.position.y + 5.0)
+		ci.draw_rect(Rect2(dot_x, dot_y, 3.0, 3.0), LxPalette.PAL["lime"])
+		ci.draw_rect(Rect2(dot_x + 1.0, dot_y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+		LxPixelFont.draw_right(ci, pip_txt, area.end.x - 4.0, area.position.y + 4.0, LxPalette.PAL["lime"], 1)
 	var sel_isl: int = clampi(sel + 1, 1, 8)
 	# 8 islands in 2 columns x 4 rows, 10 moth pips per island + hint eye icon after 2 visits
 	for isl: int in range(1, 9):

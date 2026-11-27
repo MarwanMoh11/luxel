@@ -1,0 +1,70 @@
+{
+  "pack_id": "firefly_companion",
+  "version": 1,
+  "owner": "companion",
+  "strings": {
+    "ACT_FIREFLY": "SEND PIP",
+    "PIP_JOIN_TITLE": "PIP JOINS YOU",
+    "PIP_JOIN_HINT": "PRESS %s TO SEND PIP",
+    "PIP_BLOOM_FMT": "NECTAR BLOOM %d/24",
+    "PIP_BOND_UP_FMT": "PIP BOND RANK %d",
+    "PIP_BOND_2_DESC": "DEWDROP HEAL UNLOCKED",
+    "PIP_BOND_3_DESC": "TWIN TAG + RESONANCE TETHER",
+    "PIP_BOND_4_DESC": "LUMINOUS NOVA UNLOCKED",
+    "PIP_RELAY_START": "POLLEN RELAY - RING ALL 3 BELLS",
+    "PIP_RELAY_CLEAR": "GOLDEN NECTAR CACHE OPENED!",
+    "PIP_RELAY_FAIL": "BELLS FADED - TRY AGAIN",
+    "PIP_DEW_HEAL": "PIP DEWDROP +0.5 HEART",
+    "PIP_TERRARIUM_PROMPT": "PIP PERCH",
+    "PIP_TERRARIUM_FMT": "PIP RANK %d - NECTAR %d/24 - %s",
+    "PIP_TINT_MEADOW": "MEADOW",
+    "PIP_TINT_DAWN": "DAWN",
+    "PIP_TINT_TIDE": "TIDE",
+    "PIP_TINT_ROSE": "ROSE",
+    "PIP_TINT_STAR": "STAR",
+    "PIP_QUEST_NAME": "NECTAR PILGRIMAGE",
+    "PIP_QUEST_DESC": "POLLINATE BLOOMS WITH PIP",
+    "PIP_HUD_TAG": "PIP",
+    "PIP_PERCH_LIT": "SANCTUARY PERCH LIT! +1 NECTAR",
+    "PIP_MAP_FMT": "PIP %d/3  PERCH %d/2",
+    "PIP_MAP_RELAY_OK": "RELAY OK",
+    "PIP_MAP_RELAY_OPEN": "RELAY",
+    "PIP_SHIELD_SNIP": "POLLEN INTERCEPT!",
+    "PIP_HUB_MAP_FMT": "PIP RANK %d  NECTAR %d/24",
+    "PIP_JOURNAL_FMT": "PIP RANK %d  %d/24"
+  },
+  "quests": [
+    {
+      "id": "pip_pilgrimage",
+      "island": 1,
+      "kind": "collect",
+      "folk": "pip",
+      "icon": "spark",
+      "steps": [
+        {
+          "icons": [
+            "spark",
+            "isl_1",
+            "lantern"
+          ],
+          "need": "firefly_joined",
+          "flag": "firefly_joined"
+        },
+        {
+          "icons": [
+            "spark",
+            "happy",
+            "star"
+          ],
+          "need": "",
+          "flag": "pip_quest_done"
+        }
+      ],
+      "reward": {
+        "kind": "tint",
+        "value": "star",
+        "amount": 1
+      }
+    }
+  ]
+}
