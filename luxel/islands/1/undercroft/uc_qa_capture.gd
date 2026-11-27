@@ -31,11 +31,13 @@ func _initialize() -> void:
 
 
 func _force_play_flow() -> void:
-	if _main != null and is_instance_valid(_main) and int(_main.get("flow")) != 2:
-		_main.set("flow", 2)
-		if Lx.audio != null:
-			Lx.audio.set_paused(false)
-		_main.call("_sync_ui_flow")
+	if _main != null and is_instance_valid(_main):
+		var fl: Variant = _main.get("flow")
+		if not (fl is int and int(fl) == 2):
+			_main.set("flow", 2)
+			if Lx.audio != null:
+				Lx.audio.set_paused(false)
+			_main.call("_sync_ui_flow")
 
 
 func _run() -> void:

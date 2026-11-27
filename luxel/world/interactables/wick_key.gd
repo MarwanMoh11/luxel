@@ -120,7 +120,8 @@ func _draw() -> void:
 		var is_b: bool = key_kind == "keepers_flame"
 		var b_gl: Color = LxBiomePalette.col(island_id, "glow")
 		var ring_c: Color = (PAL["cream"] as Color) if u < 0.35 else ((PAL["coral"] as Color) if is_b else b_gl)
-		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 22.0 if is_b else 18.0, u)), 0.0, TAU, 16, ring_c, 2.0 if u < 0.3 else 1.0, false)
+		var rw: float = 2.0 if u < 0.3 else 1.0
+		draw_arc(Vector2(0.0, -3.0), roundf(lerpf(3.0, 22.0 if is_b else 18.0, u)), 0.0, TAU, 16, ring_c, rw, false)
 		var scount: int = 8 if is_b else 6
 		for k: int in range(scount):
 			var a: float = (TAU * float(k)) / float(scount)

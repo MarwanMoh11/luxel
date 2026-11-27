@@ -510,7 +510,7 @@ func _draw() -> void:
 	if kind == "race" and _next_cp < _checkpoints.size():
 		var cp: Vector2 = _checkpoints[_next_cp].round()
 		var pulse: float = 2.0 * sin(elapsed_s * 6.0)
-		draw_arc(cp, roundf(_goal_radius * 0.65 + pulse), 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+		draw_arc(cp, roundf(_goal_radius * 0.65 + pulse), 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 		draw_arc(cp, roundf(_goal_radius * 0.35), 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 	elif kind == "escort":
 		var ep: Vector2 = _escort_pos.round()

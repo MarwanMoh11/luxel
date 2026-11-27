@@ -66,7 +66,8 @@ class Island3HudOverlay:
 			return
 		if Lx.state == null or Lx.state.island_id != ISLAND_ID:
 			return
-		if Lx.root != null and int(Lx.root.get("flow")) != 2:
+		var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+		if fl is int and int(fl) != 2:
 			return
 		var reg_id: String = Lx.state.region_id
 		var is_tiny: bool = rule.is_tiny()

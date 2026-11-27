@@ -264,19 +264,19 @@ func freeze_motion_toy(obj: Object, secs: float = DUSK_FREEZE_S) -> bool:
 		return true
 	var k: String = str(obj.get("kind")) if obj.get("kind") != null else ""
 	if k in ["spinner", "conveyor", "moving_platform", "mover_wall"]:
-		var orig_spd: float = float(obj.get("speed"))
+		var orig_spd: float = _fprop(obj, "speed")
 		obj.set("speed", 0.0)
 		_frozen[oid] = {"obj": obj, "kind": k, "left": secs, "max_t": secs, "orig_speed": orig_spd}
 		return true
 	if k == "rotor":
-		var orig_c: float = float(obj.get("continuous_speed"))
-		var orig_t: float = float(obj.get("target_angle"))
+		var orig_c: float = _fprop(obj, "continuous_speed")
+		var orig_t: float = _fprop(obj, "target_angle")
 		obj.set("continuous_speed", 0.0)
-		obj.set("target_angle", float(obj.get("angle")))
+		obj.set("target_angle", _fprop(obj, "angle"))
 		_frozen[oid] = {"obj": obj, "kind": k, "left": secs, "max_t": secs, "orig_speed": orig_c, "orig_target": orig_t}
 		return true
 	if k == "turret_eye":
-		obj.set("_stun_t", maxf(float(obj.get("_stun_t")), secs))
+		obj.set("_stun_t", maxf(_fprop(obj, "_stun_t"), secs))
 		_frozen[oid] = {"obj": obj, "kind": k, "left": secs, "max_t": secs, "orig_speed": 0.0}
 		return true
 	if obj is LxEnemyBrain:
@@ -328,7 +328,7 @@ func _tick_frozen(dt: float) -> bool:
 			continue
 		ent["left"] = float(ent["left"]) - dt
 		if str(ent["kind"]) == "rotor":
-			obj.set("target_angle", float(obj.get("angle")))
+			obj.set("target_angle", _fprop(obj, "angle"))
 		if float(ent["left"]) <= 0.0:
 			_restore_frozen_entry(ent)
 			done_ids.append(oid)
@@ -450,7 +450,7 @@ func _on_room_notified(event: String, data: Dictionary) -> void:
 			freeze_motion_toy(target, 2.5 if tkind == "turret_eye" else DUSK_FREEZE_S)
 		elif tkind in ["brazier", "timed_brazier"] and target is LxInteractable:
 			var it_b: LxInteractable = target as LxInteractable
-			if bool(it_b.props.get("dusk_douse", false)) and bool(it_b.get("lit")):
+			if bool(it_b.props.get("dusk_douse", false)) and it_b.get("lit") == true:
 				if it_b.has_method("_extinguish"):
 					it_b.call("_extinguish", true)
 				else:
@@ -461,7 +461,7 @@ func _on_room_notified(event: String, data: Dictionary) -> void:
 	elif tone == "war":
 		if tkind == "cracked_wall" and target is LxInteractable:
 			var cw: LxInteractable = target as LxInteractable
-			if not bool(cw.get("broken")) and bool(cw.props.get("war_breakable", true)):
+			if cw.get("broken") != true and bool(cw.props.get("war_breakable", true)):
 				cw.on_hit(LxHit.make(LxHit.SOURCE_BEAM, 2.0, dir, origin))
 		elif not handled and target is LxEnemyBrain:
 			var eb: LxEnemyBrain = target as LxEnemyBrain
@@ -474,7 +474,7 @@ func _on_room_notified(event: String, data: Dictionary) -> void:
 	elif tone == "dawn":
 		if tkind in ["brazier", "timed_brazier"] and target is LxInteractable:
 			var it_d: LxInteractable = target as LxInteractable
-			if not bool(it_d.get("lit")) and bool(it_d.props.get("dawn_relight", false)):
+			if it_d.get("lit") != true and bool(it_d.props.get("dawn_relight", false)):
 				it_d.on_hit(LxHit.make(LxHit.SOURCE_BEAM, 1.0, dir, origin))
 
 
@@ -545,11 +545,17 @@ func _unmount_nodes() -> void:
 	_fx = null
 
 
+static func _fprop(obj: Object, prop: String, fallback: float = 0.0) -> float:
+	var v: Variant = obj.get(prop)
+	return float(v) if (v is float or v is int) else fallback
+
+
 func should_show_hud_badge() -> bool:
 	var st: LxGameState = _get_state()
 	if st == null or st.island_id != ISLAND_ID or not st.has_lantern():
 		return false
-	if Lx.root != null and int(Lx.root.get("flow")) != LxMain.Flow.PLAY:
+	var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+	if fl is int and int(fl) != LxMain.Flow.PLAY:
 		return false
 	if not LxLegacy.is_legacy_region(ISLAND_ID, _region_id):
 		return true

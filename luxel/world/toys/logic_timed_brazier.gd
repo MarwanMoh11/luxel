@@ -177,7 +177,7 @@ func _draw() -> void:
 	if lit and not is_reset_brazier and secs > 0.0:
 		draw_arc(Vector2(0.0, -4.0), 11.0, 0.0, TAU, 24, Color(c_void, 0.45), 2.0)
 		var arc_c: Color = c_coral if warn else c_gold
-		draw_arc(Vector2(0.0, -4.0), 11.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 24, arc_c, 1.5)
+		draw_arc(Vector2(0.0, -4.0), 11.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 24, arc_c, 1.0)
 
 	# Cast-iron / stone pedestal feet (flared 3-legged stand)
 	draw_rect(Rect2(-7.0, 2.0, 4.0, 4.0), c_void)

@@ -167,9 +167,12 @@ func _apply_spark_shrine_bonus(region_id: String) -> void:
 	var st: LxGameState = _get_state()
 	if st == null or not bool(st.story_flags.get("quest:q6_spark_hide:done", false)):
 		return
-	if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("ember") != null:
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var ev: Variant = Lx.player.get("ember")
+		if not (ev is float or ev is int):
+			return
 		var emax: float = st.get_effective_ember_max()
-		var cur: float = float(Lx.player.get("ember"))
+		var cur: float = float(ev)
 		var floor_e: float = emax * 0.30
 		if cur < floor_e:
 			Lx.player.set("ember", floor_e)

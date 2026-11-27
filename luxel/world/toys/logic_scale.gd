@@ -111,7 +111,8 @@ func _measure_pan(is_left: bool) -> float:
 	if not pid.is_empty() and region != null and region.has_method("find_interactable"):
 		var found: Variant = region.call("find_interactable", pid)
 		if found is LxPressurePlate:
-			return float((found as LxPressurePlate).get("_press_weight"))
+			var pw_v: Variant = (found as LxPressurePlate).get("_press_weight")
+			return float(pw_v) if (pw_v is float or pw_v is int) else 0.0
 		if found is LxToy:
 			return 1.0 if (found as LxToy).powered else 0.0
 	var center: Vector2 = pos + (left_offset if is_left else right_offset)
@@ -119,7 +120,7 @@ func _measure_pan(is_left: bool) -> float:
 	var total: float = 0.0
 	var wp: Vector2 = wick_pos()
 	if rect.has_point(wp):
-		var dead_w: bool = Lx.player != null and is_instance_valid(Lx.player) and bool(Lx.player.get("dead"))
+		var dead_w: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("dead") == true
 		if not dead_w:
 			total += 1.0
 	if region != null and region.has_method("is_lantern_out") and bool(region.call("is_lantern_out")):

@@ -284,7 +284,7 @@ func _draw() -> void:
 		draw_rect(Rect2(0.0, -7.0, 1.0, 1.0), c_cream)
 		if _reclaim_burst_t > 0.0:
 			var u: float = 1.0 - clampf(_reclaim_burst_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -8.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
+			draw_arc(Vector2(0.0, -8.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 2.0)
 		_draw_signal_pulses()
 		return
 

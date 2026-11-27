@@ -80,7 +80,7 @@ class ConstellationCanvas:
 
 		if lantern_vertex.is_finite():
 			var lp: Vector2 = lantern_vertex.round()
-			draw_arc(lp, 9.0, 0.0, TAU, 16, Color(pal["cream"] as Color, 0.78 if fr else 0.90), 1.2)
+			draw_arc(lp, 9.0, 0.0, TAU, 16, Color(pal["cream"] as Color, 0.78 if fr else 0.90), 1.0)
 			draw_arc(lp, 6.0, 0.0, TAU, 12, Color(pal["ice"] as Color, 0.62), 1.0)
 			draw_line(lp + Vector2(-5.0, 0.0), lp + Vector2(5.0, 0.0), pal["gold"] as Color, 1.0)
 			draw_line(lp + Vector2(0.0, -5.0), lp + Vector2(0.0, 5.0), pal["gold"] as Color, 1.0)
@@ -322,8 +322,10 @@ static func _update_support_cells(
 	lit_tris: Array[PackedVector2Array],
 	lan_v: Vector2
 ) -> void:
-	var w: int = int(reg.get("width")) if reg.get("width") != null else 0
-	var h: int = int(reg.get("height")) if reg.get("height") != null else 0
+	var w_v: Variant = reg.get("width")
+	var h_v: Variant = reg.get("height")
+	var w: int = int(w_v) if (w_v is int or w_v is float) else 0
+	var h: int = int(h_v) if (h_v is int or h_v is float) else 0
 	var ts_v: Variant = reg.get("tile_size")
 	var ts: float = float(ts_v) if (ts_v is int or ts_v is float) and float(ts_v) > 0.0 else 16.0
 	var rects: Array[Rect2] = []

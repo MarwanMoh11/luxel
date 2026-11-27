@@ -450,7 +450,7 @@ func _draw_pane_grid(pm: LxPanes) -> void:
 		var sel: bool = i == _idx
 		var owned: bool = pm.has_pane(p.id)
 		var eq: bool = pm.is_equipped(p.id)
-		if sel and _deny_t > 0.0 and LxHudFx.shake_enabled():
+		if sel and _deny_t > 0.0 and LxHudFx.shake_enabled() and not LxHudFx.flash_reduced():
 			tr.position.x += roundf(sin(_deny_t * 50.0) * 1.5)
 		var bdr: String = "coral" if (sel and _deny_t > 0.0) else ("gold" if sel else ("lime" if eq else ("mauve" if owned else "night")))
 		var fill: String = "plum" if sel else ("dusk" if eq else ("night" if owned else "void"))

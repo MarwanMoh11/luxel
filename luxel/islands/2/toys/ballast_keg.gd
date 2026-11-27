@@ -365,7 +365,8 @@ func _draw() -> void:
 		var rr: float = roundf(lerpf(6.0, blast_r, u))
 		var ring_c: Color = PAL["cream"] as Color if u < 0.35 else PAL["coral"] as Color
 		var ring_a: float = (1.0 - u * 0.5) * (0.55 if red else 1.0)
-		draw_arc(b_rel, rr, 0.0, TAU, 20, Color(ring_c, ring_a), 1.0 if red else (2.0 if u < 0.45 else 1.0))
+		var ring_w: float = 1.0 if red else (2.0 if u < 0.45 else 1.0)
+		draw_arc(b_rel, rr, 0.0, TAU, 20, Color(ring_c, ring_a), ring_w)
 		draw_circle(b_rel, roundf(maxf(2.0, rr * (1.0 - u) * 0.65)), Color(PAL["gold"] as Color, (1.0 - u) * (0.35 if red else 0.55)))
 
 	# Respawning rack silhouette

@@ -116,7 +116,7 @@ func tick(dt: float) -> void:
 		dirty = true
 	if step_trigger and active:
 		var wp: Vector2 = wick_pos()
-		var on_now: bool = wp.distance_to(pos) <= 10.0 and (Lx.player == null or not bool(Lx.player.get("dead")))
+		var on_now: bool = wp.distance_to(pos) <= 10.0 and (Lx.player == null or Lx.player.get("dead") != true)
 		if on_now and not _wick_was_on_pedal and _cd <= 0.0:
 			cycle()
 			dirty = true
@@ -248,7 +248,8 @@ func _draw() -> void:
 		var u: float = 1.0 - clampf(_sound_ring_t / 0.42, 0.0, 1.0)
 		var rr: float = roundf(lerpf(6.0, 26.0, u))
 		var alpha: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.90)
-		draw_arc(Vector2(0.0, -5.0), rr, 0.0, TAU, 18, Color(c_cream if u < 0.35 else c_glow, alpha), 1.5 if u < 0.4 else 1.0)
+		var rw: float = 2.0 if u < 0.4 else 1.0
+		draw_arc(Vector2(0.0, -5.0), rr, 0.0, TAU, 18, Color(c_cream if u < 0.35 else c_glow, alpha), rw)
 	_draw_signal_pulses()
 
 

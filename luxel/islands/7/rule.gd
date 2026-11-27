@@ -64,7 +64,7 @@ class Island7HudOverlay:
 		if lock_pulse_t > 0.0:
 			lock_pulse_t = maxf(0.0, lock_pulse_t - dt); dirty = true
 		if rule != null and Lx.player != null and is_instance_valid(Lx.player):
-			var dead_now: bool = bool(Lx.player.get("dead"))
+			var dead_now: bool = Lx.player.get("dead") == true
 			if dead_now and not _was_dead:
 				rule.restore_all_moves("wick_dead"); dirty = true
 			_was_dead = dead_now
@@ -91,7 +91,8 @@ class Island7HudOverlay:
 			return
 		if Lx.state == null or Lx.state.island_id != ISLAND_ID:
 			return
-		if Lx.root != null and int(Lx.root.get("flow")) != 2:
+		var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+		if fl is int and int(fl) != 2:
 			return
 		LxIsland7RuleFx.draw_hud(canvas, rule, Lx.state.region_id, flip_flash_t, flip_to_black, reclaim_flash_t, lock_pulse_t)
 
@@ -202,7 +203,8 @@ func _sync_layer_enabled_interactables() -> void:
 	if not (rdata is Dictionary): return
 	var layers_v: Variant = (rdata as Dictionary).get("layers", [])
 	if not (layers_v is Array): return
-	var isl_id: int = int(Lx.world.get("current_island_id"))
+	var isl_v: Variant = Lx.world.get("current_island_id")
+	var isl_id: int = int(isl_v) if (isl_v is int or isl_v is float) else ISLAND_ID
 	var reg_id: String = str(Lx.world.get("current_region_id"))
 	var en_ids: Dictionary = {}; var dis_ids: Dictionary = {}
 	for lv: Variant in (layers_v as Array):
@@ -427,7 +429,9 @@ func _activate_region_mask_plinths() -> void:
 	for it_v: Variant in (Lx.world.call("get_interactables") as Array):
 		if it_v is LxInteractable and (it_v as LxInteractable).kind == "mask_plinth":
 			var mp: LxInteractable = it_v as LxInteractable
-			if (mp.get("auto_steal") == true) and float(mp.get("steal_radius")) <= 0.0 and mp.has_method("apply_room_theft"):
+			var sr_v: Variant = mp.get("steal_radius")
+			var sr: float = float(sr_v) if (sr_v is float or sr_v is int) else 0.0
+			if (mp.get("auto_steal") == true) and sr <= 0.0 and mp.has_method("apply_room_theft"):
 				mp.call("apply_room_theft", true)
 
 func _on_player_died() -> void: restore_all_moves("player_died")

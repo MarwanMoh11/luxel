@@ -66,7 +66,7 @@ func draw_celebration(ci: CanvasItem, clock: float, fred: bool, cleared: bool) -
 		var r1: float = roundf(lerpf(14.0, 118.0, u))
 		var r2: float = roundf(lerpf(8.0, 82.0, u))
 		ci.draw_arc(_center.round(), r1, 0.0, TAU, 28, Color(c_glow, a_s), 2.0)
-		ci.draw_arc(_center.round(), r2, 0.0, TAU, 22, Color(c_cream, a_s), 1.3)
+		ci.draw_arc(_center.round(), r2, 0.0, TAU, 22, Color(c_cream, a_s), 1.0)
 		for k: int in range(8):
 			var ang: float = float(k) * (TAU / 8.0) + u * 0.65
 			var sp: Vector2 = (_center + Vector2.from_angle(ang) * lerpf(10.0, 92.0, u)).round()

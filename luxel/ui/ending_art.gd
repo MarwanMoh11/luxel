@@ -406,7 +406,8 @@ static func _draw_dawn_island(ci: CanvasItem, idx: int, p: Vector2, t: float) ->
 			var u_ring: float = clampf(age / 0.48, 0.0, 1.0)
 			var ring_r: float = roundf(lerpf(3.0, 18.0, 1.0 - (1.0 - u_ring) * (1.0 - u_ring)))
 			var r_col: Color = LxPalette.PAL["cream"] if u_ring < 0.30 else (bio_glow if u_ring < 0.68 else LxPalette.PAL["gold"])
-			ci.draw_arc(Vector2(x, lamp_y), ring_r, 0.0, TAU, 20, r_col, 1.4 if u_ring < 0.5 else 1.0, false)
+			var r_w: float = 2.0 if u_ring < 0.5 else 1.0
+			ci.draw_arc(Vector2(x, lamp_y), ring_r, 0.0, TAU, 20, r_col, r_w, false)
 		if age < 0.55:
 			ci.draw_rect(Rect2(x - 2.0, 16.0, 4.0, lamp_y - 16.0), bio_glow)
 			ci.draw_rect(Rect2(x - 1.0, 16.0, 2.0, lamp_y - 16.0), LxPalette.PAL["cream"])

@@ -71,7 +71,7 @@ func tick_from_toy(toy: Object, dt: float) -> void:
 		_driver_id = tid
 	else:
 		var drv: Object = instance_from_id(_driver_id)
-		if drv == null or not is_instance_valid(drv) or (drv.get("active") is bool and not bool(drv.get("active"))):
+		if drv == null or not is_instance_valid(drv) or (drv.get("active") is bool and drv.get("active") == false):
 			_driver_id = tid
 	if tid == _driver_id:
 		_ticked_by_toy = true
@@ -133,7 +133,8 @@ func _draw() -> void:
 		)
 		if not op.is_finite():
 			continue
-		var r_fr: float = float(obj.get("radius")) if (obj.get("radius") is float or obj.get("radius") is int) else 10.0
+		var rv: Variant = obj.get("radius")
+		var r_fr: float = float(rv) if (rv is float or rv is int) else 10.0
 		r_fr = clampf(r_fr, 8.0, 32.0)
 		var fr_rect := Rect2((op - Vector2(r_fr, r_fr)).round(), Vector2(r_fr * 2.0, r_fr * 2.0).round())
 		draw_rect(fr_rect, Color(LxPalette.PAL["ice"] as Color, 0.14 if red else 0.22))

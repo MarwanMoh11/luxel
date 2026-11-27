@@ -39,7 +39,7 @@ func setup(p_region: Node, p_events: Array, p_island_id: int = 0, p_region_id: S
 	cleanup()
 	_aborted = false
 	region = p_region
-	island_id = p_island_id if p_island_id > 0 else (int(p_region.get("current_island_id")) if p_region != null else 1)
+	island_id = p_island_id if p_island_id > 0 else _get_i(p_region, "current_island_id", 1)
 	region_id = p_region_id if not p_region_id.is_empty() else (str(p_region.get("current_region_id")) if p_region != null else "")
 	events.clear()
 	for i: int in range(p_events.size()):
@@ -87,7 +87,14 @@ func _scan_initial_enemies() -> void:
 
 func _region_changed() -> bool:
 	if _aborted or region == null or not is_instance_valid(region): return true
-	return int(region.get("current_island_id")) != island_id or str(region.get("current_region_id")) != region_id
+	return _get_i(region, "current_island_id", 0) != island_id or str(region.get("current_region_id")) != region_id
+
+static func _get_i(obj: Object, prop: String, fb: int = 0) -> int:
+	var v: Variant = obj.get(prop) if obj != null else null
+	return int(v) if (v is int or v is float) else fb
+static func _get_f(obj: Object, prop: String, fb: float = 0.0) -> float:
+	var v: Variant = obj.get(prop) if obj != null else null
+	return float(v) if (v is float or v is int) else fb
 
 func tick(dt: float) -> void:
 	if _region_changed(): return
@@ -321,9 +328,9 @@ func _find_safe_wave_pos(want: Vector2, wick_pos: Vector2) -> Vector2:
 				var cand: Vector2 = base_p + Vector2.from_angle(float(step) * (TAU / 12.0)) * r
 				if _is_valid_spawn_point(cand, wick_pos): return cand
 	var best: Vector2 = want; var best_d: float = -1.0
-	var w: int = int(region.get("width")) if region != null else 0
-	var h: int = int(region.get("height")) if region != null else 0
-	var ts: float = float(region.get("tile_size")) if region != null else 16.0
+	var w: int = _get_i(region, "width", 0)
+	var h: int = _get_i(region, "height", 0)
+	var ts: float = _get_f(region, "tile_size", 16.0)
 	for ty: int in range(1, maxi(1, h - 1)):
 		for tx: int in range(1, maxi(1, w - 1)):
 			var pt := Vector2((float(tx) + 0.5) * ts, (float(ty) + 0.5) * ts)
@@ -583,6 +590,6 @@ func _draw() -> void:
 		var frac: float = clampf(1.0 - float(item["timer"]) / maxf(0.01, float(item["dur"])), 0.0, 1.0)
 		var r_out: float = roundf(lerpf(18.0, 6.0, frac))
 		var col_ring: Color = (PAL["coral"] if (not fr and int(floorf(frac * 10.0)) % 2 == 0) else PAL["gold"]) as Color
-		draw_arc(p, r_out, 0.0, TAU, 20, col_ring, 1.5)
+		draw_arc(p, r_out, 0.0, TAU, 20, col_ring, 2.0)
 		draw_arc(p, maxf(2.0, r_out - 4.0), 0.0, TAU, 16, PAL["cream"] as Color, 1.0)
 		draw_rect(Rect2(p - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), PAL["cream"] as Color)

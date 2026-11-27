@@ -124,6 +124,6 @@ func _draw() -> void:
 	elif _claim_t > 0.0:
 		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
 		var ca: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, Color(c_ice, ca), 1.6, false)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, Color(c_ice, ca), 2.0, false)
 		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, Color(c_rose, ca), 1.0, false)
 	_draw_signal_pulses()

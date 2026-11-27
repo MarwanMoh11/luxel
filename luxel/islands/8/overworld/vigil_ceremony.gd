@@ -172,15 +172,18 @@ func _wick_screen_pos() -> Vector2:
 func _is_overlay_allowed() -> bool:
 	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false
-	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null:
-		return int(Lx.root.get("flow")) == 2
+	if Lx.root != null and is_instance_valid(Lx.root):
+		var fl: Variant = Lx.root.get("flow")
+		if fl is int:
+			return int(fl) == 2
 	return true
 
 
 func _tick(dt: float) -> void:
 	var allowed: bool = _is_overlay_allowed()
-	if not allowed and Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null:
-		if int(Lx.root.get("flow")) in [0, 1, 7, 8]:
+	if not allowed and Lx.root != null and is_instance_valid(Lx.root):
+		var fl: Variant = Lx.root.get("flow")
+		if fl is int and int(fl) in [0, 1, 7, 8]:
 			_motes.clear()
 			_flare_t = 0.0
 			_bridge_wave_t = 0.0

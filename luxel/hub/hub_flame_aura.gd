@@ -22,7 +22,7 @@ func _process(delta: float) -> void:
 		return
 	_clock += delta
 	var fid: String = LxHubState.get_equipped_flame()
-	visible = fid != "gold" and not bool(_wick.get("dead"))
+	visible = fid != "gold" and _wick.get("dead") != true
 	if visible:
 		queue_redraw()
 

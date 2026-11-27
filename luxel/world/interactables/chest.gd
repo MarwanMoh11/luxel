@@ -152,7 +152,8 @@ func _draw() -> void:
 		if u < 0.48:
 			var ru2: float = u / 0.48
 			var rc: Color = (PAL["cream"] if ru2 < 0.3 else ((PAL["coral"] as Color) if is_rare else b_glow)) as Color
-			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 20.0 if is_rare else 16.0, ru2)), 0.0, TAU, 16, Color(rc, 1.0 - ru2), 1.5 if ru2 < 0.35 else 1.0, false)
+			var rw: float = 2.0 if ru2 < 0.35 else 1.0
+			draw_arc(Vector2(0.0, -7.0), roundf(lerpf(3.0, 20.0 if is_rare else 16.0, ru2)), 0.0, TAU, 16, Color(rc, 1.0 - ru2), rw, false)
 		if u < 0.65:
 			var su: float = u / 0.65
 			for k: int in range(8):

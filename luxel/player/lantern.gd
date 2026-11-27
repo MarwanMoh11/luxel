@@ -434,7 +434,7 @@ func _find_pickup_pos(wick: LxWick, world_ctx: Node) -> Vector2:
 	for it_var: Variant in wick.world_get_interactables(world_ctx):
 		if is_instance_valid(it_var) and it_var is Object:
 			var item: Object = it_var as Object
-			if str(item.get("kind")) == "lantern_pickup" and bool(item.get("active")):
+			if str(item.get("kind")) == "lantern_pickup" and item.get("active") == true:
 				return wick.get_entity_pos(item)
 	return Vector2(-9999.0, -9999.0)
 
@@ -520,14 +520,14 @@ func _draw() -> void:
 	draw_circle(center, 9.0 * pulse, Color(hi_col, 0.16 * glow_sc))
 	if (state == State.FLYING or state == State.RECALLING) and vel.length_squared() > 400.0:
 		var v_ang: float = (-vel).angle()
-		draw_arc(center, 8.5, v_ang - 0.85, v_ang + 0.85, 10, Color(glow_col, 0.62 * glow_sc), 1.3)
+		draw_arc(center, 8.5, v_ang - 0.85, v_ang + 0.85, 10, Color(glow_col, 0.62 * glow_sc), 2.0)
 		draw_arc(center, 11.0, v_ang - 0.55, v_ang + 0.55, 8, Color(PAL_CREAM, 0.46 * glow_sc), 1.0)
 
 	# Hang timer arc (shifts coral in final 1.1s before auto-recall) + 2 orbiting rising candlelight motes
 	if state == State.HANGING and hang_max > 0.05:
 		var frac: float = clampf(hang_timer / hang_max, 0.0, 1.0)
 		var urgent_arc: bool = hang_timer <= 1.1 and (flash_red or fmod(_anim_t * 6.0, 1.0) < 0.6)
-		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_CORAL if urgent_arc else flame_col, 0.85 if urgent_arc else 0.72), 1.2 if urgent_arc else 1.0)
+		draw_arc(center, 7.5, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, Color(PAL_CORAL if urgent_arc else flame_col, 0.85 if urgent_arc else 0.72), 2.0 if urgent_arc else 1.0)
 		for mi: int in range(2):
 			var m_ph: float = fmod(_anim_t * 0.72 + float(mi) * 0.5, 1.0)
 			var m_ang: float = _anim_t * 1.85 + float(mi) * PI

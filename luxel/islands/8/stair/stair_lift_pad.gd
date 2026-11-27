@@ -57,7 +57,7 @@ func _sync_defeated_bosses() -> void:
 		var bb: LxBossBase = ev as LxBossBase
 		if not bb.visible:
 			continue
-		if bb.boss_state == LxBossBase.BossState.DEATH and bb.hp <= 0.0 and (bb.state_timer <= 0.05 or bool(bb.get("_death_emitted"))):
+		if bb.boss_state == LxBossBase.BossState.DEATH and bb.hp <= 0.0 and (bb.state_timer <= 0.05 or bb.get("_death_emitted") == true):
 			bb.visible = false
 
 
@@ -78,7 +78,7 @@ func interact(_actor: Node = null) -> bool:
 	set_powered(true)
 	emit_power(true)
 	if not to_region.is_empty() and Lx.root != null and is_instance_valid(Lx.root) and Lx.root.has_method("load_island_region"):
-		if not (Lx.input != null and bool(Lx.input.get("_use_synthetic"))):
+		if not (Lx.input != null and Lx.input.get("_use_synthetic") == true):
 			Lx.root.call_deferred("load_island_region", 8, to_region, to_spawn)
 	queue_redraw()
 	return true

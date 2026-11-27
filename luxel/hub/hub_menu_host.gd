@@ -61,7 +61,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if _scrim != null and is_instance_valid(_scrim) and _scrim.draw.is_connected(_draw_scrim):
 		_scrim.draw.disconnect(_draw_scrim)
-	if _paused_tree and get_tree() != null:
+	if _paused_tree and is_inside_tree() and get_tree() != null:
 		get_tree().paused = false
 		_paused_tree = false
 	if active == self:
@@ -105,7 +105,7 @@ func _open_panel(panel: Node2D) -> void:
 	if _scrim != null:
 		_scrim.visible = true
 		_scrim.queue_redraw()
-	if get_tree() != null and not get_tree().paused:
+	if is_inside_tree() and get_tree() != null and not get_tree().paused:
 		get_tree().paused = true
 		_paused_tree = true
 	if Lx.audio != null:
@@ -119,7 +119,7 @@ func close_all() -> void:
 	_active_panel = null
 	if _scrim != null and is_instance_valid(_scrim):
 		_scrim.visible = false
-	if _paused_tree and get_tree() != null:
+	if _paused_tree and is_inside_tree() and get_tree() != null:
 		get_tree().paused = false
 		_paused_tree = false
 

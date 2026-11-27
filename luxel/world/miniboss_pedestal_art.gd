@@ -25,12 +25,12 @@ static func draw_pedestal_base(
 		var pulse: float = 0.0 if fred else sin(clock * (4.8 if boss_vulnerable_pulse else 2.8) + p.x * 0.03)
 		var ra: float = (0.58 if boss_vulnerable_pulse else 0.34) + (0.0 if fred else pulse * (0.20 if boss_vulnerable_pulse else 0.08))
 		var r_ring: float = roundf(11.0 + (pulse * 1.2 if boss_vulnerable_pulse else 0.0))
-		ci.draw_arc(p + Vector2(0.0, 1.0), r_ring, 0.0, TAU, 18, Color(glow_col, clampf(ra, 0.2, 0.85)), 1.4 if boss_vulnerable_pulse else 1.0)
+		ci.draw_arc(p + Vector2(0.0, 1.0), r_ring, 0.0, TAU, 18, Color(glow_col, clampf(ra, 0.2, 0.85)), 2.0 if boss_vulnerable_pulse else 1.0)
 	else:
 		var prog: float = clampf(cd_frac, 0.0, 1.0)
 		ci.draw_arc(p + Vector2(0.0, 1.0), 10.0, 0.0, TAU, 16, Color(_p("dusk"), 0.45), 1.0)
 		if prog > 0.01:
-			ci.draw_arc(p + Vector2(0.0, 1.0), 10.0, -PI * 0.5, -PI * 0.5 + TAU * prog, 16, Color(hi_col, 0.65), 1.2)
+			ci.draw_arc(p + Vector2(0.0, 1.0), 10.0, -PI * 0.5, -PI * 0.5 + TAU * prog, 16, Color(hi_col, 0.65), 1.0)
 
 
 static func _draw_pedestal_fx(
@@ -41,14 +41,14 @@ static func _draw_pedestal_fx(
 	var hc: Vector2 = (p + head_off).round()
 	if ready_t > 0.0 and not settled:
 		var ru: float = 1.0 - clampf(ready_t / 0.42, 0.0, 1.0)
-		ci.draw_arc(hc, roundf(lerpf(6.0, 22.0, ru)), 0.0, TAU, 16, Color(c_out, (1.0 - ru) * 0.65), 1.1)
+		ci.draw_arc(hc, roundf(lerpf(6.0, 22.0, ru)), 0.0, TAU, 16, Color(c_out, (1.0 - ru) * 0.65), 1.0)
 	if flash_t > 0.0:
 		var u: float = 1.0 - clampf(flash_t / maxf(0.1, flash_dur), 0.0, 1.0)
 		var fa: float = (1.0 - u) * (0.56 if fred else 0.90)
 		var r_out: float = roundf(lerpf(10.0, shock_r, u))
 		ci.draw_arc(p, r_out, 0.0, TAU, 30, Color(c_out, fa), 2.0)
-		ci.draw_arc(p, maxf(2.0, r_out - 3.0), 0.0, TAU, 26, Color(c_mid, fa * 0.72), 1.2)
-		ci.draw_arc(p, roundf(lerpf(6.0, shock_r * 0.74, u)), 0.0, TAU, 22, Color(c_core, fa * 0.84), 1.2)
+		ci.draw_arc(p, maxf(2.0, r_out - 3.0), 0.0, TAU, 26, Color(c_mid, fa * 0.72), 1.0)
+		ci.draw_arc(p, roundf(lerpf(6.0, shock_r * 0.74, u)), 0.0, TAU, 22, Color(c_core, fa * 0.84), 1.0)
 		for k: int in range(8):
 			var kp: Vector2 = (p + Vector2.from_angle(float(k) * (TAU / 8.0) + u * 0.42) * r_out).round()
 			ci.draw_rect(Rect2(kp - Vector2.ONE, Vector2(2.0, 2.0)), Color(c_core if k % 2 == 0 else c_out, fa))
@@ -107,7 +107,7 @@ static func draw_fresnel_post(
 			var tip: Vector2 = (hc + Vector2(sx * span, sweep * sx)).round()
 			ci.draw_rect(Rect2(hc + Vector2(sx * 4.0, 0.0), Vector2(2.0 if sx > 0.0 else -2.0, 2.0)).abs(), Color(_p("cream"), ba))
 			ci.draw_rect(Rect2(tip + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), Color(_p("ice"), ba * 0.85))
-			ci.draw_line(hc + Vector2(sx * 4.0, 0.0), tip, Color(_p("ice"), ba * 0.72), 1.2)
+			ci.draw_line(hc + Vector2(sx * 4.0, 0.0), tip, Color(_p("ice"), ba * 0.72), 1.0)
 	_draw_pedestal_fx(ci, p, Vector2(0.0, -13.0), flash_t, 0.52, 105.0, ready_t, _p("ice"), _p("sky"), _p("cream"), settled, fred)
 
 
@@ -153,7 +153,7 @@ static func draw_sap_stump(
 			var ma: float = sin(u * PI) * (0.72 if fred else 0.92)
 			ci.draw_rect(Rect2(mx, my, 1.0, 1.0), Color(_p("gold") if mi % 2 == 0 else _p("lime"), ma))
 		if boss_pulse and not fred:
-			ci.draw_arc(p + Vector2(0.0, -11.0), roundf(6.0 + sin(clock * 6.0) * 1.2), 0.0, TAU, 14, Color(_p("gold"), 0.58), 1.1)
+			ci.draw_arc(p + Vector2(0.0, -11.0), roundf(6.0 + sin(clock * 6.0) * 1.2), 0.0, TAU, 14, Color(_p("gold"), 0.58), 1.0)
 	_draw_pedestal_fx(ci, p, Vector2(0.0, -11.0), flash_t, 0.52, 110.0, ready_t, _p("lime"), _p("gold"), _p("cream"), settled, fred)
 
 
@@ -180,7 +180,7 @@ static func draw_rose_chime(
 	ci.draw_rect(Rect2(p + Vector2(-1.0, -15.0), Vector2(2.0, 2.0)), _p("dusk"))
 	# Hanging stained-glass diamond rose prism + 3 dangling chime rods
 	var sway: float = 0.0
-	if not fred and not settled:
+	if not fred and not LxHudFx.flash_reduced() and not settled:
 		if flash_t > 0.0:
 			sway = roundf(sin(clock * 24.0) * 2.2 * clampf(flash_t / 0.55, 0.0, 1.0))
 		elif rdy:
@@ -230,7 +230,7 @@ static func draw_astrolabe_pedestal(
 	var ac: Vector2 = (p + Vector2(0.0, -13.0)).round()
 	var ring_a: Color = _p("apricot") if rdy else (_p("dusk") if settled else _p("mauve"))
 	var ring_b: Color = _p("gold") if rdy else _p("mauve")
-	ci.draw_arc(ac, 4.5, 0.0, TAU, 16, ring_a, 1.3)
+	ci.draw_arc(ac, 4.5, 0.0, TAU, 16, ring_a, 1.0)
 	ci.draw_arc(ac, 3.0, 0.4, TAU - 0.4, 14, ring_b, 1.0)
 	var step_rot: float = 0.0 if (fred or not rdy) else floorf(clock * (5.0 if boss_pulse else 2.4)) * (PI * 0.25)
 	for k: int in range(4):
@@ -315,8 +315,8 @@ static func draw_moon_mirror(
 	# Tilted silver crescent mirror basin (10x6)
 	var mc: Vector2 = (p + Vector2(0.0, -13.0)).round()
 	ci.draw_rect(Rect2(mc + Vector2(-5.0, 0.0), Vector2(10.0, 2.0)), _p("blue") if not settled else _p("dusk"))
-	ci.draw_arc(mc + Vector2(0.0, -1.0), 5.0, 0.12, PI - 0.12, 12, _p("sky") if rdy else (_p("stone") if settled else _p("blue")), 1.6)
-	ci.draw_arc(mc + Vector2(0.0, -1.0), 3.6, 0.25, PI - 0.25, 10, _p("ice") if rdy else _p("blue"), 1.1)
+	ci.draw_arc(mc + Vector2(0.0, -1.0), 5.0, 0.12, PI - 0.12, 12, _p("sky") if rdy else (_p("stone") if settled else _p("blue")), 2.0)
+	ci.draw_arc(mc + Vector2(0.0, -1.0), 3.6, 0.25, PI - 0.25, 10, _p("ice") if rdy else _p("blue"), 1.0)
 	if rdy:
 		ci.draw_rect(Rect2(mc + Vector2(-3.0, -1.0), Vector2(2.0, 1.0)), _p("cream"))
 	# Suspended moon-drop crystal above basin
@@ -360,7 +360,7 @@ static func draw_cathedral_altar(
 	ci.draw_rect(Rect2(p + Vector2(-4.0, -15.0), Vector2(8.0, 1.0)), _p("gold") if rdy else _p("mauve"))
 	# Hanging golden-rose eclipse bell
 	var sway: float = 0.0
-	if not fred and not settled:
+	if not fred and not LxHudFx.flash_reduced() and not settled:
 		if flash_t > 0.0:
 			sway = roundf(sin(clock * 26.0) * 2.4 * clampf(flash_t / 0.52, 0.0, 1.0))
 		elif rdy and boss_pulse:
@@ -380,7 +380,7 @@ static func draw_cathedral_altar(
 		var wa: float = (0.72 if boss_pulse else 0.44) * (0.75 if fred else (0.85 + 0.15 * pulse))
 		var wr1: float = roundf(8.5 + (0.0 if fred else fposmod(clock * 4.4, 3.0)))
 		for side_a: float in [0.0, PI]:
-			ci.draw_arc(bc, wr1, side_a - 0.50, side_a + 0.50, 6, Color(_p("gold") if boss_pulse else _p("rose"), wa), 1.2)
+			ci.draw_arc(bc, wr1, side_a - 0.50, side_a + 0.50, 6, Color(_p("gold") if boss_pulse else _p("rose"), wa), 1.0)
 			if boss_pulse:
 				var wr2: float = roundf(12.0 + (0.0 if fred else fposmod(clock * 4.4 + 1.5, 3.5)))
 				ci.draw_arc(bc, wr2, side_a - 0.42, side_a + 0.42, 6, Color(_p("rose"), wa * 0.72), 1.0)

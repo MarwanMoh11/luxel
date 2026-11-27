@@ -100,7 +100,7 @@ func _read_list_var() -> String:
 func _is_clamped(it: LxInteractable) -> bool:
 	if it == null or not is_instance_valid(it):
 		return false
-	if it.get("clamped") is bool and bool(it.get("clamped")):
+	if it.get("clamped") == true:
 		return true
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
 		var w: LxWick = Lx.player as LxWick
@@ -142,13 +142,13 @@ func _is_solved_guard_met() -> bool:
 	var it: LxInteractable = region.call("find_interactable", sid) as LxInteractable
 	if it == null or not is_instance_valid(it):
 		return false
-	if it.get("opened") is bool and bool(it.get("opened")):
+	if it.get("opened") == true:
 		return true
-	if it.get("pressed") is bool and bool(it.get("pressed")):
+	if it.get("pressed") == true:
 		return true
-	if it.get("latched") is bool and bool(it.get("latched")):
+	if it.get("latched") == true:
 		return true
-	if it.get("powered") is bool and bool(it.get("powered")):
+	if it.get("powered") == true:
 		return true
 	return false
 
@@ -269,7 +269,7 @@ func _step_orb_targets(dir_x: float, dt: float) -> void:
 		var it: LxInteractable = region.call("find_interactable", oid) as LxInteractable
 		if it == null or not is_instance_valid(it) or not it.active:
 			continue
-		if it.get("carrier") != null or bool(it.get("airborne")) or _is_clamped(it):
+		if it.get("carrier") != null or it.get("airborne") == true or _is_clamped(it):
 			continue
 		if table_rect.has_area() and not table_rect.has_point(it.pos):
 			continue
@@ -287,7 +287,7 @@ func _check_beam_resets() -> void:
 	if not region.has_method("find_interactable"):
 		return
 	var em: LxInteractable = region.call("find_interactable", beam_reset_id) as LxInteractable
-	if em == null or not is_instance_valid(em) or not bool(em.get("beam_on")):
+	if em == null or not is_instance_valid(em) or em.get("beam_on") != true:
 		return
 	var segs_v: Variant = em.get("segments")
 	if not (segs_v is Array):

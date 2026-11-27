@@ -81,7 +81,7 @@ func _measure_weight() -> float:
 		var wp: Vector2 = wick_pos()
 		var wick_air: bool = false
 		if Lx.player != null and is_instance_valid(Lx.player):
-			if Lx.player.get("dead") is bool and bool(Lx.player.get("dead")):
+			if Lx.player.get("dead") == true:
 				wick_air = true
 			elif Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding")):
 				wick_air = true

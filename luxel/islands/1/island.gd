@@ -389,7 +389,8 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 	if region_id == "overworld":
 		_mount_tutorial_cues()
 		_mount_launch_pad()
-		if Lx.root != null and int(Lx.root.get("flow")) == LxMain.Flow.INTRO:
+		var _fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+		if _fl is int and int(_fl) == LxMain.Flow.INTRO:
 			return
 		if st != null and not bool(st.story_flags.get("isl1_arrived", false)):
 			st.story_flags["isl1_arrived"] = true

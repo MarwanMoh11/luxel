@@ -113,5 +113,5 @@ func _draw() -> void:
 		draw_rect(Rect2(3.0, -2.0, 4.0, 4.0), c_night)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.2)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.0)
 	_draw_signal_pulses()

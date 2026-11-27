@@ -204,7 +204,7 @@ static func _collect_sight_blockers(world_ctx: Node) -> Array[Rect2]:
 		if not is_instance_valid(it_v) or not (it_v is Object):
 			continue
 		var item: Object = it_v as Object
-		if item.get("active") is bool and not bool(item.get("active")):
+		if item.get("active") == false:
 			continue
 		if not (item.has_method("is_solid") and bool(item.call("is_solid"))):
 			continue

@@ -87,5 +87,5 @@ func _draw() -> void:
 	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_cream if _ring_t > 0.0 else col)
 	if _ring_t > 0.0:
 		var u: float = 1.0 - clampf(_ring_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(5.0 + u * 12.0), 0.0, TAU, 12, col, 1.2)
+		draw_arc(Vector2.ZERO, roundf(5.0 + u * 12.0), 0.0, TAU, 12, col, 1.0)
 	_draw_signal_pulses()

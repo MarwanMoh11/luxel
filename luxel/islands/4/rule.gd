@@ -152,12 +152,14 @@ func _physics_process(delta: float) -> void:
 	if f == _last_phys_frame:
 		return
 	_last_phys_frame = f
-	if Lx.root != null and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
+	var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+	if fl is int and int(fl) != 2:
 		_redraw_hud()
 		return
 	var dt: float = delta
-	if Lx.hitstop != null and Lx.hitstop.get("game_speed") != null:
-		dt *= clampf(float(Lx.hitstop.get("game_speed")), 0.25, 1.5)
+	var gs: Variant = Lx.hitstop.get("game_speed") if Lx.hitstop != null else null
+	if gs is float or gs is int:
+		dt *= clampf(float(gs), 0.25, 1.5)
 	tick_rule(dt)
 
 
@@ -342,7 +344,8 @@ func get_effective_weather() -> String:
 func _redraw_hud() -> void:
 	var modal_open: bool = Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open"))
 	var st: LxGameState = _get_state()
-	var in_play: bool = Lx.root == null or Lx.root.get("flow") == null or int(Lx.root.get("flow")) in [2, 3, 4]
+	var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+	var in_play: bool = not (fl is int) or int(fl) in [2, 3, 4]
 	var show_hud: bool = (not modal_open) and st != null and st.island_id == ISLAND_ID and in_play
 	if _hud_layer != null and is_instance_valid(_hud_layer):
 		_hud_layer.visible = show_hud

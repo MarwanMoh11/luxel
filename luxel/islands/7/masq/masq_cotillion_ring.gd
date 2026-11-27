@@ -128,7 +128,7 @@ func _draw() -> void:
 		var rr: float = roundf(radii[i])
 		var intact: bool = _solved or i < _last_rounds_left
 		var col: Color = (c_gold if i == 0 else (c_ice if i == 1 else c_plum)) if intact else c_wine
-		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 36, Color(col, 0.52 if intact else 0.24), 1.5)
+		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 36, Color(col, 0.52 if intact else 0.24), 2.0)
 		if intact:
 			var ang: float = _sweep_ang * (1.0 if i % 2 == 0 else -1.0)
 			var mk: Vector2 = Vector2(cos(ang), sin(ang)) * rr
@@ -146,5 +146,5 @@ func _draw() -> void:
 	if _riposte_t > 0.0:
 		var ro: Vector2 = (_riposte_origin - pos).round()
 		var u: float = 1.0 - clampf(_riposte_t / 0.65, 0.0, 1.0)
-		draw_arc(ro, 32.0, 0.0, TAU, 24, Color(c_rose, 0.58 if fred else 0.85), 1.5)
-		draw_arc(ro, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, 0.52 if fred else 0.78), 1.2)
+		draw_arc(ro, 32.0, 0.0, TAU, 24, Color(c_rose, 0.58 if fred else 0.85), 2.0)
+		draw_arc(ro, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, 0.52 if fred else 0.78), 1.0)

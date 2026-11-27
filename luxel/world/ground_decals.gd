@@ -330,7 +330,7 @@ func _draw() -> void:
 				draw_rect(Rect2(wc, Vector2(1.0, 1.0)), Color(c_core, a * 0.95 * fr_w))
 			Kind.CRATER:
 				draw_circle(p, r * 0.78, Color(PAL["void"] as Color, a * 0.46))
-				draw_arc(p, r, 0.0, TAU, 18, Color(LxBiomePalette.col(_island_id, "dark"), a * 0.72), 1.4)
+				draw_arc(p, r, 0.0, TAU, 18, Color(LxBiomePalette.col(_island_id, "dark"), a * 0.72), 1.0)
 				var rot: float = float(d["rot"])
 				for k: int in range(6):
 					var ang: float = rot + float(k) * (TAU / 6.0)

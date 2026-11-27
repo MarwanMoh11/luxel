@@ -185,8 +185,8 @@ func _draw_dawn_crescendo() -> void:
 	# Stage 1 (0.00-0.22s): Golden core compression pulling radiance inward
 	if el < APEX_T:
 		var u1: float = clampf(el / APEX_T, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(42.0, 6.0, u1 * u1)), 0.0, TAU, 24, gold, 1.5)
-		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(28.0, 4.0, u1)), 0.0, TAU, 18, rc[1], 1.2)
+		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(42.0, 6.0, u1 * u1)), 0.0, TAU, 24, gold, 2.0)
+		draw_arc(Vector2(0.0, -18.0), roundf(lerpf(28.0, 4.0, u1)), 0.0, TAU, 18, rc[1], 1.0)
 		draw_circle(Vector2(0.0, -20.0), roundf(lerpf(3.0, 9.0, u1)), cream if u1 > 0.55 else gold)
 		for k: int in range(8):
 			var a: float = float(k) * (TAU / 8.0) + u1 * 1.8
@@ -206,8 +206,10 @@ func _draw_dawn_crescendo() -> void:
 	var core_w: float = roundf(maxf(0.0, (1.0 - u2 * 1.35) * 5.0))
 	if core_w >= 1.0:
 		draw_rect(Rect2(-floorf(core_w * 0.5), -96.0, core_w, 100.0), Color(cream, minf(1.0, fade * 1.25)))
-	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(8.0, 74.0, e2)), 0.0, TAU, 28, Color(cream if u2 < 0.28 else gold, fade), 2.0 if u2 < 0.35 else 1.0)
-	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(6.0, 56.0, e2)), 0.0, TAU, 24, Color(rc[1], fade * 0.90), 1.5 if u2 < 0.4 else 1.0)
+	var w_o: float = 2.0 if u2 < 0.35 else 1.0
+	var w_m: float = 2.0 if u2 < 0.4 else 1.0
+	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(8.0, 74.0, e2)), 0.0, TAU, 28, Color(cream if u2 < 0.28 else gold, fade), w_o)
+	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(6.0, 56.0, e2)), 0.0, TAU, 24, Color(rc[1], fade * 0.90), w_m)
 	draw_arc(Vector2(0.0, -16.0), roundf(lerpf(4.0, 38.0, e2)), 0.0, TAU, 18, Color(rc[0], fade * 0.85), 1.0)
 	if u2 < 0.35:
 		var ray_f: float = 1.0 - (u2 / 0.35)
@@ -329,7 +331,7 @@ func _draw_dawn_embers() -> void:
 		1: # Warm acoustic brass bell-chime halo
 			var r_b: float = 12.0 + (0.0 if fred else fposmod(_clock * 10.0, 8.0))
 			var a_b: float = 0.65 * clampf(1.0 - (r_b - 12.0) / 8.0, 0.25, 1.0)
-			draw_arc(Vector2(0.0, -24.0), roundf(r_b), PI * 1.12, PI * 1.88, 12, Color(PAL["gold"] as Color, a_b), 1.2)
+			draw_arc(Vector2(0.0, -24.0), roundf(r_b), PI * 1.12, PI * 1.88, 12, Color(PAL["gold"] as Color, a_b), 1.0)
 		2: # Rotating Fresnel lighthouse beams
 			for k: int in range(2):
 				var ba: float = t_cr * 1.1 + float(k) * PI
@@ -342,14 +344,14 @@ func _draw_dawn_embers() -> void:
 			draw_arc(Vector2(0.0, -22.0), 16.0, PI * 1.12, PI * 1.88, 12, Color(PAL["rose"] as Color, 0.65), 1.0)
 			draw_arc(Vector2(0.0, -22.0), 14.0, PI * 1.15, PI * 1.85, 12, Color(PAL["ice"] as Color, 0.65), 1.0)
 		5: # Counter-rotating golden astrolabe rings
-			draw_arc(Vector2(0.0, -22.0), 15.0, t_cr * 1.8, t_cr * 1.8 + 2.4, 12, PAL["gold"] as Color, 1.2)
-			draw_arc(Vector2(0.0, -22.0), 15.0, -t_cr * 1.8, -t_cr * 1.8 + 2.4, 12, PAL["sky"] as Color, 1.2)
+			draw_arc(Vector2(0.0, -22.0), 15.0, t_cr * 1.8, t_cr * 1.8 + 2.4, 12, PAL["gold"] as Color, 1.0)
+			draw_arc(Vector2(0.0, -22.0), 15.0, -t_cr * 1.8, -t_cr * 1.8 + 2.4, 12, PAL["sky"] as Color, 1.0)
 		6: # Twin volcanic solar hearth spirals
 			for side: float in [-1.0, 1.0]:
 				var h_j: float = roundf(10.0 + (0.0 if fred else absf(sin(_clock * 6.0 + side)) * 5.0))
 				draw_rect(Rect2(side * 10.0, -20.0 - h_j, 2.0, h_j), Color(PAL["coral"] as Color, 0.72))
 		7: # Radiant silver lunar crescent corona
-			draw_arc(Vector2(0.0, -24.0), 13.0, -PI * 0.65, PI * 0.65, 12, PAL["ice"] as Color, 1.4)
+			draw_arc(Vector2(0.0, -24.0), 13.0, -PI * 0.65, PI * 0.65, 12, PAL["ice"] as Color, 2.0)
 		8: # Colossal 8-ray Dawn Sunburst!
 			for k: int in range(8):
 				var sa: float = t_cr * 0.6 + float(k) * (TAU / 8.0)

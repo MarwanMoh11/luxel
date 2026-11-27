@@ -295,7 +295,7 @@ func draw_accents(ci: CanvasItem, clock: float, cam_center: Vector2, relit: bool
 				var vc: Color = (PAL["gold"] if (relit or heat > 0.78) else (PAL["apricot"] if heat > 0.45 else PAL["coral"])) as Color
 				var mid6 := Vector2(p.x + roundf(sin(ph) * 4.0), p.y + roundf(cos(ph) * 3.0))
 				ci.draw_line(p - Vector2(sp * 0.7, 2.0), mid6, Color(PAL["wine"] as Color, 0.48), 2.0)
-				ci.draw_line(mid6, p + Vector2(sp * 0.7, -2.0), Color(vc, 0.42 + heat * 0.32), 1.2)
+				ci.draw_line(mid6, p + Vector2(sp * 0.7, -2.0), Color(vc, 0.42 + heat * 0.32), 1.0)
 				if heat > 0.72:
 					ci.draw_rect(Rect2(mid6, Vector2.ONE), PAL["cream"] as Color)
 			7: # Shimmering vertical silver moonlight reflection pillars across the glassy lagoon

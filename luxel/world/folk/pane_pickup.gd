@@ -74,7 +74,7 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if _collect_t > 0.0:
 		var u: float = 1.0 - clampf(_collect_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -8.0), roundf(4.0 + u * 22.0), 0.0, TAU, 16, LxPalette.PAL["gold"] if u < 0.5 else LxPalette.PAL["cream"], 1.2)
+		draw_arc(Vector2(0.0, -8.0), roundf(4.0 + u * 22.0), 0.0, TAU, 16, LxPalette.PAL["gold"] if u < 0.5 else LxPalette.PAL["cream"], 1.0)
 		return
 	if collected or not active:
 		return

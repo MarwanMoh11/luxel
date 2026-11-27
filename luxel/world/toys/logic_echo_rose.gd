@@ -422,7 +422,7 @@ func _try_reflect_echo_bolt(b: Dictionary, it: LxInteractable, hit_pt: Vector2, 
 	if n.length_squared() < 0.01:
 		return false
 	if bdir.dot(n) > 0.0:
-		if it.get("double_sided") is bool and bool(it.get("double_sided")):
+		if it.get("double_sided") == true:
 			n = -n
 		else:
 			return false
@@ -473,8 +473,10 @@ func _step_bolt_enemies(b: Dictionary, bp: Vector2, nxt: Vector2) -> bool:
 
 
 func _read_wick_shots() -> int:
-	if Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("shots_fired") != null:
-		return int(Lx.player.get("shots_fired"))
+	if Lx.player != null and is_instance_valid(Lx.player):
+		var sf_v: Variant = Lx.player.get("shots_fired")
+		if sf_v is int or sf_v is float:
+			return int(sf_v)
 	return 0
 
 

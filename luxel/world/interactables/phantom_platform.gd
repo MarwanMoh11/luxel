@@ -62,7 +62,8 @@ func _is_reveal_warning() -> bool:
 		if lpos_v is Vector2 and (lpos_v as Vector2).distance_to(pos) <= hung_r + radius:
 			anchor_in_range = true
 			if (lan as Object).has_method("is_hanging") and bool((lan as Object).call("is_hanging")):
-				anchor_warn = float((lan as Object).get("hang_timer")) <= 1.1
+				var ht_v: Variant = (lan as Object).get("hang_timer")
+				anchor_warn = (ht_v is float or ht_v is int) and float(ht_v) <= 1.1
 	var pip_in_range: bool = false
 	var pip_warn: bool = false
 	if Lx.companion != null and is_instance_valid(Lx.companion) and Lx.companion.has_method("is_perched") \
@@ -71,7 +72,8 @@ func _is_reveal_warning() -> bool:
 		var pip_r: float = LxFireflyState.get_light_radius() * 0.72
 		if ppos_v is Vector2 and (ppos_v as Vector2).distance_to(pos) <= pip_r + radius:
 			pip_in_range = true
-			pip_warn = float(Lx.companion.get("perch_timer")) <= 1.1
+			var pt_v: Variant = Lx.companion.get("perch_timer")
+			pip_warn = (pt_v is float or pt_v is int) and float(pt_v) <= 1.1
 	if pulse_active and not pulse_warn:
 		return false
 	if anchor_in_range and not anchor_warn:

@@ -97,7 +97,7 @@ func _place_discoveries(region_node: Node) -> void:
 	var grid: Array = grid_v as Array
 	var gh: int = grid.size()
 	var gw: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(region_node.get("tile_size")) if region_node.get("tile_size") != null else 16.0
+	var ts_v: Variant = region_node.get("tile_size"); var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 	var avoid: Array[Vector2] = _collect_avoid_positions(region_node)
 
 	var rng := RandomNumberGenerator.new()
@@ -147,7 +147,7 @@ func _place_lens_secret(region_node: Node) -> void:
 	var grid: Array = grid_v as Array
 	var gh: int = grid.size()
 	var gw: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(region_node.get("tile_size")) if region_node.get("tile_size") != null else 16.0
+	var ts_v: Variant = region_node.get("tile_size"); var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 	var avoid: Array[Vector2] = _collect_avoid_positions(region_node)
 	for nd: Dictionary in _nodes:
 		avoid.append(nd["pos"] as Vector2)
@@ -501,7 +501,7 @@ func _draw() -> void:
 		var r: float = roundf(lerpf(4.0, 24.0, u))
 		var a: float = (1.0 - u) * (0.55 if fred else 0.85)
 		var col: Color = (PAL["cream"] if u < 0.32 else PAL[str(rg["col"])]) as Color
-		draw_arc((rg["pos"] as Vector2).round(), r, 0.0, TAU, 16, Color(col, a), 1.2)
+		draw_arc((rg["pos"] as Vector2).round(), r, 0.0, TAU, 16, Color(col, a), 1.0)
 
 
 func _draw_lens_secret(fred: bool) -> void:
@@ -535,7 +535,7 @@ func _draw_lens_secret(fred: bool) -> void:
 		var u: float = clampf(bt / 0.90, 0.0, 1.0)
 		draw_line(sp, shore_p + Vector2(0.0, -4.0), Color(c_ice, u * 0.72), 1.0)
 		var gc := shore_p + Vector2(0.0, -4.0)
-		draw_arc(gc, roundf(lerpf(14.0, 5.0, u)), 0.0, TAU, 14, Color(c_gold, u * 0.80), 1.2)
+		draw_arc(gc, roundf(lerpf(14.0, 5.0, u)), 0.0, TAU, 14, Color(c_gold, u * 0.80), 1.0)
 		draw_rect(Rect2(gc + Vector2(-3.0, 0.0), Vector2(7.0, 1.0)), Color(c_ice, u * 0.90))
 		draw_rect(Rect2(gc + Vector2(0.0, -3.0), Vector2(1.0, 7.0)), Color(c_ice, u * 0.90))
 		draw_rect(Rect2(gc + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), Color(c_gold, u))
@@ -571,7 +571,7 @@ func _draw_biome_toy(cp: Vector2, at: float, found: bool, sway: float, fred: boo
 		5: # Spinning Brass Star-Prism
 			draw_rect(Rect2(cp + Vector2(-2.0, -5.0), Vector2(4.0, 6.0)), PAL["deep"] as Color)
 			var rot: float = _clock * (4.5 if at > 0.0 else 1.4) + ph
-			draw_arc(cp + Vector2(0.0, -10.0), 5.0, rot, rot + PI * 1.3, 10, (PAL["cream"] if at > 0.4 else PAL["gold"]) as Color, 1.2)
+			draw_arc(cp + Vector2(0.0, -10.0), 5.0, rot, rot + PI * 1.3, 10, (PAL["cream"] if at > 0.4 else PAL["gold"]) as Color, 1.0)
 			draw_rect(Rect2(cp + Vector2(-1.0, -11.0), Vector2(2.0, 2.0)), PAL["sky"] as Color)
 			if at > 0.3:
 				var ray_end: Vector2 = cp.lerp(_door_pos, 0.25).round()
@@ -585,7 +585,7 @@ func _draw_biome_toy(cp: Vector2, at: float, found: bool, sway: float, fred: boo
 				draw_rect(Rect2(cp + Vector2(0.0, -8.0 + sway), Vector2.ONE), PAL["cream"] as Color)
 		7: # Silver Lunar Mirror-Bell
 			draw_rect(Rect2(cp + Vector2(-1.0, -11.0), Vector2(2.0, 12.0)), PAL["blue"] as Color)
-			draw_arc(cp + Vector2(sway, -10.0), 4.0, -PI * 0.65, PI * 0.65, 10, (PAL["cream"] if (at > 0.0 or found) else PAL["ice"]) as Color, 1.4)
+			draw_arc(cp + Vector2(sway, -10.0), 4.0, -PI * 0.65, PI * 0.65, 10, (PAL["cream"] if (at > 0.0 or found) else PAL["ice"]) as Color, 1.0)
 			draw_rect(Rect2(cp + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), PAL["sky"] as Color)
 		8: # Dormant -> Golden Dawn-Candle Reliquary
 			draw_rect(Rect2(cp + Vector2(-2.0, -6.0), Vector2(4.0, 7.0)), PAL["plum"] as Color)

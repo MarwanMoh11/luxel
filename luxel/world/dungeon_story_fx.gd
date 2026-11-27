@@ -175,11 +175,11 @@ func draw_toys(canvas: CanvasItem, rules: LxBiomeRules, fred: bool) -> void:
 				canvas.draw_rect(Rect2(p + Vector2(sw_r - 2.0, 1.0), Vector2(5.0, 3.0)), Color(PAL["gold"] as Color, a_base))
 				canvas.draw_rect(Rect2(p + Vector2(sw_r, 4.0), Vector2.ONE), PAL["cream"] as Color)
 			2: # Harbor porthole sea-spray vent
-				canvas.draw_arc(p, 5.0, 0.0, TAU, 10, Color(PAL["sky"] as Color, a_base), 1.2)
+				canvas.draw_arc(p, 5.0, 0.0, TAU, 10, Color(PAL["sky"] as Color, a_base), 1.0)
 				canvas.draw_circle(p, 3.0, Color(PAL["deep"] as Color, a_base * 0.8))
 				canvas.draw_rect(Rect2(p + Vector2(-1.0 + clampf(sw_r, -1.0, 1.0), -1.0), Vector2(2.0, 1.0)), Color(PAL["ice"] as Color, a_base))
 			3: # Swaying bioluminescent vine-lantern
-				canvas.draw_line(p + Vector2(0.0, -9.0), p + Vector2(sw_r, 2.0), Color(PAL["pine"] as Color, a_base * 1.1), 1.4)
+				canvas.draw_line(p + Vector2(0.0, -9.0), p + Vector2(sw_r, 2.0), Color(PAL["pine"] as Color, a_base * 1.1), 1.0)
 				canvas.draw_circle(p + Vector2(sw_r, 3.0), 2.5, Color(PAL["jade"] as Color, a_base))
 				canvas.draw_rect(Rect2(p + Vector2(sw_r, 2.0), Vector2.ONE), PAL["lime"] as Color)
 			4: # Stained-glass floor kaleidoscope diamond
@@ -193,7 +193,7 @@ func draw_toys(canvas: CanvasItem, rules: LxBiomeRules, fred: bool) -> void:
 				canvas.draw_circle(bob, 2.0, Color(PAL["sky"] as Color, a_base))
 				canvas.draw_rect(Rect2(bob, Vector2.ONE), PAL["cream"] as Color)
 			6: # Hanging forge chain & glowing slag-brazier
-				canvas.draw_line(p + Vector2(0.0, -8.0), p + Vector2(sw_r * 0.5, 2.0), Color(PAL["dusk"] as Color, a_base), 1.4)
+				canvas.draw_line(p + Vector2(0.0, -8.0), p + Vector2(sw_r * 0.5, 2.0), Color(PAL["dusk"] as Color, a_base), 1.0)
 				canvas.draw_rect(Rect2(p + Vector2(-2.0, 2.0), Vector2(5.0, 3.0)), Color(PAL["wine"] as Color, a_base))
 				canvas.draw_rect(Rect2(p + Vector2(-1.0, 1.0), Vector2(3.0, 2.0)), Color((PAL["gold"] if sw_t > 0.0 else PAL["coral"]) as Color, a_base))
 			7: # Floating silver mirror shard reflecting lunar_phase

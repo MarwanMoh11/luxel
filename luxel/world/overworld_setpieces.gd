@@ -100,7 +100,7 @@ func _sample_interior_water(limit: int, clear_r: int, min_sep: float, max_shore_
 	if not (grid_v is Array) or (grid_v as Array).is_empty(): return out
 	var grid: Array = grid_v as Array
 	var h: int = grid.size(); var w: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(_region.get("tile_size")) if _region.get("tile_size") != null else 16.0
+	var ts_v: Variant = _region.get("tile_size"); var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 	var cands: Array[Dictionary] = []
 	for ty: int in range(clear_r + 1, h - clear_r - 1, 2):
 		for tx: int in range(clear_r + 1, w - clear_r - 1, 2):
@@ -148,7 +148,7 @@ func _build_pilgrimage_spine() -> Array[Vector2]:
 	var grid: Array = grid_v as Array
 	var h: int = grid.size()
 	var w: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(_region.get("tile_size")) if _region.get("tile_size") != null else 16.0
+	var ts_v: Variant = _region.get("tile_size"); var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 	var b_pts: Array[Vector2] = []
 	for bn: Node in _beacons:
 		if bn is LxBeacon and is_instance_valid(bn):

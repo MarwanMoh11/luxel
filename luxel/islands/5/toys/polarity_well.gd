@@ -259,5 +259,5 @@ func _draw() -> void:
 			draw_arc(Vector2.ZERO, 13.0, 0.0, TAU, 16, Color(rim_col, (1.0 - fu) * 0.52), 1.0)
 		else:
 			var wave_r: float = roundf(lerpf(10.0, mid_r, fu) if is_push else lerpf(mid_r, 10.0, fu))
-			draw_arc(Vector2.ZERO, wave_r, 0.0, TAU, 20, Color(d_col, (1.0 - fu) * 0.78), 1.2)
+			draw_arc(Vector2.ZERO, wave_r, 0.0, TAU, 20, Color(d_col, (1.0 - fu) * 0.78), 1.0)
 	_draw_signal_pulses()

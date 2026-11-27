@@ -140,7 +140,7 @@ func _check_player_warp() -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
 	var w: Node2D = Lx.player as Node2D
-	if w.get("dead") is bool and bool(w.get("dead")):
+	if w.get("dead") == true:
 		return
 	if w.has_method("is_grabbing") and bool(w.call("is_grabbing")):
 		return
@@ -302,7 +302,7 @@ func _check_bolt_warps() -> void:
 		if not (b_v is Object) or not is_instance_valid(b_v as Object):
 			continue
 		var b: Object = b_v as Object
-		var is_blue_b: bool = bool(b.get("is_prism")) or str(b.get("light_color")) == LxHit.COLOR_BLUE
+		var is_blue_b: bool = (b.get("is_prism") == true) or str(b.get("light_color")) == LxHit.COLOR_BLUE
 		if not is_blue_b:
 			continue
 		var bid: int = b.get_instance_id()
@@ -321,7 +321,8 @@ func _check_bolt_warps() -> void:
 		b.set("prev_pos", dest)
 		b.set("pos", exit_p)
 		b.set("dist", 0.0)
-		b.set("bounces_left", maxi(int(b.get("bounces_left")), 2))
+		var bl_v: Variant = b.get("bounces_left")
+		b.set("bounces_left", maxi(int(bl_v) if (bl_v is int or bl_v is float) else 0, 2))
 		var hids: Variant = b.get("hit_ids")
 		if hids is Array:
 			(hids as Array).clear()

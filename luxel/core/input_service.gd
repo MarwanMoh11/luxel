@@ -123,7 +123,7 @@ func _input(event: InputEvent) -> void:
 	elif event is InputEventKey or event is InputEventMouseButton or event is InputEventMouseMotion:
 		_set_device("kbm")
 
-	if Lx.root == null or int(Lx.root.get("flow")) == 2:
+	if Lx.root == null or Lx.root.get("flow") == null or int(Lx.root.get("flow")) == 2:
 		for act: String in hold_modes.keys():
 			if str(hold_modes[act]) == "toggle" and InputMap.has_action(act) and event.is_action_pressed(act):
 				_toggle_states[act] = not bool(_toggle_states.get(act, false))

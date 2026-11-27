@@ -427,7 +427,8 @@ static func _draw_lantern_edge_compass(hud: CanvasItem, blink_t: float, fred: bo
 	if not (lan_v is Object) or not is_instance_valid(lan_v):
 		return
 	var lan: Object = lan_v as Object
-	var st: int = int(lan.get("state"))
+	var st_v: Variant = lan.get("state")
+	var st: int = int(st_v) if (st_v is int or st_v is float) else 0
 	var stolen: bool = st == 4 # LxLantern.State.CARRIED
 	var hung: bool = st == 1 or st == 2 # FLYING or HANGING
 	if not stolen and not hung:

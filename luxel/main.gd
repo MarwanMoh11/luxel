@@ -232,10 +232,10 @@ func load_island_region(island_id: int, region_id: String, spawn_override: Vecto
 		if _wick != null and _wick.has_method("reset_for_room"): _wick.call("reset_for_room", spawn_at)
 	Lx.state.spawn_pos = spawn_at
 	if _region_loader != null and _region_loader.has_method("set_room_anchor"):
-		if bool(_region_loader.get("is_dungeon")) or region_id != "overworld" or LxBossHud.region_has_live_boss(_region_loader):
+		if _region_loader.get("is_dungeon") == true or region_id != "overworld" or LxBossHud.region_has_live_boss(_region_loader):
 			_region_loader.call("set_room_anchor", spawn_at)
 	if _region_loader != null and _region_loader.has_method("get_bounds"):
-		Lx.camera.set_bounds(_region_loader.call("get_bounds"), bool(_region_loader.get("is_dungeon")))
+		Lx.camera.set_bounds(_region_loader.call("get_bounds"), _region_loader.get("is_dungeon") == true)
 		Lx.camera.snap_to(spawn_at)
 	if _darkness_layer != null:
 		if _darkness_layer.has_method("reset_zones"): _darkness_layer.call("reset_zones")
@@ -289,7 +289,7 @@ func toggle_pause() -> void:
 		flow = Flow.PLAY
 		Lx.audio.set_paused(false)
 		if was_shop:
-			if _region_loader != null and bool(_region_loader.get("is_dungeon")):
+			if _region_loader != null and _region_loader.get("is_dungeon") == true:
 				var rdata: Dictionary = _region_loader.get("region_data") as Dictionary if _region_loader.get("region_data") is Dictionary else {}
 				Lx.audio.start_region_music(Lx.state.island_id, Lx.state.region_id, rdata)
 			else: Lx.audio.set_music_mode("explore", true)
@@ -313,7 +313,7 @@ func retry_from_death() -> void:
 		var tb: LxEnemyBrain = _tracked_bosses[0] as LxEnemyBrain
 		var tbid: String = tb.boss_id if not tb.boss_id.is_empty() else tb.kind
 		Lx.state.boss_retries[tbid] = int(Lx.state.boss_retries.get(tbid, 0)) + 1
-	var in_dng: bool = was_boss or (_region_loader != null and bool(_region_loader.get("is_dungeon"))) \
+	var in_dng: bool = was_boss or (_region_loader != null and _region_loader.get("is_dungeon") == true) \
 		or (Lx.packs != null and not Lx.packs.dungeon_of(Lx.state.island_id, Lx.state.region_id).is_empty()) \
 		or Lx.state.region_id != "overworld"
 	if in_dng:
@@ -405,7 +405,7 @@ func step_sim(raw_dt: float) -> void:
 		return
 	if flow == Flow.ENDING:
 		ending_timer += raw_dt; Lx.audio.tick(raw_dt, false)
-		if ending_timer >= 8.0 and _ui_root != null and int(_ui_root.get("current_screen")) == 10: _ui_root.call("show_results")
+		if ending_timer >= 8.0 and _ui_root != null and _ui_root.get("current_screen") is int and int(_ui_root.get("current_screen")) == 10: _ui_root.call("show_results")
 		return
 	if flow != Flow.PLAY or (_ui_root != null and _ui_root.has_method("is_modal_open") and bool(_ui_root.call("is_modal_open"))):
 		Lx.audio.tick(raw_dt, false)
@@ -553,7 +553,7 @@ func _sync_zone_banner(wpos: Vector2) -> void:
 		var prev_zone: String = _last_zone_id
 		_last_zone_id = zid
 		var nk: String = str(matched.get("name_key", ""))
-		if not prev_zone.is_empty() and not nk.is_empty() and not bool(_region_loader.get("is_dungeon")):
+		if not prev_zone.is_empty() and not nk.is_empty() and _region_loader.get("is_dungeon") != true:
 			var nar: Node = Lx.ui.get("narration") as Node if (Lx.ui != null and Lx.ui.get("narration") != null) else null
 			if nar != null and nar.has_method("is_letterbox_on") and not bool(nar.call("is_letterbox_on")) and nar.has_method("unsay"):
 				nar.call("unsay", "main")
@@ -569,7 +569,7 @@ func _run_smoke_mode() -> void:
 			if FileAccess.file_exists("res://luxel/islands/%d/overworld.map" % iid):
 				load_island_region(iid, "overworld")
 	print("LUXEL SMOKE PASS")
-	get_tree().quit(0)
+	if is_inside_tree(): get_tree().quit(0)
 
 static func _load_singleton(path: String) -> RefCounted:
 	if not ResourceLoader.exists(path): return null

@@ -449,11 +449,11 @@ func _sweep_interactables(wick: LxWick, world_ctx: Node, pass_r: float) -> void:
 		var ipos: Vector2 = wick.get_entity_pos(item)
 		if Geometry2D.get_closest_point_to_segment(ipos, prev_pos, pos).distance_to(ipos) > wick.get_entity_radius(item, 8.0) + pass_r: continue
 		var k: String = str(item.get("kind")).to_lower()
-		if k == "switch_eye" and not bool(item.get("requires_prism")) and item.has_method("on_hit"):
+		if k == "switch_eye" and item.get("requires_prism") != true and item.has_method("on_hit"):
 			_hit_ids.append(iid)
 			item.call("on_hit", LxHit.make(LxHit.SOURCE_BOLT, 0.5, _send_dir, pos, 0.0, false, false, wick, false))
 			_spawn_sparks(ipos, 5, "gold", 22.0, 56.0, 0.18)
-		elif (k == "brazier" or k == "road_lamp") and not bool(item.get("lit")) and item.has_method("on_light"):
+		elif (k == "brazier" or k == "road_lamp") and item.get("lit") != true and item.has_method("on_light"):
 			_hit_ids.append(iid); item.call("on_light", 24.0, "lantern_fly"); _spawn_sparks(ipos, 5, "gold", 22.0, 56.0, 0.20)
 		elif k == "pressure_plate" or k == "floor_switch":
 			_hit_ids.append(iid)

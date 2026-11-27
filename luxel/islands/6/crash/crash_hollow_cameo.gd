@@ -114,17 +114,17 @@ func _draw() -> void:
 	if _playing and _stage_t >= 0.35 and _stage_t < 0.95:
 		var cu: float = clampf((_stage_t - 0.35) / 0.60, 0.0, 1.0)
 		var r_c: float = roundf(lerpf(10.0, 3.0, cu))
-		draw_arc(Vector2(6.0, -4.0), r_c, 0.0, TAU, 12, Color(c_rose, 0.75), 1.2)
+		draw_arc(Vector2(6.0, -4.0), r_c, 0.0, TAU, 12, Color(c_rose, 0.75), 1.0)
 		draw_rect(Rect2(5.0, -5.0, 2.0, 2.0), c_cream)
 	elif _playing and _stage_t >= 0.95 and _stage_t <= 1.55:
 		var u: float = clampf((_stage_t - 0.95) / 0.22, 0.0, 1.0)
 		var tip: Vector2 = Vector2(5.0, -4.0).lerp(cp + Vector2(6.0, 2.0), u).round()
-		draw_line(Vector2(5.0, -4.0), tip, c_plum, 4.5)
-		draw_line(Vector2(5.0, -4.0), tip, c_rose, 2.4)
+		draw_line(Vector2(5.0, -4.0), tip, c_plum, 5.0)
+		draw_line(Vector2(5.0, -4.0), tip, c_rose, 2.0)
 		draw_line(Vector2(5.0, -4.0), tip, c_cream, 1.0)
 		if u >= 0.75:
 			var ru: float = clampf((_stage_t - 0.95) / 0.60, 0.0, 1.0)
-			draw_arc(cp, roundf(lerpf(4.0, 22.0, ru)), 0.0, TAU, 14, Color(c_rose, 1.0 - ru), 1.5)
+			draw_arc(cp, roundf(lerpf(4.0, 22.0, ru)), 0.0, TAU, 14, Color(c_rose, 1.0 - ru), 2.0)
 			draw_arc(cp, roundf(lerpf(2.0, 14.0, ru)), 0.0, TAU, 12, Color(c_cream, (1.0 - ru) * 0.8), 1.0)
 
 	# Horned-hood Hollow Wick cloaked silhouette + billowing cape + moth-feather dissolve

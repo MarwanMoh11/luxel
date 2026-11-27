@@ -214,9 +214,9 @@ func draw_fx(canvas: CanvasItem, off: Vector2) -> void:
 	# Expanding golden-cream nova rings + outer biome resonance corona
 	var isl_d: int = Lx.state.island_id if Lx.state != null else 1
 	var b_glow: Color = LxBiomePalette.col(isl_d, "glow")
-	canvas.draw_arc(center, cur_r * 1.12, 0.0, TAU, 32, Color(b_glow, fade * (0.48 if flash_red else 0.62)), 1.5)
-	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * (0.76 if flash_red else 0.95)), 2.5)
-	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * (0.68 if flash_red else 0.90)), 1.5)
+	canvas.draw_arc(center, cur_r * 1.12, 0.0, TAU, 32, Color(b_glow, fade * (0.48 if flash_red else 0.62)), 2.0)
+	canvas.draw_arc(center, cur_r, 0.0, TAU, 32, Color(LxWick.PAL_GOLD, fade * (0.76 if flash_red else 0.95)), 3.0)
+	canvas.draw_arc(center, cur_r * 0.78, 0.0, TAU, 28, Color(LxWick.PAL_CREAM, fade * (0.68 if flash_red else 0.90)), 1.0)
 	# Crisp inner 4-point dawn star + diagonal biome filigree rays
 	var star_r: float = roundf(lerpf(14.0, 4.0, prog) * (0.78 if flash_red else 1.0))
 	if star_r >= 2.0:

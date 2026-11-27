@@ -185,7 +185,7 @@ func _draw() -> void:
 		if _open_t > 0.0:
 			var u: float = 1.0 - clampf(_open_t / 0.36, 0.0, 1.0)
 			var alpha: float = (1.0 - u) * (0.60 if reduced else 0.92)
-			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, maxf(w, h) * 0.58, u)), 0.0, TAU, 18, Color(trip[2], alpha), 1.5)
+			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, maxf(w, h) * 0.58, u)), 0.0, TAU, 18, Color(trip[2], alpha), 2.0)
 			if not reduced:
 				draw_arc(Vector2.ZERO, roundf(lerpf(3.0, maxf(w, h) * 0.40, u)), 0.0, TAU, 14, Color(c_cream, alpha), 1.0)
 		_draw_signal_pulses()

@@ -351,7 +351,8 @@ func _draw_slash(sl: Dictionary) -> void:
 	var d: Vector2 = sl["dir"] as Vector2
 	var a: Vector2 = (c - d * half_l).round()
 	var b: Vector2 = (c + d * half_l).round()
-	draw_line(a, b, sl["outer"] as Color, 3.0 if u < 0.35 else 1.0, false)
+	var sw: float = 3.0 if u < 0.35 else 1.0
+	draw_line(a, b, sl["outer"] as Color, sw, false)
 	if u < 0.65:
 		draw_line((c - d * roundf(half_l * 0.7)).round(), (c + d * roundf(half_l * 0.7)).round(), sl["core"] as Color, 1.0, false)
 
@@ -461,7 +462,7 @@ func _boss_pos(boss_id: String) -> Vector2:
 		var enemies: Variant = Lx.world.call("get_enemies")
 		if enemies is Array:
 			for e: Variant in (enemies as Array):
-				if e is Node2D and is_instance_valid(e) and (str((e as Object).get("kind")) == boss_id or bool((e as Object).get("is_boss"))):
+				if e is Node2D and is_instance_valid(e) and (str((e as Object).get("kind")) == boss_id or (e as Object).get("is_boss") == true):
 					return (e as Node2D).global_position
 	return _player_pos()
 

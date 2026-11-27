@@ -118,7 +118,8 @@ func _poll_player_rings() -> void:
 		var b: LxInteractable = _get_bell(bi)
 		if b == null:
 			continue
-		var c: int = int(b.get("ring_count"))
+		var c_v: Variant = b.get("ring_count")
+		var c: int = int(c_v) if (c_v is int or c_v is float) else 0
 		if c > _last_counts[bi]:
 			_last_counts[bi] = c
 			submit_note(bi)
@@ -165,7 +166,7 @@ func _get_bell(bi: int) -> LxInteractable:
 func _snapshot_bell_counts() -> void:
 	for bi: int in range(3):
 		var b: LxInteractable = _get_bell(bi)
-		_last_counts[bi] = int(b.get("ring_count")) if b != null else 0
+		_last_counts[bi] = int(b.get("ring_count")) if (b != null and (b.get("ring_count") is int or b.get("ring_count") is float)) else 0
 
 
 func _ensure_overlay() -> void:

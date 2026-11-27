@@ -86,7 +86,7 @@ func _populate_features() -> void:
 	var grid: Array = grid_v as Array
 	var h: int = grid.size()
 	var w: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(_region.get("tile_size")) if _region.get("tile_size") != null else 16.0
+	var ts_v: Variant = _region.get("tile_size"); var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 
 	if island_id == 3 and not is_dungeon:
 		_scan_and_place(grid, w, h, ts, PackedStringArray(["ground", "path"]), 9, 10, func(p: Vector2, _hv: int) -> void:
@@ -520,8 +520,8 @@ func _draw_stars(fred: bool) -> void:
 			var mdir: Vector2 = (p - sky_p).normalized()
 			var ma: float = clampf(u * 2.2, 0.25, 1.0) * (0.68 if fred else 0.96)
 			draw_line((head - mdir * 24.0).round(), head, Color(PAL["sky"] as Color, ma * 0.55), 1.0)
-			draw_line((head - mdir * 15.0).round(), head, Color(PAL["gold"] as Color, ma * 0.82), 1.4)
-			draw_line((head - mdir * 7.0).round(), head, Color(PAL["cream"] as Color, ma), 1.8)
+			draw_line((head - mdir * 15.0).round(), head, Color(PAL["gold"] as Color, ma * 0.82), 1.0)
+			draw_line((head - mdir * 7.0).round(), head, Color(PAL["cream"] as Color, ma), 2.0)
 			draw_rect(Rect2(head - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, ma))
 			draw_rect(Rect2(head + Vector2(-2.0, -1.0), Vector2(1.0, 2.0)), Color(PAL["gold"] as Color, ma * 0.85))
 		else:

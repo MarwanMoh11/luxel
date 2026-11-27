@@ -57,7 +57,7 @@ func _all_stars_lit() -> bool:
 		return false
 	for sid: String in star_ids:
 		var it: LxInteractable = region.find_interactable(sid)
-		if it == null or not bool(it.get("lit")):
+		if it == null or it.get("lit") != true:
 			return false
 	return true
 
@@ -75,7 +75,7 @@ func _draw() -> void:
 	var void_c: Color = pal["void"] as Color
 	var pulse: float = 0.85 if fr else (0.76 + 0.24 * sin(_pulse_t * 3.0))
 	var col: Color = gold if aligned else deep
-	draw_arc(Vector2.ZERO, 14.0, 0.0, TAU, 24, Color(col, 0.90 if aligned else 0.80), 1.5)
+	draw_arc(Vector2.ZERO, 14.0, 0.0, TAU, 24, Color(col, 0.90 if aligned else 0.80), 2.0)
 	draw_arc(Vector2.ZERO, 9.0, 0.0, TAU, 18, Color(cream if aligned else sky, pulse), 1.0)
 	var lit_count: int = 0
 	if region != null:
@@ -84,9 +84,9 @@ func _draw() -> void:
 			if it == null:
 				continue
 			var rel: Vector2 = (it.pos - pos).round()
-			if bool(it.get("lit")):
+			if it.get("lit") == true:
 				lit_count += 1
-				draw_line(Vector2.ZERO, rel, Color(gold if aligned else sky, 0.65 * pulse), 1.5)
+				draw_line(Vector2.ZERO, rel, Color(gold if aligned else sky, 0.65 * pulse), 2.0)
 				var mid_p: Vector2 = (rel * 0.5).round()
 				draw_rect(Rect2(mid_p, Vector2.ONE), Color(cream if aligned else ice, 0.80))
 			else:
@@ -136,4 +136,4 @@ func _draw() -> void:
 	if _align_fx_t > 0.0:
 		var u: float = 1.0 - clampf(_align_fx_t / 0.55, 0.0, 1.0)
 		var ar: float = 18.0 if fr else roundf(lerpf(14.0, 44.0, u))
-		draw_arc(Vector2.ZERO, ar, 0.0, TAU, 24, Color(gold, (1.0 - u) * (0.50 if fr else 0.88)), 1.5)
+		draw_arc(Vector2.ZERO, ar, 0.0, TAU, 24, Color(gold, (1.0 - u) * (0.50 if fr else 0.88)), 2.0)

@@ -258,4 +258,4 @@ func _draw() -> void:
 		var u: float = clampf(float(rg["age"]) / maxf(float(rg["dur"]), 0.01), 0.0, 1.0)
 		var r: float = roundf(lerpf(4.0, 24.0, u))
 		var a: float = (1.0 - u) * (0.55 if fred else 0.85)
-		draw_arc((rg["pos"] as Vector2).round(), r, 0.0, TAU, 16, Color((PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, a), 1.2)
+		draw_arc((rg["pos"] as Vector2).round(), r, 0.0, TAU, 16, Color((PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, a), 1.0)

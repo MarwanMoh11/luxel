@@ -95,5 +95,5 @@ func _draw() -> void:
 		draw_rect(Rect2(mp - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if i % 2 == 0 else c_apricot)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, charge_radius * 1.2, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, charge_radius * 1.2, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 2.0)
 	_draw_signal_pulses()

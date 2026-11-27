@@ -391,11 +391,13 @@ func _sync_train_brake_effects() -> void:
 		var iid: int = it.get_instance_id()
 		if it.kind == "wind_zone" and (_train_mode == "roof" or bool(it.props.get("train_wind", false))):
 			if not _wind_base_strength.has(iid):
-				_wind_base_strength[iid] = float(it.get("strength"))
+				var sv: Variant = it.get("strength")
+				_wind_base_strength[iid] = float(sv) if (sv is float or sv is int) else 0.0
 			it.set("strength", float(_wind_base_strength[iid]) * (0.40 if braked else 1.0))
 		elif it.kind == "vehicle_cart":
 			if not _cart_base_speed.has(iid):
-				_cart_base_speed[iid] = float(it.get("speed"))
+				var cv: Variant = it.get("speed")
+				_cart_base_speed[iid] = float(cv) if (cv is float or cv is int) else 0.0
 			it.set("speed", float(_cart_base_speed[iid]) * (0.55 if braked else 1.0))
 
 
@@ -479,12 +481,13 @@ func _mount_tick_driver() -> void:
 	_tick_driver.name = "Island6RuleDriver"
 	_tick_driver.set_process(true)
 	host.add_child(_tick_driver)
-	_tick_driver.get_tree().process_frame.connect(_on_process_frame)
+	if _tick_driver.is_inside_tree() and _tick_driver.get_tree() != null:
+		_tick_driver.get_tree().process_frame.connect(_on_process_frame)
 
 
 func _unmount_nodes() -> void:
 	if _tick_driver != null and is_instance_valid(_tick_driver):
-		if _tick_driver.get_tree() != null and _tick_driver.get_tree().process_frame.is_connected(_on_process_frame):
+		if _tick_driver.is_inside_tree() and _tick_driver.get_tree() != null and _tick_driver.get_tree().process_frame.is_connected(_on_process_frame):
 			_tick_driver.get_tree().process_frame.disconnect(_on_process_frame)
 		_tick_driver.queue_free()
 	_tick_driver = null
@@ -537,7 +540,8 @@ func tick_rule(dt: float) -> void:
 		_chug_cd -= dt
 		if _chug_cd <= 0.0:
 			_chug_cd = 1.15 if braked else 0.62
-			var in_play: bool = Lx.root == null or int(Lx.root.get("flow")) == 2
+			var fl: Variant = Lx.root.get("flow") if Lx.root != null else null
+			var in_play: bool = not (fl is int) or int(fl) == 2
 			if in_play and (Lx.audio == null or not Lx.audio.is_paused) and _events != null:
 				_events.sfx_requested.emit("train_chug", Vector2.ZERO, false)
 	if _stride_active:

@@ -30,7 +30,7 @@ func _toy_setup() -> void:
 	strength = maxf(0.0, float(props.get("strength", 720.0)))
 	var mode_s: String = str(props.get("mode", "")).strip_edges().to_lower()
 	is_push = bool(props.get("push", mode_s == "push"))
-	if props.has("pull") and not bool(props.get("pull")):
+	if props.has("pull") and props.get("pull", true) == false:
 		is_push = true
 	orbit_capture = bool(props.get("orbit_capture", true))
 	orbit_r = clampf(float(props.get("orbit_r", minf(34.0, field_radius * 0.52))), 16.0, field_radius * 0.76)
@@ -279,7 +279,7 @@ func _draw() -> void:
 	if orbit_capture and (_has_apogee_clasp() or _orbit_captured):
 		var orb_c: Color = (PAL["cream"] if _orbit_captured else PAL["gold"]) as Color
 		var orb_a: float = 0.85 if _orbit_captured else 0.34
-		draw_arc(Vector2.ZERO, orbit_r, 0.0, TAU, 28, Color(orb_c, orb_a), 1.2 if _orbit_captured else 1.0)
+		draw_arc(Vector2.ZERO, orbit_r, 0.0, TAU, 28, Color(orb_c, orb_a), 2.0 if _orbit_captured else 1.0)
 		for ti: int in range(2):
 			var ta: float = _clock * (0.7 if fr else 1.5) + float(ti) * PI
 			var tp: Vector2 = (Vector2.from_angle(ta) * orbit_r).round()
@@ -313,4 +313,4 @@ func _draw() -> void:
 
 	if _flip_flash_t > 0.0:
 		var fu: float = 1.0 - clampf(_flip_flash_t / 0.28, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, lerpf(8.0, field_radius * 0.75, fu), 0.0, TAU, 24, Color(PAL["cream"] as Color, (1.0 - fu) * 0.85), 1.5)
+		draw_arc(Vector2.ZERO, lerpf(8.0, field_radius * 0.75, fu), 0.0, TAU, 24, Color(PAL["cream"] as Color, (1.0 - fu) * 0.85), 2.0)

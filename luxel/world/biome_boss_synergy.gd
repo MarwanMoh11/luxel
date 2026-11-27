@@ -371,7 +371,7 @@ func _draw_miniboss_arena(fred: bool) -> void:
 		var r_mb: float = roundf(lerpf(12.0, 96.0, u_mb))
 		var a_mb: float = (1.0 - u_mb) * (0.55 if fred else 0.88)
 		draw_arc(c, r_mb, 0.0, TAU, 28, Color(LxBiomePalette.col(_island_id, "glow"), a_mb), 2.0)
-		draw_arc(c, roundf(r_mb * 0.72), 0.0, TAU, 22, Color(PAL["cream"] as Color, a_mb), 1.2)
+		draw_arc(c, roundf(r_mb * 0.72), 0.0, TAU, 22, Color(PAL["cream"] as Color, a_mb), 1.0)
 
 
 func _draw() -> void:
@@ -397,9 +397,9 @@ func _draw() -> void:
 				draw_arc(_center.round(), 34.0, 0.0, TAU, 24, Color(PAL["apricot"] as Color, a1), 1.0)
 			if _bell_pulse_t > 0.0:
 				var u: float = 1.0 - clampf(_bell_pulse_t / 0.52, 0.0, 1.0)
-				draw_arc(_center.round(), roundf(lerpf(18.0, 88.0, u)), 0.0, TAU, 24, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 0.85)), 1.6)
+				draw_arc(_center.round(), roundf(lerpf(18.0, 88.0, u)), 0.0, TAU, 24, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 0.85)), 2.0)
 			if cleared:
-				draw_arc(_center.round(), roundf(36.0 + (0.0 if fred else sin(_clock * 1.8) * 4.0)), 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.35), 1.2)
+				draw_arc(_center.round(), roundf(36.0 + (0.0 if fred else sin(_clock * 1.8) * 4.0)), 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.35), 1.0)
 				draw_line(_center + Vector2(-14.0, 0.0), _center + Vector2(14.0, 0.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 				draw_line(_center + Vector2(0.0, -14.0), _center + Vector2(0.0, 14.0), Color(PAL["cream"] as Color, 0.32), 1.0)
 		2:
@@ -453,7 +453,7 @@ func _draw() -> void:
 					var wt: float = float(wi) / float(sn) if fred else fposmod(_clock * (0.28 if ph == 2 else 0.44) + float(wi) * 0.21, 1.0)
 					var wy: float = _center.y + lerpf(-52.0, 52.0, float(wi) / float(maxi(1, sn - 1)))
 					var wx: float = _center.x + lerpf(-96.0, 96.0, wt)
-					draw_line(Vector2(wx - 16.0, wy + 3.0).round(), Vector2(wx + 16.0, wy - 3.0).round(), Color((PAL["ice"] if wi % 2 == 0 else PAL["sky"]) as Color, wa), 1.2)
+					draw_line(Vector2(wx - 16.0, wy + 3.0).round(), Vector2(wx + 16.0, wy - 3.0).round(), Color((PAL["ice"] if wi % 2 == 0 else PAL["sky"]) as Color, wa), 1.0)
 				var glints: Array[Vector2] = [Vector2(-72.0, -34.0), Vector2(72.0, -34.0), Vector2(-64.0, 38.0), Vector2(64.0, 38.0)]
 				for gi: int in range(glints.size()):
 					var gp: Vector2 = (_center + glints[gi]).round()
@@ -463,9 +463,9 @@ func _draw() -> void:
 					draw_line(gp + Vector2(0.0, -gs), gp + Vector2(0.0, gs), gc, 1.0)
 			if cleared:
 				var c4: Vector2 = _center.round()
-				draw_arc(c4, 42.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["rose"] as Color, 0.42), 1.6)
-				draw_arc(c4, 38.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["gold"] as Color, 0.42), 1.4)
-				draw_arc(c4, 34.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["ice"] as Color, 0.42), 1.2)
+				draw_arc(c4, 42.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["rose"] as Color, 0.42), 2.0)
+				draw_arc(c4, 38.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["gold"] as Color, 0.42), 1.0)
+				draw_arc(c4, 34.0, -PI * 0.85, -PI * 0.15, 18, Color(PAL["ice"] as Color, 0.42), 1.0)
 		5:
 			for si: int in range(ABYSS_STARS_5.size()):
 				var st_p: Vector2 = (_center + ABYSS_STARS_5[si]).round()
@@ -474,7 +474,7 @@ func _draw() -> void:
 			for nd: Dictionary in _orrery_nodes:
 				var ready_n: bool = float(nd["cd"]) <= 0.0
 				var np: Vector2 = (_center + Vector2(cos(float(nd["ang"])) * 108.0, sin(float(nd["ang"])) * 62.0)).round()
-				draw_arc(np, 7.0 if ready_n else 4.0, 0.0, TAU, 14, Color((PAL["gold"] if ready_n else PAL["blue"]) as Color, 0.72 if ready_n else 0.35), 1.2)
+				draw_arc(np, 7.0 if ready_n else 4.0, 0.0, TAU, 14, Color((PAL["gold"] if ready_n else PAL["blue"]) as Color, 0.72 if ready_n else 0.35), 1.0)
 				if ready_n:
 					draw_rect(Rect2(np - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 			if cleared:
@@ -491,10 +491,10 @@ func _draw() -> void:
 					var v_ph: float = float(v.get("phase", 0.0))
 					var pulse6: float = 0.55 if fred else (0.45 + 0.45 * sin(_clock * (3.2 if ph >= 3 else 2.0) + v_ph * TAU))
 					var mid6: Vector2 = c6.lerp(vp, 0.5) + Vector2(0.0, -6.0 if vp.y < c6.y else 6.0)
-					draw_line(c6, mid6.round(), Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 2.8)
-					draw_line(mid6.round(), vp, Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 2.8)
-					draw_line(c6, mid6.round(), Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.3)
-					draw_line(mid6.round(), vp, Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.3)
+					draw_line(c6, mid6.round(), Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 3.0)
+					draw_line(mid6.round(), vp, Color(PAL["wine"] as Color, 0.38 + 0.18 * pulse6), 3.0)
+					draw_line(c6, mid6.round(), Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.0)
+					draw_line(mid6.round(), vp, Color((PAL["gold"] if ph >= 3 else PAL["coral"]) as Color, 0.32 + 0.30 * pulse6), 1.0)
 			if cleared:
 				for k: int in range(6):
 					var u6: float = fposmod(_clock * 0.45 + float(k) * 0.17, 1.0)
@@ -506,33 +506,33 @@ func _draw() -> void:
 				var rdy7: bool = float(anc["cd"]) <= 0.0
 				var ft7: float = float(anc["flash_t"])
 				draw_circle(ap, 6.0 if rdy7 else 4.0, Color((PAL["sky"] if rdy7 else PAL["deep"]) as Color, 0.55))
-				draw_arc(ap, 8.0 if rdy7 else 5.0, -PI * 0.65, PI * 0.65, 12, (PAL["ice"] if rdy7 else PAL["blue"]) as Color, 1.3)
+				draw_arc(ap, 8.0 if rdy7 else 5.0, -PI * 0.65, PI * 0.65, 12, (PAL["ice"] if rdy7 else PAL["blue"]) as Color, 1.0)
 				if rdy7:
 					draw_rect(Rect2(ap - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 				if ft7 > 0.0:
 					var u7: float = 1.0 - clampf(ft7 / 0.55, 0.0, 1.0)
-					draw_arc(ap, roundf(lerpf(8.0, 42.0, u7)), 0.0, TAU, 18, Color(PAL["ice"] as Color, (1.0 - u7) * 0.85), 1.4)
+					draw_arc(ap, roundf(lerpf(8.0, 42.0, u7)), 0.0, TAU, 18, Color(PAL["ice"] as Color, (1.0 - u7) * 0.85), 2.0)
 			if cleared or _rules.lunar_phase > 0.65:
 				var a: float = 0.25 if fred else (0.28 + 0.14 * sin(_clock * 3.0))
 				draw_line(_center + Vector2(-128.0, -48.0), _center + Vector2(128.0, -48.0), Color(PAL["ice"] as Color, a), 1.0)
-				draw_arc(_center.round(), 52.0, _clock * 0.6, _clock * 0.6 + PI * 0.7, 16, Color(PAL["sky"] as Color, a * 1.4), 1.2)
-				draw_arc(_center.round(), 52.0, _clock * 0.6 + PI, _clock * 0.6 + PI * 1.7, 16, Color((PAL["gold"] if cleared else PAL["ice"]) as Color, a * 1.4), 1.2)
+				draw_arc(_center.round(), 52.0, _clock * 0.6, _clock * 0.6 + PI * 0.7, 16, Color(PAL["sky"] as Color, a * 1.4), 1.0)
+				draw_arc(_center.round(), 52.0, _clock * 0.6 + PI, _clock * 0.6 + PI * 1.7, 16, Color((PAL["gold"] if cleared else PAL["ice"]) as Color, a * 1.4), 1.0)
 		8:
 			for rel: Dictionary in _dawn_relics:
 				var rp: Vector2 = (rel["pos"] as Vector2).round()
 				var rdy8: bool = float(rel["cd"]) <= 0.0
 				var ft8: float = float(rel["flash_t"])
 				draw_circle(rp, 5.5 if rdy8 else 3.5, Color((PAL["gold"] if (rdy8 or cleared) else PAL["plum"]) as Color, 0.60))
-				draw_arc(rp, 8.0 if rdy8 else 5.0, 0.0, TAU, 14, (PAL["gold"] if (rdy8 or cleared) else PAL["rose"]) as Color, 1.2)
+				draw_arc(rp, 8.0 if rdy8 else 5.0, 0.0, TAU, 14, (PAL["gold"] if (rdy8 or cleared) else PAL["rose"]) as Color, 1.0)
 				if rdy8 or cleared:
 					draw_rect(Rect2(rp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 				if ft8 > 0.0:
 					var u8: float = 1.0 - clampf(ft8 / 0.55, 0.0, 1.0)
-					draw_arc(rp, roundf(lerpf(8.0, 48.0, u8)), 0.0, TAU, 20, Color(PAL["gold"] as Color, (1.0 - u8) * 0.88), 1.6)
+					draw_arc(rp, roundf(lerpf(8.0, 48.0, u8)), 0.0, TAU, 20, Color(PAL["gold"] as Color, (1.0 - u8) * 0.88), 2.0)
 			if cleared:
 				for k: int in range(8):
 					var ang: float = float(k) * (TAU / 8.0) + _clock * 0.18
-					draw_line((_center + Vector2(cos(ang) * 18.0, sin(ang) * 14.0)).round(), (_center + Vector2(cos(ang) * 72.0, sin(ang) * 52.0)).round(), Color(PAL["gold"] as Color, 0.30 if fred else 0.48), 1.4)
+					draw_line((_center + Vector2(cos(ang) * 18.0, sin(ang) * 14.0)).round(), (_center + Vector2(cos(ang) * 72.0, sin(ang) * 52.0)).round(), Color(PAL["gold"] as Color, 0.30 if fred else 0.48), 1.0)
 			var seals: int = _mech.dawn_seals_broken if _mech != null else 0
 			var relit: bool = Lx.state != null and Lx.state.relit_islands.has(8)
 			for k: int in range(3):
@@ -575,7 +575,7 @@ func _draw_center_ritual_ring(fred: bool, ph: int, boss: LxEnemyBrain) -> void:
 		if ph >= 2 and (k % (notches / 4)) == 0:
 			var out_p: Vector2 = (c + Vector2(cos(a0) * (r + 4.0), sin(a0) * (r + 4.0))).round()
 			draw_rect(Rect2(out_p, Vector2(2.0, 2.0)), Color((PAL["gold"] if ph >= 4 else PAL["apricot"]) as Color, a_ring * 1.15))
-	if _island_id == 8 and ph >= 4 and boss != null and not bool(boss.get("veil_intact")):
+	if _island_id == 8 and ph >= 4 and boss != null and boss.get("veil_intact") != true:
 		for ki: int in range(8):
 			var ka: float = float(ki) * (TAU / 8.0)
 			var kd: Vector2 = Vector2.from_angle(ka)

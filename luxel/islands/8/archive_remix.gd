@@ -166,7 +166,8 @@ func spawn_receipt_stamp(at_pos: Vector2, duration_s: float = RECEIPT_DURATION_S
 	var stamp := _BrassReceiptStamp.new()
 	var sid: String = "brass_receipt_%d" % Time.get_ticks_usec()
 	stamp.region = Lx.world
-	stamp.island_id = int(Lx.world.get("current_island_id")) if Lx.world.get("current_island_id") != null else 8
+	var isl_v: Variant = Lx.world.get("current_island_id")
+	stamp.island_id = int(isl_v) if (isl_v is int or isl_v is float) else 8
 	stamp.region_id = str(Lx.world.get("current_region_id")) if Lx.world.get("current_region_id") != null else ""
 	stamp.setup({
 		"id": sid,
@@ -258,10 +259,11 @@ func _apply_pin_step(toy: LxInteractable, rem: float) -> void:
 		"timed_brazier":
 			if toy.get("lit") != null:
 				toy.set("lit", true)
-			if toy.get("time_left") != null:
+			var tl_v: Variant = toy.get("time_left")
+			if tl_v is float or tl_v is int:
 				var secs_v: Variant = toy.get("secs")
-				var hold_t: float = minf(rem, float(secs_v) if secs_v != null else 4.0)
-				toy.set("time_left", maxf(float(toy.get("time_left")), maxf(0.4, hold_t)))
+				var hold_t: float = minf(rem, float(secs_v) if (secs_v is float or secs_v is int) else 4.0)
+				toy.set("time_left", maxf(float(tl_v), maxf(0.4, hold_t)))
 			if toy.has_method("set_powered"):
 				toy.call("set_powered", true)
 		"light_plant":

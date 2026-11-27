@@ -106,7 +106,7 @@ func tick(dt: float) -> void:
 		dirty = true
 	if active and step_flip and not hidden_pool and not locked_pool:
 		var wp: Vector2 = wick_pos()
-		var in_now: bool = wp.distance_to(pos) <= radius_px * 0.72 and (Lx.player == null or not bool(Lx.player.get("dead")))
+		var in_now: bool = wp.distance_to(pos) <= radius_px * 0.72 and (Lx.player == null or Lx.player.get("dead") != true)
 		if in_now and not _wick_was_in and _cd <= 0.0:
 			trigger_flip()
 			dirty = true
@@ -274,8 +274,8 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, r + 1.0, c_void)
 	draw_circle(Vector2.ZERO, r, c_dusk if is_blk else c_mauve)
 	# Upper-left sunlit stone bevel arc & lower-right shaded bevel arc
-	draw_arc(Vector2.ZERO, r - 0.5, PI * 0.85, PI * 1.85, 18, c_rose if is_blk else c_ice, 1.2)
-	draw_arc(Vector2.ZERO, r - 0.5, -PI * 0.15, PI * 0.85, 18, c_night if is_blk else c_dusk, 1.2)
+	draw_arc(Vector2.ZERO, r - 0.5, PI * 0.85, PI * 1.85, 18, c_rose if is_blk else c_ice, 1.0)
+	draw_arc(Vector2.ZERO, r - 0.5, -PI * 0.15, PI * 0.85, 18, c_night if is_blk else c_dusk, 1.0)
 	draw_circle(Vector2.ZERO, r - 2.0, c_plum if is_blk else c_stone)
 	draw_circle(Vector2.ZERO, r - 3.5, c_void)
 	# 8 carved stone rim masonry joints & cardinal keystones
@@ -301,7 +301,7 @@ func _draw() -> void:
 		# High-contrast luminous full silver moon disc with specular lunar glint + 4-way starlight ticks
 		draw_circle(Vector2.ZERO, mr + 1.0, c_sky)
 		draw_circle(Vector2.ZERO, mr, c_ice)
-		draw_arc(Vector2.ZERO, mr, PI * 0.85, PI * 1.75, 12, c_cream, 1.2)
+		draw_arc(Vector2.ZERO, mr, PI * 0.85, PI * 1.75, 12, c_cream, 1.0)
 		draw_rect(Rect2(-mr + 2.0, -mr + 2.0, 3.0, 2.0), c_cream)
 		draw_rect(Rect2(1.0, 1.0, 2.0, 2.0), c_sky)
 		draw_rect(Rect2(-1.0, 2.0, 1.0, 1.0), c_sky)
@@ -313,9 +313,9 @@ func _draw() -> void:
 	else:
 		# Dramatic pitch-black obsidian eclipsed moon framed by razor-sharp rose/cream corona crescent
 		draw_circle(Vector2.ZERO, mr + 1.0, c_wine)
-		draw_arc(Vector2.ZERO, mr + 0.5, 0.0, TAU, 18, c_rose, 1.4)
+		draw_arc(Vector2.ZERO, mr + 0.5, 0.0, TAU, 18, c_rose, 2.0)
 		draw_circle(Vector2(1.0, 0.0), mr, c_void)
-		draw_arc(Vector2.ZERO, mr, PI * 0.65, PI * 1.45, 12, c_cream, 1.2)
+		draw_arc(Vector2.ZERO, mr, PI * 0.65, PI * 1.45, 12, c_cream, 1.0)
 		# Diamond-ring eclipse flare on upper-left limb
 		var dx: float = roundf(-mr)
 		draw_rect(Rect2(dx - 1.0, -2.0, 2.0, 3.0), c_coral)
@@ -343,7 +343,7 @@ func _draw() -> void:
 		var a: float = (1.0 - u) * (0.55 if fr else 0.92)
 		var wr1: float = roundf(lerpf(4.0, r * 1.55, u))
 		var wr2: float = roundf(lerpf(2.0, r * 1.15, clampf(u * 1.25, 0.0, 1.0)))
-		draw_arc(Vector2.ZERO, wr1, 0.0, TAU, 24, Color(c_rose if is_blk else c_ice, a), 1.5)
+		draw_arc(Vector2.ZERO, wr1, 0.0, TAU, 24, Color(c_rose if is_blk else c_ice, a), 2.0)
 		draw_arc(Vector2.ZERO, wr2, 0.0, TAU, 20, Color(c_cream, a * 0.8), 1.0)
 
 	# Moon Pocket carried-orb shimmer

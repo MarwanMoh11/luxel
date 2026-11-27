@@ -52,7 +52,7 @@ func _sync_door_policy() -> void:
 	if door == null:
 		return
 	if _is_legacy_passed() or opened:
-		if door.has_method("_open") and not bool(door.get("opened")):
+		if door.has_method("_open") and door.get("opened") != true:
 			door.call("_open", persist)
 		return
 	if _all_three_wings_live():
@@ -186,7 +186,7 @@ func _shatter_seal(play_fx: bool) -> void:
 			if not Lx.state.broken_seals.has(id):
 				Lx.state.broken_seals.append(id)
 	var door: Node = _find_target_door()
-	if door != null and door.has_method("_open") and not bool(door.get("opened")):
+	if door != null and door.has_method("_open") and door.get("opened") != true:
 		door.call("_open", persist)
 	emit_power(true)
 	if play_fx:

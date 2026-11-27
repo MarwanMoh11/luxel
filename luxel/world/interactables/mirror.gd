@@ -508,7 +508,7 @@ func _draw_cue_spotlight(face_ok: bool) -> void:
 	var c_apricot: Color = PAL["apricot"] as Color
 	var fill_a: float = 0.22 if (has_cue and wick_in) else (0.14 if has_cue else 0.08)
 	draw_circle(Vector2.ZERO, r, Color(c_gold if has_cue else c_apricot, fill_a))
-	draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, Color(c_cream if (has_cue and wick_in) else c_gold, 0.85 if has_cue else 0.45), 1.5 if wick_in else 1.0)
+	draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, Color(c_cream if (has_cue and wick_in) else c_gold, 0.85 if has_cue else 0.45), 2.0 if wick_in else 1.0)
 	draw_arc(Vector2.ZERO, maxf(6.0, r - 5.0), 0.0, TAU, 18, Color(c_apricot, 0.40), 1.0)
 	# Crisp 4-point stage mark at center (greyscale-distinct Cue-Mirror emblem)
 	draw_rect(Rect2(-1.0, -3.0, 2.0, 6.0), c_cream if wick_in else c_gold)
@@ -541,4 +541,4 @@ func _draw_cue_curtain(face_ok: bool) -> void:
 	if _flash_t > 0.0:
 		draw_rect(r, c_coral, false, 1.0)
 	elif _pierce_t > 0.0:
-		draw_rect(r, c_cream, false, 1.5)
+		draw_rect(r, c_cream, false, 2.0)

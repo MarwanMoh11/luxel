@@ -233,7 +233,7 @@ func _draw() -> void:
 	if struck:
 		var u: float = 1.0 - clampf(_struck_t / STRUCK_DUR, 0.0, 1.0)
 		var rr: float = roundf(lerpf(4.0, 16.0, u))
-		draw_arc(Vector2(1.0, -4.0), rr, 0.0, TAU, 14, Color(c_cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.5)
+		draw_arc(Vector2(1.0, -4.0), rr, 0.0, TAU, 14, Color(c_cream, (1.0 - u) * (0.6 if fr else 1.0)), 2.0)
 	_draw_forged_glyph(gc, dm, c_cream if struck else mc, c_void, c_cream)
 	_draw_signal_pulses()
 

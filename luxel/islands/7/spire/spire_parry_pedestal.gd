@@ -150,11 +150,11 @@ func _draw() -> void:
 	if orb_active:
 		var op: Vector2 = (orb_pos - pos).round()
 		draw_circle(op, 6.0, c_void)
-		draw_arc(op, 6.0, 0.0, TAU, 16, Color(c_coral, 0.72 if fr else 1.0), 1.5)
+		draw_arc(op, 6.0, 0.0, TAU, 16, Color(c_coral, 0.72 if fr else 1.0), 2.0)
 		draw_circle(op, 2.0, c_rose)
 		draw_rect(Rect2(op - Vector2.ONE, Vector2(2.0, 2.0)), c_cream)
 	if _clash_t > 0.0:
 		var cp: Vector2 = (_clash_pos - pos).round()
 		var u: float = 1.0 - clampf(_clash_t / 0.75, 0.0, 1.0)
-		draw_arc(cp, roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
+		draw_arc(cp, roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 2.0)
 	_draw_signal_pulses()

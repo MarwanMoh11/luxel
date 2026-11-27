@@ -83,7 +83,7 @@ func _connect_signals() -> void:
 	title.options_requested.connect(func() -> void: show_options(Screen.TITLE))
 	title.quit_requested.connect(func() -> void:
 		quit_requested.emit()
-		if _main != null:
+		if _main != null and is_inside_tree():
 			get_tree().quit()
 	)
 
@@ -178,7 +178,7 @@ func _connect_signals() -> void:
 		intro_finished.emit()
 		if _main != null and _main.has_method("finish_intro"):
 			_main.call("finish_intro")
-		elif _main != null and int(_main.get("flow")) == 1:
+		elif _main != null and _main.get("flow") is int and int(_main.get("flow")) == 1:
 			_main.set("flow", 2)
 	)
 	cards.ending_finished.connect(func() -> void:
@@ -205,13 +205,14 @@ func setup(main_node: Node) -> void:
 func _notify_main_resume() -> void:
 	if _main == null or not _main.has_method("toggle_pause"):
 		return
-	var cur_flow: int = int(_main.get("flow"))
+	var fl_v: Variant = _main.get("flow")
+	var cur_flow: int = int(fl_v) if (fl_v is int or fl_v is float) else -1
 	if cur_flow == 3 or cur_flow == 4 or cur_flow == 5:
 		_main.call("toggle_pause")
 
 
 func _pause_main_if_playing() -> void:
-	if _main == null or not is_instance_valid(_main) or int(_main.get("flow")) != 2:
+	if _main == null or not is_instance_valid(_main) or not (_main.get("flow") is int) or int(_main.get("flow")) != 2:
 		return
 	_main.set("flow", 3)
 	if Lx.input != null: Lx.input.clear_all_toggles()
@@ -327,7 +328,7 @@ func set_flow(flow_id: int) -> void:
 		3: show_pause()
 		4: show_map()
 		5: show_shop()
-		6: show_death(hud != null and bool(hud.get("_boss_active")))
+		6: show_death(hud != null and hud.get("_boss_active") == true)
 		7: show_ending()
 		8: show_credits()
 

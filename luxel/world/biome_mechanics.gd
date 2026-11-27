@@ -432,7 +432,7 @@ func _draw_beacon_ley_lines(col_a: Color, col_b: Color, show_next_guide: bool) -
 	var a_line: float = 0.24 if LxHudFx.flash_reduced() else (0.34 + 0.12 * sin(_clock * 2.4))
 	for i: int in range(lit_pts.size()):
 		for j: int in range(i + 1, lit_pts.size()):
-			draw_line(lit_pts[i], lit_pts[j], Color(col_a, a_line), 1.4)
+			draw_line(lit_pts[i], lit_pts[j], Color(col_a, a_line), 1.0)
 			var u: float = fposmod(_clock * 0.35 + float(i + j) * 0.23, 1.0)
 			var mp: Vector2 = lit_pts[i].lerp(lit_pts[j], u).round()
 			if _on_screen(mp):
@@ -493,7 +493,7 @@ func _draw_island2(fred: bool) -> void:
 					var e: LxEnemyBrain = e_v as LxEnemyBrain
 					if e.is_alive() and is_in_lighthouse_beam(e.pos):
 						var ep: Vector2 = e.pos.round()
-						draw_arc(ep, 12.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.4)
+						draw_arc(ep, 12.0, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 						draw_arc(ep, 9.0, _clock * 3.0, _clock * 3.0 + PI, 10, PAL["cream"] as Color, 1.0)
 
 
@@ -503,7 +503,7 @@ func _draw_canopy_waves(fred: bool) -> void:
 		var r: float = roundf(lerpf(8.0, float(cw["max_r"]), u))
 		var a: float = (1.0 - u) * (0.55 if fred else 0.85)
 		var p: Vector2 = (cw["pos"] as Vector2).round()
-		draw_arc(p, r, 0.0, TAU, 24, Color(PAL["lime"] as Color, a), 1.8)
+		draw_arc(p, r, 0.0, TAU, 24, Color(PAL["lime"] as Color, a), 2.0)
 		draw_arc(p, r * 0.82, 0.0, TAU, 20, Color(PAL["gold"] as Color, a * 0.85), 1.0)
 
 
@@ -540,7 +540,7 @@ func _draw_star_crystals(fred: bool) -> void:
 		var a: float = (1.0 - u) * (0.6 if fred else 0.92)
 		var p: Vector2 = (nr["pos"] as Vector2).round()
 		draw_arc(p, r, 0.0, TAU, 24, Color(PAL["gold"] as Color, a), 2.0)
-		draw_arc(p, r * 0.72, 0.0, TAU, 20, Color(PAL["cream"] as Color, a), 1.2)
+		draw_arc(p, r * 0.72, 0.0, TAU, 20, Color(PAL["cream"] as Color, a), 1.0)
 
 
 func _draw_molten_orbit(_fred: bool) -> void:
@@ -578,7 +578,7 @@ func _draw_eclipse_seals(fred: bool) -> void:
 				draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 			else:
 				draw_circle(sp, 4.5, Color(PAL["void"] as Color, 0.85))
-				draw_arc(sp, 4.5, 0.0, TAU, 12, PAL["plum"] as Color, 1.2)
+				draw_arc(sp, 4.5, 0.0, TAU, 12, PAL["plum"] as Color, 1.0)
 				draw_arc(sp, 4.5, -0.6, 0.8, 8, PAL["rose"] as Color, 1.0)
 	for sf: Dictionary in _seal_shatter_fx:
 		var u: float = clampf(float(sf["age"]) / maxf(float(sf["dur"]), 0.01), 0.0, 1.0)
@@ -586,7 +586,7 @@ func _draw_eclipse_seals(fred: bool) -> void:
 		var a: float = (1.0 - u) * (0.6 if fred else 0.92)
 		var p: Vector2 = (sf["pos"] as Vector2).round()
 		draw_arc(p, r, 0.0, TAU, 24, Color(PAL["gold"] as Color, a), 2.0)
-		draw_arc(p, r * 0.65, 0.0, TAU, 18, Color(PAL["cream"] as Color, a), 1.2)
+		draw_arc(p, r * 0.65, 0.0, TAU, 18, Color(PAL["cream"] as Color, a), 1.0)
 
 
 func _on_screen(p: Vector2) -> bool:

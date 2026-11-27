@@ -336,7 +336,7 @@ func _draw_express_live_fx(origin: Vector2, length_px: float, facing_east: bool,
 			draw_circle(Vector2(roundf(whx), origin.y + 15.0), 4.0, PAL["dusk"] as Color)
 			draw_rect(Rect2(roundf(whx) - 1.0, origin.y + 14.0, 2.0, 2.0), PAL["gold"] as Color)
 			whx += 28.0
-		draw_line(Vector2(roundf(origin.x + 16.0 + rod_off), origin.y + 15.0), Vector2(roundf(origin.x + length_px - 20.0 + rod_off), origin.y + 15.0), PAL["cream"] as Color, 1.2)
+		draw_line(Vector2(roundf(origin.x + 16.0 + rod_off), origin.y + 15.0), Vector2(roundf(origin.x + length_px - 20.0 + rod_off), origin.y + 15.0), PAL["cream"] as Color, 1.0)
 	# Glowing firebox embers beneath boiler & headlight cone (always alive while docked!)
 	var fx_x: float = roundf(origin.x + length_px * 0.55)
 	draw_rect(Rect2(fx_x - 10.0, origin.y + 10.0, 20.0, 3.0), Color(PAL["coral"] as Color, 0.55 * pulse))
@@ -376,7 +376,7 @@ func _draw_stomp_ring() -> void:
 	var rad: float = roundf(lerpf(14.0, 74.0, u))
 	var alpha: float = (1.0 - u) * (0.45 if LxHudFx.flash_reduced() else 0.80)
 	draw_arc(_stomp_center, rad, 0.0, TAU, 24, Color(PAL["gold"] as Color, alpha), 2.0)
-	draw_arc(_stomp_center, maxf(4.0, rad - 8.0), 0.0, TAU, 20, Color(PAL["coral"] as Color, alpha * 0.7), 1.2)
+	draw_arc(_stomp_center, maxf(4.0, rad - 8.0), 0.0, TAU, 20, Color(PAL["coral"] as Color, alpha * 0.7), 1.0)
 
 
 func _draw_puffs() -> void:

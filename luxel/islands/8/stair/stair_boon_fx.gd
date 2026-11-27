@@ -253,8 +253,10 @@ func _on_enemy_hit(enemy: Object, hit: Object, result: int) -> void:
 	# Greyscale Crit: apricot/cream burst on opened hit when palette_4 sold
 	if _dir.has_boon("boon_grey_crit") and LxSold.current().is_sold("palette_4") and result == LxEnemyBrain.HitResult.OPENED:
 		_add_ring(epos, 3.0, 18.0, 0.22, PAL["apricot"] as Color)
-		if hit != null and hit.get("damage") != null and enemy != null and is_instance_valid(enemy) and enemy.get("hp") != null:
-			enemy.set("hp", maxf(0.0, float(enemy.get("hp")) - float(hit.get("damage")) * 0.35))
+		var dmg_v: Variant = hit.get("damage") if hit != null else null
+		var hp_v: Variant = enemy.get("hp") if (enemy != null and is_instance_valid(enemy)) else null
+		if (dmg_v is float or dmg_v is int) and (hp_v is float or hp_v is int):
+			enemy.set("hp", maxf(0.0, float(hp_v) - float(dmg_v) * 0.35))
 
 
 func _damage_enemies_in_radius(origin: Vector2, rad: float, dmg: float, cracks: bool, source: String) -> void:
@@ -347,7 +349,8 @@ func _mount_hud() -> void:
 func _should_show_hud() -> bool:
 	if _dir == null or not _dir.is_in_stair():
 		return false
-	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
+	var fl: Variant = Lx.root.get("flow") if (Lx.root != null and is_instance_valid(Lx.root)) else null
+	if fl is int and int(fl) != 2:
 		return false
 	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false
@@ -451,5 +454,5 @@ func _hide_defeated_bosses() -> void:
 		var bb: LxBossBase = ev as LxBossBase
 		if not bb.visible:
 			continue
-		if bb.boss_state == LxBossBase.BossState.DEATH and bb.hp <= 0.0 and (bb.state_timer <= 0.05 or bool(bb.get("_death_emitted"))):
+		if bb.boss_state == LxBossBase.BossState.DEATH and bb.hp <= 0.0 and (bb.state_timer <= 0.05 or bb.get("_death_emitted") == true):
 			bb.visible = false

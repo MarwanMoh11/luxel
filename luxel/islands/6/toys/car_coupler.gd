@@ -306,7 +306,7 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, -1.0, 1.0, 1.0), c_lime)
 		if _snap_t > 0.0:
 			var u: float = 1.0 - clampf(_snap_t / 0.36, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, 16.0, u)), 0.0, TAU, 14, Color(bc, 1.0 - u), 1.5)
+			draw_arc(Vector2.ZERO, roundf(lerpf(5.0, 16.0, u)), 0.0, TAU, 14, Color(bc, 1.0 - u), 2.0)
 	else:
 		# Glowing molten/gold locked clamp collar gripping the coupled jaws
 		var p := Vector2(roundf(rattle.x), 0.0)
@@ -334,7 +334,7 @@ func _draw() -> void:
 				draw_rect(Rect2(p.x + 1.0, p.y - 1.0, 1.0, 2.0), bc)
 			"pin": # Brass circular hitch ring (apricot/cream)
 				draw_rect(Rect2(p.x - 3.0, p.y - 3.0, 6.0, 7.0), c_night)
-				draw_arc(p, 3.0, 0.0, TAU, 12, c_cream if _clank_t > 0.0 else bc, 1.5)
+				draw_arc(p, 3.0, 0.0, TAU, 12, c_cream if _clank_t > 0.0 else bc, 1.0)
 				draw_rect(Rect2(p.x - 1.0, p.y, 2.0, 1.0), c_cream)
 			"armoured": # Heavy beveled octagonal armor plate (coral/wine)
 				LxPhysDraw.draw_bevel_box(self, Rect2(p.x - 4.0, p.y - 4.0, 8.0, 9.0), PAL["wine"] as Color, bc, c_night, c_void)
@@ -343,5 +343,5 @@ func _draw() -> void:
 		# Crisp deflection feedback ring on rejected hit (reads wrong temper/tool immediately)
 		if _clank_t > 0.0:
 			var ru: float = 1.0 - clampf(_clank_t / 0.28, 0.0, 1.0)
-			draw_arc(p, roundf(lerpf(6.0, 12.0, ru)), 0.0, TAU, 12, Color(c_coral if not fr else c_stone, 1.0 - ru), 1.2)
+			draw_arc(p, roundf(lerpf(6.0, 12.0, ru)), 0.0, TAU, 12, Color(c_coral if not fr else c_stone, 1.0 - ru), 1.0)
 	_draw_signal_pulses()

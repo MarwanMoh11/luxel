@@ -224,7 +224,7 @@ func _draw_death() -> void:
 	LxEndingArt.draw_death_ornaments(self, DEATH_PANEL, _elapsed)
 	var p: float = clampf(_elapsed / 0.3, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.text("DEATH_TITLE"), Vector2(160.0, 48.0), p, "coral", 2, HORIZONTAL_ALIGNMENT_CENTER)
-	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
+	var in_dng: bool = Lx.world != null and Lx.world.get("is_dungeon") == true
 	var sub_key: String = "DEATH_BOSS_SUB" if _is_boss_death else ("DEATH_ANCHOR_SUB" if (in_dng and LxStrings.has_id("DEATH_ANCHOR_SUB")) else "DEATH_SUB")
 	var sub_txt: String = LxStrings.text(sub_key)
 	var sw: float = float(LxPixelFont.width(sub_txt, 1))

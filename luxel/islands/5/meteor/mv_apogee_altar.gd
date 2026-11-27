@@ -112,7 +112,7 @@ func _draw() -> void:
 		var cy: float = -12.0 + bob
 		# Twin tilted brass orbital rings with circling cream star-bead
 		draw_arc(Vector2(0.0, cy), 9.0, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.65), 1.0)
-		draw_arc(Vector2(0.0, cy), 6.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.4)
+		draw_arc(Vector2(0.0, cy), 6.0, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 		var ang: float = _clock * (0.9 if fr else 2.8)
 		var orb_p := Vector2(roundf(cos(ang) * 9.0), roundf(cy + sin(ang) * 9.0))
 		draw_rect(Rect2(orb_p - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
@@ -126,7 +126,7 @@ func _draw() -> void:
 		var a: float = (1.0 - u) * (0.52 if fr else 0.88)
 		var r1: float = 14.0 if fr else roundf(lerpf(6.0, 36.0, u))
 		var r2: float = 10.0 if fr else roundf(lerpf(4.0, 24.0, u))
-		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 22, Color(PAL["gold"] as Color, a), 1.6)
+		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 22, Color(PAL["gold"] as Color, a), 2.0)
 		draw_arc(Vector2(0.0, -10.0), r2, 0.0, TAU, 16, Color(PAL["ice"] as Color, a * 0.85), 1.0)
 	if claimed:
 		# Calm etched brass orbit emblem resting on claimed pedestal

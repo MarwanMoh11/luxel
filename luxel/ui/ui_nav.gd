@@ -42,7 +42,8 @@ static func should_show_pause_tabs(active_screen: int) -> bool:
 	if Lx.ui == null:
 		return false
 	if active_screen == 14: # PANES: hide pause bar when opened from Rest Shop/Workshop
-		var ret: int = int(Lx.ui.get("_return_screen"))
+		var ret_v: Variant = Lx.ui.get("_return_screen")
+		var ret: int = int(ret_v) if (ret_v is int or ret_v is float) else 0
 		if ret != 3 and ret != 4 and ret != 13 and ret != 14:
 			return false
 	return TAB_SCREENS.has(active_screen)
@@ -156,7 +157,7 @@ static func compute_pin_world_dir() -> Vector2:
 		return Vector2.ZERO
 	if not (Lx.player is Node2D):
 		return Vector2.ZERO
-	if bool(Lx.world.get("is_dungeon")):
+	if Lx.world.get("is_dungeon") == true:
 		return Vector2.ZERO
 	var pin: Dictionary = get_pin()
 	if pin.is_empty():

@@ -392,8 +392,9 @@ func _should_show_hud() -> bool:
 	var st: LxGameState = _state if _state != null else Lx.state
 	if st == null or st.island_id != ISLAND_ID:
 		return false
-	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null:
-		if int(Lx.root.get("flow")) != 2: # LxMain.Flow.PLAY
+	if Lx.root != null and is_instance_valid(Lx.root):
+		var fl: Variant = Lx.root.get("flow")
+		if fl is int and int(fl) != 2: # LxMain.Flow.PLAY
 			return false
 	if LxLegacy.is_legacy_region(ISLAND_ID, _region_id):
 		if not bool(st.story_flags.get("tide_organ_used", false)) and not _region_has_tide_organ():

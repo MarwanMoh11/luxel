@@ -14,7 +14,7 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 	match island_id:
 		1: # Bell Isle: Warm Brass Bell-Chime Crown + rising amber bell-motes
 			var c1: Color = (PAL["gold"] if lit else PAL["apricot"]) as Color
-			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.1, PI * 1.1, PI * 1.9, 10, c1, 1.3)
+			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.1, PI * 1.1, PI * 1.9, 10, c1, 1.0)
 			if lit:
 				for k: int in range(3):
 					var u1: float = fposmod(clock * 0.9 + float(k) * 0.33, 1.0)
@@ -23,11 +23,11 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 					canvas.draw_rect(Rect2(mx, my, 1.0, 1.0), (PAL["cream"] if u1 < 0.35 else PAL["gold"]) as Color)
 		2: # Tidewater Harbor: Brass Sea-Bell Fog-Horn Buoy + oceanic sonar rings
 			var col: Color = (PAL["ice"] if lit else PAL["sky"]) as Color
-			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.2, PI * 1.15, PI * 1.85, 10, col, 1.4)
+			canvas.draw_arc(Vector2(0.0, -16.0), 8.0 + pulse * 1.2, PI * 1.15, PI * 1.85, 10, col, 1.0)
 			if lit:
 				var r_wave: float = roundf(10.0 + fposmod(clock * 14.0, 18.0))
 				var a_wave: float = clampf(1.0 - (r_wave - 10.0) / 18.0, 0.0, 1.0) * 0.72
-				canvas.draw_arc(Vector2(0.0, -14.0), r_wave, 0.0, TAU, 18, Color(PAL["sky"] as Color, a_wave), 1.2)
+				canvas.draw_arc(Vector2(0.0, -14.0), r_wave, 0.0, TAU, 18, Color(PAL["sky"] as Color, a_wave), 1.0)
 		3: # Thornwood Hollow: Living Heartwood Sap-Shrine w/ swirling emerald canopy petals
 			for k: int in range(4):
 				var a: float = clock * (1.8 if lit else 0.9) + float(k) * (TAU / 4.0)
@@ -46,8 +46,8 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 		5: # Starfall Observatory: Counter-spinning golden Astrolabe Relay + skyward starlight beam
 			var r1: float = 11.0 if lit else 8.0
 			var rot: float = clock * (2.4 if lit else 1.1)
-			canvas.draw_arc(Vector2(0.0, -15.0), r1, rot, rot + 2.4, 12, PAL["gold"] as Color, 1.2)
-			canvas.draw_arc(Vector2(0.0, -15.0), r1, rot + PI, rot + PI + 2.4, 12, PAL["sky"] as Color, 1.2)
+			canvas.draw_arc(Vector2(0.0, -15.0), r1, rot, rot + 2.4, 12, PAL["gold"] as Color, 1.0)
+			canvas.draw_arc(Vector2(0.0, -15.0), r1, rot + PI, rot + PI + 2.4, 12, PAL["sky"] as Color, 1.0)
 			if lit:
 				canvas.draw_line(Vector2(0.0, -18.0), Vector2(0.0, -68.0), Color(PAL["ice"] as Color, 0.55), 2.0)
 				canvas.draw_line(Vector2(0.0, -18.0), Vector2(0.0, -68.0), Color(PAL["cream"] as Color, 0.85), 1.0)
@@ -59,7 +59,7 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 					canvas.draw_rect(Rect2(side * 8.0, -12.0 - h_jet * 0.65, 1.0, h_jet * 0.65), PAL["gold"] as Color)
 		7: # Moon Shoals: Twin Lunar Mirror Obelisk + inverted reflection shaft
 			var col_m: Color = (PAL["cream"] if lit else PAL["ice"]) as Color
-			canvas.draw_arc(Vector2(0.0, -20.0), 6.0, -PI * 0.6, PI * 0.6, 10, col_m, 1.5)
+			canvas.draw_arc(Vector2(0.0, -20.0), 6.0, -PI * 0.6, PI * 0.6, 10, col_m, 2.0)
 			if lit:
 				canvas.draw_line(Vector2(0.0, 4.0), Vector2(0.0, 26.0), Color(PAL["sky"] as Color, 0.55), 3.0)
 				canvas.draw_line(Vector2(0.0, 4.0), Vector2(0.0, 24.0), Color(PAL["ice"] as Color, 0.85), 1.0)
@@ -67,10 +67,10 @@ static func draw_biome_crown(canvas: CanvasItem, island_id: int, lit: bool, igni
 			if lit:
 				canvas.draw_line(Vector2(0.0, -16.0), Vector2(0.0, -78.0), Color(PAL["gold"] as Color, 0.62), 3.0)
 				canvas.draw_line(Vector2(0.0, -16.0), Vector2(0.0, -78.0), Color(PAL["cream"] as Color, 0.90), 1.0)
-				canvas.draw_arc(Vector2(0.0, -18.0), 11.0 + pulse, 0.0, TAU, 16, PAL["gold"] as Color, 1.4)
+				canvas.draw_arc(Vector2(0.0, -18.0), 11.0 + pulse, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 			else:
-				canvas.draw_arc(Vector2(0.0, -16.0), 9.0, 0.0, TAU, 14, PAL["plum"] as Color, 1.4)
-				canvas.draw_arc(Vector2(0.0, -16.0), 9.0, -0.5, 0.9, 8, PAL["rose"] as Color, 1.2)
+				canvas.draw_arc(Vector2(0.0, -16.0), 9.0, 0.0, TAU, 14, PAL["plum"] as Color, 2.0)
+				canvas.draw_arc(Vector2(0.0, -16.0), 9.0, -0.5, 0.9, 8, PAL["rose"] as Color, 1.0)
 
 	# Extra celebratory burst ring during ignition tailored to each biome's signature palette
 	if ignite_t > 0.0 and lit:

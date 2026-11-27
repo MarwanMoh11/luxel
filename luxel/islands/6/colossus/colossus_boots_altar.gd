@@ -132,6 +132,6 @@ func _draw() -> void:
 		draw_rect(Rect2(4.0, cy + 4.0, 1.0, 1.0), PAL["gold"] as Color)
 	elif _claim_t > 0.0:
 		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, PAL["coral"] as Color, 1.6, false)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, PAL["coral"] as Color, 2.0, false)
 		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.0, false)
 	_draw_signal_pulses()

@@ -99,7 +99,7 @@ func _draw() -> void:
 			draw_rect(Rect2(rx + 2.0, -1.0, 2.0, 2.0), c_cream)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(6.0 + u * 24.0), 0.0, TAU, 16, c_gold, 1.4)
+		draw_arc(Vector2.ZERO, roundf(6.0 + u * 24.0), 0.0, TAU, 16, c_gold, 2.0)
 		draw_arc(Vector2.ZERO, roundf(4.0 + u * 15.0), 0.0, TAU, 14, c_cream, 1.0)
 	# Live locomotive exhaust surge plumes when throttles lock
 	var n_on: int = _locked_map.size()

@@ -355,7 +355,7 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 		var ready: bool = prog >= 0.999
 		var r: float = lerpf(14.0, 4.5, prog)
 		var ring_col: Color = LxWick.PAL_CREAM if ready else LxWick.PAL_GOLD
-		canvas.draw_arc(hand_pos, r, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, ring_col, 1.5)
+		canvas.draw_arc(hand_pos, r, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, ring_col, 2.0)
 		var spin: float = _vis_clock * (3.2 if flash_red else 5.5)
 		var mote_r: float = lerpf(15.0, 3.0, prog)
 		for i: int in range(4):
@@ -424,16 +424,19 @@ func draw_fx(canvas: CanvasItem, off: Vector2, hand_pos: Vector2) -> void:
 			var blen: float = delta.length()
 			var bdir: Vector2 = delta / blen if blen > 0.5 else Vector2.RIGHT
 			var perp := Vector2(-bdir.y, bdir.x)
-			var core_w: float = maxf(1.0, beam_width * 0.30 * t) + (2.0 if hot_pulse else 0.0)
+			var core_w: float = maxf(1.0, roundf(beam_width * 0.30 * t)) + (2.0 if hot_pulse else 0.0)
+			var mid_w: float = maxf(1.0, roundf(beam_width * 0.65 * t))
+			var outer_w: float = maxf(2.0, roundf((beam_width + 4.0) * t))
+			var body_w: float = maxf(1.0, roundf(beam_width * t))
 			if is_blue:
-				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.48 * flash_sc), maxf(2.0, (beam_width + 3.5) * t))
-				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.90 * flash_sc), maxf(1.0, beam_width * t))
-				canvas.draw_line(a, b, Color(LxWick.PAL_ICE, t * lerpf(1.0, 0.88, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
+				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.48 * flash_sc), outer_w)
+				canvas.draw_line(a, b, Color(LxWick.PAL_SKY, t * 0.90 * flash_sc), body_w)
+				canvas.draw_line(a, b, Color(LxWick.PAL_ICE, t * lerpf(1.0, 0.88, 1.0 - flash_sc)), mid_w)
 				canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), core_w)
 			else:
-				canvas.draw_line(a, b, Color(LxBiomePalette.col(isl_b, "glow"), t * 0.42 * flash_sc), maxf(2.0, (beam_width + 3.0) * t))
-				canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), maxf(1.0, beam_width * t))
-				canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), maxf(1.0, beam_width * 0.65 * t))
+				canvas.draw_line(a, b, Color(LxBiomePalette.col(isl_b, "glow"), t * 0.42 * flash_sc), maxf(2.0, roundf((beam_width + 3.0) * t)))
+				canvas.draw_line(a, b, Color(LxWick.PAL_APRICOT, t * 0.85 * flash_sc), body_w)
+				canvas.draw_line(a, b, Color(LxWick.PAL_GOLD, t * lerpf(1.0, 0.85, 1.0 - flash_sc)), mid_w)
 				canvas.draw_line(a, b, Color(LxWick.PAL_CREAM, t), core_w)
 			var node_col: Color = LxWick.PAL_ICE if is_blue else LxWick.PAL_GOLD
 			var cursor: float = 12.0 + (1.0 - t) * 10.0

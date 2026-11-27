@@ -380,7 +380,7 @@ func _draw() -> void:
 			var fa: float = (1.0 - u) * (0.55 if fr else 0.92)
 			var r_out: float = roundf(lerpf(6.0, 22.0, u))
 			var r_in: float = roundf(lerpf(4.0, 14.0, u))
-			draw_arc(Vector2(0.0, -7.0), r_out, 0.0, TAU, 18, Color(c_gold, fa), 1.4)
+			draw_arc(Vector2(0.0, -7.0), r_out, 0.0, TAU, 18, Color(c_gold, fa), 2.0)
 			draw_arc(Vector2(0.0, -7.0), r_in, 0.0, TAU, 14, Color(c_cream, fa * 0.85), 1.0)
 			# Tossed gilded mask spinning away up-right
 			var mp := Vector2(roundf(6.0 + u * 10.0), roundf(-12.0 - sin(u * PI) * 8.0 + u * 6.0))

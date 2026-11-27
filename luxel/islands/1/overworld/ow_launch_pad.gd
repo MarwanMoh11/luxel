@@ -252,7 +252,8 @@ func _draw() -> void:
 	# Compass rose breathing glow & crisp Phase 1 flare at [1160, 168], radius 20
 	draw_circle(cp, COMPASS_RADIUS, Color(c_apricot, (0.10 + flare * 0.16) * breath))
 	draw_circle(cp, 11.0, Color(c_gold, (0.14 + flare * 0.24) * breath))
-	draw_arc(cp, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), 2.0 if (flare > 0.25 and not fred) else 1.0)
+	var compass_w: float = 2.0 if (flare > 0.25 and not fred) else 1.0
+	draw_arc(cp, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), compass_w)
 	draw_arc(cp, 12.0, 0.0, TAU, 16, Color(c_cream, clampf((0.28 + flare * 0.46) * breath, 0.0, 0.92)), 1.0)
 	for k: int in range(8):
 		var ang: float = float(k) * (PI * 0.25)
@@ -371,7 +372,8 @@ func _draw_air_fx() -> void:
 			var p0: Vector2 = _trail[i - 1].round(); var p1: Vector2 = _trail[i].round()
 			var w_out: float = (3.0 if fred else 4.0) if frac > 0.65 else (2.0 if frac > 0.30 else 1.0)
 			_air_fx.draw_line(p0, p1, Color(c_apricot if frac < 0.45 else c_gold, frac * (0.58 if fred else 0.78)), w_out)
-			_air_fx.draw_line(p0, p1, Color(c_ice if frac > 0.82 else c_gold, frac * 0.88), 2.0 if frac > 0.45 else 1.0)
+			var w_mid: float = 2.0 if frac > 0.45 else 1.0
+			_air_fx.draw_line(p0, p1, Color(c_ice if frac > 0.82 else c_gold, frac * 0.88), w_mid)
 			_air_fx.draw_line(p0, p1, Color(c_cream, frac * 0.95), 1.0)
 		var head: Vector2 = _trail[n - 1].round()
 		var u3: float = clampf((_launch_t - PHASE2_END) / (TOTAL_DUR - PHASE2_END), 0.0, 1.0)

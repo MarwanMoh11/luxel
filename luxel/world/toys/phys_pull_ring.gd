@@ -176,11 +176,11 @@ func _draw() -> void:
 	var ring_body: Color = c_cream if engaged else c_gold
 	var ring_sh: Color = c_gold if engaged else c_apricot
 	# Grounded ring shadow + chunky dark outline + metallic shaded torus
-	draw_arc(rc + Vector2(1.0, 2.0), 5.5, 0.0, TAU, 16, Color(c_void, 0.42), 3.2)
-	draw_arc(rc, 5.5, 0.0, TAU, 16, c_void, 4.6)
-	draw_arc(rc, 5.5, 0.0, TAU, 16, c_wine, 2.8)
-	draw_arc(rc, 5.5, PI * 0.85, PI * 2.15, 14, ring_sh, 2.4)
-	draw_arc(rc, 5.5, PI * 1.05, PI * 1.90, 12, ring_body, 1.8)
+	draw_arc(rc + Vector2(1.0, 2.0), 5.5, 0.0, TAU, 16, Color(c_void, 0.42), 3.0)
+	draw_arc(rc, 5.5, 0.0, TAU, 16, c_void, 5.0)
+	draw_arc(rc, 5.5, 0.0, TAU, 16, c_wine, 3.0)
+	draw_arc(rc, 5.5, PI * 0.85, PI * 2.15, 14, ring_sh, 2.0)
+	draw_arc(rc, 5.5, PI * 1.05, PI * 1.90, 12, ring_body, 1.0)
 	# Crisp top-left metallic specular glint on ring
 	draw_rect(Rect2(rc + Vector2(-3.0, -6.0), Vector2(4.0, 1.0)), c_cream)
 	draw_rect(Rect2(rc + Vector2(-5.0, -4.0), Vector2(1.0, 2.0)), c_cream)

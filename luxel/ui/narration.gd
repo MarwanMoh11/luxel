@@ -212,7 +212,7 @@ func _on_narration_requested(string_id: String, style: String, duration: float) 
 
 
 static func _is_duplicate_boss_title(hud: Node, string_id: String, resolved: String) -> bool:
-	var has_boss: bool = (hud != null and bool(hud.get("_boss_active"))) or (Lx.world != null and LxBossHud.region_has_live_boss(Lx.world))
+	var has_boss: bool = (hud != null and hud.get("_boss_active") == true) or (Lx.world != null and LxBossHud.region_has_live_boss(Lx.world))
 	if not has_boss:
 		return false
 	if string_id.begins_with("BOSS_") or string_id.begins_with("MINIBOSS_"):
@@ -375,7 +375,7 @@ func _draw_prompt() -> void:
 func _is_boss_bar_active() -> bool:
 	if Lx.ui != null and Lx.ui.get("hud") != null:
 		var hud: Node = Lx.ui.get("hud") as Node
-		if hud != null and bool(hud.get("_boss_active")):
+		if hud != null and hud.get("_boss_active") == true:
 			return true
 	return false
 

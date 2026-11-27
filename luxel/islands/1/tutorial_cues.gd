@@ -545,7 +545,8 @@ func _lantern_status() -> Dictionary:
 		return {"out": false, "carried": false, "in_hand": true, "pos": Vector2.ZERO}
 	var lan: Object = lv as Object
 	var is_out: bool = lan.has_method("is_lure_active") and bool(lan.call("is_lure_active"))
-	var st_i: int = int(lan.get("state")) if lan.get("state") != null else 0
+	var st_v: Variant = lan.get("state")
+	var st_i: int = int(st_v) if (st_v is int or st_v is float) else 0
 	var is_carried: bool = st_i == int(LxLantern.State.CARRIED)
 	var in_hand: bool = (lan.has_method("is_in_hand") and bool(lan.call("is_in_hand"))) or (not is_out and not is_carried and st_i == int(LxLantern.State.IN_HAND))
 	return {"out": is_out, "carried": is_carried, "in_hand": in_hand, "pos": lan.get("pos") as Vector2 if lan.get("pos") is Vector2 else Vector2.ZERO}

@@ -321,7 +321,7 @@ func _draw() -> void:
 		var a_inner: float = (1.0 - ru) * (0.42 if fr else 0.68)
 		var r1: float = roundf(lerpf(8.0, 36.0, ru))
 		var r2: float = roundf(lerpf(5.0, 24.0, ru))
-		draw_arc(Vector2(0.0, -5.0), r1, 0.0, TAU, 24, Color(ring_c, a_outer), 1.4)
+		draw_arc(Vector2(0.0, -5.0), r1, 0.0, TAU, 24, Color(ring_c, a_outer), 2.0)
 		draw_arc(Vector2(0.0, -5.0), r2, 0.0, TAU, 18, Color(c_cream, a_inner), 1.0)
 		for ci: int in range(4):
 			var ca: float = float(ci) * (PI * 0.5)

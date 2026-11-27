@@ -173,8 +173,8 @@ func _draw_bridge_portal(r: Rect2, c: Vector2, next_isl: int, col_a: Color, crea
 	var col_b_hi: Color = LxBiomePalette.col(next_isl, "hi")
 	var prox: float = clampf(1.0 - c.distance_to(wp) / 96.0, 0.0, 1.0)
 	var rad: float = minf(maxf(r.size.x, r.size.y) * 0.45, 22.0)
-	draw_arc(c, roundf(rad), 0.0, TAU, 22, Color(col_a, (0.36 + prox * 0.22) * pulse), 1.5)
-	draw_arc(c, roundf(maxf(6.0, rad - 5.0)), _clock * 0.8, _clock * 0.8 + PI * 1.4, 16, Color(col_b, (0.52 + prox * 0.28) * pulse), 1.4)
+	draw_arc(c, roundf(rad), 0.0, TAU, 22, Color(col_a, (0.36 + prox * 0.22) * pulse), 2.0)
+	draw_arc(c, roundf(maxf(6.0, rad - 5.0)), _clock * 0.8, _clock * 0.8 + PI * 1.4, 16, Color(col_b, (0.52 + prox * 0.28) * pulse), 1.0)
 	if prox > 0.05:
 		draw_arc(c, roundf(rad + 4.0), -_clock * 0.45, -_clock * 0.45 + PI * 1.2, 18, Color(col_b_hi, 0.44 * prox * pulse), 1.0)
 	# Heraldic Biome Crest of the destination island gleaming at the Bridge of Light threshold!
@@ -244,7 +244,7 @@ func _draw_destination_landmark(next_isl: int, c: Vector2, col_b: Color, col_hi:
 			draw_rect(Rect2(base + Vector2(-3.0, -4.0), Vector2(2.0, 3.0)), c_c)
 			draw_rect(Rect2(base + Vector2(1.0, -4.0), Vector2(2.0, 3.0)), c_c)
 		5: # Starfall Observatory: Orrery dome + tilted golden astrolabe ring
-			draw_arc(base + Vector2(0.0, -2.0), 5.0, PI, TAU, 10, c_m, 1.2)
+			draw_arc(base + Vector2(0.0, -2.0), 5.0, PI, TAU, 10, c_m, 1.0)
 			draw_line(base + Vector2(-7.0, -2.0), base + Vector2(7.0, -9.0), c_c, 1.0)
 			draw_rect(Rect2(base + Vector2(0.0, -9.0), Vector2(1.0, 2.0)), c_c)
 		6: # Ashen Kiln: Stepped volcanic furnace chimney & hearth crown
@@ -254,7 +254,7 @@ func _draw_destination_landmark(next_isl: int, c: Vector2, col_b: Color, col_hi:
 			draw_rect(Rect2(base + Vector2(-1.0, -3.0), Vector2(2.0, 3.0)), c_c)
 		7: # Moon Shoals: Twin-horned silver Lunar Mirror Spire
 			draw_rect(Rect2(base + Vector2(-1.0, -9.0), Vector2(2.0, 10.0)), c_h)
-			draw_arc(base + Vector2(0.0, -10.0), 4.0, 0.25, PI - 0.25, 8, c_c, 1.2)
+			draw_arc(base + Vector2(0.0, -10.0), 4.0, 0.25, PI - 0.25, 8, c_c, 1.0)
 			draw_rect(Rect2(base + Vector2(-4.0, -12.0), Vector2(1.0, 2.0)), c_m)
 			draw_rect(Rect2(base + Vector2(3.0, -12.0), Vector2(1.0, 2.0)), c_m)
 		_: # The Long Night: Twin-spired Gothic Eclipse Cathedral + Dawn star
@@ -296,27 +296,27 @@ func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color,
 	var a_hi: float = 0.68 * pulse
 	match _island_id:
 		1: # Great Belfry: twin choir columns + golden bell-gable arch
-			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -7.0), Color(col_g, a_hi), 1.4)
-			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -7.0), Color(col_g, a_hi), 1.4)
-			draw_arc(c + Vector2(0.0, -7.0), hw, PI, TAU, 14, Color(col_g, a_hi), 1.4)
+			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -7.0), Color(col_g, a_hi), 2.0)
+			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -7.0), Color(col_g, a_hi), 2.0)
+			draw_arc(c + Vector2(0.0, -7.0), hw, PI, TAU, 14, Color(col_g, a_hi), 2.0)
 			draw_rect(Rect2(c + Vector2(-1.0, -hw - 6.0), Vector2(2.0, 2.0)), Color(cream, a_hi))
 		2: # The Lighthouse: curved lantern cupola + sweeping sea-ice glint
-			draw_arc(c + Vector2(0.0, -4.0), hw, PI, TAU, 14, Color(PAL["ice"] as Color, a_hi), 1.4)
+			draw_arc(c + Vector2(0.0, -4.0), hw, PI, TAU, 14, Color(PAL["ice"] as Color, a_hi), 2.0)
 			var glint_x: float = roundf(c.x + (0.0 if fred else sin(_clock * 1.9) * (hw - 4.0)))
 			draw_line(Vector2(glint_x, c.y - 6.0), Vector2(glint_x, c.y + 5.0), Color(PAL["ice"] as Color, 0.35 * pulse), 2.0)
 		3: # Hollow Oak: intertwined pine/jade root-arch with lime canopy buds
-			draw_arc(c + Vector2(0.0, -4.0), hw + 1.0, PI, TAU, 14, Color(PAL["jade"] as Color, a_hi), 1.8)
+			draw_arc(c + Vector2(0.0, -4.0), hw + 1.0, PI, TAU, 14, Color(PAL["jade"] as Color, a_hi), 2.0)
 			for side3: float in [-1.0, 1.0]:
-				draw_line(c + Vector2(side3 * hw, 6.0), c + Vector2(side3 * (hw + 3.0), 8.0), Color(PAL["pine"] as Color, a_hi), 1.5)
+				draw_line(c + Vector2(side3 * hw, 6.0), c + Vector2(side3 * (hw + 3.0), 8.0), Color(PAL["pine"] as Color, a_hi), 2.0)
 				draw_rect(Rect2(c + Vector2(side3 * (hw - 3.0), -10.0), Vector2(2.0, 2.0)), Color(PAL["lime"] as Color, a_hi))
 		4: # Sunken Conservatory: pointed glasshouse gable + rose/ice transoms
-			draw_line(c + Vector2(-hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 1.4)
-			draw_line(c + Vector2(hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 1.4)
+			draw_line(c + Vector2(-hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 2.0)
+			draw_line(c + Vector2(hw, -5.0), c + Vector2(0.0, -14.0), Color(PAL["teal"] as Color, a_hi), 2.0)
 			draw_rect(Rect2(c + Vector2(-4.0, -10.0), Vector2(3.0, 3.0)), Color(PAL["rose"] as Color, 0.55 * pulse))
 			draw_rect(Rect2(c + Vector2(1.0, -10.0), Vector2(3.0, 3.0)), Color(PAL["ice"] as Color, 0.55 * pulse))
 		5: # Grand Orrery: brass zodiac ring with rotating cardinal ticks
 			var rot5: float = 0.0 if fred else _clock * 0.7
-			draw_arc(c, hw + 1.0, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.45 * pulse), 1.2)
+			draw_arc(c, hw + 1.0, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.45 * pulse), 1.0)
 			for t5: int in range(4):
 				var ang5: float = rot5 + float(t5) * (PI * 0.5)
 				var pt5: Vector2 = (c + Vector2.from_angle(ang5) * (hw + 1.0)).round()
@@ -326,14 +326,14 @@ func _draw_biome_gateway_frame(c: Vector2, w: float, col_g: Color, col_h: Color,
 			for vx: float in [-8.0, 0.0, 8.0]:
 				draw_rect(Rect2(c + Vector2(vx - 1.0, -8.0), Vector2(2.0, 2.0)), Color(PAL["gold"] as Color if not fred else PAL["coral"] as Color, a_hi))
 		7: # Moon Spire: twin silver crescent gateposts + lunar center seam
-			draw_arc(c + Vector2(-hw - 1.0, 0.0), 6.0, -PI * 0.55, PI * 0.55, 8, Color(PAL["ice"] as Color, a_hi), 1.4)
-			draw_arc(c + Vector2(hw + 1.0, 0.0), 6.0, PI * 0.45, PI * 1.55, 8, Color(PAL["ice"] as Color, a_hi), 1.4)
+			draw_arc(c + Vector2(-hw - 1.0, 0.0), 6.0, -PI * 0.55, PI * 0.55, 8, Color(PAL["ice"] as Color, a_hi), 2.0)
+			draw_arc(c + Vector2(hw + 1.0, 0.0), 6.0, PI * 0.45, PI * 1.55, 8, Color(PAL["ice"] as Color, a_hi), 2.0)
 			draw_line(c + Vector2(0.0, -11.0), c + Vector2(0.0, 7.0), Color(PAL["sky"] as Color, 0.35 * pulse), 1.0)
 		_: # Bell Sanctum: tall gothic rose-gold cathedral arch + radiant dawn keystone
-			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -8.0), Color(PAL["plum"] as Color, a_hi), 1.5)
-			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -8.0), Color(PAL["plum"] as Color, a_hi), 1.5)
-			draw_line(c + Vector2(-hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 1.5)
-			draw_line(c + Vector2(hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 1.5)
+			draw_line(c + Vector2(-hw, 6.0), c + Vector2(-hw, -8.0), Color(PAL["plum"] as Color, a_hi), 2.0)
+			draw_line(c + Vector2(hw, 6.0), c + Vector2(hw, -8.0), Color(PAL["plum"] as Color, a_hi), 2.0)
+			draw_line(c + Vector2(-hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 2.0)
+			draw_line(c + Vector2(hw, -8.0), c + Vector2(0.0, -16.0), Color(col_g, a_hi), 2.0)
 			draw_circle(c + Vector2(0.0, -14.0), 2.5, Color(cream, a_hi))
 
 

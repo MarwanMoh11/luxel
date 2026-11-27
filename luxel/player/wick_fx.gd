@@ -318,7 +318,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 	if wick.is_gliding() and wick.move_wings != null and wick.move_wings.glide_duration > 0.05 and wick.move_wings._arc_node == null:
 		var gfrac: float = clampf(wick.move_wings.glide_time_left / wick.move_wings.glide_duration, 0.0, 1.0)
 		var gcol: Color = LxWick.PAL_CORAL if gfrac < 0.28 else (LxWick.PAL_GOLD if gfrac < 0.55 else LxWick.PAL_ICE)
-		wick.draw_arc(Vector2(0.0, 1.0), 9.0, PI * 0.15, PI * 0.15 + PI * 0.70 * gfrac, 12, gcol, 1.5, false)
+		wick.draw_arc(Vector2(0.0, 1.0), 9.0, PI * 0.15, PI * 0.15 + PI * 0.70 * gfrac, 12, gcol, 2.0, false)
 	if wick.mercy_t > 0.0 and flash_red:
 		var mc: Vector2 = Vector2(0.0, -4.0)
 		wick.draw_arc(mc, 9.0, 0.0, TAU, 16, Color(LxWick.PAL_VOID, 0.55), 2.0)
@@ -358,10 +358,11 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		var wdir: Vector2 = wg["dir"] as Vector2
 		var wang: float = float(wg["ang"])
 		var wlen: float = roundf(lerpf(6.0, float(wg["len"]), minf(1.0, wt * 2.2)))
+		var wg_w: float = 2.0 if wt < 0.45 else 1.0
 		for sgn: float in [-1.0, 0.0, 1.0]:
 			var rdir: Vector2 = wdir.rotated(sgn * wang)
 			var tip: Vector2 = (wp + rdir * wlen).round()
-			wick.draw_line(wp, tip, Color(LxWick.PAL_ICE, winv * 0.92), 2.0 if wt < 0.45 else 1.0)
+			wick.draw_line(wp, tip, Color(LxWick.PAL_ICE, winv * 0.92), wg_w)
 			wick.draw_line(wp, (wp + rdir * roundf(wlen * 0.72)).round(), Color(LxWick.PAL_CREAM, winv), 1.0)
 		wick.draw_rect(Rect2(wp - Vector2.ONE, Vector2(2.0, 2.0)), Color(LxWick.PAL_CREAM, winv))
 

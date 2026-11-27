@@ -523,7 +523,7 @@ func _handle_post_death_lift_return(reloaded_region: String) -> void:
 	if target_reg.is_empty() or target_reg == reloaded_region:
 		return
 	# Skip cross-region warp when running single-room synthetic room_check isolation.
-	if Lx.input != null and bool(Lx.input.get("_use_synthetic")):
+	if Lx.input != null and Lx.input.get("_use_synthetic") == true:
 		return
 	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.has_method("load_island_region"):
 		_floor = int(cp.get("floor", _floor))

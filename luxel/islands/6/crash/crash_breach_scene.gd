@@ -111,8 +111,8 @@ func _draw() -> void:
 	if _slam_flash_t > 0.0:
 		var u: float = 1.0 - clampf(_slam_flash_t / 0.85, 0.0, 1.0)
 		var sa: float = (1.0 - u) * (0.45 if fred else 0.85)
-		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(10.0, 62.0, u)), 0.0, TAU, 22, Color(c_gold, sa), 2.2)
-		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(6.0, 44.0, u)), 0.0, TAU, 18, Color(c_cream, sa * 0.85), 1.4)
+		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(10.0, 62.0, u)), 0.0, TAU, 22, Color(c_gold, sa), 2.0)
+		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(6.0, 44.0, u)), 0.0, TAU, 18, Color(c_cream, sa * 0.85), 1.0)
 		for si: int in range(6):
 			var ang: float = float(si) * (TAU / 6.0) + 0.35
 			var sp: Vector2 = Vector2(cos(ang), sin(ang)) * lerpf(12.0, 46.0, u)

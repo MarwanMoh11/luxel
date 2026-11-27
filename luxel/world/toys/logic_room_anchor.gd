@@ -49,7 +49,7 @@ func tick(dt: float) -> void:
 	if not active or not auto_activate or is_current_anchor:
 		return
 	if wp.distance_to(pos) <= activate_radius:
-		if Lx.player == null or not is_instance_valid(Lx.player) or not bool(Lx.player.get("dead")):
+		if Lx.player == null or not is_instance_valid(Lx.player) or Lx.player.get("dead") != true:
 			claim_anchor()
 
 
@@ -134,7 +134,7 @@ func _draw() -> void:
 	# Radiant golden claimed beacon ring (or gentle hover glow ring)
 	if is_current_anchor:
 		var halo_c: Color = c_cream if (reduced or int(floorf(_clock * 3.0)) % 2 == 0) else c_gold
-		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 24, Color(c_gold, 0.72), 1.5)
+		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 24, Color(c_gold, 0.72), 2.0)
 		draw_arc(Vector2.ZERO, 10.0, 0.0, TAU, 20, halo_c, 1.0)
 	elif _hover:
 		draw_arc(Vector2.ZERO, 11.5, 0.0, TAU, 20, Color(c_gold, 0.55), 1.0)
@@ -147,7 +147,7 @@ func _draw() -> void:
 
 	# Engraved brass compass ring
 	var brass_c: Color = c_gold if is_current_anchor else (c_gold if _hover else c_apricot)
-	draw_arc(Vector2.ZERO, 6.5, 0.0, TAU, 20, brass_c, 1.5)
+	draw_arc(Vector2.ZERO, 6.5, 0.0, TAU, 20, brass_c, 2.0)
 
 	# Four cardinal stone compass points (N / S / E / W)
 	var pt_hi: Color = c_cream if is_current_anchor else (c_gold if _hover else c_stone)

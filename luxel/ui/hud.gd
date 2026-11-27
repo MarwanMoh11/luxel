@@ -103,7 +103,7 @@ func sync_bosses(live_bosses: Array) -> void:
 		var mh: float = maxf(1.0, b.max_hp)
 		var ch: float = clampf(b.hp, 0.0, mh)
 		var tr: float = clampf(float(prev_trails.get(iid, prev_trails.get(bid, ch))), ch, mh)
-		var stag_r: float = clampf(float(b.get("stagger_meter")) / maxf(0.01, float(b.get("stagger_threshold"))), 0.0, 1.0) if (b is LxBossBase) else 0.0
+		var stag_r: float = clampf((b as LxBossBase).stagger_meter / maxf(0.01, (b as LxBossBase).stagger_threshold), 0.0, 1.0) if (b is LxBossBase) else 0.0
 		var stag_on: bool = b.state == LxEnemyBrain.State.STAGGER
 		next_list.append({"id": bid, "iid": iid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase), "stagger_ratio": stag_r, "staggered": stag_on})
 		_check_hollow_twist(nk)
@@ -308,7 +308,7 @@ func _draw() -> void:
 	var notice_r: Rect2 = _compute_notice_rect() if notice_col.a > 0.0 else Rect2()
 	if show_hearts: _draw_hearts(Vector2(5.0, 5.0))
 	LxHudOverlays.draw_temper_mark(self, Vector2(5.0, 5.0), clampi(Lx.state.max_hearts, 4, 12), show_hearts)
-	var in_dng: bool = Lx.world != null and bool(Lx.world.get("is_dungeon"))
+	var in_dng: bool = Lx.world != null and Lx.world.get("is_dungeon") == true
 	var show_beacon: bool = not _boss_active and not in_dng and Lx.state.island_id > 0 and _notice_text.is_empty() and not LxHudFx.is_ceremony_active()
 	if show_beacon: _draw_beacon_gauge(160.0, 4.0)
 	if bool(_challenge.get("active", false)):

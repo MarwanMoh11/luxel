@@ -284,8 +284,9 @@ func _tick_wick_powers(dt: float) -> void:
 			for ev: Variant in (enemies_v as Array):
 				if ev is Object and is_instance_valid(ev):
 					var eo: Object = ev as Object
-					if not bool(eo.get_meta("_lx_silent_applied", false)) and eo.get("notice_radius") != null:
-						var base_r: float = float(eo.get("notice_radius"))
+					var nr_v: Variant = eo.get("notice_radius")
+					if not bool(eo.get_meta("_lx_silent_applied", false)) and (nr_v is float or nr_v is int):
+						var base_r: float = float(nr_v)
 						eo.set_meta("_lx_base_notice", base_r)
 						eo.set_meta("_lx_silent_applied", true)
 						eo.set("notice_radius", base_r * 0.70)
@@ -355,14 +356,16 @@ func _on_enemy_hit(enemy: Object, hit: Object, _result: int) -> void:
 		return
 	if sold.has_power("ember_hud") and _bound_wick != null and is_instance_valid(_bound_wick):
 		_bound_wick.ember = minf(100.0, _bound_wick.ember + 1.5)
-	if hit != null and is_instance_valid(hit) and hit.get("damage") != null:
-		var base_d: float = float(hit.get("damage"))
+	var dmg_v: Variant = hit.get("damage") if (hit != null and is_instance_valid(hit)) else null
+	if dmg_v is float or dmg_v is int:
+		var base_d: float = float(dmg_v)
 		var bonus_mult: float = sold.modify_stat("bolt_damage", 1.0, {"hearts": Lx.state.hearts if Lx.state != null else 4.0})
 		if stair != null:
 			bonus_mult = stair.modify_stair_stat("bolt_damage", bonus_mult)
-		if bonus_mult > 1.01 and enemy.get("hp") != null:
+		var hp_v: Variant = enemy.get("hp")
+		if bonus_mult > 1.01 and (hp_v is float or hp_v is int):
 			var extra: float = base_d * (bonus_mult - 1.0)
-			enemy.set("hp", maxf(0.0, float(enemy.get("hp")) - extra))
+			enemy.set("hp", maxf(0.0, float(hp_v) - extra))
 
 
 func _on_player_damaged(_amount: float, _from_pos: Vector2, _knock_dir: Vector2, _source: String) -> void:
@@ -387,7 +390,8 @@ func _on_sold_state_changed() -> void:
 
 
 func _should_show_badge() -> bool:
-	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
+	var fl: Variant = Lx.root.get("flow") if (Lx.root != null and is_instance_valid(Lx.root)) else null
+	if fl is int and int(fl) != 2:
 		return false
 	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false

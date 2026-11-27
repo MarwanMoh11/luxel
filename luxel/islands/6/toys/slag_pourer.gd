@@ -360,7 +360,7 @@ func _draw() -> void:
 				draw_rect(Rect2(dp - Vector2(1.0, 0.0), Vector2(2.0, 2.0)), c_cream)
 				cur_d += 6.0
 		# Impact ring + pixel ember sparks bouncing from mold
-		draw_arc(mold_rel, roundf(lerpf(2.0, 10.0, u)), 0.0, TAU, 12, c_gold, 1.2)
+		draw_arc(mold_rel, roundf(lerpf(2.0, 10.0, u)), 0.0, TAU, 12, c_gold, 1.0)
 		for si: int in range(5):
 			var sp_u: float = 0.45 if fr else fmod(_clock * 3.8 + float(si) * 0.21, 1.0)
 			var ang: float = -PI * 0.85 + float(si) * 0.42

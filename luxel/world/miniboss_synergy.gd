@@ -41,7 +41,8 @@ func _snap_open_floor(target: Vector2, placed: Array[Vector2]) -> Vector2:
 	var grid: Array = grid_v as Array
 	var h: int = grid.size()
 	var w: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(_region.get("tile_size")) if (_region.get("tile_size") != null and float(_region.get("tile_size")) > 0.0) else 16.0
+	var ts_v: Variant = _region.get("tile_size")
+	var ts: float = float(ts_v) if ((ts_v is float or ts_v is int) and float(ts_v) > 0.0) else 16.0
 	var has_walk_fn: bool = _region.has_method("is_walkable")
 	var spawn_p: Vector2 = _region.get("spawn_pos") as Vector2 if _region.get("spawn_pos") is Vector2 else Vector2.ZERO
 	var exit_rects: Array[Rect2] = []
@@ -244,8 +245,8 @@ func draw_anchors(canvas: CanvasItem, clock: float, fred: bool, cleared: bool) -
 	if _victory_t > 0.0 and _center != Vector2.ZERO:
 		var vu: float = 1.0 - clampf(_victory_t / 0.68, 0.0, 1.0)
 		var va: float = (1.0 - vu) * (0.55 if fred else 0.88)
-		canvas.draw_arc(_center, roundf(lerpf(10.0, 86.0, vu)), 0.0, TAU, 24, Color(c_gl, va), 1.8)
-		canvas.draw_arc(_center, roundf(lerpf(6.0, 58.0, vu)), 0.0, TAU, 18, Color(cream, va), 1.2)
+		canvas.draw_arc(_center, roundf(lerpf(10.0, 86.0, vu)), 0.0, TAU, 24, Color(c_gl, va), 2.0)
+		canvas.draw_arc(_center, roundf(lerpf(6.0, 58.0, vu)), 0.0, TAU, 18, Color(cream, va), 1.0)
 		for vk: int in range(6):
 			var vpt: Vector2 = (_center + Vector2.from_angle(float(vk) * (TAU / 6.0) + vu * 0.55) * lerpf(8.0, 66.0, vu)).round()
 			canvas.draw_rect(Rect2(vpt - Vector2.ONE, Vector2(2.0, 2.0)), Color(cream if vk % 2 == 0 else c_hi, va))
@@ -272,11 +273,11 @@ func _draw_bell_pedestal(canvas: CanvasItem, anc: Dictionary, clock: float, fred
 	canvas.draw_rect(Rect2(ap + Vector2(-9.0, 0.0), Vector2(18.0, 3.0)), sh_c); canvas.draw_rect(Rect2(ap + Vector2(-7.0, -1.0), Vector2(14.0, 5.0)), sh_c)
 	if rdy:
 		var ra: float = (0.58 if shield_up else 0.34) + (0.0 if fred else pulse * (0.20 if shield_up else 0.08))
-		canvas.draw_arc(ap + Vector2(0.0, 1.0), roundf(11.0 + (pulse * 1.2 if shield_up else 0.0)), 0.0, TAU, 18, Color(gold, clampf(ra, 0.2, 0.85)), 1.4 if shield_up else 1.0)
+		canvas.draw_arc(ap + Vector2(0.0, 1.0), roundf(11.0 + (pulse * 1.2 if shield_up else 0.0)), 0.0, TAU, 18, Color(gold, clampf(ra, 0.2, 0.85)), 2.0 if shield_up else 1.0)
 	elif not cleared:
 		var prog: float = clampf(1.0 - cd / maxf(0.1, float(anc.get("max_cd", BELL_CD))), 0.0, 1.0)
 		canvas.draw_arc(ap + Vector2(0.0, 1.0), 10.0, 0.0, TAU, 16, Color(PAL["dusk"] as Color, 0.45), 1.0)
-		canvas.draw_arc(ap + Vector2(0.0, 1.0), 10.0, -PI * 0.5, -PI * 0.5 + TAU * prog, 16, Color(PAL["apricot"] as Color, 0.65), 1.2)
+		canvas.draw_arc(ap + Vector2(0.0, 1.0), 10.0, -PI * 0.5, -PI * 0.5 + TAU * prog, 16, Color(PAL["apricot"] as Color, 0.65), 1.0)
 	var st_hi: Color = (PAL["stone"] if rdy else PAL["mauve"]) as Color
 	var beam_c: Color = (PAL["apricot"] if rdy else PAL["mauve"]) as Color
 	var night_c: Color = PAL["night"] as Color
@@ -300,20 +301,20 @@ func _draw_bell_pedestal(canvas: CanvasItem, anc: Dictionary, clock: float, fred
 		var wa: float = (0.72 if shield_up else 0.42) * (0.75 if fred else (0.85 + 0.15 * pulse))
 		var wr1: float = roundf(8.5 + (0.0 if fred else fposmod(clock * 4.5, 3.0)))
 		for side_a: float in [0.0, PI]:
-			canvas.draw_arc(bc, wr1, side_a - 0.52, side_a + 0.52, 6, Color(cream if shield_up else gold, wa), 1.2)
+			canvas.draw_arc(bc, wr1, side_a - 0.52, side_a + 0.52, 6, Color(cream if shield_up else gold, wa), 1.0)
 			if shield_up:
 				var wr2: float = roundf(12.0 + (0.0 if fred else fposmod(clock * 4.5 + 1.5, 3.5)))
 				canvas.draw_arc(bc, wr2, side_a - 0.44, side_a + 0.44, 6, Color(gold, wa * 0.72), 1.0)
 	if rt > 0.0 and not cleared:
 		var ru: float = 1.0 - clampf(rt / 0.42, 0.0, 1.0)
-		canvas.draw_arc(bc, roundf(lerpf(6.0, 22.0, ru)), 0.0, TAU, 16, Color(gold, (1.0 - ru) * 0.65), 1.1)
+		canvas.draw_arc(bc, roundf(lerpf(6.0, 22.0, ru)), 0.0, TAU, 16, Color(gold, (1.0 - ru) * 0.65), 1.0)
 	if ft > 0.0:
 		var u: float = 1.0 - clampf(ft / 0.58, 0.0, 1.0)
 		var fa: float = (1.0 - u) * (0.58 if fred else 0.92)
 		var r_out: float = roundf(lerpf(10.0, BELL_SHOCK_R, u))
-		canvas.draw_arc(ap, r_out, 0.0, TAU, 32, Color(gold, fa), 2.2)
-		canvas.draw_arc(ap, maxf(2.0, r_out - 3.0), 0.0, TAU, 28, Color(PAL["apricot"] as Color, fa * 0.72), 1.2)
-		canvas.draw_arc(ap, roundf(lerpf(6.0, BELL_SHOCK_R * 0.76, u)), 0.0, TAU, 24, Color(cream, fa * 0.85), 1.3)
+		canvas.draw_arc(ap, r_out, 0.0, TAU, 32, Color(gold, fa), 2.0)
+		canvas.draw_arc(ap, maxf(2.0, r_out - 3.0), 0.0, TAU, 28, Color(PAL["apricot"] as Color, fa * 0.72), 1.0)
+		canvas.draw_arc(ap, roundf(lerpf(6.0, BELL_SHOCK_R * 0.76, u)), 0.0, TAU, 24, Color(cream, fa * 0.85), 1.0)
 		for k: int in range(8):
 			var kp: Vector2 = (ap + Vector2.from_angle(float(k) * (TAU / 8.0) + u * 0.45) * r_out).round()
 			canvas.draw_rect(Rect2(kp - Vector2.ONE, Vector2(2.0, 2.0)), Color(cream if k % 2 == 0 else gold, fa))
@@ -335,7 +336,8 @@ static func _active_shield_hp(e: LxEnemyBrain) -> float:
 static func _apply_extra_shield_wear(e: LxEnemyBrain, sh_before: float, wear: float) -> void:
 	if sh_before <= 0.01 or not e.is_alive(): return
 	if e.has_method("_is_hit_invulnerable") and bool(e.call("_is_hit_invulnerable")): return # Never break a shield mid phase-roar
-	if float(e.get("shield_hp")) >= sh_before - 0.001 and e.has_method("_wear_shield"):
+	var sh_v: Variant = e.get("shield_hp")
+	if (sh_v is float or sh_v is int) and float(sh_v) >= sh_before - 0.001 and e.has_method("_wear_shield"):
 		if not bool(e.call("_wear_shield", wear)):
 			e.clank_t = 0.18
 			if Lx.audio != null: Lx.audio.play_sfx("shield_strain", e.pos, true)
@@ -401,8 +403,10 @@ func _fire_island5_pulse(origin: Vector2, w: LxWick) -> void:
 		if not (e_v is LxEnemyBrain and is_instance_valid(e_v)): continue
 		var e: LxEnemyBrain = e_v as LxEnemyBrain
 		if not e.is_alive() or e.pos.distance_to(origin) > 120.0: continue
-		if e.get("lens_pause_t") != null: e.set("lens_pause_t", maxf(float(e.get("lens_pause_t")), 1.4))
-		if e.get("lens_highlight_t") != null: e.set("lens_highlight_t", maxf(float(e.get("lens_highlight_t")), 3.2))
+		var lp_v: Variant = e.get("lens_pause_t")
+		if lp_v is float or lp_v is int: e.set("lens_pause_t", maxf(float(lp_v), 1.4))
+		var lh_v: Variant = e.get("lens_highlight_t")
+		if lh_v is float or lh_v is int: e.set("lens_highlight_t", maxf(float(lh_v), 3.2))
 		var kdir: Vector2 = (e.pos - origin).normalized() if e.pos.distance_to(origin) > 1.0 else Vector2.RIGHT
 		e.take_hit(LxHit.make(LxHit.SOURCE_PRISM, 0.45, kdir, origin, 0.0, false, true, w, false))
 		if w != null and is_instance_valid(w): w.spawn_sparks(e.pos + Vector2(0.0, -4.0), kdir, 5, PAL["sky"] as Color, 28.0, 86.0, 0.22)
@@ -463,7 +467,8 @@ func _has_boss_pulse_state() -> bool:
 				var pv: Variant = e.get("petals")
 				if pv is Array and not (pv as Array).is_empty(): return true
 			5:
-				if e.get("lens_pause_t") != null and float(e.get("lens_pause_t")) <= 0.0: return true
+				var lp_v: Variant = e.get("lens_pause_t")
+				if (lp_v is float or lp_v is int) and float(lp_v) <= 0.0: return true
 			6:
 				if e.get("armour_intact") == true: return true
 			8:

@@ -208,7 +208,7 @@ class RuleRuntime:
 			var c_orb := Color(PAL["gold"] as Color, 0.55 if fr else 0.78)
 			for si: int in range(12):
 				var sa0: float = float(si) * (TAU / 12.0)
-				draw_arc(wp, or_r, sa0, sa0 + 0.34, 4, c_orb, 1.2)
+				draw_arc(wp, or_r, sa0, sa0 + 0.34, 4, c_orb, 1.0)
 			for ci: int in range(4):
 				var cp: Vector2 = (wp + Vector2.from_angle(float(ci) * PI * 0.5) * or_r).round()
 				draw_rect(Rect2(cp, Vector2.ONE), Color(PAL["cream"] as Color, 0.62 if fr else 0.88))

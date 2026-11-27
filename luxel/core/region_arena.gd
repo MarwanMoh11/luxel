@@ -53,7 +53,7 @@ func tick(dt: float, region: LxRegionLoader, wick_pos: Vector2) -> void:
 	_region = region
 	if region == null:
 		return
-	var wick_dead: bool = Lx.player != null and is_instance_valid(Lx.player) and bool(Lx.player.get("dead"))
+	var wick_dead: bool = Lx.player != null and is_instance_valid(Lx.player) and Lx.player.get("dead") == true
 	var has_engaged_boss: bool = false
 	var any_live_lock_boss: bool = false
 	for e_v: Variant in region.get_enemies():

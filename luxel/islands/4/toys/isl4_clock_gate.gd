@@ -154,9 +154,9 @@ func _check_pin_sconce() -> void:
 	var sc: LxInteractable = region.call("find_interactable", pin_sconce_id) as LxInteractable
 	if sc == null or not is_instance_valid(sc):
 		return
-	var is_lit: bool = (sc.get("lit") is bool and bool(sc.get("lit"))) \
-		or (sc.get("powered") is bool and bool(sc.get("powered"))) \
-		or (sc.get("activated") is bool and bool(sc.get("activated")))
+	var is_lit: bool = (sc.get("lit") == true) \
+		or (sc.get("powered") == true) \
+		or (sc.get("activated") == true)
 	if is_lit:
 		pin_open(true)
 

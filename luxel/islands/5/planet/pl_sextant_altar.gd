@@ -112,11 +112,11 @@ func _draw() -> void:
 		var bob: float = 0.0 if fr else roundf(sin(_clock * 3.0) * 2.0)
 		var cy: float = -12.0 + bob
 		# Brass sextant quarter-arc + index arm + starlight vertex crystal
-		draw_arc(Vector2(0.0, cy), 9.0, deg_to_rad(15.0), deg_to_rad(165.0), 14, PAL["gold"] as Color, 1.6)
-		draw_line(Vector2(0.0, cy - 6.0), Vector2(-7.0, cy + 5.0), PAL["apricot"] as Color, 1.4)
-		draw_line(Vector2(0.0, cy - 6.0), Vector2(7.0, cy + 5.0), PAL["apricot"] as Color, 1.4)
+		draw_arc(Vector2(0.0, cy), 9.0, deg_to_rad(15.0), deg_to_rad(165.0), 14, PAL["gold"] as Color, 2.0)
+		draw_line(Vector2(0.0, cy - 6.0), Vector2(-7.0, cy + 5.0), PAL["apricot"] as Color, 1.0)
+		draw_line(Vector2(0.0, cy - 6.0), Vector2(7.0, cy + 5.0), PAL["apricot"] as Color, 1.0)
 		var sweep: float = deg_to_rad(90.0 + (0.0 if fr else sin(_clock * 2.2) * 32.0))
-		draw_line(Vector2(0.0, cy - 6.0), Vector2(roundf(cos(sweep) * 8.0), roundf(cy + sin(sweep) * 8.0)), PAL["ice"] as Color, 1.2)
+		draw_line(Vector2(0.0, cy - 6.0), Vector2(roundf(cos(sweep) * 8.0), roundf(cy + sin(sweep) * 8.0)), PAL["ice"] as Color, 1.0)
 		# Floating cream 4-point star at sextant pivot
 		draw_line(Vector2(-4.0, cy - 6.0), Vector2(4.0, cy - 6.0), PAL["gold"] as Color, 1.0)
 		draw_line(Vector2(0.0, cy - 10.0), Vector2(0.0, cy - 2.0), PAL["gold"] as Color, 1.0)
@@ -126,7 +126,7 @@ func _draw() -> void:
 		var a: float = (1.0 - u) * (0.52 if fr else 0.88)
 		var r1: float = 14.0 if fr else roundf(lerpf(6.0, 38.0, u))
 		var r2: float = 10.0 if fr else roundf(lerpf(4.0, 26.0, u))
-		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 24, Color(PAL["ice"] as Color, a), 1.6)
+		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 24, Color(PAL["ice"] as Color, a), 2.0)
 		draw_arc(Vector2(0.0, -10.0), r2, 0.0, TAU, 16, Color(PAL["gold"] as Color, a * 0.85), 1.0)
 	if claimed:
 		# Calm etched meridian triangle resting on claimed pedestal

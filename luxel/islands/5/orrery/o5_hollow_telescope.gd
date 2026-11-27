@@ -72,7 +72,7 @@ func _draw() -> void:
 	draw_line(Vector2(6, 7), Vector2(0, -1), night, 2.0)
 	draw_line(Vector2(0, 7), Vector2(0, -1), brass, 2.0)
 	draw_line(Vector2(-8, -1), Vector2(10, -7), brass, 4.0)
-	draw_line(Vector2(-7, -2), Vector2(9, -8), gold, 1.5)
+	draw_line(Vector2(-7, -2), Vector2(9, -8), gold, 2.0)
 	draw_circle(Vector2(10, -7), 3.0, sky if inspected else ice)
 	draw_circle(Vector2(-8, -1), 2.0, night)
 	# Subtle lens invite glint when uninspected

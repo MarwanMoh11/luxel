@@ -113,7 +113,7 @@ func tick(dt: float) -> void:
 			elif it.kind == "carry_orb" and it.has_method("push_orb"):
 				it.call("push_orb", d * eff_spd * dt)
 			elif carry_mirrors and it.kind in ["mirror", "blue_transformer", "transformer"] and it.has_method("move_to"):
-				var is_mov: bool = bool(it.get("movable")) or bool(it.props.get("on_conveyor", false))
+				var is_mov: bool = (it.get("movable") == true) or bool(it.props.get("on_conveyor", false))
 				if is_mov:
 					var nxt_m: Vector2 = it.pos + d * eff_spd * dt
 					var ok_m: bool = true

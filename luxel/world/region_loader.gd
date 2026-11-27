@@ -376,7 +376,7 @@ func _is_floor_interactable(item: LxInteractable) -> bool:
 	if (item.kind == "toggle_block" or item.kind == "tone_door" or item.kind == "shadow_gate") and not item.is_solid(): return true
 	if item is LxDoor:
 		var d: LxDoor = item as LxDoor
-		return d.door_type == "bridge_platform" or (bool(d.get("_is_light_bridge")) and d.opened)
+		return d.door_type == "bridge_platform" or (d.get("_is_light_bridge") == true and d.opened)
 	return false
 
 func _sync_interactable_layer(item: LxInteractable) -> void:

@@ -58,7 +58,7 @@ func _ready() -> void:
 func _exit_tree() -> void:
 	if active_instance == self:
 		active_instance = null
-	if _open and _pause_world and get_tree() != null:
+	if _open and _pause_world and is_inside_tree() and get_tree() != null:
 		get_tree().paused = _prev_paused
 
 
@@ -102,7 +102,7 @@ func open(opts: Dictionary = {}) -> void:
 		_canvas.queue_redraw()
 	if LxSoldFx.active_instance != null and is_instance_valid(LxSoldFx.active_instance):
 		LxSoldFx.active_instance.set_modal_suppressed(true)
-	if _pause_world and get_tree() != null:
+	if _pause_world and is_inside_tree() and get_tree() != null:
 		_prev_paused = get_tree().paused
 		get_tree().paused = true
 	_play_ui_sfx("menu_open")
@@ -116,7 +116,7 @@ func close() -> void:
 		_canvas.visible = false
 	if LxSoldFx.active_instance != null and is_instance_valid(LxSoldFx.active_instance):
 		LxSoldFx.active_instance.set_modal_suppressed(false)
-	if _pause_world and get_tree() != null:
+	if _pause_world and is_inside_tree() and get_tree() != null:
 		get_tree().paused = _prev_paused
 	_play_ui_sfx("menu_close")
 	closed.emit({

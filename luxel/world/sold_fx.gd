@@ -221,7 +221,7 @@ func _target_visual_fps() -> float:
 func _is_fps_step_active() -> bool:
 	if _sold == null or not _sold.is_sold("fps_step"):
 		return false
-	if _sunflare_surge_t > 0.0 or _modal_suppressed or get_tree().paused:
+	if _sunflare_surge_t > 0.0 or _modal_suppressed or (is_inside_tree() and get_tree().paused):
 		return false
 	return true
 
@@ -270,8 +270,10 @@ func _is_suppressed() -> bool:
 		return true
 	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return true
-	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
-		return true
+	if Lx.root != null and is_instance_valid(Lx.root):
+		var flow_v: Variant = Lx.root.get("flow")
+		if (flow_v is int or flow_v is float) and int(flow_v) != 2:
+			return true
 	return false
 
 
@@ -407,17 +409,19 @@ func _draw_overlay() -> void:
 				if not (ev is Node2D) or not is_instance_valid(ev):
 					continue
 				var en: Node2D = ev as Node2D
-				if not en.visible or bool(en.get("dead")):
+				if not en.visible or en.get("dead") == true:
 					continue
 				var st_s: String = str(en.get("state_name")).to_lower() if en.get("state_name") != null else ""
-				var st_i: int = int(en.get("state")) if en.get("state") is int else 0
+				var st_v: Variant = en.get("state")
+				var st_i: int = int(st_v) if st_v is int else 0
 				var telegraphing: bool = st_s.contains("tell") or st_s.contains("wind") or st_s.contains("charge") or st_s.contains("attack") or st_i in [2, 3]
 				if not telegraphing:
 					continue
 				var sp: Vector2 = _world_to_screen(en.global_position).round()
 				if sp.x < -12.0 or sp.x > 332.0 or sp.y < -12.0 or sp.y > 192.0:
 					continue
-				var rad: float = clampf(float(en.get("radius")) + 3.0 if en.get("radius") != null else 10.0, 8.0, 24.0)
+				var rad_v: Variant = en.get("radius")
+				var rad: float = clampf((float(rad_v) + 3.0) if (rad_v is float or rad_v is int) else 10.0, 8.0, 24.0)
 				_overlay.draw_arc(sp, rad + 1.0, 0.0, TAU, 16, void_c, 1.0)
 				_overlay.draw_arc(sp, rad, 0.0, TAU, 16, cream, 1.0)
 

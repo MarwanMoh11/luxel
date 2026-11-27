@@ -270,7 +270,7 @@ func _draw_claim_burst(c_main: Color, c_hi: Color) -> void:
 		var u1: float = clampf(el / APEX_T, 0.0, 1.0)
 		var r1: float = roundf(lerpf(28.0, 4.0, u1 * u1))
 		var r2: float = roundf(lerpf(22.0, 3.0, clampf((u1 - 0.12) / 0.88, 0.0, 1.0)))
-		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 22, c_main, 1.5)
+		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 22, c_main, 2.0)
 		draw_arc(Vector2(0.0, -10.0), r2, 0.0, TAU, 18, c_hi, 1.0)
 		draw_circle(Vector2(0.0, -14.0), roundf(lerpf(2.0, 5.5, u1)), Color(cream if u1 > 0.6 else c_hi, 0.85))
 		for k: int in range(6):
@@ -292,7 +292,8 @@ func _draw_claim_burst(c_main: Color, c_hi: Color) -> void:
 		draw_rect(Rect2(-floorf(core_w * 0.5), -58.0, core_w, 60.0), Color(cream, minf(1.0, fade * 1.25)))
 	if u2 < 0.72:
 		var rp: float = u2 / 0.72
-		draw_arc(Vector2(0.0, -8.0), roundf(lerpf(6.0, 36.0, rp)), 0.0, TAU, 22, Color(cream if rp < 0.30 else c_hi, 1.0 - rp), 2.0 if rp < 0.35 else 1.0)
+		var rw: float = 2.0 if rp < 0.35 else 1.0
+		draw_arc(Vector2(0.0, -8.0), roundf(lerpf(6.0, 36.0, rp)), 0.0, TAU, 22, Color(cream if rp < 0.30 else c_hi, 1.0 - rp), rw)
 	var rise_p: float = 1.0 - pow(1.0 - clampf(u2 * 1.55, 0.0, 1.0), 2.0)
 	var emb_y: float = roundf(lerpf(-20.0, -26.0, rise_p))
 	if Lx.camera != null and is_instance_valid(Lx.camera):

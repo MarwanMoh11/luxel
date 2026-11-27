@@ -220,7 +220,8 @@ func _check_enemy_hits(a: Vector2, b: Vector2) -> bool:
 		if _hit_ids.has(eid):
 			continue
 		var ep: Vector2 = (en as Node2D).global_position if en is Node2D else (en.get("pos") as Vector2 if en.get("pos") is Vector2 else Vector2(-9999.0, -9999.0))
-		var erad: float = float(en.get("body_radius")) if (en.get("body_radius") is float or en.get("body_radius") is int) else 8.0
+		var br_v: Variant = en.get("body_radius")
+		var erad: float = float(br_v) if (br_v is float or br_v is int) else 8.0
 		if Geometry2D.get_closest_point_to_segment(ep, a, b).distance_to(ep) <= erad + radius:
 			_hit_ids.append(eid)
 			var hit := LxHit.make(LxHit.SOURCE_THROW, METEOR_DAMAGE, move_d, pos, 2.5, true, false, self, true, light_color, curve_angle_deg)
@@ -329,7 +330,7 @@ func _draw() -> void:
 			var imp_c: Color = c_ice if is_blue else c_gold
 			var imp_p: Vector2 = (_impact_world_pos - pos).round()
 			var imp_r: float = 10.0 if fr else roundf(lerpf(6.0, 18.0, iu))
-			draw_arc(imp_p, imp_r, 0.0, TAU, 16, Color(imp_c, (1.0 - iu) * (0.48 if fr else 0.86)), 1.5)
+			draw_arc(imp_p, imp_r, 0.0, TAU, 16, Color(imp_c, (1.0 - iu) * (0.48 if fr else 0.86)), 2.0)
 		var u: float = 1.0 - clampf(_respawn_left / maxf(respawn_s, 0.01), 0.0, 1.0)
 		var ring_r: float = roundf(lerpf(14.0, 5.0, u))
 		draw_arc(cr, ring_r, 0.0, TAU, 14, Color(c_gold, 0.45 if fr else (0.35 + u * 0.6)), 1.0)

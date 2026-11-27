@@ -579,7 +579,7 @@ func _draw_open_burst(w: float, h: float) -> void:
 		draw_colored_polygon(PackedVector2Array([Vector2(-hw_t * 0.62, y_top), Vector2(hw_t * 0.62, y_top), Vector2(hw_b * 0.60, y_in), Vector2(-hw_b * 0.60, y_in)]), Color(PAL["cream"] as Color, sp_f * 0.84))
 		draw_line(Vector2(-hw_t, y_top), Vector2(-hw_b, y_out), Color(PAL["cream"] as Color, sp_f * 0.88), 1.0)
 		draw_line(Vector2(hw_t, y_top), Vector2(hw_b, y_out), Color(PAL["cream"] as Color, sp_f * 0.88), 1.0)
-	draw_arc(Vector2.ZERO, roundf(4.0 + p * maxf(w, h) * (0.72 if is_grand else 0.55)), 0.0, TAU, 18, Color(col if p > 0.35 else hi, fade), 2.0 if (is_grand and p < 0.35) else 1.0)
+	var dw: float = 2.0 if (is_grand and p < 0.35) else 1.0; draw_arc(Vector2.ZERO, roundf(4.0 + p * maxf(w, h) * (0.72 if is_grand else 0.55)), 0.0, TAU, 18, Color(col if p > 0.35 else hi, fade), dw)
 	var mote_n: int = 16 if is_grand else 6
 	for i: int in range(mote_n):
 		var a: float = float(i) * TAU / float(mote_n) + 0.25 + (p * 0.35 if is_grand else 0.0)

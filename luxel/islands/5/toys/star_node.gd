@@ -419,7 +419,7 @@ func _draw() -> void:
 		var w_off: float = 0.0 if fr else _clock * 2.0
 		for wi: int in range(8):
 			var wa: float = w_off + float(wi) * (TAU / 8.0)
-			draw_arc(Vector2.ZERO, 12.0, wa, wa + 0.35, 3, Color(rim_c, 0.72 if fr else 0.95), 1.2)
+			draw_arc(Vector2.ZERO, 12.0, wa, wa + 0.35, 3, Color(rim_c, 0.72 if fr else 0.95), 1.0)
 	if max_lit > 0 and not pinned and _fifo_rank > 0:
 		# Tiny pixel-snapped FIFO order pips below socket (1 = oldest/next to snuff, N = newest)
 		var n_dots: int = mini(_fifo_rank, 4)
@@ -433,7 +433,7 @@ func _draw() -> void:
 	if _ignite_fx_t > 0.0:
 		var iu: float = 1.0 - clampf(_ignite_fx_t / 0.34, 0.0, 1.0)
 		var ia: float = (1.0 - iu) * (0.55 if fr else 0.90)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, iu)), 0.0, TAU, 16, Color(c_cream, ia), 1.5)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, iu)), 0.0, TAU, 16, Color(c_cream, ia), 2.0)
 	_draw_signal_pulses()
 
 

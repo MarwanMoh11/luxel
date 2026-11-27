@@ -164,14 +164,15 @@ func _deliver_rings() -> void:
 				var oid_s: String = str(obj.get("id"))
 				if not oid_s.is_empty() and (oid_s == source_id or chain_ids.has(oid_s)):
 					continue
-			if obj.get("active") is bool and not bool(obj.get("active")):
+			if obj.get("active") == false:
 				continue
 			var opos: Vector2 = obj.get("pos") as Vector2 if obj.get("pos") is Vector2 else (
 				(obj as Node2D).global_position if obj is Node2D else Vector2.INF
 			)
 			if not opos.is_finite():
 				continue
-			var orad: float = float(obj.get("radius")) if (obj.get("radius") is float or obj.get("radius") is int) else 8.0
+			var orad_v: Variant = obj.get("radius")
+			var orad: float = float(orad_v) if (orad_v is float or orad_v is int) else 8.0
 			_try_touch_listener(obj, opos, orad, false)
 	if region.has_method("get_enemies"):
 		for e_v: Variant in (region.call("get_enemies") as Array):
@@ -187,7 +188,8 @@ func _deliver_rings() -> void:
 			)
 			if not epos.is_finite():
 				continue
-			var erad: float = float(e.get("body_radius")) if (e.get("body_radius") is float or e.get("body_radius") is int) else 6.0
+			var erad_v: Variant = e.get("body_radius")
+			var erad: float = float(erad_v) if (erad_v is float or erad_v is int) else 6.0
 			_try_touch_listener(e, epos, erad, true)
 
 

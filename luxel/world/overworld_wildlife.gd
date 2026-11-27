@@ -48,7 +48,8 @@ func configure(rules: LxBiomeRules, region_node: Node) -> void:
 	var grid: Array = grid_v as Array
 	var gh: int = grid.size()
 	var gw: int = (grid[0] as PackedStringArray).size()
-	var ts: float = float(region_node.get("tile_size")) if region_node.get("tile_size") != null else 16.0
+	var ts_v: Variant = region_node.get("tile_size")
+	var ts: float = float(ts_v) if (ts_v is float or ts_v is int) else 16.0
 	var want_tiles: PackedStringArray = PackedStringArray(["water", "tide"]) if _island_id in [4, 7] else PackedStringArray(["ground", "path"])
 	var rng := RandomNumberGenerator.new()
 	rng.seed = int(_island_id * 31337 + gw * 97 + gh * 53)
@@ -283,7 +284,7 @@ func _draw() -> void:
 				draw_rect(Rect2(sp, Vector2.ONE), PAL["cream"] as Color)
 			6: # Ember Skinks (coral body + gold spark tail)
 				var kp := p + Vector2(0.0, -hop)
-				draw_line(kp - Vector2(dir_x * 4.0, 0.0), kp, PAL["coral"] as Color, 1.4)
+				draw_line(kp - Vector2(dir_x * 4.0, 0.0), kp, PAL["coral"] as Color, 1.0)
 				draw_rect(Rect2(kp, Vector2(2.0, 1.0)), PAL["gold"] as Color)
 				if fleeing:
 					draw_rect(Rect2(kp - Vector2(dir_x * 5.0, 1.0), Vector2.ONE), PAL["cream"] as Color)

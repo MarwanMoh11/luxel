@@ -65,7 +65,7 @@ func _check_auto_pickup() -> void:
 	if Lx.player == null or not is_instance_valid(Lx.player) or not (Lx.player is Node2D):
 		return
 	var w: Node2D = Lx.player as Node2D
-	if w.get("dead") is bool and bool(w.get("dead")):
+	if w.get("dead") == true:
 		return
 	if w.global_position.distance_to(pos) <= AUTO_PICKUP_R:
 		_collect(w)

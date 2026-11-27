@@ -86,7 +86,7 @@ func interact(_actor: Node = null) -> bool:
 		return true
 
 	# Synthetic/headless bot path (room_check solutions) executes trade cleanly without hanging modal.
-	var is_synthetic: bool = (Lx.input != null and bool(Lx.input.get("_use_synthetic"))) or bool(props.get("instant_trade", false))
+	var is_synthetic: bool = (Lx.input != null and Lx.input.get("_use_synthetic") == true) or bool(props.get("instant_trade", false))
 	if is_synthetic:
 		return _perform_direct_trade()
 

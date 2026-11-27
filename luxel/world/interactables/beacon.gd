@@ -187,7 +187,8 @@ func _draw() -> void:
 		_draw_ready_sparks()
 		if _unlock_t > 0.0:
 			var u: float = 1.0 - clampf(_unlock_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, 2.0 if u < 0.4 else 1.0, false)
+			var w_u: float = 2.0 if u < 0.4 else 1.0
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, (PAL["cream"] if u < 0.35 else PAL["gold"]) as Color, w_u, false)
 			if _unlock_from.length_squared() > 16.0:
 				for tk: int in range(3):
 					var tu: float = clampf(u * 1.15 - float(tk) * 0.08, 0.0, 1.0)
@@ -227,11 +228,13 @@ func _draw_ignite_wave() -> void:
 	if core_w >= 1.0:
 		draw_rect(Rect2(-floorf(core_w * 0.5), -72.0, core_w, 74.0), Color(cream, minf(1.0, fade * 1.2)))
 	var e1: float = 1.0 - pow(1.0 - u2, 2.0)
-	draw_arc(Vector2(0.0, -12.0), roundf(lerpf(8.0, 64.0, e1)), 0.0, TAU, 26, Color(cream if u2 < 0.25 else c_gl, fade), 2.0 if u2 < 0.35 else 1.0, false)
+	var w1: float = 2.0 if u2 < 0.35 else 1.0
+	draw_arc(Vector2(0.0, -12.0), roundf(lerpf(8.0, 64.0, e1)), 0.0, TAU, 26, Color(cream if u2 < 0.25 else c_gl, fade), w1, false)
 	if u2 > 0.12:
 		var u2b: float = clampf((u2 - 0.12) / 0.88, 0.0, 1.0)
 		var e2: float = 1.0 - pow(1.0 - u2b, 2.0)
-		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(4.0, 42.0, e2)), 0.0, TAU, 22, Color(c_hi if u2b > 0.25 else cream, 1.0 - u2b), 1.5 if u2b < 0.3 else 1.0, false)
+		var w2: float = 2.0 if u2b < 0.3 else 1.0
+		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(4.0, 42.0, e2)), 0.0, TAU, 22, Color(c_hi if u2b > 0.25 else cream, 1.0 - u2b), w2, false)
 	for i: int in range(10):
 		var a: float = float(i) * (TAU / 10.0) + u2 * 0.8
 		var d: float = roundf(lerpf(5.0, 34.0 + float(i % 2) * 8.0, e1))

@@ -88,7 +88,7 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if _found_fx_t > 0.0:
 		var u: float = 1.0 - clampf(_found_fx_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -6.0), roundf(4.0 + u * 20.0), 0.0, TAU, 14, PAL["gold"] as Color, 1.2)
+		draw_arc(Vector2(0.0, -6.0), roundf(4.0 + u * 20.0), 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
 		draw_rect(Rect2(-2.0, -8.0 - roundf(u * 14.0), 4.0, 4.0), PAL["cream"] as Color)
 		return
 	if found or not active:

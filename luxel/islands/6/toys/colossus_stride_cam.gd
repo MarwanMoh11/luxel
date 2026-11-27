@@ -294,7 +294,7 @@ func _draw() -> void:
 		if _plant_fx_t > 0.0:
 			var pu: float = 1.0 - clampf(_plant_fx_t / 0.55, 0.0, 1.0)
 			var ra: float = (1.0 - pu) * (0.35 if fred else 0.72)
-			draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 52.0, pu)), 0.0, TAU, 18, Color(c_gold, ra), 1.6)
+			draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 52.0, pu)), 0.0, TAU, 18, Color(c_gold, ra), 2.0)
 			# Downhill edge furnace pulse strip
 			var edge_x: float = (local_tl.x + bounds.size.x - 10.0) if stride_side > 0 else (local_tl.x + 6.0)
 			draw_rect(Rect2(roundf(edge_x), local_tl.y + 18.0, 4.0, maxf(24.0, bounds.size.y - 36.0)), Color(c_coral, ra * 0.75))

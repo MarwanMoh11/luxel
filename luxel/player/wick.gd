@@ -308,7 +308,7 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 			desired_vel = Vector2.ZERO
 		elif bounce_t <= 0.0:
 			var surge_m: float = 1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0
-			var pip_m: float = LxFireflyState.get_sanctuary_speed_mult() if (firefly != null and is_instance_valid(firefly) and bool(firefly.get("sanctuary_buff_active"))) else 1.0
+			var pip_m: float = LxFireflyState.get_sanctuary_speed_mult() if (firefly != null and is_instance_valid(firefly) and firefly.get("sanctuary_buff_active") == true) else 1.0
 			var move_spd: float = MOVE_SPEED * surge_m * pip_m
 			var panes_m: LxPanes = LxPanes.current()
 			if panes_m != null and not panes_m.equipped_ids().is_empty():

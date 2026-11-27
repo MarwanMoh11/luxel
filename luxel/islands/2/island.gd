@@ -288,7 +288,7 @@ func _apply_relit_harbor_state() -> void:
 	var world: LxRegionLoader = Lx.world as LxRegionLoader
 	for it: LxInteractable in world.get_interactables():
 		if it != null and is_instance_valid(it) and it.kind == "road_lamp":
-			if it.get("lit") is bool and not bool(it.get("lit")):
+			if it.get("lit") is bool and it.get("lit") == false:
 				it.set("lit", true)
 				it.queue_redraw()
 

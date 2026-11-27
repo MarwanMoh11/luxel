@@ -28,14 +28,14 @@ class WingsArcOverlay:
 		# Crisp dark backing arc for contrast over both bright water and dark pits
 		draw_arc(center, rad, a0 - 0.08, a0 + span + 0.08, 12, Color(c_void, 0.88), 3.0, false)
 		if frac > 0.01:
-			draw_arc(center, rad, a0, a0 + span * frac, 12, c_arc, 1.5, false)
+			draw_arc(center, rad, a0, a0 + span * frac, 12, c_arc, 2.0, false)
 			var tip_a: float = a0 + span * frac
 			var tip := Vector2(roundf(center.x + cos(tip_a) * rad), roundf(center.y + sin(tip_a) * rad))
 			draw_rect(Rect2(tip, Vector2.ONE), LxWick.PAL_CREAM)
 		elif is_coyote:
 			var c_u: float = clampf(owner_wings.coyote_left / COYOTE_GRACE_S, 0.0, 1.0)
 			var pip_c: Color = LxWick.PAL_CREAM if (LxHudFx.flash_reduced() or c_u > 0.5) else LxWick.PAL_GOLD
-			draw_arc(center, rad, a0, a0 + span * 0.18 * c_u, 6, pip_c, 1.5, false)
+			draw_arc(center, rad, a0, a0 + span * 0.18 * c_u, 6, pip_c, 2.0, false)
 
 var gliding: bool = false
 var glide_dir: Vector2 = Vector2.RIGHT

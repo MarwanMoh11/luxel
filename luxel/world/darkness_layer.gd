@@ -311,15 +311,16 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 						candidates.append({"d": d2_bl + (3200.0 if bounced else 5000.0), "v": Vector4(bpos.x, bpos.y, 48.0 if bounced else 34.0, 1.18 if bounced else 0.85)})
 		var beam_v: Variant = Lx.player.get("move_beam")
 		if beam_v is Object and is_instance_valid(beam_v):
-			if bool((beam_v as Object).get("charging")) and (beam_v as Object).has_method("charge_progress"):
-				var cprog: float = float((beam_v as Object).call("charge_progress"))
+			var bo: Object = beam_v as Object
+			if bo.get("charging") == true and bo.has_method("charge_progress"):
+				var cprog: float = float(bo.call("charge_progress"))
 				var ppos_c: Vector2 = _player_pos()
 				candidates.append({"d": ppos_c.distance_squared_to(cam_center) - 2000.0, "v": Vector4(ppos_c.x, ppos_c.y - 6.0, lerpf(46.0, 92.0, cprog), lerpf(0.70, 1.38, cprog))})
-			var bt: float = float((beam_v as Object).get("beam_vis_t"))
+			var bt: float = _get_f(bo, "beam_vis_t", 0.0)
 			if bt > 0.0:
-				var bf: float = clampf(bt / maxf(0.01, float((beam_v as Object).get("beam_vis_max"))), 0.0, 1.0)
-				var ba: Vector2 = (beam_v as Object).get("beam_start") as Vector2
-				var bb: Vector2 = (beam_v as Object).get("beam_end") as Vector2
+				var bf: float = clampf(bt / maxf(0.01, _get_f(bo, "beam_vis_max", 0.01)), 0.0, 1.0)
+				var ba: Vector2 = bo.get("beam_start") as Vector2
+				var bb: Vector2 = bo.get("beam_end") as Vector2
 				var m1: Vector2 = ba.lerp(bb, 0.35)
 				var m2: Vector2 = ba.lerp(bb, 0.85)
 				candidates.append({"d": m1.distance_squared_to(cam_center) - 2200.0, "v": Vector4(m1.x, m1.y, 68.0 * bf, 1.55 * bf)})
@@ -329,11 +330,12 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 			candidates.append({"d": zp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(zp.x, zp.y - 6.0, 76.0, 1.42)})
 		var flare_v: Variant = Lx.player.get("move_sunflare")
 		if flare_v is Object and is_instance_valid(flare_v):
-			var ft: float = float((flare_v as Object).get("flare_vis_t"))
+			var fo_obj: Object = flare_v as Object
+			var ft: float = _get_f(fo_obj, "flare_vis_t", 0.0)
 			if ft > 0.0:
-				var ff: float = clampf(ft / maxf(0.01, float((flare_v as Object).get("flare_vis_max"))), 0.0, 1.0)
-				var fo: Vector2 = (flare_v as Object).get("flare_origin") as Vector2
-				var fr: float = float((flare_v as Object).get("flare_radius"))
+				var ff: float = clampf(ft / maxf(0.01, _get_f(fo_obj, "flare_vis_max", 0.01)), 0.0, 1.0)
+				var fo: Vector2 = fo_obj.get("flare_origin") as Vector2
+				var fr: float = _get_f(fo_obj, "flare_radius", 0.0)
 				candidates.append({"d": fo.distance_squared_to(cam_center) - 3200.0, "v": Vector4(fo.x, fo.y, fr * 2.0 * (0.45 + 0.55 * (1.0 - ff)), 1.85 * ff)})
 
 	if candidates.size() > MAX_LIGHTS - lights.size():
@@ -475,7 +477,7 @@ func _append_player_lights(lights: PackedVector4Array, flicker: float, is_dungeo
 	var lan_node: Variant = Lx.player.get("lantern")
 	if lan_node != null and lan_node is Object and is_instance_valid(lan_node):
 		var lo: Object = lan_node as Object
-		lantern_out = bool(lo.call("is_out")) if lo.has_method("is_out") else (not bool(lo.get("is_held")) if lo.get("is_held") != null else false)
+		lantern_out = bool(lo.call("is_out")) if lo.has_method("is_out") else (lo.get("is_held") == false)
 		if lo.has_method("get_light_radius"):
 			custom_r = float(lo.call("get_light_radius"))
 		if lantern_out:
@@ -553,9 +555,13 @@ func _boss_pos(boss_id: String) -> Vector2:
 		var enemies: Variant = Lx.world.call("get_enemies")
 		if enemies is Array:
 			for e: Variant in (enemies as Array):
-				if e is Node2D and is_instance_valid(e) and (str((e as Object).get("kind")) == boss_id or bool((e as Object).get("is_boss"))):
+				if e is Node2D and is_instance_valid(e) and (str((e as Object).get("kind")) == boss_id or (e as Object).get("is_boss") == true):
 					return (e as Node2D).global_position
 	return _player_pos()
+
+static func _get_f(obj: Object, prop: String, fb: float = 0.0) -> float:
+	var v: Variant = obj.get(prop)
+	return float(v) if (v is float or v is int) else fb
 
 func _on_enemy_hit(enemy: Object, _hit: Object, result: int) -> void:
 	if result == 2 and enemy is Node2D and is_instance_valid(enemy):

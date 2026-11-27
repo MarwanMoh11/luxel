@@ -82,9 +82,9 @@ static func draw_bolts(wick: LxWick, off: Vector2) -> void:
 		var tail_end: Vector2 = (bp - bdir * (13.0 if (b.is_counter or b.is_pierce or has_bt or b.bounce_count >= 2) else 10.0)).round()
 		# Crisp dark contrast halo so bolts read cleanly against pale floors (Feel #10)
 		wick.draw_line(mid_end + Vector2(0.0, 1.0), bp + Vector2(0.0, 1.0), Color(LxWick.PAL_NIGHT, 0.72), 3.0)
-		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.88), 1.5)
+		wick.draw_line(tail_end, mid_end, Color(c_tail, 0.88), 1.0)
 		wick.draw_rect(Rect2(tail_end, Vector2.ONE), c_tail)
-		wick.draw_line(mid_end, bp, c_body, 2.5)
+		wick.draw_line(mid_end, bp, c_body, 2.0)
 		# Punchy 4x2 glowing core along bolt axis + bright 2x2 cream leading head
 		var horiz: bool = absf(bdir.x) >= absf(bdir.y)
 		var core_sz := Vector2(4.0, 2.0) if horiz else Vector2(2.0, 4.0)

@@ -155,7 +155,7 @@ func _flight_blocked(from_p: Vector2, to_p: Vector2) -> bool:
 			if not is_instance_valid(it_v) or it_v == self or not (it_v is Object):
 				continue
 			var it: Object = it_v as Object
-			if it.get("active") is bool and not bool(it.get("active")):
+			if it.get("active") == false:
 				continue
 			var blocked: bool = false
 			var brect: Rect2 = Rect2()

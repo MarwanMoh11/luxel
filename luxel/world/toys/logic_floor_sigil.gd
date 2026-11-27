@@ -78,7 +78,7 @@ func tick(dt: float) -> void:
 		return
 	var wp: Vector2 = wick_pos()
 	if Lx.player != null and is_instance_valid(Lx.player):
-		if bool(Lx.player.get("dead")) or (Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))):
+		if Lx.player.get("dead") == true or (Lx.player.has_method("is_gliding") and bool(Lx.player.call("is_gliding"))):
 			return
 	var stepped: Vector2i = _cell_at_point(wp)
 	if _cell_set.has(stepped):

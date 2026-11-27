@@ -158,7 +158,7 @@ func _draw() -> void:
 		if _shatter_t > 0.0:
 			var u: float = 1.0 - clampf(_shatter_t / 0.50, 0.0, 1.0)
 			var sa: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
-			draw_arc(Vector2(0.0, -4.0), roundf(4.0 + u * 20.0), 0.0, TAU, 16, Color(c_rose, sa), 1.5)
+			draw_arc(Vector2(0.0, -4.0), roundf(4.0 + u * 20.0), 0.0, TAU, 16, Color(c_rose, sa), 2.0)
 		return
 
 	# Truth Shadow Law: lies cast NW wrong shadow, truth casts SE gold shadow!

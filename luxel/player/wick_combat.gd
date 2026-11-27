@@ -283,7 +283,7 @@ static func _find_active_anchor_pos(w: LxWick, ctx: Node, restrict_rect: Rect2) 
 	for it_v: Variant in w.world_get_interactables(ctx):
 		if is_instance_valid(it_v) and it_v is Object:
 			var it: Object = it_v as Object
-			if str(it.get("kind")) == "room_anchor" and bool(it.get("active")):
+			if str(it.get("kind")) == "room_anchor" and it.get("active") == true:
 				var is_cur: bool = (it.get("activated") is bool and bool(it.get("activated"))) \
 					or (it.get("lit") is bool and bool(it.get("lit"))) \
 					or (it.get("powered") is bool and bool(it.get("powered")))

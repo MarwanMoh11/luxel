@@ -331,7 +331,7 @@ func on_wick_zip(w: LxWick) -> bool:
 		w.lantern.catch_by_wick(w); return true
 	_release_post_whip()
 	_swing_post = anchor_p; _swing_post_node = post_node; _swing_boosted = post_node != null
-	var pref_r: float = float(post_node.get("orbit_r")) if (post_node != null and post_node.get("orbit_r") != null) else 38.0
+	var pr_v: Variant = post_node.get("orbit_r") if post_node != null else null; var pref_r: float = float(pr_v) if (pr_v is float or pr_v is int) else 38.0
 	_swing_radius = clampf(lerpf(dist, pref_r, 0.45), 22.0, 84.0) if _swing_boosted else clampf(dist, 22.0, 96.0)
 	_swing_t = SWING_DUR * (1.12 if _swing_boosted else 0.92)
 	var radial: Vector2 = to_post / dist

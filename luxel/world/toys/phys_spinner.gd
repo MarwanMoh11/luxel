@@ -99,7 +99,7 @@ func _draw() -> void:
 		var tip: Vector2 = (adir * length).round()
 		draw_line(Vector2(1.0, 2.0), tip + Vector2(1.0, 2.0), Color(PAL["void"] as Color, 0.40), 2.0)
 		draw_line(Vector2.ZERO, tip, PAL["night"] as Color, 3.0)
-		draw_line(Vector2.ZERO, tip, c_arm, 1.5)
+		draw_line(Vector2.ZERO, tip, c_arm, 1.0)
 		var d_px: float = 10.0
 		while d_px < length - 3.0:
 			var bp: Vector2 = (adir * d_px).round()
