@@ -380,8 +380,8 @@
       "sheet": "island5_scenery",
       "prop": "armillary_sphere",
       "pos": [
-        144,
-        60
+        132,
+        44
       ],
       "layer": "sort",
       "flip_x": false,

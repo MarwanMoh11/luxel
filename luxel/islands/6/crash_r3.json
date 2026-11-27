@@ -70,7 +70,7 @@
       "kind": "hollow_ram_phantom",
       "boss_id": "hollow_ram_phantom",
       "pos": [
-        320,
+        272,
         144
       ],
       "zone": "crash_r3",
@@ -359,8 +359,8 @@
       "sheet": "theme_ember_express_roof",
       "prop": "roof_signal_lantern",
       "pos": [
-        472,
-        152
+        480,
+        200
       ],
       "layer": "sort",
       "flip_x": true,

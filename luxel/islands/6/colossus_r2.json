@@ -436,8 +436,8 @@
       "sheet": "theme_iron_colossus",
       "prop": "pressure_gauge_dial",
       "pos": [
-        384,
-        64
+        352,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -496,8 +496,8 @@
       "sheet": "theme_iron_colossus",
       "prop": "colossus_lantern_post",
       "pos": [
-        440,
-        136
+        424,
+        104
       ],
       "layer": "sort",
       "flip_x": false,

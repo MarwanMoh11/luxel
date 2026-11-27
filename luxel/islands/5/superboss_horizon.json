@@ -303,8 +303,8 @@
       "sheet": "theme_freefall",
       "prop": "cracked_dome_arch",
       "pos": [
-        64,
-        192
+        56,
+        184
       ],
       "layer": "over",
       "flip_x": false,

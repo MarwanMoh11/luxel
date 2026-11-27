@@ -420,9 +420,9 @@
         240,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

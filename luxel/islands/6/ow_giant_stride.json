@@ -415,8 +415,8 @@
       "sheet": "theme_forge_deep",
       "prop": "molten_slag_crucible",
       "pos": [
-        608,
-        304
+        640,
+        336
       ],
       "layer": "sort",
       "flip_x": true,

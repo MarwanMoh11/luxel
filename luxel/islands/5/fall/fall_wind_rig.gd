@@ -43,8 +43,8 @@ func _draw() -> void:
 	# Rushing star-wind streaks rising past falling debris
 	for i: int in range(streaks):
 		var u: float = (float(i) + 0.5) / float(streaks)
-		var sx: float = -half_w + u * _span_w
-		var sy: float = -half_h + fposmod(-_t * _speed + float(i) * 43.0, _span_h)
+		var sx: float = roundf(-half_w + u * _span_w)
+		var sy: float = roundf(-half_h + fposmod(-_t * _speed + float(i) * 43.0, _span_h))
 		var slen: float = 10.0 + float(i % 3) * 5.0
 		var c: Color = ice if (i % 3 == 0) else sky
 		draw_line(Vector2(sx, sy), Vector2(sx, sy + slen), Color(c, 0.30), 1.0)
@@ -55,6 +55,6 @@ func _draw() -> void:
 		var cx: float = (-half_w + 36.0 + float(ci) * ((_span_w - 72.0) / maxf(1.0, float(chains - 1))))
 		var cy: float = -half_h + fposmod(-_t * (_speed * 0.65) + float(ci) * 89.0, _span_h)
 		for link: int in range(4):
-			var lp := Vector2(cx + sin(_t * 2.2 + float(ci + link)) * 2.5, cy + float(link) * 8.0)
+			var lp := Vector2(roundf(cx + sin(_t * 2.2 + float(ci + link)) * 2.5), roundf(cy + float(link) * 8.0))
 			draw_circle(lp, 2.5, night)
 			draw_arc(lp, 2.5, 0.0, TAU, 8, Color(apricot, 0.45), 1.0)

@@ -364,8 +364,8 @@
       "sheet": "theme_forge_deep",
       "prop": "foundry_crane_hook",
       "pos": [
-        432,
-        104
+        368,
+        64
       ],
       "layer": "sort",
       "flip_x": true,

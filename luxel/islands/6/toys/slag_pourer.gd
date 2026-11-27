@@ -204,9 +204,11 @@ func tick(dt: float) -> void:
 		_was_cooled_signal = true
 		set_powered(true)
 		emit_power(true)
+		queue_redraw()
 	elif not any_cooled_block and _was_cooled_signal:
 		_was_cooled_signal = false
 		set_powered(false)
+		queue_redraw()
 
 	match state:
 		PourState.DORMANT:
@@ -325,6 +327,10 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0, 5.0, 4.0, 1.0), c_cream)
 	elif cooled:
 		draw_rect(Rect2(-3.0, 4.0, 6.0, 1.0), c_apr)
+	elif not needs_var.is_empty() and not _var_allows_pour():
+		# Sealed cold-iron damper bar when heat flow is LOW (reads "flip damper to SURGE")
+		draw_rect(Rect2(-4.0, 4.0, 8.0, 2.0), PAL["sky"] as Color)
+		draw_rect(Rect2(-3.0, 4.0, 6.0, 1.0), c_ice)
 
 	# Valve status pip in riveted bezel on front plate
 	var pip_c: Color = c_gold if pouring else (c_ice if _was_cooled_signal else (c_coral if cooled else c_night))

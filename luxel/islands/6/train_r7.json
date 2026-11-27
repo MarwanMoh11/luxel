@@ -421,8 +421,8 @@
       "sheet": "theme_ember_express_roof",
       "prop": "roof_signal_lantern",
       "pos": [
-        504,
-        248
+        488,
+        216
       ],
       "layer": "sort",
       "flip_x": false,

@@ -60,10 +60,15 @@ func _draw() -> void:
 	if _surge:
 		draw_rect(Rect2(-6.0, -4.0, 12.0, 8.0), c_coral)
 		draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), c_gold)
-		var px: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 6.0) * 2.0)
-		draw_rect(Rect2(px - 1.0, -1.0, 2.0, 2.0), c_cream)
+		# Rising surge chevron (greyscale-distinct from LOW)
+		var py: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 6.0) * 1.0)
+		draw_rect(Rect2(-1.0, -3.0 + py, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-2.0, -2.0 + py, 4.0, 1.0), c_cream)
+		draw_rect(Rect2(-3.0, -1.0 + py, 6.0, 1.0), c_cream)
 	else:
 		draw_rect(Rect2(-6.0, -4.0, 12.0, 8.0), PAL["deep"] as Color)
 		draw_rect(Rect2(-4.0, 0.0, 8.0, 3.0), PAL["teal"] as Color)
-		draw_rect(Rect2(-2.0, 1.0, 4.0, 1.0), c_ice)
+		# Flat sealed bar + cool low pip (greyscale-distinct from SURGE)
+		draw_rect(Rect2(-4.0, 1.0, 8.0, 1.0), c_ice)
+		draw_rect(Rect2(-1.0, 2.0, 2.0, 1.0), c_ice)
 	_draw_signal_pulses()

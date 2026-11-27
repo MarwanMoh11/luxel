@@ -34,7 +34,7 @@
       "to_region": "orrery_r9",
       "to_spawn": [
         128,
-        48
+        64
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -86,16 +86,16 @@
       "kind": "astronomer",
       "pos": [
         248,
-        168
+        180
       ],
       "route": [
         [
           168,
-          168
+          180
         ],
         [
           328,
-          168
+          180
         ]
       ],
       "perches": [
@@ -198,7 +198,7 @@
       "kind": "star_node",
       "pos": [
         344,
-        104
+        88
       ],
       "props": {
         "pinned": true
@@ -354,8 +354,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        368,
-        164
+        396,
+        144
       ],
       "layer": "sort",
       "flip_x": false,

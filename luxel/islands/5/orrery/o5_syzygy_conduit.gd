@@ -59,20 +59,32 @@ func _draw() -> void:
 	if not visible:
 		return
 	var pal: Dictionary = LxPalette.PAL
+	var fr: bool = LxHudFx.flash_reduced()
 	var gold: Color = pal["gold"] as Color
 	var cream: Color = pal["cream"] as Color
 	var sky: Color = pal["sky"] as Color
 	var deep: Color = pal["deep"] as Color
+	var pulse: float = 0.85 if fr else (0.76 + 0.24 * sin(_pulse_t * 3.0))
 	var col: Color = gold if aligned else deep
-	draw_arc(Vector2.ZERO, 14.0, 0.0, TAU, 24, col, 1.5)
-	draw_arc(Vector2.ZERO, 9.0, 0.0, TAU, 18, cream if aligned else sky, 1.0)
+	draw_arc(Vector2.ZERO, 14.0, 0.0, TAU, 24, Color(col, 0.90 if aligned else 0.80), 1.5)
+	draw_arc(Vector2.ZERO, 9.0, 0.0, TAU, 18, Color(cream if aligned else sky, pulse), 1.0)
 	if region != null:
-		var pts: Array[Vector2] = []
 		for sid: String in star_ids:
 			var it: LxInteractable = region.find_interactable(sid)
-			if it != null and bool(it.get("lit")):
-				pts.append(it.pos - pos)
-		for p: Vector2 in pts:
-			draw_line(Vector2.ZERO, p, Color(gold if aligned else sky, 0.55), 1.5)
+			if it == null:
+				continue
+			var rel: Vector2 = (it.pos - pos).round()
+			if bool(it.get("lit")):
+				draw_line(Vector2.ZERO, rel, Color(gold if aligned else sky, 0.62 * pulse), 1.5)
+			else:
+				# Subtle chalk guide ticks toward unlit syzygy stars for instant puzzle sightline
+				var dist: float = rel.length()
+				if dist > 4.0:
+					var dn: Vector2 = rel / dist
+					var cur: float = 14.0
+					while cur < dist - 8.0:
+						var seg_end: float = minf(cur + 4.0, dist - 8.0)
+						draw_line((dn * cur).round(), (dn * seg_end).round(), Color(sky, 0.24), 1.0)
+						cur += 10.0
 	if aligned:
-		draw_circle(Vector2.ZERO, 4.0, cream)
+		draw_circle(Vector2.ZERO, 4.0, Color(cream, pulse))

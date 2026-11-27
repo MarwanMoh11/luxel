@@ -259,9 +259,9 @@
       "prop": "brass_steam_pipe_arch",
       "pos": [
         272,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.1
@@ -402,7 +402,7 @@
       "sheet": "theme_iron_colossus",
       "prop": "colossus_lantern_post",
       "pos": [
-        264,
+        216,
         72
       ],
       "layer": "sort",

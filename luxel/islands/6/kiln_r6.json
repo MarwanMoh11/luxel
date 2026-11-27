@@ -180,13 +180,13 @@
       "id": "pour_kiln_r6_n",
       "kind": "slag_pourer",
       "pos": [
-        200,
+        184,
         96
       ],
       "props": {
         "spawn_pos": [
-          200,
-          112
+          184,
+          116
         ],
         "spawn_kind": "block",
         "auto_pour": false,
@@ -342,8 +342,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        184,
-        152
+        160,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -354,8 +354,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        392,
-        152
+        416,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -366,8 +366,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        288,
-        176
+        248,
+        184
       ],
       "layer": "sort",
       "flip_x": false,

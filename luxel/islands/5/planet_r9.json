@@ -365,9 +365,9 @@
         232,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {
@@ -434,8 +434,8 @@
       "sheet": "theme_planetarium",
       "prop": "brass_telescope_stand",
       "pos": [
-        248,
-        280
+        216,
+        276
       ],
       "layer": "sort",
       "flip_x": false,

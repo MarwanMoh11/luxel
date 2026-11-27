@@ -357,9 +357,9 @@
       "prop": "hanging_strap_arch",
       "pos": [
         208,
-        48
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

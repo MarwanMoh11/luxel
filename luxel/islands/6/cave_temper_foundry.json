@@ -329,8 +329,8 @@
       "sheet": "theme_cave_6",
       "prop": "cavern_brazier_bowl",
       "pos": [
-        128,
-        144
+        152,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -365,8 +365,8 @@
       "sheet": "theme_cave_6",
       "prop": "cavern_brazier_bowl",
       "pos": [
-        344,
-        152
+        320,
+        176
       ],
       "layer": "sort",
       "flip_x": false,

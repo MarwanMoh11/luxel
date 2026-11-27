@@ -412,8 +412,8 @@
       "sheet": "theme_iron_colossus",
       "prop": "colossus_lantern_post",
       "pos": [
-        408,
-        168
+        376,
+        164
       ],
       "layer": "sort",
       "flip_x": false,

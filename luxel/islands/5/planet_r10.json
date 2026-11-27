@@ -39,7 +39,7 @@
       "to_region": "planet_r1",
       "to_spawn": [
         240,
-        56
+        64
       ]
     },
     {
@@ -408,9 +408,9 @@
         240,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {
@@ -429,8 +429,8 @@
       "sheet": "theme_planetarium",
       "prop": "zodiac_pillar_stone",
       "pos": [
-        288,
-        48
+        308,
+        44
       ],
       "layer": "sort",
       "flip_x": true,

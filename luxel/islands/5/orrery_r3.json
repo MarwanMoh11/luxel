@@ -51,7 +51,7 @@
       "to_region": "orrery_r11",
       "to_spawn": [
         224,
-        48
+        56
       ],
       "requires_moves": [],
       "requires_flags": [],
@@ -243,8 +243,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        136,
-        212
+        120,
+        184
       ],
       "layer": "sort",
       "flip_x": false,

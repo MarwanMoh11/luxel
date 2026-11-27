@@ -182,15 +182,35 @@ func _draw() -> void:
 	super._draw()
 	if not active or (lens_only and _revealed_t <= 0.0):
 		return
-	# Distinct switchable center crystal prism diamond (tells player: shoot center to flip!)
+	var fr: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
 	var d_col: Color = (PAL["cream"] if is_push else PAL["ice"]) as Color
 	var e_col: Color = (PAL["coral"] if is_push else PAL["sky"]) as Color
+	var rim_col: Color = (PAL["gold"] if is_push else PAL["sky"]) as Color
+	var collar_a: float = 0.62 if fr else 0.88
+
+	# Calm steady outer polarity guide ring + cardinal direction ticks for instant still-frame readability
+	draw_arc(Vector2.ZERO, roundf(field_radius * 0.56), 0.0, TAU, 24, Color(rim_col, 0.24 if fr else 0.16), 1.0)
+	for ci: int in range(4):
+		var cdir := Vector2.from_angle(float(ci) * PI * 0.5)
+		var r_a: float = 11.0 if is_push else 14.0
+		var r_b: float = 14.0 if is_push else 11.0
+		draw_line((cdir * r_a).round(), (cdir * r_b).round(), Color(e_col, collar_a), 1.0)
+		draw_rect(Rect2((cdir * r_b).round(), Vector2.ONE), Color(d_col, collar_a))
+
+	# Distinct switchable center crystal prism diamond (tells player: shoot center to flip!)
 	var diamond := PackedVector2Array([Vector2(0.0, -5.0), Vector2(5.0, 0.0), Vector2(0.0, 5.0), Vector2(-5.0, 0.0)])
-	draw_colored_polygon(diamond, PAL["void"] as Color)
-	var inner := PackedVector2Array([Vector2(0.0, -3.5), Vector2(3.5, 0.0), Vector2(0.0, 3.5), Vector2(-3.5, 0.0)])
-	draw_colored_polygon(inner, d_col)
+	draw_colored_polygon(diamond, c_void)
+	var inner := PackedVector2Array([Vector2(0.0, -3.0), Vector2(3.0, 0.0), Vector2(0.0, 3.0), Vector2(-3.0, 0.0)])
+	draw_colored_polygon(inner, Color(d_col, 0.88 if fr else 1.0))
 	for i: int in range(4):
-		draw_line(diamond[i], diamond[(i + 1) % 4], e_col, 1.0)
+		draw_line(diamond[i], diamond[(i + 1) % 4], Color(e_col, collar_a), 1.0)
 	if not is_push:
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["deep"] as Color)
+	elif not fr and _flip_flash_t > 0.0:
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	if _flip_flash_t > 0.0 and fr:
+		# Reduced-flash steady confirmation halo instead of bright expanding strobe
+		var fu: float = clampf(_flip_flash_t / 0.28, 0.0, 1.0)
+		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, Color(rim_col, fu * 0.55), 1.0)
 	_draw_signal_pulses()

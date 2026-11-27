@@ -303,8 +303,8 @@
       "sheet": "theme_planetarium",
       "prop": "floating_prism_lens",
       "pos": [
-        160,
-        40
+        156,
+        72
       ],
       "layer": "sort",
       "flip_x": false,
@@ -315,8 +315,8 @@
       "sheet": "theme_planetarium",
       "prop": "planetarium_lantern",
       "pos": [
-        76,
-        44
+        68,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

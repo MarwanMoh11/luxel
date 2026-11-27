@@ -12,7 +12,7 @@
   "name_key": "ISL6_COL_R5",
   "spawn": [
     256,
-    272
+    260
   ],
   "zones": [
     {
@@ -85,7 +85,7 @@
       "kind": "room_anchor",
       "pos": [
         256,
-        272
+        260
       ],
       "props": {
         "auto": true
@@ -171,7 +171,7 @@
       "kind": "piston_marshal",
       "pos": [
         256,
-        144
+        160
       ],
       "zone": "col_r5",
       "arena": [
@@ -253,9 +253,9 @@
       "prop": "brass_steam_pipe_arch",
       "pos": [
         256,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
@@ -360,7 +360,7 @@
       "sheet": "theme_iron_colossus",
       "prop": "colossus_lantern_post",
       "pos": [
-        248,
+        208,
         72
       ],
       "layer": "sort",

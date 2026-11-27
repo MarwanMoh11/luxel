@@ -227,9 +227,9 @@
       "prop": "basalt_forge_arch",
       "pos": [
         224,
-        40
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -238,8 +238,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        128,
-        136
+        96,
+        128
       ],
       "layer": "sort",
       "flip_x": false,

@@ -449,8 +449,8 @@
       "sheet": "theme_forge_deep",
       "prop": "chained_slag_cauldron",
       "pos": [
-        592,
-        416
+        640,
+        424
       ],
       "layer": "sort",
       "flip_x": false,
@@ -521,8 +521,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        648,
-        152
+        616,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -533,8 +533,8 @@
       "sheet": "theme_forge_deep",
       "prop": "molten_slag_crucible",
       "pos": [
-        648,
-        312
+        608,
+        336
       ],
       "layer": "sort",
       "flip_x": false,
@@ -545,8 +545,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        568,
-        408
+        528,
+        416
       ],
       "layer": "sort",
       "flip_x": true,

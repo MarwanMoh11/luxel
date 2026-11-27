@@ -353,9 +353,9 @@
         282,
         46
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

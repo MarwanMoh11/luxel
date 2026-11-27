@@ -2369,8 +2369,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        336,
-        144
+        312,
+        180
       ],
       "layer": "sort",
       "flip_x": false,
@@ -2381,8 +2381,8 @@
       "sheet": "island5_scenery",
       "prop": "broken_astrolabe_ring",
       "pos": [
-        400,
-        144
+        424,
+        184
       ],
       "layer": "sort",
       "flip_x": false,
@@ -2393,8 +2393,8 @@
       "sheet": "island5_scenery",
       "prop": "starlight_lantern_post",
       "pos": [
-        640,
-        912
+        620,
+        896
       ],
       "layer": "sort",
       "flip_x": false,

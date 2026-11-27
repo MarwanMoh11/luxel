@@ -39,7 +39,7 @@
       "to_region": "planet_r10",
       "to_spawn": [
         240,
-        48
+        64
       ]
     },
     {
@@ -171,14 +171,14 @@
       "kind": "the_zodiac",
       "pos": [
         256,
-        168
+        224
       ],
       "zone": "pl_r11",
       "arena": [
         112,
-        88,
+        104,
         288,
-        208
+        200
       ]
     }
   ],
@@ -203,7 +203,7 @@
       "prop": "zodiac_floor_dial",
       "pos": [
         256,
-        192
+        216
       ],
       "layer": "ground",
       "flip_x": false,
@@ -217,9 +217,9 @@
         256,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

@@ -459,8 +459,8 @@
       "sheet": "theme_forge_deep",
       "prop": "quench_barrel_tub",
       "pos": [
-        304,
-        240
+        336,
+        208
       ],
       "layer": "sort",
       "flip_x": true,

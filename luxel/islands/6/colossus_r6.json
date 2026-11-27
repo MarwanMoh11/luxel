@@ -367,9 +367,9 @@
       "prop": "brass_steam_pipe_arch",
       "pos": [
         288,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

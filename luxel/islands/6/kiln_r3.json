@@ -299,8 +299,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        80,
-        116
+        56,
+        96
       ],
       "layer": "sort",
       "flip_x": false,
@@ -312,7 +312,7 @@
       "prop": "slag_crucible",
       "pos": [
         156,
-        88
+        56
       ],
       "layer": "sort",
       "flip_x": false,

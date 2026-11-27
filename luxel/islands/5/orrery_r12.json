@@ -337,8 +337,8 @@
       "sheet": "theme_planetarium",
       "prop": "brass_star_globe",
       "pos": [
-        56,
-        120
+        96,
+        108
       ],
       "layer": "sort",
       "flip_x": false,

@@ -39,7 +39,7 @@
       "to_region": "meteor_r10",
       "to_spawn": [
         240,
-        56
+        64
       ]
     },
     {
@@ -201,12 +201,12 @@
       "kind": "twin_moons",
       "pos": [
         256,
-        176
+        224
       ],
       "zone": "mv_r11",
       "arena": [
         128,
-        104,
+        120,
         256,
         176
       ]
@@ -251,7 +251,7 @@
       "prop": "gravity_floor_seal",
       "pos": [
         256,
-        192
+        216
       ],
       "layer": "ground",
       "flip_x": false,
@@ -265,9 +265,9 @@
         256,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

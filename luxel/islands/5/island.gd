@@ -365,7 +365,7 @@ func get_main_path_waypoints() -> Array[Dictionary]:
 			"id": "wp_5_boss",
 			"region": "orrery_r10",
 			"zone": "orrery_r10",
-			"pos": [248.0, 168.0],
+			"pos": [248.0, 180.0],
 			"action": "defeat_boss",
 			"target": "boss_astronomer",
 			"grants_flag": "boss_astronomer_defeated",

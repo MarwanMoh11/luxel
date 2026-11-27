@@ -288,7 +288,7 @@
       "id": "lamp_fl_r3_e",
       "kind": "road_lamp",
       "pos": [
-        520,
+        504,
         144
       ],
       "props": {
@@ -356,8 +356,8 @@
       "sheet": "theme_freefall",
       "prop": "broken_orrery_ring",
       "pos": [
-        44,
-        144
+        36,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -380,7 +380,7 @@
       "sheet": "theme_freefall",
       "prop": "shattered_balustrade",
       "pos": [
-        288,
+        264,
         128
       ],
       "layer": "sort",
@@ -419,9 +419,9 @@
         532,
         152
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

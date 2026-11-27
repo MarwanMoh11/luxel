@@ -131,8 +131,12 @@ class RuleRuntime:
 					draw_rect(Rect2(pt, Vector2(2.0, 2.0)), Color(col, a))
 
 		if _tangent_lock_well.is_finite():
+			var wp: Vector2 = _tangent_lock_well.round()
 			var c_orb := Color(PAL["gold"] as Color, 0.55 if fr else 0.78)
-			draw_arc(_tangent_lock_well.round(), _tangent_lock_r, 0.0, TAU, 24, c_orb, 1.2)
+			draw_arc(wp, roundf(_tangent_lock_r), 0.0, TAU, 24, c_orb, 1.2)
+			for ci: int in range(4):
+				var cp: Vector2 = (wp + Vector2.from_angle(float(ci) * PI * 0.5) * _tangent_lock_r).round()
+				draw_rect(Rect2(cp, Vector2.ONE), Color(PAL["cream"] as Color, 0.62 if fr else 0.88))
 
 
 class RuleHudBadge:

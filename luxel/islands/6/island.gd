@@ -7,57 +7,22 @@ const SEAL_ID: String = "kiln_gate_seal"
 const BOSS_ID: String = "kilnmother"
 const MINI_BOSS_KIND: String = "forge_warden"
 
-const REQUIRED_BEACONS: Array[String] = [
-	"beacon_6_1",
-	"beacon_6_2",
-	"beacon_6_3",
-]
+const REQUIRED_BEACONS: Array[String] = ["beacon_6_1", "beacon_6_2", "beacon_6_3"]
 
 const REGIONS: Array[String] = [
-	"overworld",
-	"ow_rail_yard",
-	"ow_giant_stride",
-	"ow_slag_basin",
-	"ow_cinder_overlook",
-	"cave_temper_foundry",
-	"cave_slag_sluice",
-	"cave_magnet_vault",
-	"cave_bellows_trial",
-	"cave_sunflare_crypt",
-	"superboss_first_forge",
-	"kiln_r1",
-	"kiln_r2",
-	"kiln_r3",
-	"kiln_r4",
-	"kiln_r5",
-	"kiln_r6",
-	"kiln_r7",
-	"kiln_r8",
-	"kiln_r9",
-	"kiln_r10",
-	"kiln_r11",
-	"kiln_r12",
-	"kiln_r13",
-	"kiln_r14",
-	"kiln_r15",
-	"kiln_r16",
-	"kiln_r17",
-	"kiln_r18",
+	"overworld", "ow_rail_yard", "ow_giant_stride", "ow_slag_basin", "ow_cinder_overlook",
+	"cave_temper_foundry", "cave_slag_sluice", "cave_magnet_vault", "cave_bellows_trial",
+	"cave_sunflare_crypt", "superboss_first_forge",
+	"kiln_r1", "kiln_r2", "kiln_r3", "kiln_r4", "kiln_r5", "kiln_r6",
+	"kiln_r7", "kiln_r8", "kiln_r9", "kiln_r10", "kiln_r11", "kiln_r12",
+	"kiln_r13", "kiln_r14", "kiln_r15", "kiln_r16", "kiln_r17", "kiln_r18",
 ]
 
 const MOTION_REGIONS: Array[String] = [
-	"overworld",
-	"ow_rail_yard",
-	"ow_giant_stride",
-	"ow_slag_basin",
-	"ow_cinder_overlook",
+	"overworld", "ow_rail_yard", "ow_giant_stride", "ow_slag_basin", "ow_cinder_overlook",
 ]
 
-const SEAL_DUNGEON_FLAGS: Array[String] = [
-	"express_cleared",
-	"colossus_cleared",
-	"crash_done",
-]
+const SEAL_DUNGEON_FLAGS: Array[String] = ["express_cleared", "colossus_cleared", "crash_done"]
 
 var _events: LxEventBus = null
 var _state: LxGameState = null
@@ -217,192 +182,36 @@ func get_region_list() -> PackedStringArray:
 	return PackedStringArray(REGIONS)
 
 
+func _wp(id: String, region: String, zone: String, pos: Array, action: String, target: String, moves: Array, flags: Array, extra: Dictionary = {}) -> Dictionary:
+	var d: Dictionary = {
+		"id": id, "region": region, "zone": zone, "pos": pos,
+		"action": action, "target": target,
+		"requires_moves": moves, "requires_flags": flags,
+	}
+	for k: Variant in extra.keys():
+		d[k] = extra[k]
+	return d
+
+
 func get_main_path_waypoints() -> Array[Dictionary]:
 	return [
-		{
-			"id": "wp_isl6_beacon_1",
-			"region": "overworld",
-			"zone": "ash_drifts",
-			"pos": [440.0, 120.0],
-			"action": "light_beacon",
-			"target": "beacon_6_1",
-			"grants_flag": "beacon_6_1",
-			"requires_moves": ["bolt", "dash", "throw"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_isl6_beacon_2",
-			"region": "overworld",
-			"zone": "slag_foundry",
-			"pos": [552.0, 440.0],
-			"action": "light_beacon",
-			"target": "beacon_6_2",
-			"grants_flag": "beacon_6_2",
-			"requires_moves": ["bolt", "dash", "throw", "beam"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_isl6_beacon_3",
-			"region": "overworld",
-			"zone": "furnace_causeway",
-			"pos": [1016.0, 120.0],
-			"action": "light_beacon",
-			"target": "beacon_6_3",
-			"grants_flag": "beacon_6_3",
-			"requires_moves": ["bolt", "dash", "throw", "wings"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_enter_kiln",
-			"region": "overworld",
-			"zone": "kiln_approach",
-			"pos": [1312.0, 80.0],
-			"action": "enter_exit",
-			"target": "exit_to_kiln",
-			"to_region": "kiln_r1",
-			"requires_moves": ["dash", "throw", "wings", "lens"],
-			"requires_flags": ["beacon_6_1", "beacon_6_2", "beacon_6_3"],
-		},
-		{
-			"id": "wp_kiln_key_1",
-			"region": "kiln_r2",
-			"zone": "kiln_r2",
-			"pos": [72.0, 168.0],
-			"action": "collect_key",
-			"target": "wick_key_6_1",
-			"grants_flag": "wick_key_6_1",
-			"requires_moves": ["throw"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_kiln_r3_combat",
-			"region": "kiln_r3",
-			"zone": "kiln_r3",
-			"pos": [272.0, 24.0],
-			"action": "clear_room",
-			"target": "door_kiln_r3_north",
-			"requires_moves": ["dash", "throw"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_kiln_r4_crossing",
-			"region": "kiln_r4",
-			"zone": "kiln_r4",
-			"pos": [344.0, 104.0],
-			"action": "unlock_door",
-			"target": "door_kiln_r4_east",
-			"requires_moves": ["wings", "lens"],
-			"requires_flags": ["wick_key_6_1"],
-		},
-		{
-			"id": "wp_shrine_sunflare",
-			"region": "kiln_r5",
-			"zone": "kiln_r5",
-			"pos": [200.0, 104.0],
-			"action": "claim_shrine",
-			"target": "shrine_sunflare",
-			"grants_move": "sunflare",
-			"requires_moves": ["wings", "lens"],
-			"requires_flags": ["wick_key_6_1"],
-		},
-		{
-			"id": "wp_kiln_miniboss",
-			"region": "kiln_r6",
-			"zone": "kiln_r6",
-			"pos": [288.0, 128.0],
-			"action": "defeat_miniboss",
-			"target": "mini_forge_warden",
-			"grants_flag": "wick_key_6_2",
-			"requires_moves": ["sunflare"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_kiln_furnace_hall",
-			"region": "kiln_r7",
-			"zone": "kiln_r7",
-			"pos": [48.0, 120.0],
-			"action": "solve_puzzle",
-			"target": "door_kiln_r7_west",
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["wick_key_6_2"],
-		},
-		{
-			"id": "wp_kiln_r8_combat",
-			"region": "kiln_r8",
-			"zone": "kiln_r8",
-			"pos": [24.0, 136.0],
-			"action": "clear_room",
-			"target": "door_kiln_r8_west",
-			"requires_moves": ["sunflare"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_kiln_boss_key",
-			"region": "kiln_r9",
-			"zone": "kiln_r9",
-			"pos": [72.0, 136.0],
-			"action": "collect_key",
-			"target": "keepers_flame_6",
-			"grants_flag": "keepers_flame_6",
-			"requires_moves": ["sunflare"],
-			"requires_flags": [],
-		},
-		{
-			"id": "wp_kiln_clamp_west",
-			"region": "kiln_r13",
-			"zone": "kiln_r13",
-			"pos": [432.0, 144.0],
-			"action": "solve_puzzle",
-			"target": "pull_r13_clamp_w",
-			"grants_flag": "kiln_cast_west",
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["keepers_flame_6"],
-		},
-		{
-			"id": "wp_kiln_clamp_east",
-			"region": "kiln_r16",
-			"zone": "kiln_r16",
-			"pos": [72.0, 112.0],
-			"action": "solve_puzzle",
-			"target": "pull_r16_clamp_e",
-			"grants_flag": "kiln_cast_east",
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["kiln_cast_west"],
-		},
-		{
-			"id": "wp_kiln_boss",
-			"region": "kiln_r10",
-			"zone": "kiln_r10",
-			"pos": [256.0, 136.0],
-			"action": "defeat_boss",
-			"target": "boss_kilnmother",
-			"grants_flag": "boss_kilnmother_defeated",
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["keepers_flame_6", "kiln_cast_west", "kiln_cast_east"],
-		},
-		{
-			"id": "wp_great_lamp_6",
-			"region": "kiln_r10",
-			"zone": "kiln_r10",
-			"pos": [256.0, 72.0],
-			"action": "light_great_lamp",
-			"target": "great_lamp_6",
-			"grants_flag": "great_lamp_6",
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["boss_kilnmother_defeated"],
-		},
-		{
-			"id": "wp_bridge_to_island_7",
-			"region": "kiln_r10",
-			"zone": "kiln_r10",
-			"pos": [256.0, 8.0],
-			"action": "enter_exit",
-			"target": "exit_r10_bridge_7",
-			"to_region": "overworld",
-			"to_island": 7,
-			"requires_moves": ["sunflare"],
-			"requires_flags": ["great_lamp_6"],
-		},
+		_wp("wp_isl6_beacon_1", "overworld", "ash_drifts", [440.0, 120.0], "light_beacon", "beacon_6_1", ["bolt", "dash", "throw"], [], {"grants_flag": "beacon_6_1"}),
+		_wp("wp_isl6_beacon_2", "overworld", "slag_foundry", [552.0, 440.0], "light_beacon", "beacon_6_2", ["bolt", "dash", "throw", "beam"], [], {"grants_flag": "beacon_6_2"}),
+		_wp("wp_isl6_beacon_3", "overworld", "furnace_causeway", [1016.0, 120.0], "light_beacon", "beacon_6_3", ["bolt", "dash", "throw", "wings"], [], {"grants_flag": "beacon_6_3"}),
+		_wp("wp_enter_kiln", "overworld", "kiln_approach", [1312.0, 80.0], "enter_exit", "exit_to_kiln", ["dash", "throw", "wings", "lens"], ["beacon_6_1", "beacon_6_2", "beacon_6_3"], {"to_region": "kiln_r1"}),
+		_wp("wp_kiln_key_1", "kiln_r2", "kiln_r2", [72.0, 168.0], "collect_key", "wick_key_6_1", ["throw"], [], {"grants_flag": "wick_key_6_1"}),
+		_wp("wp_kiln_r3_combat", "kiln_r3", "kiln_r3", [272.0, 24.0], "clear_room", "door_kiln_r3_north", ["dash", "throw"], []),
+		_wp("wp_kiln_r4_crossing", "kiln_r4", "kiln_r4", [344.0, 104.0], "unlock_door", "door_kiln_r4_east", ["wings", "lens"], ["wick_key_6_1"]),
+		_wp("wp_shrine_sunflare", "kiln_r5", "kiln_r5", [200.0, 104.0], "claim_shrine", "shrine_sunflare", ["wings", "lens"], ["wick_key_6_1"], {"grants_move": "sunflare"}),
+		_wp("wp_kiln_miniboss", "kiln_r6", "kiln_r6", [288.0, 128.0], "defeat_miniboss", "mini_forge_warden", ["sunflare"], [], {"grants_flag": "wick_key_6_2"}),
+		_wp("wp_kiln_furnace_hall", "kiln_r7", "kiln_r7", [48.0, 120.0], "solve_puzzle", "door_kiln_r7_west", ["sunflare"], ["wick_key_6_2"]),
+		_wp("wp_kiln_r8_combat", "kiln_r8", "kiln_r8", [24.0, 136.0], "clear_room", "door_kiln_r8_west", ["sunflare"], []),
+		_wp("wp_kiln_boss_key", "kiln_r9", "kiln_r9", [72.0, 136.0], "collect_key", "keepers_flame_6", ["sunflare"], [], {"grants_flag": "keepers_flame_6"}),
+		_wp("wp_kiln_clamp_west", "kiln_r13", "kiln_r13", [432.0, 144.0], "solve_puzzle", "pull_r13_clamp_w", ["sunflare"], ["keepers_flame_6"], {"grants_flag": "kiln_cast_west"}),
+		_wp("wp_kiln_clamp_east", "kiln_r16", "kiln_r16", [72.0, 112.0], "solve_puzzle", "pull_r16_clamp_e", ["sunflare"], ["kiln_cast_west"], {"grants_flag": "kiln_cast_east"}),
+		_wp("wp_kiln_boss", "kiln_r10", "kiln_r10", [256.0, 136.0], "defeat_boss", "boss_kilnmother", ["sunflare"], ["keepers_flame_6", "kiln_cast_west", "kiln_cast_east"], {"grants_flag": "boss_kilnmother_defeated"}),
+		_wp("wp_great_lamp_6", "kiln_r10", "kiln_r10", [256.0, 72.0], "light_great_lamp", "great_lamp_6", ["sunflare"], ["boss_kilnmother_defeated"], {"grants_flag": "great_lamp_6"}),
+		_wp("wp_bridge_to_island_7", "kiln_r10", "kiln_r10", [256.0, 8.0], "enter_exit", "exit_r10_bridge_7", ["sunflare"], ["great_lamp_6"], {"to_region": "overworld", "to_island": 7}),
 	]
 
 
@@ -453,7 +262,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("DUNGEON_6_NAME", "title", 3.5)
 			if _events != null:
 				_events.sfx_requested.emit("furnace_draw", Vector2.ZERO, false)
-				_events.shake_requested.emit(0.08)
+				_emit_shake(0.08)
 		if _events != null:
 			var mb_live: bool = region_id == "kiln_r6" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
 			var weaver_live: bool = region_id == "kiln_r15" and st != null and not st.defeated_bosses.has("crucible_weaver") and not bool(st.story_flags.get("crucible_weaver_defeated", false))
@@ -513,7 +322,7 @@ func _trigger_seal_shatter() -> void:
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.28)
+		_emit_shake(0.28)
 		_emit_narration("CUE_SEAL_SHATTER_6", "title", 3.5)
 		_emit_narration("DUNGEON_6_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_6")
@@ -539,13 +348,13 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if boss_id == "crucible_weaver":
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("isl6_boss_minor_p2")
-			_events.shake_requested.emit(0.18)
+			_emit_shake(0.18)
 		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island6_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+		_emit_shake(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
@@ -598,6 +407,11 @@ func _on_great_lamp_relit(island_id: int) -> void:
 		_emit_narration("ISL6_RELIGHT", "title", 4.0)
 		_emit_narration("ISL6_BRIDGE", "narration", 4.0)
 		_events.save_requested.emit("great_lamp_6")
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _emit_narration(string_id: String, style: String, duration: float) -> void:

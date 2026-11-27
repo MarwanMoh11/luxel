@@ -432,24 +432,24 @@
       "sheet": "theme_planetarium",
       "prop": "dome_arch_rib",
       "pos": [
-        248,
-        336
+        240,
+        316
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {
       "sheet": "theme_planetarium",
       "prop": "dome_arch_rib",
       "pos": [
-        360,
-        336
+        368,
+        316
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": true,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

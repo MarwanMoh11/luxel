@@ -504,8 +504,8 @@
       "sheet": "theme_iron_colossus",
       "prop": "molten_crucible_vat",
       "pos": [
-        88,
-        232
+        56,
+        208
       ],
       "layer": "sort",
       "flip_x": false,

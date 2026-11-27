@@ -337,8 +337,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        224,
-        40
+        264,
+        36
       ],
       "layer": "sort",
       "flip_x": false,
@@ -373,8 +373,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        200,
-        40
+        184,
+        36
       ],
       "layer": "sort",
       "flip_x": false,

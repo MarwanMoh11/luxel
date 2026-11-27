@@ -234,8 +234,8 @@
       "sheet": "island6_scenery",
       "prop": "hearth_brazier_tall",
       "pos": [
-        312,
-        148
+        304,
+        160
       ],
       "layer": "sort",
       "flip_x": false,
@@ -306,8 +306,8 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        376,
-        104
+        360,
+        72
       ],
       "layer": "sort",
       "flip_x": true,

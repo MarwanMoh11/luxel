@@ -252,8 +252,8 @@
       "sheet": "theme_cave_6",
       "prop": "stalagmite_cluster",
       "pos": [
-        352,
-        264
+        376,
+        280
       ],
       "layer": "sort",
       "flip_x": true,

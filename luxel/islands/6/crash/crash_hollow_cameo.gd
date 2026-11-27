@@ -118,7 +118,7 @@ func _draw() -> void:
 		draw_rect(Rect2(5.0, -5.0, 2.0, 2.0), c_cream)
 	elif _playing and _stage_t >= 0.95 and _stage_t <= 1.55:
 		var u: float = clampf((_stage_t - 0.95) / 0.22, 0.0, 1.0)
-		var tip: Vector2 = Vector2(5.0, -4.0).lerp(cp + Vector2(6.0, 2.0), u)
+		var tip: Vector2 = Vector2(5.0, -4.0).lerp(cp + Vector2(6.0, 2.0), u).round()
 		draw_line(Vector2(5.0, -4.0), tip, c_plum, 4.5)
 		draw_line(Vector2(5.0, -4.0), tip, c_rose, 2.4)
 		draw_line(Vector2(5.0, -4.0), tip, c_cream, 1.0)

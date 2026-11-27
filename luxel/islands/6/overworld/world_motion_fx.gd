@@ -263,7 +263,7 @@ func _draw_rail_yard_motion(ease_u: float) -> void:
 		_draw_express_live_fx(Vector2(128.0 + slide_x, 112.0), 240.0, true, _anim_t > 0.0)
 		# Glowing boarding archway beacon over Track 1 door when docked
 		if _anim_t <= 0.05:
-			var bp: float = 0.55 + 0.45 * sin(_clock * 4.2)
+			var bp: float = 0.85 if LxHudFx.flash_reduced() else (0.55 + 0.45 * sin(_clock * 4.2))
 			draw_rect(Rect2(236.0, 44.0, 24.0, 3.0), Color(PAL["gold"] as Color, bp))
 			draw_rect(Rect2(244.0, 40.0, 8.0, 3.0), Color(PAL["cream"] as Color, bp))
 	elif _anim_t > 0.0 and _prev_shift == "station_a":
@@ -282,7 +282,7 @@ func _draw_giant_stride_motion(ease_u: float) -> void:
 		var drop_y: float = roundf(lerpf(-92.0, 0.0, ease_u)) if _anim_t > 0.0 else 0.0
 		_draw_colossus_limb_fx(Rect2(352.0, 368.0 + drop_y, 128.0, 64.0), _anim_t > 0.0)
 		# Ankle hatch beacon pulse inviting Wick inside
-		var pulse: float = 0.55 + 0.45 * sin(_clock * 4.0)
+		var pulse: float = 0.85 if LxHudFx.flash_reduced() else (0.55 + 0.45 * sin(_clock * 4.0))
 		draw_rect(Rect2(406.0, 398.0 + drop_y, 20.0, 8.0), Color(PAL["gold"] as Color, pulse * 0.85))
 		draw_rect(Rect2(410.0, 400.0 + drop_y, 12.0, 4.0), Color(PAL["cream"] as Color, pulse))
 	elif _anim_t > 0.0 and _prev_shift == "station_b":
@@ -315,8 +315,9 @@ func _draw_cinder_overlook_motion(ease_u: float) -> void:
 
 
 func _draw_express_live_fx(origin: Vector2, length_px: float, facing_east: bool, moving: bool) -> void:
-	var pulse: float = 0.65 + 0.35 * sin(_clock * 5.0)
-	var head_x: float = origin.x + (length_px if facing_east else 0.0)
+	var fred: bool = LxHudFx.flash_reduced()
+	var pulse: float = 0.85 if fred else (0.65 + 0.35 * sin(_clock * 5.0))
+	var head_x: float = roundf(origin.x + (length_px if facing_east else 0.0))
 	var dir_x: float = 1.0 if facing_east else -1.0
 	if moving:
 		draw_rect(Rect2(origin.x - 2.0, origin.y - 11.0, length_px + 4.0, 28.0), Color(PAL["void"] as Color, 0.88))
@@ -325,19 +326,19 @@ func _draw_express_live_fx(origin: Vector2, length_px: float, facing_east: bool,
 		draw_rect(Rect2(origin.x + 2.0, origin.y + 11.0, length_px - 4.0, 2.0), PAL["gold"] as Color)
 		var wx: float = origin.x + 12.0
 		while wx < origin.x + length_px - 18.0:
-			draw_rect(Rect2(wx, origin.y - 2.0, 10.0, 7.0), PAL["gold"] as Color)
-			draw_rect(Rect2(wx + 2.0, origin.y, 6.0, 3.0), PAL["cream"] as Color)
+			draw_rect(Rect2(roundf(wx), origin.y - 2.0, 10.0, 7.0), PAL["gold"] as Color)
+			draw_rect(Rect2(roundf(wx) + 2.0, origin.y, 6.0, 3.0), PAL["cream"] as Color)
 			wx += 22.0
 		# Brass drive-wheels + pumping coupling rod
-		var rod_off: float = roundf(sin(_clock * 22.0) * 3.0)
+		var rod_off: float = 0.0 if fred else roundf(sin(_clock * 22.0) * 3.0)
 		var whx: float = origin.x + 16.0
 		while whx < origin.x + length_px - 14.0:
-			draw_circle(Vector2(whx, origin.y + 15.0), 4.0, PAL["dusk"] as Color)
-			draw_rect(Rect2(whx - 1.0, origin.y + 14.0, 2.0, 2.0), PAL["gold"] as Color)
+			draw_circle(Vector2(roundf(whx), origin.y + 15.0), 4.0, PAL["dusk"] as Color)
+			draw_rect(Rect2(roundf(whx) - 1.0, origin.y + 14.0, 2.0, 2.0), PAL["gold"] as Color)
 			whx += 28.0
-		draw_line(Vector2(origin.x + 16.0 + rod_off, origin.y + 15.0), Vector2(origin.x + length_px - 20.0 + rod_off, origin.y + 15.0), PAL["cream"] as Color, 1.2)
+		draw_line(Vector2(roundf(origin.x + 16.0 + rod_off), origin.y + 15.0), Vector2(roundf(origin.x + length_px - 20.0 + rod_off), origin.y + 15.0), PAL["cream"] as Color, 1.2)
 	# Glowing firebox embers beneath boiler & headlight cone (always alive while docked!)
-	var fx_x: float = origin.x + length_px * 0.55
+	var fx_x: float = roundf(origin.x + length_px * 0.55)
 	draw_rect(Rect2(fx_x - 10.0, origin.y + 10.0, 20.0, 3.0), Color(PAL["coral"] as Color, 0.55 * pulse))
 	draw_colored_polygon(
 		PackedVector2Array([
@@ -345,13 +346,13 @@ func _draw_express_live_fx(origin: Vector2, length_px: float, facing_east: bool,
 			Vector2(head_x + dir_x * 48.0, origin.y - 14.0),
 			Vector2(head_x + dir_x * 48.0, origin.y + 16.0),
 		]),
-		Color(PAL["gold"] as Color, (0.16 if LxHudFx.flash_reduced() else 0.28) * pulse)
+		Color(PAL["gold"] as Color, (0.16 if fred else 0.28) * pulse)
 	)
 	draw_rect(Rect2(head_x - 2.0, origin.y - 3.0, 5.0, 6.0), PAL["cream"] as Color)
 
 
 func _draw_colossus_limb_fx(r: Rect2, moving: bool) -> void:
-	var pulse: float = 0.55 + 0.45 * sin(_clock * 2.6)
+	var pulse: float = 0.82 if LxHudFx.flash_reduced() else (0.55 + 0.45 * sin(_clock * 2.6))
 	var slit_c: Color = PAL["gold"] as Color if _relit else PAL["coral"] as Color
 	if moving:
 		draw_rect(r.grow(2.0), Color(PAL["void"] as Color, 0.86))
@@ -360,10 +361,11 @@ func _draw_colossus_limb_fx(r: Rect2, moving: bool) -> void:
 		draw_rect(Rect2(r.position.x + 2.0, r.end.y - 6.0, r.size.x - 4.0, 4.0), PAL["night"] as Color)
 	# Pulsing furnace rib-slits + brass rivets along the Colossus's armor plating
 	var gx: float = r.position.x + 12.0
+	var sy: float = roundf(r.position.y + r.size.y * 0.34)
 	while gx < r.end.x - 16.0:
-		draw_rect(Rect2(gx, r.position.y + r.size.y * 0.34, 12.0, 4.0), Color(slit_c, pulse))
-		draw_rect(Rect2(gx + 2.0, r.position.y + r.size.y * 0.34 + 1.0, 8.0, 2.0), Color(PAL["cream"] as Color, pulse * 0.85))
-		draw_rect(Rect2(gx + 4.0, r.position.y + 5.0, 2.0, 2.0), Color(PAL["gold"] as Color, 0.7))
+		draw_rect(Rect2(roundf(gx), sy, 12.0, 4.0), Color(slit_c, pulse))
+		draw_rect(Rect2(roundf(gx) + 2.0, sy + 1.0, 8.0, 2.0), Color(PAL["cream"] as Color, pulse * 0.85))
+		draw_rect(Rect2(roundf(gx) + 4.0, r.position.y + 5.0, 2.0, 2.0), Color(PAL["gold"] as Color, 0.7))
 		gx += 24.0
 
 

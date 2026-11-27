@@ -118,15 +118,19 @@ func _draw() -> void:
 
 	LxToyDraw.draw_contact_shadow(self, Vector2(0.0, 6.0), 11.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-12.0, -10.0, 24.0, 16.0), c_night, c_dusk, c_gold if both else PAL["stone"] as Color, c_void)
-	# West clamp pip (left) & East clamp pip (right)
+	# West clamp pip (left) & East clamp pip (right) — hollow locked vs bright filled released
 	draw_rect(Rect2(-9.0, -6.0, 7.0, 7.0), c_void)
 	draw_rect(Rect2(-8.0, -5.0, 5.0, 5.0), c_gold if w_ok else c_coral)
 	if w_ok:
 		draw_rect(Rect2(-7.0, -4.0, 3.0, 3.0), c_cream)
+	else:
+		draw_rect(Rect2(-7.0, -4.0, 3.0, 3.0), c_night)
 	draw_rect(Rect2(2.0, -6.0, 7.0, 7.0), c_void)
 	draw_rect(Rect2(3.0, -5.0, 5.0, 5.0), c_gold if e_ok else c_coral)
 	if e_ok:
 		draw_rect(Rect2(4.0, -4.0, 3.0, 3.0), c_cream)
+	else:
+		draw_rect(Rect2(4.0, -4.0, 3.0, 3.0), c_night)
 	if both and not LxHudFx.flash_reduced():
 		var rr: float = 12.0 + sin(_pulse_t) * 2.0
 		draw_arc(Vector2(0.0, -2.0), roundf(rr), 0.0, TAU, 16, Color(c_gold, 0.55), 1.0)

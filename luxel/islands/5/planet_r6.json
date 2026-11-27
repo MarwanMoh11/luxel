@@ -39,7 +39,7 @@
       "to_region": "planet_r5",
       "to_spawn": [
         224,
-        48
+        56
       ]
     },
     {
@@ -182,7 +182,7 @@
       "kind": "meridian_weaver",
       "pos": [
         240,
-        136
+        160
       ],
       "zone": "pl_r6",
       "arena": [
@@ -228,9 +228,9 @@
         240,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

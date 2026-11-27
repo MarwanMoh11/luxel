@@ -53,7 +53,7 @@
       "to_region": "colossus_r5",
       "to_spawn": [
         256,
-        280
+        260
       ],
       "locked_door_id": "door_r4_north"
     }

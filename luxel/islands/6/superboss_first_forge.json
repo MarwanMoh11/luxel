@@ -47,7 +47,7 @@
       "kind": "first_forge",
       "pos": [
         256,
-        184
+        224
       ],
       "route": [],
       "perches": [],
@@ -176,9 +176,9 @@
       "prop": "basalt_forge_arch",
       "pos": [
         256,
-        320
+        356
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -283,7 +283,7 @@
       "sheet": "theme_forge_deep",
       "prop": "ember_brazier_pillar",
       "pos": [
-        264,
+        152,
         264
       ],
       "layer": "sort",
@@ -295,8 +295,8 @@
       "sheet": "theme_forge_deep",
       "prop": "molten_slag_crucible",
       "pos": [
-        264,
-        136
+        360,
+        264
       ],
       "layer": "sort",
       "flip_x": true,

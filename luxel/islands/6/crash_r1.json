@@ -337,8 +337,8 @@
       "sheet": "theme_ember_express_roof",
       "prop": "pantograph_spark_arc",
       "pos": [
-        392,
-        64
+        360,
+        48
       ],
       "layer": "sort",
       "flip_x": false,

@@ -247,8 +247,8 @@
       "id": "lamp_o5_r11_s",
       "kind": "road_lamp",
       "pos": [
-        248,
-        232
+        256,
+        256
       ],
       "props": {
         "zone": "o5_r11",
@@ -322,11 +322,11 @@
       "prop": "obsidian_vault_arch",
       "pos": [
         224,
-        48
+        36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

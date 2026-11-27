@@ -39,7 +39,7 @@
       "to_region": "meteor_r4",
       "to_spawn": [
         336,
-        56
+        64
       ]
     },
     {
@@ -266,11 +266,11 @@
       "prop": "obsidian_vault_arch",
       "pos": [
         224,
-        44
+        36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

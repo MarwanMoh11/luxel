@@ -161,7 +161,7 @@
       "id": "lamp_mv_r6_sw",
       "kind": "road_lamp",
       "pos": [
-        160,
+        200,
         264
       ],
       "props": {
@@ -212,7 +212,7 @@
       "kind": "apogee_hound",
       "pos": [
         240,
-        136
+        160
       ],
       "zone": "mv_r6",
       "arena": [
@@ -263,9 +263,9 @@
         240,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
-      "shadow": true,
+      "shadow": false,
       "phase": 0.0
     },
     {

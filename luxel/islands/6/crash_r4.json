@@ -185,9 +185,9 @@
       "prop": "basalt_forge_arch",
       "pos": [
         224,
-        48
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -299,18 +299,6 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.92
-    },
-    {
-      "sheet": "theme_forge_deep",
-      "prop": "basalt_forge_arch",
-      "pos": [
-        248,
-        40
-      ],
-      "layer": "sort",
-      "flip_x": false,
-      "shadow": true,
-      "phase": 0.0
     },
     {
       "sheet": "theme_forge_deep",
