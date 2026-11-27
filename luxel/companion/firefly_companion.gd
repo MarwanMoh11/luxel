@@ -1,8 +1,8 @@
 class_name LxFireflyCompanion
 extends Node2D
 ## Pip the Firefly Companion: 100% manual-aim send/perch/recall partner for Wick.
-## Handles Glow-Tag marks, Pollen Pops, Resonance Tether with hung lantern, and Luminous Nova.
-## Strictly uses the 20 Last Light colours (LxPalette.PAL) and integer pixel-snapped drawing.
+## Handles Glow-Tag marks, Pollen Pops, Resonance Tether with hung lantern, Luminous Nova,
+## and all 8 persistent Pip Charm perks. Drawing delegated to LxFireflyDraw.
 
 enum State { BECKON, FOLLOW, SEND, PERCH, RECALL }
 
@@ -37,7 +37,7 @@ var _idle_t: float = 0.0
 var _chirp_cd: float = 0.0
 var _tether_tick_cd: float = 0.0
 var _perch_light_cd: float = 0.0
-var _flight_intercepted: bool = false
+var _flight_blocks: int = 0
 var _prev_boss_stagger_ids: Dictionary = {}
 var _tether_end: Vector2 = Vector2.ZERO
 var _sense_dir: Vector2 = Vector2.ZERO
@@ -63,9 +63,10 @@ func _exit_tree() -> void:
 	if Lx.companion == self: Lx.companion = null
 
 func reset_for_room(at_pos: Vector2) -> void:
-	cooldown_left = 0.0; perch_timer = 0.0; tether_active = false; sanctuary_buff_active = false; vel = Vector2.ZERO
+	cooldown_left = 0.0; perch_timer = 0.0; perch_max = LxFireflyState.get_perch_duration()
+	tether_active = false; sanctuary_buff_active = false; vel = Vector2.ZERO
 	_send_dist = 0.0; _join_t = 0.0; _idle_t = 0.0; _chirp_cd = 0.0; _tether_tick_cd = 0.0
-	_perch_light_cd = 0.0; _flight_intercepted = false; _prev_boss_stagger_ids.clear()
+	_perch_light_cd = 0.0; _flight_blocks = 0; _prev_boss_stagger_ids.clear()
 	_sense_active = false; _sense_dir = Vector2.ZERO
 	_hit_ids.clear(); _nova_hit_ids.clear(); _trail.clear(); _rings.clear()
 	_sparks.clear(); _boosted_bolts.clear(); _meta_marks.clear()
@@ -98,10 +99,11 @@ func press_command(world_ctx: Node) -> bool:
 		if Lx.state != null: Lx.state.story_flags["pip_sent_once"] = true
 		# 100% manual aim strictly along wick.facing (AIM_ASSIST_ENABLED == false).
 		var aim: Vector2 = _owner_wick.facing.normalized() if _owner_wick.facing.length_squared() > 0.0001 else Vector2.RIGHT
+		var spd: float = SEND_SPEED * LxFireflyState.get_send_speed_mult()
 		_send_dir = aim; prev_pos = _owner_wick.global_position
-		pos = _owner_wick.global_position + aim * 6.0; vel = aim * SEND_SPEED
+		pos = _owner_wick.global_position + aim * 6.0; vel = aim * spd
 		_send_dist = 0.0; _send_max = LxFireflyState.get_send_range()
-		state = State.SEND; tether_active = false; _flight_intercepted = false; _hit_ids.clear(); _nova_hit_ids.clear()
+		state = State.SEND; tether_active = false; _flight_blocks = 0; _hit_ids.clear(); _nova_hit_ids.clear()
 		_spawn_ring(pos, 2.0, 12.0, 0.22, "lime", 1.0); _spawn_ring(pos, 1.0, 8.0, 0.18, "gold", 1.0)
 		_spawn_sparks(pos, 5, "lime", 26.0, 68.0, 0.20); _emit_sfx("pip_send", pos, true)
 		global_position = pos.round(); queue_redraw()
@@ -155,12 +157,14 @@ func _tick_follow(dt: float, wick: LxWick, world_ctx: Node) -> void:
 	vel = (pos - prev_pos) / maxf(dt, 0.0001)
 
 func _tick_send(dt: float, wick: LxWick, world_ctx: Node) -> void:
-	var step: float = SEND_SPEED * dt
+	var spd: float = SEND_SPEED * LxFireflyState.get_send_speed_mult()
+	var step: float = spd * dt
 	var next_p: Vector2 = pos + _send_dir * step
 	if _is_wall_tile(world_ctx, next_p): _enter_perch(); return
-	pos = next_p; vel = _send_dir * SEND_SPEED; _send_dist += step
+	pos = next_p; vel = _send_dir * spd; _send_dist += step
 	_notify_world_pass(pos, prev_pos, 14.0)
-	if not _flight_intercepted and LxFireflyState.get_bond_rank() >= 2: _sweep_pollen_shield(wick, world_ctx)
+	if _flight_blocks < LxFireflyState.get_shield_block_cap() and LxFireflyState.get_bond_rank() >= 2:
+		_sweep_pollen_shield(wick, world_ctx)
 	_sweep_interactables(wick, world_ctx); _sweep_enemies_tag(wick, world_ctx)
 	if state == State.SEND and _send_dist >= _send_max: _enter_perch()
 
@@ -181,36 +185,41 @@ func _tick_recall(dt: float, wick: LxWick, world_ctx: Node) -> void:
 	if wick == null or not is_instance_valid(wick): state = State.FOLLOW; vel = Vector2.ZERO; return
 	var target: Vector2 = wick.global_position + Vector2(0.0, -8.0)
 	var delta: Vector2 = target - pos; var dlen: float = delta.length()
+	var spd: float = RECALL_SPEED * LxFireflyState.get_send_speed_mult()
 	if dlen <= 10.0:
 		pos = target; vel = Vector2.ZERO; state = State.FOLLOW
-		cooldown_left = maxf(0.0, LxFireflyState.get_cooldown() - (0.15 if _flight_intercepted else 0.0))
+		cooldown_left = maxf(0.0, LxFireflyState.get_cooldown() - (0.15 * float(_flight_blocks)))
 		_emit_sfx("pip_chirp", pos, false); return
 	var rdir: Vector2 = delta / dlen
-	pos += rdir * minf(RECALL_SPEED * dt, dlen); vel = rdir * RECALL_SPEED
+	pos += rdir * minf(spd * dt, dlen); vel = rdir * spd
 	_notify_world_pass(pos, prev_pos, 14.0)
-	if not _flight_intercepted and LxFireflyState.get_bond_rank() >= 2: _sweep_pollen_shield(wick, world_ctx)
+	if _flight_blocks < LxFireflyState.get_shield_block_cap() and LxFireflyState.get_bond_rank() >= 2:
+		_sweep_pollen_shield(wick, world_ctx)
 	if LxFireflyState.get_bond_rank() >= 4: _sweep_luminous_nova(wick, world_ctx)
 
 func _enter_perch() -> void:
-	state = State.PERCH; vel = Vector2.ZERO; perch_timer = perch_max; _perch_light_cd = 0.0
+	state = State.PERCH; vel = Vector2.ZERO
+	perch_max = LxFireflyState.get_perch_duration(); perch_timer = perch_max; _perch_light_cd = 0.0
 	_spawn_ring(pos, 2.0, 10.0, 0.22, "lime", 1.0); _burst_light(pos, 48.0, 1.05, 0.22)
 
 func _begin_recall() -> void:
-	state = State.RECALL; tether_active = false; _flight_intercepted = false; _nova_hit_ids.clear(); _emit_sfx("pip_recall", pos, true)
+	state = State.RECALL; tether_active = false; _flight_blocks = 0; _nova_hit_ids.clear(); _emit_sfx("pip_recall", pos, true)
 
 func _sweep_pollen_shield(wick: LxWick, world_ctx: Node) -> void:
 	if wick == null or not is_instance_valid(wick): return
+	var cap: int = LxFireflyState.get_shield_block_cap()
 	for e_v: Variant in wick.world_get_enemies(world_ctx):
 		if not is_instance_valid(e_v) or not (e_v is Object): continue
 		var pats_v: Variant = (e_v as Object).get("patterns")
 		if not (pats_v is LxBossPatterns): continue
 		for b: LxBossBolt in (pats_v as LxBossPatterns).pool:
+			if _flight_blocks >= cap: return
 			if not b.active or b.reflected: continue
 			if Geometry2D.get_closest_point_to_segment(b.pos, prev_pos, pos).distance_to(b.pos) > 14.0: continue
 			var bpos: Vector2 = b.pos
-			b.deactivate(); _flight_intercepted = true; cooldown_left = maxf(0.0, cooldown_left - 0.15)
+			b.deactivate(); _flight_blocks += 1; cooldown_left = maxf(0.0, cooldown_left - 0.15)
 			_spawn_ring(bpos, 2.0, 14.0, 0.24, "lime", 2.0); _spawn_ring(bpos, 1.0, 9.0, 0.18, "cream", 1.0)
-			_spawn_sparks(bpos, 6, "cream", 24.0, 66.0, 0.20); _emit_sfx("pip_tag", bpos, true); return
+			_spawn_sparks(bpos, 6, "cream", 24.0, 66.0, 0.20); _emit_sfx("pip_tag", bpos, true)
 
 func _check_boss_stagger(wick: LxWick, world_ctx: Node) -> void:
 	if wick == null or not is_instance_valid(wick): _prev_boss_stagger_ids.clear(); return
@@ -268,8 +277,10 @@ func _apply_glow_tag(wick: LxWick, enemy: Object, epos: Vector2) -> void:
 	_set_enemy_mark(enemy, MARK_DURATION)
 	if wick.is_entity_alive(enemy):
 		wick.apply_hit_to_entity(enemy, LxHit.make("pip_tag", 0.15, _send_dir, pos, 0.45, false, false, wick, false))
-	_emit_sfx("pip_tag", epos, true); _spawn_ring(epos, 2.0, 12.0, 0.22, "lime", 1.0)
-	_spawn_sparks(epos, 6, "lime", 24.0, 68.0, 0.22); _burst_light(epos, 44.0, 0.95, 0.20)
+	_emit_sfx("pip_tag", epos, true)
+	var rcol: String = "ice" if LxFireflyState.has_charm("prism_wing") else "lime"
+	_spawn_ring(epos, 2.0, 12.0, 0.22, rcol, 1.0)
+	_spawn_sparks(epos, 6, rcol, 24.0, 68.0, 0.22); _burst_light(epos, 44.0, 0.95, 0.20)
 
 func _bounce_twin_tag(wick: LxWick, enemies: Array, skip_id: int, origin: Vector2) -> void:
 	var best: Object = null; var best_pos: Vector2 = Vector2.ZERO; var best_d2: float = 56.0 * 56.0
@@ -285,6 +296,7 @@ func _bounce_twin_tag(wick: LxWick, enemies: Array, skip_id: int, origin: Vector
 		_hit_ids.append(best.get_instance_id()); _apply_glow_tag(wick, best, best_pos)
 
 func _tick_resonance_tether(wick: LxWick, world_ctx: Node, lan_p: Vector2) -> void:
+	var tmult: float = LxFireflyState.get_tether_bonus_mult()
 	if not wick.bolts.is_empty():
 		if _boosted_bolts.size() > 64: _boosted_bolts.clear()
 		for bv: Variant in wick.bolts:
@@ -292,17 +304,19 @@ func _tick_resonance_tether(wick: LxWick, world_ctx: Node, lan_p: Vector2) -> vo
 			var bo: Object = bv as Object; var bid: int = bo.get_instance_id()
 			if _boosted_bolts.has(bid): continue
 			var bp_v: Variant = bo.get("pos")
-			if bp_v is Vector2 and Geometry2D.get_closest_point_to_segment(bp_v as Vector2, pos, lan_p).distance_to(bp_v as Vector2) <= 10.0:
+			if bp_v is Vector2 and Geometry2D.get_closest_point_to_segment(bp_v as Vector2, pos, lan_p).distance_to(bp_v as Vector2) <= 10.0 * tmult:
 				_boosted_bolts[bid] = true; bo.set("speed", float(bo.get("speed")) * 1.18)
 				_spawn_sparks(bp_v as Vector2, 3, "lime", 18.0, 48.0, 0.14)
 	if _tether_tick_cd > 0.0: return
-	var dmg: float = 0.85 if LxFireflyState.get_bond_rank() >= 3 else 0.50; var struck: bool = false
+	var dmg: float = (0.85 if LxFireflyState.get_bond_rank() >= 3 else 0.50) * tmult
+	var width_pad: float = 5.0 * tmult
+	var struck: bool = false
 	for e_v: Variant in wick.world_get_enemies(world_ctx):
 		if not is_instance_valid(e_v) or not (e_v is Object): continue
 		var enemy: Object = e_v as Object
 		if not wick.is_entity_alive(enemy): continue
 		var epos: Vector2 = wick.get_entity_pos(enemy)
-		if Geometry2D.get_closest_point_to_segment(epos, pos, lan_p).distance_to(epos) <= wick.get_entity_radius(enemy, 8.0) + 5.0:
+		if Geometry2D.get_closest_point_to_segment(epos, pos, lan_p).distance_to(epos) <= wick.get_entity_radius(enemy, 8.0) + width_pad:
 			var tdir: Vector2 = (lan_p - pos).normalized() if lan_p.distance_to(pos) > 0.1 else Vector2.RIGHT
 			wick.apply_hit_to_entity(enemy, LxHit.make("pip_tether", dmg, tdir, epos, 0.25, false, false, wick, false))
 			_spawn_sparks(epos, 4, "gold", 18.0, 52.0, 0.16); struck = true
@@ -313,7 +327,7 @@ func _sweep_luminous_nova(wick: LxWick, world_ctx: Node) -> void:
 	for e_v: Variant in enemies:
 		if not is_instance_valid(e_v) or not (e_v is Object): continue
 		var enemy: Object = e_v as Object; var eid: int = enemy.get_instance_id()
-		if _nova_hit_ids.has(eid) or not wick.is_entity_alive(enemy) or not _is_enemy_marked(enemy): continue
+		if _nova_hit_ids.has(eid) or not wick.is_entity_alive(enemy) or not is_enemy_marked(enemy): continue
 		var epos: Vector2 = wick.get_entity_pos(enemy)
 		if Geometry2D.get_closest_point_to_segment(epos, prev_pos, pos).distance_to(epos) <= 18.0:
 			_nova_hit_ids.append(eid); _trigger_luminous_nova(wick, enemies, enemy, epos)
@@ -336,23 +350,24 @@ func _trigger_luminous_nova(wick: LxWick, enemies: Array, enemy: Object, center:
 
 func on_wick_hit_enemy(wick: LxWick, enemy: Object, hit: LxHit, result: int, target_pos: Vector2, world_ctx: Node) -> void:
 	if _in_pop_burst or wick == null or enemy == null or not is_instance_valid(enemy) or hit == null: return
-	if hit.source in ["pip_pop", "pip_mark", "pip_tag", "pip_tether", "pip_nova"] or not _is_enemy_marked(enemy): return
+	if hit.source in ["pip_pop", "pip_mark", "pip_tag", "pip_tether", "pip_nova"] or not is_enemy_marked(enemy): return
 	if hit.is_heavy():
 		_in_pop_burst = true; _set_enemy_mark(enemy, 0.0); cooldown_left = 0.0
-		_spawn_ring(target_pos, 3.0, POP_RADIUS, 0.28, "lime", 2.0)
-		_spawn_ring(target_pos, 2.0, POP_RADIUS * 0.75, 0.22, "gold", 1.0)
-		_spawn_ring(target_pos, 1.0, POP_RADIUS * 0.45, 0.16, "cream", 1.0)
+		var pop_r: float = POP_RADIUS * LxFireflyState.get_pop_radius_mult()
+		_spawn_ring(target_pos, 3.0, pop_r, 0.28, "lime", 2.0)
+		_spawn_ring(target_pos, 2.0, pop_r * 0.75, 0.22, "gold", 1.0)
+		_spawn_ring(target_pos, 1.0, pop_r * 0.45, 0.16, "cream", 1.0)
 		_spawn_sparks(target_pos, 10, "lime", 30.0, 92.0, 0.24)
 		_burst_light(target_pos, 72.0, 1.28, 0.30); _emit_sfx("pip_pop", target_pos, true)
 		var emax: float = wick.move_sunflare.get_ember_max() if wick.move_sunflare != null else (Lx.state.get_effective_ember_max() if Lx.state != null else 100.0)
-		wick.ember = minf(emax, wick.ember + 14.0)
+		wick.ember = minf(emax, wick.ember + LxFireflyState.get_pop_ember_gain())
 		var pop_dmg: float = LxFireflyState.get_pop_damage()
 		for o_v: Variant in wick.world_get_enemies(world_ctx):
 			if not is_instance_valid(o_v) or not (o_v is Object): continue
 			var other: Object = o_v as Object
 			if not wick.is_entity_alive(other): continue
 			var opos: Vector2 = wick.get_entity_pos(other)
-			if opos.distance_to(target_pos) <= POP_RADIUS:
+			if opos.distance_to(target_pos) <= pop_r:
 				var pdir: Vector2 = (opos - target_pos).normalized() if opos.distance_to(target_pos) > 0.1 else hit.dir
 				wick.apply_hit_to_entity(other, LxHit.make("pip_pop", pop_dmg, pdir, target_pos, 1.0, false, false, wick, false))
 		if LxFireflyState.record_pollen_pop(): _trigger_dewdrop_heal(wick)
@@ -361,7 +376,12 @@ func on_wick_hit_enemy(wick: LxWick, enemy: Object, hit: LxHit, result: int, tar
 		_in_pop_burst = true
 		var bonus: float = maxf(0.05, hit.damage * LxFireflyState.get_mark_bonus())
 		wick.apply_hit_to_entity(enemy, LxHit.make("pip_mark", bonus, hit.dir, target_pos, 0.0, false, false, wick, false))
-		_spawn_sparks(target_pos, 4, "lime", 24.0, 62.0, 0.16); _in_pop_burst = false
+		if LxFireflyState.has_charm("prism_wing"):
+			_spawn_ring(target_pos, 2.0, 14.0, 0.22, "ice", 1.0)
+			_spawn_sparks(target_pos, 5, "ice", 26.0, 68.0, 0.18)
+		else:
+			_spawn_sparks(target_pos, 4, "lime", 24.0, 62.0, 0.16)
+		_in_pop_burst = false
 
 func _trigger_dewdrop_heal(wick: LxWick) -> void:
 	if Lx.state != null: Lx.state.hearts = minf(float(Lx.state.max_hearts), Lx.state.hearts + 0.5)
@@ -392,6 +412,7 @@ func get_hud_state() -> Dictionary:
 		"blooms": LxFireflyState.get_bloom_count(), "total_blooms": LxFireflyState.TOTAL_BLOOMS,
 		"relays": LxFireflyState.get_relay_count(), "total_relays": LxFireflyState.TOTAL_RELAYS,
 		"perches": LxFireflyState.get_perch_count(), "total_perches": LxFireflyState.TOTAL_PERCHES,
+		"shrines": LxFireflyState.get_shrine_count(), "charms": LxFireflyState.get_charm_count(),
 		"sanctuary": sanctuary_buff_active, "tint": LxFireflyState.get_tint_id(),
 	}
 
@@ -427,7 +448,7 @@ func _set_enemy_mark(enemy: Object, secs: float) -> void:
 		if secs > 0.0: _meta_marks[eid] = {"obj": enemy, "t": secs}
 		else: _meta_marks.erase(eid)
 
-func _is_enemy_marked(enemy: Object) -> bool:
+func is_enemy_marked(enemy: Object) -> bool:
 	if enemy.has_method("is_pip_marked"): return bool(enemy.call("is_pip_marked"))
 	return enemy.has_meta("pip_mark_t") and float(enemy.get_meta("pip_mark_t")) > 0.0
 
@@ -478,68 +499,4 @@ func _emit_sfx(sfx_id: String, at_p: Vector2, spatial: bool) -> void:
 	elif Lx.audio != null: Lx.audio.play_sfx(sfx_id, at_p, spatial)
 
 func _draw() -> void:
-	var pal: Dictionary = LxPalette.PAL; var void_c: Color = pal["void"] as Color
-	var tint: Dictionary = LxFireflyState.get_tint_colors()
-	var c_core: Color = tint["core"] as Color; var c_glow: Color = tint["glow"] as Color
-	var c_wing: Color = tint["wing"] as Color; var c_rim: Color = tint["rim"] as Color
-	var fred: bool = LxHudFx.flash_reduced()
-	if _owner_wick != null and is_instance_valid(_owner_wick):
-		for e_v: Variant in _owner_wick.world_get_enemies(_world_ctx):
-			if not is_instance_valid(e_v) or not (e_v is Object): continue
-			var enemy: Object = e_v as Object
-			if not _owner_wick.is_entity_alive(enemy) or not _is_enemy_marked(enemy): continue
-			var erad: float = _owner_wick.get_entity_radius(enemy, 8.0)
-			var mp: Vector2 = (_owner_wick.get_entity_pos(enemy) + Vector2(0.0, -erad - 11.0 + (0.0 if fred else roundf(sin(_anim_t * 6.0)))) - global_position).round()
-			draw_rect(Rect2(mp + Vector2(-2.0, -2.0), Vector2(5.0, 5.0)), void_c)
-			draw_rect(Rect2(mp + Vector2(0.0, -3.0), Vector2(1.0, 7.0)), void_c)
-			draw_rect(Rect2(mp + Vector2(-3.0, 0.0), Vector2(7.0, 1.0)), void_c)
-			draw_rect(Rect2(mp + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), c_glow)
-			draw_rect(Rect2(mp + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), c_glow)
-			draw_rect(Rect2(mp + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), pal["gold"] as Color)
-			draw_rect(Rect2(mp, Vector2.ONE), c_core)
-	if tether_active:
-		var a := Vector2(0.0, -3.0); var b: Vector2 = (_tether_end + Vector2(0.0, -4.0) - global_position).round()
-		var seg: Vector2 = b - a; var total: float = seg.length()
-		if total > 4.0:
-			var sdir: Vector2 = seg / total
-			draw_line(a, b, void_c, 3.0); draw_line(a, b, c_rim, 1.0)
-			var off: float = fmod(_anim_t * (14.0 if fred else 28.0), 8.0); var bi: int = 0
-			while off < total:
-				var bp: Vector2 = (a + sdir * off).round()
-				draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), void_c)
-				draw_rect(Rect2(bp, Vector2(2.0, 2.0)), c_glow if (bi % 2 == 0) else (pal["gold"] as Color))
-				draw_rect(Rect2(bp, Vector2.ONE), c_core); off += 8.0; bi += 1
-	for tm: Dictionary in _trail:
-		var u: float = clampf(float(tm["age"]) / maxf(0.01, float(tm["life"])), 0.0, 1.0)
-		var tp: Vector2 = ((tm["pos"] as Vector2) - global_position).round(); var sz: float = 2.0 if u < 0.45 else 1.0
-		draw_rect(Rect2(tp - Vector2.ONE, Vector2(sz + 2.0, sz + 2.0)), void_c)
-		draw_rect(Rect2(tp, Vector2(sz, sz)), c_core if u < 0.3 else (c_glow if u < 0.68 else c_rim))
-	if state == State.PERCH:
-		var frac: float = clampf(perch_timer / maxf(0.1, perch_max), 0.0, 1.0)
-		draw_arc(Vector2(0.0, 2.0), 7.0, 0.0, TAU, 16, void_c, 3.0)
-		draw_arc(Vector2(0.0, 2.0), 7.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 16, c_glow if perch_timer > 1.5 else (pal["coral"] as Color), 1.0)
-	for rg: Dictionary in _rings:
-		var u: float = clampf(float(rg["age"]) / maxf(0.01, float(rg["life"])), 0.0, 1.0)
-		var r: float = roundf(lerpf(float(rg["r0"]), float(rg["r1"]), u))
-		var rp: Vector2 = ((rg["pos"] as Vector2) - global_position).round()
-		draw_arc(rp, r, 0.0, TAU, 20, void_c, 3.0)
-		draw_arc(rp, r, 0.0, TAU, 20, LxPalette.color(str(rg["col"]), "lime"), roundf(float(rg["w"])))
-	for sp: Dictionary in _sparks:
-		var sp_p: Vector2 = ((sp["pos"] as Vector2) - global_position).round()
-		draw_rect(Rect2(sp_p - Vector2.ONE, Vector2(3.0, 3.0)), void_c)
-		draw_rect(Rect2(sp_p, Vector2.ONE), LxPalette.color(str(sp["col"]), "lime"))
-	var c := Vector2(0.0, -4.0 + (0.0 if fred else roundf(sin(_anim_t * 6.5))))
-	if not (state == State.FOLLOW and _idle_t > 3.5 and not _sense_active):
-		draw_rect(Rect2(-2.0, 2.0, 4.0, 1.0), void_c)
-	var flap: float = 0.0 if fred else (1.0 if (int(floorf(_anim_t * 18.0)) % 2 == 0) else -1.0)
-	draw_rect(Rect2(c + Vector2(-4.0, -3.0 + flap), Vector2(3.0, 3.0)), void_c)
-	draw_rect(Rect2(c + Vector2(1.0, -3.0 - flap), Vector2(3.0, 3.0)), void_c)
-	draw_rect(Rect2(c + Vector2(-2.0, -2.0), Vector2(5.0, 6.0)), void_c)
-	draw_rect(Rect2(c + Vector2(-3.0, -2.0 + flap), Vector2(2.0, 1.0)), c_wing)
-	draw_rect(Rect2(c + Vector2(2.0, -2.0 - flap), Vector2(2.0, 1.0)), c_wing)
-	draw_rect(Rect2(c + Vector2(-1.0, -1.0), Vector2(3.0, 2.0)), c_rim)
-	draw_rect(Rect2(c + Vector2(-1.0, 1.0), Vector2(3.0, 2.0)), c_glow)
-	draw_rect(Rect2(c + Vector2(0.0, 1.0), Vector2(1.0, 2.0)), c_core)
-	if LxFireflyState.get_bond_rank() >= 3:
-		draw_rect(Rect2(c + Vector2(-1.0, -3.0), Vector2(1.0, 1.0)), pal["gold"] as Color)
-		draw_rect(Rect2(c + Vector2(1.0, -3.0), Vector2(1.0, 1.0)), pal["gold"] as Color)
+	LxFireflyDraw.draw_companion(self, self)

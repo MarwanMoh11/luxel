@@ -90,13 +90,19 @@ static func draw_moths(ci: CanvasItem, area: Rect2, sel: int = 0) -> void:
 	LxBubble.draw_icon(ci, "moth", area.position + Vector2(4.0, 2.0), 1.0)
 	LxPixelFont.draw_left(ci, hdr, area.position + Vector2(16.0, 4.0), LxPalette.PAL["gold"], 1)
 	if LxFireflyState.is_joined():
+		var charms_n: int = LxFireflyState.get_charm_count()
 		var pip_txt: String = LxFolkData.fmt_id("PIP_JOURNAL_FMT", [LxFireflyState.get_bond_rank(), LxFireflyState.get_nectar_count()])
+		var ch_txt: String = LxFolkData.fmt_id("PIP_JOURNAL_CHARM_FMT", [charms_n])
 		var pip_w: float = float(LxPixelFont.width(pip_txt, 1))
-		var dot_x: float = roundf(area.end.x - 4.0 - pip_w - 5.0)
+		var ch_w: float = float(LxPixelFont.width(ch_txt, 1))
+		var right_x: float = area.end.x - 4.0
+		LxPixelFont.draw_right(ci, ch_txt, right_x, area.position.y + 4.0, LxPalette.PAL["gold" if charms_n > 0 else "stone"], 1)
+		var pip_rx: float = roundf(right_x - ch_w - 6.0)
+		var dot_x: float = roundf(pip_rx - pip_w - 5.0)
 		var dot_y: float = roundf(area.position.y + 5.0)
 		ci.draw_rect(Rect2(dot_x, dot_y, 3.0, 3.0), LxPalette.PAL["lime"])
 		ci.draw_rect(Rect2(dot_x + 1.0, dot_y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
-		LxPixelFont.draw_right(ci, pip_txt, area.end.x - 4.0, area.position.y + 4.0, LxPalette.PAL["lime"], 1)
+		LxPixelFont.draw_right(ci, pip_txt, pip_rx, area.position.y + 4.0, LxPalette.PAL["lime"], 1)
 	var sel_isl: int = clampi(sel + 1, 1, 8)
 	# 8 islands in 2 columns x 4 rows, 10 moth pips per island + hint eye icon after 2 visits
 	for isl: int in range(1, 9):
@@ -146,6 +152,16 @@ static func draw_moths(ci: CanvasItem, area: Rect2, sel: int = 0) -> void:
 	else:
 		LxBubble.draw_icon(ci, "question", hr.position + Vector2(16.0, 1.0), 1.0)
 		LxPixelFont.draw_left(ci, LxFolkData.fmt_id("FMT_RATIO", [sel_visits, 2]), hr.position + Vector2(28.0, 4.0), LxPalette.PAL["stone"], 1)
+	if LxFireflyState.is_joined():
+		var cspec: Dictionary = LxFireflyState.get_charm_spec_for_island(sel_isl)
+		var c_done: bool = not cspec.is_empty() and LxFireflyState.has_charm(str(cspec["charm_id"]))
+		var c_lbl: String = LxStrings.text(str(cspec["name_key"])) if c_done else LxFolkData.tr_id("JOURNAL_UNSEEN")
+		var cw: float = float(LxPixelFont.width(c_lbl, 1))
+		var cx: float = roundf(hr.end.x - 4.0 - cw - 5.0)
+		var cy: float = roundf(hr.position.y + 5.0)
+		ci.draw_rect(Rect2(cx, cy, 3.0, 3.0), LxPalette.PAL["gold" if c_done else "dusk"])
+		ci.draw_rect(Rect2(cx + 1.0, cy + 1.0, 1.0, 1.0), LxPalette.PAL["cream" if c_done else "mauve"])
+		LxPixelFont.draw_right(ci, c_lbl, hr.end.x - 4.0, hr.position.y + 4.0, LxPalette.PAL["gold" if c_done else "mauve"], 1)
 
 	# Bottom Wick House Moth Lantern reward tier strip (5 / 10 / 20 / 35 / 50 / 65 / 80)
 	var tr := Rect2(area.position.x + 2.0, area.position.y + 90.0, area.size.x - 4.0, 15.0)

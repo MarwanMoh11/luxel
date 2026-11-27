@@ -439,6 +439,7 @@ static func _draw_wick_silhouette(ci: CanvasItem, t: float) -> void:
 	ci.draw_rect(Rect2(26.0, 146.0, 1.0, 1.0), LxPalette.PAL["cream"])
 	if LxHudFx.flash_reduced() or fmod(t * 2.8, 1.0) < 0.55:
 		_px(ci, [[24, 146, 1, 1], [29, 146, 1, 1], [27, 143, 1, 1]], "gold")
+	LxPipStoryFx.draw_ending_pip(ci, t)
 
 static func rank_text_color(rank_key: String) -> Color:
 	return LxPalette.PAL[str((RANK_STYLE.get(rank_key, RANK_STYLE["RANK_C"]) as Array)[0])]
@@ -455,6 +456,7 @@ static func draw_results_ornaments(ci: CanvasItem, panel: Rect2, rank_key: Strin
 	_draw_split_filigree_divider(ci, panel.position.x + 14.0, panel.end.x - 14.0, 146.0, 174.0, 35.0, "apricot", "gold")
 	_draw_rank_medallion(ci, rank_key, t)
 	LxPixelFont.draw_panel(ci, Rect2(34.0, 59.0, 252.0, 64.0), "night", "dusk", "void")
+	LxPipStoryFx.draw_results_pip_badge(ci, panel, t)
 	ci.draw_rect(Rect2(160.0, 63.0, 1.0, 56.0), LxPalette.PAL["dusk"])
 	for row: int in range(STAT_ICONS.size()):
 		var iy: float = 64.0 + float(row) * 12.0

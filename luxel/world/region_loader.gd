@@ -579,8 +579,7 @@ func get_light_pools() -> Array[Vector4]: return LxRegionRuntime.get_light_pools
 func get_firefly_light_pools() -> Array[Vector4]: return _firefly_content.call("get_light_pools") as Array[Vector4] if (_firefly_content != null and _firefly_content.has_method("get_light_pools")) else []
 func try_interact_firefly(actor: Node, actor_pos: Vector2, reach: float = 24.0) -> bool: return bool(_firefly_content.call("try_interact", actor, actor_pos, reach)) if (_firefly_content != null and _firefly_content.has_method("try_interact")) else false
 func get_firefly_prompt_near(actor_pos: Vector2, reach: float = 24.0) -> Dictionary:
-	var p: String = str(_firefly_content.call("get_interact_prompt_near", actor_pos, reach)) if (_firefly_content != null and _firefly_content.has_method("get_interact_prompt_near")) else ""
-	return {} if p.is_empty() else {"prompt": p, "pos": Vector2(232.0, 184.0)}
+	return _firefly_content.call("get_interact_prompt_info", actor_pos, reach) as Dictionary if (_firefly_content != null and _firefly_content.has_method("get_interact_prompt_info")) else {}
 func is_flag_set(flag: String) -> bool: return check_flag_static(flag)
 static func check_flag_static(flag: String) -> bool: return LxRegionRuntime.check_flag_static(flag)
 
