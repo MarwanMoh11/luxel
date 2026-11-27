@@ -384,7 +384,7 @@ func _draw_extra(off: Vector2) -> void:
 		var pp: Vector2 = ((pd["pos"] as Vector2) - pos).round()
 		var fade: float = 1.0 - clampf(float(pd["age"]) / maxf(float(pd["life"]), 0.1), 0.0, 1.0)
 		draw_circle(pp, PUDDLE_RADIUS * 0.88, Color(PAL["blue"] as Color, 0.35 * fade))
-		draw_arc(pp, PUDDLE_RADIUS, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.85 * fade), 1.4)
+		draw_arc(pp, PUDDLE_RADIUS, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.85 * fade), 1.0)
 		draw_arc(pp, PUDDLE_RADIUS * 0.55, 0.0, TAU, 14, Color(PAL["ice"] as Color, 0.65 * fade), 1.0)
 	# Draw flying spit globs
 	for g: Dictionary in _globs:
@@ -398,6 +398,6 @@ func _draw_extra(off: Vector2) -> void:
 		var rel: Vector2 = (_spit_target - pos).round()
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var col: Color = (PAL["coral"] if prog > 0.68 else PAL["sky"]) as Color
-		draw_arc(rel, PUDDLE_RADIUS, 0.0, TAU, 18, col, 1.3)
+		draw_arc(rel, PUDDLE_RADIUS, 0.0, TAU, 18, col, 1.0)
 		draw_arc(rel, lerpf(PUDDLE_RADIUS, 4.0, prog), 0.0, TAU, 14, PAL["ice"] as Color, 1.0)
 		draw_line(c, rel, Color(PAL["sky"] as Color, 0.55), 1.0)

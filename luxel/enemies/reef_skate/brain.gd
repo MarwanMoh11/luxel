@@ -290,4 +290,4 @@ func _draw_extra(off: Vector2) -> void:
 		var lane_end: Vector2 = off + _skim_dir * 72.0
 		LxBossTelegraphFx.draw_ground_danger_lane(self, off, lane_end, body_radius + 3.0, prog, anim_t, "sky", "gold")
 	elif _stranded:
-		draw_arc(off, body_radius + 4.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(off, body_radius + 4.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.0)

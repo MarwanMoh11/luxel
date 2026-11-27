@@ -194,7 +194,7 @@ func _on_boss_tick(dt: float, _target: Vector2) -> void:
 		var cyc: float = fposmod(_stride_t, STRIDE_PERIOD)
 		var cur_s: int = -1 if cyc < half_p else 1
 		var loc_t: float = cyc if cyc < half_p else (cyc - half_p)
-		var now_w: bool = loc_t >= (half_p - STRIDE_WARN_S)
+		var now_w: bool = loc_t >= (half_p - STRIDE_WARN_S * get_tell_scale())
 		if now_w and not _stride_warn:
 			stage.play_sfx("colossus_horn", pos)
 		if cur_s != _last_side:
@@ -290,17 +290,23 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var cy: float = arena_rect.position.y + 30.0 + float(ci) * (arena_rect.size.y - 60.0) * 0.5
 			var cx: float = arena_rect.get_center().x + dir_x * 46.0
 			var p: Vector2 = (Vector2(cx, cy) - pos).round()
-			draw_line(p - Vector2(dir_x * 5.0, 4.0), p, Color(t_col, 0.45 if fred else 0.70), 1.4)
-			draw_line(p - Vector2(dir_x * 5.0, -4.0), p, Color(t_col, 0.45 if fred else 0.70), 1.4)
+			draw_line(p - Vector2(dir_x * 5.0, 4.0), p, Color(PAL["void"] as Color, 0.50 if fred else 0.75), 3.0)
+			draw_line(p - Vector2(dir_x * 5.0, -4.0), p, Color(PAL["void"] as Color, 0.50 if fred else 0.75), 3.0)
+			draw_line(p - Vector2(dir_x * 5.0, 4.0), p, Color(t_col, 0.45 if fred else 0.70), 1.0)
+			draw_line(p - Vector2(dir_x * 5.0, -4.0), p, Color(t_col, 0.45 if fred else 0.70), 1.0)
 	# Coolant crystal halos at NW/NE corners
 	for cp: Vector2 in _coolant_positions:
 		var lp: Vector2 = (cp - pos).round()
-		draw_arc(lp, 10.0, 0.0, TAU, 16, Color(PAL["ice"] as Color, 0.72), 1.3)
+		draw_arc(lp, 10.0, 0.0, TAU, 16, Color(PAL["void"] as Color, 0.72), 3.0)
+		draw_arc(lp, 10.0, 0.0, TAU, 16, Color(PAL["ice"] as Color, 0.72), 1.0)
 	# Comedy jammed jackhammer rattle lines during recover!
 	if boss_state == BossState.RECOVER and _jammed_rattle_t > 0.0:
 		var jx: float = sin(anim_t * 48.0) * 3.0 if not fred else 0.0
 		var hp_top: Vector2 = (off + Vector2(jx, -body_radius - 12.0)).round()
-		draw_line(hp_top + Vector2(-9.0, -2.0), hp_top + Vector2(-5.0, 2.0), PAL["gold"] as Color, 1.4)
-		draw_line(hp_top + Vector2(5.0, 2.0), hp_top + Vector2(9.0, -2.0), PAL["gold"] as Color, 1.4)
+		draw_line(hp_top + Vector2(-9.0, -2.0), hp_top + Vector2(-5.0, 2.0), PAL["void"] as Color, 3.0)
+		draw_line(hp_top + Vector2(5.0, 2.0), hp_top + Vector2(9.0, -2.0), PAL["void"] as Color, 3.0)
+		draw_line(hp_top + Vector2(-9.0, -2.0), hp_top + Vector2(-5.0, 2.0), PAL["gold"] as Color, 1.0)
+		draw_line(hp_top + Vector2(5.0, 2.0), hp_top + Vector2(9.0, -2.0), PAL["gold"] as Color, 1.0)
 	elif boss_state == BossState.STAGGER and _quench_t > 0.0:
-		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.6)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["ice"] as Color, 2.0)

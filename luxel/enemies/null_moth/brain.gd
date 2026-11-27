@@ -325,7 +325,7 @@ func _draw_extra(off: Vector2) -> void:
 	if _has_void_halo():
 		var hr: float = HALO_RADIUS * (0.85 if _eat_flash_t > 0.0 else 1.0)
 		var ring_c: Color = (PAL["ice"] if _eat_flash_t > 0.0 else PAL["dusk"]) as Color
-		draw_arc(c, hr, 0.0, TAU, 24, Color(ring_c, 0.72), 1.4)
+		draw_arc(c, hr, 0.0, TAU, 24, Color(ring_c, 0.72), 1.0)
 		var spin: float = anim_t * (0.9 if fred else 2.2)
 		for k: int in range(6):
 			var a: float = spin + float(k) * (TAU / 6.0)
@@ -334,19 +334,20 @@ func _draw_extra(off: Vector2) -> void:
 
 	if lens_highlight_t > 0.0:
 		# Highlight curved-approach arc when True Lens pulses!
-		draw_arc(c, HALO_RADIUS + 4.0, facing + 0.9, facing + TAU - 0.9, 18, PAL["gold"] as Color, 1.2)
+		draw_arc(c, HALO_RADIUS + 4.0, facing + 0.9, facing + TAU - 0.9, 18, PAL["gold"] as Color, 1.0)
 
 	if state == State.TELL and _preview_pts.size() >= 2:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var lc: Color = (PAL["coral"] if prog > 0.65 else PAL["ice"]) as Color
+		var hot_p: bool = prog > 0.65
+		var lc: Color = (PAL["coral"] if hot_p else PAL["ice"]) as Color
 		for k: int in range(_preview_pts.size() - 1):
 			var a: Vector2 = (_preview_pts[k] - pos + off).round()
 			var b: Vector2 = (_preview_pts[k + 1] - pos + off).round()
-			if prog > 0.65 or k % 2 == 0:
-				draw_line(a, b, lc, 1.4 if prog > 0.65 else 1.0)
+			if hot_p or k % 2 == 0:
+				draw_line(a, b, lc, 2.0 if hot_p else 1.0)
 
 	for b: Dictionary in _bolts:
 		var lp: Vector2 = ((b["pos"] as Vector2) - pos + off).round()
 		draw_circle(lp, 3.2, PAL["void"] as Color)
-		draw_arc(lp, 3.4, 0.0, TAU, 10, PAL["ice"] as Color, 1.2)
+		draw_arc(lp, 3.4, 0.0, TAU, 10, PAL["ice"] as Color, 1.0)
 		draw_rect(Rect2(lp, Vector2.ONE), PAL["cream"] as Color)

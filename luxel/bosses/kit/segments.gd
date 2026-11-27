@@ -287,8 +287,10 @@ func draw_segments(ci: CanvasItem, origin_world: Vector2) -> void:
 		var r: float = float(s["radius"])
 		if i > 0 and bool(segments[i - 1]["alive"]):
 			var prev_p: Vector2 = ((segments[i - 1]["pos"] as Vector2) + off).round()
-			ci.draw_line(p, prev_p, PAL["night"] as Color, r * 0.9)
-			ci.draw_line(p, prev_p, PAL["pine"] as Color, maxf(1.5, r * 0.45))
+			var link_outer_w: float = maxf(2.0, roundf(r * 0.9))
+			var link_inner_w: float = maxf(1.0, roundf(r * 0.45))
+			ci.draw_line(p, prev_p, PAL["night"] as Color, link_outer_w)
+			ci.draw_line(p, prev_p, PAL["pine"] as Color, link_inner_w)
 		var lit: bool = bool(s["lit"])
 		var fill: Color = PAL["cream"] as Color if float(s["flash_t"]) > 0.0 else (
 			PAL["gold"] as Color if lit else LxPalette.color(str(s["color"]), "teal")
@@ -298,7 +300,8 @@ func draw_segments(ci: CanvasItem, origin_world: Vector2) -> void:
 		ci.draw_circle(p, r, fill)
 		ci.draw_circle((p + Vector2(-r * 0.25, -r * 0.25)).round(), maxf(1.5, r * 0.42), PAL["cream"] as Color if lit else PAL["lime"] as Color)
 		if bool(s["armoured"]):
-			ci.draw_arc(p, r + 1.4, 0.0, TAU, 12, PAL["stone"] as Color, 1.4)
+			ci.draw_arc(p, roundf(r) + 1.0, 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+			ci.draw_arc(p, roundf(r) + 1.0, 0.0, TAU, 12, PAL["stone"] as Color, 1.0)
 		if i == 0:
 			var fwd: Vector2 = Vector2.from_angle(float(s["facing"]))
 			var side := Vector2(-fwd.y, fwd.x)

@@ -288,4 +288,4 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		draw_rect(Rect2(dp + Vector2(-3.0, -2.0), Vector2(6.0, 4.0)), PAL["ice"] as Color if _drone_disabled_t > 0.0 else PAL["gold"] as Color, true)
 	# Overclocked boiler glow ring when both chains are still attached in P3
 	if phase >= 3 and tethers.active_count() >= 2 and boss_state != BossState.DEATH:
-		draw_arc(Vector2.ZERO, body_radius + 4.5, 0.0, TAU, 20, PAL["coral"] as Color, 1.5)
+		draw_arc(Vector2.ZERO, body_radius + 4.5, 0.0, TAU, 20, PAL["coral"] as Color, 2.0)

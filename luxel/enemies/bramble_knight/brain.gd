@@ -123,7 +123,7 @@ func _enter_commit() -> void:
 		state_timer = THORN_BURST_TIME
 		thorn_burst_hit = false
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.12)
+			Lx.events.shake_requested.emit(0.06 if LxHudFx.flash_reduced() else 0.12)
 		if Lx.world != null and is_instance_valid(Lx.world):
 			var amb: Variant = Lx.world.get("_ambient_life")
 			if amb is Object and is_instance_valid(amb) and (amb as Object).has_method("_gust_particles"):
@@ -178,30 +178,35 @@ func _shield_color() -> Color:
 func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		# Horned bramble helmet silhouette.
-		draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
-		draw_line(off + Vector2(4.0, -body_radius), off + Vector2(6.5, -body_radius - 5.0), PAL["jade"] as Color, 1.8)
+		draw_line(off + Vector2(-4.0, -body_radius), off + Vector2(-6.5, -body_radius - 5.0), PAL["jade"] as Color, 2.0)
+		draw_line(off + Vector2(4.0, -body_radius), off + Vector2(6.5, -body_radius - 5.0), PAL["jade"] as Color, 2.0)
 	# Spiky thorn tines along active front shield.
 	if _has_active_shield():
 		for i: int in range(-2, 3):
 			var a: float = facing + float(i) * 0.42
 			var p0: Vector2 = off + Vector2.from_angle(a) * (body_radius + 2.0)
 			var p1: Vector2 = off + Vector2.from_angle(a) * (body_radius + 6.5)
-			draw_line(p0, p1, (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["lime"] as Color), 1.5)
+			draw_line(p0, p1, (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["lime"] as Color), 2.0)
 	if thorn_burst_active and state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var c: Vector2 = off.round()
 		var edge_c: Color = (PAL["coral"] as Color) if prog > 0.65 else (PAL["lime"] as Color)
 		for ti: int in range(12):
 			var a0: float = float(ti) * (TAU / 12.0)
+			draw_arc(c, THORN_BURST_R, a0, a0 + 0.24, 3, PAL["void"] as Color, 3.0)
 			draw_arc(c, THORN_BURST_R, a0, a0 + 0.24, 3, edge_c, 1.0)
-		draw_arc(c, lerpf(THORN_BURST_R, body_radius + 4.0, prog), 0.0, TAU, 20, (PAL["cream"] if state_timer <= 0.10 else PAL["gold"]) as Color, 1.5)
+		var shrink_r: float = lerpf(THORN_BURST_R, body_radius + 4.0, prog)
+		var locked_b: bool = state_timer <= 0.10 * _assist_tell_scale()
+		draw_arc(c, shrink_r, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, shrink_r, 0.0, TAU, 20, (PAL["cream"] if locked_b else PAL["gold"]) as Color, 2.0)
 	elif thorn_burst_active and state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / THORN_BURST_TIME, 0.0, 1.0)
 		var burst_r: float = lerpf(body_radius + 6.0, THORN_BURST_R, prog)
 		var c: Vector2 = off.round()
+		draw_arc(c, burst_r + 1.5, 0.0, TAU, 24, PAL["void"] as Color, 5.0)
 		draw_arc(c, burst_r + 1.5, 0.0, TAU, 24, PAL["pine"] as Color, 3.0)
 		draw_arc(c, burst_r, 0.0, TAU, 24, PAL["jade"] as Color, 2.0)
-		draw_arc(c, maxf(2.0, burst_r - 2.0), 0.0, TAU, 20, PAL["lime"] as Color, 1.2)
+		draw_arc(c, maxf(2.0, burst_r - 2.0), 0.0, TAU, 20, PAL["lime"] as Color, 1.0)
 		for k: int in range(8):
 			var ka: float = float(k) * (TAU / 8.0) + prog * 0.16
 			var dir: Vector2 = Vector2.from_angle(ka)
@@ -210,8 +215,8 @@ func _draw_extra(off: Vector2) -> void:
 			var base_p: Vector2 = (c + dir * stem_r).round()
 			var mid_p: Vector2 = (c + dir * (burst_r - 2.5)).round()
 			var tip_p: Vector2 = (c + dir * (burst_r + 4.0)).round()
-			draw_line(base_p, mid_p, PAL["pine"] as Color, 2.2)
-			draw_line(base_p, tip_p, PAL["coral"] as Color, 1.6)
+			draw_line(base_p, mid_p, PAL["pine"] as Color, 3.0)
+			draw_line(base_p, tip_p, PAL["coral"] as Color, 2.0)
 			draw_line((mid_p + perp * 2.0).round(), tip_p, PAL["coral"] as Color, 1.0)
 			draw_line((mid_p - perp * 2.0).round(), tip_p, PAL["coral"] as Color, 1.0)
 			draw_line(mid_p, tip_p, PAL["rose"] as Color, 1.0)

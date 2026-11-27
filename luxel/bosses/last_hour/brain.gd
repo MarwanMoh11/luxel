@@ -339,8 +339,10 @@ func _body_color() -> Color:
 func _draw_boss_extra(_off: Vector2) -> void:
 	var c_loc: Vector2 = (arena_rect.get_center() - pos).round()
 	var face_r: float = minf(arena_rect.size.x, arena_rect.size.y) * 0.44
+	var fred: bool = is_flash_reduced()
 
 	# Floating 12-Numeral Clock-Face on arena floor + Gold Damage-Etched Arc!
+	draw_arc(c_loc, face_r, 0.0, TAU, 36, Color(PAL["void"] as Color, 0.45), 3.0)
 	draw_arc(c_loc, face_r, 0.0, TAU, 36, Color(PAL["gold"] as Color, 0.34), 1.0)
 	var dmg_frac: float = 1.0 - clampf(hp / maxf(max_hp, 0.01), 0.0, 1.0)
 	if dmg_frac > 0.02:
@@ -354,10 +356,12 @@ func _draw_boss_extra(_off: Vector2) -> void:
 
 	# Counter-clockwise Hour Hand & P2+ Sweeping Minute Hand
 	var h_tip: Vector2 = (c_loc + Vector2.from_angle(_hour_ang) * (face_r * 0.56)).round()
+	draw_line(c_loc, h_tip, Color(PAL["void"] as Color, 0.70), 4.0)
 	draw_line(c_loc, h_tip, Color(PAL["coral"] as Color, 0.65), 2.0)
 	if phase >= 2 or _death_forward_ticked:
 		var m_tip: Vector2 = (c_loc + Vector2.from_angle(_minute_ang) * (face_r * 0.96)).round()
 		var sweeping: bool = boss_state == BossState.COMMIT and active_attack_id == "minute_hand_sweep"
+		draw_line(c_loc, m_tip, PAL["void"] as Color, 5.0 if sweeping else 4.0)
 		draw_line(c_loc, m_tip, (PAL["cream"] if sweeping else PAL["ice"]) as Color, 3.0 if sweeping else 2.0)
 		# P2+ Central Echo Rose bloom
 		var rp: Vector2 = (_echo_rose_pos - pos).round()
@@ -368,7 +372,8 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	# Future Afterimage during Rewind Lunge tell/commit
 	if _afterimage_active:
 		var ap: Vector2 = (_afterimage_pos - pos).round()
-		var a_col: Color = Color(PAL["ice"] as Color, 0.52 if is_flash_reduced() else 0.78)
+		var a_col: Color = Color(PAL["ice"] as Color, 0.52 if fred else 0.78)
+		draw_arc(ap + Vector2(0.0, -16.0), 11.0, 0.0, TAU, 16, Color(PAL["void"] as Color, 0.65), 4.0)
 		draw_arc(ap + Vector2(0.0, -16.0), 11.0, 0.0, TAU, 16, a_col, 2.0)
 		draw_rect(Rect2(ap + Vector2(-5.0, -24.0), Vector2(10.0, 20.0)), Color(PAL["sky"] as Color, 0.40))
 		draw_circle(ap + Vector2(0.0, -28.0), 4.5, a_col)
@@ -376,13 +381,16 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	# Zero O'Clock Rewind flash ring
 	if _rewind_flash_t > 0.0:
 		var ru: float = 1.0 - clampf(_rewind_flash_t / 0.65, 0.0, 1.0)
-		draw_arc(c_loc, lerpf(face_r, 8.0, ru), 0.0, TAU, 28, PAL["gold"] as Color, 2.0)
+		var ra: float = 0.55 if fred else 1.0
+		draw_arc(c_loc, lerpf(face_r, 8.0, ru), 0.0, TAU, 28, Color(PAL["void"] as Color, ra * 0.85), 4.0)
+		draw_arc(c_loc, lerpf(face_r, 8.0, ru), 0.0, TAU, 28, Color(PAL["gold"] as Color, ra), 2.0)
 
 	# Temporal Annihilation burst sparkles
 	for fx: Dictionary in _annihilate_fx:
 		var fp: Vector2 = ((fx["pos"] as Vector2) - pos).round()
 		var fu: float = 1.0 - clampf(float(fx["ttl"]) / 0.34, 0.0, 1.0)
-		draw_arc(fp, lerpf(4.0, 18.0, fu), 0.0, TAU, 14, PAL["ice"] as Color, 2.0)
+		draw_arc(fp, lerpf(4.0, 18.0, fu), 0.0, TAU, 14, Color(PAL["void"] as Color, 0.65), 4.0)
+		draw_arc(fp, lerpf(4.0, 18.0, fu), 0.0, TAU, 14, Color(PAL["ice"] as Color, 0.65 if fred else 1.0), 2.0)
 		draw_circle(fp, maxf(1.5, 4.0 * (1.0 - fu)), PAL["cream"] as Color)
 
 	# Death golden moth floating down at XII

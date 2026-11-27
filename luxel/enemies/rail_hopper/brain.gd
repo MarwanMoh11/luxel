@@ -318,6 +318,6 @@ func _draw_extra(off: Vector2) -> void:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration if state == State.TELL else LEAP_TIME, 0.05), 0.0, 1.0)
 		var ring_c: Color = (PAL["cream"] if (state == State.COMMIT or prog > 0.72) else PAL["gold"]) as Color
 		draw_circle(dest_local, LAND_HIT_R, Color(PAL["coral"] as Color, 0.16 if state == State.TELL else 0.28))
-		draw_arc(dest_local, LAND_HIT_R, 0.0, TAU, 18, ring_c, 1.4)
+		draw_arc(dest_local, LAND_HIT_R, 0.0, TAU, 18, ring_c, 1.0)
 		if state == State.TELL:
 			draw_line(off.round(), dest_local, Color(PAL["apricot"] as Color, 0.65), 1.0)

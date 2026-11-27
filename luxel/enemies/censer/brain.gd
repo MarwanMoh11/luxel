@@ -210,7 +210,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16 and _has_player():
+	if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 2.8, dt)
@@ -320,9 +320,11 @@ func _draw_extra(off: Vector2) -> void:
 		var frac: float = clampf(float(sp["ttl"]) / maxf(float(sp["max_ttl"]), 0.1), 0.0, 1.0)
 		var r: float = SMOKE_R * lerpf(0.75, 1.0, frac)
 		draw_circle(rp, r, Color(PAL["dusk"] as Color, 0.36 * frac))
-		draw_arc(rp, r, 0.0, TAU, 20, Color(PAL["plum"] as Color, 0.65 * frac), 1.4)
+		draw_arc(rp, r, 0.0, TAU, 20, Color(PAL["void"] as Color, 0.45 * frac), 3.0)
+		draw_arc(rp, r, 0.0, TAU, 20, Color(PAL["plum"] as Color, 0.65 * frac), 1.0)
 	if _chain_cut_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_sector(self, Vector2.ZERO, facing - 1.05, facing + 1.05, WHIP_RANGE, prog, anim_t, "coral", "apricot")

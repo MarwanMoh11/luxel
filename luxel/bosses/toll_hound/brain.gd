@@ -277,11 +277,11 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Sound-lock ear indicator when lured by bell or decoy lantern!
 	if _sound_lure_t > 0.0 and boss_state != BossState.DEATH:
 		var lp: Vector2 = (_sound_lure_pos - pos).round()
-		draw_arc(lp, 8.0 + (0.0 if is_flash_reduced() else sin(anim_t * 10.0) * 1.5), 0.0, TAU, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(lp, 8.0 + (0.0 if is_flash_reduced() else sin(anim_t * 10.0) * 1.5), 0.0, TAU, 12, PAL["gold"] as Color, 1.0)
 		if _sniff_t > 0.0:
 			# Little gold "?" / sniff spark above snout
 			draw_rect(Rect2(c + Vector2(-1.0, -body_radius - 14.0), Vector2(3.0, 3.0)), PAL["gold"] as Color)
 	if _dusk_slow_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	if not _collar_cracked and boss_state != BossState.STAGGER and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 2.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 2.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 2.0)

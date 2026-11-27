@@ -328,6 +328,10 @@ func _draw_extra(off: Vector2) -> void:
 		var end_p: Vector2 = (off + thrust_dir * 64.0).round()
 		var side := Vector2(-thrust_dir.y, thrust_dir.x) * 8.0
 		var col: Color = (PAL["cream"] if prog > 0.72 else PAL["coral"]) as Color
+		draw_line((off + side).round(), (end_p + side).round(), PAL["void"] as Color, 3.0)
+		draw_line((off - side).round(), (end_p - side).round(), PAL["void"] as Color, 3.0)
 		draw_line((off + side).round(), (end_p + side).round(), col, 1.0)
 		draw_line((off - side).round(), (end_p - side).round(), col, 1.0)
-		draw_line(off.round(), off.lerp(end_p, prog).round(), PAL["gold"] as Color, 1.6)
+		var fill_end: Vector2 = off.lerp(end_p, prog).round()
+		draw_line(off.round(), fill_end, PAL["void"] as Color, 4.0)
+		draw_line(off.round(), fill_end, PAL["gold"] as Color, 2.0)

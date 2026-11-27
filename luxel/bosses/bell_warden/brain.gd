@@ -403,17 +403,20 @@ func _shield_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# P2 Arena Change: Belfry Resonance Floor rings etched around home
 	if phase >= 2 and boss_state != BossState.DEATH:
 		var hc: Vector2 = (home - pos).round()
 		var col_f: Color = PAL["coral"] as Color if slam_tone == "war" else PAL["gold"] as Color
-		var a_f: float = 0.36 if _resonance_pulse_t > 0.0 else 0.18
-		draw_arc(hc, 64.0, 0.0, TAU, 36, Color(col_f, a_f), 1.4)
+		var a_f: float = (0.26 if fred else 0.36) if _resonance_pulse_t > 0.0 else 0.18
+		draw_arc(hc, 64.0, 0.0, TAU, 36, Color(PAL["void"] as Color, a_f * 0.9), 3.0)
+		draw_arc(hc, 64.0, 0.0, TAU, 36, Color(col_f, a_f), 1.0)
 		draw_arc(hc, 96.0, 0.0, TAU, 44, Color(PAL["gold"] as Color, a_f * 0.7), 1.0)
 
 	# Armour glint when bolts chip outside punish windows
 	if _armour_glint_t > 0.0 and boss_state != BossState.DEATH:
-		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0)
+		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0) * (0.65 if fred else 1.0)
+		draw_arc(c, body_radius + 4.5, _armour_glint_ang - 0.75, _armour_glint_ang + 0.75, 10, Color(PAL["void"] as Color, ga * 0.85), 4.0)
 		draw_arc(c, body_radius + 4.5, _armour_glint_ang - 0.75, _armour_glint_ang + 0.75, 10, Color(PAL["cream"] as Color, ga), 2.0)
 
 	var is_war: bool = slam_tone == "war"
@@ -426,16 +429,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var p_den: float = ECHO_PAUSE_TIME * get_tell_scale()
 			var p_u: float = 1.0 - clampf(_slam_stage_t / maxf(p_den, 0.05), 0.0, 1.0)
 			LxBossTelegraphFx.draw_ground_danger_ring(self, c, max_r, p_u, anim_t, "coral" if is_war else "gold", "cream")
-			draw_arc(c, body_radius + 10.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.6)
+			draw_arc(c, body_radius + 10.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+			draw_arc(c, body_radius + 10.0, 0.0, TAU, 20, PAL["ice"] as Color, 2.0)
 		elif slam_stage == SlamStage.RING_1 or slam_stage == SlamStage.RING_2:
 			var ring_r: float = lerpf(SLAM_START_R, max_r, _slam_progress)
-			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, c_outer, 2.2)
-			draw_arc(c, ring_r, 0.0, TAU, 36, c_mid, 3.4)
-			draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+			draw_arc(c, ring_r, 0.0, TAU, 36, Color(PAL["void"] as Color, 0.72 if fred else 0.90), 6.0)
+			draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, Color(c_outer, 0.75 if fred else 1.0), 2.0)
+			draw_arc(c, ring_r, 0.0, TAU, 36, Color(c_mid, 0.78 if fred else 1.0), 3.0)
+			draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, Color(PAL["cream"] as Color, 0.72 if fred else 1.0), 1.0)
 	elif boss_state == BossState.PHASE_SHIFT:
 		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var rr: float = body_radius + 10.0 + rp * 16.0
-		draw_arc(c, rr + 2.5, 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
-		draw_arc(c, rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.4)
+		var pa: float = 0.65 if fred else 1.0
+		draw_arc(c, rr, 0.0, TAU, 28, Color(PAL["void"] as Color, pa * 0.85), 5.0)
+		draw_arc(c, rr + 2.5, 0.0, TAU, 28, Color(PAL["apricot"] as Color, pa), 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, Color(PAL["gold"] as Color, pa), 2.0)
 	if _dusk_slow_t > 0.0:
-		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
+		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
+		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)

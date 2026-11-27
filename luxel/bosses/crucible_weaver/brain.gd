@@ -263,24 +263,29 @@ func _body_color() -> Color:
 
 
 func _draw_boss_extra(off: Vector2) -> void:
+	var fred: bool = is_flash_reduced()
 	# Draw LabWorld fallback glass mirrors (real rooms render their own LxMirror interactables!)
 	for m: Dictionary in _spun_mirrors:
 		if not str(m["interactable_id"]).is_empty():
 			continue
 		var mp: Vector2 = ((m["pos"] as Vector2) - pos).round()
-		var fl: bool = float(m["flash_t"]) > 0.0
+		var fl: bool = float(m["flash_t"]) > 0.0 and not fred
 		draw_circle(mp, 8.0, Color(PAL["sky"] as Color, 0.25 if not fl else 0.55))
-		draw_arc(mp, 7.5, 0.0, TAU, 14, PAL["cream"] as Color if fl else PAL["ice"] as Color, 1.4)
+		draw_arc(mp, 7.5, 0.0, TAU, 14, PAL["void"] as Color, 3.0)
+		draw_arc(mp, 7.5, 0.0, TAU, 14, PAL["cream"] as Color if fl else PAL["ice"] as Color, 1.0)
 		var nv: Vector2 = Vector2.from_angle(float(m["angle"])) * 6.0
+		draw_line((mp - nv.orthogonal()).round(), (mp + nv.orthogonal()).round(), PAL["void"] as Color, 4.0)
 		draw_line((mp - nv.orthogonal()).round(), (mp + nv.orthogonal()).round(), PAL["cream"] as Color, 2.0)
 	# Sweeping molten loom beam during P2 commit
 	if boss_state == BossState.COMMIT and active_attack_id == "furnace_loom_sweep":
 		var u: float = clampf(_commit_elapsed / 0.45, 0.0, 1.0)
 		var bend: Vector2 = (off + Vector2.from_angle(_sweep_base_ang + u * 1.56) * 128.0).round()
+		draw_line(off.round(), bend, PAL["void"] as Color, 9.0)
 		draw_line(off.round(), bend, PAL["wine"] as Color, 7.0)
-		draw_line(off.round(), bend, PAL["coral"] as Color, 4.4)
-		draw_line(off.round(), bend, PAL["gold"] as Color, 2.2)
+		draw_line(off.round(), bend, PAL["coral"] as Color, 4.0)
+		draw_line(off.round(), bend, PAL["gold"] as Color, 2.0)
 		draw_line(off.round(), bend, PAL["cream"] as Color, 1.0)
 	# Frosted brittle teacup halo
 	if _brittle_t > 0.0:
-		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.6)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["ice"] as Color, 2.0)

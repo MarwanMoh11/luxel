@@ -62,20 +62,21 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 		var a_out: float = (1.0 - prog) * (0.55 if fred else 0.90)
 		var isl_a: int = Lx.state.island_id if Lx.state != null else 1
 		var c_off: Vector2 = off.round()
-		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(pal["void"] as Color, a_out * 0.85), 3.0)
-		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(LxBiomePalette.col(isl_a, "glow"), a_out), 1.5)
+		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(pal["void"] as Color, a_out * 0.85), 4.0)
+		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(LxBiomePalette.col(isl_a, "glow"), a_out), 2.0)
 		enemy.draw_arc(c_off, inner_r, 0.0, TAU, 18, Color(pal["cream"] as Color, a_out * 0.85), 1.0)
 		for ci: int in range(4):
 			var ang: float = float(ci) * (PI * 0.5) + prog * (0.20 if fred else 0.45)
 			var p0: Vector2 = (c_off + Vector2.from_angle(ang) * (r + 4.0 + ease_p * 10.0)).round()
 			var p1: Vector2 = (c_off + Vector2.from_angle(ang) * (r + 8.0 + ease_p * 16.0)).round()
-			enemy.draw_line(p0, p1, Color(pal["void"] as Color, a_out * 0.8), 2.5)
+			enemy.draw_line(p0, p1, Color(pal["void"] as Color, a_out * 0.8), 3.0)
 			enemy.draw_line(p0, p1, Color(LxBiomePalette.col(isl_a, "hi"), a_out), 1.0)
 			if enemy.is_boss and enemy.phase >= 2:
 				var da: float = float(ci) * (PI * 0.5) + PI * 0.25 - prog * (0.15 if fred else 0.35)
 				var q0: Vector2 = (c_off + Vector2.from_angle(da) * (r + 6.0 + ease_p * 14.0)).round()
 				var q1: Vector2 = (c_off + Vector2.from_angle(da) * (r + 12.0 + ease_p * 22.0)).round()
-				enemy.draw_line(q0, q1, Color(pal["gold"] as Color, a_out * 0.90), 1.2)
+				enemy.draw_line(q0, q1, Color(pal["void"] as Color, a_out * 0.75), 3.0)
+				enemy.draw_line(q0, q1, Color(pal["gold"] as Color, a_out * 0.90), 1.0)
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
 		return
@@ -135,7 +136,8 @@ static func draw_shield_arc(enemy: LxEnemyBrain, off: Vector2, base_col: Color) 
 		else:
 			col = (pal["coral"] if int(enemy.anim_t * 10.0) % 2 == 0 else pal["apricot"]) as Color
 
-	enemy.draw_arc(off, rad, enemy.facing - 1.05, enemy.facing + 1.05, 12, col, 2.5)
+	enemy.draw_arc(off.round(), rad, enemy.facing - 1.05, enemy.facing + 1.05, 12, pal["void"] as Color, 4.0)
+	enemy.draw_arc(off.round(), rad, enemy.facing - 1.05, enemy.facing + 1.05, 12, col, 2.0)
 
 	# Visible hairline fractures across the shield as it wears down
 	var isl_sh: int = Lx.state.island_id if Lx.state != null else 1

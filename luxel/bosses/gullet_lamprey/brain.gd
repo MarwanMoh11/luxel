@@ -333,7 +333,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	var hc: Vector2 = (arena_rect.get_center() - pos + off).round()
 	var pulse: float = 1.0 + sin(_beat_t * TAU / 4.0) * 0.16
 	draw_circle(hc, 11.0 * pulse, Color(PAL["gold" if _heart_flash_t > 0.0 else "rose"] as Color, 0.35))
-	draw_arc(hc, 9.0 * pulse, 0.0, TAU, 16, PAL["cream" if _heart_flash_t > 0.0 else "gold"] as Color, 1.5)
+	draw_arc(hc, 9.0 * pulse, 0.0, TAU, 16, PAL["cream" if _heart_flash_t > 0.0 else "gold"] as Color, 2.0)
 	draw_circle(hc, 4.0, PAL["cream"] as Color)
 	# 2. The 3 Swallowed Ship-Lanterns
 	for lm: Dictionary in _lamps:
@@ -342,8 +342,8 @@ func _draw_boss_extra(off: Vector2) -> void:
 		draw_circle(lp, 6.5, PAL["night"] as Color)
 		draw_circle(lp, 4.5, PAL["gold" if is_lit else "dusk"] as Color)
 		if is_lit:
-			draw_arc(lp, 9.5, 0.0, TAU, 12, PAL["cream"] as Color, 1.2)
-			draw_line(lp, hc, Color(PAL["gold"] as Color, 0.55), 1.2)
+			draw_arc(lp, 9.5, 0.0, TAU, 12, PAL["cream"] as Color, 1.0)
+			draw_line(lp, hc, Color(PAL["gold"] as Color, 0.55), 1.0)
 	if _heart_flash_t > 0.0 and not is_flash_reduced():
 		var u: float = 1.0 - clampf(_heart_flash_t / 0.65, 0.0, 1.0)
-		draw_arc(hc, lerpf(12.0, 92.0, u), 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
+		draw_arc(hc, lerpf(12.0, 92.0, u), 0.0, TAU, 24, PAL["gold"] as Color, 2.0)

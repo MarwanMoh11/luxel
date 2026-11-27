@@ -288,13 +288,13 @@ func _body_color() -> Color:
 func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		var rim: Color = (PAL["ice"] as Color) if (illuminated or phase_fx_t > 0.0) else (PAL["dusk"] as Color)
-		draw_arc(off, body_radius + 2.0, 0.0, TAU, 14, rim, 1.5 if illuminated else 1.0)
+		draw_arc(off, body_radius + 2.0, 0.0, TAU, 14, rim, 2.0 if illuminated else 1.0)
 		var fwd: Vector2 = Vector2.from_angle(facing)
 		var side: Vector2 = Vector2(-fwd.y, fwd.x)
 		draw_circle(off + fwd * 2.0 + side * 2.0, 1.2, PAL["ice"] as Color)
 		draw_circle(off + fwd * 2.0 - side * 2.0, 1.2, PAL["ice"] as Color)
 	elif illuminated:
-		draw_arc(off, body_radius + 3.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
+		draw_arc(off, body_radius + 3.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 	var c: Vector2 = off.round()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -317,19 +317,19 @@ func _draw_extra(off: Vector2) -> void:
 			for side_s: float in [-1.0, 1.0]:
 				var r0: Vector2 = (c + perp_t * (side_s * LUNGE_HIT_R) + lunge_dir * (reach_len * t0)).round()
 				var r1: Vector2 = (c + perp_t * (side_s * LUNGE_HIT_R) + lunge_dir * (reach_len * t1)).round()
-				draw_line(r0, r1, PAL["void"] as Color, 2.2)
-				draw_line(r0, r1, rail_c, 1.2)
-		draw_line(a1, b1, PAL["void"] as Color, 2.2)
-		draw_line(a1, b1, rail_c, 1.2)
+				draw_line(r0, r1, PAL["void"] as Color, 3.0)
+				draw_line(r0, r1, rail_c, 1.0)
+		draw_line(a1, b1, PAL["void"] as Color, 3.0)
+		draw_line(a1, b1, rail_c, 1.0)
 		if locked:
-			draw_line(c, tip, line_c, 1.4)
+			draw_line(c, tip, line_c, 2.0)
 		else:
 			for si: int in range(0, 10, 2):
 				var p0: Vector2 = (c + lunge_dir * (reach_len * float(si) / 10.0)).round()
 				var p1: Vector2 = (c + lunge_dir * (reach_len * float(si + 1) / 10.0)).round()
-				draw_line(p0, p1, line_c, 1.2)
-		draw_line((tip - lunge_dir * 4.0 + perp_t * 3.0).round(), tip, line_c, 1.2)
-		draw_line((tip - lunge_dir * 4.0 - perp_t * 3.0).round(), tip, line_c, 1.2)
+				draw_line(p0, p1, line_c, 1.0)
+		draw_line((tip - lunge_dir * 4.0 + perp_t * 3.0).round(), tip, line_c, 1.0)
+		draw_line((tip - lunge_dir * 4.0 - perp_t * 3.0).round(), tip, line_c, 1.0)
 		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
 		var perp: Vector2 = Vector2(-lunge_dir.y, lunge_dir.x)
@@ -337,11 +337,11 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(c, (c - lunge_dir * 22.0).round(), PAL["void"] as Color, 4.0)
 		for si: int in range(-1, 2, 2):
 			var s: float = float(si)
-			draw_line((c + perp * (s * 3.0)).round(), (c - lunge_dir * 18.0 + perp * (s * 4.5)).round(), PAL["plum"] as Color, 1.6)
+			draw_line((c + perp * (s * 3.0)).round(), (c - lunge_dir * 18.0 + perp * (s * 4.5)).round(), PAL["plum"] as Color, 2.0)
 			draw_line((c + perp * (s * 1.5)).round(), (c - lunge_dir * 13.0 + perp * (s * 2.0)).round(), PAL["sky"] as Color, 1.0)
-		draw_arc((c - lunge_dir * 8.0).round(), body_radius * 0.9, la + PI * 0.55, la + PI * 1.45, 8, PAL["plum"] as Color, 1.8)
-		draw_arc((c - lunge_dir * 15.0).round(), body_radius * 0.72, la + PI * 0.65, la + PI * 1.35, 6, PAL["sky"] as Color, 1.2)
-		draw_line((c + lunge_dir * 4.0).round(), (c - lunge_dir * 10.0).round(), PAL["ice"] as Color, 1.2)
+		draw_arc((c - lunge_dir * 8.0).round(), body_radius * 0.9, la + PI * 0.55, la + PI * 1.45, 8, PAL["plum"] as Color, 2.0)
+		draw_arc((c - lunge_dir * 15.0).round(), body_radius * 0.72, la + PI * 0.65, la + PI * 1.35, 6, PAL["sky"] as Color, 1.0)
+		draw_line((c + lunge_dir * 4.0).round(), (c - lunge_dir * 10.0).round(), PAL["ice"] as Color, 1.0)
 	if phase_fx_t > 0.0:
 		var pf: float = clampf(phase_fx_t / 0.24, 0.0, 1.0)
 		var d: float = roundf(body_radius + 3.0 + (1.0 - pf) * 4.0)
@@ -350,10 +350,10 @@ func _draw_extra(off: Vector2) -> void:
 		var bot: Vector2 = c + Vector2(0.0, d)
 		var lft: Vector2 = c + Vector2(-d, 0.0)
 		var rgt: Vector2 = c + Vector2(d, 0.0)
-		draw_line(top, rgt, PAL["ice"] as Color, 1.4)
-		draw_line(rgt, bot, PAL["ice"] as Color, 1.4)
-		draw_line(bot, lft, PAL["ice"] as Color, 1.4)
-		draw_line(lft, top, PAL["ice"] as Color, 1.4)
+		draw_line(top, rgt, PAL["ice"] as Color, 1.0)
+		draw_line(rgt, bot, PAL["ice"] as Color, 1.0)
+		draw_line(bot, lft, PAL["ice"] as Color, 1.0)
+		draw_line(lft, top, PAL["ice"] as Color, 1.0)
 		draw_line(c + Vector2(0.0, -id), c + Vector2(id, 0.0), PAL["cream"] as Color, 1.0)
 		draw_line(c + Vector2(id, 0.0), c + Vector2(0.0, id), PAL["cream"] as Color, 1.0)
 		draw_line(c + Vector2(0.0, id), c + Vector2(-id, 0.0), PAL["cream"] as Color, 1.0)

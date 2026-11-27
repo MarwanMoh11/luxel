@@ -154,7 +154,7 @@ func _ignite_spoke(idx: int) -> void:
 	if str(sp["state"]) != "intact":
 		return
 	sp["state"] = "burning"
-	sp["timer"] = SPOKE_WARN_S
+	sp["timer"] = SPOKE_WARN_S * get_tell_scale()
 	var end_p: Vector2 = sp["end_pos"] as Vector2
 	ground.warn_lane(_spindle_pos, end_p, 8.0, SPOKE_WARN_S, 0.0, "coral", "gold")
 	stage.play_sfx("lw_spoke_ignite", end_p)
@@ -301,7 +301,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	var sp_local: Vector2 = (_spindle_pos + inv).round()
 	# Central golden brass spindle
 	draw_circle(sp_local, 10.0, Color(PAL["night"] as Color, 0.85))
-	draw_arc(sp_local, 10.0, 0.0, TAU, 18, PAL["gold"] as Color, 1.5)
+	draw_arc(sp_local, 10.0, 0.0, TAU, 18, PAL["gold"] as Color, 2.0)
 	draw_circle(sp_local, 3.0, PAL["apricot"] as Color)
 	# 6 walkable silk spokes
 	for i: int in range(_spokes.size()):
@@ -317,7 +317,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 			col = PAL["ice"] as Color
 		elif i != _perched_spoke:
 			col = Color(PAL["stone"] as Color, 0.55)
-		draw_line(sp_local, ep, col, 2.2 if (i == _perched_spoke or st == "burning") else 1.2)
+		draw_line(sp_local, ep, col, 2.0 if (i == _perched_spoke or st == "burning") else 1.0)
 	# Horror beat: 6 ice eyes blink open in a ring above during Spindle Drop tell!
 	if _eye_blink_t > 0.0:
 		for k: int in range(6):

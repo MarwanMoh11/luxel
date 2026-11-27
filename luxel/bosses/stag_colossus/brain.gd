@@ -286,15 +286,19 @@ func _body_color() -> Color:
 
 
 func _draw_boss_extra(off: Vector2) -> void:
+	var fred: bool = is_flash_reduced()
 	# Draw P2 corner Dew Lens overheat prisms
 	for dl: Dictionary in _dew_lenses:
 		var lp: Vector2 = ((dl["pos"] as Vector2) - pos).round()
 		var fl: float = float(dl["flash"])
 		draw_circle(lp, 9.0, PAL["night"] as Color)
-		draw_circle(lp, 7.2, PAL["cream"] as Color if fl > 0.0 else PAL["sky"] as Color)
+		draw_circle(lp, 7.2, (PAL["gold"] if fred else PAL["cream"]) as Color if fl > 0.0 else PAL["sky"] as Color)
 		draw_circle(lp + Vector2(-2.0, -2.0), 3.0, PAL["ice"] as Color)
 		if fl > 0.0:
-			draw_line(lp, off.round(), PAL["gold"] as Color, 3.0)
-			draw_line(lp, off.round(), PAL["cream"] as Color, 1.4)
+			var ba: float = 0.62 if fred else 1.0
+			draw_line(lp, off.round(), Color(PAL["void"] as Color, ba * 0.85), 5.0)
+			draw_line(lp, off.round(), Color(PAL["gold"] as Color, ba), 3.0)
+			draw_line(lp, off.round(), Color(PAL["cream"] as Color, ba), 1.0)
 	if _overheated_t > 0.0:
-		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["coral"] as Color, 1.6)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 20, PAL["coral"] as Color, 2.0)

@@ -382,7 +382,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	if _trench_rect.has_area():
 		var rl := Rect2((_trench_rect.position - pos).round(), _trench_rect.size.round())
 		draw_rect(rl, Color(PAL["void"] as Color, 0.58), true)
-		draw_rect(rl, PAL["dusk"] as Color, false, 1.5)
+		draw_rect(rl, PAL["dusk"] as Color, false, 2.0)
 	# Draw active glowing Light-Eggs (shoot to snuff!)
 	for egg: Dictionary in _light_eggs:
 		var ep: Vector2 = ((egg["pos"] as Vector2) - pos).round()

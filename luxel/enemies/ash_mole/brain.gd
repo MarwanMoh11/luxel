@@ -260,7 +260,7 @@ func _draw() -> void:
 		var cr_len: float = (body_radius + 5.5) if hot else (body_radius + 2.5)
 		var mid := Vector2(roundf(c.x + cd.x * (cr_len * 0.55) + perp.x * 1.4), roundf(c.y + cd.y * (cr_len * 0.55) + perp.y * 1.4))
 		var tip := Vector2(roundf(c.x + cd.x * cr_len), roundf(c.y + cd.y * cr_len))
-		draw_line(c, mid, PAL["coral"] as Color, 1.4 if hot else 1.0)
+		draw_line(c, mid, PAL["coral"] as Color, 2.0 if hot else 1.0)
 		draw_line(mid, tip, (PAL["apricot"] as Color) if hot else (PAL["wine"] as Color), 1.0)
 		draw_rect(Rect2(roundf(c.x + cd.x * (body_radius + 1.5)), roundf(c.y + cd.y * (body_radius + 1.5) + 2.0), 1.0, 1.0), PAL["night"] as Color, true)
 	for ci: int in range(3):
@@ -283,14 +283,14 @@ func _draw() -> void:
 			for di: int in range(10):
 				var a0: float = spin_d + float(di) * (TAU / 10.0)
 				var a1: float = a0 + 0.38
-				draw_arc(tc, AMBUSH_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 2.2)
-				draw_arc(tc, AMBUSH_HIT_R, a0, a1, 4, dash_c, 1.4)
+				draw_arc(tc, AMBUSH_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 3.0)
+				draw_arc(tc, AMBUSH_HIT_R, a0, a1, 4, dash_c, 1.0)
 		var r: float = roundf(lerpf(AMBUSH_HIT_R - 1.5 if ambush_attack else body_radius + 10.0, body_radius + 2.5, prog))
-		draw_arc(tc, r, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
+		draw_arc(tc, r, 0.0, TAU, 16, PAL["coral"] as Color, 2.0)
 		draw_arc(tc, maxf(2.0, r - 2.0), 0.0, TAU, 12, (PAL["cream"] if locked_a else PAL["apricot"]) as Color, 1.0)
 	elif state == State.COMMIT:
 		var br: float = roundf(body_radius + 4.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 22.0) * 1.0))
-		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 1.8)
+		draw_arc(c, br, 0.0, TAU, 14, PAL["apricot"] as Color, 2.0)
 		draw_arc(c, maxf(2.0, br - 2.0), 0.0, TAU, 12, PAL["gold"] as Color, 1.0)
 
 
@@ -298,16 +298,16 @@ func _draw_extra(off: Vector2) -> void:
 	super._draw_extra(off)
 	if surfaced and _sprite_sheet == null:
 		# Digging claws
-		draw_line(off + Vector2(-3.0, 2.0), off + Vector2(-5.0, 5.0), PAL["gold"] as Color, 1.5)
-		draw_line(off + Vector2(3.0, 2.0), off + Vector2(5.0, 5.0), PAL["gold"] as Color, 1.5)
+		draw_line(off + Vector2(-3.0, 2.0), off + Vector2(-5.0, 5.0), PAL["gold"] as Color, 2.0)
+		draw_line(off + Vector2(3.0, 2.0), off + Vector2(5.0, 5.0), PAL["gold"] as Color, 2.0)
 	if surfaced and (state == State.TELL or state == State.COMMIT):
 		var c := Vector2(roundf(off.x), roundf(off.y))
 		var is_c: bool = state == State.COMMIT
 		var sr: float = (body_radius + 8.0) if is_c else (body_radius + 5.5)
 		for si: int in range(-1, 2, 2):
 			var sa: float = facing + float(si) * 0.45
-			draw_arc(c, sr + 1.5, sa - 0.55, sa + 0.55, 8, PAL["coral"] as Color, 2.0 if is_c else 1.4)
-			draw_arc(c, sr, sa - 0.45, sa + 0.45, 8, PAL["apricot"] as Color, 1.4 if is_c else 1.0)
+			draw_arc(c, sr + 1.5, sa - 0.55, sa + 0.55, 8, PAL["coral"] as Color, 3.0 if is_c else 2.0)
+			draw_arc(c, sr, sa - 0.45, sa + 0.45, 8, PAL["apricot"] as Color, 2.0 if is_c else 1.0)
 			if is_c:
 				draw_arc(c, sr - 1.5, sa - 0.30, sa + 0.30, 6, PAL["gold"] as Color, 1.0)
 				var td: Vector2 = Vector2.from_angle(sa + float(si) * 0.40)

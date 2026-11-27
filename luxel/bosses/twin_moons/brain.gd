@@ -319,13 +319,13 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	# Syzygy tether chord connecting the twin moons in P2+ or active tether
 	if phase >= 2 or _tether_active:
-		draw_line(s_loc, u_loc, Color(sola_c, 0.65), 2.5 if _tether_active else 1.2)
+		draw_line(s_loc, u_loc, Color(sola_c, 0.65), 3.0 if _tether_active else 1.0)
 		if _tether_active:
 			draw_line(s_loc, u_loc, PAL["cream"] as Color, 1.0)
 
 	# Draw live satellite twin (Umbra) at its independent counter-orbiting world coordinate!
 	draw_circle(u_loc + Vector2(0.0, 9.0), 9.0, Color(PAL["void"] as Color, 0.36))
-	draw_arc(u_loc, 12.5, 0.0, TAU, 20, umbra_c, 1.5)
+	draw_arc(u_loc, 12.5, 0.0, TAU, 20, umbra_c, 2.0)
 	draw_circle(u_loc, 10.0, PAL["night"] as Color)
 	draw_circle(u_loc, 8.8, PAL["apricot"] as Color if _swapped else PAL["blue"] as Color)
 	draw_circle(u_loc + Vector2(-2.0, -2.0), 4.0, PAL["gold"] as Color if _swapped else PAL["sky"] as Color)
@@ -336,5 +336,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _clash_flash_t > 0.0:
 		var mid: Vector2 = s_loc.lerp(u_loc, 0.5)
 		var u: float = 1.0 - clampf(_clash_flash_t / 0.42, 0.0, 1.0)
-		draw_arc(mid, lerpf(8.0, 38.0, u), 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
-		draw_arc(mid, lerpf(4.0, 28.0, u), 0.0, TAU, 18, PAL["cream"] as Color, 1.2)
+		var ca: float = 0.55 if is_flash_reduced() else 1.0
+		draw_arc(mid, lerpf(8.0, 38.0, u), 0.0, TAU, 24, Color(PAL["void"] as Color, ca * 0.85), 4.0)
+		draw_arc(mid, lerpf(8.0, 38.0, u), 0.0, TAU, 24, Color(PAL["gold"] as Color, ca), 2.0)
+		draw_arc(mid, lerpf(4.0, 28.0, u), 0.0, TAU, 18, Color(PAL["cream"] as Color, ca), 1.0)

@@ -338,23 +338,24 @@ func _draw_extra(off: Vector2) -> void:
 	if _boom_fx_t > 0.0:
 		var u: float = 1.0 - clampf(_boom_fx_t / 0.32, 0.0, 1.0)
 		draw_arc(c, lerpf(10.0, DETONATE_AOE_R, u), 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
-		draw_arc(c, lerpf(6.0, DETONATE_AOE_R * 0.75, u), 0.0, TAU, 18, PAL["gold"] as Color, 1.2)
+		draw_arc(c, lerpf(6.0, DETONATE_AOE_R * 0.75, u), 0.0, TAU, 18, PAL["gold"] as Color, 1.0)
 
 	if state == State.TELL and _preview_pts.size() >= 2:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var lc: Color = (PAL["coral"] if prog > 0.62 else PAL["apricot"]) as Color
+		var hot_p: bool = prog > 0.62
+		var lc: Color = (PAL["coral"] if hot_p else PAL["apricot"]) as Color
 		for k: int in range(_preview_pts.size() - 1):
 			var a: Vector2 = (_preview_pts[k] - pos + off).round()
 			var b: Vector2 = (_preview_pts[k + 1] - pos + off).round()
-			draw_line(a, b, lc, 2.0 if prog > 0.62 else 1.2)
+			draw_line(a, b, lc, 2.0 if hot_p else 1.0)
 		# Glowing shoot-me cue ring on the hefted boulder during TELL!
-		draw_arc(c + Vector2(0.0, -14.0), 8.5, 0.0, TAU, 16, PAL["gold"] as Color, 1.4)
+		draw_arc(c + Vector2(0.0, -14.0), 8.5, 0.0, TAU, 16, PAL["gold"] as Color, 1.0)
 
 	for b: Dictionary in _boulders:
 		var lp: Vector2 = ((b["pos"] as Vector2) - pos + off).round()
 		var bv: Vector2 = (b["vel"] as Vector2).normalized()
-		draw_line((lp - bv * 9.0).round(), lp, PAL["wine"] as Color, 4.5)
-		draw_line((lp - bv * 7.0).round(), lp, PAL["coral"] as Color, 2.5)
+		draw_line((lp - bv * 9.0).round(), lp, PAL["wine"] as Color, 5.0)
+		draw_line((lp - bv * 7.0).round(), lp, PAL["coral"] as Color, 3.0)
 		draw_circle(lp, BOULDER_RADIUS, PAL["night"] as Color)
 		draw_circle(lp, BOULDER_RADIUS - 1.2, PAL["coral"] as Color)
 		draw_circle(lp + Vector2(-1.0, -1.0), 2.5, PAL["gold"] as Color)

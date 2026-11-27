@@ -334,10 +334,10 @@ func _draw_lunar_bolt(pt: Vector2, dir: Vector2) -> void:
 	var perp: Vector2 = Vector2(-dir.y, dir.x)
 	var head: Vector2 = (p + dir * 3.5).round()
 	var tail: Vector2 = (p - dir * 3.5).round()
-	draw_line(tail, head, PAL["sky"] as Color, 2.6)
+	draw_line(tail, head, PAL["sky"] as Color, 3.0)
 	draw_line((p + perp * 2.0).round(), head, PAL["ice"] as Color, 1.0)
 	draw_line((p - perp * 2.0).round(), head, PAL["ice"] as Color, 1.0)
-	draw_line(p, head, PAL["cream"] as Color, 1.2)
+	draw_line(p, head, PAL["cream"] as Color, 1.0)
 	draw_rect(Rect2(head, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 
 func _draw_extra(off: Vector2) -> void:
@@ -348,7 +348,7 @@ func _draw_extra(off: Vector2) -> void:
 	if dark_lantern_out or _sprite_sheet == null:
 		var lan_off: Vector2 = ((dark_lantern_pos - pos) if dark_lantern_out else (c + Vector2.from_angle(facing) * 6.0)).round()
 		if dark_lantern_out:
-			draw_line(c, lan_off, PAL["deep"] as Color, 1.6)
+			draw_line(c, lan_off, PAL["deep"] as Color, 2.0)
 			draw_line(c, lan_off, PAL["sky"] as Color, 1.0)
 			for bi: int in range(1, 5):
 				var bp: Vector2 = c.lerp(lan_off, float(bi) * 0.2).round()
@@ -370,18 +370,18 @@ func _draw_extra(off: Vector2) -> void:
 			var dash_len: float = DASH_SPEED * DASH_COMMIT_TIME + DASH_HIT_R
 			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + commit_dir * dash_len, DASH_HIT_R, t_urg, anim_t, "coral", "gold")
 		elif active_move == MoveKind.BOLT_VOLLEY:
-			draw_line(c, (c + commit_dir * 50.0).round(), tc, 1.8 if hot_t else 1.4)
+			draw_line(c, (c + commit_dir * 50.0).round(), tc, 2.0 if hot_t else 1.0)
 			var vc: int = _volley_count()
 			var vs: float = _volley_spread()
 			var vm: float = float(vc - 1) * 0.5
 			for vi: int in range(vc):
 				var vdir: Vector2 = commit_dir.rotated((float(vi) - vm) * vs)
-				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), (PAL["coral"] if hot_t else PAL["blue"]) as Color, 1.4 if hot_t else 1.0)
+				draw_line(c, (c + vdir * VOLLEY_RANGE).round(), (PAL["coral"] if hot_t else PAL["blue"]) as Color, 2.0 if hot_t else 1.0)
 				_draw_lunar_bolt(c + vdir * 22.0, vdir)
 		elif active_move == MoveKind.LANTERN_ZIP:
 			var zc: Vector2 = (dark_lantern_pos - pos).round()
 			LxBossTelegraphFx.draw_ground_danger_ring(self, zc, 26.0, t_urg, anim_t, "sky", "coral")
-			draw_line(c, zc, (PAL["coral"] if hot_t else PAL["sky"]) as Color, 1.3)
+			draw_line(c, zc, (PAL["coral"] if hot_t else PAL["sky"]) as Color, 1.0)
 			draw_circle(zc, 2.2, (PAL["cream"] if hot_t else PAL["ice"]) as Color)
 	elif state == State.COMMIT and active_move == MoveKind.BOLT_VOLLEY:
 		var prog: float = clampf(commit_elapsed / VOLLEY_COMMIT_TIME, 0.0, 1.0)
@@ -391,6 +391,7 @@ func _draw_extra(off: Vector2) -> void:
 		for vi: int in range(vc2):
 			var vdir: Vector2 = commit_dir.rotated((float(vi) - vm2) * vs2)
 			var b_end: Vector2 = (c + vdir * VOLLEY_RANGE).round()
-			draw_line(c, b_end, PAL["sky"] as Color, 2.0 if absf(float(vi) - vm2) < 0.1 else 1.4)
+			var is_mid: bool = absf(float(vi) - vm2) < 0.1
+			draw_line(c, b_end, PAL["sky"] as Color, 2.0 if is_mid else 1.0)
 			draw_line(c, (c + vdir * (VOLLEY_RANGE * 0.85)).round(), PAL["ice"] as Color, 1.0)
 			_draw_lunar_bolt(c + vdir * lerpf(16.0, VOLLEY_RANGE - 6.0, prog), vdir)

@@ -306,10 +306,12 @@ func _draw_extra(off: Vector2) -> void:
 	elif state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / COMMIT_TIME, 0.0, 1.0)
 		var r: float = lerpf(8.0, shock_r, prog)
-		draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, PAL["sky"] as Color, 2.2)
+		draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(Vector2.ZERO, r, 0.0, TAU, 24, PAL["sky"] as Color, 2.0)
 		draw_arc(Vector2.ZERO, maxf(4.0, r - 2.0), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
 	for sp: Dictionary in _spores:
 		var lp: Vector2 = ((sp["pos"] as Vector2) - pos + c).round()
+		draw_circle(lp, 3.0, PAL["void"] as Color)
 		draw_circle(lp, 2.5, PAL["plum"] as Color)
 		draw_circle(lp, 1.5, PAL["gold"] as Color)
 		draw_rect(Rect2(lp, Vector2.ONE), PAL["cream"] as Color)

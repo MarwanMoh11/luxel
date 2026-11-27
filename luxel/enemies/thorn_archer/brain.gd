@@ -343,7 +343,7 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	# Overgrown vine-bloom jam indicator on bow!
 	if jammed_t > 0.0:
-		draw_arc(c, body_radius + 3.5, 0.0, TAU, 16, PAL["lime"] as Color, 1.5)
+		draw_arc(c, body_radius + 3.5, 0.0, TAU, 16, PAL["lime"] as Color, 2.0)
 		for k: int in range(4):
 			var a: float = anim_t * 2.2 + float(k) * (PI * 0.5)
 			var bp: Vector2 = (c + Vector2.from_angle(a) * (body_radius + 4.0)).round()
@@ -352,12 +352,12 @@ func _draw_extra(off: Vector2) -> void:
 		var locked: bool = state_timer <= 0.18 * _assist_tell_scale()
 		var tip: Vector2 = (c + shot_dir * 130.0).round()
 		var col: Color = (PAL["cream"] if locked else PAL["coral"]) as Color
-		draw_line(c, tip, col, 1.4 if locked else 1.0)
+		draw_line(c, tip, col, 2.0 if locked else 1.0)
 		draw_circle((c + shot_dir * 10.0).round(), 2.5, PAL["cream"] as Color)
 	for d: Dictionary in darts:
 		var p: Vector2 = ((d["pos"] as Vector2) - pos).round()
 		var dn: Vector2 = (d["vel"] as Vector2).normalized()
 		var tail: Vector2 = (p - dn * 9.0).round()
 		draw_line(tail, p, PAL["void"] as Color, 3.0)
-		draw_line(tail, p, PAL["coral"] as Color, 1.8)
+		draw_line(tail, p, PAL["coral"] as Color, 2.0)
 		draw_line((p - dn * 4.0).round(), p, PAL["cream"] as Color, 1.0)

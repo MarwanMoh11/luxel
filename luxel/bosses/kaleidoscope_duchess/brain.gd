@@ -256,7 +256,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		LxIsland7Rule.draw_truth_shadow(self, lp + Vector2(0.0, 6.0), 9.0, 3.0, "nw_wrong", false)
 		# Chromatic diamond-wing moth silhouette
 		draw_colored_polygon(PackedVector2Array([lp + Vector2(0, -16), lp + Vector2(14, -8), lp + Vector2(0, 2), lp + Vector2(-14, -8)]), Color(col, 0.58))
-		draw_arc(lp + Vector2(0, -8), 7.5, 0.0, TAU, 14, col, 1.4)
+		draw_arc(lp + Vector2(0, -8), 7.5, 0.0, TAU, 14, col, 1.0)
 		# Comedy beat: fake copies gasp & cover their eyes together!
 		if _gasp_t > 0.0:
 			draw_circle(lp + Vector2(-3.0, -10.0), 2.2, PAL["cream"] as Color)
@@ -265,7 +265,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	if _decoy_pop_t > 0.0:
 		var pp: Vector2 = (_decoy_pop_pos - pos).round()
-		draw_arc(pp, 14.0 * (1.0 - _decoy_pop_t / 0.45) + 4.0, 0.0, TAU, 14, PAL["cream"] as Color, 1.2)
+		draw_arc(pp, 14.0 * (1.0 - _decoy_pop_t / 0.45) + 4.0, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 
 	# P2 Overhead Prism Chandelier 4-arm chromatic laser carousel!
 	if _carousel_active_t > 0.0:
@@ -276,6 +276,6 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var ep: Vector2 = (ctr + d * 145.0).round()
 			var lc: Color = LxPalette.color(FACET_COLORS[k], "ice")
 			draw_line(ctr, ep, lc, 4.0)
-			draw_line(ctr, ep, PAL["cream"] as Color, 1.4)
+			draw_line(ctr, ep, PAL["cream"] as Color, 1.0)
 	if boss_state == BossState.TELL and active_attack_id == "chromatic_convergence":
-		draw_arc(c, body_radius + 7.0, 0.0, TAU, 18, PAL["cream"] as Color, 1.6)
+		draw_arc(c, body_radius + 7.0, 0.0, TAU, 18, PAL["cream"] as Color, 2.0)

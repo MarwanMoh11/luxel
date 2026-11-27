@@ -202,8 +202,9 @@ func draw_bolt(ci: CanvasItem, local_off: Vector2, clock: float, flash_red: bool
 	# Tail streak for readable motion direction
 	if frozen_t <= 0.0 and vel.length_squared() > 64.0:
 		var tail: Vector2 = (p - dir * minf(10.0, r * 2.2)).round()
-		ci.draw_line(tail, p, void_col, r + 1.6)
-		ci.draw_line(tail, p, rim_col, maxf(1.2, r * 0.7))
+		var tail_w: float = maxf(1.0, roundf(r * 0.7))
+		ci.draw_line(tail, p, void_col, roundf(r) + 2.0)
+		ci.draw_line(tail, p, rim_col, tail_w)
 
 	ci.draw_circle(p, r + (1.8 if not reflectable else 1.2), void_col)
 	ci.draw_circle(p, r, rim_col)

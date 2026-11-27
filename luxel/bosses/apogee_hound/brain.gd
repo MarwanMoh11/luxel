@@ -278,9 +278,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for k: int in range(2):
 			var ph: float = fposmod(_well_phase_anim + float(k) * 0.5, 1.0)
 			var u: float = ph if _well.is_push else (1.0 - ph)
-			draw_arc(wc, lerpf(10.0, _well.radius - 2.0, u), 0.0, TAU, 24, Color(c_ring, sin(ph * PI) * 0.50), 1.2)
+			draw_arc(wc, lerpf(10.0, _well.radius - 2.0, u), 0.0, TAU, 24, Color(c_ring, sin(ph * PI) * 0.50), 1.0)
 		draw_circle(wc, 7.0, PAL["void"] as Color)
-		draw_arc(wc, 7.0, 0.0, TAU, 16, c_ring, 1.2)
+		draw_arc(wc, 7.0, 0.0, TAU, 16, c_ring, 1.0)
 		draw_rect(Rect2(wc - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
 	# Curved pounce trajectory preview during orbital_pounce TELL
@@ -288,4 +288,4 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for k: int in range(_pounce_curve_pts.size() - 1):
 			var a: Vector2 = (_pounce_curve_pts[k] - pos + off).round()
 			var b: Vector2 = (_pounce_curve_pts[k + 1] - pos + off).round()
-			draw_line(a, b, PAL["ice"] as Color, 1.5)
+			draw_line(a, b, PAL["ice"] as Color, 2.0)

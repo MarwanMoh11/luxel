@@ -272,8 +272,10 @@ func _draw_extra(_off: Vector2) -> void:
 		var dp: Vector2 = (drop_target - pos).round()
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0) if state == State.TELL else 1.0
 		draw_circle(dp, DROP_RADIUS, Color(PAL["coral"] as Color, 0.16 + 0.14 * prog))
-		draw_arc(dp, DROP_RADIUS, 0.0, TAU, 18, (PAL["cream"] if prog > 0.72 else PAL["gold"]) as Color, 1.3)
+		draw_arc(dp, DROP_RADIUS, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(dp, DROP_RADIUS, 0.0, TAU, 18, (PAL["cream"] if prog > 0.72 else PAL["gold"]) as Color, 2.0)
 		if state == State.TELL:
+			draw_arc(dp, lerpf(DROP_RADIUS, 4.0, prog), 0.0, TAU, 14, PAL["void"] as Color, 3.0)
 			draw_arc(dp, lerpf(DROP_RADIUS, 4.0, prog), 0.0, TAU, 14, PAL["apricot"] as Color, 1.0)
 	if _cinder_active:
 		var cp: Vector2 = (_cinder_pos - pos).round()

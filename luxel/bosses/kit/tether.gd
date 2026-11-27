@@ -175,8 +175,8 @@ func draw_tethers(ci: CanvasItem, origin_world: Vector2) -> void:
 		var col: Color = PAL["cream"] as Color if float(t["flash_t"]) > 0.0 else (
 			PAL["ice"] as Color if (is_elec and warn_t <= 0.0) else LxPalette.color(str(t["color"]), "stone")
 		)
-		ci.draw_line(pa.round(), pb.round(), PAL["night"] as Color, 3.0)
-		ci.draw_line(pa.round(), pb.round(), col, 1.4)
+		ci.draw_line(pa.round(), pb.round(), PAL["void"] as Color, 3.0)
+		ci.draw_line(pa.round(), pb.round(), col, 1.0)
 		for k: int in range(1, links):
 			var u: float = float(k) / float(links)
 			var lp: Vector2 = pa.lerp(pb, u).round()

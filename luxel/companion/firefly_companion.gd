@@ -290,9 +290,10 @@ func _tick_follow(dt: float, wick: LxWick, world_ctx: Node) -> void:
 		else:
 			_sense_dir = Vector2.ZERO
 
-	# Auto "when stuck" Wayfinder flutter when lingering idle or wandering without progress
+	# Auto "when stuck" Wayfinder flutter when lingering idle or wandering without progress (paused during locked boss arenas)
+	var arena_locked: bool = world_ctx != null and is_instance_valid(world_ctx) and world_ctx.has_method("is_arena_locked") and bool(world_ctx.call("is_arena_locked"))
 	var idle_lim: float = LxFireflyState.get_wayfinder_idle_delay()
-	if _auto_guide_cd <= 0.0 and _join_t <= 0.0 and not _hold_active and (_idle_t >= idle_lim or _stuck_t >= idle_lim * 2.4):
+	if not arena_locked and _auto_guide_cd <= 0.0 and _join_t <= 0.0 and not _hold_active and (_idle_t >= idle_lim or _stuck_t >= idle_lim * 2.4):
 		if trigger_wayfinder(world_ctx, false):
 			_stuck_t = 0.0; return
 

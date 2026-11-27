@@ -458,12 +458,14 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	# Bible 4.5: P2 rose/ice world-split rim
 	if phase >= 2 and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 3.2, -PI * 0.5, PI * 0.5, 14, PAL["rose"] as Color, 1.4)
-		draw_arc(c, body_radius + 3.2, PI * 0.5, PI * 1.5, 14, PAL["ice"] as Color, 1.4)
+		draw_arc(c, body_radius + 3.2, 0.0, TAU, 24, PAL["void"] as Color, 3.0)
+		draw_arc(c, body_radius + 3.2, -PI * 0.5, PI * 0.5, 14, PAL["rose"] as Color, 1.0)
+		draw_arc(c, body_radius + 3.2, PI * 0.5, PI * 1.5, 14, PAL["ice"] as Color, 1.0)
 
 	# Armour glint when yellow bolts chip outside punish windows
 	if _armour_glint_t > 0.0 and boss_state != BossState.DEATH:
-		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0)
+		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0) * (0.65 if fred else 1.0)
+		draw_arc(c, body_radius + 5.0, _armour_glint_ang - 0.80, _armour_glint_ang + 0.80, 10, Color(PAL["void"] as Color, ga * 0.85), 4.0)
 		draw_arc(c, body_radius + 5.0, _armour_glint_ang - 0.80, _armour_glint_ang + 0.80, 10, Color(PAL["ice"] as Color, ga), 2.0)
 
 	# Horror beat: Silver Blink-Ghost keeps swinging 0.50s after Warden stops!
@@ -472,16 +474,20 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var lu: float = 1.0 - clampf(silver_ghost_linger_t / GHOST_HORROR_LINGER, 0.0, 1.0)
 		var sw_a: float = mirror_dir.angle() + sin(lu * TAU) * 1.1
 		draw_circle(mp_l, body_radius * 0.72, Color(PAL["ice"] as Color, 0.45 * (1.0 - lu)))
-		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(PAL["cream"] as Color, 0.80 * (1.0 - lu)), 1.6)
-		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(PAL["ice"] as Color, 0.75 * (1.0 - lu)), 1.6)
+		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(PAL["void"] as Color, 0.75 * (1.0 - lu)), 4.0)
+		draw_arc(mp_l, body_radius + 2.0, sw_a - 0.85, sw_a + 0.85, 12, Color(PAL["cream"] as Color, 0.80 * (1.0 - lu)), 2.0)
+		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(PAL["void"] as Color, 0.70 * (1.0 - lu)), 4.0)
+		draw_line(mp_l, (mp_l + Vector2.from_angle(sw_a) * 24.0).round(), Color(PAL["ice"] as Color, 0.75 * (1.0 - lu)), 2.0)
 
 	if guard_cracked_t > 0.0:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 1.8)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 2.0)
 		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 	if shimmer_t > 0.0:
 		var sp: float = 1.0 - clampf(shimmer_t / 0.70, 0.0, 1.0)
-		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, PAL["rose"] as Color, 1.8 if fred else 2.2)
-		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.2)
+		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, Color(PAL["void"] as Color, 0.65 if fred else 0.85), 3.0 if fred else 4.0)
+		draw_arc(c, body_radius + 6.0 + sp * 14.0, 0.0, TAU, 24, Color(PAL["rose"] as Color, 0.72 if fred else 1.0), 1.0 if fred else 2.0)
+		draw_arc(c, body_radius + 3.0 + sp * 9.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.0)
 
 	if boss_state == BossState.COMMIT and active_attack_id == "prismatic_spear_lunge":
 		var mp2: Vector2 = (mirror_pos - pos + off).round()
@@ -489,18 +495,23 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var p1: float = clampf(_commit_elapsed / SPEAR_COMMIT_TIME, 0.0, 1.0)
 			var a0: float = spear_dir.angle() - SPEAR_HALF_ARC * 0.90
 			var a1: float = lerpf(a0 + 0.30, spear_dir.angle() + SPEAR_HALF_ARC * 0.90, p1)
+			draw_arc(c, SPEAR_ARC_R, a0, a1, 16, PAL["void"] as Color, 5.0)
 			draw_arc(c, SPEAR_ARC_R, a0, a1, 16, PAL["blue"] as Color, 3.0)
 			draw_arc(c, SPEAR_ARC_R - 2.2, a0, a1, 14, PAL["sky"] as Color, 2.0)
-			draw_arc(c, SPEAR_ARC_R - 3.8, a0 + 0.1, a1, 12, PAL["cream"] as Color, 1.1)
+			draw_arc(c, SPEAR_ARC_R - 3.8, a0 + 0.1, a1, 12, PAL["cream"] as Color, 1.0)
 		elif phase >= 2 and feint_done and (silver_ghost_active or _is_spire_black()):
 			var p2: float = clampf((_commit_elapsed - SPEAR_COMMIT_TIME) / MIRROR_COMMIT_TIME, 0.0, 1.0)
 			var tip: Vector2 = (mp2 + mirror_dir * lerpf(8.0, MIRROR_RANGE, p2)).round()
-			draw_line(mp2, tip, PAL["sky"] as Color, 2.6)
-			draw_line(mp2, tip, PAL["ice"] as Color, 1.6)
-			draw_arc(tip, 11.0, mirror_dir.angle() - 1.05, mirror_dir.angle() + 1.05, 12, PAL["cream"] as Color, 1.8)
+			draw_line(mp2, tip, PAL["void"] as Color, 5.0)
+			draw_line(mp2, tip, PAL["sky"] as Color, 3.0)
+			draw_line(mp2, tip, PAL["ice"] as Color, 2.0)
+			draw_arc(tip, 11.0, mirror_dir.angle() - 1.05, mirror_dir.angle() + 1.05, 12, PAL["void"] as Color, 4.0)
+			draw_arc(tip, 11.0, mirror_dir.angle() - 1.05, mirror_dir.angle() + 1.05, 12, PAL["cream"] as Color, 2.0)
 	elif boss_state == BossState.PHASE_SHIFT:
 		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var r1: float = body_radius + 10.0 + rp * 18.0
-		draw_arc(c, r1, 0.0, TAU, 28, PAL["rose"] as Color, 2.2)
-		draw_arc(c, maxf(4.0, r1 - 4.0), 0.0, TAU, 24, PAL["ice"] as Color, 1.6)
-		draw_arc(c, maxf(3.0, r1 - 6.5), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
+		var pa: float = 0.65 if fred else 1.0
+		draw_arc(c, r1, 0.0, TAU, 28, Color(PAL["void"] as Color, pa * 0.85), 4.0)
+		draw_arc(c, r1, 0.0, TAU, 28, Color(PAL["rose"] as Color, pa), 2.0)
+		draw_arc(c, maxf(4.0, r1 - 4.0), 0.0, TAU, 24, Color(PAL["ice"] as Color, pa), 2.0)
+		draw_arc(c, maxf(3.0, r1 - 6.5), 0.0, TAU, 20, Color(PAL["cream"] as Color, pa), 1.0)

@@ -338,10 +338,12 @@ func _draw_extra(off: Vector2) -> void:
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var end_p: Vector2 = (c + _lunge_dir * LUNGE_DIST).round()
-		draw_line(c, end_p, (PAL["coral"] if prog > 0.65 else PAL["rose"]) as Color, 1.5)
+		draw_line(c, end_p, PAL["void"] as Color, 4.0)
+		draw_line(c, end_p, (PAL["coral"] if prog > 0.65 else PAL["rose"]) as Color, 2.0)
 	elif state == State.COMMIT:
-		draw_line((c - _lunge_dir * 12.0).round(), (c + _lunge_dir * 14.0).round(), PAL["rose"] as Color, 2.6)
-		draw_line(c, (c + _lunge_dir * 15.0).round(), PAL["cream"] as Color, 1.2)
+		draw_line((c - _lunge_dir * 12.0).round(), (c + _lunge_dir * 14.0).round(), PAL["void"] as Color, 5.0)
+		draw_line((c - _lunge_dir * 12.0).round(), (c + _lunge_dir * 14.0).round(), PAL["rose"] as Color, 3.0)
+		draw_line(c, (c + _lunge_dir * 15.0).round(), PAL["cream"] as Color, 1.0)
 
 	# Draw rose-petal afterimages in local coordinates
 	var scale_t: float = _assist_tell_scale()
@@ -359,8 +361,10 @@ func _draw_extra(off: Vector2) -> void:
 		draw_rect(Rect2(ep + Vector2(-1.0, -11.0), Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, alpha))
 		if age >= tell_start and age < commit_start:
 			var t_end: Vector2 = (ep + edir * LUNGE_DIST).round()
-			draw_line(ep, t_end, Color(PAL["rose"] as Color, alpha), 1.4)
+			draw_line(ep, t_end, Color(PAL["void"] as Color, alpha), 3.0)
+			draw_line(ep, t_end, Color(PAL["rose"] as Color, alpha), 1.0)
 			draw_arc(ep, 7.0, 0.0, TAU, 12, Color(PAL["cream"] as Color, alpha), 1.0)
 		elif age >= commit_start and age <= commit_end:
-			draw_line((ep - edir * 10.0).round(), (ep + edir * 14.0).round(), PAL["rose"] as Color, 2.5)
-			draw_line(ep, (ep + edir * 15.0).round(), PAL["cream"] as Color, 1.2)
+			draw_line((ep - edir * 10.0).round(), (ep + edir * 14.0).round(), PAL["void"] as Color, 5.0)
+			draw_line((ep - edir * 10.0).round(), (ep + edir * 14.0).round(), PAL["rose"] as Color, 3.0)
+			draw_line(ep, (ep + edir * 15.0).round(), PAL["cream"] as Color, 1.0)

@@ -374,7 +374,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		var fl: bool = float(m["flash_t"]) > 0.0
 		draw_rect(Rect2(mp + Vector2(-6.0, -7.0), Vector2(12.0, 14.0)), PAL["night"] as Color)
 		draw_rect(Rect2(mp + Vector2(-5.0, -6.0), Vector2(10.0, 12.0)), (PAL["cream"] if fl else PAL["blue"]) as Color)
-		draw_line(mp + Vector2(-4.0, 4.0), mp + Vector2(4.0, -4.0), PAL["ice"] as Color, 1.8)
+		draw_line(mp + Vector2(-4.0, 4.0), mp + Vector2(4.0, -4.0), PAL["ice"] as Color, 2.0)
 		draw_rect(Rect2(mp + Vector2(-6.0, -7.0), Vector2(12.0, 2.0)), PAL["gold"] as Color)
 
 	# Draw Phase 3 perimeter bloom roses
@@ -397,4 +397,4 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		draw_rect(Rect2(ep + Vector2(1.0, -27.0), Vector2(1.0, 1.0)), Color(PAL["cream"] as Color, a))
 		# Echo rose shears pip
 		var tip: Vector2 = (ep + _echo_facing * 10.0 + Vector2(0.0, -10.0)).round()
-		draw_line(ep + Vector2(0.0, -10.0), tip, Color(PAL["cream"] as Color, a), 1.6)
+		draw_line(ep + Vector2(0.0, -10.0), tip, Color(PAL["cream"] as Color, a), 2.0)

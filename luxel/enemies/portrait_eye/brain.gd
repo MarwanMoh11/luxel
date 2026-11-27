@@ -233,7 +233,7 @@ func _step_brain(dt: float) -> void:
 					_emit_sfx("portrait_eye_blink")
 		State.TELL:
 			eye_open = true
-			if sees_light and state_timer > 0.16:
+			if sees_light and state_timer > 0.16 * _assist_tell_scale():
 				var tp3: Vector2 = lit_target["pos"] as Vector2
 				if tp3.distance_to(pos) > 0.1:
 					_turn_toward((tp3 - pos).angle(), 2.8, dt)
@@ -388,9 +388,9 @@ func _draw_extra(off: Vector2) -> void:
 		draw_colored_polygon(pts, Color(col, fill_a))
 		draw_arc(c, CONE_RANGE, a0, a1, 12, Color(col, 0.55), 1.0)
 	if dusk_frozen_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.8)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	elif glass_cracked_t > 0.0:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 14, PAL["coral"] as Color, 1.4)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 14, PAL["coral"] as Color, 1.0)
 	# Draw live glare-bolts
 	for b: Dictionary in _bolts:
 		var bp: Vector2 = ((b["pos"] as Vector2) - pos).round()

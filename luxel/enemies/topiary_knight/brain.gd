@@ -384,14 +384,16 @@ func _draw_extra(off: Vector2) -> void:
 
 	# Stone-lock plinth aura when frozen by light
 	if frozen:
-		draw_arc(c, body_radius + 3.0, 0.0, TAU, 16, PAL["stone"] as Color, 1.2)
+		draw_arc(c, body_radius + 3.0, 0.0, TAU, 16, PAL["stone"] as Color, 1.0)
 		if clank_t > 0.0:
-			draw_arc(c, body_radius + 5.0, facing - 0.9, facing + 0.9, 10, PAL["cream"] as Color, 1.5)
+			draw_arc(c, body_radius + 5.0, facing - 0.9, facing + 0.9, 10, PAL["cream"] as Color, 2.0)
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var col: Color = (PAL["coral"] if prog > 0.65 else PAL["gold"]) as Color
-		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.05, _cleave_dir.angle() + 1.05, 14, col, 1.4)
+		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.05, _cleave_dir.angle() + 1.05, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.05, _cleave_dir.angle() + 1.05, 14, col, 2.0)
 	elif state == State.COMMIT:
-		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.15, _cleave_dir.angle() + 1.15, 16, PAL["lime"] as Color, 2.4)
-		draw_arc(c, CLEAVE_ARC_R - 2.5, _cleave_dir.angle() - 1.0, _cleave_dir.angle() + 1.0, 14, PAL["cream"] as Color, 1.2)
+		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.15, _cleave_dir.angle() + 1.15, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, CLEAVE_ARC_R, _cleave_dir.angle() - 1.15, _cleave_dir.angle() + 1.15, 16, PAL["lime"] as Color, 2.0)
+		draw_arc(c, CLEAVE_ARC_R - 2.5, _cleave_dir.angle() - 1.0, _cleave_dir.angle() + 1.0, 14, PAL["cream"] as Color, 1.0)

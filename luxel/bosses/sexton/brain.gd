@@ -303,7 +303,7 @@ func _draw() -> void:
 		var jitter: float = 0.0 if is_flash_reduced() else sin(anim_t * 28.0) * 1.5
 		draw_circle(Vector2(jitter, 2.0), 13.0, PAL["night"] as Color)
 		draw_circle(Vector2(jitter, 0.0), 10.0, PAL["dusk"] as Color)
-		draw_arc(Vector2(jitter, 1.0), 12.5, 0.0, TAU, 16, PAL["apricot"] as Color, 1.8)
+		draw_arc(Vector2(jitter, 1.0), 12.5, 0.0, TAU, 16, PAL["apricot"] as Color, 2.0)
 		return
 	super._draw()
 
@@ -312,9 +312,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if _coffin_shield_hp > 0.0 and boss_state != BossState.STAGGER:
 		draw_arc(c, body_radius + 5.0, facing - 1.05, facing + 1.05, 14, PAL["stone"] as Color, 3.0)
-		draw_arc(c, body_radius + 3.5, facing - 1.00, facing + 1.00, 12, PAL["gold"] as Color, 1.4)
+		draw_arc(c, body_radius + 3.5, facing - 1.00, facing + 1.00, 12, PAL["gold"] as Color, 1.0)
 	if _dusk_slow_t > 0.0:
-		draw_arc(c, body_radius + 6.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 6.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	# Comedy beat: blinking confused "?" after patting fresh pit rim
 	if _pat_spade_t > 0.0 and boss_state == BossState.RECOVER:
 		draw_rect(Rect2(c + Vector2(-1.0, -body_radius - 14.0), Vector2(3.0, 3.0)), PAL["cream"] as Color)

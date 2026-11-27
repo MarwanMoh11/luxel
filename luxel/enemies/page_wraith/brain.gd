@@ -208,7 +208,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16 and _has_player():
+	if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 3.2, dt)

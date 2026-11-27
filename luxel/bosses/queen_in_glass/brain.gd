@@ -263,7 +263,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var fwd: Vector2 = Vector2.from_angle(facing)
 		draw_arc(c, body_radius + 7.0, facing - 1.05, facing + 1.05, 14, PAL["ice"] as Color, 2.0)
 		if _reflect_bounce_t > 0.0:
-			draw_line(c + fwd * 12.0, (c + _bounce_dir * 34.0).round(), PAL["cream"] as Color, 1.8)
+			draw_line(c + fwd * 12.0, (c + _bounce_dir * 34.0).round(), PAL["cream"] as Color, 2.0)
 
 	# P2 Orbiting mirror-shields
 	if _orbit_shields > 0:
@@ -277,7 +277,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _reflect_scream_t > 0.0:
 		var rp: Vector2 = (c + Vector2(18.0, -14.0)).round()
 		draw_circle(rp, 7.0, Color(PAL["plum"] as Color, 0.55))
-		draw_arc(rp, 7.0, 0.0, TAU, 14, PAL["rose"] as Color, 1.4)
+		draw_arc(rp, 7.0, 0.0, TAU, 14, PAL["rose"] as Color, 1.0)
 		draw_line(rp + Vector2(-4, -4), rp + Vector2(4, 4), PAL["cream"] as Color, 1.0)
 		draw_line(rp + Vector2(3, -4), rp + Vector2(-3, 4), PAL["rose"] as Color, 1.0)
 		draw_circle(rp + Vector2(0, 2), 2.2, PAL["void"] as Color)
@@ -287,4 +287,4 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var lp: Vector2 = ((cl["pos"] as Vector2) - pos).round()
 		LxIsland7Rule.draw_truth_shadow(self, lp + Vector2(0.0, 5.0), 9.0, 3.0, "nw_wrong", false)
 		draw_colored_polygon(PackedVector2Array([lp + Vector2(0, -18), lp + Vector2(9, 2), lp + Vector2(-9, 2)]), Color(PAL["sky"] as Color, 0.65))
-		draw_arc(lp + Vector2(0, -10), 8.0, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)
+		draw_arc(lp + Vector2(0, -10), 8.0, 0.0, TAU, 12, PAL["ice"] as Color, 1.0)

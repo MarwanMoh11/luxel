@@ -246,9 +246,10 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		var cp: Vector2 = ((cage["pos"] as Vector2) - pos).round()
 		var r: float = float(cage["radius"])
 		draw_circle(cp, r, Color(PAL["pine"] as Color, 0.45))
-		draw_arc(cp, r, 0.0, TAU, 14, PAL["gold"] as Color, 1.6)
-		draw_line(cp + Vector2(-r * 0.6, -r * 0.6), cp + Vector2(r * 0.6, r * 0.6), PAL["jade"] as Color, 1.6)
-		draw_line(cp + Vector2(-r * 0.6, r * 0.6), cp + Vector2(r * 0.6, -r * 0.6), PAL["apricot"] as Color, 1.4)
+		draw_arc(cp, r, 0.0, TAU, 14, PAL["void"] as Color, 4.0)
+		draw_arc(cp, r, 0.0, TAU, 14, PAL["gold"] as Color, 2.0)
+		draw_line(cp + Vector2(-r * 0.6, -r * 0.6), cp + Vector2(r * 0.6, r * 0.6), PAL["jade"] as Color, 2.0)
+		draw_line(cp + Vector2(-r * 0.6, r * 0.6), cp + Vector2(r * 0.6, -r * 0.6), PAL["apricot"] as Color, 1.0)
 		draw_circle(cp, 2.2, PAL["rose"] as Color)
 
 	# Comedy beat: jammed blades make brass tail wag + mainspring glint!
@@ -256,7 +257,9 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	if _jammed and boss_state == BossState.STAGGER:
 		var wag: float = (sin(anim_t * 6.0) * 1.75) if fred else (sin(anim_t * 28.0) * 5.0)
 		var tail_p: Vector2 = (-Vector2.from_angle(facing) * 14.0 + Vector2(0.0, -4.0 + wag)).round()
+		draw_circle(tail_p, 3.5, PAL["void"] as Color)
 		draw_circle(tail_p, 2.4, PAL["gold"] as Color)
+		draw_circle(Vector2(0.0, -18.0), 4.0, PAL["void"] as Color)
 		draw_circle(Vector2(0.0, -18.0), 3.0, PAL["cream"] as Color)
 
 	# Death butterflies

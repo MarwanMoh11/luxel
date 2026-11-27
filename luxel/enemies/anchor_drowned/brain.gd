@@ -279,7 +279,7 @@ func _draw_extra(off: Vector2) -> void:
 		LxBossTelegraphFx.draw_ground_danger_ring(self, off + _slam_dir * 28.0, SLAM_RADIUS, prog, anim_t, "coral", "gold")
 	if _anchor_planted_t > 0.0:
 		var ap: Vector2 = (_anchor_pos - pos + off).round()
-		draw_line(off.round(), ap, PAL["mauve"] as Color, 1.6)
+		draw_line(off.round(), ap, PAL["mauve"] as Color, 2.0)
 		draw_circle(ap, 4.5, PAL["night"] as Color)
-		draw_arc(ap, 5.5, 0.0, TAU, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(ap, 5.5, 0.0, TAU, 12, PAL["gold"] as Color, 1.0)
 		draw_circle(ap, 2.0, PAL["ice"] as Color)

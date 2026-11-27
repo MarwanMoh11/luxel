@@ -301,9 +301,11 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	if _stars.is_empty():
 		return
+	var fred: bool = is_flash_reduced()
 	var c_loc: Vector2 = (arena_rect.get_center() - pos + off).round()
 	# Subtle dome compass meridian ring
-	draw_arc(c_loc, 36.0, 0.0, TAU, 24, Color(PAL["gold"] as Color if _dome_turn_t > 0.0 else PAL["dusk"] as Color, 0.35), 1.2)
+	draw_arc(c_loc, 36.0, 0.0, TAU, 24, Color(PAL["void"] as Color, 0.45), 3.0)
+	draw_arc(c_loc, 36.0, 0.0, TAU, 24, Color(PAL["gold"] as Color if _dome_turn_t > 0.0 else PAL["dusk"] as Color, 0.35), 1.0)
 	# Octagonal 8-star constellation bridges & sockets
 	for i: int in range(_stars.size()):
 		var p0: Vector2 = (_star_pos(i) - pos + off).round()
@@ -311,16 +313,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var lit0: bool = bool(_stars[i]["lit"])
 		var lit1: bool = bool(_stars[(i + 1) % STAR_COUNT]["lit"])
 		if lit0 and lit1:
-			draw_line(p0, p1, Color(PAL["gold"] as Color, 0.50), 1.5)
+			draw_line(p0, p1, Color(PAL["void"] as Color, 0.55), 4.0)
+			draw_line(p0, p1, Color(PAL["gold"] as Color, 0.50), 2.0)
 		else:
 			draw_line(p0, p1, Color(PAL["dusk"] as Color, 0.25), 1.0)
 		if lit0:
 			draw_circle(p0, 5.0, Color(PAL["gold"] as Color, 0.30))
+			draw_rect(Rect2(p0 - Vector2(3.0, 3.0), Vector2(6.0, 6.0)), PAL["void"] as Color)
 			draw_rect(Rect2(p0 - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), PAL["gold"] as Color)
 			draw_rect(Rect2(p0 - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 		else:
+			draw_arc(p0, 4.5, 0.0, TAU, 10, Color(PAL["void"] as Color, 0.65), 3.0)
 			draw_arc(p0, 4.5, 0.0, TAU, 10, Color(PAL["plum"] as Color, 0.55), 1.0)
 	if _snuff_flash_t > 0.0:
 		var sp: Vector2 = (_snuff_pos - pos + off).round()
 		var u: float = 1.0 - clampf(_snuff_flash_t / 0.30, 0.0, 1.0)
-		draw_arc(sp, lerpf(4.0, 16.0, u), 0.0, TAU, 12, Color(PAL["ice"] as Color, 1.0 - u), 1.2)
+		var sa: float = (1.0 - u) * (0.55 if fred else 1.0)
+		draw_arc(sp, lerpf(4.0, 16.0, u), 0.0, TAU, 12, Color(PAL["void"] as Color, sa * 0.85), 3.0)
+		draw_arc(sp, lerpf(4.0, 16.0, u), 0.0, TAU, 12, Color(PAL["ice"] as Color, sa), 1.0)

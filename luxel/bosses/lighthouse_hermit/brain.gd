@@ -483,9 +483,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _arena != null:
 		_arena.draw_extras(self, off)
 	if lamp_cracked_t > 0.0:
-		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["void"] as Color, 3.2)
-		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["sky"] as Color, 1.8)
-		draw_arc(lc, body_radius + 2.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.1)
+		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
+		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["sky"] as Color, 2.0)
+		draw_arc(lc, body_radius + 2.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 	if active_attack_id == "whirlpool_shell_pull" and boss_state in [BossState.TELL, BossState.COMMIT]:
 		var pulling_now: bool = boss_state == BossState.COMMIT
 		var r_pull: float = 52.0 if pulling_now else lerpf(64.0, 22.0, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
@@ -493,33 +493,33 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var sp_out: float = 1.2 if fred_w else 3.0
 		var sp_in: float = -1.6 if fred_w else -4.0
 		draw_arc(lc, r_pull, anim_t * sp_out, anim_t * sp_out + PI * 1.5, 24, PAL["coral" if pulling_now else "sky"] as Color, 2.0)
-		draw_arc(lc, r_pull * 0.62, anim_t * sp_in, anim_t * sp_in + PI * 1.4, 18, PAL["cream" if pulling_now else "ice"] as Color, 1.4)
+		draw_arc(lc, r_pull * 0.62, anim_t * sp_in, anim_t * sp_in + PI * 1.4, 18, PAL["cream" if pulling_now else "ice"] as Color, 1.0)
 	elif active_attack_id == "lamp_beam_sweep" and boss_state == BossState.TELL:
 		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
 		_draw_sweep_mirror_glints(_sweep_start_ang + _sweep_dir * (arc * 0.5), arc * 0.5 + 0.14, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
 	elif active_attack_id == "lamp_beam_sweep" and boss_state == BossState.COMMIT and _beam_stage != BeamStage.COUNTER_PAUSE:
 		var b_dir: Vector2 = Vector2.from_angle(_beam_angle)
 		var b_end: Vector2 = (off + b_dir * _beam_hit_len).round()
-		draw_line(lc, b_end, PAL["apricot"] as Color, 6.8)
-		draw_line(lc, b_end, PAL["gold"] as Color, 3.8)
-		draw_line(lc, b_end, PAL["cream"] as Color, 1.6)
+		draw_line(lc, b_end, PAL["apricot"] as Color, 7.0)
+		draw_line(lc, b_end, PAL["gold"] as Color, 4.0)
+		draw_line(lc, b_end, PAL["cream"] as Color, 2.0)
 		if _reflected_active:
 			var r0: Vector2 = (_reflect_origin - pos + off).round()
 			var r1: Vector2 = (_reflect_end - pos + off).round()
 			draw_line(r0, r1, PAL["blue"] as Color, 5.0)
 			draw_line(r0, r1, PAL["sky"] as Color, 3.0)
-			draw_line(r0, r1, PAL["cream"] as Color, 1.2)
+			draw_line(r0, r1, PAL["cream"] as Color, 1.0)
 	elif active_attack_id == "tide_ring_mines" and boss_state == BossState.COMMIT:
 		var ring_r: float = lerpf(TIDE_START_R, TIDE_MAX_R, _tide_progress)
-		draw_arc(lc, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.4)
-		draw_arc(lc, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
-		draw_arc(lc, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+		draw_arc(lc, ring_r + 2.4, 0.0, TAU, 36, PAL["blue"] as Color, 2.0)
+		draw_arc(lc, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.0)
+		draw_arc(lc, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["cream"] as Color, 1.0)
 	# Cupola armour glint outside punish windows vs golden punish halo
 	if clank_t > 0.0:
-		draw_arc(lc, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.2)
-		draw_arc(lc, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.2)
+		draw_arc(lc, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.0)
+		draw_arc(lc, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 
 
 func _draw_sweep_mirror_glints(mid_a: float, half_arc: float, prog: float) -> void:
@@ -542,7 +542,7 @@ func _draw_sweep_mirror_glints(mid_a: float, half_arc: float, prog: float) -> vo
 			var r_snap: float = roundf(rad_d)
 			var pts := PackedVector2Array([mp + Vector2(0.0, -r_snap), mp + Vector2(r_snap, 0.0), mp + Vector2(0.0, r_snap), mp + Vector2(-r_snap, 0.0), mp + Vector2(0.0, -r_snap)])
 			draw_polyline(pts, PAL["void"] as Color, 3.0)
-			draw_polyline(pts, col_d, 1.5)
+			draw_polyline(pts, col_d, 2.0)
 			draw_circle(mp, 3.2, PAL["void"] as Color)
 			draw_circle(mp, 2.2, PAL["cream"] as Color)
 

@@ -326,18 +326,18 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	# 1. Swirling maelstrom current ring (blue suction vs coral geyser)
 	var vc: Color = PAL["coral"] as Color if _is_geyser else PAL["sky"] as Color
-	draw_arc(off.round(), 54.0, anim_t * 1.6, anim_t * 1.6 + PI * 1.5, 24, Color(vc, 0.36), 1.4)
+	draw_arc(off.round(), 54.0, anim_t * 1.6, anim_t * 1.6 + PI * 1.5, 24, Color(vc, 0.36), 1.0)
 	# 2. 2 orbiting sea-glass mirrors
 	for k: int in range(2):
 		var ma: float = _mirror_ang + float(k) * PI
 		var mp: Vector2 = (off + Vector2.from_angle(ma) * 66.0).round()
 		var tang := Vector2(-sin(ma), cos(ma))
 		draw_line((mp - tang * 7.0).round(), (mp + tang * 7.0).round(), PAL["blue"] as Color, 3.0)
-		draw_line((mp - tang * 6.0).round(), (mp + tang * 6.0).round(), PAL["ice"] as Color, 1.4)
+		draw_line((mp - tang * 6.0).round(), (mp + tang * 6.0).round(), PAL["ice"] as Color, 1.0)
 	# 3. P3 Twin Counter-Rotating Vortex Eye
 	if phase >= 3:
 		var tp: Vector2 = (_twin_eye_pos - pos + off).round()
-		draw_arc(tp, 16.0, -anim_t * 2.4, -anim_t * 2.4 + PI * 1.6, 18, PAL["gold"] as Color, 1.8)
+		draw_arc(tp, 16.0, -anim_t * 2.4, -anim_t * 2.4 + PI * 1.6, 18, PAL["gold"] as Color, 2.0)
 		draw_circle(tp, 9.0, PAL["deep"] as Color)
 		draw_circle(tp, 4.5, PAL["coral" if not _is_geyser else "sky"] as Color)
 		draw_circle(tp, 2.0, PAL["cream"] as Color)

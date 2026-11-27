@@ -247,16 +247,19 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Brass escapement rail guide line across the floor
 	var rl_x0: float = arena_rect.position.x + 14.0 - pos.x
 	var rl_x1: float = arena_rect.end.x - 14.0 - pos.x
 	var rl_y: float = _rail_y - pos.y
+	draw_line(Vector2(rl_x0, rl_y).round(), Vector2(rl_x1, rl_y).round(), Color(PAL["void"] as Color, 0.38), 4.0)
 	draw_line(Vector2(rl_x0, rl_y).round(), Vector2(rl_x1, rl_y).round(), Color(PAL["gold"] as Color, 0.22), 2.0)
 	# Cuckoo-popped comedy beat: ice-frozen halo & floating musical note pips!
 	if _cuckoo_popped_t > 0.0 or boss_state == BossState.STAGGER:
-		draw_arc(c, body_radius + 6.0, 0.0, TAU, 18, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 6.0, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 6.0, 0.0, TAU, 18, PAL["ice"] as Color, 2.0)
 		for k: int in range(2):
-			var ny: float = -body_radius - 10.0 - fmod(anim_t * 16.0 + float(k) * 8.0, 14.0)
-			var nx: float = -5.0 + float(k) * 10.0 + sin(anim_t * 6.0 + float(k)) * 2.0
+			var ny: float = -body_radius - 10.0 - fmod(anim_t * (6.0 if fred else 16.0) + float(k) * 8.0, 14.0)
+			var nx: float = -5.0 + float(k) * 10.0 + (0.0 if fred else sin(anim_t * 6.0 + float(k)) * 2.0)
 			draw_rect(Rect2((c + Vector2(nx, ny)).round(), Vector2(2.0, 3.0)), PAL["gold"] as Color)
 			draw_rect(Rect2((c + Vector2(nx + 1.0, ny)).round(), Vector2(2.0, 1.0)), PAL["cream"] as Color)

@@ -474,9 +474,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 	LxHeronAbbessVisuals.draw_extra(self, off)
 	var c: Vector2 = off.round()
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.2)
+		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 16, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["ice"] as Color, 1.0)
 	elif beak_stuck:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.8)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["gold"] as Color, 1.4)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["gold"] as Color, 1.0)

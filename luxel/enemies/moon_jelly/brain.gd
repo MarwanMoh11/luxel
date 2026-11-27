@@ -322,10 +322,12 @@ func _draw_extra(off: Vector2) -> void:
 	elif state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / RIPPLE_COMMIT, 0.0, 1.0)
 		var rr: float = lerpf(8.0, r, prog)
-		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 24, PAL["ice"] as Color, 2.2)
+		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 24, PAL["ice"] as Color, 2.0)
 		draw_arc(Vector2.ZERO, maxf(4.0, rr - 2.0), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
 	for m: Dictionary in _motes:
 		var lp: Vector2 = ((m["pos"] as Vector2) - pos + c).round()
+		draw_circle(lp, 3.0, PAL["void"] as Color)
 		draw_circle(lp, 2.4, PAL["blue"] as Color)
 		draw_circle(lp, 1.4, PAL["ice"] as Color)
 		draw_rect(Rect2(lp, Vector2.ONE), PAL["cream"] as Color)

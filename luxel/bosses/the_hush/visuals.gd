@@ -152,13 +152,13 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 			var surge_t: float = float(arena_obj.get("comeback_surge_t"))
 			if surge_t > 0.0:
 				var sr: float = b.anim_t * (1.0 if fred else 2.5)
-				b.draw_arc(w_loc, 13.0, 0.0, TAU, 20, pal["gold"] as Color, 1.6)
-				b.draw_arc(w_loc, 16.0, sr, sr + PI, 12, pal["cream"] as Color, 1.2)
+				b.draw_arc(w_loc, 13.0, 0.0, TAU, 20, pal["gold"] as Color, 2.0)
+				b.draw_arc(w_loc, 16.0, sr, sr + PI, 12, pal["cream"] as Color, 1.0)
 			var burst_t: float = float(arena_obj.get("comeback_burst_t"))
 			if burst_t > 0.0:
 				var bu: float = 1.0 - clampf(burst_t / 0.85, 0.0, 1.0)
-				b.draw_arc(w_loc, lerpf(10.0, 118.0, bu), 0.0, TAU, 32, Color(pal["gold"] as Color, 1.0 - bu), 2.4)
-				b.draw_arc(w_loc, lerpf(6.0, 96.0, bu), 0.0, TAU, 28, Color(pal["cream"] as Color, 1.0 - bu), 1.4)
+				b.draw_arc(w_loc, lerpf(10.0, 118.0, bu), 0.0, TAU, 32, Color(pal["gold"] as Color, 1.0 - bu), 2.0)
+				b.draw_arc(w_loc, lerpf(6.0, 96.0, bu), 0.0, TAU, 28, Color(pal["cream"] as Color, 1.0 - bu), 1.0)
 
 
 static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: Dictionary, fred: bool) -> void:
@@ -197,15 +197,15 @@ static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: 
 		for bp_v: Variant in (ar_obj.get("briar_nodes") as Array):
 			var bp: Vector2 = ((bp_v as Vector2) - b.pos + off).round()
 			b.draw_circle(bp, 7.5, Color(pal["pine"] as Color, 0.80))
-			b.draw_arc(bp, 8.5, 0.0, TAU, 14, pal["jade"] as Color, 1.5)
+			b.draw_arc(bp, 8.5, 0.0, TAU, 14, pal["jade"] as Color, 2.0)
 			_draw_diamond(b, bp, 3.5, pal["lime"] as Color, pal["cream"] as Color)
 		if bool(ar_obj.get("echo_ghost_active")):
 			var ep: Vector2 = ((ar_obj.get("echo_ghost_pos") as Vector2) - b.pos + off).round()
 			var hot_e: bool = float(ar_obj.get("echo_flash_t")) > 0.0
 			b.draw_circle(ep, 7.0, Color(pal["void"] as Color, 0.72))
 			b.draw_circle(ep, 6.0, Color(pal["teal"] as Color, 0.45))
-			b.draw_arc(ep, 8.5, 0.0, TAU, 16, pal["void"] as Color, 2.8)
-			b.draw_arc(ep, 8.5, 0.0, TAU, 16, (pal["cream"] if hot_e else pal["lime"]) as Color, 1.4)
+			b.draw_arc(ep, 8.5, 0.0, TAU, 16, pal["void"] as Color, 3.0)
+			b.draw_arc(ep, 8.5, 0.0, TAU, 16, (pal["cream"] if hot_e else pal["lime"]) as Color, 1.0)
 			_draw_diamond(b, ep, 3.0, pal["ice"] as Color, pal["cream"] as Color)
 	elif ph == 3:
 		# Gravity & Moving Floor: opposing animated Conveyor Bands + orbiting Starfall Gravity Well + Phantom Center
@@ -222,14 +222,14 @@ static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: 
 			var x: float = rl.position.x + 4.0 + step_off
 			while x < rl.end.x - 4.0:
 				var cy: float = rl.get_center().y
-				b.draw_line(Vector2(roundf(x - sgn * 2.5), cy - 3.0), Vector2(roundf(x + sgn * 2.0), cy), pal["apricot"] as Color, 1.2)
-				b.draw_line(Vector2(roundf(x - sgn * 2.5), cy + 3.0), Vector2(roundf(x + sgn * 2.0), cy), pal["apricot"] as Color, 1.2)
+				b.draw_line(Vector2(roundf(x - sgn * 2.5), cy - 3.0), Vector2(roundf(x + sgn * 2.0), cy), pal["apricot"] as Color, 1.0)
+				b.draw_line(Vector2(roundf(x - sgn * 2.5), cy + 3.0), Vector2(roundf(x + sgn * 2.0), cy), pal["apricot"] as Color, 1.0)
 				x += 12.0
 		var gw: Object = ar_obj.get("grav_well") as Object
 		if gw != null and bool(gw.get("active")):
 			var gp: Vector2 = ((gw.get("pos") as Vector2) - b.pos + off).round()
-			b.draw_arc(gp, 24.0, 0.0, TAU, 22, Color(pal["sky"] as Color, 0.42), 1.3)
-			b.draw_arc(gp, 13.0, b.anim_t * (1.2 if fred else 3.0), b.anim_t * (1.2 if fred else 3.0) + PI * 1.4, 14, pal["ice"] as Color, 1.4)
+			b.draw_arc(gp, 24.0, 0.0, TAU, 22, Color(pal["sky"] as Color, 0.42), 1.0)
+			b.draw_arc(gp, 13.0, b.anim_t * (1.2 if fred else 3.0), b.anim_t * (1.2 if fred else 3.0) + PI * 1.4, 14, pal["ice"] as Color, 1.0)
 			b.draw_circle(gp, 3.0, pal["cream"] as Color)
 		if b.active_attack_id == "p3_double_silence_ring" and b.boss_state in [LxBossBase.BossState.TELL, LxBossBase.BossState.COMMIT]:
 			b.draw_rect(Rect2(c_loc - Vector2(36.0, 24.0), Vector2(72.0, 48.0)), Color(pal["plum"] as Color, 0.16), true)
@@ -237,14 +237,14 @@ static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: 
 	elif ph == 4:
 		# Mirrors & What Was Sold: diagonal Silver/Rose Mirror Split + Mirror Silhouette Twin
 		if bool(ar_obj.get("mirror_fault_active")):
-			b.draw_line(c_loc + Vector2(-140.0, 86.0), c_loc + Vector2(140.0, -86.0), Color(pal["ice"] as Color, 0.36), 2.4)
+			b.draw_line(c_loc + Vector2(-140.0, 86.0), c_loc + Vector2(140.0, -86.0), Color(pal["ice"] as Color, 0.36), 2.0)
 			b.draw_line(c_loc + Vector2(-140.0, 86.0), c_loc + Vector2(140.0, -86.0), Color(pal["rose"] as Color, 0.62), 1.0)
 		if bool(ar_obj.get("mirror_active")):
 			var mp: Vector2 = ((ar_obj.get("mirror_pos") as Vector2) - b.pos + off).round()
 			b.draw_circle(mp, 10.0, Color(pal["void"] as Color, 0.78))
 			b.draw_circle(mp, 9.0, Color(pal["deep"] as Color, 0.72))
 			b.draw_arc(mp, 10.5, 0.0, TAU, 18, pal["void"] as Color, 3.0)
-			b.draw_arc(mp, 10.5, 0.0, TAU, 18, pal["rose"] as Color, 1.6)
+			b.draw_arc(mp, 10.5, 0.0, TAU, 18, pal["rose"] as Color, 2.0)
 			_draw_diamond(b, mp, 4.5, pal["ice"] as Color, pal["cream"] as Color)
 		var ms_t: float = float(ar_obj.get("mirror_shatter_t"))
 		if ms_t > 0.0:

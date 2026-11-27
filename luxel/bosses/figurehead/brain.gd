@@ -253,4 +253,4 @@ func _draw_boss_extra(off: Vector2) -> void:
 	draw_circle(fp, 5.0, PAL["night"] as Color)
 	draw_circle(fp, 3.2, PAL["gold" if _fluke_clamped_t > 0.0 else "sky"] as Color)
 	if _fluke_clamped_t > 0.0:
-		draw_arc(fp, 9.0, 0.0, TAU, 14, PAL["gold"] as Color, 1.5)
+		draw_arc(fp, 9.0, 0.0, TAU, 14, PAL["gold"] as Color, 2.0)

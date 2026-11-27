@@ -516,7 +516,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var bc: Vector2 = (c + Vector2(0.0, 1.0)).round()
 		var br: float = 5.5 + (0.0 if fred else 1.2 * sin(anim_t * 22.0))
 		draw_arc(bc, br, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
-		draw_arc(bc, br, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
+		draw_arc(bc, br, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 		draw_circle(bc, 2.5, PAL["cream"] as Color)
 		_draw_core_target_pips(bc, br + 2.0, fred)
 	elif active_attack_id == "bellows_gust" and boss_state == BossState.COMMIT:
@@ -526,9 +526,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var s_off: Vector2 = side2 * float(idx) * (GUST_HALF_W * 0.48)
 			var p0: Vector2 = (off + s_off).round()
 			var p1: Vector2 = (off + s_off + _gust_dir * (g_len if idx == 0 else g_len * 0.86)).round()
-			draw_line(p0, p1, PAL["wine"] as Color, 6.8 if idx == 0 else 4.8)
-			draw_line(p0, p1, PAL["coral"] as Color, 4.6 if idx == 0 else 3.2)
-			draw_line(p0, p1, PAL["gold"] as Color, 1.8 if idx == 0 else 1.1)
+			draw_line(p0, p1, PAL["wine"] as Color, 7.0 if idx == 0 else 5.0)
+			draw_line(p0, p1, PAL["coral"] as Color, 5.0 if idx == 0 else 3.0)
+			draw_line(p0, p1, PAL["gold"] as Color, 2.0 if idx == 0 else 1.0)
 	elif active_attack_id == "furnace_cross" and boss_state == BossState.COMMIT:
 		var raw_len: float = lerpf(14.0, CROSS_RANGE, _cross_progress)
 		for ci: int in range(4):
@@ -537,33 +537,33 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var cend: Vector2 = (c + cdir * arm_len).round()
 			draw_line(c, cend, PAL["wine"] as Color, 9.0)
 			draw_line(c, cend, PAL["coral"] as Color, 6.0)
-			draw_line(c, cend, PAL["apricot"] as Color, 3.6)
+			draw_line(c, cend, PAL["apricot"] as Color, 4.0)
 			draw_line(c, cend, PAL["gold"] as Color, 2.0)
 			draw_line(c, cend, PAL["cream"] as Color, 1.0)
 			draw_circle(cend, 2.4, (PAL["ice"] if arm_len < raw_len - 1.0 else PAL["gold"]) as Color)
 	elif active_attack_id in ["molten_ring", "core_meltdown_rings"] and boss_state == BossState.COMMIT:
 		if _ring_stage == RingStage.PAUSE:
 			var pr: float = KILN_RING_MAX_R * 0.45 + (0.0 if fred else 2.0 * sin(anim_t * 18.0))
-			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["void"] as Color, 3.4)
+			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["void"] as Color, 3.0)
 			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
-			draw_arc(c, pr, 0.0, TAU, 24, PAL["cream"] as Color, 2.2)
+			draw_arc(c, pr, 0.0, TAU, 24, PAL["cream"] as Color, 2.0)
 			draw_circle(c, 4.5, PAL["void"] as Color)
 			draw_circle(c, 3.0, PAL["cream"] as Color)
 			_draw_core_target_pips(c, body_radius + 3.0, fred)
 		else:
 			var ring_r: float = lerpf(KILN_RING_START_R, KILN_RING_MAX_R, _ring_progress)
-			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
-			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.8)
+			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 3.0)
+			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 4.0)
 			draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
-			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.2)
+			draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.0)
 	var lob_prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 	_slag.draw_slag(self, pos, off, lob_prog, active_attack_id == "slag_lob" and boss_state == BossState.TELL, anim_t)
 	# Heavy slag armour glint outside punish windows vs golden punish halo
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 5.5, facing - 1.2, facing + 1.2, 16, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 7.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 1.3)
+		draw_arc(c, body_radius + 5.5, facing - 1.2, facing + 1.2, 16, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 7.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 
 
 func _draw_core_target_pips(center: Vector2, rad: float, fred: bool) -> void:
@@ -574,7 +574,7 @@ func _draw_core_target_pips(center: Vector2, rad: float, fred: bool) -> void:
 		var p0: Vector2 = (center + pd * (rad - 1.5)).round()
 		var p1: Vector2 = (center + pd * (rad + 2.5)).round()
 		draw_line(p0, p1, PAL["void"] as Color, 3.0)
-		draw_line(p0, p1, pip_col, 1.4)
+		draw_line(p0, p1, pip_col, 1.0)
 		draw_circle(p1, 1.2, PAL["cream"] as Color)
 
 

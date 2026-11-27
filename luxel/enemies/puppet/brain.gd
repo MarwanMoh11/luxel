@@ -224,7 +224,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.18 and _has_attention_target():
+	if state_timer > 0.18 * _assist_tell_scale() and _has_attention_target():
 		var to_t: Vector2 = _attention_target() - pos
 		if to_t.length() > 0.1:
 			_turn_toward(to_t.angle(), 3.2, dt)
@@ -310,15 +310,17 @@ func _draw_extra(off: Vector2) -> void:
 		var sp_l: Vector2 = (spool_pos - pos).round()
 		var bright: bool = _is_black_world() or spool_revealed_t > 0.0 or _reviving
 		var cord_c: Color = (PAL["cream"] if (_reviving and not LxHudFx.flash_reduced() and int(anim_t * 12.0) % 2 == 0) else (PAL["rose"] if bright else PAL["wine"])) as Color
-		draw_line(c + Vector2(0.0, -14.0), sp_l, cord_c, 1.4 if bright else 1.0)
+		draw_line(c + Vector2(0.0, -14.0), sp_l, PAL["void"] as Color, 4.0 if bright else 3.0)
+		draw_line(c + Vector2(0.0, -14.0), sp_l, cord_c, 2.0 if bright else 1.0)
 		draw_circle(sp_l, 3.5 if bright else 2.5, PAL["gold"] as Color)
 		draw_circle(sp_l, 1.6, PAL["cream"] as Color if bright else PAL["rose"] as Color)
 		if _reviving:
 			var r_prog: float = 1.0 - clampf(_revive_t / REVIVE_DELAY, 0.0, 1.0)
-			draw_arc(c, body_radius + 4.0, -PI * 0.5, -PI * 0.5 + TAU * r_prog, 16, PAL["rose"] as Color, 1.8)
+			draw_arc(c, body_radius + 4.0, -PI * 0.5, -PI * 0.5 + TAU * r_prog, 16, PAL["rose"] as Color, 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_lane(self, Vector2.ZERO, _slash_dir * (SLASH_SPEED * SLASH_COMMIT), 11.0, prog, anim_t, "rose", "gold")
 	elif state == State.COMMIT:
-		draw_arc(c, body_radius + 14.0, facing - 1.15, facing + 1.15, 14, PAL["rose"] as Color, 2.2)
-		draw_arc(c, body_radius + 11.5, facing - 0.95, facing + 0.95, 12, PAL["cream"] as Color, 1.2)
+		draw_arc(c, body_radius + 14.0, facing - 1.15, facing + 1.15, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 14.0, facing - 1.15, facing + 1.15, 14, PAL["rose"] as Color, 2.0)
+		draw_arc(c, body_radius + 11.5, facing - 0.95, facing + 0.95, 12, PAL["cream"] as Color, 1.0)

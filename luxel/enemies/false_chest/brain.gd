@@ -191,7 +191,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16 and _has_player():
+	if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 3.0, dt)
@@ -270,4 +270,5 @@ func _draw_extra(off: Vector2) -> void:
 		LxBossTelegraphFx.draw_ground_danger_lane(self, Vector2.ZERO, _bite_dir * (BITE_SPEED * BITE_COMMIT), 12.0, prog, anim_t, "coral", "gold")
 	elif state == State.RECOVER:
 		var glow_a: float = 0.45 if LxHudFx.flash_reduced() else (0.45 + 0.25 * sin(anim_t * 10.0))
-		draw_arc(c, body_radius + 3.5, 0.0, TAU, 16, Color(PAL["rose"] as Color, glow_a), 1.5)
+		draw_arc(c, body_radius + 3.5, 0.0, TAU, 16, Color(PAL["void"] as Color, glow_a), 4.0)
+		draw_arc(c, body_radius + 3.5, 0.0, TAU, 16, Color(PAL["rose"] as Color, glow_a), 2.0)

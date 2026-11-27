@@ -482,7 +482,7 @@ func _draw_extra(off: Vector2) -> void:
 	if gulp_t > 0.0:
 		var gp: float = 1.0 - clampf(gulp_t / GULP_TIME, 0.0, 1.0)
 		var gr: float = roundf(body_radius + 2.5 + gp * 5.0)
-		draw_arc(c, gr + 1.0, 0.0, TAU, 16, PAL["apricot"] as Color, 1.4)
+		draw_arc(c, gr + 1.0, 0.0, TAU, 16, PAL["apricot"] as Color, 1.0)
 		draw_arc(c, gr, 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
 		for si: int in range(4):
 			var sa: float = float(si) * (PI * 0.5) + PI * 0.25 + gp * 0.45

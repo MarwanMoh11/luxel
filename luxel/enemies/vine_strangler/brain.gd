@@ -281,18 +281,22 @@ func _draw_extra(off: Vector2) -> void:
 		var tip: Vector2 = (c + tether_dir * TETHER_REACH).round()
 		var locked: bool = state_timer <= 0.16 * _assist_tell_scale()
 		var col: Color = (PAL["coral"] if locked else PAL["rose"]) as Color
-		draw_line(c, tip, col, 1.4 if locked else 1.0)
+		draw_line(c, tip, PAL["void"] as Color, 4.0 if locked else 3.0)
+		draw_line(c, tip, col, 2.0 if locked else 1.0)
+		draw_circle(tip, 4.0, PAL["void"] as Color)
 		draw_circle(tip, 3.0, col)
 	elif state == State.COMMIT:
 		var rel_e: Vector2 = (tether_end - pos).round()
-		draw_line(c, rel_e, PAL["pine"] as Color, 3.5)
-		draw_line(c, rel_e, PAL["coral"] as Color, 1.6)
+		draw_line(c, rel_e, PAL["void"] as Color, 6.0)
+		draw_line(c, rel_e, PAL["pine"] as Color, 4.0)
+		draw_line(c, rel_e, PAL["coral"] as Color, 2.0)
 		draw_circle(rel_e, 3.5, PAL["rose"] as Color)
 	if tethered_wick and _has_player():
 		var rel_w: Vector2 = (_get_wick_pos() - pos).round()
 		var rel_a: Vector2 = (tether_anchor - pos).round()
 		draw_arc(rel_a, TETHER_MAX_RADIUS, 0.0, TAU, 20, Color(PAL["rose"] as Color, 0.55), 1.0)
-		draw_line(c, rel_w, PAL["pine"] as Color, 2.8)
-		draw_line(c, rel_w, PAL["coral"] as Color, 1.3)
+		draw_line(c, rel_w, PAL["void"] as Color, 5.0)
+		draw_line(c, rel_w, PAL["pine"] as Color, 3.0)
+		draw_line(c, rel_w, PAL["coral"] as Color, 1.0)
 	if state == State.RECOVER or state == State.STAGGER:
-		draw_arc(c + Vector2(0.0, -4.0), 5.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(c + Vector2(0.0, -4.0), 5.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.0)

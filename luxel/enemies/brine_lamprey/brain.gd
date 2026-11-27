@@ -303,9 +303,9 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	var rip_r: float = 7.5 + sin(anim_t * 6.0) * 1.4
-	draw_arc(Vector2.ZERO, rip_r, 0.0, TAU, 14, PAL["rose" if state == State.TELL else "sky"] as Color, 1.1)
+	draw_arc(Vector2.ZERO, rip_r, 0.0, TAU, 14, PAL["rose" if state == State.TELL else "sky"] as Color, 1.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_lane(self, off, off + _leap_dir * 48.0, 8.5, prog, anim_t, "coral", "gold")
 	elif _latched_skiff != null:
-		draw_arc(off, body_radius + 3.0, 0.0, TAU, 12, PAL["coral"] as Color, 1.4)
+		draw_arc(off, body_radius + 3.0, 0.0, TAU, 12, PAL["coral"] as Color, 1.0)

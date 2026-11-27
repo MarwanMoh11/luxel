@@ -194,7 +194,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16 and _has_player():
+	if state_timer > 0.16 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 3.2, dt)
@@ -267,11 +267,13 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(gp + Vector2(-2.0, 0.0), gp + Vector2(2.0, 0.0), PAL["gold"] as Color, 1.0)
 		draw_line(gp + Vector2(0.0, -2.0), gp + Vector2(0.0, 2.0), PAL["cream"] as Color, 1.0)
 	if dusk_clamped_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.8)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_lane(self, Vector2.ZERO, chomp_dir * (CHOMP_SPEED * CHOMP_COMMIT), 12.0, prog, anim_t, "coral", "gold")
 	elif state == State.RECOVER:
 		# Highlight vulnerable open velvet jaw!
 		var glow_a: float = 0.45 if LxHudFx.flash_reduced() else (0.45 + 0.25 * sin(anim_t * 10.0))
-		draw_arc(c, body_radius + 3.0, 0.0, TAU, 14, Color(PAL["rose"] as Color, glow_a), 1.4)
+		draw_arc(c, body_radius + 3.0, 0.0, TAU, 14, Color(PAL["void"] as Color, glow_a), 3.0)
+		draw_arc(c, body_radius + 3.0, 0.0, TAU, 14, Color(PAL["rose"] as Color, glow_a), 1.0)

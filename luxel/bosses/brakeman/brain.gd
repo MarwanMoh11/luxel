@@ -231,8 +231,12 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for wp_b: Vector2 in _wheel_positions:
 		var lp: Vector2 = (wp_b - pos).round()
 		var col: Color = PAL["gold"] as Color if _brake_t > 0.0 else PAL["apricot"] as Color
-		var spin: float = anim_t * (10.0 if _brake_t > 0.0 else 1.5)
-		draw_arc(lp, 10.5, spin, spin + PI * 1.4, 14, Color(col, 0.72), 1.3)
+		var spin: float = anim_t * ((2.5 if fred else 10.0) if _brake_t > 0.0 else 1.5)
+		draw_arc(lp, 10.5, spin, spin + PI * 1.4, 14, Color(PAL["void"] as Color, 0.72), 3.0)
+		draw_arc(lp, 10.5, spin, spin + PI * 1.4, 14, Color(col, 0.72), 1.0)
 	# Comedy cap-spin sparkle ring on stagger
 	if _cap_spin_t > 0.0 and boss_state == BossState.STAGGER:
-		draw_arc((off + Vector2(0.0, -body_radius - 10.0)).round(), 8.0, anim_t * 14.0, anim_t * 14.0 + PI, 10, PAL["gold"] as Color, 1.4)
+		var cp: Vector2 = (off + Vector2(0.0, -body_radius - 10.0)).round()
+		var ca: float = anim_t * (3.0 if fred else 14.0)
+		draw_arc(cp, 8.0, ca, ca + PI, 10, PAL["void"] as Color, 3.0)
+		draw_arc(cp, 8.0, ca, ca + PI, 10, PAL["gold"] as Color, 1.0)

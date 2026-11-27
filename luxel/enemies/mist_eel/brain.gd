@@ -325,16 +325,18 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if _submerged:
 		var r: float = 7.0 + sin(anim_t * 6.0) * 1.5
-		draw_arc(Vector2.ZERO, r, 0.0, TAU, 16, PAL["sky"] as Color, 1.4)
+		draw_arc(Vector2.ZERO, r, 0.0, TAU, 16, PAL["sky"] as Color, 1.0)
 		draw_arc(Vector2.ZERO, r + 3.0, 0.0, TAU, 16, PAL["blue"] as Color, 1.0)
 	elif _stranded:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 14, PAL["gold"] as Color, 1.2)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
 	if state == State.TELL:
 		var rel: Vector2 = (_arc_to - pos).round()
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var col: Color = (PAL["gold"] if prog > 0.65 else PAL["sky"]) as Color
-		draw_line(c, rel, col, 1.2)
-		draw_arc(rel, lerpf(12.0, 6.0, prog), 0.0, TAU, 14, PAL["ice"] as Color, 1.4)
-		draw_arc(Vector2.ZERO, 6.0 + prog * 8.0, 0.0, TAU, 14, PAL["sky"] as Color, 1.2)
+		draw_line(c, rel, PAL["void"] as Color, 3.0)
+		draw_line(c, rel, col, 1.0)
+		draw_arc(rel, lerpf(12.0, 6.0, prog), 0.0, TAU, 14, PAL["void"] as Color, 4.0)
+		draw_arc(rel, lerpf(12.0, 6.0, prog), 0.0, TAU, 14, PAL["ice"] as Color, 2.0)
+		draw_arc(Vector2.ZERO, 6.0 + prog * 8.0, 0.0, TAU, 14, PAL["sky"] as Color, 1.0)
 	elif state == State.COMMIT:
-		draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 12, PAL["sky"] as Color, 1.2)
+		draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 12, PAL["sky"] as Color, 1.0)

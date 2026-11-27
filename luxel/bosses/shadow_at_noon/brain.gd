@@ -256,13 +256,13 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	# Zenith Sundial ring under boss
-	draw_arc(c + Vector2(0.0, 4.0), 15.0, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.48), 1.2)
+	draw_arc(c + Vector2(0.0, 4.0), 15.0, 0.0, TAU, 20, Color(PAL["gold"] as Color, 0.48), 1.0)
 
 	# P1/All: Glowing gold 1.5s Lag Echo outline!
 	if boss_state == BossState.TELL and active_attack_id == "lag_echo":
 		var ep: Vector2 = (_echo_pos - pos).round()
 		draw_circle(ep, 10.0, Color(PAL["void"] as Color, 0.55))
-		draw_arc(ep, 11.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.6)
+		draw_arc(ep, 11.0, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 		draw_arc(ep, 7.0, 0.0, TAU, 12, PAL["cream"] as Color, 1.0)
 
 	# P2: 3-Hour Sundial split shadows at 120 deg!
@@ -270,7 +270,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for ts: Dictionary in _tri_shadows:
 			var lp: Vector2 = ((ts["pos"] as Vector2) - pos).round()
 			draw_circle(lp, 9.0, Color(PAL["void"] as Color, 0.65))
-			draw_arc(lp, 9.5, 0.0, TAU, 14, PAL["coral"] as Color, 1.3)
+			draw_arc(lp, 9.5, 0.0, TAU, 14, PAL["coral"] as Color, 1.0)
 
 	# P3: Zenith Zero-Shadow dot vs Sideways-Stretched vulnerable shadow body!
 	if phase >= 3:
@@ -279,7 +279,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 			draw_line(c, tip, PAL["void"] as Color, 11.0)
 			draw_line(c, tip, PAL["gold"] as Color, 2.0)
 			draw_circle(tip, 6.0, PAL["void"] as Color)
-			draw_arc(tip, 6.5, 0.0, TAU, 12, PAL["cream"] as Color, 1.2)
+			draw_arc(tip, 6.5, 0.0, TAU, 12, PAL["cream"] as Color, 1.0)
 		elif _is_zero_shadow_dot():
 			draw_circle(c, 5.0, PAL["void"] as Color)
-			draw_arc(c, 7.5, 0.0, TAU, 14, PAL["cream"] as Color, 1.6)
+			draw_arc(c, 7.5, 0.0, TAU, 14, PAL["cream"] as Color, 2.0)

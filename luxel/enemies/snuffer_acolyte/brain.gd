@@ -263,7 +263,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.16:
+	if state_timer > 0.16 * _assist_tell_scale():
 		if sprint_kind == "lantern" and _is_lantern_out():
 			sprint_target = _get_lantern_pos()
 		elif sprint_kind == "wick" and _has_player():
@@ -366,14 +366,16 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if dusk_frozen_t > 0.0:
 		var a: float = clampf(dusk_frozen_t / DUSK_FREEZE_TIME, 0.25, 1.0)
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, Color(PAL["ice"] as Color, a), 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, Color(PAL["void"] as Color, a), 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, Color(PAL["ice"] as Color, a), 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var local_t: Vector2 = sprint_target - pos
 		LxBossTelegraphFx.draw_ground_danger_lane(self, Vector2.ZERO, local_t.limit_length(120.0), 11.0, prog, anim_t, "coral", "gold")
 	elif state == State.COMMIT:
 		var fwd: Vector2 = Vector2.from_angle(facing)
-		draw_line(c, (c + fwd * 18.0).round(), PAL["gold"] as Color, 1.8)
+		draw_line(c, (c + fwd * 18.0).round(), PAL["void"] as Color, 4.0)
+		draw_line(c, (c + fwd * 18.0).round(), PAL["gold"] as Color, 2.0)
 	if snuff_puff_t > 0.0:
 		var u: float = 1.0 - clampf(snuff_puff_t / 0.40, 0.0, 1.0)
-		draw_arc(c, 6.0 + u * 16.0, 0.0, TAU, 16, Color(PAL["mauve"] as Color, 1.0 - u), 1.6)
+		draw_arc(c, 6.0 + u * 16.0, 0.0, TAU, 16, Color(PAL["mauve"] as Color, 1.0 - u), 2.0)

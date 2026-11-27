@@ -390,8 +390,8 @@ func _body_color() -> Color:
 func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if burrowed:
-		draw_arc(c + Vector2(0.0, 2.0), body_radius + 1.5, PI, TAU, 12, PAL["mauve"] as Color, 2.5)
-		draw_arc(c + Vector2(0.0, 2.0), body_radius - 1.0, PI, TAU, 10, PAL["dusk"] as Color, 1.5)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius + 1.5, PI, TAU, 12, PAL["mauve"] as Color, 3.0)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius - 1.0, PI, TAU, 10, PAL["dusk"] as Color, 1.0)
 		return
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -408,12 +408,18 @@ func _draw_extra(off: Vector2) -> void:
 			]),
 			Color(lc, lerpf(0.08, 0.16 if fred else 0.22, prog)),
 		)
-		draw_line(c, tip, PAL["cream"] as Color if locked else lc, 1.4)
-		draw_line((tip - charge_dir * 4.0 + perp * 3.5).round(), tip, lc, 1.2)
-		draw_line((tip - charge_dir * 4.0 - perp * 3.5).round(), tip, lc, 1.2)
+		draw_line(c, tip, PAL["void"] as Color, 4.0 if locked else 3.0)
+		draw_line(c, tip, PAL["cream"] as Color if locked else lc, 2.0 if locked else 1.0)
+		var ah0: Vector2 = (tip - charge_dir * 4.0 + perp * 3.5).round()
+		var ah1: Vector2 = (tip - charge_dir * 4.0 - perp * 3.5).round()
+		draw_line(ah0, tip, PAL["void"] as Color, 3.0)
+		draw_line(ah1, tip, PAL["void"] as Color, 3.0)
+		draw_line(ah0, tip, lc, 1.0)
+		draw_line(ah1, tip, lc, 1.0)
 	elif state == State.COMMIT:
+		draw_line(c, (c - charge_dir * 16.0).round(), PAL["void"] as Color, 4.0)
 		draw_line(c, (c - charge_dir * 16.0).round(), PAL["ice"] as Color, 2.0)
-		draw_line(c, (c - charge_dir * 10.0).round(), PAL["cream"] as Color, 1.2)
+		draw_line(c, (c - charge_dir * 10.0).round(), PAL["cream"] as Color, 1.0)
 	elif is_reflective():
 		# Mirror-carapace glint dot
 		var glint_p: Vector2 = (c + Vector2(-2.0, -body_radius)).round()

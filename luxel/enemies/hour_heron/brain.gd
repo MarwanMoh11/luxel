@@ -290,18 +290,22 @@ func _draw_extra(off: Vector2) -> void:
 	# Metronome pulse ring: bright gold when step-vulnerable, cool marble shield when invulnerable
 	if is_vulnerable() and state != State.TELL and state != State.COMMIT:
 		var pulse: float = 0.0 if LxHudFx.flash_reduced() else sin(anim_t * 14.0) * 1.0
-		draw_arc(c, body_radius + 3.5 + pulse, 0.0, TAU, 16, PAL["gold"] as Color, 1.3)
+		draw_arc(c, body_radius + 3.5 + pulse, 0.0, TAU, 16, PAL["gold"] as Color, 1.0)
 	elif _marble_flash_t > 0.0:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 14, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 14, PAL["ice"] as Color, 2.0)
 
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var end_p: Vector2 = (c + _lunge_dir * LUNGE_DIST).round()
-		var col: Color = (PAL["coral"] if prog > 0.68 else PAL["gold"]) as Color
-		draw_line(c, end_p, col, 1.8 if prog > 0.68 else 1.2)
-		draw_arc(end_p, lerpf(8.0, 4.0, prog), 0.0, TAU, 12, PAL["cream"] as Color, 1.2)
+		var hot_p: bool = prog > 0.68
+		var col: Color = (PAL["coral"] if hot_p else PAL["gold"]) as Color
+		draw_line(c, end_p, PAL["void"] as Color, 4.0 if hot_p else 3.0)
+		draw_line(c, end_p, col, 2.0 if hot_p else 1.0)
+		draw_arc(end_p, lerpf(8.0, 4.0, prog), 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+		draw_arc(end_p, lerpf(8.0, 4.0, prog), 0.0, TAU, 12, PAL["cream"] as Color, 1.0)
 	elif state == State.COMMIT:
 		var tail: Vector2 = (c - _lunge_dir * 16.0).round()
 		var tip: Vector2 = (c + _lunge_dir * 15.0).round()
+		draw_line(tail, tip, PAL["void"] as Color, 5.0)
 		draw_line(tail, tip, PAL["gold"] as Color, 3.0)
-		draw_line(c, tip, PAL["cream"] as Color, 1.5)
+		draw_line(c, tip, PAL["cream"] as Color, 1.0)

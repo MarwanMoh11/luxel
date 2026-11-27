@@ -21,8 +21,8 @@ static func draw_extra(b: LxHeronAbbessBoss, off: Vector2) -> void:
 
 	if b._sprite_sheet == null:
 		var top: Vector2 = off + Vector2(0.0, -b.body_radius - 6.0)
-		b.draw_line(top + Vector2(-4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
-		b.draw_line(top + Vector2(4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 1.8)
+		b.draw_line(top + Vector2(-4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 2.0)
+		b.draw_line(top + Vector2(4.0, 2.0), top + Vector2(0.0, -4.0), PAL["gold"] as Color, 2.0)
 
 	if b.active_move == LxHeronAbbessBoss.BossMove.WING_GUST and b.state == LxEnemyBrain.State.TELL:
 		var side: Vector2 = Vector2(-b.gust_dir.y, b.gust_dir.x)
@@ -32,8 +32,8 @@ static func draw_extra(b: LxHeronAbbessBoss, off: Vector2) -> void:
 		LxBossTelegraphFx.draw_ground_danger_lane(b, dmg_pt, end_pt, LxHeronAbbessBoss.GUST_HALF_W, g_prog, b.anim_t, "sky", "ice")
 		LxBossTelegraphFx.draw_ground_danger_lane(b, off, dmg_pt, LxHeronAbbessBoss.GUST_HALF_W, g_prog, b.anim_t, "coral", "gold")
 		var pull_d: float = lerpf(44.0, 10.0, g_prog)
-		b.draw_line((off + b.gust_dir * pull_d - side * 12.0).round(), (off + b.gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
-		b.draw_line((off + b.gust_dir * pull_d + side * 12.0).round(), (off + b.gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.2)
+		b.draw_line((off + b.gust_dir * pull_d - side * 12.0).round(), (off + b.gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.0)
+		b.draw_line((off + b.gust_dir * pull_d + side * 12.0).round(), (off + b.gust_dir * (pull_d - 6.0)).round(), PAL["ice"] as Color, 1.0)
 	elif b.active_move == LxHeronAbbessBoss.BossMove.WING_GUST and b.state == LxEnemyBrain.State.COMMIT:
 		_draw_gust_commit(b, off)
 	elif b.active_move == LxHeronAbbessBoss.BossMove.SHOCKWAVE_RING and b.state == LxEnemyBrain.State.TELL:
@@ -58,28 +58,28 @@ static func draw_extra(b: LxHeronAbbessBoss, off: Vector2) -> void:
 		var air_u: float = 1.0 - clampf(b.state_timer / maxf(LxHeronAbbessBoss.LEAP_AIR_TIME, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_ring(b, rel_air, LxHeronAbbessBoss.LEAP_RING_MAX_R, lerpf(0.72, 1.0, air_u), b.anim_t, "sky", "coral")
 		LxBossTelegraphFx.draw_ground_danger_ring(b, rel_air, 16.0, lerpf(0.78, 1.0, air_u), b.anim_t, "coral", "gold")
-		b.draw_line(off.round(), rel_air, Color(PAL["ice"] as Color, 0.45), 1.1)
+		b.draw_line(off.round(), rel_air, Color(PAL["ice"] as Color, 0.45), 1.0)
 	elif b.active_move == LxHeronAbbessBoss.BossMove.GALE_LEAP and b.state == LxEnemyBrain.State.COMMIT and b.leap_stage == 1:
 		var ring_r2: float = lerpf(LxHeronAbbessBoss.RING_START_R, LxHeronAbbessBoss.LEAP_RING_MAX_R, b.ring_progress)
 		_draw_ring(b, Vector2.ZERO, ring_r2, false)
 	elif b._roaring:
 		var rp: float = 1.0 - clampf(b.state_timer / LxHeronAbbessBoss.ROAR_TIME, 0.0, 1.0)
 		var rr: float = b.body_radius + 10.0 + rp * 16.0
-		b.draw_arc(off.round(), rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 1.8)
-		b.draw_arc(off.round(), rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.2)
+		b.draw_arc(off.round(), rr + 2.5, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
+		b.draw_arc(off.round(), rr, 0.0, TAU, 28, PAL["gold"] as Color, 2.0)
 
 	var fred_sk: bool = b.is_flash_reduced()
 	if b.is_flying():
 		var ac: Vector2 = off.round()
 		var cr_r: float = roundf(b.body_radius + (5.5 if fred_sk else (5.0 + sin(b.anim_t * 14.0) * 1.0)))
-		b.draw_arc(ac, cr_r, 0.0, TAU, 20, PAL["void"] as Color, 2.8)
-		b.draw_arc(ac, cr_r, 0.0, TAU, 20, PAL["gold"] as Color, 1.2)
+		b.draw_arc(ac, cr_r, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
+		b.draw_arc(ac, cr_r, 0.0, TAU, 20, PAL["gold"] as Color, 1.0)
 		for ci: int in range(4):
 			var d_c: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
 			var cp0: Vector2 = (ac + d_c * (cr_r - 2.5)).round()
 			var cp1: Vector2 = (ac + d_c * (cr_r + 3.0)).round()
-			b.draw_line(cp0, cp1, PAL["void"] as Color, 2.8)
-			b.draw_line(cp0, cp1, PAL["cream"] as Color, 1.2)
+			b.draw_line(cp0, cp1, PAL["void"] as Color, 3.0)
+			b.draw_line(cp0, cp1, PAL["cream"] as Color, 1.0)
 
 	if b.phase >= 2:
 		var updraft_spd: float = 1.5 if fred_sk else 3.8
@@ -87,25 +87,25 @@ static func draw_extra(b: LxHeronAbbessBoss, off: Vector2) -> void:
 			var sp: Vector2 = ((sk["pos"] as Vector2) - b.pos).round()
 			if bool(sk["shattered"]):
 				b.draw_arc(sp, LxHeronAbbessBoss.SKYLIGHT_UPDRAFT_R, 0.0, TAU, 18, Color(PAL["sky"] as Color, 0.45), 1.0)
-				b.draw_arc(sp, LxHeronAbbessBoss.SKYLIGHT_UPDRAFT_R - 5.0, b.anim_t * updraft_spd, b.anim_t * updraft_spd + PI * 1.1, 12, Color(PAL["ice"] as Color, 0.80), 1.3)
+				b.draw_arc(sp, LxHeronAbbessBoss.SKYLIGHT_UPDRAFT_R - 5.0, b.anim_t * updraft_spd, b.anim_t * updraft_spd + PI * 1.1, 12, Color(PAL["ice"] as Color, 0.80), 1.0)
 				b.draw_circle(sp, 3.0, PAL["cream"] as Color)
 			else:
 				var r_sk := Rect2(sp + Vector2(-6.0, -6.0), Vector2(12.0, 12.0))
-				b.draw_rect(r_sk.grow(1.0), PAL["void"] as Color, false, 2.2)
+				b.draw_rect(r_sk.grow(1.0), PAL["void"] as Color, false, 2.0)
 				b.draw_rect(r_sk, Color(PAL["ice"] as Color, 0.25))
-				b.draw_rect(r_sk, PAL["gold"] as Color, false, 1.2)
+				b.draw_rect(r_sk, PAL["gold"] as Color, false, 1.0)
 				var glint_c: Color = (PAL["cream"] if (fred_sk or int(b.anim_t * 6.0) % 2 == 0) else PAL["ice"]) as Color
 				b.draw_line((sp + Vector2(-4.0, -2.0)).round(), (sp + Vector2(-2.0, -4.0)).round(), glint_c, 1.0)
 				b.draw_rect(Rect2((sp + Vector2(3.0, -4.0)).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color)
 
 
 static func _draw_ring(b: LxHeronAbbessBoss, center: Vector2, ring_r: float, trail: bool) -> void:
-	b.draw_arc(center, ring_r + 2.8, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
-	b.draw_arc(center, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
-	b.draw_arc(center, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
-	b.draw_arc(center, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
+	b.draw_arc(center, ring_r + 2.8, 0.0, TAU, 36, PAL["blue"] as Color, 2.0)
+	b.draw_arc(center, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.0)
+	b.draw_arc(center, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 2.0)
+	b.draw_arc(center, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
 	if trail and ring_r > 16.0:
-		b.draw_arc(center, ring_r - 8.5, 0.0, TAU, 24, PAL["blue"] as Color, 1.1)
+		b.draw_arc(center, ring_r - 8.5, 0.0, TAU, 24, PAL["blue"] as Color, 1.0)
 
 
 static func _draw_gust_commit(b: LxHeronAbbessBoss, off: Vector2) -> void:
@@ -129,8 +129,8 @@ static func _draw_gust_commit(b: LxHeronAbbessBoss, off: Vector2) -> void:
 		var l_end: float = g_len if idx == 0 else g_len * 0.88
 		var p0: Vector2 = (off + s_off).round()
 		var p1: Vector2 = (off + s_off + b.gust_dir * l_end).round()
-		b.draw_line(p0, p1, Color(PAL["sky"] as Color, 0.70 if fred_g else 0.90), 2.4 if idx == 0 else 1.6)
-		b.draw_line(p0, p1, Color((PAL["cream"] if idx == 0 else PAL["ice"]) as Color, 0.75 if fred_g else 0.95), 1.2 if idx == 0 else 1.0)
+		b.draw_line(p0, p1, Color(PAL["sky"] as Color, 0.70 if fred_g else 0.90), 3.0 if idx == 0 else 2.0)
+		b.draw_line(p0, p1, Color((PAL["cream"] if idx == 0 else PAL["ice"]) as Color, 0.75 if fred_g else 0.95), 2.0 if idx == 0 else 1.0)
 	for ci: int in range(4):
 		var ct: float = fposmod(b.anim_t * 4.6 + float(ci) * 0.25, 1.0)
 		var dist_c: float = lerpf(12.0, g_len, ct)

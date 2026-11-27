@@ -332,20 +332,27 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var wcol: Color = (PAL["gold"] if _well.is_push else PAL["sky"]) as Color
 		var r_wave: float = lerpf(12.0, _well.radius * 0.72, _well_anim) if _well.is_push else lerpf(_well.radius * 0.72, 12.0, _well_anim)
 		draw_arc(wc, _well.radius * 0.72, 0.0, TAU, 24, Color(wcol, 0.25), 1.0)
-		draw_arc(wc, r_wave, 0.0, TAU, 20, Color(wcol, 0.65), 1.4)
+		draw_arc(wc, r_wave, 0.0, TAU, 20, Color(PAL["void"] as Color, 0.60), 3.0)
+		draw_arc(wc, r_wave, 0.0, TAU, 20, Color(wcol, 0.65), 1.0)
+		draw_circle(wc, 5.0, PAL["void"] as Color)
 		draw_circle(wc, 4.0, wcol)
 
 	# Front brass shield arc + armour glint
 	var fwd: Vector2 = Vector2.from_angle(facing)
 	var shield_col: Color = (PAL["cream"] if clank_t > 0.0 else PAL["gold"]) as Color
-	draw_arc(c, body_radius + 3.5, facing - FRONT_SHIELD_HALF * 0.85, facing + FRONT_SHIELD_HALF * 0.85, 14, shield_col, 2.2 if clank_t > 0.0 else 1.6)
+	draw_arc(c, body_radius + 3.5, facing - FRONT_SHIELD_HALF * 0.85, facing + FRONT_SHIELD_HALF * 0.85, 14, PAL["void"] as Color, 5.0 if clank_t > 0.0 else 4.0)
+	draw_arc(c, body_radius + 3.5, facing - FRONT_SHIELD_HALF * 0.85, facing + FRONT_SHIELD_HALF * 0.85, 14, shield_col, 3.0 if clank_t > 0.0 else 2.0)
 	# Rear astrolabe weak core (pulses bright gold/ice under True Lens!)
 	var rear_p: Vector2 = (c - fwd * (body_radius + 1.5)).round()
+	draw_circle(rear_p, 4.5 if _lens_highlight_t > 0.0 else 3.2, PAL["void"] as Color)
 	draw_circle(rear_p, 3.2 if _lens_highlight_t > 0.0 else 2.2, (PAL["cream"] if _lens_highlight_t > 0.0 else PAL["coral"]) as Color)
 	if _lens_highlight_t > 0.0:
-		draw_arc(rear_p, 6.0, 0.0, TAU, 12, PAL["ice"] as Color, 1.4)
+		draw_arc(rear_p, 6.0, 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+		draw_arc(rear_p, 6.0, 0.0, TAU, 12, PAL["ice"] as Color, 1.0)
 
 	if clank_t > 0.0:
+		draw_arc(c, body_radius + 6.0, facing - 1.0, facing + 1.0, 14, PAL["void"] as Color, 4.0)
 		draw_arc(c, body_radius + 6.0, facing - 1.0, facing + 1.0, 14, PAL["cream"] as Color, 2.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)

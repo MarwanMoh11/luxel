@@ -272,19 +272,23 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Silver tray front guard gleam
 	if not is_punishable() and boss_state != BossState.DEATH:
+		draw_arc(c, body_radius + 4.0, facing - FRONT_GUARD_HALF, facing + FRONT_GUARD_HALF, 12, PAL["void"] as Color, 4.0)
 		draw_arc(c, body_radius + 4.0, facing - FRONT_GUARD_HALF, facing + FRONT_GUARD_HALF, 12, PAL["stone"] as Color, 2.0)
 	# Glowing exposed winding-key marker on back when bowing / staggered
 	if _bow_lure_t > 0.0 or boss_state == BossState.STAGGER or boss_state == BossState.RECOVER:
 		var back_p: Vector2 = (c - Vector2.from_angle(facing) * (body_radius + 5.0)).round()
+		draw_circle(back_p, 4.0, PAL["void"] as Color)
 		draw_circle(back_p, 3.0, PAL["gold"] as Color)
 		draw_circle(back_p, 1.5, PAL["cream"] as Color)
 	if _dusk_freeze_t > 0.0:
-		draw_arc(c, body_radius + 6.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 6.5, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 6.5, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	# Comedy beat: tiny floating dust puffs while Valet furiously dusts scorch marks in STAGGER!
 	if boss_state == BossState.STAGGER:
 		for k: int in range(3):
-			var a: float = anim_t * 7.0 + float(k) * 2.1
+			var a: float = anim_t * (2.2 if fred else 7.0) + float(k) * 2.1
 			var dp: Vector2 = (c + Vector2(cos(a) * 14.0, -8.0 + sin(a) * 6.0)).round()
 			draw_circle(dp, 1.6, PAL["rose"] if k % 2 == 0 else PAL["cream"])

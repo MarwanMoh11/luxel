@@ -458,7 +458,7 @@ func _mount_finale_panel() -> Node:
 		return _finale_panel
 	var p: Node = FinalePanel.new()
 	p.name = "HushFinalePanel"
-	var host: Node = Lx.root if (Lx.root != null and is_instance_valid(Lx.root)) else get_tree().current_scene
+	var host: Node = Lx.root if (Lx.root != null and is_instance_valid(Lx.root)) else (get_tree().current_scene if is_inside_tree() else null)
 	if host == null: host = self
 	host.add_child(p)
 	p.connect("display_off_completed", _on_display_off_completed)

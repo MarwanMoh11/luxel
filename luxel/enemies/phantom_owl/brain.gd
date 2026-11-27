@@ -144,7 +144,7 @@ func _draw() -> void:
 					break
 				var p0 := Vector2(roundf(c.x + dir.x * d0), roundf(c.y + dir.y * d0))
 				var p1 := Vector2(roundf(c.x + dir.x * minf(d0 + 3.0, dist - 3.0)), roundf(c.y + dir.y * minf(d0 + 3.0, dist - 3.0)))
-				draw_line(p0, p1, ring_c if (di % 2 == 0) else hi_c, 1.2 if locked_owl else 1.0)
+				draw_line(p0, p1, ring_c if (di % 2 == 0) else hi_c, 2.0 if locked_owl else 1.0)
 		# Readable dashed ground target ring matching dive hit radius
 		var fill_a: float = lerpf(0.10, 0.22, prog)
 		draw_circle(lt, DIVE_HIT_R, Color(ring_c, fill_a))
@@ -152,16 +152,16 @@ func _draw() -> void:
 		for si: int in range(8):
 			var a0: float = rot_d + float(si) * (TAU / 8.0)
 			var a1: float = a0 + 0.44
-			draw_arc(lt, DIVE_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 2.2)
-			draw_arc(lt, DIVE_HIT_R, a0, a1, 4, ring_c if (si % 2 == 0 or locked_owl) else hi_c, 1.4)
+			draw_arc(lt, DIVE_HIT_R + 1.0, a0, a1, 4, PAL["void"] as Color, 3.0)
+			draw_arc(lt, DIVE_HIT_R, a0, a1, 4, ring_c if (si % 2 == 0 or locked_owl) else hi_c, 1.0)
 		var in_r: float = roundf(lerpf(DIVE_HIT_R * 0.80, 4.0, prog))
-		draw_arc(lt, in_r, 0.0, TAU, 16, hi_c, 1.2)
+		draw_arc(lt, in_r, 0.0, TAU, 16, hi_c, 1.0)
 		for ci: int in range(4):
 			var cd: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
 			var t0: Vector2 = (lt + cd * (DIVE_HIT_R - 2.5)).round()
 			var t1: Vector2 = (lt + cd * (DIVE_HIT_R + 2.0)).round()
-			draw_line(t0, t1, PAL["void"] as Color, 2.2)
-			draw_line(t0, t1, hi_c, 1.2)
+			draw_line(t0, t1, PAL["void"] as Color, 3.0)
+			draw_line(t0, t1, hi_c, 1.0)
 		draw_rect(Rect2(lt, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
 		for si: int in range(-1, 2, 2):
@@ -182,7 +182,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_arc(c, body_radius + 2.5, 0.0, TAU, 16, PAL["sky"] as Color, 1.0)
 		for qi: int in range(4):
 			var qa: float = rot + float(qi) * (PI * 0.5)
-			draw_arc(c, body_radius + 4.5, qa, qa + 0.85, 6, PAL["deep"] as Color, 1.2)
+			draw_arc(c, body_radius + 4.5, qa, qa + 0.85, 6, PAL["deep"] as Color, 1.0)
 			draw_arc(c, body_radius + 3.0, qa + 0.15, qa + 0.65, 5, PAL["ice"] as Color, 1.0)
 			var ca: float = float(qi) * (PI * 0.5)
 			var cd: Vector2 = Vector2.from_angle(ca)

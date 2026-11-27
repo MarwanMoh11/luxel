@@ -369,8 +369,8 @@ func _shield_color() -> Color:
 func _draw_lunar_glint(pt: Vector2, arm: float) -> void:
 	var p: Vector2 = pt.round()
 	var inner: float = maxf(1.0, arm * 0.55)
-	draw_line(p + Vector2(-arm, 0.0), p + Vector2(arm, 0.0), PAL["sky"] as Color, 1.2)
-	draw_line(p + Vector2(0.0, -arm), p + Vector2(0.0, arm), PAL["sky"] as Color, 1.2)
+	draw_line(p + Vector2(-arm, 0.0), p + Vector2(arm, 0.0), PAL["sky"] as Color, 1.0)
+	draw_line(p + Vector2(0.0, -arm), p + Vector2(0.0, arm), PAL["sky"] as Color, 1.0)
 	draw_line(p + Vector2(-inner, 0.0), p + Vector2(inner, 0.0), PAL["ice"] as Color, 1.0)
 	draw_line(p + Vector2(0.0, -inner), p + Vector2(0.0, inner), PAL["ice"] as Color, 1.0)
 	draw_rect(Rect2(p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
@@ -382,12 +382,12 @@ func _draw_extra(off: Vector2) -> void:
 		var gp: Vector2 = (ghost_pos - pos + off).round()
 		var bv: Vector2 = c - gp
 		var ba: float = bv.angle() if bv.length_squared() > 0.01 else facing
-		draw_line(gp, c, (PAL["blue"] if gt > 0.45 else PAL["deep"]) as Color, 1.4)
+		draw_line(gp, c, (PAL["blue"] if gt > 0.45 else PAL["deep"]) as Color, 1.0)
 		draw_arc(gp, body_radius + 1.2, ba - 1.35, ba + 1.35, 10, PAL["deep"] as Color, 2.0)
 		if gt > 0.30:
-			draw_arc(gp, body_radius, ba - 1.15, ba + 1.15, 10, PAL["blue"] as Color, 1.4)
+			draw_arc(gp, body_radius, ba - 1.15, ba + 1.15, 10, PAL["blue"] as Color, 1.0)
 		if gt > 0.50:
-			draw_arc(gp.lerp(c, 0.30).round(), body_radius * 0.85, ba - 0.95, ba + 0.95, 8, PAL["sky"] as Color, 1.2)
+			draw_arc(gp.lerp(c, 0.30).round(), body_radius * 0.85, ba - 0.95, ba + 0.95, 8, PAL["sky"] as Color, 1.0)
 		if gt > 0.65:
 			draw_arc(gp.lerp(c, 0.62).round(), body_radius * 0.65, ba - 0.70, ba + 0.70, 6, PAL["ice"] as Color, 1.0)
 			draw_rect(Rect2(gp.lerp(c, 0.45).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
@@ -403,13 +403,16 @@ func _draw_extra(off: Vector2) -> void:
 		var base_a: float = delta.angle() if len_t > 0.01 else facing
 		var tip_a: Vector2 = (c + Vector2.from_angle(base_a + spread * feint_side) * len_t).round()
 		var tip_b: Vector2 = (c + Vector2.from_angle(base_a - spread * feint_side) * len_t).round()
-		draw_line(c, tip_a, (PAL["coral"] if locked_o else PAL["sky"]) as Color, 1.2 if locked_o else 1.0)
-		draw_line(c, tip_b, (PAL["cream"] if locked_o else PAL["ice"]) as Color, 1.6 if locked_o else 1.4)
+		draw_line(c, tip_a, PAL["void"] as Color, 4.0 if locked_o else 3.0)
+		draw_line(c, tip_b, PAL["void"] as Color, 4.0 if locked_o else 3.0)
+		draw_line(c, tip_a, (PAL["coral"] if locked_o else PAL["sky"]) as Color, 2.0 if locked_o else 1.0)
+		draw_line(c, tip_b, (PAL["cream"] if locked_o else PAL["ice"]) as Color, 2.0 if locked_o else 1.0)
 		_draw_lunar_glint(tip_a, 3.0 if not locked_o else 4.5)
 		_draw_lunar_glint(tip_b, 5.0 if locked_o else 4.0)
 	elif variant == VARIANT_SNATCHER and state == State.TELL:
 		var tgt: Vector2 = (lock_target - pos).round()
-		draw_line(c, tgt, PAL["blue"] as Color, 1.8)
+		draw_line(c, tgt, PAL["void"] as Color, 4.0)
+		draw_line(c, tgt, PAL["blue"] as Color, 2.0)
 		draw_line(c, tgt, PAL["ice"] as Color, 1.0)
 		_draw_lunar_glint(tgt, 4.0)
 	elif variant == VARIANT_WARDEN and state == State.TELL:

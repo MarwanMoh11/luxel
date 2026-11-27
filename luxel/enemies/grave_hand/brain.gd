@@ -201,7 +201,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.15 and _has_player():
+	if state_timer > 0.15 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 4.0, dt)
@@ -256,7 +256,7 @@ func _draw() -> void:
 	if sunk_t > 0.0:
 		# Sunk underground under Dusk hush — show quiet ice-rimmed dirt mound only!
 		draw_circle(Vector2(0.0, 2.0), 8.0, PAL["night"] as Color)
-		draw_arc(Vector2(0.0, 2.0), 8.5, 0.0, TAU, 14, PAL["ice"] as Color, 1.4)
+		draw_arc(Vector2(0.0, 2.0), 8.5, 0.0, TAU, 14, PAL["ice"] as Color, 1.0)
 		return
 	super._draw()
 
@@ -271,8 +271,8 @@ func _draw_extra(off: Vector2) -> void:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_ring(self, Vector2.ZERO, GRAB_HIT_R, prog, anim_t, "coral", "apricot")
 	elif state == State.COMMIT:
-		draw_arc(c, GRAB_HIT_R * 0.88, facing - 1.1, facing + 1.1, 14, PAL["coral"] as Color, 2.2)
+		draw_arc(c, GRAB_HIT_R * 0.88, facing - 1.1, facing + 1.1, 14, PAL["coral"] as Color, 2.0)
 	if snare_t > 0.0 and _has_player():
 		var rel: Vector2 = (_get_wick_pos() - pos).round()
-		draw_line(c, rel, PAL["apricot"] as Color, 1.5)
+		draw_line(c, rel, PAL["apricot"] as Color, 2.0)
 		draw_circle(rel, 3.0, PAL["gold"] as Color)

@@ -372,16 +372,19 @@ func _draw_extra(off: Vector2) -> void:
 	if frozen:
 		# Ice-rimmed frozen block indicator & thaw countdown arc
 		var frac: float = clampf(frozen_t / FREEZE_DURATION, 0.0, 1.0)
-		draw_rect(Rect2(c - BLOCK_SIZE * 0.5, BLOCK_SIZE), Color(PAL["ice"] as Color, 0.75), false, 1.2)
-		draw_arc(c, 12.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, PAL["sky"] as Color, 1.4)
+		draw_rect(Rect2(c - BLOCK_SIZE * 0.5, BLOCK_SIZE), Color(PAL["ice"] as Color, 0.75), false, 1.0)
+		draw_arc(c, 12.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 20, PAL["sky"] as Color, 1.0)
 		return
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(SPLASH_HIT_R, 10.0, prog)
+		draw_arc(c, SPLASH_HIT_R, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
 		draw_arc(c, SPLASH_HIT_R, 0.0, TAU, 20, PAL["coral"] as Color, 1.0)
-		draw_arc(c, r, 0.0, TAU, 20, (PAL["cream"] if prog > 0.72 else PAL["gold"]) as Color, 1.6)
+		draw_arc(c, r, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, r, 0.0, TAU, 20, (PAL["cream"] if prog > 0.72 else PAL["gold"]) as Color, 2.0)
 	elif state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / SPLASH_COMMIT_TIME, 0.0, 1.0)
 		var rr: float = lerpf(8.0, SPLASH_HIT_R, prog)
 		draw_circle(c, rr, Color(PAL["coral"] as Color, 0.26 * (1.0 - prog * 0.4)))
+		draw_arc(c, rr, 0.0, TAU, 22, PAL["void"] as Color, 4.0)
 		draw_arc(c, rr, 0.0, TAU, 22, PAL["gold"] as Color, 2.0)

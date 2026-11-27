@@ -387,18 +387,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# P2 basin tide foam ripples around Captain
 	if _p2_flood_active and not is_flash_reduced():
 		var fr: float = 24.0 + fmod(anim_t * 22.0, 26.0)
-		draw_arc(c, fr, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.32), 1.2)
+		draw_arc(c, fr, 0.0, TAU, 20, Color(PAL["sky"] as Color, 0.32), 1.0)
 	# Personality beat: bicorne hat pops off & bobs on P2 tide before he snatches it back!
 	if _hat_float_t > 0.0:
 		var hp_l: Vector2 = (_hat_pos - pos + off).round()
 		draw_line(hp_l + Vector2(-7.0, 0.0), hp_l + Vector2(7.0, 0.0), PAL["deep"] as Color, 3.0)
-		draw_line(hp_l + Vector2(-4.5, -2.5), hp_l + Vector2(4.5, -2.5), PAL["gold"] as Color, 1.5)
+		draw_line(hp_l + Vector2(-4.5, -2.5), hp_l + Vector2(4.5, -2.5), PAL["gold"] as Color, 2.0)
 	if _feint_ghost_t > 0.0:
 		var gp: Vector2 = (_feint_ghost_pos - pos + off).round()
-		draw_line(gp, c, PAL["sky"] as Color, 1.4)
-		draw_arc(gp, body_radius, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)
+		draw_line(gp, c, PAL["void"] as Color, 3.0)
+		draw_line(gp, c, PAL["sky"] as Color, 1.0)
+		draw_arc(gp, body_radius, 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+		draw_arc(gp, body_radius, 0.0, TAU, 12, PAL["ice"] as Color, 1.0)
 	if guard_cracked_t > 0.0:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 1.8)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 18, PAL["sky"] as Color, 2.0)
 		draw_arc(c, body_radius + 2.5, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 	# Active Brine Surge / Cross-Surge wave visual
 	if boss_state == BossState.COMMIT and active_attack_id in ["brine_surge_cone", "double_cross_surge"]:
@@ -406,16 +409,19 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for ci: Vector2 in _surge_cones(_surge_dir.angle(), _cross_active):
 			var a0: float = ci.x - ci.y
 			var a1: float = ci.x + ci.y
-			draw_arc(c, wave_r + 3.0, a0, a1, 16, PAL["deep"] as Color, 2.2)
-			draw_arc(c, wave_r, a0, a1, 16, PAL["sky"] as Color, 3.2)
-			draw_arc(c, maxf(3.0, wave_r - 2.4), a0, a1, 14, PAL["ice"] as Color, 1.8)
+			draw_arc(c, wave_r, a0, a1, 16, PAL["void"] as Color, 5.0)
+			draw_arc(c, wave_r + 3.0, a0, a1, 16, PAL["deep"] as Color, 2.0)
+			draw_arc(c, wave_r, a0, a1, 16, PAL["sky"] as Color, 3.0)
+			draw_arc(c, maxf(3.0, wave_r - 2.4), a0, a1, 14, PAL["ice"] as Color, 2.0)
 			draw_arc(c, maxf(3.0, wave_r - 3.6), a0, a1, 12, PAL["cream"] as Color, 1.0)
 	# Armour glint outside punish windows vs golden punish halo
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 14, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, facing - 1.1, facing + 1.1, 14, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

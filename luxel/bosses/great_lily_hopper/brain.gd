@@ -339,7 +339,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for ud: Dictionary in _updrafts:
 		var up: Vector2 = ((ud["pos"] as Vector2) - pos).round()
 		draw_arc(up, UPDRAFT_R, 0.0, TAU, 18, Color(PAL["sky"] as Color, 0.42), 1.0)
-		draw_arc(up, UPDRAFT_R - 5.0, anim_t * 3.6, anim_t * 3.6 + PI * 1.1, 12, Color(PAL["ice"] as Color, 0.78), 1.2)
+		draw_arc(up, UPDRAFT_R - 5.0, anim_t * 3.6, anim_t * 3.6 + PI * 1.1, 12, Color(PAL["ice"] as Color, 0.78), 1.0)
 		draw_rect(Rect2(up + Vector2(-4.0, -4.0), Vector2(8.0, 8.0)), Color(PAL["night"] as Color, 0.70))
 		draw_rect(Rect2(up + Vector2(-3.0, -1.0), Vector2(6.0, 2.0)), PAL["sky"] as Color)
 
@@ -348,7 +348,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var pp_s: Vector2 = ((sp["pos"] as Vector2) - pos).round()
 		var frac_s: float = clampf(float(sp["ttl"]) / maxf(float(sp["max_ttl"]), 0.05), 0.0, 1.0)
 		draw_circle(pp_s, 14.0, Color(PAL["blue"] as Color, 0.36 * frac_s))
-		draw_arc(pp_s, 14.0, 0.0, TAU, 14, Color(PAL["sky"] as Color, 0.78 * frac_s), 1.4)
+		draw_arc(pp_s, 14.0, 0.0, TAU, 14, Color(PAL["sky"] as Color, 0.78 * frac_s), 1.0)
 
 	# Airborne shadow when leaping
 	if hop_z > 2.0:
@@ -357,7 +357,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	# Armour water-glint outside punish windows vs golden crown punish halo
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 4.5, facing - 1.1, facing + 1.1, 14, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 6.5, facing - 0.8, facing + 0.8, 12, PAL["ice"] as Color, 1.2)
+		draw_arc(c, body_radius + 4.5, facing - 1.1, facing + 1.1, 14, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 6.5, facing - 0.8, facing + 0.8, 12, PAL["ice"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)

@@ -368,16 +368,19 @@ func _draw_boss_extra(off: Vector2) -> void:
 				var tp: Vector2i = tv as Vector2i
 				var loc: Vector2 = (Vector2(float(tp.x) * 16.0, float(tp.y) * 16.0) - pos + off).round()
 				draw_rect(Rect2(loc, Vector2(16.0, 16.0)), Color(PAL["gold"] as Color, 0.25), true)
+				draw_rect(Rect2(loc, Vector2(16.0, 16.0)), PAL["void"] as Color, false, 3.0)
 				draw_rect(Rect2(loc, Vector2(16.0, 16.0)), PAL["ice"] as Color, false, 1.0)
 	# Orbiting rippable golden Moth-Sparks!
 	for s: Dictionary in _moth_sparks:
 		if not bool(s["alive"]): continue
 		var sp: Vector2 = ((s["pos"] as Vector2) - pos + off).round()
-		draw_arc(sp, 6.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(sp, 6.0, 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+		draw_arc(sp, 6.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.0)
 		draw_rect(Rect2(sp - Vector2(2.0, 1.0), Vector2(4.0, 2.0)), PAL["cream"] as Color)
 	# Core exposed golden eclipse fracture ring
 	if _core_open_t > 0.0:
-		draw_arc(c, 22.0, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
+		draw_arc(c, 22.0, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(c, 22.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
 	# 80 Rescued Moths orbiting the arena rim (diving closer into golden safety halo in P3!)
 	if arena_rect.has_area() and boss_state != BossState.DEATH:
 		var ac: Vector2 = (arena_rect.get_center() - pos + off).round()

@@ -364,7 +364,7 @@ func _draw_extra(off: Vector2) -> void:
 		var frac: float = clampf(float(pd["ttl"]) / PUDDLE_TTL, 0.0, 1.0)
 		draw_circle(lp, PUDDLE_RADIUS, Color(PAL["coral"] as Color, 0.30 * frac))
 		var rim_c: Color = PAL["apricot"] as Color if (fred or int(anim_t * 9.0) % 2 == 0) else (PAL["gold"] as Color)
-		draw_arc(lp, PUDDLE_RADIUS, 0.0, TAU, 18, Color(rim_c, 0.80 * frac), 1.2)
+		draw_arc(lp, PUDDLE_RADIUS, 0.0, TAU, 18, Color(rim_c, 0.80 * frac), 1.0)
 	# Draw flying glowing coals
 	for c: Dictionary in _coals:
 		var cp: Vector2 = ((c["pos"] as Vector2) - pos + off).round()
@@ -379,4 +379,4 @@ func _draw_extra(off: Vector2) -> void:
 		var lcol: Color = (PAL["cream"] if prog > 0.72 else PAL["gold"]) as Color
 		for deg: float in [-COAL_ARC_DEG, 0.0, COAL_ARC_DEG]:
 			var d: Vector2 = aim_dir.rotated(deg_to_rad(deg)).normalized()
-			draw_line((off + d * (body_radius + 3.0)).round(), (off + d * (66.0 * (0.45 + 0.55 * prog))).round(), lcol, 1.2)
+			draw_line((off + d * (body_radius + 3.0)).round(), (off + d * (66.0 * (0.45 + 0.55 * prog))).round(), lcol, 1.0)

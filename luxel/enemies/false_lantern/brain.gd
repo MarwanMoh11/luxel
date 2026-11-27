@@ -288,12 +288,15 @@ func _draw_extra(off: Vector2) -> void:
 		return
 	if swallowed_lantern:
 		draw_circle(c + Vector2(0.0, -8.0), 5.0, Color(PAL["gold"] as Color, 0.55))
-		draw_arc(c + Vector2(0.0, -8.0), 8.0, -PI * 0.5, -PI * 0.5 + TAU * clampf(swallow_t / SWALLOW_TIME, 0.0, 1.0), 16, PAL["gold"] as Color, 1.4)
+		draw_arc(c + Vector2(0.0, -8.0), 8.0, -PI * 0.5, -PI * 0.5 + TAU * clampf(swallow_t / SWALLOW_TIME, 0.0, 1.0), 16, PAL["gold"] as Color, 1.0)
 	if state == State.TELL:
 		var reach: float = LUNGE_SPEED * LUNGE_TIME
 		var tip: Vector2 = (c + lunge_dir * reach).round()
 		var locked: bool = state_timer <= 0.16 * _assist_tell_scale()
-		draw_line(c, tip, PAL["cream"] as Color if locked else PAL["coral"] as Color, 1.5 if locked else 1.0)
+		draw_line(c, tip, PAL["void"] as Color, 4.0 if locked else 3.0)
+		draw_line(c, tip, PAL["cream"] as Color if locked else PAL["coral"] as Color, 2.0 if locked else 1.0)
+		draw_circle(tip, 4.0, PAL["void"] as Color)
 		draw_circle(tip, 3.0, PAL["coral"] as Color)
 	elif state == State.COMMIT:
-		draw_line(c, (c - lunge_dir * 14.0).round(), PAL["coral"] as Color, 2.5)
+		draw_line(c, (c - lunge_dir * 14.0).round(), PAL["void"] as Color, 5.0)
+		draw_line(c, (c - lunge_dir * 14.0).round(), PAL["coral"] as Color, 3.0)

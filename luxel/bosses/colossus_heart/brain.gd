@@ -330,10 +330,12 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	# P1 iron cage shimmer while valves remain
 	if phase == 1 and _alive_valve_count() > 0 and _cage_dropped_t <= 0.0 and boss_state != BossState.DEATH:
-		draw_arc(off.round(), body_radius + 4.0, 0.0, TAU, 20, Color(PAL["stone"] as Color, 0.65), 1.4)
+		draw_arc(off.round(), body_radius + 4.0, 0.0, TAU, 20, Color(PAL["stone"] as Color, 0.65), 1.0)
 	# P2+ faint pendulum arc track on ribcage floor so players know where to freeze slag_slimes!
 	if phase >= 2 and boss_state != BossState.DEATH:
 		var piv_rel: Vector2 = (_pendulum_pivot - pos).round()
-		draw_arc(piv_rel, PENDULUM_LEN, PI * 0.5 - PENDULUM_ARC_RAD, PI * 0.5 + PENDULUM_ARC_RAD, 24, Color(PAL["apricot"] as Color, 0.34), 1.2)
+		draw_arc(piv_rel, PENDULUM_LEN, PI * 0.5 - PENDULUM_ARC_RAD, PI * 0.5 + PENDULUM_ARC_RAD, 24, Color(PAL["apricot"] as Color, 0.34), 1.0)
 	if _slime_bonk_flash_t > 0.0 and boss_state == BossState.STAGGER:
-		draw_arc(off.round(), body_radius + 6.0, 0.0, TAU, 20, PAL["ice"] as Color, 1.8)
+		var fa: float = 0.60 if is_flash_reduced() else 1.0
+		draw_arc(off.round(), body_radius + 6.0, 0.0, TAU, 20, Color(PAL["void"] as Color, fa * 0.85), 4.0)
+		draw_arc(off.round(), body_radius + 6.0, 0.0, TAU, 20, Color(PAL["ice"] as Color, fa), 2.0)

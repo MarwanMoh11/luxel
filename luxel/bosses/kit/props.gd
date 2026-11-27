@@ -278,8 +278,8 @@ func draw_props(ci: CanvasItem, origin_world: Vector2) -> void:
 			ci.draw_rect(Rect2(body_p + Vector2(-r * 0.55, -r * 1.25), Vector2(r * 1.1, r * 1.5)), col)
 			ci.draw_rect(Rect2(body_p + Vector2(-r * 0.55, -r * 1.25), Vector2(r * 1.1, 3.0)), PAL["cream"] as Color)
 		elif kind == "chandelier":
-			ci.draw_arc(body_p, r, 0.0, TAU, 16, PAL["night"] as Color, 2.5)
-			ci.draw_arc(body_p, r - 1.0, 0.0, TAU, 16, col, 1.5)
+			ci.draw_arc(body_p, roundf(r), 0.0, TAU, 16, PAL["void"] as Color, 3.0)
+			ci.draw_arc(body_p, roundf(r) - 1.0, 0.0, TAU, 16, col, 2.0)
 			for k: int in range(4):
 				var cp: Vector2 = (body_p + Vector2.from_angle(float(k) * PI * 0.5) * (r - 1.5)).round()
 				ci.draw_circle(cp, 2.0, PAL["cream"] as Color)

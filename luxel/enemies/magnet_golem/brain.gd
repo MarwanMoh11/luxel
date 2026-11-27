@@ -351,13 +351,16 @@ func _draw_extra(off: Vector2) -> void:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		if magnet_cracked_t <= 0.0:
 			draw_arc(c, PULL_RADIUS, 0.0, TAU, 28, Color(PAL["sky"] as Color, 0.35 + 0.35 * prog), 1.0)
-			draw_arc(c, lerpf(PULL_RADIUS, 16.0, prog), 0.0, TAU, 24, PAL["ice"] as Color, 1.3)
-		draw_arc(c, SHOCK_RADIUS, 0.0, TAU, 20, (PAL["cream"] if prog > 0.72 else PAL["coral"]) as Color, 1.4)
+			draw_arc(c, lerpf(PULL_RADIUS, 16.0, prog), 0.0, TAU, 24, PAL["void"] as Color, 3.0)
+			draw_arc(c, lerpf(PULL_RADIUS, 16.0, prog), 0.0, TAU, 24, PAL["ice"] as Color, 1.0)
+		draw_arc(c, SHOCK_RADIUS, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, SHOCK_RADIUS, 0.0, TAU, 20, (PAL["cream"] if prog > 0.72 else PAL["coral"]) as Color, 2.0)
 	elif state == State.COMMIT:
 		var prog: float = 1.0 - clampf(state_timer / COMMIT_TIME, 0.0, 1.0)
 		if magnet_cracked_t <= 0.0:
 			var r_in: float = lerpf(PULL_RADIUS, 14.0, fmod(prog * 2.0, 1.0))
-			draw_arc(c, r_in, 0.0, TAU, 24, PAL["sky"] as Color, 1.6)
+			draw_arc(c, r_in, 0.0, TAU, 24, PAL["sky"] as Color, 2.0)
 			if _is_lantern_out() and pos.distance_to(_get_lantern_pos()) <= PULL_RADIUS:
-				draw_line(c, (_get_lantern_pos() - pos + off).round(), PAL["ice"] as Color, 1.5)
-		draw_arc(c, lerpf(10.0, SHOCK_RADIUS, prog), 0.0, TAU, 20, PAL["gold"] as Color, 1.8)
+				draw_line(c, (_get_lantern_pos() - pos + off).round(), PAL["ice"] as Color, 2.0)
+		draw_arc(c, lerpf(10.0, SHOCK_RADIUS, prog), 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c, lerpf(10.0, SHOCK_RADIUS, prog), 0.0, TAU, 20, PAL["gold"] as Color, 2.0)

@@ -164,7 +164,7 @@ func _step_brain(dt: float) -> void:
 					_emit_attack_started()
 					_emit_sfx("eclipse_lock")
 		State.TELL:
-			if sees and state_timer > 0.18:
+			if sees and state_timer > 0.18 * _assist_tell_scale():
 				var to_w: Vector2 = _get_wick_pos() - pos
 				if to_w.length() > 0.1:
 					_turn_toward(to_w.angle(), 2.6, dt)
@@ -297,13 +297,16 @@ func _draw_extra(off: Vector2) -> void:
 		for p: Vector2 in _beam_pts:
 			local_pts.append((p - pos).round())
 		var a: float = 0.65 if LxHudFx.flash_reduced() else (0.55 + 0.30 * sin(anim_t * 18.0))
+		draw_polyline(local_pts, Color(PAL["void"] as Color, a), 4.0)
 		draw_polyline(local_pts, Color(PAL["coral"] as Color, a), 2.0)
 	elif state == State.COMMIT and _beam_pts.size() >= 2:
 		var local_pts := PackedVector2Array()
 		for p: Vector2 in _beam_pts:
 			local_pts.append((p - pos).round())
+		draw_polyline(local_pts, PAL["void"] as Color, 8.0)
 		draw_polyline(local_pts, PAL["coral"] as Color, 6.0)
-		draw_polyline(local_pts, PAL["gold"] as Color, 3.2)
-		draw_polyline(local_pts, PAL["cream"] as Color, 1.4)
+		draw_polyline(local_pts, PAL["gold"] as Color, 3.0)
+		draw_polyline(local_pts, PAL["cream"] as Color, 1.0)
 	if _dusk_frozen_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)

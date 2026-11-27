@@ -180,8 +180,8 @@ func _draw_extra(off: Vector2) -> void:
 		var scuttle: float = sin(anim_t * 11.0) * 1.5
 		for s: float in [-1.0, 1.0]:
 			var leg_base: Vector2 = off + side * (body_radius * s)
-			draw_line(leg_base, leg_base + side * 3.5 + fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
-			draw_line(leg_base, leg_base + side * 3.5 - fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 1.5)
+			draw_line(leg_base, leg_base + side * 3.5 + fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 2.0)
+			draw_line(leg_base, leg_base + side * 3.5 - fwd * (2.0 + scuttle * s), PAL["wine"] as Color, 2.0)
 		# Oversized front guard claw
 		var claw_c: Color = (PAL["cream"] as Color) if clank_t > 0.0 else (PAL["gold"] as Color if is_counter_attack and state == State.TELL else PAL["apricot"] as Color)
 		if _has_active_shield():
@@ -195,7 +195,7 @@ func _draw_extra(off: Vector2) -> void:
 			var sd: Vector2 = Vector2.from_angle(facing + float(i) * 0.45)
 			var sl: float = (5.0 if (i % 2 == 0) else 3.5) + (1.0 - cp) * 3.0
 			var tip := Vector2(roundf(sp.x + sd.x * sl), roundf(sp.y + sd.y * sl))
-			draw_line(sp, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.2)
+			draw_line(sp, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.0)
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if state == State.TELL:
 		var urg: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
@@ -217,9 +217,9 @@ func _draw_extra(off: Vector2) -> void:
 			var a1: float = facing + s * spread
 			var lo: float = minf(a0, a1)
 			var hi: float = maxf(a0, a1)
-			draw_arc(piv, arc_r + 1.5, lo, hi, 8, PAL["wine"] as Color, 2.4)
-			draw_arc(piv, arc_r, lo, hi, 8, PAL["coral"] as Color, 1.8)
-			draw_arc(piv, arc_r - 1.2, lo, hi, 8, PAL["apricot"] as Color, 1.2)
+			draw_arc(piv, arc_r + 1.5, lo, hi, 8, PAL["wine"] as Color, 3.0)
+			draw_arc(piv, arc_r, lo, hi, 8, PAL["coral"] as Color, 2.0)
+			draw_arc(piv, arc_r - 1.2, lo, hi, 8, PAL["apricot"] as Color, 1.0)
 			draw_arc(piv, arc_r - 2.2, lo, hi, 6, PAL["gold"] as Color, 1.0)
 		var focal := Vector2(roundf(c.x + fwd.x * (body_radius + 10.5)), roundf(c.y + fwd.y * (body_radius + 10.5)))
 		if is_c:
@@ -231,6 +231,6 @@ func _draw_extra(off: Vector2) -> void:
 			draw_rect(Rect2(focal - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), PAL["cream"] as Color, true)
 		elif is_counter_attack:
 			var arm: float = 3.0 if LxHudFx.flash_reduced() else roundf(3.0 + sin(anim_t * 28.0) * 1.5)
-			draw_line(focal + Vector2(-arm, 0.0), focal + Vector2(arm, 0.0), PAL["gold"] as Color, 1.4)
-			draw_line(focal + Vector2(0.0, -arm), focal + Vector2(0.0, arm), PAL["gold"] as Color, 1.4)
+			draw_line(focal + Vector2(-arm, 0.0), focal + Vector2(arm, 0.0), PAL["gold"] as Color, 1.0)
+			draw_line(focal + Vector2(0.0, -arm), focal + Vector2(0.0, arm), PAL["gold"] as Color, 1.0)
 			draw_rect(Rect2(focal, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

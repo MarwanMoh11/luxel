@@ -328,9 +328,16 @@ func _draw_extra(off: Vector2) -> void:
 		var g_col: Color = (PAL["gold"] if prog > 0.65 else PAL["apricot"]) as Color
 		for si: int in [-1, 1]:
 			var s_off: Vector2 = side * (float(si) * GUST_HALF_W)
-			draw_line((c + s_off + gust_dir * (body_radius + 2.0)).round(), (c + s_off + gust_dir * GUST_RANGE).round(), g_col, 1.0)
+			var rl0: Vector2 = (c + s_off + gust_dir * (body_radius + 2.0)).round()
+			var rl1: Vector2 = (c + s_off + gust_dir * GUST_RANGE).round()
+			draw_line(rl0, rl1, PAL["void"] as Color, 3.0)
+			draw_line(rl0, rl1, g_col, 1.0)
 		var dmg_c: Vector2 = c + gust_dir * GUST_DAMAGE_R
-		draw_line((dmg_c - side * GUST_HALF_W).round(), (dmg_c + side * GUST_HALF_W).round(), (PAL["cream"] if prog > 0.72 else PAL["coral"]) as Color, 1.4 if prog > 0.72 else 1.0)
+		var dm0: Vector2 = (dmg_c - side * GUST_HALF_W).round()
+		var dm1: Vector2 = (dmg_c + side * GUST_HALF_W).round()
+		var hot_bar: bool = prog > 0.72
+		draw_line(dm0, dm1, PAL["void"] as Color, 4.0 if hot_bar else 3.0)
+		draw_line(dm0, dm1, (PAL["cream"] if hot_bar else PAL["coral"]) as Color, 2.0 if hot_bar else 1.0)
 		for ii: int in range(3):
 			var lat: float = float(ii - 1) * (GUST_HALF_W * 0.55)
 			var u: float = fmod(prog * 2.2 + float(ii) * 0.33, 1.0)
@@ -347,9 +354,10 @@ func _draw_extra(off: Vector2) -> void:
 			var p0: Vector2 = (base_p + side * lane_w + gust_dir * (body_radius + 2.0)).round()
 			var lane_len: float = reach * (1.0 if idx == 0 else 0.84)
 			var p1: Vector2 = (base_p + side * (lane_w * 1.15) + gust_dir * lane_len).round()
+			draw_line(p0, p1, PAL["void"] as Color, 5.0 if idx == 0 else 4.0)
 			draw_line(p0, p1, PAL["coral"] as Color, 3.0 if idx == 0 else 2.0)
 			var mid_c: Color = (PAL["gold"] as Color) if idx == 0 else (PAL["apricot"] as Color)
-			draw_line(p0, p0.lerp(p1, 0.92).round(), mid_c, 1.6 if idx == 0 else 1.2)
+			draw_line(p0, p0.lerp(p1, 0.92).round(), mid_c, 2.0 if idx == 0 else 1.0)
 			if idx == 0:
 				draw_line(p0, p0.lerp(p1, 0.72).round(), PAL["cream"] as Color, 1.0)
 		for ci: int in range(4):
@@ -358,11 +366,11 @@ func _draw_extra(off: Vector2) -> void:
 			var cw: float = lerpf(4.0, GUST_HALF_W * 0.76, ct)
 			var back: Vector2 = -gust_dir * lerpf(4.0, 7.5, ct)
 			var cc: Color = (PAL["cream"] as Color) if ct < 0.30 else ((PAL["gold"] as Color) if ct < 0.68 else (PAL["apricot"] as Color))
-			draw_line(tip, (tip + back + side * cw).round(), cc, 1.2)
-			draw_line(tip, (tip + back - side * cw).round(), cc, 1.2)
+			draw_line(tip, (tip + back + side * cw).round(), cc, 1.0)
+			draw_line(tip, (tip + back - side * cw).round(), cc, 1.0)
 		for ei: int in range(8):
 			var et: float = fmod(prog * 2.1 + float(ei) * 0.137, 1.0)
-			var lat: float = sin(float(ei) * 2.4 + anim_t * 18.0) * lerpf(3.0, GUST_HALF_W * 0.85, et)
+			var lat: float = sin(float(ei) * 2.4 + anim_t * (6.0 if LxHudFx.flash_reduced() else 18.0)) * lerpf(3.0, GUST_HALF_W * 0.85, et)
 			var ep: Vector2 = (base_p + gust_dir * (body_radius + 4.0 + et * GUST_RANGE * 0.92) + side * lat).round()
 			var mod3: int = ei % 3
 			var ec: Color = (PAL["cream"] as Color) if mod3 == 0 else ((PAL["gold"] as Color) if mod3 == 1 else (PAL["coral"] as Color))

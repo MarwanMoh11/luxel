@@ -197,7 +197,7 @@ func _step_position(dt: float) -> void:
 
 func _step_tell(dt: float) -> void:
 	# Tracks lightly early, locks optical axis in final 0.18s so sidestepping dodges cleanly
-	if state_timer > 0.18 and _has_attention_target():
+	if state_timer > 0.18 * _assist_tell_scale() and _has_attention_target():
 		var to_t: Vector2 = _attention_target() - pos
 		if to_t.length() > 0.1:
 			_turn_toward(to_t.angle(), 3.0, dt)
@@ -322,6 +322,7 @@ func _draw_extra(off: Vector2) -> void:
 	for b: Dictionary in _bolts:
 		var lp: Vector2 = ((b["pos"] as Vector2) - pos + c).round()
 		var v: Vector2 = (b["vel"] as Vector2).normalized()
-		draw_line((lp - v * 6.0).round(), lp, PAL["blue"] as Color, 2.2)
+		draw_line((lp - v * 6.0).round(), lp, PAL["void"] as Color, 4.0)
+		draw_line((lp - v * 6.0).round(), lp, PAL["blue"] as Color, 2.0)
 		draw_circle(lp, 2.2, PAL["ice"] as Color)
 		draw_rect(Rect2(lp, Vector2.ONE), PAL["cream"] as Color)

@@ -256,8 +256,9 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	# Highlight active anchor spool glow so Wick reads which corner to bolt!
 	if _active_spool >= 0 and _active_spool < _spools.size():
 		var sp: Vector2 = (_spools[_active_spool] + inv).round()
-		var r: float = 8.0 + sin(anim_t * 7.0) * 1.5
-		draw_arc(sp, r, 0.0, TAU, 16, PAL["gold"] as Color if _tether_active else Color(PAL["ice"] as Color, 0.45), 1.5)
+		var r: float = 8.0 + (0.0 if is_flash_reduced() else sin(anim_t * 7.0) * 1.5)
+		draw_arc(sp, r, 0.0, TAU, 16, Color(PAL["void"] as Color, 0.78 if _tether_active else 0.45), 4.0)
+		draw_arc(sp, r, 0.0, TAU, 16, PAL["gold"] as Color if _tether_active else Color(PAL["ice"] as Color, 0.45), 2.0)
 	if _verdict_v1 == "fire":
 		# Subtle warm verdict seal on center floor
 		var cp: Vector2 = (arena_rect.get_center() + inv).round()

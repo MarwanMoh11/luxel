@@ -240,16 +240,19 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# P2 Red-Ink slow strips
 	for strip: Rect2 in _ink_strips:
 		var rl := Rect2((strip.position - pos).round(), strip.size.round())
+		draw_rect(rl.grow(1.0), Color(PAL["void"] as Color, 0.72), false, 1.0)
 		draw_rect(rl, Color(PAL["wine"] as Color, 0.45), true)
-		draw_rect(rl, PAL["coral"] as Color, false, 1.2)
+		draw_rect(rl, PAL["coral"] as Color, false, 1.0)
 	# Active AUDIT STAMP wax seal orbiting boss!
 	if not _audited_family.is_empty() and _audit_timer > 0.0:
 		var seal_p: Vector2 = (c + Vector2(0.0, -body_radius - 16.0)).round()
+		draw_arc(seal_p, 6.0, 0.0, TAU, 14, PAL["void"] as Color, 4.0)
 		draw_circle(seal_p, 6.0, PAL["coral"] as Color)
-		draw_arc(seal_p, 6.0, 0.0, TAU, 14, PAL["gold"] as Color, 1.5)
-		draw_line(seal_p + Vector2(-2.5, -2.5), seal_p + Vector2(2.5, 2.5), PAL["cream"] as Color, 1.4)
-		draw_line(seal_p + Vector2(2.5, -2.5), seal_p + Vector2(-2.5, 2.5), PAL["cream"] as Color, 1.4)
+		draw_arc(seal_p, 6.0, 0.0, TAU, 14, PAL["gold"] as Color, 2.0)
+		draw_line(seal_p + Vector2(-2.5, -2.5), seal_p + Vector2(2.5, 2.5), PAL["cream"] as Color, 1.0)
+		draw_line(seal_p + Vector2(2.5, -2.5), seal_p + Vector2(-2.5, 2.5), PAL["cream"] as Color, 1.0)
 	# Comedy beat: furiously scribbling tiny minus sign on miss!
 	if _scribble_t > 0.0 and boss_state == BossState.RECOVER:
 		var mp: Vector2 = (c + Vector2(14.0, -body_radius - 12.0)).round()
+		draw_rect(Rect2(mp - Vector2.ONE, Vector2(8.0, 4.0)), PAL["void"] as Color)
 		draw_rect(Rect2(mp, Vector2(6.0, 2.0)), PAL["coral"] as Color)

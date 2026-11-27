@@ -236,9 +236,9 @@ func _draw_overlay() -> void:
 		c.draw_rect(Rect2(0.0, 0.0, VIEW_W, VIEW_H), void_c)
 		var r: float = roundf(lerpf(4.0, 210.0, 1.0 - pow(1.0 - u, 2.0)))
 		var alpha_s: float = (0.55 * (1.0 - u * 0.45)) if fred else 1.0
-		c.draw_arc(Vector2(160.0, 90.0), r, 0.0, TAU, 36, Color(cream, alpha_s), 1.4 if fred else 2.4)
+		c.draw_arc(Vector2(160.0, 90.0), r, 0.0, TAU, 36, Color(cream, alpha_s), 1.0 if fred else 2.0)
 		if r > 6.0:
-			c.draw_arc(Vector2(160.0, 90.0), r - 4.0, 0.0, TAU, 32, Color(gold, alpha_s * (0.85 if fred else 1.0)), 1.2 if fred else 2.0)
+			c.draw_arc(Vector2(160.0, 90.0), r - 4.0, 0.0, TAU, 32, Color(gold, alpha_s * (0.85 if fred else 1.0)), 1.0 if fred else 2.0)
 		return
 
 	if stage == Stage.STAND_HUD:

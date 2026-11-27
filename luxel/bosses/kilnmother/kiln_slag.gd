@@ -114,7 +114,7 @@ func draw_slag(ci: CanvasItem, boss_pos: Vector2, off: Vector2, tell_prog: float
 		var cool: bool = bool(b["cooled"])
 		ci.draw_circle(bp, 9.0, PAL["night"] as Color)
 		ci.draw_circle(bp, 7.2, (PAL["mauve"] if cool else PAL["coral"]) as Color)
-		ci.draw_arc(bp, 7.8, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.4)
+		ci.draw_arc(bp, 7.8, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.0)
 
 
 static func _clamp_to_world(p: Vector2, world_ctx: Node) -> Vector2:

@@ -360,7 +360,7 @@ func _body_color() -> Color:
 func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		var wing: float = 3.0 + sin(anim_t * 14.0) * 1.5
-		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 1.5)
+		draw_line(off + Vector2(-body_radius - wing, -1.0), off + Vector2(body_radius + wing, -1.0), PAL["sky"] as Color, 2.0)
 	if lens_preview_t > 0.0 and state != State.TELL and state != State.COMMIT and not _history.is_empty():
 		var sample: Dictionary = _sample_echo()
 		var pdir: Vector2 = (sample["dir"] as Vector2).normalized()
@@ -385,16 +385,22 @@ func _draw_extra(off: Vector2) -> void:
 		if _echo_is_dash:
 			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + _echo_dir * preview_len, DASH_HIT_R, prog, anim_t, "coral" if prog > 0.65 else "sky", "gold" if prog > 0.65 else "ice")
 			var dc: Color = (PAL["gold"] as Color) if prog > 0.65 else (PAL["ice"] as Color)
-			draw_line(c, tip, dc, 1.2)
-			draw_line((tip - _echo_dir * 5.0 + perp_t * 3.5).round(), tip, dc, 1.4)
-			draw_line((tip - _echo_dir * 5.0 - perp_t * 3.5).round(), tip, dc, 1.4)
+			draw_line(c, tip, PAL["void"] as Color, 3.0)
+			draw_line(c, tip, dc, 1.0)
+			var da0: Vector2 = (tip - _echo_dir * 5.0 + perp_t * 3.5).round()
+			var da1: Vector2 = (tip - _echo_dir * 5.0 - perp_t * 3.5).round()
+			draw_line(da0, tip, PAL["void"] as Color, 3.0)
+			draw_line(da1, tip, PAL["void"] as Color, 3.0)
+			draw_line(da0, tip, dc, 1.0)
+			draw_line(da1, tip, dc, 1.0)
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		else:
 			var hot: bool = prog > 0.65
 			LxBossTelegraphFx.draw_ground_danger_lane(self, c, c + _echo_dir * preview_len, BOLT_HALF_W, prog, anim_t, "coral" if hot else "gold", "cream" if hot else "ice")
 			var lc: Color = (PAL["coral"] as Color) if hot else (PAL["gold"] as Color)
 			if hot:
-				draw_line(c, tip, lc, 1.4)
+				draw_line(c, tip, PAL["void"] as Color, 4.0)
+				draw_line(c, tip, lc, 2.0)
 			else:
 				var segs_b: int = maxi(4, int(preview_len / 8.0))
 				for si: int in range(0, segs_b, 2):
@@ -418,10 +424,11 @@ func _draw_extra(off: Vector2) -> void:
 			var p1: Vector2 = (mid_p + perp * (s * 2.6 + shim * 0.9)).round()
 			var p2: Vector2 = (end_p + perp * (s * 1.4 - shim * 0.9)).round()
 			draw_line(p0, p1, PAL["blue"] as Color, 2.0)
-			draw_line(p1, p2, PAL["blue"] as Color, 1.5)
+			draw_line(p1, p2, PAL["blue"] as Color, 2.0)
 			draw_line(p0, p1, PAL["sky"] as Color, 1.0)
 			draw_line(p1, p2, PAL["sky"] as Color, 1.0)
-		draw_line(c, end_p.round(), PAL["ice"] as Color, 1.8)
+		draw_line(c, end_p.round(), PAL["void"] as Color, 4.0)
+		draw_line(c, end_p.round(), PAL["ice"] as Color, 2.0)
 		draw_line(c, (c + step_dir * (trail_len * (0.72 if _echo_is_dash else 0.92))).round(), PAL["cream"] as Color, 1.0)
 		for mi: int in range(1, 4):
 			var mp: Vector2 = (c + step_dir * (trail_len * float(mi) * 0.26) + perp * (shim * (2.0 if mi == 2 else -2.0))).round()

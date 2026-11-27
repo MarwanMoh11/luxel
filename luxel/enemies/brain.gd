@@ -535,14 +535,14 @@ func _draw() -> void:
 		var locked_aim: bool = state_timer <= 0.16 * _assist_tell_scale()
 		var tc: Color = (PAL["cream"] if (locked_aim and (fred or int(anim_t * 12.0) % 2 == 0)) else (PAL["gold"] if is_counter_attack else PAL["coral"])) as Color
 		var tip: Vector2 = (off_r + Vector2.from_angle(facing) * (r + 5.0 + prog * 5.0)).round()
-		draw_arc(off_r, ring_r, facing - 0.95, facing + 0.95, 16, PAL["void"] as Color, 3.6)
+		draw_arc(off_r, ring_r, facing - 0.95, facing + 0.95, 16, PAL["void"] as Color, 4.0)
 		draw_arc(off_r, ring_r, facing - 0.95, facing + 0.95, 16, tc, 2.0)
 		draw_line(off_r, tip, PAL["void"] as Color, 3.0)
-		draw_line(off_r, tip, PAL["cream"] as Color, 1.4)
+		draw_line(off_r, tip, PAL["cream"] as Color, 1.0)
 		if locked_aim: draw_rect(Rect2(tip - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 	elif state == State.COMMIT:
 		draw_arc(off_r, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["void"] as Color, 4.0)
-		draw_arc(off_r, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.4)
+		draw_arc(off_r, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.0)
 
 	var drew_sprite: bool = false
 	var sq: float = clampf(flash_t / 0.12, 0.0, 1.0) * (0.5 if fred else 1.0)

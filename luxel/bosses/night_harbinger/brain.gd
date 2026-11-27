@@ -479,8 +479,8 @@ func _tick_eclipse_mirror(dt: float) -> void:
 				_shatter_eclipse_mirror(); return
 	if _mirror_firing:
 		_mirror_fire_t += dt
-		if _mirror_fire_t >= MIRROR_ARC_DELAY:
-			var prog: float = clampf((_mirror_fire_t - MIRROR_ARC_DELAY) / MIRROR_ARC_DUR, 0.0, 1.0)
+		if _mirror_fire_t >= MIRROR_ARC_DELAY * get_tell_scale():
+			var prog: float = clampf((_mirror_fire_t - MIRROR_ARC_DELAY * get_tell_scale()) / MIRROR_ARC_DUR, 0.0, 1.0)
 			var arc_p: Vector2 = _mirror_pos + _mirror_dir * lerpf(8.0, MIRROR_ARC_RANGE, prog)
 			if not _mirror_hit and _has_player() and arc_p.distance_to(_get_wick_pos()) <= 12.0:
 				_mirror_hit = true

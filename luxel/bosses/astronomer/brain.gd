@@ -427,7 +427,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# P2 Star pedestals
 	for sp: Vector2 in _star_pedestals:
 		var lp: Vector2 = (sp - pos).round()
-		draw_arc(lp, 8.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, 0.65), 1.1)
+		draw_arc(lp, 8.0, 0.0, TAU, 12, Color(PAL["gold"] as Color, 0.65), 1.0)
 		draw_circle(lp, 2.0, PAL["cream"] as Color)
 
 	# P3 Twin Gravity Syzygy Wells (matches Island 5 polarity-well visual language)
@@ -437,8 +437,8 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var wp: Vector2 = (wf.pos - pos).round()
 			var wcol: Color = (PAL["gold"] if wf.is_push else PAL["sky"]) as Color
 			var chev_r: float = roundf(wf.radius * 0.56)
-			draw_arc(wp, roundf(wf.radius * 0.68), 0.0, TAU, 20, Color(wcol, 0.35), 1.1)
-			draw_arc(wp, 14.0, well_spin, well_spin + PI, 12, wcol, 1.4)
+			draw_arc(wp, roundf(wf.radius * 0.68), 0.0, TAU, 20, Color(wcol, 0.35), 1.0)
+			draw_arc(wp, 14.0, well_spin, well_spin + PI, 12, wcol, 1.0)
 			for di: int in range(4):
 				var ddir: Vector2 = Vector2.from_angle(float(di) * (PI * 0.5) + PI * 0.25)
 				var dp: Vector2 = (wp + ddir * chev_r).round()
@@ -451,21 +451,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for d_off: Vector2 in decoy_offsets:
 		var dc: Vector2 = (c + d_off).round()
 		draw_line(c, dc, Color(PAL["ice"] as Color, 0.30), 1.0)
-		draw_arc(dc, body_radius + 4.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.3)
+		draw_arc(dc, body_radius + 4.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 		draw_circle(dc, body_radius * 0.70, PAL["deep"] as Color)
 		_draw_lens_glint(dc, 4.5, fred)
 
 	# True Lens exposed gold core
 	if true_core_lit_t > 0.0:
-		draw_arc(c, body_radius + 6.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.8)
+		draw_arc(c, body_radius + 6.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 		draw_circle(c, 3.0, PAL["cream"] as Color)
 
 	# Spectral veil glint outside punish windows vs golden punish halo
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 5.0, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["sky"] as Color, 1.2)
+		draw_arc(c, body_radius + 5.0, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 7.0, facing - 0.85, facing + 0.85, 12, PAL["sky"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 
 
 func _draw_well_chevron(at: Vector2, dir: Vector2, col: Color) -> void:
@@ -476,10 +476,10 @@ func _draw_well_chevron(at: Vector2, dir: Vector2, col: Color) -> void:
 	var w0: Vector2 = (p - f * 2.0 + s * 3.0).round()
 	var w1: Vector2 = (p - f * 2.0 - s * 3.0).round()
 	var vc: Color = Color(PAL["void"] as Color, 0.85)
-	draw_line(w0, tip, vc, 2.8)
-	draw_line(w1, tip, vc, 2.8)
-	draw_line(w0, tip, col, 1.3)
-	draw_line(w1, tip, col, 1.3)
+	draw_line(w0, tip, vc, 3.0)
+	draw_line(w1, tip, vc, 3.0)
+	draw_line(w0, tip, col, 1.0)
+	draw_line(w1, tip, col, 1.0)
 
 
 func _draw_lens_glint(center: Vector2, rad: float, fred: bool) -> void:
@@ -492,7 +492,7 @@ func _draw_lens_glint(center: Vector2, rad: float, fred: bool) -> void:
 		(p + Vector2(-r, 0.0)).round(),
 	]
 	for i: int in range(4):
-		draw_line(pts[i], pts[(i + 1) % 4], PAL["void"] as Color, 2.8)
+		draw_line(pts[i], pts[(i + 1) % 4], PAL["void"] as Color, 3.0)
 	for i: int in range(4):
-		draw_line(pts[i], pts[(i + 1) % 4], PAL["sky"] as Color, 1.3)
+		draw_line(pts[i], pts[(i + 1) % 4], PAL["sky"] as Color, 1.0)
 	draw_rect(Rect2(p - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color, true)

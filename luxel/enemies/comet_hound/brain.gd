@@ -324,18 +324,21 @@ func _draw_extra(off: Vector2) -> void:
 
 	if state == State.TELL and _curve_pts.size() >= 2:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var col: Color = (PAL["coral"] if prog > 0.65 else PAL["sky"]) as Color
-		var hi: Color = (PAL["cream"] if prog > 0.65 else PAL["gold"]) as Color
+		var hot_p: bool = prog > 0.65
+		var col: Color = (PAL["coral"] if hot_p else PAL["sky"]) as Color
+		var hi: Color = (PAL["cream"] if hot_p else PAL["gold"]) as Color
 		for k: int in range(_curve_pts.size() - 1):
 			var a: Vector2 = (_curve_pts[k] - pos + off).round()
 			var b: Vector2 = (_curve_pts[k + 1] - pos + off).round()
-			draw_line(a, b, col, 2.0 if prog > 0.65 else 1.4)
+			draw_line(a, b, PAL["void"] as Color, 4.0 if hot_p else 3.0)
+			draw_line(a, b, col, 2.0 if hot_p else 1.0)
 			if k % 2 == 0:
 				draw_rect(Rect2(b, Vector2(1.0, 1.0)), hi)
 	elif state == State.COMMIT:
 		var c: Vector2 = off.round()
 		var back_p: Vector2 = (c - _lunge_dir * 18.0).round()
+		draw_line(back_p, c, PAL["void"] as Color, 5.0)
 		draw_line(back_p, c, PAL["gold"] as Color, 3.0)
-		draw_line(back_p, c, PAL["ice"] as Color, 1.5)
+		draw_line(back_p, c, PAL["ice"] as Color, 1.0)
 	elif lens_highlight_t > 0.0:
 		draw_arc(off.round(), body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)

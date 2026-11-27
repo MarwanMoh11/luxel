@@ -381,7 +381,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var p0: Vector2 = (_constellation_pts[i] - pos + off).round()
 		if i + 1 < _constellation_pts.size():
 			var p1: Vector2 = (_constellation_pts[i + 1] - pos + off).round()
-			draw_line(p0, p1, Color(wire_col, 0.55), 1.5)
+			draw_line(p0, p1, Color(wire_col, 0.55), 2.0)
 		draw_circle(p0, 3.5, Color(PAL["gold"] as Color, 0.35))
 		draw_rect(Rect2(p0 - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
@@ -390,10 +390,12 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var wc: Vector2 = (_bow_field.pos - pos + off).round()
 		draw_arc(wc, _bow_field.radius, 0.0, TAU, 28, Color(PAL["sky"] as Color, 0.30), 1.0)
 		draw_circle(wc, 6.0, PAL["void"] as Color)
-		draw_arc(wc, 6.0, 0.0, TAU, 14, PAL["ice"] as Color, 1.2)
+		draw_arc(wc, 6.0, 0.0, TAU, 14, PAL["ice"] as Color, 1.0)
 
 	# 90-degree dome rotation golden sweep flash on body transitions!
 	if _turn_flash_t > 0.0:
 		var c_loc: Vector2 = (arena_rect.get_center() - pos + off).round()
 		var u: float = 1.0 - clampf(_turn_flash_t / 1.0, 0.0, 1.0)
-		draw_arc(c_loc, lerpf(18.0, 88.0, u), 0.0, TAU, 28, Color(PAL["gold"] as Color, (1.0 - u) * 0.75), 2.0)
+		var ta: float = (1.0 - u) * (0.45 if is_flash_reduced() else 0.75)
+		draw_arc(c_loc, lerpf(18.0, 88.0, u), 0.0, TAU, 28, Color(PAL["void"] as Color, ta * 0.85), 4.0)
+		draw_arc(c_loc, lerpf(18.0, 88.0, u), 0.0, TAU, 28, Color(PAL["gold"] as Color, ta), 2.0)

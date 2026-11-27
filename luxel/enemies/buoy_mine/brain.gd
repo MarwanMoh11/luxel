@@ -245,5 +245,5 @@ func _draw_extra(off: Vector2) -> void:
 		LxBossTelegraphFx.draw_ground_danger_ring(self, off, BLAST_RADIUS, prog, anim_t, "coral", "gold")
 	if _blast_ring_t > 0.0:
 		var frac: float = 1.0 - clampf(_blast_ring_t / 0.28, 0.0, 1.0)
-		draw_arc(off, lerpf(10.0, BLAST_RADIUS, frac), 0.0, TAU, 20, PAL["gold"] as Color, 2.2)
-		draw_arc(off, lerpf(6.0, BLAST_RADIUS * 0.78, frac), 0.0, TAU, 16, PAL["cream"] as Color, 1.4)
+		draw_arc(off, lerpf(10.0, BLAST_RADIUS, frac), 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
+		draw_arc(off, lerpf(6.0, BLAST_RADIUS * 0.78, frac), 0.0, TAU, 16, PAL["cream"] as Color, 1.0)

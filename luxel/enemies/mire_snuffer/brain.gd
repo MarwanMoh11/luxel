@@ -231,23 +231,23 @@ func _draw_extra(off: Vector2) -> void:
 		var p_end: Vector2 = (c + puff_dir * p_len).round()
 		var p_side: Vector2 = Vector2(-puff_dir.y, puff_dir.x)
 		var p_col: Color = (PAL["coral"] if state_timer <= 0.16 * _assist_tell_scale() else PAL["lime"]) as Color
-		draw_line(c, p_end, p_col, 1.4)
+		draw_line(c, p_end, p_col, 1.0)
 		draw_line((c + p_side * 10.0).round(), (p_end + p_side * 14.0).round(), PAL["plum"] as Color, 1.0)
 		draw_line((c - p_side * 10.0).round(), (p_end - p_side * 14.0).round(), PAL["plum"] as Color, 1.0)
-		draw_arc(p_end, lerpf(12.0, PUFF_HIT_R * 0.75, prog_p), 0.0, TAU, 14, p_col, 1.2)
+		draw_arc(p_end, lerpf(12.0, PUFF_HIT_R * 0.75, prog_p), 0.0, TAU, 14, p_col, 1.0)
 	elif puff_attack and state == State.COMMIT:
 		var cloud_c: Vector2 = (c + puff_dir * 8.0).round()
-		draw_arc(cloud_c, PUFF_HIT_R, 0.0, TAU, 16, PAL["dusk"] as Color, 2.4)
-		draw_arc(cloud_c, PUFF_HIT_R - 3.0, 0.0, TAU, 14, PAL["plum"] as Color, 1.8)
-		draw_arc(cloud_c, PUFF_HIT_R - 6.0, 0.0, TAU, 12, PAL["lime"] as Color, 1.2)
+		draw_arc(cloud_c, PUFF_HIT_R, 0.0, TAU, 16, PAL["dusk"] as Color, 3.0)
+		draw_arc(cloud_c, PUFF_HIT_R - 3.0, 0.0, TAU, 14, PAL["plum"] as Color, 2.0)
+		draw_arc(cloud_c, PUFF_HIT_R - 6.0, 0.0, TAU, 12, PAL["lime"] as Color, 1.0)
 	if sub_state == SubState.GRAB:
 		var spin: float = anim_t * 6.5
 		var vr: float = roundf(body_radius + 5.5 + (0.0 if LxHudFx.flash_reduced() else sin(anim_t * 16.0) * 1.0))
 		for vi: int in range(3):
 			var a0: float = spin + float(vi) * (TAU / 3.0)
-			draw_arc(c, vr + 1.5, a0, a0 + 1.15, 8, PAL["night"] as Color, 2.2)
-			draw_arc(c, vr, a0 + 0.15, a0 + 1.25, 8, PAL["dusk"] as Color, 1.6)
-			draw_arc(c, maxf(2.0, vr - 2.0), a0 + 0.40, a0 + 1.15, 6, PAL["plum"] as Color, 1.1)
+			draw_arc(c, vr + 1.5, a0, a0 + 1.15, 8, PAL["night"] as Color, 3.0)
+			draw_arc(c, vr, a0 + 0.15, a0 + 1.25, 8, PAL["dusk"] as Color, 2.0)
+			draw_arc(c, maxf(2.0, vr - 2.0), a0 + 0.40, a0 + 1.15, 6, PAL["plum"] as Color, 1.0)
 		for wi: int in range(4):
 			var wt: float = fmod(anim_t * 2.0 + float(wi) * 0.25, 1.0)
 			var wr: float = lerpf(body_radius + 11.0, body_radius + 1.5, wt)
@@ -259,7 +259,7 @@ func _draw_extra(off: Vector2) -> void:
 		var sp: float = 1.0 - clampf(snuff_fx_t / 0.45, 0.0, 1.0)
 		var sr: float = roundf(body_radius + 4.0 + sp * 9.5)
 		draw_arc(c, sr + 1.5, 0.0, TAU, 16, PAL["dusk"] as Color, 2.0)
-		draw_arc(c, sr, 0.0, TAU, 16, PAL["plum"] as Color, 1.4)
+		draw_arc(c, sr, 0.0, TAU, 16, PAL["plum"] as Color, 1.0)
 		draw_arc(c, maxf(2.0, sr - 2.5), 0.0, TAU, 12, PAL["stone"] as Color, 1.0)
 		for pi: int in range(6):
 			var pa: float = float(pi) * (TAU / 6.0) + sp * 0.45

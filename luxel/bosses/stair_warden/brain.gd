@@ -330,17 +330,22 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	var act: int = _current_act()
 	var trim_c: Color = LxPalette.color(_act_color(), "gold")
 	if act >= 2 and boss_state != BossState.DEATH:
 		# Orbiting Prism / Sovereign Crown ring around Stair Warden
 		var r_halo: float = 19.0 if act == 2 else 23.0
-		draw_arc(c + Vector2(0.0, -14.0), r_halo, anim_t * 1.4, anim_t * 1.4 + TAU * 0.72, 20, trim_c, 1.4)
+		draw_arc(c + Vector2(0.0, -14.0), r_halo, anim_t * 1.4, anim_t * 1.4 + TAU * 0.72, 20, PAL["void"] as Color, 3.0)
+		draw_arc(c + Vector2(0.0, -14.0), r_halo, anim_t * 1.4, anim_t * 1.4 + TAU * 0.72, 20, trim_c, 1.0)
 		if act >= 3 and _crown_intact:
 			for k: int in range(6):
 				var ca: float = -anim_t * 1.6 + float(k) * (TAU / 6.0)
 				var pt: Vector2 = (c + Vector2(0.0, -14.0) + Vector2.from_angle(ca) * (r_halo + 2.0)).round()
+				draw_rect(Rect2(pt - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), PAL["void"] as Color)
 				draw_rect(Rect2(pt - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 	if _crown_shatter_t > 0.0:
 		var u: float = 1.0 - clampf(_crown_shatter_t / 2.4, 0.0, 1.0)
-		draw_arc(c, lerpf(16.0, 56.0, u), 0.0, TAU, 20, Color(PAL["cream"] as Color, 1.0 - u), 1.8)
+		var sa: float = (1.0 - u) * (0.55 if fred else 1.0)
+		draw_arc(c, lerpf(16.0, 56.0, u), 0.0, TAU, 20, Color(PAL["void"] as Color, sa * 0.85), 4.0)
+		draw_arc(c, lerpf(16.0, 56.0, u), 0.0, TAU, 20, Color(PAL["cream"] as Color, sa), 2.0)

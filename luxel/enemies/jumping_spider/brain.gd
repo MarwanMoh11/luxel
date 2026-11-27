@@ -334,6 +334,9 @@ func _draw_extra(off: Vector2) -> void:
 		var rc: Color = (PAL["coral"] if locked else PAL["gold"]) as Color
 		# Overhead silk line + target landing ring
 		draw_line(c + Vector2(0.0, -8.0), c + Vector2(0.0, -24.0), PAL["ice"] as Color, 1.0)
+		draw_line(c, rel_l, PAL["void"] as Color, 3.0)
 		draw_line(c, rel_l, rc, 1.0)
-		draw_arc(rel_l, LAND_HIT_R, 0.0, TAU, 20, rc, 1.5)
+		draw_arc(rel_l, LAND_HIT_R, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(rel_l, LAND_HIT_R, 0.0, TAU, 20, rc, 2.0)
+		draw_arc(rel_l, lerpf(LAND_HIT_R, 4.0, prog), 0.0, TAU, 16, PAL["void"] as Color, 3.0)
 		draw_arc(rel_l, lerpf(LAND_HIT_R, 4.0, prog), 0.0, TAU, 16, PAL["cream"] as Color, 1.0)

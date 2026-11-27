@@ -225,15 +225,19 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	if _verdict_v2 == "mercy":
 		var mp: Vector2 = (_mercy_ring_pos + inv).round()
 		draw_circle(mp, 20.0, Color(PAL["pine"] as Color, 0.30))
-		draw_arc(mp, 20.0, 0.0, TAU, 20, PAL["lime"] as Color, 1.2)
+		draw_arc(mp, 20.0, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
+		draw_arc(mp, 20.0, 0.0, TAU, 20, PAL["lime"] as Color, 1.0)
 	# Twin P2 brass Justice Scale Pans!
 	if phase >= 2 or _scale_trial_t > 0.0:
 		var pl: Vector2 = (_pan_left + inv).round()
 		var pr: Vector2 = (_pan_right + inv).round()
+		draw_line(pl, pr, Color(PAL["void"] as Color, 0.55), 3.0)
 		draw_line(pl, pr, Color(PAL["gold"] as Color, 0.45), 1.0)
 		var l_col: Color = PAL["coral"] as Color if _scale_trial_t > 0.0 else PAL["apricot"] as Color
 		var r_col: Color = PAL["lime"] as Color if _scale_trial_t > 0.0 else PAL["gold"] as Color
 		draw_circle(pl, 18.0, Color(l_col, 0.24))
-		draw_arc(pl, 18.0, 0.0, TAU, 20, l_col, 1.5)
+		draw_arc(pl, 18.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(pl, 18.0, 0.0, TAU, 20, l_col, 2.0)
 		draw_circle(pr, 18.0, Color(r_col, 0.28))
-		draw_arc(pr, 18.0, 0.0, TAU, 20, PAL["cream"] as Color if (_scale_trial_t > 0.0 and not is_flash_reduced() and int(anim_t * 8.0) % 2 == 0) else r_col, 1.6)
+		draw_arc(pr, 18.0, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(pr, 18.0, 0.0, TAU, 20, PAL["cream"] as Color if (_scale_trial_t > 0.0 and not is_flash_reduced() and int(anim_t * 8.0) % 2 == 0) else r_col, 2.0)

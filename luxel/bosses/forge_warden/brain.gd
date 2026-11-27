@@ -382,17 +382,17 @@ func _draw_boss_extra(off: Vector2) -> void:
 		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.0, 1.8, armour_hp, armour_max)
 	if boss_state == BossState.COMMIT and active_attack_id == "forge_quake_slam":
 		var ring_r: float = lerpf(FORGE_RING_START_R, FORGE_RING_MAX_R, _stomp_progress)
-		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["wine"] as Color, 2.4)
-		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 3.6)
-		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 1.8)
-		draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.1)
+		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["wine"] as Color, 2.0)
+		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["coral"] as Color, 4.0)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, PAL["apricot"] as Color, 2.0)
+		draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, PAL["gold"] as Color, 1.0)
 	elif boss_state == BossState.COMMIT and active_attack_id == "molten_line_fissure":
 		var cur_len: float = minf(lerpf(12.0, FISSURE_RANGE, _fissure_progress), _fissure_block_dist)
 		var fend2: Vector2 = (c + _fissure_dir * cur_len).round()
 		draw_line(c, fend2, PAL["wine"] as Color, 10.0)
-		draw_line(c, fend2, PAL["coral"] as Color, 6.8)
+		draw_line(c, fend2, PAL["coral"] as Color, 7.0)
 		draw_line(c, fend2, PAL["apricot"] as Color, 4.0)
-		draw_line(c, fend2, PAL["gold"] as Color, 2.2)
+		draw_line(c, fend2, PAL["gold"] as Color, 2.0)
 		draw_line(c, fend2, PAL["cream"] as Color, 1.0)
 	# Draw splashed molten/cooled slag boulders & reflected spark arc!
 	for sb: Dictionary in _slag_boulders:
@@ -400,17 +400,17 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var cool: bool = bool(sb["cooled"])
 		draw_circle(sp, 8.5, PAL["night"] as Color)
 		draw_circle(sp, 7.0, (PAL["mauve"] if cool else PAL["coral"]) as Color)
-		draw_arc(sp, 7.5, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.3)
+		draw_arc(sp, 7.5, 0.0, TAU, 14, (PAL["ice"] if cool else PAL["gold"]) as Color, 1.0)
 	if _reflect_fx_t > 0.0:
 		var rp_l: Vector2 = (_reflect_fx_pos - pos + off).round()
-		draw_line(rp_l, c, PAL["ice"] as Color, 2.4)
+		draw_line(rp_l, c, PAL["ice"] as Color, 2.0)
 		draw_line(rp_l, c, PAL["cream"] as Color, 1.0)
 	# Heavy slag armour glint outside punish windows vs golden punish halo
 	if clank_t > 0.0:
-		draw_arc(c, body_radius + 5.5, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.2)
-		draw_arc(c, body_radius + 7.5, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.3)
+		draw_arc(c, body_radius + 5.5, facing - 1.15, facing + 1.15, 16, PAL["cream"] as Color, 2.0)
+		draw_arc(c, body_radius + 7.5, facing - 0.85, facing + 0.85, 12, PAL["gold"] as Color, 1.0)
 	elif is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

@@ -289,10 +289,12 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var b: Vector2 = Vector2(arena_rect.end.x - 14.0, ry) + inv
 		var is_act: bool = i == _active_rail
 		var col: Color = PAL["ice"] as Color if (i == 1 and _mid_rail_frozen) else (PAL["gold"] as Color if is_act else PAL["dusk"] as Color)
-		draw_line(a.round(), b.round(), Color(col, 0.72 if is_act else 0.35), 1.4 if is_act else 1.0)
+		draw_line(a.round(), b.round(), Color(PAL["void"] as Color, 0.55 if is_act else 0.30), 4.0 if is_act else 3.0)
+		draw_line(a.round(), b.round(), Color(col, 0.72 if is_act else 0.35), 2.0 if is_act else 1.0)
 	# Active silk-fire spark racing along rail!
 	if _rail_fire_idx >= 0:
 		var fp: Vector2 = (Vector2(_rail_fire_x, _rail_y(_rail_fire_idx)) + inv).round()
+		draw_circle(fp, 7.0, PAL["void"] as Color)
 		draw_circle(fp, 5.5, PAL["coral"] as Color)
 		draw_circle(fp, 3.2, PAL["gold"] as Color)
 		draw_circle(fp, 1.5, PAL["cream"] as Color)

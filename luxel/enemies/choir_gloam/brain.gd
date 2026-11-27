@@ -207,7 +207,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.18 and _has_player():
+	if state_timer > 0.18 * _assist_tell_scale() and _has_player():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.1:
 			_turn_toward(to_w.angle(), 2.6, dt)
@@ -304,9 +304,11 @@ func _body_color() -> Color:
 func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if _revealed_t > 0.0:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 	if _silenced_t > 0.0:
-		draw_arc(c, body_radius + 6.0, 0.0, TAU, 16, PAL["mauve"] as Color, 1.5)
+		draw_arc(c, body_radius + 6.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 6.0, 0.0, TAU, 16, PAL["mauve"] as Color, 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		if _voice_role == 0:
@@ -315,6 +317,7 @@ func _draw_extra(off: Vector2) -> void:
 			LxBossTelegraphFx.draw_ground_danger_ring(self, Vector2.ZERO, 44.0, prog, anim_t, "sky", "ice")
 	for b: Dictionary in _bolts:
 		var rp: Vector2 = ((b["pos"] as Vector2) - pos).round()
-		draw_circle(rp, BOLT_R + 1.2, PAL["deep"] as Color)
+		draw_circle(rp, BOLT_R + 2.0, PAL["void"] as Color)
+		draw_circle(rp, BOLT_R + 1.0, PAL["deep"] as Color)
 		draw_circle(rp, BOLT_R, PAL["sky"] as Color)
 		draw_circle(rp, 1.8, PAL["cream"] as Color)

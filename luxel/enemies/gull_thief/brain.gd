@@ -395,10 +395,10 @@ func _draw_extra(off: Vector2) -> void:
 		var flap: float = sin(anim_t * (14.0 if carrying_lantern else 9.0)) * 4.0
 		draw_line(off, off + side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
 		draw_line(off, off - side * 8.0 + Vector2(0.0, flap), PAL["sky"] as Color, 2.0)
-		draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 1.5)
+		draw_line(off + fwd * 3.0, off + fwd * 8.0, PAL["apricot"] as Color, 2.0)
 	if glint_t > 0.0:
 		var gr: float = body_radius + 3.0 + (1.0 - clampf(glint_t / 0.28, 0.0, 1.0)) * 4.0
-		draw_arc(c, gr, 0.0, TAU, 12, PAL["ice"] as Color, 1.2)
+		draw_arc(c, gr, 0.0, TAU, 12, PAL["ice"] as Color, 1.0)
 		draw_line(c + Vector2(-4.0, 0.0), c + Vector2(4.0, 0.0), PAL["cream"] as Color, 1.0)
 		draw_line(c + Vector2(0.0, -4.0), c + Vector2(0.0, 4.0), PAL["cream"] as Color, 1.0)
 	if state == State.TELL:
@@ -422,7 +422,7 @@ func _draw_extra(off: Vector2) -> void:
 			var cd: Vector2 = Vector2.from_angle(float(ci) * (PI * 0.5))
 			var tp := Vector2(roundf(rel.x + cd.x * rad), roundf(rel.y + cd.y * rad))
 			var ti := Vector2(roundf(rel.x + cd.x * maxf(1.5, rad - 2.5)), roundf(rel.y + cd.y * maxf(1.5, rad - 2.5)))
-			draw_line(ti, tp, PAL["coral"] as Color, 1.2)
+			draw_line(ti, tp, PAL["coral"] as Color, 1.0)
 			draw_rect(Rect2(tp, Vector2(1.0, 1.0)), PAL["gold"] as Color, true)
 		draw_rect(Rect2(rel, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	elif state == State.COMMIT:
@@ -430,7 +430,7 @@ func _draw_extra(off: Vector2) -> void:
 			var s: float = float(si)
 			var w0 := Vector2(roundf(c.x + side.x * (s * 5.5) - fwd.x * 1.5), roundf(c.y + side.y * (s * 5.5) - fwd.y * 1.5))
 			var w1 := Vector2(roundf(c.x + side.x * (s * 7.5) - fwd.x * 14.0), roundf(c.y + side.y * (s * 7.5) - fwd.y * 14.0))
-			draw_line(w0, w1, PAL["sky"] as Color, 1.5)
+			draw_line(w0, w1, PAL["sky"] as Color, 2.0)
 			draw_line(w0, Vector2(roundf(c.x + side.x * (s * 6.5) - fwd.x * 9.0), roundf(c.y + side.y * (s * 6.5) - fwd.y * 9.0)), PAL["ice"] as Color, 1.0)
 			draw_rect(Rect2(w1, Vector2(1.0, 1.0)), PAL["ice"] as Color, true)
 	if carrying_lantern:

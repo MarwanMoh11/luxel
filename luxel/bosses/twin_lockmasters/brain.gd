@@ -346,7 +346,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for i: int in range(_portals.size()):
 		var pp: Vector2 = (_portals[i] - pos + off).round()
 		var glow: bool = (i == _portal_glow_idx and _portal_glow_t > 0.0)
-		draw_arc(pp, 11.0 if glow else 9.0, 0.0, TAU, 16, PAL["cream" if glow else "blue"] as Color, 2.0 if glow else 1.2)
+		draw_arc(pp, 11.0 if glow else 9.0, 0.0, TAU, 16, PAL["cream" if glow else "blue"] as Color, 2.0 if glow else 1.0)
 		draw_circle(pp, 5.5 if glow else 4.0, Color(PAL["ice" if glow else "sky"] as Color, 0.45 if glow else 0.25))
 
 	# 2. Draw live twin Bilge (blue portal-sniper crab with brass monocle!)
@@ -356,8 +356,8 @@ func _draw_boss_extra(off: Vector2) -> void:
 	draw_circle(bp + Vector2(0.0, 7.0), 9.0, Color(PAL["void"] as Color, 0.36))
 	# Crab legs
 	for sgn: float in [-1.0, 1.0]:
-		draw_line(b_c + Vector2(sgn * 7.0, 1.0), b_c + Vector2(sgn * 13.0, 6.0), PAL["deep"] as Color, 1.6)
-		draw_line(b_c + Vector2(sgn * 6.0, 4.0), b_c + Vector2(sgn * 11.0, 8.0), PAL["blue"] as Color, 1.4)
+		draw_line(b_c + Vector2(sgn * 7.0, 1.0), b_c + Vector2(sgn * 13.0, 6.0), PAL["deep"] as Color, 2.0)
+		draw_line(b_c + Vector2(sgn * 6.0, 4.0), b_c + Vector2(sgn * 11.0, 8.0), PAL["blue"] as Color, 1.0)
 	# Blue armored carapace + keyhole crown
 	draw_circle(b_c, 10.5, PAL["night"] as Color)
 	draw_circle(b_c, 9.2, PAL["blue"] as Color)
@@ -371,7 +371,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	draw_circle(b_c + Vector2(3.0, 0.0), 1.6, PAL["cream"] as Color)
 	# Sniper claw aiming along _bilge_facing
 	var sdir: Vector2 = Vector2.from_angle(_bilge_facing)
-	draw_line(b_c + sdir * 6.0, (b_c + sdir * 16.0).round(), PAL["sky"] as Color, 2.6)
+	draw_line(b_c + sdir * 6.0, (b_c + sdir * 16.0).round(), PAL["sky"] as Color, 3.0)
 	draw_circle((b_c + sdir * 16.0).round(), 2.2, PAL["cream"] as Color)
 
 	# 3. Shared Sea-Glass Hex Shield & transfer ribbon
@@ -385,11 +385,11 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for k: int in range(7):
 			var ha: float = anim_t * h_spd + float(k % 6) * (TAU / 6.0)
 			hex.append((sp + Vector2.from_angle(ha) * 7.5).round())
-		draw_polyline(hex, PAL["cream"] as Color, 1.6)
+		draw_polyline(hex, PAL["cream"] as Color, 2.0)
 		draw_circle(sp, 2.4, PAL["sky"] as Color)
 
 	# 4. P3 Bicker clack sparks between twins
 	if _bicker_t > 0.0:
 		var mid: Vector2 = off.lerp(b_c, 0.5).round()
 		var b_rad: float = roundf(10.0 + (0.0 if fred else sin(anim_t * 24.0) * 3.0))
-		draw_arc(mid, b_rad, 0.0, TAU, 12, PAL["gold"] as Color, 1.5)
+		draw_arc(mid, b_rad, 0.0, TAU, 12, PAL["gold"] as Color, 2.0)

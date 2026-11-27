@@ -328,13 +328,13 @@ func _draw_extra(off: Vector2) -> void:
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var r: float = lerpf(16.0, 8.0, prog)
-		draw_arc(off.round(), r, 0.0, TAU, 16, PAL["cream"] as Color if prog > 0.6 else PAL["gold"] as Color, 1.4)
+		draw_arc(off.round(), r, 0.0, TAU, 16, PAL["cream"] as Color if prog > 0.6 else PAL["gold"] as Color, 1.0)
 	for m: Dictionary in mines:
 		var mp: Vector2 = ((m["pos"] as Vector2) - pos).round()
 		if bool(m["bloomed"]):
 			var frac: float = clampf(float(m["snag_t"]) / MINE_SNAG_DUR, 0.0, 1.0)
 			draw_circle(mp, MINE_SNAG_R, Color(PAL["pine"] as Color, 0.30 * frac))
-			draw_arc(mp, MINE_SNAG_R, 0.0, TAU, 16, PAL["coral"] as Color, 1.5)
+			draw_arc(mp, MINE_SNAG_R, 0.0, TAU, 16, PAL["coral"] as Color, 2.0)
 			draw_arc(mp, MINE_SNAG_R - 3.0, 0.0, TAU, 12, PAL["lime"] as Color, 1.0)
 		else:
 			draw_circle(mp, 4.5, PAL["void"] as Color)

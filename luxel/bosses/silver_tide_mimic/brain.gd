@@ -298,12 +298,12 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var ip: Vector2 = (c + Vector2(0.0, -body_radius - 18.0)).round()
 		var ic: Color = (PAL["rose"] if _copied_move == "lens" else (PAL["gold"] if _copied_move == "sunflare" else PAL["ice"])) as Color
 		draw_circle(ip, 6.0, Color(PAL["night"] as Color, 0.85))
-		draw_arc(ip, 6.0, 0.0, TAU, 16, ic, 1.4)
+		draw_arc(ip, 6.0, 0.0, TAU, 16, ic, 1.0)
 		if _copied_move == "beam":
-			draw_line(ip + Vector2(-4.0, 0.0), ip + Vector2(4.0, 0.0), PAL["cream"] as Color, 1.6)
+			draw_line(ip + Vector2(-4.0, 0.0), ip + Vector2(4.0, 0.0), PAL["cream"] as Color, 2.0)
 		elif _copied_move == "dash":
-			draw_line(ip + Vector2(-3.0, -2.0), ip + Vector2(3.0, 0.0), PAL["cream"] as Color, 1.4)
-			draw_line(ip + Vector2(-3.0, 2.0), ip + Vector2(3.0, 0.0), PAL["cream"] as Color, 1.4)
+			draw_line(ip + Vector2(-3.0, -2.0), ip + Vector2(3.0, 0.0), PAL["cream"] as Color, 1.0)
+			draw_line(ip + Vector2(-3.0, 2.0), ip + Vector2(3.0, 0.0), PAL["cream"] as Color, 1.0)
 		else:
 			draw_circle(ip, 2.2, PAL["cream"] as Color)
 	if _blush_t > 0.0:

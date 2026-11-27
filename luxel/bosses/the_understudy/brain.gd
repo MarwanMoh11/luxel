@@ -334,14 +334,16 @@ func _draw_boss_extra(off: Vector2) -> void:
 			draw_arc(sp, 20.0, 0.0, TAU, 18, Color(PAL["gold"] as Color, 0.45), 1.0)
 
 	# Hovering Spotlight Mask holding the stolen move!
+	var fred: bool = is_flash_reduced()
 	if _mask_active:
 		var mp: Vector2 = (_mask_world_pos() - pos).round()
+		var m_flash: bool = _mask_flash_t > 0.0 and not fred
 		# Golden spotlight cone & tether ribbon from chest medallion
-		draw_line(c + Vector2(0.0, -6.0), mp, Color(PAL["gold"] as Color, 0.65), 1.4)
+		draw_line(c + Vector2(0.0, -6.0), mp, Color(PAL["gold"] as Color, 0.65), 1.0)
 		draw_circle(mp, 12.0, Color(PAL["gold"] as Color, 0.22))
-		draw_arc(mp, 11.0, 0.0, TAU, 18, PAL["cream"] as Color if _mask_flash_t > 0.0 else PAL["gold"] as Color, 1.5)
+		draw_arc(mp, 11.0, 0.0, TAU, 18, PAL["cream"] as Color if m_flash else PAL["gold"] as Color, 2.0)
 		draw_rect(Rect2(mp - Vector2(5.0, 5.0), Vector2(10.0, 10.0)), PAL["void"] as Color)
-		draw_rect(Rect2(mp - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), PAL["cream"] as Color if _mask_flash_t > 0.0 else PAL["ice"] as Color)
+		draw_rect(Rect2(mp - Vector2(4.0, 4.0), Vector2(8.0, 8.0)), PAL["cream"] as Color if m_flash else PAL["ice"] as Color)
 		# Iron cage bars + HP bar
 		for bx: float in [-2.0, 1.0]:
 			draw_rect(Rect2(mp + Vector2(bx, -5.0), Vector2(1.0, 10.0)), PAL["coral"] as Color)
@@ -350,4 +352,4 @@ func _draw_boss_extra(off: Vector2) -> void:
 		draw_rect(Rect2(mp + Vector2(-7.0, 8.0), Vector2(roundf(14.0 * frac), 2.0)), PAL["coral"] as Color)
 	elif _mask_reclaim_t > 0.0:
 		var u: float = 1.0 - clampf(_mask_reclaim_t / 1.2, 0.0, 1.0)
-		draw_arc(c, roundf(lerpf(12.0, 42.0, u)), 0.0, TAU, 22, Color(PAL["gold"] as Color, 1.0 - u), 1.6)
+		draw_arc(c, roundf(lerpf(12.0, 42.0, u)), 0.0, TAU, 22, Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if fred else 1.0)), 2.0)

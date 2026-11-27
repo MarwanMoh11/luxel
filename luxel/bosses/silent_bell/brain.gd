@@ -248,17 +248,24 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Visual silent dust-ripple wave (reads entirely by eye!)
 	if _dust_pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_dust_pulse_t / 0.60, 0.0, 1.0)
 		var rx: float = lerpf(18.0, 88.0, u)
-		draw_arc(c, rx, 0.0, TAU, 32, Color(PAL["ice"] as Color, (1.0 - u) * 0.85), 1.5)
+		var da: float = (1.0 - u) * (0.55 if fred else 0.85)
+		draw_arc(c, rx, 0.0, TAU, 32, Color(PAL["void"] as Color, da * 0.85), 4.0)
+		draw_arc(c, rx, 0.0, TAU, 32, Color(PAL["ice"] as Color, da), 2.0)
 	# Open mouth target indicator inviting Wick to throw the lantern INSIDE!
 	if _mouth_open and not _mouth_triggered_this_rec and boss_state != BossState.DEATH:
-		var pulse: float = 0.0 if is_flash_reduced() else sin(anim_t * 10.0) * 1.5
-		draw_arc(c + Vector2(0.0, 6.0), 15.0 + pulse, 0.0, TAU, 20, PAL["ice"] as Color, 1.6)
-		draw_arc(c + Vector2(0.0, 6.0), 8.0, 0.0, TAU, 14, PAL["cream"] as Color, 1.2)
+		var pulse: float = 0.0 if fred else sin(anim_t * 10.0) * 1.5
+		draw_arc(c + Vector2(0.0, 6.0), 15.0 + pulse, 0.0, TAU, 20, PAL["void"] as Color, 4.0)
+		draw_arc(c + Vector2(0.0, 6.0), 15.0 + pulse, 0.0, TAU, 20, PAL["ice"] as Color, 2.0)
+		draw_arc(c + Vector2(0.0, 6.0), 8.0, 0.0, TAU, 14, PAL["void"] as Color, 3.0)
+		draw_arc(c + Vector2(0.0, 6.0), 8.0, 0.0, TAU, 14, PAL["cream"] as Color, 1.0)
 	# Forced-to-ring golden fracture aura during STAGGER!
 	if boss_state == BossState.STAGGER:
+		draw_arc(c, body_radius + 8.0, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
 		draw_arc(c, body_radius + 8.0, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["cream"] as Color, 1.2)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["void"] as Color, 3.0)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["cream"] as Color, 1.0)

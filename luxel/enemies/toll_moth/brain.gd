@@ -255,7 +255,7 @@ func _step_position(dt: float) -> void:
 
 
 func _step_tell(dt: float) -> void:
-	if state_timer > 0.14:
+	if state_timer > 0.14 * _assist_tell_scale():
 		var to_w: Vector2 = _get_wick_pos() - pos
 		if to_w.length() > 0.01:
 			_turn_toward(to_w.angle(), 3.2, dt)
@@ -351,18 +351,19 @@ func _draw_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
 	if muted_t > 0.0:
 		var a: float = clampf(muted_t / DUSK_MUTE_TIME, 0.25, 1.0)
-		draw_arc(c, body_radius + 4.5, 0.0, TAU, 16, Color(PAL["ice"] as Color, a), 1.4)
-		draw_line(c + Vector2(-5.0, -5.0), c + Vector2(5.0, 5.0), Color(PAL["sky"] as Color, a), 1.2)
+		draw_arc(c, body_radius + 4.5, 0.0, TAU, 16, Color(PAL["ice"] as Color, a), 1.0)
+		draw_line(c + Vector2(-5.0, -5.0), c + Vector2(5.0, 5.0), Color(PAL["sky"] as Color, a), 1.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_ring(self, Vector2.ZERO, ATTACK_RING_R, prog, anim_t, "coral", "gold")
 	elif state == State.COMMIT:
 		var prog2: float = 1.0 - clampf(state_timer / maxf(RING_COMMIT, 0.05), 0.0, 1.0)
 		var r_now: float = lerpf(10.0, ATTACK_RING_R, prog2)
-		draw_arc(Vector2.ZERO, r_now, 0.0, TAU, 24, PAL["coral"] as Color, 2.2)
+		draw_arc(Vector2.ZERO, r_now, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(Vector2.ZERO, r_now, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
 		draw_arc(Vector2.ZERO, maxf(4.0, r_now - 2.0), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
 	if pulse_fx_t > 0.0:
 		var u: float = 1.0 - clampf(pulse_fx_t / 0.36, 0.0, 1.0)
 		var pr: float = lerpf(8.0, pulse_fx_r, u)
 		var col: Color = LxPalette.color(pulse_fx_col, "coral")
-		draw_arc(Vector2.ZERO, pr, 0.0, TAU, 24, Color(col, (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.85)), 1.6)
+		draw_arc(Vector2.ZERO, pr, 0.0, TAU, 24, Color(col, (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.85)), 2.0)

@@ -347,23 +347,26 @@ func _draw_extra(off: Vector2) -> void:
 	draw_circle(back_c, 2.2, PAL["coral"] as Color)
 	draw_rect(Rect2(back_c, Vector2.ONE), PAL["cream"] as Color)
 	if lens_highlight_t > 0.0:
-		draw_arc(back_c, 5.2, 0.0, TAU, 14, PAL["gold"] as Color, 1.3)
+		draw_arc(back_c, 5.2, 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
 		draw_arc(back_c, 3.0, 0.0, TAU, 10, PAL["ice"] as Color, 1.0)
 
 	# Thin sky laser sightline during TELL (curves cleanly through LxFields!)
 	if state == State.TELL and _preview_pts.size() >= 2:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var col: Color = (PAL["coral"] if prog > 0.65 else PAL["sky"]) as Color
+		var hot_p: bool = prog > 0.65
+		var col: Color = (PAL["coral"] if hot_p else PAL["sky"]) as Color
 		for k: int in range(_preview_pts.size() - 1):
 			var a: Vector2 = (_preview_pts[k] - pos + off).round()
 			var b: Vector2 = (_preview_pts[k + 1] - pos + off).round()
-			if prog > 0.65 or k % 2 == 0:
-				draw_line(a, b, col, 1.5 if prog > 0.65 else 1.0)
+			if hot_p or k % 2 == 0:
+				draw_line(a, b, PAL["void"] as Color, 4.0 if hot_p else 3.0)
+				draw_line(a, b, col, 2.0 if hot_p else 1.0)
 
 	# Active star-ray bolts
 	for b: Dictionary in _bolts:
 		var lp: Vector2 = ((b["pos"] as Vector2) - pos + off).round()
 		var bv: Vector2 = (b["vel"] as Vector2).normalized()
+		draw_line((lp - bv * 7.0).round(), lp, PAL["void"] as Color, 5.0)
 		draw_line((lp - bv * 7.0).round(), lp, PAL["blue"] as Color, 3.0)
-		draw_line((lp - bv * 5.0).round(), lp, PAL["sky"] as Color, 1.8)
+		draw_line((lp - bv * 5.0).round(), lp, PAL["sky"] as Color, 2.0)
 		draw_circle(lp, 2.2, PAL["cream"] as Color)

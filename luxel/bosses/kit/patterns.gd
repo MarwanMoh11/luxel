@@ -436,10 +436,10 @@ func draw_patterns(ci: CanvasItem, origin_world: Vector2) -> void:
 			if el < wd:
 				LxBossTelegraphFx.draw_ground_danger_lane(ci, a, b, hw, clampf(el / maxf(wd, 0.05), 0.0, 1.0), _clock, "sky", "gold")
 			else:
-				ci.draw_line(a.round(), b.round(), PAL["void"] as Color, 6.4)
-				ci.draw_line(a.round(), b.round(), PAL["blue"] as Color, 4.6 if fred else 5.0)
-				ci.draw_line(a.round(), b.round(), PAL["ice"] as Color, 2.2 if fred else 2.6)
-				ci.draw_line(a.round(), b.round(), Color(PAL["cream"] as Color, 0.72 if fred else 1.0), 1.0 if fred else 1.2)
+				ci.draw_line(a.round(), b.round(), PAL["void"] as Color, 6.0)
+				ci.draw_line(a.round(), b.round(), PAL["blue"] as Color, 4.0 if fred else 5.0)
+				ci.draw_line(a.round(), b.round(), PAL["ice"] as Color, 2.0 if fred else 3.0)
+				ci.draw_line(a.round(), b.round(), Color(PAL["cream"] as Color, 0.72 if fred else 1.0), 1.0)
 
 	# Erupting pillars
 	for pl: Dictionary in _pillars:

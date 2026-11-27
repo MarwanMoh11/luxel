@@ -338,12 +338,15 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for i: int in range(4):
 		var sp: Vector2 = (ac + s_offs[i] - pos).round()
 		var lit: bool = _sconces_lit[i]
+		draw_circle(sp, 4.5, PAL["void"] as Color)
 		draw_circle(sp, 3.2, PAL["gold"] if lit else PAL["dusk"])
 		if lit:
 			draw_circle(sp, 1.5, PAL["cream"] as Color)
 	# Brittle chain shimmer pulse
 	if _brittle_t > 0.0 and _chains_remaining > 0:
-		draw_arc(c + Vector2(0.0, -14.0), 16.0, 0.0, TAU, 16, PAL["coral"] as Color, 1.4)
+		draw_arc(c + Vector2(0.0, -14.0), 16.0, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
+		draw_arc(c + Vector2(0.0, -14.0), 16.0, 0.0, TAU, 16, PAL["coral"] as Color, 1.0)
 	# Exposed molten wax heart glow when dropped/open
 	if (_core_open_t > 0.0 or boss_state == BossState.STAGGER) and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["gold"] as Color, 1.6)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 4.0, 0.0, TAU, 18, PAL["gold"] as Color, 2.0)

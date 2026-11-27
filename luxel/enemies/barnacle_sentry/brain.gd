@@ -287,13 +287,13 @@ func _draw_extra(off: Vector2) -> void:
 	if _sprite_sheet == null:
 		var back: Vector2 = -fwd
 		# Pedestal ring + exposed glowing back aperture (shows flank/prism vulnerability).
-		draw_arc(off, body_radius + 1.5, 0.0, TAU, 16, PAL["night"] as Color, 1.5)
+		draw_arc(off, body_radius + 1.5, 0.0, TAU, 16, PAL["night"] as Color, 2.0)
 		draw_circle(off + back * (body_radius * 0.72), 2.5, PAL["apricot"] as Color)
 		draw_circle(off + back * (body_radius * 0.72), 1.2, PAL["gold"] as Color)
 
 	if shell_cracked_t > 0.0:
 		var sc: Vector2 = off.round()
-		draw_arc(sc, body_radius + 2.2, facing - 1.1, facing + 1.1, 10, PAL["sky"] as Color, 1.4)
+		draw_arc(sc, body_radius + 2.2, facing - 1.1, facing + 1.1, 10, PAL["sky"] as Color, 1.0)
 		draw_line((sc + fwd * 2.0).round(), (sc + fwd * (body_radius + 3.0)).round(), PAL["cream"] as Color, 1.0)
 		draw_line((sc + Vector2.from_angle(facing + 0.45) * 2.0).round(), (sc + Vector2.from_angle(facing + 0.55) * (body_radius + 2.5)).round(), PAL["ice"] as Color, 1.0)
 		draw_line((sc + Vector2.from_angle(facing - 0.45) * 2.0).round(), (sc + Vector2.from_angle(facing - 0.55) * (body_radius + 2.5)).round(), PAL["ice"] as Color, 1.0)
@@ -311,8 +311,8 @@ func _draw_extra(off: Vector2) -> void:
 			var d_end: float = minf(d_cur + 5.0, sight_len)
 			var s0: Vector2 = (off + fwd * d_cur).round()
 			var s1: Vector2 = (off + fwd * d_end).round()
-			draw_line(s0, s1, PAL["void"] as Color, 2.2)
-			draw_line(s0, s1, aim_col, 1.2 if locked_t else 1.0)
+			draw_line(s0, s1, PAL["void"] as Color, 4.0 if locked_t else 3.0)
+			draw_line(s0, s1, aim_col, 2.0 if locked_t else 1.0)
 			d_cur += 9.0
 		draw_rect(Rect2(tip + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), PAL["void"] as Color, true)
 		draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
@@ -338,7 +338,7 @@ func _draw_extra(off: Vector2) -> void:
 		var perp: Vector2 = Vector2(-gd.y, gd.x)
 		var trav: float = float(g["traveled"])
 		var tail_end: Vector2 = (gp - gd * 8.0).round()
-		draw_line((gp - gd * 3.0).round(), tail_end, PAL["deep"] as Color, 1.5)
+		draw_line((gp - gd * 3.0).round(), tail_end, PAL["deep"] as Color, 2.0)
 		draw_line((gp - gd * 3.0).round(), (gp - gd * 6.5).round(), PAL["sky"] as Color, 1.0)
 		for si: int in range(3):
 			var dist_s: float = 5.0 + float(si) * 2.5

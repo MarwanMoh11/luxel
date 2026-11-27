@@ -368,7 +368,7 @@ func _begin_swing_tell(is_lunge: bool) -> void:
 
 func _step_tell(dt: float, target_pos: Vector2) -> void:
 	var to_w: Vector2 = target_pos - pos
-	if to_w.length() > 0.01 and state_timer > 0.16:
+	if to_w.length() > 0.01 and state_timer > 0.16 * _assist_tell_scale():
 		_turn_toward(to_w.angle(), TURN_WINDUP * (1.25 if lunge_attack else 1.0), dt)
 	state_timer -= dt
 	if state_timer <= 0.0:
@@ -564,7 +564,7 @@ func _draw_extra(off: Vector2) -> void:
 			var sd: Vector2 = Vector2.from_angle(sa)
 			var slen: float = (5.5 if (i % 2 == 0) else 3.5) + (1.0 - cp) * 3.5
 			var tip := Vector2(roundf(sc.x + sd.x * slen), roundf(sc.y + sd.y * slen))
-			draw_line(sc, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.2)
+			draw_line(sc, tip, (PAL["gold"] as Color) if (i % 2 == 0) else (PAL["apricot"] as Color), 1.0)
 			draw_rect(Rect2(tip, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 	if _has_active_shield() and deflect_charge > 0:
 		var hot_d: bool = deflect_charge >= RICOCHET_NEED - 1
@@ -576,11 +576,11 @@ func _draw_extra(off: Vector2) -> void:
 			draw_rect(Rect2(dp, Vector2(1.0, 1.0)), pc, true)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-		var locked_t: bool = state_timer <= 0.14
+		var locked_t: bool = state_timer <= 0.14 * _assist_tell_scale()
 		var glint_p := Vector2(roundf(c.x + fwd.x * (body_radius + 5.0 + prog * 4.0)), roundf(c.y + fwd.y * (body_radius + 5.0 + prog * 4.0)))
 		var arm: float = roundf((3.0 if (is_counter_attack or lunge_attack) else 2.0) + prog * 2.0 + (1.0 if locked_t else 0.0))
-		draw_line(glint_p + Vector2(-arm, 0.0), glint_p + Vector2(arm, 0.0), (PAL["cream"] if locked_t else PAL["apricot"]) as Color, 1.2)
-		draw_line(glint_p + Vector2(0.0, -arm), glint_p + Vector2(0.0, arm), (PAL["cream"] if locked_t else PAL["gold"]) as Color, 1.2)
+		draw_line(glint_p + Vector2(-arm, 0.0), glint_p + Vector2(arm, 0.0), (PAL["cream"] if locked_t else PAL["apricot"]) as Color, 1.0)
+		draw_line(glint_p + Vector2(0.0, -arm), glint_p + Vector2(0.0, arm), (PAL["cream"] if locked_t else PAL["gold"]) as Color, 1.0)
 		draw_rect(Rect2(glint_p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
 		if _has_active_shield():
 			var rim := Vector2(roundf(c.x + fwd.x * (body_radius + 3.0) + side.x * 2.0), roundf(c.y + fwd.y * (body_radius + 3.0) + side.y * 2.0))
@@ -590,11 +590,11 @@ func _draw_extra(off: Vector2) -> void:
 		var prog: float = 1.0 - clampf(state_timer / maxf(dur, 0.05), 0.0, 1.0)
 		var a0: float = facing - swing_arc * 0.95
 		var a1: float = lerpf(a0 + 0.35, facing + swing_arc * 0.95, prog)
-		draw_arc(c, body_radius + 14.5, a0, a1, 14, PAL["wine"] as Color, 2.6)
-		draw_arc(c, body_radius + 13.0, a0, a1, 14, PAL["apricot"] as Color, 1.8)
-		draw_arc(c, body_radius + 11.5, a0 + 0.15, a1, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(c, body_radius + 14.5, a0, a1, 14, PAL["wine"] as Color, 3.0)
+		draw_arc(c, body_radius + 13.0, a0, a1, 14, PAL["apricot"] as Color, 2.0)
+		draw_arc(c, body_radius + 11.5, a0 + 0.15, a1, 12, PAL["gold"] as Color, 1.0)
 		var lead_d: Vector2 = Vector2.from_angle(a1)
 		var tip_a := Vector2(roundf(c.x + lead_d.x * (body_radius + 10.0)), roundf(c.y + lead_d.y * (body_radius + 10.0)))
 		var tip_b := Vector2(roundf(c.x + lead_d.x * (body_radius + 15.5)), roundf(c.y + lead_d.y * (body_radius + 15.5)))
-		draw_line(tip_a, tip_b, PAL["cream"] as Color, 1.5)
+		draw_line(tip_a, tip_b, PAL["cream"] as Color, 2.0)
 		draw_rect(Rect2(tip_b, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)

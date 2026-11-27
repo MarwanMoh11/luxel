@@ -322,7 +322,7 @@ func _step_position(dt: float, target_pos: Vector2) -> void:
 
 
 func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if state_timer > 0.16:
+	if state_timer > 0.16 * _assist_tell_scale():
 		var to_t: Vector2 = target_pos - pos
 		if to_t.length() > 0.1:
 			_turn_toward(to_t.angle(), 2.2, dt)
@@ -411,9 +411,11 @@ func _draw_extra(off: Vector2) -> void:
 		var rp: Vector2 = (tax_ring_pos - pos).round()
 		var a: float = 0.35 if LxHudFx.flash_reduced() else (0.30 + 0.12 * sin(anim_t * 8.0))
 		draw_circle(rp, TAX_RING_R, Color(PAL["gold"] as Color, a * 0.35))
-		draw_arc(rp, TAX_RING_R, 0.0, TAU, 24, Color(PAL["coral"] as Color, minf(0.85, tax_ring_t)), 1.6)
+		draw_arc(rp, TAX_RING_R, 0.0, TAU, 24, Color(PAL["void"] as Color, minf(0.85, tax_ring_t)), 4.0)
+		draw_arc(rp, TAX_RING_R, 0.0, TAU, 24, Color(PAL["coral"] as Color, minf(0.85, tax_ring_t)), 2.0)
 	if dusk_frozen_t > 0.0:
-		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.6)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.0, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_sector(self, Vector2.ZERO, facing - SLAM_ARC_HALF, facing + SLAM_ARC_HALF, SLAM_REACH, prog, anim_t, "coral", "gold")

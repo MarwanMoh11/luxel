@@ -276,22 +276,26 @@ func _body_color() -> Color:
 func _draw_boss_extra(off: Vector2) -> void:
 	if boss_state == BossState.DEATH:
 		return
+	var fred: bool = is_flash_reduced()
 	var sc: Color = LxPalette.color(_stance_color_key(), "gold")
 	# Stance crest ring around the First Forge showing active Temper weakness (gold/apricot/coral!)
-	var r: float = body_radius + 6.5 + (2.5 if _stance_flash_t > 0.0 else 0.0)
-	draw_arc(off.round(), r, anim_t * 2.4, anim_t * 2.4 + PI * 1.35, 20, Color(sc, 0.78), 1.6)
+	var r: float = body_radius + 6.5 + (2.5 if (_stance_flash_t > 0.0 and not fred) else 0.0)
+	draw_arc(off.round(), r, anim_t * 2.4, anim_t * 2.4 + PI * 1.35, 20, Color(PAL["void"] as Color, 0.78), 4.0)
+	draw_arc(off.round(), r, anim_t * 2.4, anim_t * 2.4 + PI * 1.35, 20, Color(sc, 0.78), 2.0)
 	# Perimeter Temper Anvil badges (West=gold SKIP, North=apricot SCATTER, East=coral LANCE)
 	var badge_cols: Array[String] = ["gold", "apricot", "coral"]
 	for i: int in range(mini(_anvil_positions.size(), 3)):
 		var ap: Vector2 = (_anvil_positions[i] - pos).round()
 		var active_match: bool = (i == active_stance)
-		draw_arc(ap, 11.0 if active_match else 9.0, 0.0, TAU, 16, Color(LxPalette.color(badge_cols[i], "gold"), 0.85 if active_match else 0.45), 1.6 if active_match else 1.1)
+		draw_arc(ap, 11.0 if active_match else 9.0, 0.0, TAU, 16, Color(PAL["void"] as Color, 0.78 if active_match else 0.45), 4.0 if active_match else 3.0)
+		draw_arc(ap, 11.0 if active_match else 9.0, 0.0, TAU, 16, Color(LxPalette.color(badge_cols[i], "gold"), 0.85 if active_match else 0.45), 2.0 if active_match else 1.0)
 	# Twin rotating Crucible Spin beams during P3 commit
 	if boss_state == BossState.COMMIT and active_attack_id == "crucible_spin":
 		var cur_a: float = _spin_base_ang + (_commit_elapsed / SPIN_COMMIT_S) * PI * 1.15
 		for bi: int in range(2):
 			var bend: Vector2 = (off + Vector2.from_angle(cur_a + float(bi) * PI) * SPIN_RANGE).round()
-			draw_line(off.round(), bend, PAL["wine"] as Color, 7.5)
-			draw_line(off.round(), bend, PAL["coral"] as Color, 4.6)
-			draw_line(off.round(), bend, PAL["gold"] as Color, 2.2)
+			draw_line(off.round(), bend, PAL["void"] as Color, 9.0)
+			draw_line(off.round(), bend, PAL["wine"] as Color, 7.0)
+			draw_line(off.round(), bend, PAL["coral"] as Color, 5.0)
+			draw_line(off.round(), bend, PAL["gold"] as Color, 2.0)
 			draw_line(off.round(), bend, PAL["cream"] as Color, 1.0)

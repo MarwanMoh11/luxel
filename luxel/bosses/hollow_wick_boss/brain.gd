@@ -524,7 +524,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Bible 4.7: P2 diagonal NW Silver / SE Black split & truth shadow
 	if p2_split_active and boss_state != BossState.DEATH:
 		var hc: Vector2 = (home - pos).round()
-		draw_line(hc + Vector2(-130.0, 82.0), hc + Vector2(130.0, -82.0), Color(PAL["ice"] as Color, 0.45), 2.4)
+		draw_line(hc + Vector2(-130.0, 82.0), hc + Vector2(130.0, -82.0), Color(PAL["ice"] as Color, 0.45), 2.0)
 		draw_line(hc + Vector2(-130.0, 82.0), hc + Vector2(130.0, -82.0), Color(PAL["rose"] as Color, 0.65), 1.0)
 	if phase >= 2 and boss_state != BossState.DEATH:
 		LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 4.0), 8.0, 3.0, "black_lantern", false)
@@ -534,9 +534,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var cl: Vector2 = (clone_pos - pos).round()
 		LxIsland7Rule.draw_truth_shadow(self, cl + Vector2(0.0, 4.0), 7.5, 2.8, "nw_wrong", false)
 		draw_circle(cl, body_radius + 1.0, Color(PAL["deep"] as Color, 0.72))
-		draw_arc(cl, body_radius + 2.5, 0.0, TAU, 14, (PAL["cream"] if clone_flash_t > 0.0 else PAL["ice"]) as Color, 1.4)
+		draw_arc(cl, body_radius + 2.5, 0.0, TAU, 14, (PAL["cream"] if clone_flash_t > 0.0 else PAL["ice"]) as Color, 1.0)
 		if clone_flash_t > 0.0:
-			draw_arc(cl, body_radius + 8.0, 0.0, TAU, 16, PAL["sky"] as Color, 1.4)
+			draw_arc(cl, body_radius + 8.0, 0.0, TAU, 16, PAL["sky"] as Color, 1.0)
 
 	# P3 Unmasked pale moth shimmer
 	if phase >= 3 and boss_state != BossState.DEATH:
@@ -546,26 +546,26 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _armour_glint_t > 0.0 and boss_state != BossState.DEATH:
 		var ga: float = clampf(_armour_glint_t / 0.22, 0.0, 1.0)
 		draw_arc(c, body_radius + 5.0, _armour_glint_ang - 0.85, _armour_glint_ang + 0.85, 10, Color(PAL["rose"] as Color, ga), 2.0)
-		draw_arc(c, body_radius + 3.5, _armour_glint_ang - 0.55, _armour_glint_ang + 0.55, 8, Color(PAL["ice"] as Color, ga), 1.2)
+		draw_arc(c, body_radius + 3.5, _armour_glint_ang - 0.55, _armour_glint_ang + 0.55, 8, Color(PAL["ice"] as Color, ga), 1.0)
 
 	# Flying Dark Lantern & P3 Stolen Lantern Clash tell
 	if dark_lantern_out and boss_state != BossState.DEATH:
 		var lp: Vector2 = (dark_lantern_pos - pos).round()
 		draw_circle(lp, 4.5, PAL["void"] as Color)
-		draw_arc(lp, 5.5, 0.0, TAU, 14, PAL["sky"] as Color, 1.4)
+		draw_arc(lp, 5.5, 0.0, TAU, 14, PAL["sky"] as Color, 1.0)
 		if phase >= 3 and clash_window_open:
 			var cu: float = clampf(_commit_elapsed / maxf(CLASH_THROW_TIME_P3 * get_tell_scale(), 0.05), 0.0, 1.0)
 			var cr: float = roundf(lerpf(18.0, 8.0, cu))
 			draw_arc(lp, cr, 0.0, TAU, 18, PAL["void"] as Color, 3.0)
-			draw_arc(lp, cr, 0.0, TAU, 18, PAL["coral"] as Color, 1.8)
-			draw_arc(lp, 11.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
+			draw_arc(lp, cr, 0.0, TAU, 18, PAL["coral"] as Color, 2.0)
+			draw_arc(lp, 11.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 			var tc: Color = (PAL["cream"] if (fred or int(anim_t * 8.0) % 2 == 0) else PAL["gold"]) as Color
 			for ti: int in range(4):
 				var td: Vector2 = Vector2.from_angle(float(ti) * (PI * 0.5))
 				var p0: Vector2 = (lp + td * (cr - 2.0)).round()
 				var p1: Vector2 = (lp + td * (cr + (2.0 if fred else 3.0))).round()
 				draw_line(p0, p1, PAL["void"] as Color, 3.0)
-				draw_line(p0, p1, tc, 1.4)
+				draw_line(p0, p1, tc, 1.0)
 			draw_circle(lp, 2.5, PAL["cream"] as Color)
 
 	if clash_flash_t > 0.0:
@@ -574,23 +574,23 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	if boss_state == BossState.COMMIT and active_attack_id == "dark_beam":
 		var b_end: Vector2 = (off + commit_dir * BEAM_RANGE).round()
-		draw_line(c, b_end, PAL["deep"] as Color, 7.6)
-		draw_line(c, b_end, PAL["blue"] as Color, 5.4)
-		draw_line(c, b_end, PAL["sky"] as Color, 3.6)
-		draw_line(c, b_end, PAL["ice"] as Color, 2.2)
-		draw_line(c, b_end, PAL["cream"] as Color, 1.1)
+		draw_line(c, b_end, PAL["deep"] as Color, 7.0)
+		draw_line(c, b_end, PAL["blue"] as Color, 5.0)
+		draw_line(c, b_end, PAL["sky"] as Color, 3.0)
+		draw_line(c, b_end, PAL["ice"] as Color, 2.0)
+		draw_line(c, b_end, PAL["cream"] as Color, 1.0)
 	elif boss_state == BossState.COMMIT and active_attack_id == "eclipse_flare":
 		var ring_r: float = lerpf(FLARE_START_R, FLARE_MAX_R, _flare_progress)
-		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.2)
-		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.4)
-		draw_arc(c, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 1.8)
-		draw_arc(c, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.1)
+		draw_arc(c, ring_r + 2.6, 0.0, TAU, 36, PAL["blue"] as Color, 2.0)
+		draw_arc(c, ring_r, 0.0, TAU, 36, PAL["sky"] as Color, 3.0)
+		draw_arc(c, maxf(2.0, ring_r - 2.2), 0.0, TAU, 28, PAL["ice"] as Color, 2.0)
+		draw_arc(c, maxf(2.0, ring_r - 4.0), 0.0, TAU, 24, PAL["cream"] as Color, 1.0)
 	elif boss_state == BossState.PHASE_SHIFT:
 		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var rr: float = body_radius + 10.0 + rp * 18.0
 		var rot: float = anim_t * (1.2 if fred else 3.4)
-		draw_arc(c, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 1.6)
-		draw_arc(c, rr, 0.0, TAU, 26, PAL["ice"] as Color, 1.8)
+		draw_arc(c, rr + 2.5, 0.0, TAU, 26, PAL["blue"] as Color, 2.0)
+		draw_arc(c, rr, 0.0, TAU, 26, PAL["ice"] as Color, 2.0)
 		for ci: int in range(2):
 			var base_a: float = rot + float(ci) * PI
 			draw_arc(c, rr * 0.78 + float(ci) * 3.5, base_a, base_a + PI * 0.72, 14, (PAL["sky"] if ci == 0 else PAL["ice"]) as Color, 2.0)

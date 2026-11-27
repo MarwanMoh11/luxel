@@ -358,9 +358,9 @@ func _draw_sights(off: Vector2) -> void:
 		# Twin converging chrome sniper sights!
 		var spread: float = lerpf(16.0, 0.0, prog)
 		var perp := Vector2(-_dive_dir.y, _dive_dir.x)
-		draw_line(off.round(), (lt + perp * spread).round(), col, 1.2)
-		draw_line(off.round(), (lt - perp * spread).round(), col, 1.2)
+		draw_line(off.round(), (lt + perp * spread).round(), col, 1.0)
+		draw_line(off.round(), (lt - perp * spread).round(), col, 1.0)
 		LxBossTelegraphFx.draw_ground_danger_ring(self, lt, DIVE_HIT_R, prog, anim_t, "coral" if locked else "sky", "cream")
 	elif state == State.COMMIT:
-		draw_line((off - _dive_dir * 14.0).round(), (off + _dive_dir * 10.0).round(), PAL["ice"] as Color, 2.2)
+		draw_line((off - _dive_dir * 14.0).round(), (off + _dive_dir * 10.0).round(), PAL["ice"] as Color, 2.0)
 		draw_line((off - _dive_dir * 10.0).round(), (off + _dive_dir * 12.0).round(), PAL["cream"] as Color, 1.0)

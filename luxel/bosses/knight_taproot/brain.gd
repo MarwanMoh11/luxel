@@ -256,14 +256,17 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		var ly: float = _lane_y(i)
 		var la: Vector2 = (Vector2(arena_rect.position.x + 12.0, ly) + inv).round()
 		var lb: Vector2 = (Vector2(arena_rect.end.x - 12.0, ly) + inv).round()
+		draw_line(la, lb, Color(PAL["void"] as Color, 0.35 if i != _active_lane else 0.55), 3.0)
 		draw_line(la, lb, Color(PAL["jade"] as Color, 0.25 if i != _active_lane else 0.50), 1.0)
 		var nd: Dictionary = _lane_nodes[i]
 		var np: Vector2 = ((nd["pos"] as Vector2) + inv).round()
 		var bloomed: bool = float(nd["bloom_t"]) > 0.0
 		if bloomed:
+			draw_rect(Rect2(np + Vector2(-8.0, -11.0), Vector2(16.0, 22.0)), PAL["void"] as Color)
 			draw_rect(Rect2(np + Vector2(-7.0, -10.0), Vector2(14.0, 20.0)), PAL["pine"] as Color)
 			draw_rect(Rect2(np + Vector2(-5.0, -8.0), Vector2(10.0, 16.0)), PAL["jade"] as Color)
 			draw_rect(Rect2(np + Vector2(-3.0, -5.0), Vector2(6.0, 10.0)), PAL["lime"] as Color)
 		else:
+			draw_circle(np, 6.0, Color(PAL["void"] as Color, 0.78))
 			draw_circle(np, 5.0, Color(PAL["pine"] as Color, 0.75))
 			draw_circle(np, 2.2, PAL["gold"] as Color if float(nd["charge"]) > 0.02 else PAL["jade"] as Color)

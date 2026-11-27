@@ -201,13 +201,18 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var r_loc := Rect2(loc_p, Vector2(band_w - 6.0, arena_rect.size.y - 8.0))
 			draw_rect(r_loc, Color(col, (0.14 if active_h else 0.05) if not fred else (0.10 if active_h else 0.04)), true)
 			if active_h:
+				draw_rect(r_loc, Color(PAL["void"] as Color, 0.50), false, 3.0)
 				draw_rect(r_loc, Color(col, 0.48), false, 1.0)
 	# Glowing Halo Hue Ring around the Rose-Window Seraph
 	if boss_state != BossState.DEATH:
 		var hc: Color = LxPalette.color(HUES[hue_idx], "gold")
-		draw_arc(c + Vector2(0.0, -16.0), 21.0, 0.0, TAU, 24, hc, 1.6)
+		draw_arc(c + Vector2(0.0, -16.0), 21.0, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(c + Vector2(0.0, -16.0), 21.0, 0.0, TAU, 24, hc, 2.0)
 		if _wings_shattered_t > 0.0:
-			draw_arc(c + Vector2(0.0, -16.0), 25.0, anim_t * 2.0, anim_t * 2.0 + PI, 14, PAL["cream"] as Color, 1.2)
+			draw_arc(c + Vector2(0.0, -16.0), 25.0, anim_t * 2.0, anim_t * 2.0 + PI, 14, PAL["void"] as Color, 3.0)
+			draw_arc(c + Vector2(0.0, -16.0), 25.0, anim_t * 2.0, anim_t * 2.0 + PI, 14, PAL["cream"] as Color, 1.0)
 	if _shatter_flash_t > 0.0:
 		var u: float = 1.0 - clampf(_shatter_flash_t / 0.65, 0.0, 1.0)
-		draw_arc(c, lerpf(14.0, 62.0, u), 0.0, TAU, 24, Color(PAL["cream"] as Color, 1.0 - u), 2.0)
+		var sa: float = (1.0 - u) * (0.55 if fred else 1.0)
+		draw_arc(c, lerpf(14.0, 62.0, u), 0.0, TAU, 24, Color(PAL["void"] as Color, sa * 0.85), 4.0)
+		draw_arc(c, lerpf(14.0, 62.0, u), 0.0, TAU, 24, Color(PAL["cream"] as Color, sa), 2.0)

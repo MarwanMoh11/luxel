@@ -313,7 +313,8 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var bl: float = float(b_d["bloom"])
 		var ready: bool = bl >= 0.70
 		draw_circle(bp, 6.0 + bl * 3.0, Color(PAL["pine"] as Color, 0.72))
-		draw_arc(bp, 7.0 + bl * 4.0, 0.0, TAU, 14, (PAL["lime"] if ready else PAL["jade"]) as Color, 1.4 if ready else 1.0)
+		draw_arc(bp, 7.0 + bl * 4.0, 0.0, TAU, 14, PAL["void"] as Color, 4.0 if ready else 3.0)
+		draw_arc(bp, 7.0 + bl * 4.0, 0.0, TAU, 14, (PAL["lime"] if ready else PAL["jade"]) as Color, 2.0 if ready else 1.0)
 		draw_circle(bp, 2.2 + bl * 1.4, (PAL["gold"] if ready else PAL["lime"]) as Color)
 
 	if burrowed:
@@ -322,24 +323,27 @@ func _draw_boss_extra(off: Vector2) -> void:
 			var col_t: Color = (PAL["lime"] if ti % 2 == 0 else PAL["jade"]) as Color
 			draw_circle(tp, 2.2 if ti == _mycelial_trail.size() - 1 else 1.5, col_t)
 			if ti > 0:
-				draw_line((_mycelial_trail[ti - 1] - pos + off).round(), tp, PAL["jade"] as Color, 1.4)
-		draw_arc(c + Vector2(0.0, 2.0), body_radius + 2.0, PI, TAU, 14, PAL["pine"] as Color, 2.8)
-		draw_arc(c + Vector2(0.0, 1.0), body_radius + 0.8, PI, TAU, 12, PAL["lime"] as Color, 1.4)
+				draw_line((_mycelial_trail[ti - 1] - pos + off).round(), tp, PAL["jade"] as Color, 1.0)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius + 2.0, PI, TAU, 14, PAL["void"] as Color, 5.0)
+		draw_arc(c + Vector2(0.0, 2.0), body_radius + 2.0, PI, TAU, 14, PAL["pine"] as Color, 3.0)
+		draw_arc(c + Vector2(0.0, 1.0), body_radius + 0.8, PI, TAU, 12, PAL["lime"] as Color, 1.0)
 		return
 
 	# Armour glint when closed cap deflects plain bolts outside punish windows
 	if clank_t > 0.0:
 		var ga: float = facing
-		draw_arc(c + Vector2(0.0, -3.0), body_radius + 4.5, ga - 1.1, ga + 1.1, 14, PAL["cream"] as Color, 2.2)
-		draw_arc(c + Vector2(0.0, -3.0), body_radius + 6.5, ga - 0.8, ga + 0.8, 12, PAL["gold"] as Color, 1.2)
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 4.5, ga - 1.1, ga + 1.1, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 4.5, ga - 1.1, ga + 1.1, 14, PAL["cream"] as Color, 2.0)
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 6.5, ga - 0.8, ga + 0.8, 12, PAL["gold"] as Color, 1.0)
 	elif not is_punishable() and boss_state != BossState.DEATH and boss_state != BossState.IDLE:
-		draw_arc(c + Vector2(0.0, -3.0), body_radius + 3.0, PI + 0.35, TAU - 0.35, 14, Color(PAL["apricot"] as Color, 0.42), 1.1)
+		draw_arc(c + Vector2(0.0, -3.0), body_radius + 3.0, PI + 0.35, TAU - 0.35, 14, Color(PAL["apricot"] as Color, 0.42), 1.0)
 
 	# Open golden gill punish halo
 	if cap_open and is_punishable():
 		var vr: float = body_radius + 4.5 + (0.0 if is_flash_reduced() else 0.8 * sin(anim_t * 14.0))
-		draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.2)
-		draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 1.8)
+		draw_arc(c, vr, 0.0, TAU, 24, PAL["void"] as Color, 4.0)
+		draw_arc(c, vr + 1.4, 0.0, TAU, 24, PAL["apricot"] as Color, 1.0)
+		draw_arc(c, vr, 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
 		for vi: int in range(4):
 			var vd: Vector2 = Vector2.from_angle(anim_t * 1.6 + float(vi) * (PI * 0.5))
 			draw_circle((c + vd * (vr + 1.5)).round(), 1.1, PAL["cream"] as Color)

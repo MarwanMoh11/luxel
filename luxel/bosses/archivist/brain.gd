@@ -340,7 +340,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if phase >= 3:
 		var torn := Rect2(center_loc + Vector2(2.0, -22.0), Vector2(38.0, 44.0))
 		draw_rect(torn, Color(PAL["void"] as Color, 0.45), true)
-		draw_line(center_loc + Vector2(2.0, -22.0), center_loc + Vector2(18.0, 22.0), PAL["rose"] as Color, 1.2)
+		draw_line(center_loc + Vector2(2.0, -22.0), center_loc + Vector2(18.0, 22.0), PAL["rose"] as Color, 1.0)
 	# 8 biome ribbons orbiting the Archivist's Tome
 	for i: int in range(8):
 		var lit: bool = i == 7 or _borrowed_mask[mini(i, 6)]
@@ -351,7 +351,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Ch.2 Dusk Echo Clone ghost marker when active
 	if phase == 2 and _echo_silenced_t <= 0.0 and boss_state != BossState.DEATH:
 		var ep: Vector2 = (_echo_pos - pos + off).round()
-		draw_arc(ep, 10.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.2)
+		draw_arc(ep, 10.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
 		draw_circle(ep, 4.0, Color(PAL["deep"] as Color, 0.55))
 	# Ch.3 orbiting Starfall Gravity Well visual cue
 	if _grav_well != null and _field_reg:

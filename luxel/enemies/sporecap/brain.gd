@@ -358,7 +358,7 @@ func _body_color() -> Color:
 
 func _draw_extra(off: Vector2) -> void:
 	if burrowed:
-		draw_arc(off + Vector2(0.0, 2.0), body_radius + 1.0, PI, TAU, 12, PAL["pine"] as Color, 2.5)
+		draw_arc(off + Vector2(0.0, 2.0), body_radius + 1.0, PI, TAU, 12, PAL["pine"] as Color, 3.0)
 		return
 	var swell: float = 0.0
 	if state == State.TELL:
@@ -377,13 +377,13 @@ func _draw_extra(off: Vector2) -> void:
 			var a0: float = float(ti) * (TAU / 12.0)
 			draw_arc(c, RING_MAX_R, a0, a0 + 0.24, 3, PAL["jade"] as Color, 1.0)
 		var hot_s: bool = state_timer <= 0.18 * _assist_tell_scale()
-		draw_arc(c, lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, (PAL["cream"] if hot_s else PAL["lime"]) as Color, 2.0 if hot_s else 1.5)
+		draw_arc(c, lerpf(RING_MAX_R * 0.75, RING_START_R + 4.0, swell), 0.0, TAU, 24, (PAL["cream"] if hot_s else PAL["lime"]) as Color, 2.0 if hot_s else 1.0)
 	elif state == State.COMMIT:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
 		var c: Vector2 = off.round()
-		draw_arc(c, ring_r + 2.0, 0.0, TAU, 28, PAL["pine"] as Color, 3.2)
-		draw_arc(c, ring_r, 0.0, TAU, 28, PAL["jade"] as Color, 2.2)
-		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["lime"] as Color, 1.4)
+		draw_arc(c, ring_r + 2.0, 0.0, TAU, 28, PAL["pine"] as Color, 3.0)
+		draw_arc(c, ring_r, 0.0, TAU, 28, PAL["jade"] as Color, 2.0)
+		draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 24, PAL["lime"] as Color, 1.0)
 		var lift: float = -sin(ring_progress * PI) * 3.0
 		for mi: int in range(6):
 			var ma: float = float(mi) * (TAU / 6.0) + ring_progress * 0.85 + sin(anim_t * 6.0 + float(mi)) * 0.14
@@ -400,4 +400,4 @@ func _draw_extra(off: Vector2) -> void:
 			draw_circle(off + Vector2(0.0, -3.0), body_radius * 0.7, PAL["gold"] as Color)
 			draw_circle(off + Vector2(0.0, -3.0), body_radius * 0.35, PAL["cream"] as Color)
 		else:
-			draw_arc(off, body_radius + 3.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+			draw_arc(off, body_radius + 3.0, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)

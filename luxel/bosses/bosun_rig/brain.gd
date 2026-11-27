@@ -232,7 +232,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Subtle deck-roll tide indicator arrow above Bosun when listing
 	var dir_x: float = -1.0 if _roll_side == "port" else 1.0
 	var ind: Vector2 = (off + Vector2(0.0, -body_radius - 12.0)).round()
-	draw_line(ind + Vector2(-6.0 * dir_x, 0.0), ind + Vector2(6.0 * dir_x, 0.0), PAL["sky"] as Color, 1.4)
+	draw_line(ind + Vector2(-6.0 * dir_x, 0.0), ind + Vector2(6.0 * dir_x, 0.0), PAL["sky"] as Color, 1.0)
 	draw_rect(Rect2(ind + Vector2(6.0 * dir_x, -1.0), Vector2(2.0, 2.0)), PAL["gold"] as Color, true)
 	if _whistle_trill_t > 0.0 and not is_flash_reduced():
-		draw_arc(off + Vector2(0.0, -14.0), 14.0 + (0.45 - _whistle_trill_t) * 26.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.2)
+		draw_arc(off + Vector2(0.0, -14.0), 14.0 + (0.45 - _whistle_trill_t) * 26.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.0)

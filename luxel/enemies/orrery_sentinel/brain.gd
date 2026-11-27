@@ -367,8 +367,8 @@ func _shield_color() -> Color:
 func _draw_star_flare(pt: Vector2, arm: float, outer_c: Color) -> void:
 	var p: Vector2 = pt.round()
 	var inner: float = maxf(1.5, arm * 0.55)
-	draw_line(p + Vector2(-arm, 0.0), p + Vector2(arm, 0.0), outer_c, 1.4)
-	draw_line(p + Vector2(0.0, -arm), p + Vector2(0.0, arm), outer_c, 1.4)
+	draw_line(p + Vector2(-arm, 0.0), p + Vector2(arm, 0.0), outer_c, 1.0)
+	draw_line(p + Vector2(0.0, -arm), p + Vector2(0.0, arm), outer_c, 1.0)
 	draw_line(p + Vector2(-inner, 0.0), p + Vector2(inner, 0.0), PAL["cream"] as Color, 1.0)
 	draw_line(p + Vector2(0.0, -inner), p + Vector2(0.0, inner), PAL["cream"] as Color, 1.0)
 	draw_rect(Rect2(p, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
@@ -383,7 +383,7 @@ func _draw_extra(off: Vector2) -> void:
 		draw_circle(back_pos, 1.2, PAL["cream"] as Color)
 	if lens_highlight_t > 0.0:
 		var back_c: Vector2 = (c - Vector2.from_angle(facing) * (body_radius * 0.75)).round()
-		draw_arc(back_c, 5.5, 0.0, TAU, 14, PAL["gold"] as Color, 1.4)
+		draw_arc(back_c, 5.5, 0.0, TAU, 14, PAL["gold"] as Color, 1.0)
 		draw_arc(back_c, 3.2, 0.0, TAU, 10, PAL["ice"] as Color, 1.0)
 		draw_line(back_c + Vector2(-4.0, 0.0), back_c + Vector2(4.0, 0.0), PAL["cream"] as Color, 1.0)
 		draw_line(back_c + Vector2(0.0, -4.0), back_c + Vector2(0.0, 4.0), PAL["cream"] as Color, 1.0)
@@ -404,13 +404,15 @@ func _draw_extra(off: Vector2) -> void:
 		draw_line(c, (c + right_d * cone_r).round(), cone_col, 1.0)
 		draw_arc(c, cone_r, facing - CONE_HALF, facing + CONE_HALF, 14, cone_col, 1.0)
 		if locked_t:
-			draw_line(ray_start, ray_end, ray_c, 1.5)
+			draw_line(ray_start, ray_end, PAL["void"] as Color, 4.0)
+			draw_line(ray_start, ray_end, ray_c, 2.0)
 			_draw_star_flare(ray_start, 3.5, PAL["coral"] as Color)
 		else:
 			var segs_o: int = maxi(4, int(beam_len / 8.0))
 			for bi: int in range(0, segs_o, 2):
 				var b0: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, beam_len, float(bi) / float(segs_o))).round()
 				var b1: Vector2 = (c + fwd_t * lerpf(body_radius + 2.0, beam_len, minf(float(bi + 1), float(segs_o)) / float(segs_o))).round()
+				draw_line(b0, b1, PAL["void"] as Color, 3.0)
 				draw_line(b0, b1, ray_c, 1.0)
 			_draw_star_flare(ray_start, 2.5, PAL["gold"] as Color)
 		draw_rect(Rect2(ray_end, Vector2(1.0, 1.0)), PAL["cream"] as Color, true)
@@ -431,8 +433,9 @@ func _draw_extra(off: Vector2) -> void:
 	if state == State.COMMIT:
 		var emit_p: Vector2 = (c + shot_dir * (body_radius + 1.0)).round()
 		var local_end: Vector2 = (_beam_end - pos).round()
+		draw_line(emit_p, local_end, PAL["void"] as Color, 6.0)
 		draw_line(emit_p, local_end, PAL["gold"] as Color, 4.0)
-		draw_line(emit_p, local_end, PAL["ice"] as Color, 2.2)
+		draw_line(emit_p, local_end, PAL["ice"] as Color, 2.0)
 		draw_line(emit_p, local_end, PAL["cream"] as Color, 1.0)
 		_draw_star_flare(emit_p, 5.0, PAL["gold"] as Color)
 		_draw_star_flare(local_end, 6.0, PAL["ice"] as Color)

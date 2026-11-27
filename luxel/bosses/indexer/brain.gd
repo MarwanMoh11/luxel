@@ -215,22 +215,26 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Highlight glowing golden tail drawer!
 	if not segments.segments.is_empty() and boss_state != BossState.DEATH:
 		var tp: Vector2 = ((segments.segments[segments.segments.size() - 1]["pos"] as Vector2) - pos).round()
-		draw_arc(tp, 10.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
+		draw_arc(tp, 10.0, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(tp, 10.0, 0.0, TAU, 16, PAL["gold"] as Color, 2.0)
 		draw_circle(tp, 3.5, PAL["cream"] as Color)
 	# Draw P2 Split Car (2 mahogany drawers on opposite rail!)
 	if _split_active and boss_state != BossState.DEATH:
 		for dp_w: Vector2 in [_split_pos, _split_tail]:
 			var dp: Vector2 = (dp_w - pos).round()
+			draw_rect(Rect2(dp - Vector2(8.0, 7.0), Vector2(16.0, 14.0)), PAL["void"] as Color)
 			draw_rect(Rect2(dp - Vector2(7.0, 6.0), Vector2(14.0, 12.0)), PAL["wine"] as Color)
-			draw_rect(Rect2(dp - Vector2(7.0, 6.0), Vector2(14.0, 12.0)), PAL["gold"] as Color, false, 1.2)
+			draw_rect(Rect2(dp - Vector2(7.0, 6.0), Vector2(14.0, 12.0)), PAL["gold"] as Color, false, 1.0)
 			draw_rect(Rect2(dp + Vector2(-3.0, -1.0), Vector2(6.0, 2.0)), PAL["cream"] as Color)
 	# Comedy beat: alphabetized cream index cards sneezing out on tail hit!
 	if _sneeze_t > 0.0:
 		for k: int in range(4):
-			var a: float = anim_t * 5.0 + float(k) * 1.5
+			var a: float = anim_t * (2.0 if fred else 5.0) + float(k) * 1.5
 			var cp: Vector2 = (c + Vector2(cos(a) * 18.0, -14.0 + sin(a) * 8.0)).round()
+			draw_rect(Rect2(cp - Vector2.ONE, Vector2(6.0, 5.0)), PAL["void"] as Color)
 			draw_rect(Rect2(cp, Vector2(4.0, 3.0)), PAL["cream"] as Color)
 			draw_rect(Rect2(cp + Vector2(1.0, 1.0), Vector2(2.0, 1.0)), PAL["coral"] as Color)

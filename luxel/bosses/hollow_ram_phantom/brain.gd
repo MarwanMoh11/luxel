@@ -216,8 +216,11 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Pulsing gold halos on Master Throttle Locks (R1 / R2)
 	for lp_w: Vector2 in _lock_positions:
 		var lp: Vector2 = (lp_w - pos).round()
-		draw_arc(lp, 10.5, 0.0, TAU, 16, Color(PAL["gold"] as Color, 0.68), 1.3)
+		draw_arc(lp, 10.5, 0.0, TAU, 16, Color(PAL["void"] as Color, 0.68), 3.0)
+		draw_arc(lp, 10.5, 0.0, TAU, 16, Color(PAL["gold"] as Color, 0.68), 1.0)
 	# Violet-coral temper aura around Phantom during TELL / P2
 	if boss_state == BossState.TELL or (phase >= 2 and boss_state != BossState.DEATH):
 		var col: Color = LxPalette.color(_temper_color(_active_temper), "rose")
-		draw_arc(off.round(), body_radius + 4.0, anim_t * 6.0, anim_t * 6.0 + PI * 1.4, 16, Color(col, 0.72), 1.3)
+		var ta: float = anim_t * (1.8 if fred else 6.0)
+		draw_arc(off.round(), body_radius + 4.0, ta, ta + PI * 1.4, 16, Color(PAL["void"] as Color, 0.72), 3.0)
+		draw_arc(off.round(), body_radius + 4.0, ta, ta + PI * 1.4, 16, Color(col, 0.72), 1.0)

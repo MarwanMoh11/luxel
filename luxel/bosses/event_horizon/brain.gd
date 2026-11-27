@@ -363,20 +363,20 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Live Singularity gravitational pull / White Hole push ripples + Photon Ring aim guide
 	if _singularity != null and _fields_reg:
 		draw_arc(c, _singularity.radius, 0.0, TAU, 36, Color(ring_c, 0.25), 1.0)
-		draw_arc(c, 34.0, 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.42 if is_wh else 0.52), 1.2)
+		draw_arc(c, 34.0, 0.0, TAU, 24, Color(PAL["gold"] as Color, 0.42 if is_wh else 0.52), 1.0)
 		for k: int in range(3):
 			var ph: float = fposmod(_ripple_t + float(k) / 3.0, 1.0)
 			var u: float = ph if is_wh else (1.0 - ph)
-			draw_arc(c, lerpf(16.0, _singularity.radius - 4.0, u), 0.0, TAU, 28, Color(hi_c if k == 0 else ring_c, sin(ph * PI) * 0.42), 1.2)
+			draw_arc(c, lerpf(16.0, _singularity.radius - 4.0, u), 0.0, TAU, 28, Color(hi_c if k == 0 else ring_c, sin(ph * PI) * 0.42), 1.0)
 
 	# Draw the two orbiting Accretion Lens Satellite Wells (visual aim cues for curved shots!)
 	for lw: AccretionLensWell in [_lens_a, _lens_b]:
 		if lw != null and _fields_reg:
 			var lp: Vector2 = (lw.pos - pos + off).round()
 			var lc: Color = (PAL["gold"] if lw.is_push else PAL["sky"]) as Color
-			draw_arc(lp, lw.radius * 0.58, 0.0, TAU, 20, Color(lc, 0.42), 1.2)
+			draw_arc(lp, lw.radius * 0.58, 0.0, TAU, 20, Color(lc, 0.42), 1.0)
 			draw_circle(lp, 5.5, PAL["void"] as Color)
-			draw_arc(lp, 5.5, 0.0, TAU, 12, lc, 1.4)
+			draw_arc(lp, 5.5, 0.0, TAU, 12, lc, 1.0)
 			draw_rect(Rect2(lp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 
 	# Straight-shot SWALLOW / HEAL visual feedback (dark imploding ring + plum cross!)
@@ -387,8 +387,8 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Curved-shot PERIAPSIS CRIT visual feedback (blazing gold burst ring!)
 	if _periapsis_flash_t > 0.0:
 		var u_p: float = 1.0 - clampf(_periapsis_flash_t / 0.28, 0.0, 1.0)
-		draw_arc(c, lerpf(14.0, 38.0, u_p), 0.0, TAU, 24, PAL["gold"] as Color, 2.2)
-		draw_arc(c, lerpf(10.0, 30.0, u_p), 0.0, TAU, 18, PAL["cream"] as Color, 1.2)
+		draw_arc(c, lerpf(14.0, 38.0, u_p), 0.0, TAU, 24, PAL["gold"] as Color, 2.0)
+		draw_arc(c, lerpf(10.0, 30.0, u_p), 0.0, TAU, 18, PAL["cream"] as Color, 1.0)
 
 	# White Hole P3 inversion flash
 	if _white_flip_flash_t > 0.0:

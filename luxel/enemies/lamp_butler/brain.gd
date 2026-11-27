@@ -291,7 +291,7 @@ func _step_position(dt: float, target_pos: Vector2) -> void:
 
 
 func _step_tell(dt: float, target_pos: Vector2) -> void:
-	if state_timer > 0.16:
+	if state_timer > 0.16 * _assist_tell_scale():
 		var to_t: Vector2 = target_pos - pos
 		if to_t.length() > 0.1:
 			_turn_toward(to_t.angle(), 2.2, dt)
@@ -399,6 +399,8 @@ func _draw_extra(off: Vector2) -> void:
 		draw_colored_polygon(pts, Color(col, fill_a))
 		draw_arc(c, CONE_RANGE, a0, a1, 10, Color(col, 0.45), 1.0)
 	if dusk_frozen_t > 0.0:
-		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.8)
+		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 5.5, 0.0, TAU, 16, PAL["ice"] as Color, 2.0)
 	if state == State.COMMIT:
-		draw_arc(c, SLASH_HIT_R * 0.85, facing - SLASH_ARC, facing + SLASH_ARC, 14, PAL["cream"] as Color, 2.2)
+		draw_arc(c, SLASH_HIT_R * 0.85, facing - SLASH_ARC, facing + SLASH_ARC, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c, SLASH_HIT_R * 0.85, facing - SLASH_ARC, facing + SLASH_ARC, 14, PAL["cream"] as Color, 2.0)

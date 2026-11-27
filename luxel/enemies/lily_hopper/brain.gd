@@ -360,6 +360,7 @@ func _draw_extra(off: Vector2) -> void:
 		var br: float = roundf(lerpf(10.0, 6.0, prog))
 		var br_c: Color = (PAL["gold"] if locked else PAL["sky"]) as Color
 		var hi_c: Color = (PAL["cream"] if locked else PAL["ice"]) as Color
+		draw_line(c, rel, PAL["void"] as Color, 3.0)
 		draw_line(c, rel, br_c, 1.0)
 		for bi: int in range(1, 4):
 			var bt: float = float(bi) * 0.25
@@ -370,8 +371,10 @@ func _draw_extra(off: Vector2) -> void:
 				var fx: float = float(sx)
 				var fy: float = float(sy)
 				var cr: Vector2 = rel + Vector2(fx * br, fy * br)
-				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), br_c, 1.5)
-				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), br_c, 1.5)
+				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), PAL["void"] as Color, 4.0)
+				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), PAL["void"] as Color, 4.0)
+				draw_line(cr, cr + Vector2(-fx * 3.0, 0.0), br_c, 2.0)
+				draw_line(cr, cr + Vector2(0.0, -fy * 3.0), br_c, 2.0)
 				draw_rect(Rect2(cr, Vector2(1.0, 1.0)), hi_c, true)
 		draw_rect(Rect2(rel + Vector2(-1.0, 0.0), Vector2(3.0, 1.0)), hi_c, true)
 		draw_rect(Rect2(rel + Vector2(0.0, -1.0), Vector2(1.0, 3.0)), hi_c, true)
@@ -380,9 +383,10 @@ func _draw_extra(off: Vector2) -> void:
 			draw_arc(rel, RING_MAX_R, a0, a0 + 0.34, 3, br_c, 1.0)
 	elif state == State.COMMIT and commit_stage == CommitStage.RING:
 		var ring_r: float = lerpf(RING_START_R, RING_MAX_R, ring_progress)
-		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["blue"] as Color, 2.4)
-		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 28, PAL["sky"] as Color, 2.2)
-		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.2)
+		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["void"] as Color, 5.0)
+		draw_arc(Vector2.ZERO, ring_r + 1.5, 0.0, TAU, 28, PAL["blue"] as Color, 3.0)
+		draw_arc(Vector2.ZERO, ring_r, 0.0, TAU, 28, PAL["sky"] as Color, 2.0)
+		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 2.2), 0.0, TAU, 24, PAL["ice"] as Color, 1.0)
 		draw_arc(Vector2.ZERO, maxf(2.0, ring_r - 3.4), 0.0, TAU, 20, PAL["cream"] as Color, 1.0)
 		var lift: float = -sin(ring_progress * PI) * 5.0
 		for di: int in range(4):

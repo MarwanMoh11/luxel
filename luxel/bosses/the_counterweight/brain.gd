@@ -323,6 +323,6 @@ func _draw_boss_extra(off: Vector2) -> void:
 		for k: int in range(2):
 			var ph: float = fposmod(_well_anim + float(k) * 0.5, 1.0)
 			var u: float = ph if _well.is_push else (1.0 - ph)
-			draw_arc(wc, lerpf(10.0, _well.radius - 2.0, u), 0.0, TAU, 24, Color(c_ring, sin(ph * PI) * 0.45), 1.2)
+			draw_arc(wc, lerpf(10.0, _well.radius - 2.0, u), 0.0, TAU, 24, Color(c_ring, sin(ph * PI) * 0.45), 1.0)
 		draw_circle(wc, 6.5, PAL["void"] as Color)
-		draw_arc(wc, 6.5, 0.0, TAU, 14, c_ring, 1.2)
+		draw_arc(wc, 6.5, 0.0, TAU, 14, c_ring, 1.0)

@@ -310,15 +310,15 @@ func _draw_boss_extra(off: Vector2) -> void:
 	for sr: Dictionary in _smoke_rings:
 		var u: float = clampf(float(sr["age"]) / maxf(0.01, float(sr["life"])), 0.0, 1.0)
 		var lp: Vector2 = ((sr["pos"] as Vector2) - pos + off).round()
-		draw_arc(lp, lerpf(3.0, 9.0, u), 0.0, TAU, 12, Color(PAL["cream"] as Color, 1.0 - u), 1.3)
+		draw_arc(lp, lerpf(3.0, 9.0, u), 0.0, TAU, 12, Color(PAL["cream"] as Color, 1.0 - u), 1.0)
 	# Interactive wake mines
 	for m: Dictionary in _mines:
 		var mp: Vector2 = ((m["pos"] as Vector2) - pos + off).round()
 		var bat: bool = bool(m["batted"])
 		draw_circle(mp, 5.5, PAL["night"] as Color)
 		draw_circle(mp, 4.0, PAL["gold" if bat else "coral"] as Color)
-		draw_arc(mp, 6.5, 0.0, TAU, 10, PAL["cream" if bat else "apricot"] as Color, 1.1)
+		draw_arc(mp, 6.5, 0.0, TAU, 10, PAL["cream" if bat else "apricot"] as Color, 1.0)
 	# P2 circular moat current ring
 	if _swirl_field != null and _swirl_field.active:
 		var cc: Vector2 = (_swirl_field.center - pos + off).round()
-		draw_arc(cc, 68.0, anim_t * _orbit_sign, anim_t * _orbit_sign + PI * 1.4, 24, Color(PAL["sky"] as Color, 0.35), 1.2)
+		draw_arc(cc, 68.0, anim_t * _orbit_sign, anim_t * _orbit_sign + PI * 1.4, 24, Color(PAL["sky"] as Color, 0.35), 1.0)

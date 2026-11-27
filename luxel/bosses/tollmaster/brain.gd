@@ -301,19 +301,24 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Lectern Shield front arc when active
 	if not is_punishable() and boss_state != BossState.DEATH:
-		draw_arc(c, body_radius + 4.5, facing - 0.95, facing + 0.95, 14, PAL["gold"] as Color, 2.2)
+		draw_arc(c, body_radius + 4.5, facing - 0.95, facing + 0.95, 14, PAL["void"] as Color, 4.0)
+		draw_arc(c, body_radius + 4.5, facing - 0.95, facing + 0.95, 14, PAL["gold"] as Color, 2.0)
 	# Active Invoice countdown ring over Brass Register!
 	if _invoice_active:
 		var reg: Dictionary = props.get_prop(_register_id)
 		if not reg.is_empty() and str(reg["state"]) == "idle":
 			var rp: Vector2 = ((reg["pos"] as Vector2) - pos).round()
 			var frac: float = clampf(_invoice_timer / INVOICE_DURATION, 0.0, 1.0)
-			draw_arc(rp, 16.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 24, PAL["gold"] as Color, 2.2)
+			draw_arc(rp, 16.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 24, PAL["void"] as Color, 4.0)
+			draw_arc(rp, 16.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 24, PAL["gold"] as Color, 2.0)
+			draw_rect(Rect2(rp + Vector2(-6.0, -7.0), Vector2(12.0, 10.0)), PAL["void"] as Color)
 			draw_rect(Rect2(rp + Vector2(-5.0, -6.0), Vector2(10.0, 8.0)), PAL["gold"] as Color)
 			draw_rect(Rect2(rp + Vector2(-3.0, -4.0), Vector2(6.0, 4.0)), PAL["coral"] as Color)
 	# Popped monocle comedy cue!
 	if _monocle_popped_t > 0.0:
-		var mp: Vector2 = (c + Vector2(15.0, -body_radius - 14.0 + sin(anim_t * 6.0) * 2.0)).round()
-		draw_arc(mp, 3.5, 0.0, TAU, 12, PAL["gold"] as Color, 1.4)
+		var mp: Vector2 = (c + Vector2(15.0, -body_radius - 14.0 + (0.0 if fred else sin(anim_t * 6.0) * 2.0))).round()
+		draw_arc(mp, 3.5, 0.0, TAU, 12, PAL["void"] as Color, 3.0)
+		draw_arc(mp, 3.5, 0.0, TAU, 12, PAL["gold"] as Color, 1.0)

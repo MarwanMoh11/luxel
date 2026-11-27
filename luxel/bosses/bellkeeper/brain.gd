@@ -492,21 +492,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var hc: Vector2 = (home - pos).round()
 		var frozen: bool = _clock_freeze_t > 0.0
 		var ring_c: Color = (PAL["ice"] if frozen else PAL["gold"]) as Color
-		draw_arc(hc, CLOCK_HAND_LEN, 0.0, TAU, 48, Color(ring_c, 0.28), 1.4)
+		draw_arc(hc, CLOCK_HAND_LEN, 0.0, TAU, 48, Color(ring_c, 0.28), 1.0)
 		for hi: int in range(12):
 			var ha: float = float(hi) * (TAU / 12.0)
 			var d_h: Vector2 = Vector2.from_angle(ha)
-			draw_line((hc + d_h * (CLOCK_HAND_LEN - 7.0)).round(), (hc + d_h * CLOCK_HAND_LEN).round(), Color(ring_c, 0.42), 1.5 if hi % 3 == 0 else 1.0)
+			draw_line((hc + d_h * (CLOCK_HAND_LEN - 7.0)).round(), (hc + d_h * CLOCK_HAND_LEN).round(), Color(ring_c, 0.42), 2.0 if hi % 3 == 0 else 1.0)
 		var hand_dir: Vector2 = Vector2.from_angle(_clock_ang)
 		var p0: Vector2 = (hc + hand_dir * 16.0).round()
 		var p1: Vector2 = (hc + hand_dir * CLOCK_HAND_LEN).round()
 		var live_hand: bool = _saw_first_tell and boss_state != BossState.PHASE_SHIFT and _clock_warm_t >= 1.25
 		var ha_f: float = 0.85 if live_hand else 0.32
 		draw_circle(hc, 5.2, Color(PAL["void"] as Color, ha_f))
-		draw_arc(hc, 4.4, 0.0, TAU, 14, Color(ring_c, ha_f), 1.4)
+		draw_arc(hc, 4.4, 0.0, TAU, 14, Color(ring_c, ha_f), 1.0)
 		draw_circle(hc, 2.0, Color(PAL["cream"] as Color, ha_f * 0.90))
-		draw_line(p0, p1, Color(PAL["night"] as Color, ha_f), 4.2)
-		draw_line(p0, p1, Color(ring_c, ha_f), 2.2)
+		draw_line(p0, p1, Color(PAL["night"] as Color, ha_f), 4.0)
+		draw_line(p0, p1, Color(ring_c, ha_f), 2.0)
 		draw_line(p0, p1, Color(PAL["cream"] as Color, ha_f * 0.85), 1.0)
 
 	if phase >= 3 and boss_state != BossState.DEATH:
@@ -522,21 +522,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 			LxBossTelegraphFx.draw_ground_danger_ring(self, c, SLAM_MAX_R, p_u, anim_t, _tone_color_key(), "coral")
 		elif slam_stage == SlamStage.RING_1 or slam_stage == SlamStage.RING_2:
 			var ring_r: float = lerpf(SLAM_START_R, SLAM_MAX_R, _slam_progress)
-			draw_arc(c, ring_r + 3.0, 0.0, TAU, 36, PAL["apricot"] as Color, 2.2)
-			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["gold"] as Color, 3.4)
-			draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.4)
+			draw_arc(c, ring_r + 3.0, 0.0, TAU, 36, PAL["apricot"] as Color, 2.0)
+			draw_arc(c, ring_r, 0.0, TAU, 36, PAL["gold"] as Color, 3.0)
+			draw_arc(c, maxf(2.0, ring_r - 2.4), 0.0, TAU, 28, PAL["cream"] as Color, 1.0)
 	elif boss_state == BossState.PHASE_SHIFT:
 		var rp: float = 1.0 - clampf(state_timer / maxf(phase_shift_duration, 0.05), 0.0, 1.0)
 		var rr: float = body_radius + 11.0 + rp * 18.0
 		var ph_a: float = (1.0 - rp * 0.45) * (0.58 if fred else 1.0)
-		draw_arc(c, rr + 2.5, 0.0, TAU, 28, Color(PAL["apricot"] as Color, ph_a), 1.4 if fred else 2.0)
-		draw_arc(c, rr, 0.0, TAU, 28, Color(PAL["gold"] as Color, ph_a), 1.6 if fred else 2.4)
+		draw_arc(c, rr + 2.5, 0.0, TAU, 28, Color(PAL["apricot"] as Color, ph_a), 1.0 if fred else 2.0)
+		draw_arc(c, rr, 0.0, TAU, 28, Color(PAL["gold"] as Color, ph_a), 1.0 if fred else 2.0)
 	if _p3_chime_t > 0.0:
 		var cp: float = 1.0 - clampf(_p3_chime_t / 0.65, 0.0, 1.0)
 		var cr: float = body_radius + 10.0 + cp * 22.0
 		var ch_a: float = (1.0 - cp * 0.45) * (0.58 if fred else 1.0)
-		draw_arc(c, cr + 2.0, 0.0, TAU, 28, Color(PAL["coral"] as Color, ch_a), 1.4 if fred else 2.0)
-		draw_arc(c, cr, 0.0, TAU, 28, Color(PAL["gold"] as Color, ch_a), 1.6 if fred else 2.2)
+		draw_arc(c, cr + 2.0, 0.0, TAU, 28, Color(PAL["coral"] as Color, ch_a), 1.0 if fred else 2.0)
+		draw_arc(c, cr, 0.0, TAU, 28, Color(PAL["gold"] as Color, ch_a), 1.0 if fred else 2.0)
 
 
 func _draw_p3_tone_aura(c: Vector2, fred: bool) -> void:
@@ -545,22 +545,22 @@ func _draw_p3_tone_aura(c: Vector2, fred: bool) -> void:
 	var ring_a: float = 0.62 if fred else 0.78
 	var spin: float = anim_t * (0.45 if fred else 1.1)
 	draw_arc(c, aura_r, 0.0, TAU, 20, Color(PAL["void"] as Color, ring_a), 3.0)
-	draw_arc(c, aura_r, 0.0, TAU, 20, Color(tc, ring_a), 1.5)
+	draw_arc(c, aura_r, 0.0, TAU, 20, Color(tc, ring_a), 2.0)
 	if _toll_tone == "dawn":
 		for i: int in range(4):
 			var a: float = spin + float(i) * (PI * 0.5)
 			var sc: Vector2 = (c + Vector2.from_angle(a) * (aura_r + 3.0)).round()
-			draw_line((sc + Vector2(-3.0, 0.0)).round(), (sc + Vector2(3.0, 0.0)).round(), PAL["void"] as Color, 2.8)
-			draw_line((sc + Vector2(0.0, -3.0)).round(), (sc + Vector2(0.0, 3.0)).round(), PAL["void"] as Color, 2.8)
-			draw_line((sc + Vector2(-2.5, 0.0)).round(), (sc + Vector2(2.5, 0.0)).round(), tc, 1.2)
-			draw_line((sc + Vector2(0.0, -2.5)).round(), (sc + Vector2(0.0, 2.5)).round(), tc, 1.2)
+			draw_line((sc + Vector2(-3.0, 0.0)).round(), (sc + Vector2(3.0, 0.0)).round(), PAL["void"] as Color, 3.0)
+			draw_line((sc + Vector2(0.0, -3.0)).round(), (sc + Vector2(0.0, 3.0)).round(), PAL["void"] as Color, 3.0)
+			draw_line((sc + Vector2(-2.5, 0.0)).round(), (sc + Vector2(2.5, 0.0)).round(), tc, 1.0)
+			draw_line((sc + Vector2(0.0, -2.5)).round(), (sc + Vector2(0.0, 2.5)).round(), tc, 1.0)
 			draw_rect(Rect2(sc, Vector2.ONE), PAL["cream"] as Color)
 	elif _toll_tone == "dusk":
 		for sgn: float in [0.0, PI]:
 			var a0: float = spin + sgn - 0.65
 			var a1: float = spin + sgn + 0.65
-			draw_arc(c, aura_r + 3.5, a0, a1, 10, PAL["void"] as Color, 3.2)
-			draw_arc(c, aura_r + 3.5, a0, a1, 10, tc, 1.6)
+			draw_arc(c, aura_r + 3.5, a0, a1, 10, PAL["void"] as Color, 3.0)
+			draw_arc(c, aura_r + 3.5, a0, a1, 10, tc, 2.0)
 			draw_arc(c, aura_r + 2.2, a0 + 0.18, a1 - 0.18, 8, PAL["cream"] as Color, 1.0)
 	else:
 		for i: int in range(3):
@@ -571,6 +571,6 @@ func _draw_p3_tone_aura(c: Vector2, fred: bool) -> void:
 			var bl: Vector2 = (c + d_v * (aura_r + 1.0) - p_v * 3.0).round()
 			var br: Vector2 = (c + d_v * (aura_r + 1.0) + p_v * 3.0).round()
 			var tri := PackedVector2Array([tip, bl, br, tip])
-			draw_polyline(tri, PAL["void"] as Color, 2.8)
+			draw_polyline(tri, PAL["void"] as Color, 3.0)
 			draw_colored_polygon(PackedVector2Array([tip, bl, br]), tc)
 			draw_polyline(tri, PAL["cream"] as Color, 1.0)

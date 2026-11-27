@@ -316,23 +316,27 @@ func _shield_color() -> Color:
 
 func _draw_boss_extra(_off: Vector2) -> void:
 	var inv: Vector2 = -pos
+	var fred: bool = is_flash_reduced()
 	# Growth-ring orbital lines during P2/P3
 	if _field.active:
 		var cp: Vector2 = (_field.center + inv).round()
 		var rot: float = anim_t * 0.8 * _field.dir_sign
 		for k: int in range(4):
 			var a0: float = rot + float(k) * (PI * 0.5)
-			draw_arc(cp, 68.0, a0, a0 + 0.75, 10, Color(PAL["lime"] as Color, 0.32), 1.2)
+			draw_arc(cp, 68.0, a0, a0 + 0.75, 10, Color(PAL["void"] as Color, 0.42), 3.0)
+			draw_arc(cp, 68.0, a0, a0 + 0.75, 10, Color(PAL["lime"] as Color, 0.32), 1.0)
 	# Glowing Shrink-Dive Fissure during Bark Seal!
 	if _bark_sealed_t > 0.0:
 		var fp: Vector2 = (_fissure_pos + inv).round()
-		var r: float = 12.0 + sin(anim_t * 7.0) * 2.0
+		var r: float = 12.0 + (0.0 if fred else sin(anim_t * 7.0) * 2.0)
 		draw_circle(fp, r, Color(PAL["pine"] as Color, 0.60))
-		draw_arc(fp, r, 0.0, TAU, 18, PAL["lime"] as Color, 1.8)
+		draw_arc(fp, r, 0.0, TAU, 18, PAL["void"] as Color, 4.0)
+		draw_arc(fp, r, 0.0, TAU, 18, PAL["lime"] as Color, 2.0)
 		draw_circle(fp, 4.0, PAL["cream"] as Color)
 	# Active Heartwood Beam Sweep visual!
 	if boss_state == BossState.COMMIT and active_attack_id == "heartwood_beam_sweep":
 		var b_end: Vector2 = (_trace_heartwood_beam() + inv).round()
+		draw_line(Vector2.ZERO, b_end, PAL["void"] as Color, 9.0)
 		draw_line(Vector2.ZERO, b_end, PAL["lime"] as Color, 7.0)
 		draw_line(Vector2.ZERO, b_end, PAL["gold"] as Color, 4.0)
-		draw_line(Vector2.ZERO, b_end, PAL["cream"] as Color, 1.8)
+		draw_line(Vector2.ZERO, b_end, PAL["cream"] as Color, 2.0)
