@@ -13,6 +13,7 @@ const TINT_LERP_S: float = 0.6
 const DEFAULT_TINT: Vector3 = Vector3(0.60, 0.58, 0.78)
 
 const BIOME_TINTS: Dictionary = {
+	0: Vector3(0.72, 0.64, 0.78), # Wick House Hub: warm candlelit hearth interior
 	1: Vector3(0.64, 0.58, 0.78), # Bell Isle: luminous warm dusk indigo
 	2: Vector3(0.48, 0.68, 0.84), # Tidewater Harbor: crisp moonlit oceanic teal
 	3: Vector3(0.56, 0.76, 0.72), # Thornwood Hollow: vibrant nocturnal forest emerald
@@ -75,7 +76,7 @@ func _ensure_veil() -> void:
 	_veil.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_veil.position = Vector2.ZERO
 	_veil.size = VIEW_SIZE
-	_veil.color = Color.WHITE
+	_veil.color = LxPalette.PAL["cream"] as Color
 	_veil.material = _mat
 	add_child(_veil)
 
@@ -180,9 +181,9 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_beacon_lift = move_toward(_beacon_lift, target_lift, dt * 0.16) if dt > 0.0 else target_lift
 	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
 	var b_phase: float = LxBiomeRules.active_instance.get_shader_phase() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.5
-	var b_id: int = region.current_island_id if (region != null and region.current_island_id > 0) else 1
+	var b_id: int = region.current_island_id if (region != null and region.current_island_id >= 0) else 1
 	var is_dng: bool = region != null and region.is_dungeon
-	var max_dark: float = 0.38 if is_dng else 0.44
+	var max_dark: float = 0.24 if b_id == 0 else (0.38 if is_dng else 0.44)
 	var eff_dark: float = clampf((darkness_strength + b_off) * 0.58 - _beacon_lift, 0.0, max_dark)
 	var target_vig: float = 0.0
 	if b_id >= 2 and _boss_phase >= 2:
@@ -380,11 +381,11 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 
 func _update_biome_tint(dt: float, region: LxRegionLoader, lit_b: int = -1, flash_red: bool = false) -> void:
 	var isl_id: int = 1
-	if region != null and region.current_island_id > 0:
+	if region != null and region.current_island_id >= 0:
 		isl_id = region.current_island_id
-	elif Lx.state != null and is_instance_valid(Lx.state) and Lx.state.island_id > 0:
+	elif Lx.state != null and is_instance_valid(Lx.state) and Lx.state.island_id >= 0:
 		isl_id = Lx.state.island_id
-	var desired: Vector3 = BIOME_TINTS.get(clampi(isl_id, 1, 8), DEFAULT_TINT) as Vector3
+	var desired: Vector3 = BIOME_TINTS.get(clampi(isl_id, 0, 8), DEFAULT_TINT) as Vector3
 	if region != null and not region.is_dungeon:
 		if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id):
 			desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.38)

@@ -183,15 +183,15 @@ func _mount_nodes() -> void:
 	var host: Node = _resolve_host_node()
 	if host == null:
 		return
-	if sold_fx == null or not is_instance_valid(sold_fx):
-		if LxSoldFx.active_instance != null and is_instance_valid(LxSoldFx.active_instance):
+	if sold_fx == null or not is_instance_valid(sold_fx) or sold_fx.is_queued_for_deletion():
+		if LxSoldFx.active_instance != null and is_instance_valid(LxSoldFx.active_instance) and not LxSoldFx.active_instance.is_queued_for_deletion():
 			sold_fx = LxSoldFx.active_instance
 		else:
 			sold_fx = LxSoldFx.new()
 			sold_fx.name = "LxSoldFx"
 			host.add_child(sold_fx)
-	if toll_menu == null or not is_instance_valid(toll_menu):
-		if LxTollMenu.active_instance != null and is_instance_valid(LxTollMenu.active_instance):
+	if toll_menu == null or not is_instance_valid(toll_menu) or toll_menu.is_queued_for_deletion():
+		if LxTollMenu.active_instance != null and is_instance_valid(LxTollMenu.active_instance) and not LxTollMenu.active_instance.is_queued_for_deletion():
 			toll_menu = LxTollMenu.active_instance
 		else:
 			toll_menu = LxTollMenu.new()
@@ -225,9 +225,13 @@ func _unmount_nodes() -> void:
 	_hud_node = null
 	if toll_menu != null and is_instance_valid(toll_menu):
 		toll_menu.close()
+		if LxTollMenu.active_instance == toll_menu:
+			LxTollMenu.active_instance = null
 		toll_menu.queue_free()
 	toll_menu = null
 	if sold_fx != null and is_instance_valid(sold_fx):
+		if LxSoldFx.active_instance == sold_fx:
+			LxSoldFx.active_instance = null
 		sold_fx.queue_free()
 	sold_fx = null
 
@@ -383,7 +387,7 @@ func _on_sold_state_changed() -> void:
 
 
 func _should_show_badge() -> bool:
-	if Lx.root != null and is_instance_valid(Lx.root) and int(Lx.root.get("flow")) == 0:
+	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
 		return false
 	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false

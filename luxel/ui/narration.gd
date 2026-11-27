@@ -204,7 +204,7 @@ func _on_narration_requested(string_id: String, style: String, duration: float) 
 		return
 	if not cur_notice.is_empty() and resolved == cur_notice:
 		return
-	if style == "title" and _is_duplicate_boss_title(hud, string_id, resolved):
+	if (style == "title" or style == "narration") and _is_duplicate_boss_title(hud, string_id, resolved):
 		return
 	var slot_name: String = "title" if (style == "title" or style == "warning") else "main"
 	var eff_dur: float = minf(duration, 2.6) if (slot_name == "main" and style == "narration" and not is_letterbox_on()) else duration
@@ -315,7 +315,8 @@ func _draw_slot(s: Dictionary) -> void:
 			y = 166.0 if lines.size() == 1 else 165.0
 		else:
 			var many_moves: bool = _unlocked_move_count() >= 4
-			var base_y: float = (129.0 if has_active_prompt() else 132.0) if many_moves else 146.0
+			var boss_bar: bool = _is_boss_bar_active()
+			var base_y: float = (118.0 if has_active_prompt() else 122.0) if boss_bar else ((129.0 if has_active_prompt() else 132.0) if many_moves else 146.0)
 			if slot_name == "title":
 				base_y -= 13.0 if _slots.has("main") else 2.0
 			y = base_y - gap * float(lines.size() - 1)
@@ -369,6 +370,14 @@ func _draw_prompt() -> void:
 	]:
 		draw_rect(Rect2(cp, Vector2.ONE), pin_c)
 	LxPixelFont.draw_centered(self, _prompt_text, 160.0, y + 3.0, col, 1)
+
+
+func _is_boss_bar_active() -> bool:
+	if Lx.ui != null and Lx.ui.get("hud") != null:
+		var hud: Node = Lx.ui.get("hud") as Node
+		if hud != null and bool(hud.get("_boss_active")):
+			return true
+	return false
 
 
 func _unlocked_move_count() -> int:

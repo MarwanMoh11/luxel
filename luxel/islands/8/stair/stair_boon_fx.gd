@@ -347,7 +347,9 @@ func _mount_hud() -> void:
 func _should_show_hud() -> bool:
 	if _dir == null or not _dir.is_in_stair():
 		return false
-	if Lx.root != null and is_instance_valid(Lx.root) and int(Lx.root.get("flow")) == 0:
+	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
+		return false
+	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
 		return false
 	return true
 

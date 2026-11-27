@@ -35,7 +35,7 @@ func _ready() -> void:
 
 
 func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
-	_island_id = clampi(island_id, 1, 8)
+	_island_id = clampi(island_id, 0, 8)
 	_is_dungeon = is_dungeon
 	_clock = 0.0
 	_cam_center = cam_center
@@ -50,6 +50,9 @@ func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
 	_cached_lit_b = _lit_beacon_progress()
 	if not is_dungeon:
 		match _island_id:
+			0: # Wick House Hub: gentle cozy hearth motes (no outdoor sunbeams indoors)
+				for i: int in range(10):
+					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(4.0, 9.0), "phase": rng.randf_range(0.0, TAU)})
 			1: # Gentle twilight bell-blossom petals -> warm golden dawn pollen when relit
 				for i: int in range(12):
 					_drops.append({"ox": rng.randf_range(-HALF_W, HALF_W), "oy": rng.randf_range(-HALF_H, HALF_H), "spd": rng.randf_range(7.0, 14.0), "phase": rng.randf_range(0.0, TAU)})
@@ -116,6 +119,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			Lx.audio.play_sfx(_ambient_breath_sfx(relit), _cam_center + Vector2(_amb_side * 96.0, -28.0), true)
 			_amb_side = -_amb_side
 	match _island_id:
+		0:
+			for d: Dictionary in _drops:
+				d["ox"] = wrapf(float(d["ox"]) + sin(_clock * 0.65 + float(d["phase"])) * 4.0 * dt, -HALF_W, HALF_W)
+				d["oy"] = wrapf(float(d["oy"]) - float(d["spd"]) * 0.45 * dt, -HALF_H, HALF_H)
 		1:
 			for d: Dictionary in _drops:
 				d["ox"] = wrapf(float(d["ox"]) + (6.0 + sin(_clock * 1.1 + float(d["phase"])) * 5.0) * dt, -HALF_W, HALF_W)
@@ -160,6 +167,14 @@ func _draw() -> void:
 	var relit: bool = _is_relit()
 	var lit_b: int = 3 if relit else _cached_lit_b
 	match _island_id:
+		0:
+			var a0: float = 0.28 if fred else 0.48
+			for i: int in range(_drops.size()):
+				var d: Dictionary = _drops[i]
+				var p: Vector2 = (_cam_center + Vector2(float(d["ox"]), float(d["oy"]))).round()
+				var tw0: float = 0.78 if fred else (0.55 + 0.45 * sin(_clock * 1.8 + float(d["phase"])))
+				var c0: Color = (PAL["cream"] if i % 4 == 0 else (PAL["gold"] if i % 2 == 0 else PAL["apricot"])) as Color
+				draw_rect(Rect2(p, Vector2.ONE), Color(c0, a0 * tw0))
 		1:
 			if relit or lit_b >= 3:
 				_draw_dawn_sunbeams(fred, 0.55 if not relit else 1.0)
@@ -190,6 +205,8 @@ func _draw() -> void:
 
 func _ambient_breath_sfx(relit: bool) -> String:
 	match _island_id:
+		0:
+			return "prop_chime"
 		1:
 			return "prop_chime"
 		2:
@@ -296,8 +313,8 @@ func _draw_comets(fred: bool, relit: bool, lit_b: int) -> void:
 		var tail: Vector2 = (head - Vector2(22.0, 10.0)).round()
 		var a: float = sin(u * PI) * (0.55 if fred else 0.90)
 		var gold_c: bool = relit or lit_b >= 2
-		draw_line(tail, head, Color((PAL["gold"] if gold_c else PAL["sky"]) as Color, a * 0.75), 1.2)
-		draw_line(tail.lerp(head, 0.5), head, Color((PAL["cream"] if gold_c else PAL["gold"]) as Color, a), 1.4)
+		draw_line(tail, head, Color((PAL["gold"] if gold_c else PAL["sky"]) as Color, a * 0.75), 1.0)
+		draw_line(tail.lerp(head, 0.5).round(), head, Color((PAL["cream"] if gold_c else PAL["gold"]) as Color, a), 2.0)
 		draw_rect(Rect2(head - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, a))
 
 

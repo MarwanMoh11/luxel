@@ -50,6 +50,9 @@ func detach() -> void:
 
 func on_region_loaded(region_id: String) -> void:
 	_region_id = region_id
+	_motes.clear()
+	_flare_t = 0.0
+	_bridge_wave_t = 0.0
 	_ensure_canvas()
 	if _canvas != null and is_instance_valid(_canvas):
 		_canvas.queue_redraw()
@@ -91,13 +94,15 @@ func _on_setting_sold(setting_id: String, _weight: int, total_weight: int) -> vo
 			is_first_trade = true
 		if total_weight >= 1:
 			Lx.state.story_flags["toll_weight_1"] = true
-	if is_first_trade or _region_id == "vigil_terrace":
+	var in_vigil: bool = _region_id == "vigil_terrace"
+	var in_boss: bool = Lx.world != null and LxBossHud.region_has_live_boss(Lx.world)
+	if (is_first_trade and not in_boss) or in_vigil:
 		_bridge_wave_t = BRIDGE_WAVE_DURATION_S
 		if Lx.events != null:
 			Lx.events.sfx_requested.emit("toll_mote_drink", Vector2.ZERO, false)
 			if LxStrings.has_id("ISL8_ASK_PAID"):
 				Lx.events.narration_requested.emit("ISL8_ASK_PAID", "title", 3.4)
-			if is_first_trade and LxStrings.has_id("ISL8_VIGIL_BRIDGES_LIT"):
+			if is_first_trade and in_vigil and LxStrings.has_id("ISL8_VIGIL_BRIDGES_LIT"):
 				Lx.events.narration_requested.emit("ISL8_VIGIL_BRIDGES_LIT", "narration", 3.8)
 			Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("apply_layers"):
@@ -164,7 +169,25 @@ func _wick_screen_pos() -> Vector2:
 	return Vector2(VIEW_W * 0.5, VIEW_H * 0.5)
 
 
+func _is_overlay_allowed() -> bool:
+	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
+		return false
+	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null:
+		return int(Lx.root.get("flow")) == 2
+	return true
+
+
 func _tick(dt: float) -> void:
+	var allowed: bool = _is_overlay_allowed()
+	if not allowed and Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null:
+		if int(Lx.root.get("flow")) in [0, 1, 7, 8]:
+			_motes.clear()
+			_flare_t = 0.0
+			_bridge_wave_t = 0.0
+	if _layer != null and is_instance_valid(_layer):
+		_layer.visible = allowed and (not _motes.is_empty() or _flare_t > 0.0 or _bridge_wave_t > 0.0)
+	if not allowed:
+		return
 	var dirty: bool = false
 	if _flare_t > 0.0:
 		_flare_t = maxf(0.0, _flare_t - dt)
@@ -191,6 +214,8 @@ func _tick(dt: float) -> void:
 
 
 func _draw_overlay(ci: CanvasItem) -> void:
+	if not _is_overlay_allowed():
+		return
 	var fred: bool = LxHudFx.flash_reduced()
 	var target: Vector2 = _wick_screen_pos().round()
 

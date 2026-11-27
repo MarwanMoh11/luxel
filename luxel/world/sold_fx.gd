@@ -68,7 +68,7 @@ func _build_nodes() -> void:
 	_post_rect.position = Vector2.ZERO
 	_post_rect.size = VIEW_SIZE
 	_post_rect.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	_post_rect.color = Color.WHITE
+	_post_rect.color = LxPalette.PAL["cream"] as Color
 	if ResourceLoader.exists(SHADER_PATH):
 		var sh: Resource = ResourceLoader.load(SHADER_PATH)
 		if sh is Shader:
@@ -265,13 +265,26 @@ func _sync_all() -> void:
 		_overlay.queue_redraw()
 
 
+func _is_suppressed() -> bool:
+	if _modal_suppressed:
+		return true
+	if Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open")):
+		return true
+	if Lx.root != null and is_instance_valid(Lx.root) and Lx.root.get("flow") != null and int(Lx.root.get("flow")) != 2:
+		return true
+	return false
+
+
 func _sync_shader() -> void:
 	if _post_rect == null:
 		return
+	var suppressed: bool = _is_suppressed()
 	var pix_loss: float = _sold.get_display_pixels_pct() if _sold != null else 0.0
 	var hold_on: bool = _is_fps_step_active() and _has_hold_frame and _hold_tex != null
 	var need_post: bool = (_palette_mix > 0.001) or (pix_loss > 0.001) or hold_on or _dawn_clear_active
-	_post_rect.visible = need_post and not _modal_suppressed
+	_post_rect.visible = need_post and not suppressed
+	if _overlay != null and is_instance_valid(_overlay):
+		_overlay.visible = not suppressed
 	if _mat == null or not _post_rect.visible:
 		return
 	var reduced: bool = LxHudFx.flash_reduced()
