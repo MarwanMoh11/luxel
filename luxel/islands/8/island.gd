@@ -379,7 +379,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 			_emit_narration("DUNGEON_8_NAME", "title", 3.5)
 			if _events != null:
 				_events.sfx_requested.emit("eclipse_wave", Vector2.ZERO, false)
-				_events.shake_requested.emit(0.10)
+				_emit_shake(0.10)
 		if _events != null:
 			var mb_live: bool = region_id == "sanctum_r4" and st != null and not st.defeated_bosses.has(MINI_BOSS_KIND)
 			var seraph_live: bool = region_id == "sanctum_r12" and st != null and not st.defeated_bosses.has("rose_seraph") and not bool(st.story_flags.get("rose_seraph_defeated", false))
@@ -411,7 +411,7 @@ func _trigger_seal_shatter() -> void:
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.30)
+		_emit_shake(0.30)
 		_emit_narration("CUE_SEAL_SHATTER_8", "title", 3.5)
 		_emit_narration("DUNGEON_8_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_8")
@@ -437,18 +437,18 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 	if boss_id == SUPERBOSS_ID:
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("superboss_b")
-			_events.shake_requested.emit(0.34)
+			_emit_shake(0.34)
 		return
 	if boss_id in ["chief_auditor", "tollmaster", "indexer", "archivist", "stair_warden", "rose_seraph"]:
 		if phase >= 2 and _events != null:
 			_events.music_mode_requested.emit("isl8_boss_minor_p2")
-			_events.shake_requested.emit(0.28 if phase == 2 else 0.34)
+			_emit_shake(0.28 if phase == 2 else 0.34)
 		return
 	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
 		return
 	if phase >= 2 and _events != null:
 		_events.music_mode_requested.emit("island8_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else 0.36)
+		_emit_shake(0.28 if boss_id == MINI_BOSS_KIND else 0.36)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
@@ -500,6 +500,11 @@ func _on_great_lamp_relit(island_id: int) -> void:
 		_emit_narration("ISL8_RELIGHT", "title", 4.0)
 		_emit_narration("ISL8_BRIDGE", "narration", 4.5)
 		_events.save_requested.emit("great_lamp_8")
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _emit_narration(string_id: String, style: String, duration: float) -> void:

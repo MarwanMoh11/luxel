@@ -302,9 +302,9 @@
       "prop": "archive_arch_portal",
       "pos": [
         224,
-        52
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false
     },
     {
@@ -321,7 +321,7 @@
       "sheet": "theme_archive",
       "prop": "wide_library_bookcase",
       "pos": [
-        176,
+        192,
         48
       ],
       "layer": "sort",

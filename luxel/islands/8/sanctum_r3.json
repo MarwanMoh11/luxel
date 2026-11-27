@@ -277,7 +277,7 @@
       "id": "lamp_sanctum_r3_w",
       "kind": "road_lamp",
       "pos": [
-        48,
+        64,
         216
       ],
       "props": {
@@ -346,8 +346,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        368,
-        40
+        344,
+        24
       ],
       "layer": "sort",
       "flip_x": false,

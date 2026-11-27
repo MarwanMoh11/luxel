@@ -88,6 +88,7 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 	var c_sky: Color = PAL["sky"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 
 	# Tall gothic brass ledger board on twin fluted legs
 	draw_rect(Rect2(-15.0, 1.0, 4.0, 7.0), c_void)
@@ -99,6 +100,9 @@ func _draw() -> void:
 	draw_rect(Rect2(-19.0, -19.0, 38.0, 21.0), c_gold)
 	draw_rect(Rect2(-18.0, -18.0, 36.0, 19.0), c_night)
 	draw_rect(Rect2(-17.0, -17.0, 34.0, 2.0), c_dusk)
+	if _best_floor >= 12:
+		draw_rect(Rect2(-3.0, -22.0, 6.0, 2.0), c_void)
+		draw_rect(Rect2(-2.0, -21.0, 4.0, 1.0), c_cream)
 
 	# Header: IRON + multiplier
 	LxPixelFont.draw_centered(self, "x%.2f" % _mult, 0.0, -16.0, c_gold, 1, c_void)
@@ -106,14 +110,19 @@ func _draw() -> void:
 	var line2: String = "F%d %d" % [_best_floor, _best_score]
 	LxPixelFont.draw_centered(self, line2, 0.0, -9.0, c_cream, 1, c_void)
 
-	# 3 Express Lift indicator gems (F4 gold, F8 sky, F12 rose)
+	# 3 Express Lift indicator gems (F4 gold, F8 sky, F12 rose; raised crowned gem vs recessed bar for greyscale)
 	var cols: Array[Color] = [c_gold, c_sky, c_rose]
 	for i: int in range(3):
 		var gx: float = -10.0 + float(i) * 10.0
-		draw_rect(Rect2(gx - 3.0, -2.0, 6.0, 3.0), c_void)
-		draw_rect(Rect2(gx - 2.0, -1.0, 4.0, 1.0), cols[i] if _lifts[i] else c_dusk)
+		draw_rect(Rect2(gx - 3.0, -3.0, 6.0, 4.0), c_void)
+		if _lifts[i]:
+			draw_rect(Rect2(gx - 2.0, -2.0, 4.0, 2.0), cols[i])
+			draw_rect(Rect2(gx - 1.0, -3.0, 2.0, 1.0), c_cream)
+		else:
+			draw_rect(Rect2(gx - 2.0, -1.0, 4.0, 1.0), c_dusk)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - (_pulse_t / 0.65)
-		draw_arc(Vector2(0.0, -8.0), roundf(12.0 + u * 22.0), 0.0, TAU, 20, Color(c_cream, 1.0 - u), 1.2)
+		var pa: float = (1.0 - u) * (0.50 if fred else 0.90)
+		draw_arc(Vector2(0.0, -8.0), roundf(12.0 + u * 22.0), 0.0, TAU, 20, Color(c_cream, pa), 1.0)
 	_draw_signal_pulses()

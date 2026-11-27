@@ -99,7 +99,7 @@ func _draw() -> void:
 	var fr: bool = LxHudFx.flash_reduced()
 
 	# Grounded recess shadow under brass toll medallion
-	_draw_ground_shadow(9.5, 4.5, Vector2(1.0, 6.0))
+	_draw_ground_shadow(10.0, 4.0, Vector2(1.0, 6.0))
 
 	# 4 diagonal carved brass corner prongs framing the medallion plate
 	var prong_body: Color = gold if powered else dusk
@@ -143,9 +143,9 @@ func _draw() -> void:
 	if powered:
 		# Unmistakable warm gold/cream pulsing toll-eye sigil (steady high-contrast when flash_reduced)
 		var pulse_hi: bool = fr or (sin(_clock * 4.5) > -0.15)
-		var pulse_a: float = 0.72 if fr else (0.50 + 0.35 * absf(sin(_clock * 4.5)))
+		var pulse_a: float = 0.55 if fr else (0.50 + 0.35 * absf(sin(_clock * 4.5)))
 		var pulse_r: float = 10.0 if fr else roundf(9.5 + 1.5 * absf(sin(_clock * 4.5)))
-		draw_arc(Vector2.ZERO, pulse_r, 0.0, TAU, 18, Color(gold, pulse_a), 1.2)
+		draw_arc(Vector2.ZERO, pulse_r, 0.0, TAU, 18, Color(gold, pulse_a), 1.0)
 		# Almond / diamond glowing eye sclera & iris
 		draw_rect(Rect2(-5.0, -1.0, 10.0, 2.0), apr)
 		draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), gold)

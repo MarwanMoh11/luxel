@@ -12,7 +12,7 @@
   ],
   "spawn": [
     248,
-    280
+    296
   ],
   "zones": [
     {
@@ -172,7 +172,7 @@
       "kind": "tollmaster",
       "pos": [
         248,
-        152
+        192
       ],
       "zone": "toll_boss"
     }
@@ -182,17 +182,17 @@
       "sheet": "theme_toll_house",
       "prop": "toll_gate_arch",
       "pos": [
-        248,
-        56
+        240,
+        32
       ],
-      "layer": "sort"
+      "layer": "over"
     },
     {
       "sheet": "theme_toll_house",
       "prop": "stamp_floor_emblem",
       "pos": [
         248,
-        184
+        192
       ],
       "layer": "ground"
     },
@@ -227,7 +227,7 @@
       "sheet": "theme_toll_house",
       "prop": "stacked_ledger_tower",
       "pos": [
-        376,
+        352,
         88
       ],
       "layer": "sort"
@@ -254,8 +254,8 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        88,
-        168
+        64,
+        152
       ],
       "layer": "sort"
     },
@@ -263,8 +263,8 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        392,
-        168
+        416,
+        152
       ],
       "layer": "sort"
     }
@@ -291,7 +291,7 @@
       "kind": "circle",
       "pos": [
         248,
-        184
+        192
       ],
       "radius": 52,
       "style": "ritual",
@@ -379,9 +379,6 @@
           216
         ],
         "tol": 8.0
-      },
-      {
-        "op": "sunflare"
       },
       {
         "op": "clear",

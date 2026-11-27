@@ -1214,9 +1214,20 @@ def lint_region(
 
     logic_inputs: Set[str] = set()
     for it in reg["interactables"]:
-        if str(it.get("kind", "")).lower() == "logic_gate":
-            for inp in (it.get("props") or {}).get("inputs", []) or []:
+        k_l = str(it.get("kind", "")).lower()
+        p_l = it.get("props") or {}
+        if k_l == "logic_gate":
+            for inp in p_l.get("inputs", []) or []:
                 logic_inputs.add(str(inp))
+        elif k_l == "scale":
+            for pan_key in ("left", "right"):
+                pan_val = p_l.get(pan_key)
+                if isinstance(pan_val, str) and pan_val.strip():
+                    logic_inputs.add(pan_val.strip())
+                elif isinstance(pan_val, list):
+                    for pv in pan_val:
+                        if isinstance(pv, str) and pv.strip():
+                            logic_inputs.add(pv.strip())
 
     # Validate interactables, props, doors, switches
     for it in reg["interactables"]:

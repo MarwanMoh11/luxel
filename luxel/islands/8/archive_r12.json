@@ -216,7 +216,7 @@
       "kind": "archivist",
       "pos": [
         256,
-        168
+        224
       ],
       "zone": "archive_boss"
     }
@@ -227,9 +227,9 @@
       "prop": "archive_arch_portal",
       "pos": [
         256,
-        56
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false
     },
     {
@@ -237,7 +237,7 @@
       "prop": "compass_rug_medallion",
       "pos": [
         256,
-        192
+        212
       ],
       "layer": "ground",
       "flip_x": false
@@ -345,7 +345,7 @@
       "kind": "circle",
       "pos": [
         256,
-        192
+        212
       ],
       "radius": 60,
       "color": "apricot",
@@ -355,7 +355,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        168
+        200
       ],
       "size": [
         80,

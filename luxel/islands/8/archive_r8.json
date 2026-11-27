@@ -360,9 +360,9 @@
       "prop": "archive_arch_portal",
       "pos": [
         368,
-        52
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false
     },
     {
@@ -420,7 +420,7 @@
       "prop": "hanging_archive_banner",
       "pos": [
         416,
-        176
+        144
       ],
       "layer": "sort",
       "flip_x": true

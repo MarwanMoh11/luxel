@@ -70,11 +70,25 @@ func _has_live_warden() -> bool:
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
+	var c_dusk: Color = PAL["dusk"] as Color
 	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
+	var armed: bool = active and _cd <= 0.0
 	draw_rect(Rect2(-6.0, -6.0, 12.0, 12.0), c_void)
-	draw_rect(Rect2(-5.0, -5.0, 10.0, 10.0), PAL["dusk"] as Color)
-	draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), c_gold, false, 1.0)
-	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	draw_rect(Rect2(-5.0, -5.0, 10.0, 10.0), c_dusk if armed else c_night)
+	draw_rect(Rect2(-4.0, -4.0, 8.0, 8.0), c_gold if armed else c_dusk, false, 1.0)
+	# Crisp mini bell silhouette (greyscale-distinct armed vs cooling down)
+	if armed:
+		draw_rect(Rect2(-1.0, -3.0, 2.0, 2.0), c_gold)
+		draw_rect(Rect2(-2.0, -1.0, 4.0, 3.0), c_gold)
+		draw_rect(Rect2(-3.0, 2.0, 6.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 1.0), c_cream)
+	else:
+		draw_rect(Rect2(-2.0, -1.0, 4.0, 2.0), c_void)
+		draw_rect(Rect2(-1.0, 0.0, 2.0, 1.0), c_dusk)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, lerpf(6.0, 24.0, u), 0.0, TAU, 16, Color(c_gold, 1.0 - u), 1.2)
+		var pa: float = (1.0 - u) * (0.50 if fred else 0.85)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 24.0, u)), 0.0, TAU, 16, Color(c_gold, pa), 1.0)

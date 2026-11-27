@@ -122,7 +122,7 @@ func _open_arch(play_fx: bool) -> void:
 	if play_fx:
 		_emit_sfx("seal_break")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.22)
+			Lx.events.shake_requested.emit(0.22 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 			Lx.events.save_requested.emit("moth_arch_80_opened")
 	queue_redraw()
 
@@ -130,7 +130,8 @@ func _open_arch(play_fx: bool) -> void:
 func _draw() -> void:
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var rdx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
+	var fred: bool = LxHudFx.flash_reduced()
+	var rdx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled() and not fred) else 0.0
 	var x0: float = floorf(-w * 0.5) + rdx
 	var y0: float = floorf(-h * 0.5)
 	var void_c: Color = PAL["void"] as Color
@@ -144,23 +145,35 @@ func _draw() -> void:
 		draw_rect(Rect2(x0, y0, 6.0, h), void_c)
 		draw_rect(Rect2(x0 + 1.0, y0 + 1.0, 4.0, h - 2.0), dusk)
 		draw_rect(Rect2(x0 + 4.0, y0 + 1.0, 1.0, h - 2.0), cream)
+		draw_rect(Rect2(x0 + 2.0, y0 - 2.0, 2.0, 2.0), gold)
 		draw_rect(Rect2(x0 + w - 6.0, y0, 6.0, h), void_c)
 		draw_rect(Rect2(x0 + w - 5.0, y0 + 1.0, 4.0, h - 2.0), dusk)
 		draw_rect(Rect2(x0 + w - 5.0, y0 + 1.0, 1.0, h - 2.0), cream)
+		draw_rect(Rect2(x0 + w - 4.0, y0 - 2.0, 2.0, 2.0), gold)
 		if _open_t > 0.0:
 			var u: float = 1.0 - clampf(_open_t / 0.65, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(10.0 + u * 30.0), 0.0, TAU, 20, Color(gold, 1.0 - u), 1.5)
+			var oa: float = (1.0 - u) * (0.55 if fred else 0.95)
+			draw_arc(Vector2.ZERO, roundf(10.0 + u * 30.0), 0.0, TAU, 20, Color(gold, oa), 1.0 if fred else 2.0)
 		return
 
 	draw_rect(Rect2(x0, y0 + h, w, 2.0), void_c)
 	draw_rect(Rect2(x0, y0, w, h), void_c)
 	draw_rect(Rect2(x0 + 1.0, y0 + 1.0, w - 2.0, h - 2.0), night)
 	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, h - 4.0), PAL["plum"] as Color)
-	# 8 moth constellation pips (10 moths each)
+	# 8 moth constellation pips (10 moths each; raised tall star vs flat dark recess for greyscale clarity)
 	for i: int in range(8):
 		var px: float = roundf(-18.0 + float(i) * 5.0 + rdx)
 		var lit_p: bool = i < lit_tiers
-		draw_rect(Rect2(px - 1.0, -2.0, 3.0, 4.0), void_c)
-		draw_rect(Rect2(px, -1.0, 1.0, 2.0), cream if lit_p else dusk)
-	# Central moth glyph
-	draw_rect(Rect2(-3.0 + rdx, -6.0, 6.0, 2.0), gold if lit_tiers >= 8 else dusk)
+		draw_rect(Rect2(px - 1.0, -2.0, 3.0, 5.0), void_c)
+		if lit_p:
+			draw_rect(Rect2(px, -3.0, 1.0, 5.0), cream)
+			draw_rect(Rect2(px - 1.0, -1.0, 3.0, 1.0), gold)
+		else:
+			draw_rect(Rect2(px, 0.0, 1.0, 2.0), dusk)
+	# Central moth glyph (spread wings when ready vs folded bar when sealed)
+	if lit_tiers >= 8:
+		draw_rect(Rect2(-5.0 + rdx, -7.0, 4.0, 3.0), gold)
+		draw_rect(Rect2(1.0 + rdx, -7.0, 4.0, 3.0), gold)
+		draw_rect(Rect2(-1.0 + rdx, -6.0, 2.0, 2.0), cream)
+	else:
+		draw_rect(Rect2(-3.0 + rdx, -6.0, 6.0, 2.0), dusk)

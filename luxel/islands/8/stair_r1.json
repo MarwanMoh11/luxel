@@ -345,8 +345,8 @@
       "sheet": "theme_endless_stair",
       "prop": "spiral_newel_pillar",
       "pos": [
-        256,
-        84
+        272,
+        88
       ],
       "layer": "sort",
       "flip_x": true,

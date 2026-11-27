@@ -310,9 +310,9 @@
       "prop": "archive_arch_portal",
       "pos": [
         256,
-        56
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false
     },
     {

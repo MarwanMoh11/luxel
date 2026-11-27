@@ -135,6 +135,8 @@ func _draw() -> void:
 	var has_w: bool = _has_flag("sanctum_seal_w")
 	var has_e: bool = _has_flag("sanctum_seal_e")
 	var has_b: bool = _is_bell_rung()
+	var claimed_b: bool = _has_flag(CLAIMED_FLAG)
+	var fred: bool = LxHudFx.flash_reduced()
 	var sold_n: int = mini(6, _sold_count())
 
 	# Left & Right wing-seal stanchion posts framing the boss threshold
@@ -146,7 +148,11 @@ func _draw() -> void:
 		var seal_on: bool = has_w if side < 0 else has_e
 		var seal_c: Color = (c_apricot if side < 0 else c_rose) if seal_on else c_dusk
 		draw_rect(Rect2(sx - 2.0, -2.0, 4.0, 4.0), c_void)
-		draw_rect(Rect2(sx - 1.0, -1.0, 2.0, 2.0), seal_c)
+		if seal_on:
+			draw_rect(Rect2(sx - 1.0, -1.0, 2.0, 2.0), c_cream)
+			draw_rect(Rect2(sx - 1.0, -7.0, 2.0, 2.0), seal_c)
+		else:
+			draw_rect(Rect2(sx - 2.0, -1.0, 4.0, 1.0), c_dusk)
 		# Wing pointer pips on stanchion cap
 		draw_rect(Rect2(sx - 2.0, -5.0, 4.0, 1.0), c_gold if (has_b or seal_on) else c_mauve)
 
@@ -163,24 +169,26 @@ func _draw() -> void:
 		draw_rect(Rect2(-4.0, -6.0, 2.0, 6.0), c_mauve)
 		draw_rect(Rect2(-1.0, 4.0, 2.0, 2.0), c_night) # silent clapper
 		# Coral silence slash across the silent bell
-		draw_line(Vector2(-6.0, -6.0), Vector2(6.0, 4.0), c_coral, 1.5)
+		draw_line(Vector2(-6.0, -6.0), Vector2(6.0, 4.0), c_coral, 2.0)
 		# Directional wing arrows (< W | E >) beneath chains
 		draw_rect(Rect2(-12.0, 3.0, 3.0, 1.0), c_apricot if has_w else c_gold)
 		draw_rect(Rect2(9.0, 3.0, 3.0, 1.0), c_rose if has_e else c_gold)
 	else:
-		# Parted chains + radiant golden rung bell crest on left post (path wide open)
-		draw_rect(Rect2(-22.0, -11.0, 8.0, 6.0), c_void)
-		draw_rect(Rect2(-21.0, -10.0, 6.0, 4.0), c_gold)
-		draw_rect(Rect2(-20.0, -9.0, 2.0, 2.0), c_cream)
-		draw_rect(Rect2(14.0, -11.0, 8.0, 6.0), c_void)
-		draw_rect(Rect2(15.0, -10.0, 6.0, 4.0), c_gold)
-		draw_rect(Rect2(16.0, -9.0, 2.0, 2.0), c_cream)
+		# Parted chains + radiant golden rung bell crest on stanchions (path wide open)
+		for bx: float in [-22.0, 14.0]:
+			draw_rect(Rect2(bx, -11.0, 8.0, 6.0), c_void)
+			draw_rect(Rect2(bx + 1.0, -10.0, 6.0, 4.0), c_gold)
+			draw_rect(Rect2(bx + 2.0, -9.0, 2.0, 2.0), c_cream if not claimed_b else c_apricot)
+			if not claimed_b:
+				draw_rect(Rect2(bx + 3.0, -13.0, 2.0, 2.0), c_cream)
 
 	# Sold-settings brass pips along lower stanchions
 	for i: int in range(6):
 		var px: float = (-21.0 + float(i) * 2.0) if i < 3 else (15.0 + float(i - 3) * 2.0)
 		draw_rect(Rect2(px, 5.0, 1.0, 1.0), c_gold if i < sold_n else c_dusk)
 	if _flash_t > 0.0:
-		var fc: Color = c_cream if has_b else c_coral
-		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 24.0, 1.0 - _flash_t / 0.60)), 0.0, TAU, 18, fc, 1.4)
+		var u: float = 1.0 - clampf(_flash_t / 0.60, 0.0, 1.0)
+		var fa: float = (1.0 - u) * (0.50 if fred else 0.90)
+		var fc: Color = Color(c_cream if has_b else c_coral, fa)
+		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 24.0, u)), 0.0, TAU, 18, fc, 1.0 if fred else 2.0)
 	_draw_signal_pulses()

@@ -67,7 +67,7 @@
       "boss_id": "the_hush",
       "pos": [
         264,
-        168
+        192
       ],
       "route": [
         [
@@ -300,7 +300,7 @@
       "prop": "stone_gargoyle_perch",
       "pos": [
         56,
-        184
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -361,7 +361,7 @@
       "kind": "circle",
       "pos": [
         264,
-        168
+        192
       ],
       "radius": 58,
       "style": "ritual",

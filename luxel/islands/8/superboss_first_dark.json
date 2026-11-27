@@ -50,7 +50,7 @@
       "kind": "first_dark",
       "pos": [
         256,
-        176
+        224
       ],
       "route": [],
       "zone": "superboss_first_dark",
@@ -297,7 +297,7 @@
             "kind": "chest",
             "pos": [
               256,
-              176
+              192
             ],
             "props": {
               "reward_kind": "shards",

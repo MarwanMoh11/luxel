@@ -396,10 +396,10 @@
       "sheet": "theme_toll_house",
       "prop": "toll_gate_arch",
       "pos": [
-        248,
-        56
+        240,
+        32
       ],
-      "layer": "sort"
+      "layer": "over"
     },
     {
       "sheet": "theme_toll_house",
@@ -513,7 +513,7 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        360,
+        344,
         104
       ],
       "layer": "sort"

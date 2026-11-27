@@ -192,7 +192,7 @@ func _shatter_seal(play_fx: bool) -> void:
 	if play_fx:
 		_emit_sfx("seal_break")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.24)
+			Lx.events.shake_requested.emit(0.24 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 			if LxStrings.has_id("ISL8_SEAL_SHATTER"):
 				Lx.events.narration_requested.emit("ISL8_SEAL_SHATTER", "title", 3.4)
 			Lx.events.save_requested.emit("triple_eclipse_broken")
@@ -202,7 +202,8 @@ func _shatter_seal(play_fx: bool) -> void:
 func _draw() -> void:
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var rdx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
+	var fred: bool = LxHudFx.flash_reduced()
+	var rdx: float = (1.0 if int(floorf(_rattle_t * 36.0)) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled() and not fred) else 0.0
 	var x0: float = floorf(-w * 0.5) + rdx
 	var y0: float = floorf(-h * 0.5)
 	var void_c: Color = PAL["void"] as Color
@@ -212,16 +213,19 @@ func _draw() -> void:
 	var cream: Color = PAL["cream"] as Color
 
 	if opened:
-		# Parted obsidian cathedral jambs with lit gold trim
+		# Parted obsidian cathedral jambs with lit gold trim & raised open finials
 		draw_rect(Rect2(x0, y0, 6.0, h), void_c)
 		draw_rect(Rect2(x0 + 1.0, y0 + 1.0, 4.0, h - 2.0), dusk)
 		draw_rect(Rect2(x0 + 4.0, y0 + 1.0, 1.0, h - 2.0), gold)
+		draw_rect(Rect2(x0 + 2.0, y0 - 2.0, 2.0, 2.0), cream)
 		draw_rect(Rect2(x0 + w - 6.0, y0, 6.0, h), void_c)
 		draw_rect(Rect2(x0 + w - 5.0, y0 + 1.0, 4.0, h - 2.0), dusk)
 		draw_rect(Rect2(x0 + w - 5.0, y0 + 1.0, 1.0, h - 2.0), gold)
+		draw_rect(Rect2(x0 + w - 4.0, y0 - 2.0, 2.0, 2.0), cream)
 		if _open_t > 0.0:
 			var u: float = 1.0 - clampf(_open_t / 0.60, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(8.0 + u * 28.0), 0.0, TAU, 20, Color(cream, 1.0 - u), 1.5)
+			var oa: float = (1.0 - u) * (0.55 if fred else 0.95)
+			draw_arc(Vector2.ZERO, roundf(8.0 + u * 28.0), 0.0, TAU, 20, Color(cream, oa), 1.0 if fred else 2.0)
 		return
 
 	# Sealed Triple Eclipse Barrier
@@ -232,10 +236,18 @@ func _draw() -> void:
 	draw_rect(Rect2(x0 + 2.0, y0 + 2.0, w - 4.0, 1.0), PAL["mauve"] as Color)
 
 	# Three Eclipse Medallions: Toll (Gold), Archive (Sky), Stair (Rose)
+	# Lit = raised crown spark + bright cross core; Unlit = recessed barred cavity (greyscale-legible)
 	for i: int in range(3):
 		var mx: float = roundf(float(i - 1) * 14.0 + rdx)
 		var col: Color = PAL[str(WING_DUNGEONS[i]["col"])] as Color
 		var lit_m: bool = _lit_pips[i]
 		draw_rect(Rect2(mx - 4.0, -4.0, 8.0, 8.0), void_c)
-		draw_rect(Rect2(mx - 3.0, -3.0, 6.0, 6.0), col if lit_m else night)
-		draw_rect(Rect2(mx - 1.0, -1.0, 2.0, 2.0), cream if lit_m else dusk)
+		if lit_m:
+			draw_rect(Rect2(mx - 1.0, -6.0, 2.0, 2.0), cream)
+			draw_rect(Rect2(mx - 3.0, -3.0, 6.0, 6.0), col)
+			draw_rect(Rect2(mx - 2.0, -1.0, 4.0, 2.0), cream)
+			draw_rect(Rect2(mx - 1.0, -2.0, 2.0, 4.0), cream)
+		else:
+			draw_rect(Rect2(mx - 3.0, -3.0, 6.0, 6.0), night)
+			draw_rect(Rect2(mx - 3.0, -1.0, 6.0, 2.0), void_c)
+			draw_rect(Rect2(mx - 1.0, -1.0, 2.0, 1.0), dusk)

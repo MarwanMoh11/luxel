@@ -409,6 +409,7 @@ class _BrassReceiptStamp:
 		if not active:
 			return
 		var frac: float = clampf(remaining / maxf(0.01, total_dur), 0.0, 1.0)
+		var fred: bool = LxHudFx.flash_reduced()
 		var void_c: Color = PAL["void"] as Color
 		var gold: Color = PAL["gold"] as Color
 		var cream: Color = PAL["cream"] as Color
@@ -416,5 +417,11 @@ class _BrassReceiptStamp:
 		draw_rect(Rect2(-5.0, -5.0, 10.0, 10.0), void_c)
 		draw_rect(Rect2(-4.0, -4.0, 8.0, 8.0), apricot)
 		draw_rect(Rect2(-3.0, -3.0, 6.0, 6.0), gold)
+		# Crisp cardinal wax-seal notches for greyscale legibility
+		draw_rect(Rect2(-1.0, -6.0, 2.0, 1.0), cream)
+		draw_rect(Rect2(-1.0, 5.0, 2.0, 1.0), apricot)
+		draw_rect(Rect2(-6.0, -1.0, 1.0, 2.0), cream)
+		draw_rect(Rect2(5.0, -1.0, 1.0, 2.0), apricot)
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), cream)
-		draw_arc(Vector2.ZERO, 7.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 14, cream, 1.0)
+		var arc_a: float = 0.60 if fred else 0.95
+		draw_arc(Vector2.ZERO, 7.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 14, Color(cream, arc_a), 1.0)

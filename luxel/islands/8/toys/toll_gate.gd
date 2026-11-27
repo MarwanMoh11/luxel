@@ -149,7 +149,7 @@ func _open_gate(play_fx: bool) -> void:
 	if play_fx:
 		_emit_sfx("door_open")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.14)
+			Lx.events.shake_requested.emit(0.14 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	queue_redraw()
 
 
@@ -201,7 +201,7 @@ func _draw() -> void:
 			_draw_gate_post(Rect2(x0 - 1.0, y0 + h - post_w, w + 2.0, post_w), false)
 		if _open_t > 0.0:
 			var a: float = clampf(_open_t / 0.50, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(6.0 + (1.0 - a) * 18.0), 0.0, TAU, 16, Color(cream, a * (0.6 if fr else 1.0)), 1.2)
+			draw_arc(Vector2.ZERO, roundf(6.0 + (1.0 - a) * 18.0), 0.0, TAU, 16, Color(cream, a * (0.55 if fr else 0.95)), 1.0)
 		return
 
 	# Grounded barrier shadow
@@ -261,7 +261,7 @@ func _draw() -> void:
 	draw_rect(Rect2(mc.x - 1.0, mc.y + 2.0, 3.0, 2.0), coral)
 	draw_rect(Rect2(mc.x, mc.y + 2.0, 1.0, 1.0), cream if _rattle_t > 0.0 else apr)
 
-	# Weight pips mounted in a neat brass ledger bar above gate
+	# Weight pips mounted in a neat brass ledger bar above gate (tall lit spark vs flat recessed slot)
 	var need_p: int = clampi(min_weight, 1, 5)
 	var got_p: int = LxSold.current().get_toll_weight()
 	var span: float = float(need_p - 1) * 4.0
@@ -269,9 +269,11 @@ func _draw() -> void:
 		var px: float = roundf(-span * 0.5 + float(i) * 4.0 + rdx) - 1.0
 		var py: float = y0 - 4.0
 		draw_rect(Rect2(px - 1.0, py - 1.0, 4.0, 4.0), void_c)
-		draw_rect(Rect2(px, py, 2.0, 2.0), cream if i < got_p else dusk)
 		if i < got_p:
+			draw_rect(Rect2(px, py - 1.0, 2.0, 3.0), cream)
 			draw_rect(Rect2(px, py + 1.0, 2.0, 1.0), gold)
+		else:
+			draw_rect(Rect2(px, py + 1.0, 2.0, 1.0), dusk)
 
 
 func _draw_gate_post(r: Rect2, locked_glow: bool) -> void:

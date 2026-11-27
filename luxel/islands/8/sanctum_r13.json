@@ -524,8 +524,8 @@
       "sheet": "island8_scenery",
       "prop": "shattered_rose_window",
       "pos": [
-        56,
-        118
+        40,
+        112
       ],
       "layer": "sort",
       "flip_x": false,

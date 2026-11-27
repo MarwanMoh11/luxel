@@ -274,8 +274,8 @@
       "sheet": "theme_toll_house",
       "prop": "filing_cabinet_tall",
       "pos": [
-        64,
-        84
+        40,
+        88
       ],
       "layer": "sort",
       "flip_x": false,
@@ -286,8 +286,8 @@
       "sheet": "theme_toll_house",
       "prop": "filing_cabinet_tall",
       "pos": [
-        352,
-        84
+        344,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
@@ -334,8 +334,8 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        256,
-        244
+        272,
+        240
       ],
       "layer": "sort",
       "flip_x": true,

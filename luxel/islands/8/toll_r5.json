@@ -262,7 +262,7 @@
       "kind": "chief_auditor",
       "pos": [
         216,
-        152
+        160
       ],
       "zone": "toll_audit"
     }
@@ -282,9 +282,9 @@
       "prop": "toll_gate_arch",
       "pos": [
         216,
-        56
+        40
       ],
-      "layer": "sort"
+      "layer": "over"
     },
     {
       "sheet": "theme_toll_house",

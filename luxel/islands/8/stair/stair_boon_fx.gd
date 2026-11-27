@@ -295,34 +295,38 @@ func _draw() -> void:
 	for r: Dictionary in _pulse_rings:
 		var dur: float = maxf(0.01, float(r["dur"]))
 		var u: float = 1.0 - clampf(float(r["t"]) / dur, 0.0, 1.0)
-		var rad: float = lerpf(float(r["r0"]), float(r["r1"]), u)
+		var rad: float = roundf(lerpf(float(r["r0"]), float(r["r1"]), u))
 		var col: Color = r["col"] as Color
-		var alpha: float = (1.0 - u) * (0.65 if fred else 0.90)
-		draw_arc((r["pos"] as Vector2).round(), rad, 0.0, TAU, 20, Color(col, alpha), 1.4)
+		var alpha: float = (1.0 - u) * (0.48 if fred else 0.90)
+		draw_arc((r["pos"] as Vector2).round(), rad, 0.0, TAU, 20, Color(col, alpha), 1.0)
 
 	if _wick == null or not is_instance_valid(_wick) or _wick.dead:
 		return
 	var wp: Vector2 = _wick.global_position.round()
 
-	# Orbiting golden Crowned Toll motes
+	# Orbiting golden Crowned Toll motes (steady cardinal halo under flash_reduced)
 	if _dir.has_boon("boon_crowned_toll"):
+		var base_a: float = 0.0 if fred else (_clock * 2.4)
 		for k: int in range(4):
-			var a: float = _clock * 2.4 + float(k) * (TAU * 0.25)
+			var a: float = base_a + float(k) * (TAU * 0.25)
 			var mp: Vector2 = (wp + Vector2(cos(a) * 12.0, sin(a) * 8.0 - 4.0)).round()
 			draw_rect(Rect2(mp - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color)
 			draw_rect(Rect2(mp, Vector2.ONE), PAL["cream"] as Color)
 
-	# Armed Last Breath halo pip
+	# Armed Last Breath halo pip (steady crown pip under flash_reduced)
 	if _dir.is_last_breath_armed():
-		var la: float = -_clock * 1.8
+		var la: float = -PI * 0.5 if fred else (-_clock * 1.8)
 		var lp: Vector2 = (wp + Vector2(cos(la) * 10.0, sin(la) * 6.0 - 9.0)).round()
 		draw_rect(Rect2(lp - Vector2.ONE, Vector2(3.0, 3.0)), PAL["void"] as Color)
 		draw_rect(Rect2(lp, Vector2(1.0, 1.0)), PAL["cream"] as Color)
 
-	# Active Zip Shield ring
+	# Active Zip Shield ring (cardinal ticks for greyscale legibility + calm alpha under flash_reduced)
 	if _zip_shield_t > 0.0:
-		var sa: float = clampf(_zip_shield_t / 1.45, 0.25, 0.95)
-		draw_arc(wp + Vector2(0.0, -3.0), 11.0, 0.0, TAU, 16, Color(PAL["gold"] as Color, sa), 1.2)
+		var sa: float = clampf(_zip_shield_t / 1.45, 0.25, 0.55 if fred else 0.90)
+		var sc: Vector2 = wp + Vector2(0.0, -3.0)
+		draw_arc(sc, 11.0, 0.0, TAU, 16, Color(PAL["gold"] as Color, sa), 1.0)
+		for tick_off: Vector2 in [Vector2(-11.0, 0.0), Vector2(11.0, 0.0), Vector2(0.0, -11.0), Vector2(0.0, 11.0)]:
+			draw_rect(Rect2((sc + tick_off).round(), Vector2.ONE), Color(PAL["cream"] as Color, sa))
 
 
 func _mount_hud() -> void:
@@ -359,23 +363,30 @@ func _draw_hud() -> void:
 	if boons.size() > 0:
 		tag = "B:%d  SCORE:%d x%s" % [boons.size(), int(sc.get("score", 0)), mult_s]
 	var w_px: float = float(LxPixelFont.width(tag, 1)) + 8.0
-	var bx: float = 315.0 - w_px
-	var by: float = 148.0
-	c.draw_rect(Rect2(bx, by, w_px, 9.0), PAL["void"] as Color)
-	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 7.0), PAL["night"] as Color)
-	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 7.0), PAL["rose"] as Color if _dir.is_iron_ascent() else PAL["gold"] as Color)
-	LxPixelFont.draw(c, tag, Vector2(bx + 4.0, by + 2.0), PAL["cream"] as Color, 1, PAL["void"] as Color)
+	var bx: float = roundf(315.0 - w_px)
+	var by: float = 146.0
+	c.draw_rect(Rect2(bx, by, w_px, 11.0), PAL["void"] as Color)
+	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 9.0), PAL["night"] as Color)
+	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 9.0), PAL["rose"] as Color if _dir.is_iron_ascent() else PAL["gold"] as Color)
+	LxPixelFont.draw(c, tag, Vector2(bx + 4.0, by + 3.0), PAL["cream"] as Color, 1, PAL["void"] as Color)
 
-	# Active boon color pips stacked cleanly above the Iron Ascent score bar (zero minimap overlap)
+	# Active boon pips stacked cleanly above the Iron Ascent score bar (greyscale-distinct shapes)
 	if not boons.is_empty():
 		var px: float = 312.0
-		var py: float = 141.0
+		var py: float = 139.0
 		for i: int in range(boons.size() - 1, -1, -1):
 			var meta: Dictionary = _dir.get_boon_meta(boons[i])
 			var grp: String = str(meta.get("group", "WICK"))
-			var col: Color = PAL["cream"] as Color if boons[i] == "boon_crowned_toll" else (PAL["gold"] as Color if grp == "TOLL" else (PAL["sky"] as Color if grp == "LANTERN" else PAL["lime"] as Color))
+			var is_crown: bool = (boons[i] == "boon_crowned_toll")
+			var col: Color = PAL["cream"] as Color if is_crown else (PAL["gold"] as Color if grp == "TOLL" else (PAL["sky"] as Color if grp == "LANTERN" else PAL["lime"] as Color))
 			c.draw_rect(Rect2(px - 4.0, py, 5.0, 5.0), PAL["void"] as Color)
 			c.draw_rect(Rect2(px - 3.0, py + 1.0, 3.0, 3.0), col)
+			if is_crown:
+				c.draw_rect(Rect2(px - 2.0, py - 1.0, 1.0, 1.0), PAL["cream"] as Color)
+			elif grp == "TOLL":
+				c.draw_rect(Rect2(px - 2.0, py + 2.0, 1.0, 1.0), PAL["void"] as Color)
+			elif grp == "LANTERN":
+				c.draw_rect(Rect2(px - 2.0, py + 1.0, 1.0, 1.0), PAL["cream"] as Color)
 			px -= 6.0
 
 

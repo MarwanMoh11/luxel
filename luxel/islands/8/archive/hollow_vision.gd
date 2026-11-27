@@ -83,6 +83,9 @@ func _draw() -> void:
 
 	if _vision_t > 0.0:
 		var u: float = 1.0 - clampf(_vision_t / VISION_DUR, 0.0, 1.0)
+		# Raised crown ticks while vision is live
+		draw_rect(Rect2(-4.0, -26.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(2.0, -26.0, 2.0, 2.0), c_cream)
 		# Golden Toll Scale at top center of the crystal vision
 		draw_rect(Rect2(-7.0, -16.0, 14.0, 2.0), c_gold)
 		draw_rect(Rect2(-1.0, -18.0, 2.0, 10.0), c_gold)
@@ -96,15 +99,19 @@ func _draw() -> void:
 		var lan_col: Color = c_gold if u < 0.35 else (c_plum if u < 0.70 else c_void)
 		draw_rect(Rect2(hx + 3.0, 1.0, 3.0, 4.0), c_void)
 		draw_rect(Rect2(hx + 4.0, 2.0, 1.0, 2.0), lan_col)
-		if not fred:
-			draw_arc(Vector2(0.0, -14.0), roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_gold, 1.0 - u), 1.0)
+		var ra: float = (1.0 - u) * (0.40 if fred else 0.90)
+		draw_arc(Vector2(0.0, -14.0), roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_gold, ra), 1.0)
 	elif played:
-		# Quiet afterimage: golden scale above an empty dark lantern silhouette
+		# Quiet afterimage: twin crown pips + golden scale above an empty dark lantern silhouette
+		draw_rect(Rect2(-4.0, -25.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(2.0, -25.0, 2.0, 1.0), c_cream)
 		draw_rect(Rect2(-6.0, -14.0, 12.0, 1.0), c_gold)
 		draw_rect(Rect2(-1.0, -15.0, 2.0, 7.0), c_gold)
 		draw_rect(Rect2(-3.0, 2.0, 6.0, 8.0), c_void)
 		draw_rect(Rect2(-2.0, 3.0, 4.0, 6.0), c_ice, false, 1.0)
 	else:
-		# Dormant glass prism chevrons
-		draw_rect(Rect2(-2.0, -6.0, 4.0, 12.0), Color(c_sky, 0.35))
-		draw_rect(Rect2(-1.0, -2.0, 2.0, 4.0), c_ice)
+		# Dormant shuttered glass plaque (recessed vertical seam + hollow center diamond)
+		draw_rect(Rect2(-1.0, -18.0, 2.0, 36.0), Color(c_plum, 0.55))
+		draw_rect(Rect2(-3.0, -5.0, 6.0, 10.0), c_void)
+		draw_rect(Rect2(-2.0, -4.0, 4.0, 8.0), Color(c_sky, 0.35))
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_ice)

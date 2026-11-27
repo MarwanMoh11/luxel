@@ -88,16 +88,16 @@
       "boss_id": "rose_seraph",
       "pos": [
         256,
-        152
+        192
       ],
       "route": [
         [
           160,
-          152
+          192
         ],
         [
           352,
-          152
+          192
         ]
       ],
       "perches": [],
@@ -426,7 +426,7 @@
       "kind": "circle",
       "pos": [
         144,
-        168
+        192
       ],
       "radius": 22,
       "style": "sun",
@@ -451,7 +451,7 @@
       "kind": "circle",
       "pos": [
         256,
-        168
+        192
       ],
       "radius": 22,
       "style": "compass",
@@ -476,7 +476,7 @@
       "kind": "circle",
       "pos": [
         368,
-        168
+        192
       ],
       "radius": 22,
       "style": "ritual",

@@ -89,11 +89,15 @@ func _draw() -> void:
 	draw_rect(Rect2(-4.0, -4.0, 8.0, 1.0), c_gold)
 	draw_rect(Rect2(-4.0, -10.0, 1.0, 7.0), c_mauve)
 	draw_rect(Rect2(3.0, -9.0, 1.0, 4.0), c_mauve) # snapped right strut
-	# Dim violet ember inside dead cage (flares during spotlight)
+	# Dim violet ember inside dead cage (flares during spotlight; memorial crest once seen)
 	draw_rect(Rect2(-1.0, -7.0, 2.0, 2.0), c_cream if _spot_t > 0.0 else (c_ice if _seen else c_dusk))
+	if _seen:
+		draw_rect(Rect2(-1.0, -14.0, 2.0, 3.0), c_ice)
+		draw_rect(Rect2(-2.0, -13.0, 4.0, 1.0), c_cream)
 	# Wordless spotlight shaft during inspection
 	if _spot_t > 0.0:
-		var a: float = clampf(_spot_t / 2.2, 0.0, 1.0) * (0.22 if LxHudFx.flash_reduced() else 0.32)
+		var fred: bool = LxHudFx.flash_reduced()
+		var a: float = clampf(_spot_t / 2.2, 0.0, 1.0) * (0.20 if fred else 0.32)
 		draw_rect(Rect2(-11.0, -28.0, 22.0, 34.0), Color(c_ice, a))
-		draw_arc(Vector2(0.0, -6.0), 14.0, 0.0, TAU, 18, Color(c_gold, a * 2.0), 1.0)
+		draw_arc(Vector2(0.0, -6.0), 14.0, 0.0, TAU, 18, Color(c_gold, minf(0.55 if fred else 0.90, a * 2.0)), 1.0)
 	_draw_signal_pulses()

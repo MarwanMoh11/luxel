@@ -103,20 +103,26 @@ func _draw() -> void:
 		draw_rect(Rect2(lp.x - 3.0, lp.y - 1.0, 6.0, 4.0), c_dusk if lit else c_night)
 		draw_rect(Rect2(lp.x - 3.0, lp.y - 5.0, 6.0, 4.0), c_void)
 		if lit:
-			var glow_r: float = 6.0 if fred else (6.0 + sin(_clock * 3.0 + float(i)) * 1.0)
-			draw_circle(lp + Vector2(0.0, -3.0), glow_r, Color(col, 0.22))
+			var glow_r: float = 6.0 if fred else roundf(6.0 + sin(_clock * 3.0 + float(i)) * 1.0)
+			draw_circle(lp + Vector2(0.0, -3.0), glow_r, Color(col, 0.16 if fred else 0.22))
 			draw_rect(Rect2(lp.x - 2.0, lp.y - 4.0, 4.0, 3.0), col)
+			draw_rect(Rect2(lp.x - 1.0, lp.y - 6.0, 2.0, 2.0), c_cream)
 			draw_rect(Rect2(lp.x - 1.0, lp.y - 4.0, 2.0, 1.0), c_cream)
 		else:
 			draw_rect(Rect2(lp.x - 2.0, lp.y - 4.0, 4.0, 3.0), c_night)
+			draw_rect(Rect2(lp.x - 3.0, lp.y - 5.0, 6.0, 1.0), c_dusk)
 			draw_rect(Rect2(lp.x - 1.0, lp.y - 3.0, 2.0, 1.0), PAL["mauve"] as Color)
 
 	# Central brass index lectern plaque showing lit count (e.g. 0/8..8/8)
 	draw_rect(Rect2(-12.0, -4.0, 24.0, 10.0), c_void)
 	draw_rect(Rect2(-11.0, -3.0, 22.0, 8.0), c_night)
 	draw_rect(Rect2(-11.0, -3.0, 22.0, 1.0), c_gold)
+	if lit_count >= 8:
+		draw_rect(Rect2(-9.0, -5.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(7.0, -5.0, 2.0, 2.0), c_cream)
 	LxPixelFont.draw_centered(self, "%d/8" % lit_count, 0.0, -1.0, c_cream if lit_count >= 8 else c_gold, 1, c_void)
 
 	if _pulse_t > 0.0:
 		var p: float = 1.0 - clampf(_pulse_t / 0.60, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, lerpf(10.0, 48.0, p), 0.0, TAU, 24, Color(c_gold, 1.0 - p), 1.4)
+		var pa: float = (1.0 - p) * (0.50 if fred else 0.90)
+		draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 48.0, p)), 0.0, TAU, 24, Color(c_gold, pa), 1.0)

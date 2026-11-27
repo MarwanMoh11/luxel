@@ -465,8 +465,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        296,
-        142
+        312,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -478,7 +478,7 @@
       "prop": "shattered_rose_window",
       "pos": [
         344,
-        206
+        184
       ],
       "layer": "sort",
       "flip_x": false,

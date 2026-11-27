@@ -406,8 +406,8 @@
       "sheet": "theme_toll_house",
       "prop": "hanging_receipt_banner",
       "pos": [
-        188,
-        40
+        184,
+        24
       ],
       "layer": "sort",
       "flip_x": false,
@@ -418,8 +418,8 @@
       "sheet": "theme_toll_house",
       "prop": "hanging_receipt_banner",
       "pos": [
-        260,
-        40
+        264,
+        24
       ],
       "layer": "sort",
       "flip_x": true,
@@ -430,7 +430,7 @@
       "sheet": "theme_toll_house",
       "prop": "filing_cabinet_tall",
       "pos": [
-        408,
+        424,
         216
       ],
       "layer": "sort",

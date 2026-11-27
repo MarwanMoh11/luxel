@@ -226,7 +226,7 @@ func _draw() -> void:
 	var returned: bool = (state == State.RETURNED)
 
 	# Grounded shadow under sculpted obsidian memory shrine
-	_draw_ground_shadow(11.0, 4.5, Vector2(1.0, 7.0))
+	_draw_ground_shadow(11.0, 4.0, Vector2(1.0, 7.0))
 
 	# Stepped obsidian altar base with gold inlay corners
 	draw_rect(Rect2(-10.0, 2.0, 20.0, 6.0), void_c)
@@ -295,7 +295,7 @@ func _draw() -> void:
 		draw_rect(Rect2(0.0, cy - 1.0, 1.0, 1.0), cream)
 
 		# Golden sigil halo + orbiting rune motes
-		var halo_a: float = 0.72 if fr else (0.58 + 0.30 * absf(sin(_clock * 3.5)))
+		var halo_a: float = 0.55 if fr else (0.58 + 0.30 * absf(sin(_clock * 3.5)))
 		draw_arc(Vector2(0.0, cy), 7.0, 0.0, TAU, 16, Color(gold, halo_a), 1.0)
 		var orb_a: float = 0.0 if fr else _clock * 2.4
 		for oi: int in range(2):

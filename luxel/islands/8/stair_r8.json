@@ -279,7 +279,7 @@
       "heart": "none",
       "pos": [
         240,
-        144
+        160
       ],
       "zone": "stair_f8",
       "arena": [
@@ -319,7 +319,7 @@
       "sheet": "theme_endless_stair",
       "prop": "spiral_newel_pillar",
       "pos": [
-        280,
+        272,
         80
       ],
       "layer": "sort",
@@ -380,7 +380,7 @@
       "prop": "tattered_climb_banner",
       "pos": [
         200,
-        56
+        44
       ],
       "layer": "sort",
       "flip_x": false,
@@ -392,7 +392,7 @@
       "prop": "tattered_climb_banner",
       "pos": [
         280,
-        56
+        44
       ],
       "layer": "sort",
       "flip_x": true,
@@ -405,7 +405,7 @@
       "kind": "circle",
       "pos": [
         240,
-        152
+        160
       ],
       "radius": 64,
       "style": "astrolabe",

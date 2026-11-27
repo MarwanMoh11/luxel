@@ -95,12 +95,16 @@ func _draw() -> void:
 	var c_rose: Color = PAL["rose"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 
 	draw_rect(Rect2(-14.0, -2.0, 28.0, 8.0), c_void)
 	draw_rect(Rect2(-13.0, -1.0, 26.0, 6.0), c_rose if _cleared else c_dusk)
 	draw_rect(Rect2(-11.0, 0.0, 22.0, 4.0), c_night)
+	if _cleared:
+		draw_rect(Rect2(-12.0, 1.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(10.0, 1.0, 2.0, 2.0), c_cream)
 
-	# Crown spire silhouette
+	# Crown spire silhouette (3-prong open crown vs barred sealed tablet in greyscale)
 	draw_rect(Rect2(-9.0, -16.0, 18.0, 14.0), c_void)
 	draw_rect(Rect2(-8.0, -15.0, 16.0, 12.0), c_gold if _cleared else c_night)
 	draw_rect(Rect2(-7.0, -14.0, 14.0, 10.0), c_night)
@@ -112,9 +116,11 @@ func _draw() -> void:
 		if _final_score > 0:
 			LxPixelFont.draw_centered(self, "%d" % _final_score, 0.0, -6.0, c_gold, 1, c_void)
 	else:
+		draw_rect(Rect2(-7.0, -5.0, 14.0, 1.0), c_dusk)
 		LxPixelFont.draw_centered(self, "XII", 0.0, -11.0, PAL["mauve"] as Color, 1, c_void)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - (_pulse_t / 0.60)
-		draw_arc(Vector2(0.0, -8.0), roundf(12.0 + u * 28.0), 0.0, TAU, 20, Color(c_cream, 1.0 - u), 1.5)
+		var pa: float = (1.0 - u) * (0.50 if fred else 0.92)
+		draw_arc(Vector2(0.0, -8.0), roundf(12.0 + u * 28.0), 0.0, TAU, 20, Color(c_cream, pa), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

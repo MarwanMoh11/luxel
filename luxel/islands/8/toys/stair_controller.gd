@@ -204,7 +204,7 @@ func _live_enemy_count() -> int:
 func _pedestal_offset(idx: int) -> Vector2:
 	var n: int = maxi(1, draft_options.size())
 	var span: float = float(n - 1) * 26.0
-	return Vector2(-span * 0.5 + float(idx) * 26.0, 0.0)
+	return Vector2(roundf(-span * 0.5 + float(idx) * 26.0), 0.0)
 
 
 func _draw() -> void:
@@ -215,17 +215,21 @@ func _draw() -> void:
 	var cream: Color = PAL["cream"] as Color
 	var sky: Color = PAL["sky"] as Color
 	var lime: Color = PAL["lime"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 
 	if state == State.COMBAT_ACTIVE:
-		# Recessed stair sigil medallion on the floor
+		# Recessed sealed stair medallion with flanking lock bars (greyscale-distinct)
 		draw_rect(Rect2(-10.0, -6.0, 20.0, 12.0), void_c)
 		draw_rect(Rect2(-9.0, -5.0, 18.0, 10.0), night)
 		draw_rect(Rect2(-7.0, -3.0, 14.0, 6.0), dusk)
+		draw_rect(Rect2(-9.0, -1.0, 2.0, 2.0), void_c)
+		draw_rect(Rect2(7.0, -1.0, 2.0, 2.0), void_c)
 		LxPixelFont.draw_centered(self, "F%d" % active_floor, 0.0, -2.0, gold, 1, void_c)
 		return
 
 	if state == State.BOON_DRAFT:
-		# 3 raised brass Boon Pedestals
+		# 3 raised brass Boon Pedestals with selection chevron + greyscale-distinct group crests
+		var bob: float = 0.0 if fred else roundf(sin(_clock * 4.0) * 1.0)
 		for i: int in range(draft_options.size()):
 			var b: Dictionary = draft_options[i]
 			var off: Vector2 = _pedestal_offset(i)
@@ -235,14 +239,31 @@ func _draw() -> void:
 			draw_rect(Rect2(off.x - 9.0, off.y - 6.0, 18.0, 12.0), void_c)
 			draw_rect(Rect2(off.x - 8.0, off.y - 5.0, 16.0, 10.0), cream if sel else dusk)
 			draw_rect(Rect2(off.x - 7.0, off.y - 4.0, 14.0, 8.0), night)
-			draw_rect(Rect2(off.x - 2.0, off.y - 10.0, 4.0, 4.0), void_c)
-			draw_rect(Rect2(off.x - 1.0, off.y - 9.0, 2.0, 2.0), cream if sel else gcol)
+			# Group-distinct top jewel silhouette (TOLL = wide bar, LANTERN = diamond, WICK = tall flame)
+			if grp == "TOLL":
+				draw_rect(Rect2(off.x - 4.0, off.y - 10.0, 8.0, 4.0), void_c)
+				draw_rect(Rect2(off.x - 3.0, off.y - 9.0, 6.0, 2.0), cream if sel else gcol)
+			elif grp == "LANTERN":
+				draw_rect(Rect2(off.x - 3.0, off.y - 10.0, 6.0, 4.0), void_c)
+				draw_rect(Rect2(off.x - 2.0, off.y - 9.0, 4.0, 2.0), cream if sel else gcol)
+				draw_rect(Rect2(off.x - 1.0, off.y - 11.0, 2.0, 6.0), cream if sel else gcol)
+			else:
+				draw_rect(Rect2(off.x - 2.0, off.y - 11.0, 4.0, 5.0), void_c)
+				draw_rect(Rect2(off.x - 1.0, off.y - 10.0, 2.0, 3.0), cream if sel else gcol)
+			if sel:
+				var cy: float = off.y - 14.0 + bob
+				draw_rect(Rect2(off.x - 2.0, cy, 4.0, 1.0), cream)
+				draw_rect(Rect2(off.x - 1.0, cy + 1.0, 2.0, 1.0), cream)
 			LxPixelFont.draw_centered(self, grp.left(3), off.x, off.y - 2.0, cream if sel else gcol, 1, void_c)
 		return
 
-	# FLOOR_DONE: lit stair seal
+	# FLOOR_DONE: lit stair seal with 4 cardinal corner sparks
 	draw_rect(Rect2(-10.0, -6.0, 20.0, 12.0), void_c)
 	draw_rect(Rect2(-9.0, -5.0, 18.0, 10.0), gold)
 	draw_rect(Rect2(-8.0, -4.0, 16.0, 8.0), night)
+	draw_rect(Rect2(-9.0, -5.0, 2.0, 2.0), cream)
+	draw_rect(Rect2(7.0, -5.0, 2.0, 2.0), cream)
+	draw_rect(Rect2(-9.0, 3.0, 2.0, 2.0), cream)
+	draw_rect(Rect2(7.0, 3.0, 2.0, 2.0), cream)
 	LxPixelFont.draw_centered(self, "OK", 0.0, -2.0, cream, 1, void_c)
 	_draw_signal_pulses()

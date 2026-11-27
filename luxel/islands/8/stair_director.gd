@@ -97,7 +97,6 @@ var _used_layers_this_climb: Array[String] = []
 var _cur_climb_picks: Dictionary = {} # slot_key -> pool_layer
 var _prev_climb_picks: Dictionary = {} # slot_key -> pool_layer from previous climb
 var _pending_lift_return: bool = false
-var _death_region: String = ""
 var _runtime: Node2D = null
 var _death_bound: bool = false
 
@@ -465,7 +464,6 @@ func clear_run_state() -> void:
 	_in_stair = false
 	_iron_ascent_active = false
 	_pending_lift_return = false
-	_death_region = ""
 	_floor = 0
 	_boons.clear()
 	_used_layers_this_climb.clear()
@@ -512,7 +510,6 @@ func _on_player_died() -> void:
 	if not _in_stair:
 		return
 	_run_deaths += 1
-	_death_region = Lx.state.region_id if Lx.state != null else ""
 	# Never wipe boons or reset back to stair_r1 start; mark lift checkpoint return.
 	_pending_lift_return = true
 	_write_vars()

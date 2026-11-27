@@ -373,8 +373,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        240,
-        76
+        216,
+        68
       ],
       "layer": "sort",
       "flip_x": false,
@@ -385,8 +385,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        336,
-        76
+        352,
+        64
       ],
       "layer": "sort",
       "flip_x": true,
@@ -418,7 +418,58 @@
       "phase": 0.0
     }
   ],
-  "decor": [],
+  "decor": [
+    {
+      "kind": "rug",
+      "rect": [
+        264,
+        320,
+        48,
+        80
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold",
+      "edge": "void"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        264,
+        48,
+        48,
+        64
+      ],
+      "style": "ornate",
+      "color": "wine",
+      "hi": "rose",
+      "trim": "gold",
+      "edge": "void"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        96
+      ],
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "sky",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        304
+      ],
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "rose",
+      "secondary": "apricot"
+    }
+  ],
   "layers": [
     {
       "id": "relit_dawn",

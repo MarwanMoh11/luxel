@@ -32,8 +32,10 @@ var _tab_idx: int = 0
 var _row_idx: int = 0
 var _rows: Array[Dictionary] = []
 var _feedback_text: String = ""
-var _feedback_col: Color = Color.WHITE
+var _feedback_col: Color = LxPalette.PAL["cream"] as Color
 var _feedback_t: float = 0.0
+var _hover_tab: int = -1
+var _hover_row: int = -1
 var _clock: float = 0.0
 var _prev_paused: bool = false
 var _pause_world: bool = false
@@ -89,6 +91,8 @@ func open(opts: Dictionary = {}) -> void:
 	_last_trade_action = ""
 	_feedback_text = ""
 	_feedback_t = 0.0
+	_hover_tab = -1
+	_hover_row = -1
 	_tab_idx = clampi(int(opts.get("tab_idx", 0)), 0, TABS.size() - 1)
 	_row_idx = 0
 	_rebuild_rows()
@@ -270,6 +274,9 @@ func _input(ev: InputEvent) -> void:
 			select_tab(_tab_idx + 1)
 			get_viewport().set_input_as_handled()
 			return
+	if ev is InputEventMouseMotion:
+		_update_hover((ev as InputEventMouseMotion).position)
+		return
 	if ev is InputEventMouseButton and (ev as InputEventMouseButton).pressed:
 		var mb: InputEventMouseButton = ev as InputEventMouseButton
 		if mb.button_index == MOUSE_BUTTON_RIGHT:
@@ -279,6 +286,27 @@ func _input(ev: InputEvent) -> void:
 		if mb.button_index == MOUSE_BUTTON_LEFT:
 			_handle_click(mb.position)
 			get_viewport().set_input_as_handled()
+
+
+func _update_hover(pos: Vector2) -> void:
+	var ht: int = -1
+	var hr: int = -1
+	if _mode != "redemption" and _mode != "finale_pixels" and pos.y >= 28.0 and pos.y <= 41.0:
+		for i: int in range(TABS.size()):
+			var tr := Rect2(22.0 + float(i) * 92.0, 28.0, 88.0, 12.0)
+			if tr.has_point(pos):
+				ht = i
+				break
+	for i: int in range(mini(_rows.size(), MAX_ROWS_VISIBLE)):
+		var rr := Rect2(22.0, LIST_Y + float(i) * ROW_H, 276.0, ROW_H - 2.0)
+		if rr.has_point(pos):
+			hr = i
+			break
+	if ht != _hover_tab or hr != _hover_row:
+		_hover_tab = ht
+		_hover_row = hr
+		if _canvas != null:
+			_canvas.queue_redraw()
 
 
 func _handle_click(pos: Vector2) -> void:
@@ -377,6 +405,7 @@ func _draw_ledger() -> void:
 	var stone: Color = PAL["stone"] as Color
 	var coral: Color = PAL["coral"] as Color
 	var lime: Color = PAL["lime"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 
 	# Scrim behind building ledger
 	c.draw_rect(Rect2(0.0, 0.0, VIEW_W, VIEW_H), Color(void_c, 0.84))
@@ -415,40 +444,53 @@ func _draw_ledger() -> void:
 	LxPixelFont.draw(c, weight_str, Vector2(298.0, 16.0), cream, 1, void_c, HORIZONTAL_ALIGNMENT_RIGHT)
 	c.draw_rect(Rect2(20.0, 24.0, 280.0, 1.0), plum)
 
-	# Tabs (for multi-tab modes)
+	# Tabs (for multi-tab modes, h=12 >= 11 with greyscale-distinct active crown & hover border)
 	if _mode != "redemption" and _mode != "finale_pixels":
 		for i: int in range(TABS.size()):
 			var active_t: bool = (i == _tab_idx)
+			var hovered_t: bool = (i == _hover_tab and not active_t)
 			var tx: float = 22.0 + float(i) * 92.0
-			c.draw_rect(Rect2(tx, 28.0, 88.0, 12.0), dusk if active_t else void_c)
-			c.draw_rect(Rect2(tx + 1.0, 29.0, 86.0, 10.0), plum if active_t else night)
+			c.draw_rect(Rect2(tx, 28.0, 88.0, 12.0), gold if active_t else (apricot if hovered_t else void_c))
+			c.draw_rect(Rect2(tx + 1.0, 29.0, 86.0, 10.0), plum if active_t else (dusk if hovered_t else night))
 			if active_t:
+				c.draw_rect(Rect2(tx + 2.0, 29.0, 84.0, 1.0), cream)
 				c.draw_rect(Rect2(tx, 39.0, 88.0, 1.0), gold)
+				c.draw_rect(Rect2(tx + 3.0, 33.0, 2.0, 2.0), cream)
+				c.draw_rect(Rect2(tx + 83.0, 33.0, 2.0, 2.0), cream)
 			var tlabel: String = "%s +%d" % [TABS[i], 2 if TABS[i] == "BEAUTY" else 1]
-			LxPixelFont.draw_centered(c, tlabel, tx + 44.0, 31.0, cream if active_t else stone, 1, void_c)
+			LxPixelFont.draw_centered(c, tlabel, tx + 44.0, 31.0, cream if active_t else (apricot if hovered_t else stone), 1, void_c)
 	else:
 		var sub_key: String = "ISL8_MENU_REDEEM_SUB" if _mode == "redemption" else "ISL8_MENU_FINALE_SUB"
 		LxPixelFont.draw(c, LxStrings.text(sub_key), Vector2(22.0, 31.0), apricot, 1, void_c)
 
-	# Setting rows
+	# Setting rows (h=16 >= 11 with hover/focus parity & greyscale-legible selection + status glyphs)
 	if _rows.is_empty():
 		var empty_key: String = "ISL8_MENU_REDEEM_EMPTY" if _mode == "redemption" else "ISL8_MENU_EMPTY"
 		LxPixelFont.draw_centered(c, LxStrings.text(empty_key), 160.0, 74.0, stone, 1, void_c)
 	else:
+		var pulse_sel: bool = fred or (sin(_clock * 5.0) > -0.25)
 		for i: int in range(mini(_rows.size(), MAX_ROWS_VISIBLE)):
 			var row: Dictionary = _rows[i]
 			var sid: String = str(row.get("id", ""))
 			var sel: bool = (i == _row_idx)
+			var hov: bool = (i == _hover_row and not sel)
 			var already_sold: bool = sold.is_sold(sid) and _mode != "redemption"
 			var redeemed: bool = sold.is_redeemed(sid)
 			var ry: float = LIST_Y + float(i) * ROW_H
-			c.draw_rect(Rect2(22.0, ry, 276.0, ROW_H - 2.0), gold if sel else dusk)
-			c.draw_rect(Rect2(23.0, ry + 1.0, 274.0, ROW_H - 4.0), plum if sel else night)
+			c.draw_rect(Rect2(22.0, ry, 276.0, ROW_H - 2.0), gold if sel else (apricot if hov else dusk))
+			c.draw_rect(Rect2(23.0, ry + 1.0, 274.0, ROW_H - 4.0), plum if sel else (dusk if hov else night))
 			if sel:
-				c.draw_rect(Rect2(25.0, ry + 5.0, 3.0, 5.0), cream)
+				c.draw_rect(Rect2(25.0, ry + 5.0, 2.0, 5.0), cream if pulse_sel else gold)
+				c.draw_rect(Rect2(27.0, ry + 6.0, 1.0, 3.0), cream if pulse_sel else gold)
+				c.draw_rect(Rect2(28.0, ry + 7.0, 1.0, 1.0), cream)
+			elif hov:
+				c.draw_rect(Rect2(25.0, ry + 6.0, 2.0, 3.0), apricot)
 			var label: String = LxStrings.text(str(row.get("name_key", sid.to_upper())))
 			var name_col: Color = cream if sel else (stone if already_sold else apricot)
 			LxPixelFont.draw(c, label, Vector2(31.0, ry + 5.0), name_col, 1, void_c)
+			if already_sold:
+				var lw: float = float(LxPixelFont.width(label, 1))
+				c.draw_rect(Rect2(31.0, ry + 7.0, lw, 1.0), Color(coral, 0.70))
 
 			var state_txt: String = ""
 			var state_col: Color = gold
@@ -469,10 +511,10 @@ func _draw_ledger() -> void:
 			LxPixelFont.draw(c, state_txt, Vector2(292.0, ry + 5.0), state_col, 1, void_c, HORIZONTAL_ALIGNMENT_RIGHT)
 
 	# Detail footer card: YOU LOSE / YOU GET (and Flash-Reduction note if active)
-	var fy: float = 122.0
-	c.draw_rect(Rect2(22.0, fy, 276.0, 32.0), void_c)
-	c.draw_rect(Rect2(23.0, fy + 1.0, 274.0, 30.0), dusk)
-	c.draw_rect(Rect2(24.0, fy + 2.0, 272.0, 28.0), night)
+	var fy: float = 120.0
+	c.draw_rect(Rect2(22.0, fy, 276.0, 33.0), void_c)
+	c.draw_rect(Rect2(23.0, fy + 1.0, 274.0, 31.0), dusk)
+	c.draw_rect(Rect2(24.0, fy + 2.0, 272.0, 29.0), night)
 	if not _rows.is_empty():
 		var cur: Dictionary = _rows[clampi(_row_idx, 0, _rows.size() - 1)]
 		var cur_sid: String = str(cur.get("id", ""))
@@ -497,10 +539,14 @@ func _draw_ledger() -> void:
 				pwr_col = stone
 		LxPixelFont.draw(c, lose_s, Vector2(28.0, fy + 5.0), coral, 1, void_c)
 		LxPixelFont.draw(c, get_s, Vector2(28.0, fy + 14.0), gold, 1, void_c)
-		LxPixelFont.draw(c, pwr_s, Vector2(28.0, fy + 22.0), pwr_col, 1, void_c)
+		LxPixelFont.draw(c, pwr_s, Vector2(28.0, fy + 23.0), pwr_col, 1, void_c)
 
-	# Bottom controls / feedback bar (Esc always visible)
-	if _feedback_t > 0.0 and not _feedback_text.is_empty():
-		LxPixelFont.draw_centered(c, _feedback_text, 160.0, 159.0, _feedback_col, 1, void_c)
+	# Bottom controls / feedback pill (h=11 >= 11, Esc always visible)
+	var by: float = 156.0
+	var show_fb: bool = _feedback_t > 0.0 and not _feedback_text.is_empty()
+	c.draw_rect(Rect2(22.0, by, 276.0, 11.0), _feedback_col if (show_fb and (fred or int(_feedback_t * 10.0) % 2 == 0)) else dusk)
+	c.draw_rect(Rect2(23.0, by + 1.0, 274.0, 9.0), night)
+	if show_fb:
+		LxPixelFont.draw_centered(c, _feedback_text, 160.0, by + 3.0, _feedback_col, 1, void_c)
 	else:
-		LxPixelFont.draw_centered(c, LxStrings.text("ISL8_MENU_CONTROLS"), 160.0, 159.0, stone, 1, void_c)
+		LxPixelFont.draw_centered(c, LxStrings.text("ISL8_MENU_CONTROLS"), 160.0, by + 3.0, stone, 1, void_c)

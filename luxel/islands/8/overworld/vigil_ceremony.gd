@@ -22,8 +22,6 @@ var _motes: Array[Dictionary] = []
 var _flare_t: float = 0.0
 var _flare_screen_pos: Vector2 = Vector2(160.0, 90.0)
 var _bridge_wave_t: float = 0.0
-var _ambient_t: float = 0.0
-var _last_sold_id: String = ""
 
 
 func attach() -> void:
@@ -85,7 +83,6 @@ func _resolve_host() -> Node:
 
 func _on_setting_sold(setting_id: String, _weight: int, total_weight: int) -> void:
 	_ensure_canvas()
-	_last_sold_id = setting_id
 	_spawn_hud_mote_stream(setting_id)
 	var is_first_trade: bool = false
 	if Lx.state != null:
@@ -102,8 +99,7 @@ func _on_setting_sold(setting_id: String, _weight: int, total_weight: int) -> vo
 				Lx.events.narration_requested.emit("ISL8_ASK_PAID", "title", 3.4)
 			if is_first_trade and LxStrings.has_id("ISL8_VIGIL_BRIDGES_LIT"):
 				Lx.events.narration_requested.emit("ISL8_VIGIL_BRIDGES_LIT", "narration", 3.8)
-			if not LxHudFx.flash_reduced():
-				Lx.events.shake_requested.emit(0.16)
+			Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if Lx.world != null and is_instance_valid(Lx.world) and Lx.world.has_method("apply_layers"):
 			Lx.world.call("apply_layers")
 	if _canvas != null and is_instance_valid(_canvas):
@@ -169,7 +165,6 @@ func _wick_screen_pos() -> Vector2:
 
 
 func _tick(dt: float) -> void:
-	_ambient_t += dt
 	var dirty: bool = false
 	if _flare_t > 0.0:
 		_flare_t = maxf(0.0, _flare_t - dt)
@@ -197,20 +192,20 @@ func _tick(dt: float) -> void:
 
 func _draw_overlay(ci: CanvasItem) -> void:
 	var fred: bool = LxHudFx.flash_reduced()
-	var target: Vector2 = _wick_screen_pos()
+	var target: Vector2 = _wick_screen_pos().round()
 
 	# Twin horizontal golden bridge-ignition beams sweeping West & East from Wick!
 	if _bridge_wave_t > 0.0:
 		var u: float = 1.0 - clampf(_bridge_wave_t / BRIDGE_WAVE_DURATION_S, 0.0, 1.0)
 		var alpha: float = (1.0 - u) * (0.45 if fred else 0.78)
-		var reach: float = lerpf(16.0, 168.0, u)
+		var reach: float = roundf(lerpf(16.0, 168.0, u))
 		var gold_c: Color = Color(PAL["gold"] as Color, alpha)
 		var cream_c: Color = Color(PAL["cream"] as Color, alpha)
 		ci.draw_line(target + Vector2(-8.0, 0.0), target + Vector2(-reach, 0.0), gold_c, 3.0)
 		ci.draw_line(target + Vector2(8.0, 0.0), target + Vector2(reach, 0.0), gold_c, 3.0)
 		ci.draw_line(target + Vector2(-8.0, 0.0), target + Vector2(-reach, 0.0), cream_c, 1.0)
 		ci.draw_line(target + Vector2(8.0, 0.0), target + Vector2(reach, 0.0), cream_c, 1.0)
-		ci.draw_arc(target.round(), roundf(8.0 + u * 26.0), 0.0, TAU, 20, cream_c, 1.0)
+		ci.draw_arc(target, roundf(8.0 + u * 26.0), 0.0, TAU, 20, cream_c, 1.0)
 
 	# 18 HUD-to-lantern Bezier mote streams!
 	for m: Dictionary in _motes:
@@ -223,17 +218,20 @@ func _draw_overlay(ci: CanvasItem) -> void:
 		var pos: Vector2 = _quad_bezier(p0, p1, target, ease_u).round()
 		var tail: Vector2 = _quad_bezier(p0, p1, target, maxf(0.0, ease_u - 0.10)).round()
 		var col: Color = PAL[str(m["col"])] as Color
-		var sz: float = float(m["size"])
+		var sz: float = roundf(float(m["size"]))
+		var half: float = floorf(sz * 0.5)
 		if not fred:
 			ci.draw_line(tail, pos, Color(col, 0.55), 1.0)
-		ci.draw_rect(Rect2(pos - Vector2(sz * 0.5, sz * 0.5), Vector2(sz, sz)), PAL["void"] as Color)
-		ci.draw_rect(Rect2(pos - Vector2(sz * 0.5 - 0.5, sz * 0.5 - 0.5), Vector2(maxf(1.0, sz - 1.0), maxf(1.0, sz - 1.0))), col)
+		ci.draw_rect(Rect2(pos - Vector2(half, half), Vector2(sz, sz)), PAL["void"] as Color)
+		var inner_sz: float = maxf(1.0, sz - 2.0) if sz >= 3.0 else 1.0
+		var inner_off: float = floorf(inner_sz * 0.5)
+		ci.draw_rect(Rect2(pos - Vector2(inner_off, inner_off), Vector2(inner_sz, inner_sz)), col)
 
 	# Lantern drink flare ring (steady & crisp under flash_reduced)
 	if _flare_t > 0.0:
 		var fu: float = 1.0 - clampf(_flare_t / 0.36, 0.0, 1.0)
-		var fa: float = (1.0 - fu) * (0.55 if fred else 0.90)
-		ci.draw_arc(_flare_screen_pos.round(), roundf(5.0 + fu * 16.0), 0.0, TAU, 16, Color(PAL["gold"] as Color, fa), 1.5)
+		var fa: float = (1.0 - fu) * (0.50 if fred else 0.90)
+		ci.draw_arc(_flare_screen_pos.round(), roundf(5.0 + fu * 16.0), 0.0, TAU, 16, Color(PAL["gold"] as Color, fa), 1.0 if fred else 2.0)
 		ci.draw_arc(_flare_screen_pos.round(), roundf(3.0 + fu * 9.0), 0.0, TAU, 12, Color(PAL["cream"] as Color, fa), 1.0)
 
 

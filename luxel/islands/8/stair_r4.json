@@ -260,7 +260,7 @@
       "heart": "none",
       "pos": [
         224,
-        144
+        160
       ],
       "zone": "stair_f4",
       "arena": [
@@ -336,8 +336,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        176,
-        60
+        160,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -348,8 +348,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        272,
-        60
+        288,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -374,7 +374,7 @@
       "kind": "circle",
       "pos": [
         224,
-        152
+        160
       ],
       "radius": 62,
       "style": "ritual",

@@ -59,7 +59,7 @@ func interact(_actor: Node = null) -> bool:
 		LxIsland8Rule.active_instance.archive.grant_bookmark()
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL8_POW_BOOKMARK", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+		Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -105,15 +105,16 @@ func _draw() -> void:
 	if not visible:
 		return
 	var c_void: Color = PAL["void"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	# Walnut & sky-gilded reading plinth
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), PAL["night"] as Color, PAL["plum"] as Color, PAL["sky"] as Color, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), PAL["gold"] as Color if not claimed else PAL["dusk"] as Color)
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 2.0)
+		var bob: float = 0.0 if fred else roundf(sin(_clock * 3.4) * 2.0)
 		var cy: float = -12.0 + bob
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 14.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["sky"] as Color, 0.65), 1.0, false)
+		var r1: float = 8.0 + (0.0 if fred else fmod(_clock * 14.0, 10.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["sky"] as Color, 0.45 if fred else 0.65), 1.0, false)
 		# Floating silk Bookmark Sigil ribbon (pointed forked tail + gold clasp)
 		draw_rect(Rect2(-4.0, cy - 6.0, 8.0, 11.0), c_void)
 		draw_rect(Rect2(-3.0, cy - 5.0, 6.0, 9.0), PAL["wine"] as Color)
@@ -121,8 +122,14 @@ func _draw() -> void:
 		draw_rect(Rect2(-3.0, cy - 5.0, 6.0, 2.0), PAL["gold"] as Color)
 		draw_rect(Rect2(-1.0, cy - 2.0, 2.0, 3.0), PAL["cream"] as Color)
 		draw_rect(Rect2(-1.0, cy + 3.0, 2.0, 2.0), c_void)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, PAL["sky"] as Color, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.0, false)
+	else:
+		# Settled recessed ribbon cradle slot (greyscale-distinct from active floating sigil)
+		draw_rect(Rect2(-4.0, -3.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 1.0), PAL["dusk"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
+			var a1: float = (1.0 - u) * (0.55 if fred else 0.90)
+			var a2: float = (1.0 - u) * (0.50 if fred else 0.85)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, Color(PAL["sky"] as Color, a1), 1.0 if fred else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, Color(PAL["cream"] as Color, a2), 1.0, false)
 	_draw_signal_pulses()

@@ -286,9 +286,9 @@
       "prop": "archive_arch_portal",
       "pos": [
         240,
-        56
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false
     },
     {

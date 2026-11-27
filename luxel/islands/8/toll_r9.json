@@ -495,7 +495,7 @@
       "prop": "wax_seal_pedestal",
       "pos": [
         472,
-        184
+        176
       ],
       "layer": "sort"
     },
@@ -512,7 +512,7 @@
       "sheet": "theme_toll_house",
       "prop": "hanging_receipt_banner",
       "pos": [
-        360,
+        336,
         40
       ],
       "layer": "sort"
@@ -530,8 +530,8 @@
       "sheet": "theme_toll_house",
       "prop": "ledger_counter_desk",
       "pos": [
-        440,
-        72
+        424,
+        88
       ],
       "layer": "sort"
     },
@@ -557,7 +557,7 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        472,
+        448,
         296
       ],
       "layer": "sort"

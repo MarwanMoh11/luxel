@@ -216,7 +216,7 @@
       "heart": "none",
       "pos": [
         256,
-        168
+        192
       ],
       "zone": "stair_f12_crown",
       "arena": [
@@ -292,8 +292,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        216,
-        60
+        176,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -304,8 +304,8 @@
       "sheet": "theme_endless_stair",
       "prop": "tattered_climb_banner",
       "pos": [
-        296,
-        60
+        336,
+        56
       ],
       "layer": "sort",
       "flip_x": true,
@@ -366,7 +366,7 @@
       "kind": "circle",
       "pos": [
         256,
-        176
+        184
       ],
       "radius": 78,
       "style": "astrolabe",

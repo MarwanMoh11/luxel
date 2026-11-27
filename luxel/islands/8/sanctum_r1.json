@@ -414,8 +414,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        232,
-        48
+        248,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -438,8 +438,8 @@
       "sheet": "island8_scenery",
       "prop": "tattered_sanctum_banner",
       "pos": [
-        88,
-        104
+        128,
+        56
       ],
       "layer": "sort",
       "flip_x": false,
@@ -522,8 +522,8 @@
       "sheet": "island8_scenery",
       "prop": "dark_candelabra",
       "pos": [
-        184,
-        232
+        208,
+        248
       ],
       "layer": "sort",
       "flip_x": true,

@@ -409,7 +409,7 @@
       "sheet": "theme_toll_house",
       "prop": "wax_seal_pedestal",
       "pos": [
-        408,
+        416,
         248
       ],
       "layer": "sort"
@@ -427,7 +427,7 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        360,
+        336,
         88
       ],
       "layer": "sort"
@@ -436,7 +436,7 @@
       "sheet": "theme_toll_house",
       "prop": "toll_clerk_lantern",
       "pos": [
-        248,
+        224,
         248
       ],
       "layer": "sort"

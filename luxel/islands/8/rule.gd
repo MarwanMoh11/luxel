@@ -34,7 +34,6 @@ var _current_region: String = ""
 var _post_dash_t: float = 0.0
 var _was_dashing: bool = false
 var _was_sunflare_cd: float = 0.0
-var _base_bolt_cd_applied: bool = false
 
 
 func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
@@ -404,20 +403,34 @@ func _draw_hud_badge() -> void:
 	var gold: Color = PAL["gold"] as Color
 	var cream: Color = PAL["cream"] as Color
 	var sky: Color = PAL["sky"] as Color
+	var in_stair: bool = stair != null and stair.is_in_stair()
+	var frame_ready: bool = _post_dash_t > 0.0 and sold != null and sold.has_power("fps_step")
+	var fred: bool = LxHudFx.flash_reduced()
 	var tw: int = sold.get_toll_weight() if sold != null else 0
 	var sc: int = sold.get_sold_count() if sold != null else 0
 	var txt: String = "TOLL:%d" % tw
-	if stair != null and stair.is_in_stair():
+	if in_stair:
 		txt = "F%d B:%d W:%d" % [stair.get_floor(), stair.get_boons().size(), tw]
 	elif sc > 0:
 		txt = "TOLL:%d S:%d" % [tw, sc]
-	var w_px: float = float(LxPixelFont.width(txt, 1)) + 8.0
-	var bx: float = 315.0 - w_px
+	var w_px: float = float(LxPixelFont.width(txt, 1)) + 13.0
+	var bx: float = roundf(315.0 - w_px)
 	var by: float = 63.0
-	c.draw_rect(Rect2(bx, by, w_px, 9.0), void_c)
-	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 7.0), night)
-	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 7.0), sky if (stair != null and stair.is_in_stair()) else gold)
-	LxPixelFont.draw(c, txt, Vector2(bx + 4.0, by + 2.0), cream, 1, void_c)
+	var accent: Color = sky if in_stair else gold
+	c.draw_rect(Rect2(bx, by, w_px, 11.0), void_c)
+	c.draw_rect(Rect2(bx + 1.0, by + 1.0, w_px - 2.0, 9.0), night)
+	c.draw_rect(Rect2(bx + 1.0, by + 1.0, 1.0, 9.0), cream if (frame_ready and not fred) else accent)
+	# Greyscale-distinct mode icon (3x5 stair steps vs balance-scale T-bar)
+	if in_stair:
+		c.draw_rect(Rect2(bx + 4.0, by + 6.0, 2.0, 2.0), accent)
+		c.draw_rect(Rect2(bx + 5.0, by + 4.0, 2.0, 2.0), accent)
+		c.draw_rect(Rect2(bx + 6.0, by + 3.0, 2.0, 1.0), cream)
+	else:
+		c.draw_rect(Rect2(bx + 4.0, by + 3.0, 5.0, 1.0), cream)
+		c.draw_rect(Rect2(bx + 6.0, by + 3.0, 1.0, 5.0), accent)
+		c.draw_rect(Rect2(bx + 4.0, by + 5.0, 1.0, 1.0), accent)
+		c.draw_rect(Rect2(bx + 8.0, by + 5.0, 1.0, 1.0), accent)
+	LxPixelFont.draw(c, txt, Vector2(bx + 11.0, by + 3.0), cream, 1, void_c)
 
 
 class _RuleTickDriver:

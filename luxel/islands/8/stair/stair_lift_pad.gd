@@ -117,9 +117,10 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 	var accent: Color = PAL["gold"] as Color if floor_num <= 4 else (PAL["sky"] as Color if floor_num <= 8 else PAL["rose"] as Color)
 
-	# Octagonal brass lift pad
+	# Octagonal brass lift pad (unlocked: 4 corner pins + direction chevron; locked: barred side rails)
 	draw_rect(Rect2(-12.0, -9.0, 24.0, 18.0), c_void)
 	draw_rect(Rect2(-11.0, -8.0, 22.0, 16.0), accent if _unlocked else c_dusk)
 	draw_rect(Rect2(-9.0, -6.0, 18.0, 12.0), c_night)
@@ -128,10 +129,17 @@ func _draw() -> void:
 		draw_rect(Rect2(8.0, -7.0, 2.0, 2.0), c_cream)
 		draw_rect(Rect2(-10.0, 5.0, 2.0, 2.0), c_cream)
 		draw_rect(Rect2(8.0, 5.0, 2.0, 2.0), c_cream)
+		var dir_y: float = 4.0 if floor_num == 1 else -5.0
+		draw_rect(Rect2(-2.0, dir_y, 4.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, dir_y + (1.0 if floor_num == 1 else -1.0), 2.0, 1.0), c_cream)
+	else:
+		draw_rect(Rect2(-8.0, -4.0, 16.0, 1.0), c_dusk)
+		draw_rect(Rect2(-8.0, 3.0, 16.0, 1.0), c_dusk)
 	var lbl: String = "F%d" % floor_num
 	LxPixelFont.draw_centered(self, lbl, 0.0, -2.0, c_cream if _unlocked else PAL["mauve"] as Color, 1, c_void)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - (_pulse_t / 0.45)
-		draw_arc(Vector2.ZERO, roundf(10.0 + u * 18.0), 0.0, TAU, 16, Color(accent, 1.0 - u), 1.4)
+		var pa: float = (1.0 - u) * (0.50 if fred else 0.90)
+		draw_arc(Vector2.ZERO, roundf(10.0 + u * 18.0), 0.0, TAU, 16, Color(accent, pa), 1.0)
 	_draw_signal_pulses()

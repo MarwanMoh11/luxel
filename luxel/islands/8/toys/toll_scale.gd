@@ -315,20 +315,27 @@ func _draw() -> void:
 	draw_rect(Rect2(-2.0, -9.0, 4.0, 10.0), dusk)
 	draw_rect(Rect2(-2.0, -9.0, 1.0, 10.0), stone)
 	draw_rect(Rect2(1.0, -9.0, 1.0, 10.0), night)
-	# Brass column collar & ornamental fulcrum finial crown
+	# Brass column collar & ornamental mode-distinct fulcrum finial crown
 	draw_rect(Rect2(-4.0, -11.0, 8.0, 3.0), void_c)
 	draw_rect(Rect2(-3.0, -10.0, 6.0, 1.0), apricot)
 	draw_rect(Rect2(-2.0, -13.0, 4.0, 3.0), void_c)
-	draw_rect(Rect2(-1.0, -12.0, 2.0, 2.0), gold)
+	draw_rect(Rect2(-1.0, -12.0, 2.0, 2.0), accent)
 	draw_rect(Rect2(-1.0, -12.0, 1.0, 1.0), cream)
+	if mode == "redemption":
+		draw_rect(Rect2(-3.0, -12.0, 6.0, 1.0), lime)
+		draw_rect(Rect2(-1.0, -14.0, 2.0, 3.0), cream)
+	elif mode == "boon_toll":
+		draw_rect(Rect2(-3.0, -14.0, 1.0, 2.0), ice)
+		draw_rect(Rect2(0.0, -15.0, 1.0, 3.0), cream)
+		draw_rect(Rect2(2.0, -14.0, 1.0, 2.0), ice)
 
 	# Sculpted brass balance beam (tilts sharply right when PAID — unmistakable in greyscale!)
 	var dy: float = roundf(_tilt * 4.0)
 	var left_p := Vector2(-10.0, -9.0 - dy)
 	var right_p := Vector2(10.0, -9.0 + dy)
-	draw_line(left_p, right_p, void_c, 4.5)
-	draw_line(left_p + Vector2(0.0, 1.0), right_p + Vector2(0.0, 1.0), apricot, 1.5)
-	draw_line(left_p, right_p, accent, 1.5)
+	draw_line(left_p, right_p, void_c, 4.0)
+	draw_line(left_p + Vector2(0.0, 1.0), right_p + Vector2(0.0, 1.0), apricot, 2.0)
+	draw_line(left_p, right_p, accent, 1.0)
 	draw_line(left_p + Vector2(0.0, -1.0), right_p + Vector2(0.0, -1.0), cream, 1.0)
 	# Ornamental brass end-knobs & central diamond fulcrum brooch
 	for ep: Vector2 in [left_p, right_p]:
@@ -363,14 +370,14 @@ func _draw() -> void:
 		elif weighing:
 			# Clear tilted weight glow on right pan when weighing a setting or PAID
 			var glow_r: float = 6.0 if paid else 5.0
-			var ga: float = 0.52 if fr else (0.55 + 0.25 * absf(sin(_clock * 4.0)))
-			draw_arc(Vector2(bp.x, pan_y - 1.0), glow_r, 0.0, TAU, 14, Color(accent, ga), 1.2)
+			var ga: float = 0.48 if fr else (0.55 + 0.25 * absf(sin(_clock * 4.0)))
+			draw_arc(Vector2(bp.x, pan_y - 1.0), glow_r, 0.0, TAU, 14, Color(accent, ga), 1.0)
 			draw_rect(Rect2(bp.x - 3.0, pan_y - 2.0, 6.0, 3.0), coral if mode == "shop" or mode == "gate" else accent)
 			draw_rect(Rect2(bp.x - 2.0, pan_y - 3.0, 4.0, 3.0), accent)
 			draw_rect(Rect2(bp.x - 1.0, pan_y - 4.0, 2.0, 3.0), accent_hi)
 			draw_rect(Rect2(bp.x, pan_y - 4.0, 1.0, 1.0), cream)
 
-	# Weight pips inlaid along front stone plinth
+	# Weight pips inlaid along front stone plinth (raised lit pip vs flat recessed slot)
 	var pips: int = mini(min_weight, 4) if mode == "gate" else 1
 	var got_w: int = LxSold.current().get_toll_weight()
 	var span: float = float(pips - 1) * 4.0
@@ -378,11 +385,13 @@ func _draw() -> void:
 		var px: float = roundf(-span * 0.5 + float(i) * 4.0) - 1.0
 		var lit_p: bool = paid or (mode == "gate" and i < got_w)
 		draw_rect(Rect2(px - 1.0, 3.0, 4.0, 4.0), void_c)
-		draw_rect(Rect2(px, 4.0, 2.0, 2.0), cream if lit_p else night)
 		if lit_p:
+			draw_rect(Rect2(px, 3.0, 2.0, 3.0), cream)
 			draw_rect(Rect2(px, 5.0, 2.0, 1.0), accent)
+		else:
+			draw_rect(Rect2(px, 5.0, 2.0, 1.0), night)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - (_pulse_t / 0.55)
-		draw_arc(Vector2(0.0, -5.0), roundf(6.0 + u * 18.0), 0.0, TAU, 16, Color(cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.2)
+		draw_arc(Vector2(0.0, -5.0), roundf(6.0 + u * 18.0), 0.0, TAU, 16, Color(cream, (1.0 - u) * (0.55 if fr else 0.92)), 1.0)
 	_draw_signal_pulses()

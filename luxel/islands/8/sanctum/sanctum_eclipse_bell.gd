@@ -71,7 +71,7 @@ func on_signal(from_id: String, is_on: bool) -> void:
 	if changed:
 		_emit_sfx("shield_shatter")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.14)
+			Lx.events.shake_requested.emit(0.14 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		queue_redraw()
 
 
@@ -129,7 +129,7 @@ func _try_ring_bell() -> bool:
 	emit_power(true)
 	_emit_sfx("sanctum_bell_toll")
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.32)
+		Lx.events.shake_requested.emit(0.32 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if LxStrings.has_id("ISL8_SC_BELL_RUNG"):
 			Lx.events.narration_requested.emit("ISL8_SC_BELL_RUNG", "title", 3.6)
 	if region != null and region.has_method("save_interactables_to_state"):
@@ -170,7 +170,8 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if bell_rung:
-		var pulse: float = 18.0 * sin(clampf(_ring_t / 1.4, 0.0, 1.0) * PI) if _ring_t > 0.0 else 0.0
+		var boost: float = 0.5 if LxHudFx.flash_reduced() else 1.0
+		var pulse: float = 18.0 * boost * sin(clampf(_ring_t / 1.4, 0.0, 1.0) * PI) if _ring_t > 0.0 else 0.0
 		return Vector4(pos.x, pos.y - 6.0, 96.0 + pulse, 1.30)
 	var broken_n: int = int(chain_1_broken) + int(chain_2_broken)
 	return Vector4(pos.x, pos.y - 6.0, 34.0 + float(broken_n) * 16.0, 0.45 + float(broken_n) * 0.20)
@@ -202,51 +203,70 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_plum: Color = PAL["plum"] as Color
+	var c_mauve: Color = PAL["mauve"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_sky: Color = PAL["sky"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 
 	# Shadow & stone drum plinth
 	draw_circle(Vector2(0.0, 4.0), 17.0, c_void)
-	draw_arc(Vector2(0.0, 2.0), 16.0, 0.0, TAU, 24, c_gold if bell_rung else c_plum, 1.5)
-	# Bell dome silhouette (dark bronze -> radiant gold when rung)
+	draw_arc(Vector2(0.0, 2.0), 16.0, 0.0, TAU, 24, c_gold if bell_rung else c_plum, 2.0)
+	# Bell dome silhouette (dark bronze -> radiant gold + crown spire when rung)
 	var body_c: Color = c_apricot if bell_rung else c_dusk
-	var hi_c: Color = c_cream if bell_rung else c_mauve_safe()
+	var hi_c: Color = c_cream if bell_rung else c_mauve
 	draw_rect(Rect2(-12.0, -4.0, 24.0, 10.0), body_c)
 	draw_rect(Rect2(-10.0, -12.0, 20.0, 9.0), body_c)
 	draw_rect(Rect2(-6.0, -16.0, 12.0, 5.0), body_c)
 	draw_rect(Rect2(-13.0, 5.0, 26.0, 3.0), c_gold if bell_rung else c_night)
 	draw_rect(Rect2(-7.0, -11.0, 3.0, 11.0), hi_c)
+	if bell_rung:
+		draw_rect(Rect2(-4.0, -19.0, 2.0, 3.0), c_cream)
+		draw_rect(Rect2(-1.0, -21.0, 2.0, 5.0), c_cream)
+		draw_rect(Rect2(2.0, -19.0, 2.0, 3.0), c_cream)
 	# Clapper jewel
 	draw_circle(Vector2(0.0, 7.0), 3.0, c_cream if bell_rung else c_gold)
-	# Chain 1 (west blue prism chain)
+	# Chain 1 (west blue prism chain; broken shows snapped stub anchor)
 	if not chain_1_broken:
 		draw_line(Vector2(-16.0, -12.0), Vector2(-6.0, -4.0), c_sky, 2.0)
 		draw_rect(Rect2(-14.0, -10.0, 4.0, 4.0), c_ice)
-	# Chain 2 (east phantom dais chain)
+		draw_rect(Rect2(-13.0, -9.0, 2.0, 2.0), c_void)
+	else:
+		draw_rect(Rect2(-16.0, -13.0, 3.0, 2.0), c_dusk)
+	# Chain 2 (east phantom dais chain; broken shows snapped stub anchor)
 	if not chain_2_broken:
 		draw_line(Vector2(16.0, -12.0), Vector2(6.0, -4.0), c_plum, 2.0)
 		draw_rect(Rect2(10.0, -10.0, 4.0, 4.0), c_cream)
-	# Chain 3 (center Sunflare seal)
+		draw_rect(Rect2(11.0, -9.0, 2.0, 2.0), c_void)
+	else:
+		draw_rect(Rect2(13.0, -13.0, 3.0, 2.0), c_dusk)
+	# Chain 3 (center Sunflare seal: barred X when locked vs open sunburst cross when armed!)
 	if not bell_rung:
-		var ready_c: Color = c_gold if (chain_1_broken and chain_2_broken) else c_coral
-		draw_arc(Vector2(0.0, -4.0), 5.0, 0.0, TAU, 12, ready_c, 1.4)
-	# Sold-settings golden rim sparks
+		var armed: bool = chain_1_broken and chain_2_broken
+		var ready_c: Color = c_gold if armed else c_coral
+		draw_arc(Vector2(0.0, -4.0), 5.0, 0.0, TAU, 12, ready_c, 1.0)
+		if armed:
+			draw_rect(Rect2(-1.0, -8.0, 2.0, 8.0), c_cream)
+			draw_rect(Rect2(-4.0, -5.0, 8.0, 2.0), c_cream)
+			draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), c_gold)
+		else:
+			draw_line(Vector2(-3.0, -7.0), Vector2(3.0, -1.0), c_void, 2.0)
+			draw_line(Vector2(3.0, -7.0), Vector2(-3.0, -1.0), c_coral, 1.0)
+	# Sold-settings golden rim sparks (steady cardinal layout under flash_reduced)
 	var sold_w: int = LxSold.current().get_toll_weight() if LxSold.current() != null else 0
 	var pips: int = mini(6, sold_w / 2)
+	var spin: float = 0.0 if fred else (_clock * 0.8)
 	for i: int in range(pips):
-		var a: float = _clock * 0.8 + float(i) * (TAU / maxf(1.0, float(pips)))
+		var a: float = spin + float(i) * (TAU / maxf(1.0, float(pips)))
 		draw_rect(Rect2(roundf(cos(a) * 19.0) - 1.0, roundf(sin(a) * 12.0) - 3.0, 2.0, 2.0), c_gold)
 	if _ring_t > 0.0:
 		var u: float = 1.0 - clampf(_ring_t / 1.4, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(12.0, 78.0, u)), 0.0, TAU, 28, Color(c_cream, 1.0 - u), 2.0)
+		var ra: float = (1.0 - u) * (0.50 if fred else 0.92)
+		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(12.0, 78.0, u)), 0.0, TAU, 28, Color(c_cream, ra), 1.0 if fred else 2.0)
 	if _reject_t > 0.0:
-		draw_arc(Vector2(0.0, -2.0), 18.0, 0.0, TAU, 18, c_coral, 1.4)
+		var rja: float = clampf(_reject_t / 0.45, 0.0, 1.0) * (0.50 if fred else 0.95)
+		draw_arc(Vector2(0.0, -2.0), 18.0, 0.0, TAU, 18, Color(c_coral, rja), 1.0)
 	_draw_signal_pulses()
-
-
-func c_mauve_safe() -> Color:
-	return PAL["mauve"] as Color

@@ -405,7 +405,7 @@
       "prop": "dark_candelabra",
       "pos": [
         296,
-        40
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -428,8 +428,8 @@
       "sheet": "island8_scenery",
       "prop": "eclipse_brazier",
       "pos": [
-        136,
-        224
+        120,
+        200
       ],
       "layer": "sort",
       "flip_x": false,
