@@ -96,46 +96,6 @@ static func draw_plinth(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool
 		var ca_c: float = 0.34 if fred_c else (0.28 + 0.16 * sin(elapsed * 2.6))
 		var cr_c: float = 13.0 if isl_id >= 2 else 11.0
 		canvas.draw_arc(c.round(), cr_c, 0.0, TAU, 16, Color(LxBiomePalette.col(isl_id, "glow"), ca_c), 1.0)
-	if isl_id == 1:
-		_draw_harmony_constellation(canvas, elapsed)
-
-
-static func _draw_harmony_constellation(canvas: CanvasItem, elapsed: float) -> void:
-	# Compact 8-island jewel bar in the quiet top-right Sky-Chart header (x=244..294, y=18)
-	if Lx.state == null:
-		return
-	var fred: bool = LxHudFx.flash_reduced()
-	var t: float = 0.0 if fred else elapsed
-	var harm_cnt: int = 0
-	for k: int in range(1, 9):
-		if bool(Lx.state.story_flags.get("disc_all_%d" % k, false)):
-			harm_cnt += 1
-	var base_x: float = 248.0
-	var cy: float = 18.0
-	var line_col: Color = Color(LxPalette.PAL["gold"] as Color, 0.72) if harm_cnt >= 8 else Color(LxPalette.PAL["dusk"] as Color, 0.85)
-	canvas.draw_line(Vector2(base_x, cy), Vector2(base_x + 42.0, cy), line_col, 1.0)
-	for k: int in range(1, 9):
-		var px: float = base_x + float(k - 1) * 6.0
-		var is_relit: bool = Lx.state.relit_islands.has(k)
-		var is_harm: bool = bool(Lx.state.story_flags.get("disc_all_%d" % k, false))
-		var b_glow: Color = LxBiomePalette.col(k, "glow")
-		if is_harm:
-			var tw: float = 0.88 if fred else (0.76 + 0.24 * sin(t * 2.4 + float(k) * 0.9))
-			canvas.draw_rect(Rect2(px - 1.0, cy, 3.0, 1.0), Color(b_glow, tw))
-			canvas.draw_rect(Rect2(px, cy - 1.0, 1.0, 3.0), Color(b_glow, tw))
-			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
-		elif is_relit:
-			canvas.draw_rect(Rect2(px - 1.0, cy - 1.0, 2.0, 2.0), b_glow)
-			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["cream"] as Color)
-		else:
-			canvas.draw_rect(Rect2(px, cy, 1.0, 1.0), LxPalette.PAL["mauve"] as Color)
-	# Crown the top-right jewel bar with a golden Archipelago Dawn Star once all 8 islands are relit!
-	if Lx.state.relit_islands.size() >= 8:
-		var ds := Vector2(base_x - 7.0, cy).round()
-		var dtw: float = 0.88 if fred else (0.72 + 0.28 * sin(t * 2.2))
-		canvas.draw_rect(Rect2(ds + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), Color(LxPalette.PAL["gold"] as Color, dtw))
-		canvas.draw_rect(Rect2(ds + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), Color(LxPalette.PAL["gold"] as Color, dtw))
-		canvas.draw_rect(Rect2(ds, Vector2.ONE), LxPalette.PAL["cream"] as Color)
 
 
 static func _draw_island_atmosphere(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool, elapsed: float) -> void:
@@ -208,16 +168,18 @@ static func draw_chart_backdrop(canvas: CanvasItem, chart: Rect2, elapsed: float
 		for my: float in [44.0, 66.0]:
 			canvas.draw_rect(Rect2(mx - 1.0, my, 3.0, 1.0), dusk)
 			canvas.draw_rect(Rect2(mx, my - 1.0, 1.0, 3.0), dusk)
+	var fred: bool = LxHudFx.flash_reduced()
+	var t: float = 0.0 if fred else elapsed
 	for s: int in range(18):
 		var sx: float = 26.0 + float((s * 47 + 13) % 268)
 		var sy: float = 30.0 + float((s * 19 + 5) % 44)
 		if sx < 38.0 and sy > 70.0:
 			continue
-		var phase: float = fmod(elapsed + float(s) * 0.41, 2.4 + float(s % 3) * 0.6)
+		var phase: float = fmod(t + float(s) * 0.41, 2.4 + float(s % 3) * 0.6)
 		var scol: Color = (LxPalette.PAL["ice"] if s % 3 == 0 else LxPalette.PAL["stone"]) if phase < 0.45 else (LxPalette.PAL["mauve"] if s % 2 == 0 else dusk)
 		canvas.draw_rect(Rect2(sx, sy, 1.0, 1.0), scol)
 	for w: int in range(6):
-		var wx: float = 54.0 + float(w) * 42.0 + roundf(sin(elapsed * 0.8 + float(w)) * 2.0)
+		var wx: float = 54.0 + float(w) * 42.0 + (0.0 if fred else roundf(sin(elapsed * 0.8 + float(w)) * 2.0))
 		var wy: float = 84.0 + float(w % 2) * 3.0
 		canvas.draw_rect(Rect2(wx, wy, 5.0, 1.0), dusk)
 	draw_compass_rose(canvas, Vector2(29.0, 82.0), elapsed)
@@ -238,9 +200,11 @@ static func draw_compass_rose(canvas: CanvasItem, c: Vector2, elapsed: float) ->
 static func draw_unexplored_island(canvas: CanvasItem, c: Vector2, isl_id: int, elapsed: float) -> void:
 	_px(canvas, c, [[-6, -2, 12, 3], [-4, -4, 8, 2]], LxPalette.PAL["dusk"])
 	_px(canvas, c, [[-2, -6, 4, 2], [-7, 0, 14, 2], [-5, 2, 10, 2], [-2, 4, 4, 1]], LxPalette.PAL["night"])
+	var fred: bool = LxHudFx.flash_reduced()
 	for k: int in range(3):
-		var fx: float = roundf(c.x - 5.0 + float(k) * 5.0 + sin(elapsed * 1.1 + float(isl_id) + float(k) * 2.0) * 1.5)
-		canvas.draw_rect(Rect2(fx, c.y - 3.0 - float(k % 2) * 2.0, 1.0, 1.0), LxPalette.PAL["mauve"])
+		var drift: float = 0.0 if fred else sin(elapsed * 1.1 + float(isl_id) + float(k) * 2.0) * 1.5
+		var fx: float = roundf(c.x - 5.0 + float(k) * 5.0 + drift)
+		canvas.draw_rect(Rect2(fx, roundf(c.y - 3.0 - float(k % 2) * 2.0), 1.0, 1.0), LxPalette.PAL["mauve"])
 
 
 static func draw_island_landmark(canvas: CanvasItem, c: Vector2, isl_id: int, relit: bool, elapsed: float) -> void:
@@ -289,9 +253,9 @@ static func draw_island_landmark(canvas: CanvasItem, c: Vector2, isl_id: int, re
 			_px(canvas, c, [[-3, -9, 6, 1]], LxPalette.PAL["wine"])
 			_px(canvas, c, [[-1, -4, 2, 2]], LxPalette.PAL["apricot"] if (LxHudFx.flash_reduced() or fmod(elapsed * 2.2, 1.0) < 0.5) else LxPalette.PAL["coral"])
 			_px(canvas, c, [[0, -3, 1, 1]], LxPalette.PAL["gold"])
-			var puff: float = floorf(fmod(elapsed * 2.5, 3.0))
-			canvas.draw_rect(Rect2(roundf(c.x - 1.0 + puff * 0.5), c.y - 10.0 - puff, 1.0, 1.0), LxPalette.PAL["coral"])
-			canvas.draw_rect(Rect2(c.x + 1.0, c.y - 11.0 - fmod(puff + 1.0, 3.0), 1.0, 1.0), LxPalette.PAL["mauve"])
+			var puff: float = 0.0 if LxHudFx.flash_reduced() else floorf(fmod(elapsed * 2.5, 3.0))
+			canvas.draw_rect(Rect2(roundf(c.x - 1.0 + puff * 0.5), roundf(c.y - 10.0 - puff), 1.0, 1.0), LxPalette.PAL["coral"])
+			canvas.draw_rect(Rect2(roundf(c.x + 1.0), roundf(c.y - 11.0 - fmod(puff + 1.0, 3.0)), 1.0, 1.0), LxPalette.PAL["mauve"])
 		7:
 			_px(canvas, c, [[-3, -3, 6, 1]], LxPalette.PAL["blue"])
 			_px(canvas, c, [[-1, -8, 2, 5], [1, -11, 1, 1]], LxPalette.PAL["sky"])

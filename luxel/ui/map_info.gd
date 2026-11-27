@@ -17,7 +17,7 @@ static func draw_header_progress(ci: CanvasItem, elapsed: float) -> void:
 	var pct_txt: String = LxStrings.fmt("MAP_COMPLETION_FMT", [pct])
 	LxPixelFont.draw_right(ci, pct_txt, 298.0, 16.0, LxPalette.PAL["gold"] if pct >= 100 else LxPalette.PAL["cream"], 1)
 	var pct_w: float = float(LxPixelFont.width(pct_txt, 1))
-	var bar_right: float = 298.0 - pct_w - 5.0
+	var bar_right: float = 298.0 - pct_w - 6.0
 	var jewel_x0: float = roundf(bar_right - 39.0)
 	var fr: bool = LxHudFx.flash_reduced()
 	for i: int in range(8):
@@ -42,10 +42,10 @@ static func draw_header_progress(ci: CanvasItem, elapsed: float) -> void:
 static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: bool) -> void:
 	if isl_id == 0:
 		LxPixelFont.draw_panel(ci, box, "dusk", "gold", "night")
-		LxHudFx.draw_biome_crest(ci, 1, box.position + Vector2(8.0, 8.0), LxPalette.PAL["gold"] as Color, LxPalette.PAL["cream"] as Color)
-		LxPixelFont.draw_left(ci, LxStrings.text("MAP_HUB_LABEL"), box.position + Vector2(14.0, 5.0), LxPalette.PAL["gold"], 1)
+		LxHudFx.draw_biome_crest(ci, 1, box.position + Vector2(8.0, 7.0), LxPalette.PAL["gold"] as Color, LxPalette.PAL["cream"] as Color)
+		LxPixelFont.draw_left(ci, LxStrings.text("MAP_HUB_LABEL"), box.position + Vector2(14.0, 4.0), LxPalette.PAL["gold"], 1)
 		if Lx.state != null and Lx.state.island_id == 0:
-			LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 5.0, LxPalette.PAL["cream"], 1)
+			LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 4.0, LxPalette.PAL["cream"], 1)
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_SECRETS", [count_secrets()]), box.position + Vector2(6.0, 26.0), LxPalette.PAL["sky"], 1)
 		_draw_footer_counts(ci, box)
 		return
@@ -58,7 +58,7 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		return
 
 	var isl_glow: Color = LxBiomePalette.col(isl_id, "glow")
-	LxHudFx.draw_biome_crest(ci, isl_id, box.position + Vector2(8.0, 8.0), isl_glow, LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(ci, isl_id, box.position + Vector2(8.0, 7.0), isl_glow, LxPalette.PAL["cream"] as Color)
 	var is_cur: bool = Lx.state != null and Lx.state.island_id == isl_id
 	var max_name: int = 16 if is_cur else 20
 	var isl_name: String = LxStrings.sanitize(str(data.get("name", "")), 0)
@@ -66,26 +66,26 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 		var cut: String = isl_name.substr(0, max_name)
 		var sp: int = cut.rfind(" ")
 		isl_name = (cut.substr(0, sp) if sp >= 4 else cut).strip_edges()
-	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_ISLAND_FMT", [isl_id, isl_name]), box.position + Vector2(14.0, 5.0), isl_glow, 1)
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_ISLAND_FMT", [isl_id, isl_name]), box.position + Vector2(14.0, 4.0), isl_glow, 1)
 	if is_cur:
-		LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 5.0, LxPalette.PAL["cream"], 1)
+		LxPixelFont.draw_right(ci, LxStrings.text("MAP_CURRENT"), box.end.x - 6.0, box.position.y + 4.0, LxPalette.PAL["cream"], 1)
 
 	var beacons: int = count_beacons(isl_id)
-	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 14.0), LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_BEACONS", [beacons]), box.position + Vector2(6.0, 12.0), LxPalette.PAL["cream"], 1)
 	for bk: int in range(3):
 		var bx: float = box.end.x - 24.0 + float(bk) * 6.0
 		var lit_b: bool = bk < beacons
-		ci.draw_rect(Rect2(bx, box.position.y + 14.0, 4.0, 4.0), isl_glow if lit_b else LxPalette.PAL["night"])
-		ci.draw_rect(Rect2(bx + 1.0, box.position.y + 15.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
+		ci.draw_rect(Rect2(bx, box.position.y + 12.0, 4.0, 4.0), isl_glow if lit_b else LxPalette.PAL["night"])
+		ci.draw_rect(Rect2(bx + 1.0, box.position.y + 13.0, 2.0, 2.0), LxPalette.PAL["cream" if lit_b else "mauve"])
 
 	var dngs: Array[Dictionary] = get_island_dungeons(isl_id)
 	if dngs.size() <= 1:
 		var isl_relit: bool = Lx.state != null and Lx.state.relit_islands.has(isl_id)
 		var dungeon_label: String = get_dungeon_name(isl_id, data)
 		var d_line: String = LxStrings.text("MAP_DUNGEON_CLEAR") if isl_relit else (LxStrings.fmt("MAP_DUNGEON", [dungeon_label]) if beacons >= 3 else LxStrings.text("MAP_DUNGEON_SEALED"))
-		LxPixelFont.draw_left(ci, d_line, box.position + Vector2(6.0, 23.0), LxPalette.PAL["lime"] if isl_relit else LxPalette.PAL["apricot"], 1)
+		LxPixelFont.draw_left(ci, d_line, box.position + Vector2(6.0, 21.0), LxPalette.PAL["lime"] if isl_relit else LxPalette.PAL["apricot"], 1)
 		if not dngs.is_empty():
-			_draw_dungeon_pips(ci, box.end.x - 6.0, box.position.y + 23.0, dngs[0], isl_glow)
+			_draw_dungeon_pips(ci, box.end.x - 6.0, box.position.y + 21.0, dngs[0], isl_glow)
 		_draw_relic_and_harmony(ci, box, isl_id, data)
 	else:
 		_draw_multi_dungeons(ci, box, dngs, isl_glow)
@@ -105,13 +105,13 @@ static func _draw_multi_dungeons(ci: CanvasItem, box: Rect2, dngs: Array[Diction
 	var done_n: int = 0
 	for d: Dictionary in dngs:
 		if LxMapDungeon.is_dungeon_done(d): done_n += 1
-	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_DUNGEON_COUNT_FMT", [done_n, dngs.size()]), box.position + Vector2(6.0, 21.0), LxPalette.PAL["lime"] if done_n == dngs.size() else LxPalette.PAL["apricot"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_DUNGEON_COUNT_FMT", [done_n, dngs.size()]), box.position + Vector2(6.0, 19.0), LxPalette.PAL["lime"] if done_n == dngs.size() else LxPalette.PAL["apricot"], 1)
 	var shown: int = mini(dngs.size(), 3)
 	for i: int in range(shown):
 		var d: Dictionary = dngs[i]
-		var ry: float = box.position.y + 28.0 + float(i) * 5.0
+		var ry: float = box.position.y + 26.0 + float(i) * 7.0
 		var done: bool = LxMapDungeon.is_dungeon_done(d)
-		var nm: String = LxMapDungeon._dungeon_display_name(d, str(d.get("id", ""))).substr(0, 14)
+		var nm: String = LxMapDungeon._dungeon_display_name(d, str(d.get("id", ""))).substr(0, 20)
 		ci.draw_rect(Rect2(box.position.x + 6.0, ry + 1.0, 3.0, 3.0), LxPalette.PAL["lime"] if done else glow)
 		LxPixelFont.draw_left(ci, nm, Vector2(box.position.x + 11.0, ry), LxPalette.PAL["lime"] if done else LxPalette.PAL["cream"], 1)
 		_draw_dungeon_pips(ci, box.end.x - 6.0, ry, d, glow)
@@ -175,18 +175,18 @@ static func _draw_relic_and_harmony(ci: CanvasItem, box: Rect2, isl_id: int, dat
 static func _draw_footer_counts(ci: CanvasItem, box: Rect2) -> void:
 	var embers: int = Lx.state.ember_pieces if Lx.state != null else 0
 	var moths: int = LxQuests.current().get_moth_count()
-	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 44.0), LxPalette.PAL["apricot"] if embers >= EMBER_TOTAL else LxPalette.PAL["stone"], 1)
-	LxPixelFont.draw_right(ci, LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [moths, 80]), box.end.x - 6.0, box.position.y + 44.0, LxPalette.PAL["gold"] if moths > 0 else LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_EMBERS", [embers]), box.position + Vector2(6.0, 48.0), LxPalette.PAL["apricot"] if embers >= EMBER_TOTAL else LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_right(ci, LxFolkData.fmt_id("JOURNAL_MOTHS_FMT", [moths, 80]), box.end.x - 6.0, box.position.y + 48.0, LxPalette.PAL["gold"] if moths > 0 else LxPalette.PAL["stone"], 1)
 
 
 static func ws_filter_rect(filter_val: int) -> Rect2:
-	# Compact island search filter pills inside top of Waystone box (170..300, y=109)
+	# Compact island search filter pills inside top of Waystone box (170..300, y=106)
 	# filter_val: -1 = ALL, 0 = HUB, 1..8 = island 1..8
 	if filter_val == -1:
-		return Rect2(174.0, 108.0, 16.0, 8.0)
+		return Rect2(174.0, 106.0, 16.0, 9.0)
 	if filter_val == 0:
-		return Rect2(191.0, 108.0, 11.0, 8.0)
-	return Rect2(203.0 + float(filter_val - 1) * 11.0, 108.0, 10.0, 8.0)
+		return Rect2(191.0, 106.0, 11.0, 9.0)
+	return Rect2(203.0 + float(filter_val - 1) * 11.0, 106.0, 10.0, 9.0)
 
 
 static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary], ws_idx: int, ws_scroll: int, elapsed: float, ws_filter: int = -2) -> void:
@@ -206,7 +206,7 @@ static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary
 			ci.draw_rect(fr.grow(-1.0), LxPalette.PAL["plum"] if act else LxPalette.PAL["void"])
 			var flbl: String = LxFolkData.tr_id("PANES_TAB_ALL").substr(0, 3) if fv == -1 else (LxFolkData.tr_id("MAP_HUB_SHORT").substr(0, 1) if fv == 0 else str(fv))
 			var fcol: Color = LxPalette.PAL["gold"] if act else (LxBiomePalette.col(fv, "glow") if fv > 0 else LxPalette.PAL["stone"])
-			LxPixelFont.draw_centered(ci, flbl, fr.get_center().x, fr.position.y + 1.0, fcol, 1)
+			LxPixelFont.draw_centered(ci, flbl, fr.get_center().x, fr.position.y + 2.0, fcol, 1)
 
 	if ws_list.is_empty():
 		LxPixelFont.draw_left(ci, LxStrings.text("MAP_NO_WAYSTONES"), box.position + Vector2(6.0, 26.0), LxPalette.PAL["mauve"], 1)
@@ -233,16 +233,16 @@ static func draw_waystones(ci: CanvasItem, box: Rect2, ws_list: Array[Dictionary
 		var ax: float = box.end.x - 7.0
 		var up_col: Color = LxPalette.PAL["gold"] if ws_scroll > 0 else LxPalette.PAL["night"]
 		var dn_col: Color = LxPalette.PAL["gold"] if ws_scroll + WS_VISIBLE < total else LxPalette.PAL["night"]
-		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 22.0, 1.0, 1.0), up_col)
-		ci.draw_rect(Rect2(ax, box.position.y + 23.0, 3.0, 1.0), up_col)
-		ci.draw_rect(Rect2(ax, box.position.y + 43.0, 3.0, 1.0), dn_col)
-		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 44.0, 1.0, 1.0), dn_col)
+		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 21.0, 1.0, 1.0), up_col)
+		ci.draw_rect(Rect2(ax, box.position.y + 22.0, 3.0, 1.0), up_col)
+		ci.draw_rect(Rect2(ax, box.position.y + 42.0, 3.0, 1.0), dn_col)
+		ci.draw_rect(Rect2(ax + 1.0, box.position.y + 43.0, 1.0, 1.0), dn_col)
 
-	LxPixelFont.draw_left(ci, LxStrings.text("MAP_TRAVEL_PROMPT"), box.position + Vector2(6.0, 49.0), LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_left(ci, LxStrings.text("MAP_TRAVEL_PROMPT"), box.position + Vector2(6.0, 48.0), LxPalette.PAL["stone"], 1)
 
 
 static func ws_row_rect(row: int) -> Rect2:
-	return Rect2(179.0, 118.0 + float(row) * 9.0, 112.0, 8.0)
+	return Rect2(179.0, 117.0 + float(row) * 9.0, 112.0, 9.0)
 
 
 static func get_dungeon_name(isl_id: int, data: Dictionary) -> String:

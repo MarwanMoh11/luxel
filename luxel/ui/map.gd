@@ -42,12 +42,12 @@ var _island_dungeons: Array[Dictionary] = []
 var _island_nodes: Array[Dictionary] = []
 var _island_node_idx: int = 0
 var _hover_island: int = -1
+var _hover_tab: int = -1
 var _waystone_idx: int = 0
 var _ws_scroll: int = 0
 var _ws_filter_island: int = -1 # -1 = ALL, 0 = HUB, 1..8 = island
 var _waystone_list: Array[Dictionary] = [] # {island_id, waystone_id, label}
 var _elapsed: float = 0.0
-
 
 func _ready() -> void: process_mode = Node.PROCESS_MODE_ALWAYS; visible = false
 func close() -> void: visible = false
@@ -56,6 +56,7 @@ func open() -> void:
 	if Lx.data_islands.is_empty(): Lx.load_all_data()
 	_selected_island = Lx.state.island_id if Lx.state != null else 1
 	_ws_filter_island = _selected_island
+	_hover_tab = -1
 	_rebuild_dungeons()
 	_rebuild_island_nodes()
 	_view = View.ISLAND
@@ -145,6 +146,13 @@ func _unhandled_input(event: InputEvent) -> void:
 		get_viewport().set_input_as_handled(); return
 	if event is InputEventMouseMotion:
 		var mpos: Vector2 = (event as InputEventMouseMotion).position
+		var next_tab: int = -1
+		for vi: int in range(3):
+			if _tab_rect(vi).has_point(mpos): next_tab = vi; break
+		if next_tab != _hover_tab:
+			_hover_tab = next_tab
+			if next_tab >= 0: _play_ui_sfx("ui_move")
+			queue_redraw()
 		if _view == View.ISLAND:
 			var hi: int = LxMapIsland.hit_test_node(_island_nodes, mpos)
 			if hi >= 0 and hi != _island_node_idx:
@@ -272,7 +280,7 @@ func _step_view(dir: int) -> void:
 	_rebuild_dungeons(); _rebuild_island_nodes(); _play_ui_sfx("ui_move"); queue_redraw()
 
 func _tab_rect(v_idx: int) -> Rect2:
-	return Rect2(126.0 + float(v_idx) * 38.0, 14.0, 36.0, 9.0)
+	return Rect2(122.0 + float(v_idx) * 39.0, 13.0, 37.0, 11.0)
 
 func _handle_click(pos: Vector2) -> bool:
 	if LxUiNav.handle_tab_bar_click(pos, 4):
@@ -357,7 +365,6 @@ func _draw() -> void:
 
 	LxPixelFont.draw_centered(self, LxStrings.text("MAP_HINT"), 160.0, 160.0, LxPalette.PAL["stone"], 1)
 
-
 func _draw_view_tabs() -> void:
 	var labels: Array[String] = [
 		LxFolkData.tr_id("MAP_TAB_WORLD"),
@@ -367,9 +374,9 @@ func _draw_view_tabs() -> void:
 	for vi: int in range(3):
 		var r: Rect2 = _tab_rect(vi)
 		var active: bool = _view == vi
-		LxPixelFont.draw_panel(self, r, "plum" if active else "night", "gold" if active else "dusk", "void")
-		LxPixelFont.draw_centered(self, labels[vi], r.get_center().x, r.position.y + 2.0, LxPalette.PAL["gold"] if active else LxPalette.PAL["stone"], 1)
-
+		var hov: bool = (not active) and _hover_tab == vi
+		LxPixelFont.draw_panel(self, r, "plum" if active else "night", "gold" if active else ("sky" if hov else "dusk"), "void")
+		LxPixelFont.draw_centered(self, labels[vi], r.get_center().x, r.position.y + 3.0, LxPalette.PAL["gold"] if active else (LxPalette.PAL["ice"] if hov else LxPalette.PAL["stone"]), 1)
 
 func _draw_panel_brackets() -> void:
 	var p: Vector2 = PANEL_RECT.position
@@ -587,7 +594,6 @@ func _play_ui_sfx(sfx_id: String) -> void:
 
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc
-
 
 static func _joy_btn(event: InputEvent, btn: JoyButton) -> bool:
 	return event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed and (event as InputEventJoypadButton).button_index == btn

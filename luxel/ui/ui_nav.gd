@@ -3,8 +3,8 @@ extends RefCounted
 ## Shared navigation, Pin ("Next Light"), island-visit tracking, Previously-bar icons,
 ## rich save-slot summaries, and Pause/Map/Journal/Panes top tab bar for luxel/ui/.
 
-const TAB_BAR_Y: float = 1.0
-const TAB_BAR_H: float = 9.0
+const TAB_BAR_Y: float = 0.0
+const TAB_BAR_H: float = 11.0
 const TAB_IDS: Array[String] = ["PAUSE_TITLE", "PAUSE_MAP", "PAUSE_JOURNAL", "PAUSE_PANES"]
 const TAB_SCREENS: Array[int] = [3, 4, 13, 14] # LxUiRoot.Screen: PAUSE, MAP, JOURNAL, PANES
 const ONE_DAY_SECS: int = 86400
@@ -59,14 +59,14 @@ static func draw_pause_tab_bar(ci: CanvasItem, active_screen: int) -> void:
 	if not should_show_pause_tabs(active_screen):
 		return
 	var pal: Dictionary = LxPalette.PAL
-	ci.draw_rect(Rect2(48.0, 0.0, 224.0, 10.0), pal["void"] as Color)
+	ci.draw_rect(Rect2(48.0, 0.0, 224.0, 11.0), pal["void"] as Color)
 	for i: int in range(TAB_IDS.size()):
 		var r: Rect2 = tab_rect(i)
 		var is_act: bool = TAB_SCREENS[i] == active_screen
 		LxPixelFont.draw_panel(ci, r, "plum" if is_act else "night", "gold" if is_act else "dusk", "void")
 		var lbl: String = LxFolkData.tr_id(TAB_IDS[i]).substr(0, 7)
 		var tc: Color = (pal["gold"] if is_act else pal["stone"]) as Color
-		LxPixelFont.draw_centered(ci, lbl, r.get_center().x, r.position.y + 2.0, tc, 1)
+		LxPixelFont.draw_centered(ci, lbl, r.get_center().x, r.position.y + 3.0, tc, 1)
 
 
 static func handle_tab_bar_click(pos: Vector2, active_screen: int) -> bool:
@@ -322,33 +322,33 @@ static func resolve_quest_place(q: Dictionary) -> Dictionary:
 					break
 	if reg.is_empty():
 		reg = "overworld"
-	var label: String = region_display_label(isl, reg)
+	var label: String = region_display_label(isl, reg, 22)
 	var out := {"island": isl, "region": reg, "label": label}
 	_quest_regions_cache[qid] = out
 	return out
 
 
-static func region_display_label(isl: int, reg: String) -> String:
+static func region_display_label(isl: int, reg: String, max_len: int = 14) -> String:
 	if isl == 0 and reg == "overworld":
 		return LxFolkData.tr_id("MAP_HUB_SHORT")
 	if Lx.packs != null:
 		var rmeta: Dictionary = Lx.packs.region_meta(isl, reg)
 		var nk: String = str(rmeta.get("name_key", ""))
 		if not nk.is_empty() and LxFolkData.has_str(nk):
-			return LxFolkData.tr_id(nk).substr(0, 14)
+			return LxFolkData.tr_id(nk).substr(0, max_len)
 		var did: String = Lx.packs.dungeon_of(isl, reg)
 		if not did.is_empty():
-			return LxMapDungeon._dungeon_display_name(Lx.packs.dungeon(did), did).substr(0, 14)
+			return LxMapDungeon._dungeon_display_name(Lx.packs.dungeon(did), did).substr(0, max_len)
 	if reg == "overworld":
 		var idata: Dictionary = Lx.get_island_data(isl)
-		var inm: String = LxStrings.sanitize(str(idata.get("name", "")), 14)
+		var inm: String = LxStrings.sanitize(str(idata.get("name", "")), max_len)
 		if not inm.is_empty():
 			return inm
 	var clean: String = reg
 	for pfx: String in ["ow_", "cave_", "sb_", "superboss_", "vault_"]:
 		if clean.begins_with(pfx):
 			clean = clean.substr(pfx.length())
-	return LxStrings.sanitize(clean, 14)
+	return LxStrings.sanitize(clean, max_len)
 
 
 # ---- Save Slot Rich Summary & Previously Icon Strip ----

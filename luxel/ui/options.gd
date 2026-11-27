@@ -355,7 +355,7 @@ func _draw() -> void:
 	_draw_frame_ornaments()
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.position.x + 16.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
 	LxHudFx.draw_biome_crest(self, isl_o, Vector2(PANEL_RECT.end.x - 17.0, PANEL_RECT.position.y + 8.0), LxBiomePalette.col(isl_o, "hi"), LxPalette.PAL["cream"] as Color)
-	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 5.0, LxPalette.PAL["gold"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_TITLE"), 160.0, PANEL_RECT.position.y + 4.0, LxPalette.PAL["gold"], 1)
 	var sold_n: int = LxSold.current().get_sold_count()
 	if sold_n > 0:
 		LxHudOverlays.draw_sold_badge(self, Vector2(PANEL_RECT.end.x - 24.0, PANEL_RECT.position.y + 3.0), sold_n, true, true)
@@ -407,7 +407,7 @@ func _draw_frame_ornaments() -> void:
 		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
 		draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
 	# Decorative lantern-chain divider beneath OPT_TITLE.
-	var cy: float = p.y + 12.0
+	var cy: float = p.y + 13.0
 	draw_rect(Rect2(p.x + 12.0, cy, PANEL_RECT.size.x - 24.0, 1.0), night)
 	var x: float = p.x + 16.0
 	while x < e.x - 16.0:
@@ -561,7 +561,7 @@ func _hold_label(cfg: Dictionary, action_id: String) -> String:
 
 
 func _tab_rect(i: int) -> Rect2:
-	return Rect2(26.0 + float(i) * 68.0, 26.0, 64.0, 12.0)
+	return Rect2(26.0 + float(i) * 68.0, 27.0, 64.0, 11.0)
 
 
 func _row_rect(i: int) -> Rect2:

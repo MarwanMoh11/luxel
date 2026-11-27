@@ -51,7 +51,7 @@ static func draw_frame_ornaments(cv: CanvasItem, isl: int, elapsed: float, all_d
 		cv.draw_rect(Rect2(rv + Vector2(1.0, 1.0), Vector2(2.0, 2.0)), night)
 		cv.draw_rect(Rect2(rv, Vector2(2.0, 2.0)), apr)
 		cv.draw_rect(Rect2(rv, Vector2(1.0, 1.0)), gold)
-	var dy: float = 36.0
+	var dy: float = 37.0
 	cv.draw_rect(Rect2(28.0, dy, 264.0, 1.0), night)
 	cv.draw_rect(Rect2(32.0, dy, 256.0, 1.0), dusk)
 	if not LxHudFx.flash_reduced():

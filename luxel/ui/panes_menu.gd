@@ -26,6 +26,7 @@ var _slot_cursor: int = 0
 var _scroll_row: int = 0
 var _elapsed: float = 0.0
 var _close_hover: bool = false
+var _hover_filter: int = -1
 var _feedback_txt: String = ""
 var _feedback_col: String = "lime"
 var _feedback_t: float = 0.0
@@ -49,7 +50,7 @@ func open(p_read_only: bool = false) -> void:
 	read_only = p_read_only; _sheet = LxSpriteSheet.load_sheet(SHEET_PATH)
 	LxPanes.current().load_from_state()
 	_island_filter = 0; _rebuild_list()
-	_idx = 0; _focus_slots = false; _slot_cursor = 0; _scroll_row = 0; _elapsed = 0.0
+	_idx = 0; _focus_slots = false; _slot_cursor = 0; _scroll_row = 0; _elapsed = 0.0; _hover_filter = -1
 	_feedback_txt = ""; _feedback_t = 0.0; _deny_t = 0.0; _spark_slot = -1; _spark_t = 0.0
 	_clear_drag(); visible = true; _play_sfx("menu_open"); queue_redraw()
 
@@ -128,6 +129,12 @@ func _handle_mouse_motion(pos: Vector2) -> void:
 	if over_c != _close_hover:
 		_close_hover = over_c
 		if over_c: _play_sfx("ui_move")
+	var next_f: int = -1
+	for fi: int in range(9):
+		if _filter_rect(fi).has_point(pos): next_f = fi; break
+	if next_f != _hover_filter:
+		_hover_filter = next_f
+		if next_f >= 0: _play_sfx("ui_move")
 	var hit_i: int = _grid_index_at(pos)
 	if hit_i >= 0 and hit_i != _idx:
 		_idx = hit_i
@@ -343,7 +350,7 @@ func _draw() -> void:
 	# Header: Title + Read-only badge + Lead budget pips + Owned count
 	LxPixelFont.draw_left(self, LxFolkData.tr_id("PANES_TITLE"), Vector2(24.0, 15.0), LxPalette.PAL["gold"], 1)
 	if read_only:
-		var ro_r := Rect2(94.0, 13.0, 44.0, 9.0)
+		var ro_r := Rect2(94.0, 12.0, 44.0, 11.0)
 		LxPixelFont.draw_panel(self, ro_r, "night", "sky", "void")
 		LxPixelFont.draw_centered(self, LxFolkData.tr_id("PANES_VIEW_ONLY"), ro_r.get_center().x, 15.0, LxPalette.PAL["ice"], 1)
 
@@ -376,7 +383,8 @@ func _draw() -> void:
 	LxPixelFont.draw_left(self, LxFolkData.tr_id(hint_id), Vector2(22.0, 160.0), LxPalette.PAL["stone"], 1)
 	var cr: Rect2 = _close_btn_rect()
 	LxPixelFont.draw_panel(self, cr, "plum" if _close_hover else "night", "gold" if _close_hover else "mauve", "void")
-	LxPixelFont.draw_centered(self, LxFolkData.tr_id("SHOP_CLOSE"), cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
+	var close_lbl: String = LxStrings.text("OPT_BACK") if (read_only or LxUiNav.should_show_pause_tabs(14)) else LxFolkData.tr_id("SHOP_CLOSE")
+	LxPixelFont.draw_centered(self, close_lbl, cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
 
 	# Drag ghost
 	if _drag_active and not _dragging_id.is_empty():
@@ -419,11 +427,12 @@ func _draw_island_filters(pm: LxPanes) -> void:
 	for fi: int in range(9):
 		var fr: Rect2 = _filter_rect(fi)
 		var sel: bool = fi == _island_filter
-		var bdr: String = "gold" if sel else "dusk"
+		var hov: bool = (not sel) and fi == _hover_filter
+		var bdr: String = "gold" if sel else ("sky" if hov else "dusk")
 		var fill: String = "plum" if sel else "night"
 		LxPixelFont.draw_panel(self, fr, fill, bdr, "void")
 		var lbl: String = LxFolkData.tr_id("PANES_TAB_ALL") if fi == 0 else str(fi)
-		var col: Color = LxPalette.PAL["gold"] if sel else (LxBiomePalette.col(fi, "glow") if fi > 0 else LxPalette.PAL["cream"])
+		var col: Color = LxPalette.PAL["gold"] if sel else (LxPalette.PAL["ice"] if hov else (LxBiomePalette.col(fi, "glow") if fi > 0 else LxPalette.PAL["cream"]))
 		LxPixelFont.draw_centered(self, lbl, fr.get_center().x, fr.position.y + 3.0, col, 1)
 	if _island_filter > 0:
 		var cnt: int = pm.owned_count_for_island(_island_filter)

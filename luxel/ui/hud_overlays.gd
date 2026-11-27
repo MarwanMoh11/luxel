@@ -299,7 +299,7 @@ static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts
 	var y: float = compute_left_stack_y(max_h, hearts_visible, false)
 	var x: float = origin.x
 	var box_w: float = float(LxPixelFont.width(t_lbl, 1)) + 16.0
-	LxPixelFont.draw_panel(ci, Rect2(x, y, box_w, 10.0), "night", col_name, "void")
+	LxPixelFont.draw_panel(ci, Rect2(x, y, box_w, 11.0), "night", col_name, "void")
 	var p := Vector2(roundf(x + 5.0), roundf(y + 5.0))
 	match cur:
 		"skip":
@@ -315,7 +315,7 @@ static func draw_temper_mark(ci: CanvasItem, origin: Vector2, max_h: int, hearts
 			ci.draw_rect(Rect2(p.x - 1.0, p.y - 2.0, 3.0, 1.0), pal["cream"] as Color)
 		_:
 			ci.draw_rect(Rect2(p.x - 1.0, p.y - 1.0, 3.0, 3.0), col)
-	LxPixelFont.draw_left(ci, t_lbl, Vector2(x + 11.0, y + 2.0), col, 1)
+	LxPixelFont.draw_left(ci, t_lbl, Vector2(x + 11.0, y + 3.0), col, 1)
 
 
 static func sold_id_for_option_row(row_id: String) -> String:
@@ -344,8 +344,8 @@ static func draw_sold_badge(ci: CanvasItem, at: Vector2, sold_count: int = 0, fu
 	var w: float = float(LxPixelFont.width(txt, 1)) + 8.0
 	var x: float = roundf(at.x - w) if right_align else roundf(at.x)
 	var y: float = roundf(at.y)
-	LxPixelFont.draw_panel(ci, Rect2(x, y, w, 9.0), "wine", "coral", "void")
-	LxPixelFont.draw_centered(ci, txt, x + w * 0.5, y + 2.0, pal["gold"] as Color, 1)
+	LxPixelFont.draw_panel(ci, Rect2(x, y, w, 11.0), "wine", "coral", "void")
+	LxPixelFont.draw_centered(ci, txt, x + w * 0.5, y + 3.0, pal["gold"] as Color, 1)
 
 
 static func get_ending_sold_key(ending_mode: String, receipt_count: int) -> String:
@@ -402,7 +402,7 @@ static func draw_ember_meter(ci: CanvasItem, at: Vector2, ember_val: float, embe
 		if ready:
 			ci.draw_rect(Rect2(at + Vector2(2.0, 2.0), Vector2(inner_w, 1.0)), LxPalette.PAL["cream"])
 	var label_id: String = "HUD_EMBER_READY" if ready else "HUD_EMBER"
-	var label_col: Color = LxPalette.PAL["dusk"] if dim else (LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"])
+	var label_col: Color = LxPalette.PAL["mauve"] if dim else (LxPalette.PAL["gold"] if ready else LxPalette.PAL["stone"])
 	LxPixelFont.draw_right(ci, LxStrings.text(label_id), at.x + bar_w, at.y - 7.0, label_col, 1)
 
 

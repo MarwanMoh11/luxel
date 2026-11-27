@@ -23,6 +23,7 @@ var _sel: int = 0
 var _scroll: int = 0
 var _elapsed: float = 0.0
 var _close_hover: bool = false
+var _hover_tab: int = -1
 
 
 func _ready() -> void:
@@ -38,6 +39,7 @@ func open(start_page: int = Page.QUESTS) -> void:
 	current_page = clampi(start_page, Page.QUESTS, Page.TOYS)
 	_sel = clampi((Lx.state.island_id - 1) if (current_page == Page.MOTHS and Lx.state != null and Lx.state.island_id > 0) else 0, 0, maxi(0, _count_for_page() - 1))
 	_scroll = 0
+	_hover_tab = -1
 	_elapsed = 0.0
 	visible = true
 	_play_sfx("menu_open")
@@ -70,9 +72,15 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion:
 		var pos: Vector2 = (event as InputEventMouseMotion).position
 		var oc: bool = _close_btn_rect().has_point(pos)
-		if oc != _close_hover:
+		var next_tab: int = -1
+		for ti: int in range(TAB_KEYS.size()):
+			if _tab_rect(ti).has_point(pos):
+				next_tab = ti
+				break
+		if oc != _close_hover or next_tab != _hover_tab:
 			_close_hover = oc
-			if oc: _play_sfx("ui_move")
+			_hover_tab = next_tab
+			if oc or next_tab >= 0: _play_sfx("ui_move")
 			queue_redraw()
 		var hi: int = LxJournalPages.hit_test_item(current_page, CONTENT_RECT, pos, _scroll)
 		if hi >= 0 and hi != _sel and hi < _count_for_page():
@@ -239,9 +247,11 @@ func _draw() -> void:
 	for ti: int in range(TAB_KEYS.size()):
 		var tr: Rect2 = _tab_rect(ti)
 		var active_t: bool = ti == current_page
-		LxPixelFont.draw_panel(self, tr, "plum" if active_t else "night", "gold" if active_t else "dusk", "void")
+		var hov_t: bool = (not active_t) and ti == _hover_tab
+		LxPixelFont.draw_panel(self, tr, "plum" if active_t else "night", "gold" if active_t else ("sky" if hov_t else "dusk"), "void")
 		LxBubble.draw_icon(self, TAB_ICONS[ti], tr.position + Vector2(4.0, 3.0), 1.0)
-		LxPixelFont.draw_left(self, LxFolkData.tr_id(TAB_KEYS[ti]), tr.position + Vector2(16.0, 5.0), LxPalette.PAL["gold"] if active_t else LxPalette.PAL["stone"], 1)
+		var tc: Color = LxPalette.PAL["gold"] if active_t else (LxPalette.PAL["ice"] if hov_t else LxPalette.PAL["stone"])
+		LxPixelFont.draw_left(self, LxFolkData.tr_id(TAB_KEYS[ti]), tr.position + Vector2(16.0, 5.0), tc, 1)
 
 	LxPixelFont.draw_panel(self, CONTENT_RECT, "void", "dusk", "night")
 	match current_page:
@@ -253,7 +263,7 @@ func _draw() -> void:
 	LxPixelFont.draw_left(self, LxFolkData.tr_id("JOURNAL_HINT"), Vector2(22.0, 160.0), LxPalette.PAL["stone"], 1)
 	var cr: Rect2 = _close_btn_rect()
 	LxPixelFont.draw_panel(self, cr, "plum" if _close_hover else "night", "gold" if _close_hover else "mauve", "void")
-	LxPixelFont.draw_centered(self, LxFolkData.tr_id("SHOP_CLOSE"), cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text("OPT_BACK"), cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["gold"] if _close_hover else LxPalette.PAL["cream"], 1)
 
 
 func _tab_rect(ti: int) -> Rect2:

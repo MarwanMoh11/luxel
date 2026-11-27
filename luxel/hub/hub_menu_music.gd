@@ -8,6 +8,7 @@ signal track_selected(cue_id: String)
 
 const PANEL := Rect2(26.0, 12.0, 268.0, 156.0)
 const VISIBLE_ROWS: int = 7
+const EQ_STATIC: Array[float] = [3.0, 6.0, 5.0, 3.0]
 
 const TRACK_CATALOG: Array[Dictionary] = [
 	{"cue": "hub", "name_key": "HUB_TRK_HUB", "unlock": "always"},
@@ -39,6 +40,7 @@ var _idx: int = 0
 var _scroll: int = 0
 var _clock: float = 0.0
 var _playing_cue: String = "hub"
+var _hover_close: bool = false
 
 
 func _ready() -> void:
@@ -50,6 +52,7 @@ func open() -> void:
 	_rebuild()
 	_playing_cue = str(Lx.state.story_flags.get("hub:music_track", "hub")) if Lx.state != null else "hub"
 	_idx = 0
+	_hover_close = false
 	for i: int in range(_rows.size()):
 		if str(_rows[i]["cue"]) == _playing_cue:
 			_idx = i
@@ -61,6 +64,7 @@ func open() -> void:
 
 func close() -> void:
 	visible = false
+	_hover_close = false
 
 
 func get_rows() -> Array[Dictionary]:
@@ -151,6 +155,24 @@ func _process(delta: float) -> void:
 func handle_menu_input(event: InputEvent) -> bool:
 	if not visible:
 		return false
+	if event is InputEventMouseMotion:
+		var mp: Vector2 = (event as InputEventMouseMotion).position
+		var hc: bool = _close_rect().has_point(mp)
+		if hc != _hover_close:
+			_hover_close = hc
+			if hc:
+				_play_ui("ui_move")
+			queue_redraw()
+		for ri: int in range(VISIBLE_ROWS):
+			var ei: int = _scroll + ri
+			if ei >= _rows.size():
+				break
+			if _row_rect(ri).has_point(mp):
+				if ei != _idx:
+					select_index(ei)
+					_play_ui("ui_move")
+				break
+		return false
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
@@ -179,8 +201,18 @@ func handle_menu_input(event: InputEvent) -> bool:
 			select_index(_idx - 1); _play_ui("ui_move"); return true
 		if k == KEY_DOWN or k == KEY_S:
 			select_index(_idx + 1); _play_ui("ui_move"); return true
+		if k == KEY_PAGEUP:
+			select_index(_idx - VISIBLE_ROWS); _play_ui("ui_move"); return true
+		if k == KEY_PAGEDOWN:
+			select_index(_idx + VISIBLE_ROWS); _play_ui("ui_move"); return true
 		if k == KEY_ENTER or k == KEY_SPACE or k == KEY_E:
 			confirm_selected(); return true
+	if event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+		var jb: int = (event as InputEventJoypadButton).button_index
+		if jb == JOY_BUTTON_LEFT_SHOULDER:
+			select_index(_idx - VISIBLE_ROWS); _play_ui("ui_move"); return true
+		if jb == JOY_BUTTON_RIGHT_SHOULDER:
+			select_index(_idx + VISIBLE_ROWS); _play_ui("ui_move"); return true
 	if event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause"):
 		_play_ui("menu_close"); closed.emit(); return true
 	if event.is_action_pressed("lx_ui_accept"):
@@ -198,26 +230,34 @@ func _play_ui(sfx: String) -> void:
 
 
 func _close_rect() -> Rect2:
-	return Rect2(PANEL.end.x - 16.0, PANEL.position.y + 4.0, 12.0, 12.0)
+	return Rect2(PANEL.end.x - 18.0, PANEL.position.y + 4.0, 12.0, 12.0)
 
 
 func _row_rect(ri: int) -> Rect2:
-	return Rect2(PANEL.position.x + 8.0, PANEL.position.y + 30.0 + float(ri) * 15.0, PANEL.size.x - 16.0, 13.0)
+	return Rect2(PANEL.position.x + 8.0, PANEL.position.y + 30.0 + float(ri) * 15.0, PANEL.size.x - 22.0, 13.0)
 
 
 func _draw() -> void:
 	if not visible:
 		return
-	draw_rect(PANEL, LxPalette.PAL["void"])
-	draw_rect(PANEL.grow(-1.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(PANEL.position + Vector2(2.0, 2.0), PANEL.size), LxPalette.PAL["void"])
+	LxPixelFont.draw_panel(self, PANEL, "night", "gold", "void")
 	draw_rect(Rect2(PANEL.position.x + 2.0, PANEL.position.y + 2.0, PANEL.size.x - 4.0, 16.0), LxPalette.PAL["wine"])
-	draw_rect(Rect2(PANEL.position.x + 1.0, PANEL.position.y + 1.0, PANEL.size.x - 2.0, 1.0), LxPalette.PAL["gold"])
-	LxBubble.draw_icon(self, "music", Vector2(PANEL.position.x + 6.0, PANEL.position.y + 5.0), 1.0)
+	draw_rect(Rect2(PANEL.position.x + 2.0, PANEL.position.y + 18.0, PANEL.size.x - 4.0, 1.0), LxPalette.PAL["gold"])
+	for rv: Vector2 in [
+		Vector2(PANEL.position.x + 3.0, PANEL.position.y + 3.0),
+		Vector2(PANEL.end.x - 5.0, PANEL.position.y + 3.0),
+		Vector2(PANEL.position.x + 3.0, PANEL.end.y - 5.0),
+		Vector2(PANEL.end.x - 5.0, PANEL.end.y - 5.0),
+	]:
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), LxPalette.PAL["apricot"])
+		draw_rect(Rect2(rv, Vector2.ONE), LxPalette.PAL["gold"])
+	LxBubble.draw_icon(self, "music", Vector2(PANEL.position.x + 7.0, PANEL.position.y + 5.0), 1.0)
 	LxPixelFont.draw(self, LxStrings.text("HUB_MUSIC_TITLE"), Vector2(PANEL.position.x + 20.0, PANEL.position.y + 7.0), LxPalette.PAL["gold"], 1)
 
 	var cr: Rect2 = _close_rect()
-	draw_rect(cr, LxPalette.PAL["dusk"])
-	LxPixelFont.draw_centered(self, "X", cr.position.x + cr.size.x * 0.5, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_panel(self, cr, "coral" if _hover_close else "dusk", "gold" if _hover_close else "mauve", "void")
+	LxPixelFont.draw_centered(self, "X", cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
 
 	var unl_n: int = 0
 	for r: Dictionary in _rows:
@@ -235,17 +275,30 @@ func _draw() -> void:
 		var sel: bool = ei == _idx
 		var unl: bool = bool(row["unlocked"])
 		var is_now: bool = str(row["cue"]) == _playing_cue
-		draw_rect(rr, LxPalette.PAL["plum"] if sel else LxPalette.PAL["void"])
-		if sel:
-			draw_rect(Rect2(rr.position.x, rr.position.y, 2.0, rr.size.y), LxPalette.PAL["gold"])
+		LxPixelFont.draw_panel(self, rr, "plum" if sel else "void", "gold" if sel else "dusk", "void")
 		var lbl: String = LxStrings.text(str(row["name_key"])) if unl else LxStrings.text("HUB_MUSIC_LOCKED")
 		var col: Color = LxPalette.PAL["gold"] if is_now else (LxPalette.PAL["cream"] if unl else LxPalette.PAL["mauve"])
 		LxPixelFont.draw(self, lbl, Vector2(rr.position.x + 6.0, rr.position.y + 4.0), col, 1)
 		if is_now:
-			# Animated pixel equalizer bars
+			# Pixel equalizer bars (calm stepped static silhouette under flash_reduced)
 			for bi: int in range(4):
-				var bh: float = 4.0 if fred else clampf(roundf(3.0 + 4.0 * absf(sin(_clock * 5.2 + float(bi) * 1.1))), 2.0, 8.0)
-				draw_rect(Rect2(rr.end.x - 22.0 + float(bi * 4), rr.end.y - 2.0 - bh, 2.0, bh), LxPalette.PAL["gold"])
+				var bh: float = EQ_STATIC[bi] if fred else clampf(roundf(3.0 + 4.0 * absf(sin(_clock * 5.2 + float(bi) * 1.1))), 2.0, 7.0)
+				var bx: float = roundf(rr.end.x - 21.0 + float(bi * 4))
+				var by: float = roundf(rr.end.y - 3.0 - bh)
+				draw_rect(Rect2(bx, by, 2.0, bh), LxPalette.PAL["gold"])
+				draw_rect(Rect2(bx, by, 2.0, 1.0), LxPalette.PAL["cream"])
+
+	# Scrollbar when list exceeds visible rows
+	if _rows.size() > VISIBLE_ROWS:
+		var track := Rect2(PANEL.end.x - 10.0, PANEL.position.y + 30.0, 3.0, float(VISIBLE_ROWS - 1) * 15.0 + 13.0)
+		draw_rect(track.grow(1.0), LxPalette.PAL["dusk"])
+		draw_rect(track, LxPalette.PAL["void"])
+		var thumb_h: float = maxf(10.0, roundf(track.size.y * float(VISIBLE_ROWS) / float(_rows.size())))
+		var max_s: int = maxi(1, _rows.size() - VISIBLE_ROWS)
+		var frac: float = clampf(float(_scroll) / float(max_s), 0.0, 1.0)
+		var ty: float = roundf(track.position.y + (track.size.y - thumb_h) * frac)
+		draw_rect(Rect2(track.position.x, ty, track.size.x, thumb_h), LxPalette.PAL["gold"])
+		draw_rect(Rect2(track.position.x, ty, track.size.x, 1.0), LxPalette.PAL["cream"])
 
 	var fy: float = PANEL.end.y - 16.0
 	draw_rect(Rect2(PANEL.position.x + 4.0, fy - 2.0, PANEL.size.x - 8.0, 1.0), LxPalette.PAL["dusk"])

@@ -108,11 +108,11 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		_handle_mouse_button(event as InputEventMouseButton)
 		return
-	if _key_just(event, KEY_TAB) or _key_just(event, KEY_Q) or _key_just(event, KEY_E):
+	if _key_just(event, KEY_TAB) or _key_just(event, KEY_Q) or _key_just(event, KEY_E) or _joy_btn(event, JOY_BUTTON_Y):
 		_open_panes(); get_viewport().set_input_as_handled(); return
-	if event.is_action_pressed("lx_move_left") or _key_just(event, KEY_LEFT):
+	if event.is_action_pressed("lx_move_left") or _key_just(event, KEY_LEFT) or _joy_btn(event, JOY_BUTTON_LEFT_SHOULDER):
 		_switch_page(_page_idx - 1); get_viewport().set_input_as_handled(); return
-	if event.is_action_pressed("lx_move_right") or _key_just(event, KEY_RIGHT):
+	if event.is_action_pressed("lx_move_right") or _key_just(event, KEY_RIGHT) or _joy_btn(event, JOY_BUTTON_RIGHT_SHOULDER):
 		_switch_page(_page_idx + 1); get_viewport().set_input_as_handled(); return
 	var count: int = maxi(1, _items.size())
 	if event.is_action_pressed("lx_move_up") or _key_just(event, KEY_UP):
@@ -494,7 +494,7 @@ static func fmt_shop(key: String, args: Array) -> String:
 func _tab_rect(ti: int) -> Rect2:
 	var n: int = maxi(1, _pages.size())
 	var w: float = floorf((264.0 - float(n - 1) * 4.0) / float(n))
-	return Rect2(28.0 + float(ti) * (w + 4.0), 25.0, w, 10.0)
+	return Rect2(28.0 + float(ti) * (w + 4.0), 24.0, w, 11.0)
 
 func _row_rect(vis_i: int) -> Rect2:
 	return Rect2(28.0, 39.0 + float(vis_i) * 15.0, 257.0 if _items.size() > VISIBLE_ROWS else 264.0, 13.0)
@@ -505,3 +505,5 @@ func _play_ui_sfx(sfx_id: String) -> void:
 	if Lx.audio != null: Lx.audio.play_sfx(sfx_id, Vector2.ZERO, false, true)
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc
+static func _joy_btn(event: InputEvent, btn: JoyButton) -> bool:
+	return event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed and (event as InputEventJoypadButton).button_index == btn

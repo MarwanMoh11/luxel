@@ -71,7 +71,7 @@ static func draw_quests(ci: CanvasItem, area: Rect2, sel: int, scroll: int) -> v
 		for si: int in range(max_steps):
 			LxBubble.draw_icon(ci, step_icons[si], r.position + Vector2(30.0 + float(si * 12), 4.0), 1.0)
 		var place_x: float = r.position.x + 84.0
-		var place_lbl: String = str(place.get("label", "")).substr(0, 18)
+		var place_lbl: String = str(place.get("label", "")).substr(0, 22)
 		LxBubble.draw_icon(ci, "star" if pinned else "arrow_e", Vector2(place_x, r.position.y + 4.0), 1.0)
 		LxPixelFont.draw_left(ci, place_lbl, Vector2(place_x + 12.0, r.position.y + 6.0), LxPalette.PAL["gold"] if pinned else LxPalette.PAL["ice"], 1)
 		# Reward icon + status badge on right
@@ -133,23 +133,23 @@ static func draw_moths(ci: CanvasItem, area: Rect2, sel: int = 0) -> void:
 		var hk: String = str(hint.get("kind", "overworld"))
 		var hicon: String = "door" if hk == "dungeon" else ("crystal" if hk == "cave" else "lantern")
 		LxBubble.draw_icon(ci, hicon, hr.position + Vector2(28.0, 1.0), 1.0)
-		var reg_lbl: String = LxUiNav.region_display_label(sel_isl, str(hint.get("region", "overworld")))
+		var reg_lbl: String = LxUiNav.region_display_label(sel_isl, str(hint.get("region", "overworld")), 24)
 		LxPixelFont.draw_left(ci, reg_lbl, hr.position + Vector2(40.0, 4.0), LxPalette.PAL["ice"], 1)
 	else:
 		LxBubble.draw_icon(ci, "question", hr.position + Vector2(16.0, 1.0), 1.0)
 		LxPixelFont.draw_left(ci, LxFolkData.fmt_id("FMT_RATIO", [sel_visits, 2]), hr.position + Vector2(28.0, 4.0), LxPalette.PAL["stone"], 1)
 
 	# Bottom Wick House Moth Lantern reward tier strip (5 / 10 / 20 / 35 / 50 / 65 / 80)
-	var tr := Rect2(area.position.x + 2.0, area.position.y + 89.0, area.size.x - 4.0, 16.0)
+	var tr := Rect2(area.position.x + 2.0, area.position.y + 90.0, area.size.x - 4.0, 15.0)
 	LxPixelFont.draw_panel(ci, tr, "night", "gold", "void")
 	LxPixelFont.draw_left(ci, LxFolkData.tr_id("JOURNAL_TIERS"), tr.position + Vector2(4.0, 5.0), LxPalette.PAL["apricot"], 1)
 	for i: int in range(LxQuests.MOTH_TIERS.size()):
 		var req: int = LxQuests.MOTH_TIERS[i]
 		var hit: bool = total_caught >= req
 		var claimed: bool = qsvc.is_moth_tier_claimed(req)
-		var pr := Rect2(tr.position.x + 48.0 + float(i * 31), tr.position.y + 3.0, 27.0, 10.0)
+		var pr := Rect2(tr.position.x + 48.0 + float(i * 31), tr.position.y + 2.0, 27.0, 11.0)
 		LxPixelFont.draw_panel(ci, pr, "plum" if claimed else ("dusk" if hit else "void"), "lime" if claimed else ("gold" if hit else "dusk"), "void")
-		LxPixelFont.draw_centered(ci, str(req), pr.get_center().x, pr.position.y + 2.0, LxPalette.PAL["cream"] if hit else LxPalette.PAL["stone"], 1)
+		LxPixelFont.draw_centered(ci, str(req), pr.get_center().x, pr.position.y + 3.0, LxPalette.PAL["cream"] if hit else LxPalette.PAL["stone"], 1)
 
 
 static func draw_bestiary(ci: CanvasItem, area: Rect2, sel: int, scroll: int, clock_s: float) -> void:
@@ -175,7 +175,7 @@ static func draw_bestiary(ci: CanvasItem, area: Rect2, sel: int, scroll: int, cl
 		var weak: String = LxFolkData.weakness_icon(kind) if seen else "question"
 		LxBubble.draw_icon(ci, weak, Vector2(card.end.x - 12.0, card.position.y + 3.0), 1.0)
 		var label: String = LxStrings.sanitize(kind, 9) if seen else LxFolkData.tr_id("JOURNAL_UNSEEN")
-		LxPixelFont.draw_left(ci, label, card.position + Vector2(26.0, 5.0), LxPalette.PAL["cream"] if seen else LxPalette.PAL["mauve"], 1)
+		LxPixelFont.draw_left(ci, label, card.position + Vector2(26.0, 5.0), LxPalette.PAL["cream"] if seen else (LxPalette.PAL["stone"] if is_sel else LxPalette.PAL["mauve"]), 1)
 		var sd: String = LxFolkData.fmt_id("JOURNAL_SD_FMT", [counts.x, counts.y])
 		LxPixelFont.draw_left(ci, sd, card.position + Vector2(26.0, 16.0), LxPalette.PAL["gold"] if counts.y > 0 else LxPalette.PAL["stone"], 1)
 

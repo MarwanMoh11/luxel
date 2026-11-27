@@ -559,16 +559,16 @@ func _notice_color() -> Color:
 	return LxPalette.fade_step(maxf(p, 0.52) if _notice_t < 0.2 else p, LxBiomePalette.key(isl, "border"))
 
 func _compute_notice_rect() -> Rect2:
-	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 24.0
-	return Rect2(roundf(160.0 - w * 0.5), 4.0, w, 9.0)
+	var w: float = float(LxPixelFont.width(_notice_text, 1)) + 30.0
+	return Rect2(roundf(160.0 - w * 0.5), 3.0, w, 11.0)
 
 func _draw_notice(rect: Rect2, col: Color) -> void:
 	var isl: int = Lx.state.island_id if Lx.state != null else 1
 	var ny: float = rect.position.y
 	LxPixelFont.draw_panel(self, rect, "night", LxBiomePalette.key(isl, "border"), "void")
-	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.position.x + 6.0, ny + 4.0), col, LxPalette.PAL["cream"] as Color)
-	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.end.x - 7.0, ny + 4.0), col, LxPalette.PAL["cream"] as Color)
-	LxPixelFont.draw_centered(self, _notice_text, 160.0, ny + 2.0, col, 1, Color(0.0, 0.0, 0.0, 0.0))
+	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.position.x + 7.0, ny + 5.0), col, LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl, Vector2(rect.end.x - 8.0, ny + 5.0), col, LxPalette.PAL["cream"] as Color)
+	LxPixelFont.draw_centered(self, _notice_text, 160.0, ny + 3.0, col, 1, Color(0.0, 0.0, 0.0, 0.0))
 
 
 func _world_to_screen(world_pos: Vector2) -> Vector2:

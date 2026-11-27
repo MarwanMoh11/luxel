@@ -262,7 +262,8 @@ func _return_from_tab() -> void:
 func _any_overlay_visible() -> bool:
 	return (title != null and title.visible) or (pause != null and pause.visible) or (map_screen != null and map_screen.visible) \
 		or (options != null and options.visible) or (rebind != null and rebind.visible) or (rest_shop != null and rest_shop.visible) \
-		or (journal != null and journal.visible) or (panes_menu != null and panes_menu.visible) or (cards != null and cards.visible)
+		or (journal != null and journal.visible) or (panes_menu != null and panes_menu.visible) or (cards != null and cards.visible) \
+		or LxHubMenuHost.is_any_open()
 
 func _should_show_scrim() -> bool:
 	return (pause != null and pause.visible) or (map_screen != null and map_screen.visible) or (rest_shop != null and rest_shop.visible) \

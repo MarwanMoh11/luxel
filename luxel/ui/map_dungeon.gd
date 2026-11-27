@@ -242,7 +242,7 @@ static func _any_uncollected(isl: int, reg: String, ids: Array) -> bool:
 static func dungeon_pill_rect(rect: Rect2, idx: int, count: int) -> Rect2:
 	var usable_w: float = rect.size.x - 14.0
 	var pw: float = minf(66.0, floorf((usable_w - float(maxi(0, count - 1)) * 3.0) / float(maxi(1, count))))
-	return Rect2(rect.position.x + 7.0 + float(idx) * (pw + 3.0), rect.position.y + 15.0, pw, 9.0)
+	return Rect2(rect.position.x + 7.0 + float(idx) * (pw + 3.0), rect.position.y + 15.0, pw, 11.0)
 
 
 static func draw_dungeon_graph(
@@ -280,15 +280,19 @@ static func draw_dungeon_graph(
 	# Multi-dungeon switcher pills when the island has > 1 dungeon
 	var top_pad: float = 18.0
 	if island_dungeons.size() > 1:
-		top_pad = 28.0
+		top_pad = 30.0
 		for di: int in range(island_dungeons.size()):
 			var pr: Rect2 = dungeon_pill_rect(rect, di, island_dungeons.size())
 			var dm: Dictionary = island_dungeons[di]
 			var is_sel: bool = di == sel_dng_idx
 			var is_done: bool = is_dungeon_done(dm)
 			LxPixelFont.draw_panel(ci, pr, "plum" if is_sel else "void", "gold" if is_sel else ("lime" if is_done else "dusk"), "night")
-			var short_nm: String = _dungeon_display_name(dm, str(dm.get("id", ""))).substr(0, maxi(4, int((pr.size.x - 8.0) / 4.0)))
-			LxPixelFont.draw_centered(ci, short_nm, pr.get_center().x, pr.position.y + 2.0, LxPalette.PAL["gold"] if is_sel else (LxPalette.PAL["lime"] if is_done else LxPalette.PAL["stone"]), 1)
+			var max_c: int = maxi(4, int((pr.size.x - 8.0) / 4.0))
+			var full_nm: String = _dungeon_display_name(dm, str(dm.get("id", "")))
+			if full_nm.length() > max_c and full_nm.to_upper().begins_with("THE "):
+				full_nm = full_nm.substr(4)
+			var short_nm: String = full_nm.substr(0, max_c)
+			LxPixelFont.draw_centered(ci, short_nm, pr.get_center().x, pr.position.y + 3.0, LxPalette.PAL["gold"] if is_sel else (LxPalette.PAL["lime"] if is_done else LxPalette.PAL["stone"]), 1)
 
 	# Layout room grid inside inner plot area
 	var plot := Rect2(rect.position.x + 10.0, rect.position.y + top_pad, rect.size.x - 20.0, rect.size.y - top_pad - 14.0)
@@ -407,7 +411,7 @@ static func _dungeon_display_name(dmeta: Dictionary, fallback_id: String) -> Str
 	var nk: String = str(dmeta.get("name_key", ""))
 	if not nk.is_empty() and LxFolkData.has_str(nk): return LxFolkData.tr_id(nk)
 	var nm: String = str(dmeta.get("name", fallback_id))
-	return LxStrings.sanitize(nm, 22)
+	return LxStrings.sanitize(nm, 28)
 
 
 static func _read_map_bounds(mpath: String, j: Dictionary) -> Vector2:

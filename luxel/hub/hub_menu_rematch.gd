@@ -15,6 +15,7 @@ var _scroll: int = 0
 var _clock: float = 0.0
 var _msg_key: String = ""
 var _msg_t: float = 0.0
+var _hover_close: bool = false
 
 
 func _ready() -> void:
@@ -28,12 +29,14 @@ func open() -> void:
 	_scroll = 0
 	_msg_key = ""
 	_msg_t = 0.0
+	_hover_close = false
 	visible = true
 	queue_redraw()
 
 
 func close() -> void:
 	visible = false
+	_hover_close = false
 
 
 func get_entries() -> Array[Dictionary]:
@@ -139,6 +142,24 @@ func _process(delta: float) -> void:
 func handle_menu_input(event: InputEvent) -> bool:
 	if not visible:
 		return false
+	if event is InputEventMouseMotion:
+		var mp: Vector2 = (event as InputEventMouseMotion).position
+		var hc: bool = _close_rect().has_point(mp)
+		if hc != _hover_close:
+			_hover_close = hc
+			if hc:
+				_play_ui("ui_move")
+			queue_redraw()
+		for ri: int in range(VISIBLE_ROWS):
+			var ei: int = _scroll + ri
+			if ei >= _entries.size():
+				break
+			if _row_rect(ri).has_point(mp):
+				if ei != _idx:
+					select_index(ei)
+					_play_ui("ui_move")
+				break
+		return false
 	if event is InputEventMouseButton:
 		var mb: InputEventMouseButton = event as InputEventMouseButton
 		if mb.pressed and mb.button_index == MOUSE_BUTTON_RIGHT:
@@ -170,8 +191,18 @@ func handle_menu_input(event: InputEvent) -> bool:
 			select_index(_idx - 1); _play_ui("ui_move"); return true
 		if k == KEY_DOWN or k == KEY_S:
 			select_index(_idx + 1); _play_ui("ui_move"); return true
+		if k == KEY_PAGEUP:
+			select_index(_idx - VISIBLE_ROWS); _play_ui("ui_move"); return true
+		if k == KEY_PAGEDOWN:
+			select_index(_idx + VISIBLE_ROWS); _play_ui("ui_move"); return true
 		if k == KEY_ENTER or k == KEY_SPACE or k == KEY_E:
 			confirm_selected(); return true
+	if event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed:
+		var jb: int = (event as InputEventJoypadButton).button_index
+		if jb == JOY_BUTTON_LEFT_SHOULDER:
+			select_index(_idx - VISIBLE_ROWS); _play_ui("ui_move"); return true
+		if jb == JOY_BUTTON_RIGHT_SHOULDER:
+			select_index(_idx + VISIBLE_ROWS); _play_ui("ui_move"); return true
 	if event.is_action_pressed("lx_ui_cancel") or event.is_action_pressed("lx_pause"):
 		_play_ui("menu_close"); closed.emit(); return true
 	if event.is_action_pressed("lx_ui_accept"):
@@ -189,27 +220,35 @@ func _play_ui(sfx: String) -> void:
 
 
 func _close_rect() -> Rect2:
-	return Rect2(PANEL.end.x - 16.0, PANEL.position.y + 4.0, 12.0, 12.0)
+	return Rect2(PANEL.end.x - 18.0, PANEL.position.y + 4.0, 12.0, 12.0)
 
 
 func _row_rect(ri: int) -> Rect2:
-	return Rect2(PANEL.position.x + 8.0, PANEL.position.y + 30.0 + float(ri) * 15.0, PANEL.size.x - 16.0, 13.0)
+	return Rect2(PANEL.position.x + 8.0, PANEL.position.y + 30.0 + float(ri) * 15.0, PANEL.size.x - 22.0, 13.0)
 
 
 func _draw() -> void:
 	if not visible:
 		return
-	draw_rect(PANEL, LxPalette.PAL["void"])
-	draw_rect(PANEL.grow(-1.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(PANEL.position + Vector2(2.0, 2.0), PANEL.size), LxPalette.PAL["void"])
+	LxPixelFont.draw_panel(self, PANEL, "night", "ice", "void")
 	draw_rect(Rect2(PANEL.position.x + 2.0, PANEL.position.y + 2.0, PANEL.size.x - 4.0, 16.0), LxPalette.PAL["dusk"])
-	draw_rect(Rect2(PANEL.position.x + 1.0, PANEL.position.y + 1.0, PANEL.size.x - 2.0, 1.0), LxPalette.PAL["ice"])
-	LxBubble.draw_icon(self, "crown", Vector2(PANEL.position.x + 6.0, PANEL.position.y + 5.0), 1.0)
+	draw_rect(Rect2(PANEL.position.x + 2.0, PANEL.position.y + 18.0, PANEL.size.x - 4.0, 1.0), LxPalette.PAL["ice"])
+	for rv: Vector2 in [
+		Vector2(PANEL.position.x + 3.0, PANEL.position.y + 3.0),
+		Vector2(PANEL.end.x - 5.0, PANEL.position.y + 3.0),
+		Vector2(PANEL.position.x + 3.0, PANEL.end.y - 5.0),
+		Vector2(PANEL.end.x - 5.0, PANEL.end.y - 5.0),
+	]:
+		draw_rect(Rect2(rv, Vector2(2.0, 2.0)), LxPalette.PAL["apricot"])
+		draw_rect(Rect2(rv, Vector2.ONE), LxPalette.PAL["gold"])
+	LxBubble.draw_icon(self, "crown", Vector2(PANEL.position.x + 7.0, PANEL.position.y + 5.0), 1.0)
 	LxPixelFont.draw(self, LxStrings.text("HUB_REMATCH_TITLE"), Vector2(PANEL.position.x + 20.0, PANEL.position.y + 7.0), LxPalette.PAL["ice"], 1)
 
 	# Close button
 	var cr: Rect2 = _close_rect()
-	draw_rect(cr, LxPalette.PAL["wine"])
-	LxPixelFont.draw_centered(self, "X", cr.position.x + cr.size.x * 0.5, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_panel(self, cr, "coral" if _hover_close else "wine", "gold" if _hover_close else "mauve", "void")
+	LxPixelFont.draw_centered(self, "X", cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
 
 	# Summary counter
 	var def_n: int = 0
@@ -231,27 +270,42 @@ func _draw() -> void:
 		var r: Rect2 = _row_rect(ri)
 		var sel: bool = ei == _idx
 		var is_def: bool = bool(e["defeated"])
-		draw_rect(r, LxPalette.PAL["plum"] if sel else LxPalette.PAL["void"])
-		if sel:
-			draw_rect(Rect2(r.position.x, r.position.y, 2.0, r.size.y), LxPalette.PAL["gold"])
+		LxPixelFont.draw_panel(self, r, "plum" if sel else "void", "gold" if sel else "dusk", "void")
 		var meta: Dictionary = e["meta"] as Dictionary
 		var rec: Dictionary = e["rec"] as Dictionary
 		var isl: int = int(e["island"])
 		var name_str: String = LxStrings.text(str(meta.get("name_key", ""))) if is_def else LxStrings.text("HUB_REMATCH_UNKNOWN")
-		var label: String = "I%d %s" % [isl, name_str.substr(0, 18)]
+		var label: String = "I%d %s" % [isl, name_str.substr(0, 22)]
 		var col: Color = LxPalette.PAL["cream"] if is_def else LxPalette.PAL["mauve"]
 		LxPixelFont.draw(self, label, Vector2(r.position.x + 5.0, r.position.y + 4.0), col, 1)
 		if is_def:
 			var best_s: float = float(rec.get("best_s", -1.0))
 			var t_str: String = ("%04.1fS" % best_s) if best_s > 0.0 else "--.-S"
-			LxPixelFont.draw(self, t_str, Vector2(r.end.x - 74.0, r.position.y + 4.0), LxPalette.PAL["gold"] if best_s > 0.0 else LxPalette.PAL["stone"], 1)
-			# Medal pip
+			LxPixelFont.draw_right(self, t_str, r.end.x - 30.0, r.position.y + 4.0, LxPalette.PAL["gold"] if best_s > 0.0 else LxPalette.PAL["stone"], 1)
+			# Medal pip (void-backed with top specular pixel when earned)
 			var med: int = int(rec.get("medal", 0))
 			var mc: Color = LxPalette.PAL["gold"] if med >= 3 else (LxPalette.PAL["ice"] if med == 2 else (LxPalette.PAL["apricot"] if med == 1 else LxPalette.PAL["dusk"]))
-			draw_rect(Rect2(r.end.x - 38.0, r.position.y + 3.0, 6.0, 7.0), mc)
+			var mp_x: float = roundf(r.end.x - 24.0)
+			var mp_y: float = roundf(r.position.y + 3.0)
+			draw_rect(Rect2(mp_x, mp_y, 6.0, 7.0), LxPalette.PAL["void"])
+			draw_rect(Rect2(mp_x + 1.0, mp_y + 1.0, 4.0, 5.0), mc)
+			if med > 0:
+				draw_rect(Rect2(mp_x + 1.0, mp_y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 			# No-hit pip
 			if bool(rec.get("no_hit", false)):
-				LxPixelFont.draw(self, LxStrings.text("HUB_NH_TAG"), Vector2(r.end.x - 28.0, r.position.y + 4.0), LxPalette.PAL["lime"], 1)
+				LxPixelFont.draw_right(self, LxStrings.text("HUB_NH_TAG"), r.end.x - 5.0, r.position.y + 4.0, LxPalette.PAL["lime"], 1)
+
+	# Scrollbar when list exceeds visible rows
+	if _entries.size() > VISIBLE_ROWS:
+		var track := Rect2(PANEL.end.x - 10.0, PANEL.position.y + 30.0, 3.0, float(VISIBLE_ROWS - 1) * 15.0 + 13.0)
+		draw_rect(track.grow(1.0), LxPalette.PAL["dusk"])
+		draw_rect(track, LxPalette.PAL["void"])
+		var thumb_h: float = maxf(10.0, roundf(track.size.y * float(VISIBLE_ROWS) / float(_entries.size())))
+		var max_s: int = maxi(1, _entries.size() - VISIBLE_ROWS)
+		var frac: float = clampf(float(_scroll) / float(max_s), 0.0, 1.0)
+		var ty: float = roundf(track.position.y + (track.size.y - thumb_h) * frac)
+		draw_rect(Rect2(track.position.x, ty, track.size.x, thumb_h), LxPalette.PAL["ice"])
+		draw_rect(Rect2(track.position.x, ty, track.size.x, 1.0), LxPalette.PAL["cream"])
 
 	# Footer hint / target times
 	var fy: float = PANEL.end.y - 22.0

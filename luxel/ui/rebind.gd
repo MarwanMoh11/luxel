@@ -138,7 +138,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		_play_ui_sfx("ui_move")
 		queue_redraw()
 		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("lx_move_left") or event.is_action_pressed("lx_move_right") or _key_just(event, KEY_LEFT) or _key_just(event, KEY_RIGHT):
+	elif event.is_action_pressed("lx_move_left") or event.is_action_pressed("lx_move_right") or _key_just(event, KEY_LEFT) or _key_just(event, KEY_RIGHT) or _joy_just(event, JOY_BUTTON_LEFT_SHOULDER) or _joy_just(event, JOY_BUTTON_RIGHT_SHOULDER):
 		device_kind = "gamepad" if device_kind == "kbm" else "kbm"
 		_play_ui_sfx("ui_move")
 		queue_redraw()
@@ -248,7 +248,7 @@ func _sync_scroll() -> void:
 
 
 func _draw() -> void:
-	var no_flash: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
+	var no_flash: bool = LxHudFx.flash_reduced()
 	var pulse_hi: bool = true if no_flash else fmod(_blink_t, 0.5) < 0.25
 	draw_rect(Rect2(PANEL_RECT.position + Vector2(3.0, 3.0), PANEL_RECT.size), LxPalette.PAL["void"])
 	draw_rect(PANEL_RECT.grow(1.0), LxPalette.PAL["void"])
@@ -256,14 +256,14 @@ func _draw() -> void:
 	var panel_border: String = ("gold" if pulse_hi else "apricot") if _listening else LxBiomePalette.key(isl_r, "border")
 	LxPixelFont.draw_panel(self, PANEL_RECT, "dusk", panel_border, "night")
 	_draw_frame_ornaments()
-	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.position.x + 16.0, 17.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
-	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.end.x - 17.0, 17.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
-	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_TITLE"), 160.0, 15.0, LxPalette.PAL["gold"], 1)
+	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.position.x + 16.0, 16.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
+	LxHudFx.draw_biome_crest(self, isl_r, Vector2(PANEL_RECT.end.x - 17.0, 16.0), LxBiomePalette.col(isl_r, "hi"), LxPalette.PAL["cream"] as Color)
+	LxPixelFont.draw_centered(self, LxStrings.text("REBIND_TITLE"), 160.0, 14.0, LxPalette.PAL["gold"], 1)
 
 	var dev_key: String = "REBIND_DEVICE_KBM" if device_kind == "kbm" else "REBIND_DEVICE_PAD"
-	var dev_rect := Rect2(26.0, 24.0, 268.0, 12.0)
+	var dev_rect := Rect2(26.0, 25.0, 268.0, 11.0)
 	LxPixelFont.draw_panel(self, dev_rect, "plum" if _hover_dev else "night", "gold" if _hover_dev else "sky", "void")
-	LxPixelFont.draw_centered(self, LxStrings.text(dev_key), 160.0, 27.0, LxPalette.PAL["cream"] if _hover_dev else LxPalette.PAL["ice"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text(dev_key), 160.0, 28.0, LxPalette.PAL["cream"] if _hover_dev else LxPalette.PAL["ice"], 1)
 
 	var total: int = _total_rows()
 	for vis_i: int in range(VISIBLE_ROWS):
@@ -399,3 +399,7 @@ func _play_ui_sfx(sfx_id: String) -> void:
 
 static func _key_just(event: InputEvent, kc: Key) -> bool:
 	return event is InputEventKey and (event as InputEventKey).pressed and not (event as InputEventKey).echo and (event as InputEventKey).keycode == kc
+
+
+static func _joy_just(event: InputEvent, btn: JoyButton) -> bool:
+	return event is InputEventJoypadButton and (event as InputEventJoypadButton).pressed and (event as InputEventJoypadButton).button_index == btn

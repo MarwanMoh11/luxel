@@ -24,6 +24,11 @@ static func is_ceremony_active() -> bool:
 	if narration_has_title():
 		return true
 	if Lx.ui != null:
+		var hud_v: Variant = Lx.ui.get("hud")
+		if hud_v is Object and is_instance_valid(hud_v):
+			var cer_v: Variant = (hud_v as Object).get("ceremony")
+			if cer_v is Object and (cer_v as Object).has_method("is_ceremony_active") and bool((cer_v as Object).call("is_ceremony_active")):
+				return true
 		var nar_v: Variant = Lx.ui.get("narration")
 		if nar_v is Object and is_instance_valid(nar_v) and (nar_v as Object).has_method("is_letterbox_on") and bool((nar_v as Object).call("is_letterbox_on")):
 			return true

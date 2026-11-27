@@ -21,10 +21,7 @@ const HUB_ROOMS: Array[Dictionary] = [
 
 static var _static_cache: Dictionary = {} # isl_id -> Array[Dictionary]
 
-
-static func clear_cache() -> void:
-	_static_cache.clear()
-
+static func clear_cache() -> void: _static_cache.clear()
 
 static func build_island_nodes(isl_id: int) -> Array[Dictionary]:
 	if isl_id == 0:
@@ -94,12 +91,11 @@ static func _scan_island_static(isl_id: int) -> Array[Dictionary]:
 			"dungeon_id": did, "dmeta": dm.duplicate(true),
 			"region": str(dm.get("entry", "overworld")),
 			"icon": "lantern",
-			"label": LxMapDungeon._dungeon_display_name(dm, did).substr(0, 16),
+			"label": LxMapDungeon._dungeon_display_name(dm, did).substr(0, 28),
 			"pos": minor_slots[mi % minor_slots.size()],
 			"reqs": _parse_req_flags(dm.get("requires_flags", []) as Array),
 			"world_pos": Vector2(-1.0, -1.0),
 		})
-
 	# 2. Set piece (upper-west / center-north)
 	for si: int in range(setpieces.size()):
 		var ds: Dictionary = setpieces[si]
@@ -109,19 +105,16 @@ static func _scan_island_static(isl_id: int) -> Array[Dictionary]:
 			"dungeon_id": did, "dmeta": ds.duplicate(true),
 			"region": str(ds.get("entry", "overworld")),
 			"icon": "spark",
-			"label": LxMapDungeon._dungeon_display_name(ds, did).substr(0, 16),
+			"label": LxMapDungeon._dungeon_display_name(ds, did).substr(0, 28),
 			"pos": Vector2(104.0, 58.0 + float(si) * 18.0),
 			"reqs": _parse_req_flags(ds.get("requires_flags", []) as Array),
 			"world_pos": Vector2(-1.0, -1.0),
 		})
-
 	# 3. Grand dungeon (prominent north-east crown)
 	for gi: int in range(grands.size()):
 		var dg: Dictionary = grands[gi]
 		var did: String = str(dg.get("id", ""))
-		var g_reqs: Array[Dictionary] = [
-			{"flag": "beacons_3", "icon": "lantern"},
-		]
+		var g_reqs: Array[Dictionary] = [{"flag": "beacons_3", "icon": "lantern"}]
 		for m_d: Dictionary in minors:
 			var mdf: String = str(m_d.get("done_flag", "dungeon_done:" + str(m_d.get("id", ""))))
 			g_reqs.append({"flag": mdf, "icon": "key"})
@@ -130,27 +123,23 @@ static func _scan_island_static(isl_id: int) -> Array[Dictionary]:
 			"dungeon_id": did, "dmeta": dg.duplicate(true),
 			"region": str(dg.get("entry", "overworld")),
 			"icon": "crown",
-			"label": LxMapDungeon._dungeon_display_name(dg, did).substr(0, 16),
+			"label": LxMapDungeon._dungeon_display_name(dg, did).substr(0, 28),
 			"pos": Vector2(148.0, 54.0),
 			"reqs": g_reqs,
 			"world_pos": Vector2(-1.0, -1.0),
 		})
-
 	# 4. Superboss (far east / hidden corner)
 	for bid: String in packs.all_boss_ids():
 		var bm: Dictionary = packs.boss_meta(bid)
-		if int(bm.get("island", 0)) != isl_id or bool(bm.get("mini", false)):
-			continue
+		if int(bm.get("island", 0)) != isl_id or bool(bm.get("mini", false)): continue
 		var bdng: String = str(bm.get("dungeon", ""))
 		var breg: String = str(bm.get("region", ""))
 		var is_super: bool = breg.begins_with("superboss") or breg.begins_with("sb_") or breg.begins_with("vault_") or breg.begins_with("cave_") or bdng == "superboss" or bdng.is_empty()
-		if not is_super:
-			continue
+		if not is_super: continue
 		var sb_reqs: Array[Dictionary] = []
-		if bid == "first_dark":
-			sb_reqs.append({"flag": "moths>=80", "icon": "moth"})
+		if bid == "first_dark": sb_reqs.append({"flag": "moths>=80", "icon": "moth"})
 		var nk: String = str(bm.get("name_key", ""))
-		var lbl: String = LxFolkData.tr_id(nk).substr(0, 16) if (not nk.is_empty() and LxFolkData.has_str(nk)) else LxStrings.sanitize(bid, 16)
+		var lbl: String = LxFolkData.tr_id(nk).substr(0, 28) if (not nk.is_empty() and LxFolkData.has_str(nk)) else LxStrings.sanitize(bid, 28)
 		out.append({
 			"id": "sb_" + bid, "island": isl_id, "kind": "superboss",
 			"boss_id": bid, "region": breg, "icon": "skull", "label": lbl,
@@ -382,10 +371,10 @@ static func _draw_chart_frame(ci: CanvasItem, isl_id: int, elapsed: float) -> vo
 		ci.draw_rect(Rect2(gx, CHART_RECT.end.y - 4.0, 1.0, 2.0), dusk)
 		gx += 28.0
 	# Island header strip inside top of chart
-	var name_txt: String = LxFolkData.tr_id("MAP_HUB_LABEL") if isl_id == 0 else LxStrings.fmt("MAP_ISLAND_FMT", [isl_id, LxStrings.sanitize(str(Lx.get_island_data(isl_id).get("name", "")), 16)])
+	var name_txt: String = LxFolkData.tr_id("MAP_HUB_LABEL") if isl_id == 0 else LxStrings.fmt("MAP_ISLAND_FMT", [isl_id, LxStrings.sanitize(str(Lx.get_island_data(isl_id).get("name", "")), 24)])
 	var glow_c: Color = (LxPalette.PAL["gold"] as Color) if isl_id == 0 else LxBiomePalette.col(isl_id, "glow")
 	LxHudFx.draw_biome_crest(ci, maxi(1, isl_id), CHART_RECT.position + Vector2(9.0, 8.0), glow_c, LxPalette.PAL["cream"] as Color)
-	LxPixelFont.draw_left(ci, name_txt.substr(0, 24), CHART_RECT.position + Vector2(16.0, 5.0), glow_c, 1)
+	LxPixelFont.draw_left(ci, name_txt.substr(0, 32), CHART_RECT.position + Vector2(16.0, 5.0), glow_c, 1)
 	# Soft island prev/next arrows in chart top-right
 	var ac: Color = LxPalette.PAL["gold"] if (LxHudFx.flash_reduced() or fmod(elapsed * 2.0, 1.0) < 0.6) else LxPalette.PAL["apricot"]
 	LxPixelFont.draw_right(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [isl_id, 8]), CHART_RECT.end.x - 6.0, CHART_RECT.position.y + 5.0, ac, 1)
@@ -526,7 +515,7 @@ static func _draw_info_sidebar(ci: CanvasItem, isl_id: int, nodes: Array[Diction
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [mc.x, maxi(10, mc.y)]), Vector2(x0 + 12.0, y + 2.0), pal["lime" if mc.x >= maxi(10, mc.y) else "gold"] as Color, 1)
 		var emb: int = Lx.state.ember_pieces if Lx.state != null else 0
 		LxBubble.draw_icon(ci, "ember", Vector2(x0 + 46.0, y), 1.0)
-		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [emb, 16]), Vector2(x0 + 58.0, y + 2.0), pal["apricot"] as Color, 1)
+		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_WS_COUNT_FMT", [emb, LxMapInfo.EMBER_TOTAL]), Vector2(x0 + 58.0, y + 2.0), pal["apricot"] as Color, 1)
 		y += 12.0
 		var b_lit: int = LxMapInfo.count_beacons(isl_id)
 		LxBubble.draw_icon(ci, "lantern", Vector2(x0, y), 1.0)
@@ -550,19 +539,27 @@ static func _draw_info_sidebar(ci: CanvasItem, isl_id: int, nodes: Array[Diction
 		var pinned: bool = LxUiNav.is_pinned(isl_id, str(nd.get("id", "")))
 		LxBubble.draw_icon(ci, "question" if st == "unseen" else str(nd.get("icon", "lantern")), card_r.position + Vector2(4.0, 4.0), 1.0)
 		var title_s: String = LxFolkData.tr_id("JOURNAL_UNSEEN") if st == "unseen" else str(nd.get("label", ""))
-		LxPixelFont.draw_left(ci, title_s.substr(0, 16), card_r.position + Vector2(16.0, 5.0), _state_color(st), 1)
-		# State badge
+		var l1: String = title_s
+		var l2: String = ""
+		if title_s.length() > 15:
+			var sp: int = title_s.rfind(" ", 15)
+			l1 = title_s.substr(0, sp if sp >= 3 else 15)
+			l2 = title_s.substr((sp + 1) if sp >= 3 else 15).strip_edges().substr(0, 17)
+		LxPixelFont.draw_left(ci, l1, card_r.position + Vector2(16.0, 5.0), _state_color(st), 1)
+		var st_y: float = 17.0
+		if not l2.is_empty():
+			LxPixelFont.draw_left(ci, l2, card_r.position + Vector2(16.0, 12.0), _state_color(st), 1)
+			st_y = 21.0
 		var st_key: String = "JOURNAL_Q_DONE" if st == "cleared" else ("JOURNAL_Q_OPEN" if st == "open" else ("MAP_LOCKED" if st == "seen" else "JOURNAL_UNSEEN"))
-		LxPixelFont.draw_left(ci, LxFolkData.tr_id(st_key), card_r.position + Vector2(5.0, 17.0), _state_color(st), 1)
+		LxPixelFont.draw_left(ci, LxFolkData.tr_id(st_key), card_r.position + Vector2(5.0, st_y), _state_color(st), 1)
 		if pinned:
-			LxPixelFont.draw_right(ci, LxUiNav.tr_any("ISL3_HUD_PIN", "MAP_CURRENT"), card_r.end.x - 4.0, card_r.position.y + 17.0, pal["gold"] as Color, 1)
-		# Gate requirement icons row
+			LxPixelFont.draw_right(ci, LxUiNav.tr_any("ISL3_HUD_PIN", "MAP_CURRENT"), card_r.end.x - 4.0, card_r.position.y + st_y, pal["gold"] as Color, 1)
 		var reqs: Array = nd.get("reqs", []) as Array
 		if not reqs.is_empty():
+			var ry: float = card_r.position.y + (29.0 if st_y > 18.0 else 27.0)
 			for ri: int in range(mini(reqs.size(), 5)):
 				var rd: Dictionary = reqs[ri] as Dictionary
 				var rx: float = card_r.position.x + 5.0 + float(ri * 14)
-				var ry: float = card_r.position.y + 27.0
 				var met: bool = bool(rd.get("met", false))
 				ci.draw_rect(Rect2(rx - 1.0, ry - 1.0, 11.0, 11.0), (pal["lime"] if met else pal["coral"]) as Color)
 				ci.draw_rect(Rect2(rx, ry, 9.0, 9.0), pal["void"] as Color)

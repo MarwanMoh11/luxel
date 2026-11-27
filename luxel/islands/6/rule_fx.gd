@@ -128,9 +128,9 @@ static func draw_hud_mark(
 		var bdr: String = "cream" if temper_pop_t > 0.0 else t_col_name
 		var box_w: float = float(LxPixelFont.width(t_lbl, 1)) + 16.0
 		var py: float = base_y - (1.0 if temper_pop_t > 0.15 else 0.0)
-		LxPixelFont.draw_panel(canvas, Rect2(x, py, box_w, 10.0), "night", bdr, "void")
+		LxPixelFont.draw_panel(canvas, Rect2(x, py, box_w, 11.0), "night", bdr, "void")
 		draw_temper_glyph(canvas, Vector2(x + 5.0, py + 5.0), cur_temper, temper_color(cur_temper))
-		LxPixelFont.draw_left(canvas, t_lbl, Vector2(x + 11.0, py + 2.0), PAL["cream"] as Color if temper_pop_t > 0.0 else temper_color(cur_temper), 1)
+		LxPixelFont.draw_left(canvas, t_lbl, Vector2(x + 11.0, py + 3.0), PAL["cream"] as Color if temper_pop_t > 0.0 else temper_color(cur_temper), 1)
 		x += box_w + 3.0
 
 	if not on_isl6:
@@ -139,7 +139,7 @@ static func draw_hud_mark(
 	var reg: String = st.region_id
 	var is_kiln: bool = reg.begins_with("kiln_") or reg == "_proof_i6_2"
 	if stride_active:
-		var pill := Rect2(x, base_y, 26.0, 10.0)
+		var pill := Rect2(x, base_y, 26.0, 11.0)
 		var pb: String = "ice" if stride_stabilized else ("cream" if (stride_warn and (LxHudFx.flash_reduced() or fmod(clock, 0.3) < 0.15)) else "gold")
 		LxPixelFont.draw_panel(canvas, pill, "night", pb, "void")
 		var cx: float = x + 13.0
@@ -155,20 +155,20 @@ static func draw_hud_mark(
 		var hw: float = float(LxPixelFont.width(htxt, 1)) + 8.0
 		var hbdr: String = "cream" if heat_flash_t > 0.0 else ("coral" if surge else "sky")
 		var hy: float = base_y - (1.0 if heat_flash_t > 0.55 else 0.0)
-		LxPixelFont.draw_panel(canvas, Rect2(x, hy, hw, 10.0), "night", hbdr, "void")
-		LxPixelFont.draw_left(canvas, htxt, Vector2(x + 4.0, hy + 2.0), PAL["cream"] as Color if heat_flash_t > 0.35 else (PAL["gold"] as Color if surge else PAL["ice"] as Color), 1)
+		LxPixelFont.draw_panel(canvas, Rect2(x, hy, hw, 11.0), "night", hbdr, "void")
+		LxPixelFont.draw_left(canvas, htxt, Vector2(x + 4.0, hy + 3.0), PAL["cream"] as Color if heat_flash_t > 0.35 else (PAL["gold"] as Color if surge else PAL["ice"] as Color), 1)
 	elif not reg.begins_with("colossus_") and not reg.begins_with("train_") and not reg.begins_with("crash_"):
 		var sh: String = LxIsland6Rule.get_kiln_shift()
 		var sk: String = "ISL6_HUD_SHIFT_A" if sh == "station_a" else ("ISL6_HUD_SHIFT_B" if sh == "station_b" else "ISL6_HUD_SHIFT_C")
 		var stxt: String = LxStrings.text(sk) if LxStrings.has_id(sk) else ""
-		var sw: float = float(LxPixelFont.width(stxt, 1)) + 16.0
+		var sw: float = float(LxPixelFont.width(stxt, 1)) + 19.0
 		var sbdr: String = "cream" if shift_flash_t > 0.0 else "apricot"
-		LxPixelFont.draw_panel(canvas, Rect2(x, base_y, sw, 10.0), "night", sbdr, "void")
-		LxPixelFont.draw_left(canvas, stxt, Vector2(x + 4.0, base_y + 2.0), PAL["gold"] as Color, 1)
+		LxPixelFont.draw_panel(canvas, Rect2(x, base_y, sw, 11.0), "night", sbdr, "void")
+		LxPixelFont.draw_left(canvas, stxt, Vector2(x + 4.0, base_y + 3.0), PAL["gold"] as Color, 1)
 		var sidx: int = LxIsland6Rule.VALID_SHIFTS.find(sh)
 		for i: int in range(3):
 			var pc: Color = PAL["cream"] as Color if i == sidx else PAL["dusk"] as Color
-			canvas.draw_rect(Rect2(x + sw - 11.0 + float(i * 3), base_y + 4.0, 2.0, 2.0), pc)
+			canvas.draw_rect(Rect2(x + sw - 12.0 + float(i * 3), base_y + 4.0, 2.0, 2.0), pc)
 
 
 static func temper_color(mode: String) -> Color:

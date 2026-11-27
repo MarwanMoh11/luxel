@@ -187,25 +187,26 @@ func _draw_boss_intro(ci: CanvasItem) -> void:
 	if bar_h > 0.0:
 		ci.draw_rect(Rect2(0.0, 0.0, 320.0, bar_h), pal["void"] as Color)
 		ci.draw_rect(Rect2(0.0, 180.0 - bar_h, 320.0, bar_h), pal["void"] as Color)
-	var card := Rect2(44.0, 56.0, 232.0, 48.0)
+	var card := Rect2(44.0, 54.0, 232.0, 52.0)
 	ci.draw_rect(Rect2(card.position + Vector2(2.0, 2.0), card.size), pal["void"] as Color)
 	LxPixelFont.draw_panel(ci, card, "night", LxBiomePalette.key(isl, "border"), "void")
 	var glow: Color = LxBiomePalette.col(isl, "glow")
 	ci.draw_rect(Rect2(card.position.x + 12.0, card.position.y + 4.0, card.size.x - 24.0, 1.0), glow)
-	ci.draw_rect(Rect2(card.position.x + 12.0, card.end.y - 5.0, card.size.x - 24.0, 1.0), glow)
-	LxHudFx.draw_biome_crest(ci, isl, Vector2(card.position.x + 14.0, card.get_center().y), glow, pal["cream"] as Color)
-	LxHudFx.draw_biome_crest(ci, isl, Vector2(card.end.x - 15.0, card.get_center().y), glow, pal["cream"] as Color)
+	ci.draw_rect(Rect2(card.position.x + 12.0, card.end.y - 4.0, card.size.x - 24.0, 1.0), glow)
+	LxHudFx.draw_biome_crest(ci, isl, Vector2(card.position.x + 14.0, card.get_center().y - 2.0), glow, pal["cream"] as Color)
+	LxHudFx.draw_biome_crest(ci, isl, Vector2(card.end.x - 15.0, card.get_center().y - 2.0), glow, pal["cream"] as Color)
 	var nm: String = str(boss_intro.get("name", ""))
 	var sc: int = 2 if nm.length() <= 14 else 1
-	var ny: float = 69.0 if sc == 2 else 73.0
+	var ny: float = 66.0 if sc == 2 else 70.0
 	LxPixelFont.draw_faded(ci, nm, Vector2(160.0, ny), fade, "gold", sc, HORIZONTAL_ALIGNMENT_CENTER)
-	# Phase pips under boss name
+	# Phase pips under boss name (void-backed for crisp contrast)
 	var ph: int = clampi(int(boss_intro.get("phases", 2)), 1, 4)
 	var px0: float = roundf(160.0 - float(ph * 6 - 2) * 0.5)
 	for pi: int in range(ph):
-		ci.draw_rect(Rect2(px0 + float(pi * 6), 88.0, 4.0, 2.0), pal["coral"] as Color)
+		ci.draw_rect(Rect2(px0 + float(pi * 6) - 1.0, 83.0, 6.0, 4.0), pal["void"] as Color)
+		ci.draw_rect(Rect2(px0 + float(pi * 6), 84.0, 4.0, 2.0), pal["coral"] as Color)
 	if t >= 0.30:
-		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 4.0, card.end.y - 9.0, pal["mauve"] as Color, 1)
+		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), card.end.x - 6.0, card.end.y - 12.0, pal["mauve"] as Color, 1)
 
 
 func _draw_reward_ceremony(ci: CanvasItem) -> void:
@@ -277,7 +278,7 @@ func _draw_previously_bar(ci: CanvasItem) -> void:
 	var lw: float = float(LxPixelFont.width(lbl, 1))
 	var strip_w: float = float(icons.size()) * 11.0 + 4.0
 	var box_w: float = roundf(lw + strip_w + 18.0)
-	var box := Rect2(roundf(160.0 - box_w * 0.5), 31.0, box_w, 15.0)
+	var box := Rect2(roundf(160.0 - box_w * 0.5), 31.0, box_w, 16.0)
 	LxPixelFont.draw_panel(ci, box, "night", "gold", "void")
 	LxPixelFont.draw_left(ci, lbl, box.position + Vector2(6.0, 5.0), LxPalette.fade_step(fade, "gold"), 1)
 	var ix: float = roundf(box.position.x + lw + 12.0)

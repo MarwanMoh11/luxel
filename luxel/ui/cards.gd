@@ -426,7 +426,7 @@ func _draw_results() -> void:
 	var rank_key: String = _compute_rank_key(deaths, relit)
 	LxEndingArt.draw_results_ornaments(self, RESULTS_PANEL, rank_key, _elapsed, relit)
 	LxPixelFont.draw_faded(self, LxStrings.text("RESULTS_TITLE"), Vector2(160.0, 19.0), clampf(_elapsed / 0.35, 0.0, 1.0), "gold", 2, HORIZONTAL_ALIGNMENT_CENTER)
-	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 41.0, LxEndingArt.rank_text_color(rank_key), 2)
+	LxPixelFont.draw_centered(self, LxStrings.fmt("RESULTS_RANK_FMT", [LxStrings.text(rank_key)]), 160.0, 42.0, LxEndingArt.rank_text_color(rank_key), 2)
 	var p1: float = clampf((_elapsed - 0.08) / 0.22, 0.0, 1.0); var p2: float = clampf((_elapsed - 0.16) / 0.22, 0.0, 1.0)
 	var p3: float = clampf((_elapsed - 0.24) / 0.22, 0.0, 1.0); var p4: float = clampf((_elapsed - 0.32) / 0.22, 0.0, 1.0)
 	LxPixelFont.draw_faded(self, LxStrings.fmt("RESULTS_TIME_FMT", [LxUiNav.format_epic_time(play_s)]), Vector2(48.0, 64.0), p1, "cream", 1)
