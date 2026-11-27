@@ -1,4 +1,4 @@
-"""Islands 0, 1 & 2 themes: undercroft, manor, great_toll_shaft, bell_outer, wick_cellar, lighthouse, galleon, locks, leviathan_belly, seabed."""
+"""Islands 0, 1 & 2 themes: undercroft, manor, belfry_nave, great_toll_shaft, bell_outer, bell_cavern, wick_cellar, lighthouse, galleon, locks, leviathan_belly, seabed."""
 from __future__ import annotations
 
 from typing import Any
@@ -291,7 +291,7 @@ class BellOuterPainter(ThemePainter):
         buf[mask] = out[mask]
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
-        # Drape organic creeping moss/ivy asymmetrically over outer stone perimeter walls
+        # Drape organic creeping moss/ivy asymmetrically over deep twilight stone perimeter walls
         m_wall = ctx["m_wall"]
         if not np.any(m_wall):
             return
@@ -302,10 +302,294 @@ class BellOuterPainter(ThemePainter):
         ivy_n = fbm_grid(H, W, 22.0, seed=self.spec.seed + 409 + z_off, octaves=2)
         dn_open = ~ctx["n_dn_wall"]
         ly, ts = ctx["ly"], ctx["ts"]
-        cap_ivy = m_wall & (~(dn_open & (ly >= ts - 5))) & (ivy_n > 0.62) & (bg < 0.65)
-        buf[cap_ivy] = np.where(ivy_n > 0.74, IX["jade"], IX["teal"])[cap_ivy]
+        cap_ivy = m_wall & (~(dn_open & (ly >= ts - 5))) & (ivy_n > 0.62) & (bg < 0.62)
+        buf[cap_ivy] = np.where(ivy_n > 0.80, IX["jade"], np.where(ivy_n > 0.70, IX["teal"], IX["pine"]))[cap_ivy]
         lip_ivy = m_wall & dn_open & (ly >= ts - 6) & (ly <= ts - 4) & (ivy_n > 0.68)
         buf[lip_ivy] = IX["pine"]
+
+
+class BelfryNavePainter(ThemePainter):
+    """Lower Belfry Nave (belfry_r1..r9, r17, r18): luminous dressed cathedral slate flagstones,
+    deep twilight vaulted walls with arched lancet niches & warm bronze wall-sconce light aprons,
+    and calm royal plum/wine runners."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
+
+        # Calm dressed cathedral slate flagstones (16x10 running bond, target walk luma ~83-88)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
+
+        # Gentle central nave lantern glow lifts focal arena space subtly
+        dist_c = np.hypot((xs - W * 0.5) / max(1.0, W * 0.52), (ys - H * 0.5) / max(1.0, H * 0.54))
+        nave_glow = np.clip(1.0 - dist_c, 0.0, 1.0) * 0.12
+        slab_f = np.clip(nb * 0.42 + slab_h * 0.30 + warm * 0.08 + nave_glow + 0.16, 0.0, 0.94)
+        out = ramp_blend(s.floor_ramp, slab_f, bg)
+
+        # Soft Bayer-dithered mortar seams (zero harsh grid static)
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.48)
+        out = np.where(is_seam, IX["night"], out)
+        # Gentle top-left catchlight on worn cathedral slabs
+        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.68) & (bg < 0.34)
+        out = np.where(is_bev, IX["stone"], out)
+        # Subtle brass bell-nave pin accents
+        pin_hi = (sx == 8) & (sy == 5) & (slab_h > 0.96)
+        pin_lo = (sx == 8) & (sy == 5) & (slab_h > 0.90) & (~pin_hi)
+        out = np.where(pin_lo, IX["apricot"], out)
+        out = np.where(pin_hi, IX["gold"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys, lx, ly, ts = ctx["xs"], ctx["ys"], ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        is_edge = (
+            ((~ctx["n_up_path"]) & (ly == 0))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 1))
+            | ((~ctx["n_lt_path"]) & (lx == 0))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 1))
+        )
+        is_inner = (
+            ((~ctx["n_up_path"]) & (ly == 1))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 2))
+            | ((~ctx["n_lt_path"]) & (lx == 1))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 2))
+        )
+        main, hi, edge, trim = IX[s.path_main], IX[s.path_hi], IX[s.path_edge], IX[s.path_trim]
+        dk = SHADE_IX[main]
+        # Refined royal plum/wine cathedral runner with calm plush weave & apricot/gold trim
+        out = np.full(buf.shape, main, dtype=np.uint8)
+        out = np.where((nb > 0.56) & (bg < 0.38), hi, out)
+        out = np.where((((xs + ys) % 8) == 0) & (bg < 0.28), dk, out)
+        out = np.where(is_inner & (((xs + ys) % 4) != 0), IX["apricot"], out)
+        out = np.where(is_inner & (((xs + ys) % 8) == 0), trim, out)
+        out = np.where(is_edge, edge, out)
+        buf[mask] = out[mask]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Arched cathedral lancet niches spaced every 32px along south-facing walls
+        ax = xs % 32
+        in_arch = south_wall & (ly >= ts - 5) & (ly <= ts - 2) & (ax >= 13) & (ax <= 18) & ~((ly == ts - 5) & ((ax == 13) | (ax == 18)))
+        buf[in_arch] = IX["void"]
+        arch_mid = in_arch & (ly >= ts - 4) & (ax >= 14) & (ax <= 17)
+        buf[arch_mid] = IX["deep"]
+        glint = in_arch & (ly == ts - 4) & ((ax == 15) | (ax == 16))
+        buf[glint] = IX["apricot"]
+
+        # Warm glowing bronze wall-sconces mounted on piers between lancets (ax == 2..3)
+        sconce = south_wall & (ax >= 2) & (ax <= 3) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[sconce] = IX["apricot"]
+        flame = south_wall & (ax >= 2) & (ax <= 3) & (ly == ts - 4)
+        buf[flame] = IX["gold"]
+
+        # Soft Bayer-dithered apricot/gold floor light aprons beneath south-facing wall sconces
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 2 + 16) % 32) - 16).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 9.0, dy / 7.5), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 8) & (fall > 0.0)
+            buf[zone & ((fall * 0.42) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.28) > bg)] = IX["gold"]
+
+
+class GreatTollShaftPainter(ThemePainter):
+    """Upper Belfry & Great Toll Shaft: deep dark riveted-iron bulkheads framing the iconic
+    golden radial bell-deck, iron catwalks, gear-chasm abyss, and warm brass wall-sconce aprons."""
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        super().paint_walls(buf, ctx)
+        m_wall = ctx["m_wall"]
+        if not np.any(m_wall):
+            return
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        tx, ty = ctx["tx"], ctx["ty"]
+        dn_open = ~ctx["n_dn_wall"]
+        up_open = ~ctx["n_up_wall"]
+        # Mute repetitive bright-gold cap rivets into subtle dark-iron bolts (keep crisp gold cornice lip!)
+        riv_top = m_wall & (~(dn_open & (ly >= ts - 6))) & ((lx == 2) | (lx == 13)) & ((ly == 2) | (ly == 6))
+        buf[riv_top] = IX["dusk"]
+        # Rare subtle warm bronze stud on select bulkhead plates
+        accent_stud = riv_top & (lx == 2) & (ly == 2) & (((tx + ty) % 3) == 0)
+        buf[accent_stud] = IX["apricot"]
+        # Mute top-edge cornice lip on interior wall caps to subtle mauve/apricot so south gold cornice leads the eye
+        north_lip = m_wall & up_open & (ly == 0)
+        buf[north_lip] = IX["dusk"]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Warm brass bulkhead sconces every 36px along south-facing iron walls
+        sx_w = xs % 36
+        bracket = south_wall & (sx_w >= 17) & (sx_w <= 19) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[bracket] = IX["apricot"]
+        core_l = south_wall & (sx_w == 18) & ((ly == ts - 4) | (ly == ts - 3))
+        buf[core_l] = IX["gold"]
+
+        # Soft Bayer-dithered warm brass sconce floor aprons on walkable deck tiles directly south
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 18 + 18) % 36) - 18).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 8.5, dy / 7.0), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 7) & (fall > 0.0)
+            buf[zone & ((fall * 0.40) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.26) > bg)] = IX["gold"]
+
+
+class BellCavernPainter(ThemePainter):
+    """Bell Isle acoustic limestone grottos (cave_echo_well, cave_lens_grotto): calm twilight
+    acoustic slate (~82-88 luma), deep sculpted cavern rock walls (~38-44), worn mossy flagstone
+    paths (zero yellow confetti!), crisp blue subterranean water with ice foam, and warm sconces."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, nf, warm = ctx["bg"], ctx["n_broad"], ctx["n_fine"], ctx["warm"]
+
+        # Calm acoustic twilight slate strata (~82-88 luma, clearly above ~40 rock walls)
+        warp_n = fbm_grid(H, W, 32.0, seed=s.seed + 163, octaves=3)
+        strata = np.clip(nb * 0.44 + warp_n * 0.32 + warm * 0.08 + 0.14, 0.0, 0.90)
+        out = ramp_blend(s.floor_ramp, strata, bg)
+
+        # Quiet natural limestone hairline crevices
+        crack = (np.abs(warp_n - 0.46) < 0.011) & (nb < 0.54) & (bg < 0.65)
+        out = np.where(crack, IX["night"], out)
+        # Subtle catchlight along upper rock shelf edge
+        shelf_hi = (np.abs(warp_n - 0.474) < 0.008) & (nb > 0.52) & (bg < 0.34)
+        out = np.where(shelf_hi, IX["stone"], out)
+        # Clean 3px damp stone darkening right along subterranean water edges
+        damp_rim = (
+            (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_lt_water"] & (lx < 3))
+            | (ctx["n_rt_water"] & (lx >= ts - 3))
+        )
+        out = np.where(damp_rim & (bg < 0.58) & (~crack), IX["dusk"], out)
+        # Sparse cool moss flecks in damp pockets + rare bronze mineral glints
+        out = np.where((nf < 0.008) & (warp_n < 0.36), IX["teal"], out)
+        out = np.where((nf > 0.996) & (nb > 0.56), IX["apricot"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        # Worn mossy stepping flagstones (ZERO yellow sand_trail confetti!)
+        sh, sw = 8, 12
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        st_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 241)
+
+        field = np.clip(nb * 0.42 + st_h * 0.32 + 0.24, 0.0, 0.92)
+        out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
+        joint = ((sx == 0) | (sy == 0)) & (bg < 0.56)
+        out = np.where(joint, IX["night"], out)
+        # Soft moss creeping into damp flagstone seams
+        moss_j = joint & (nb < 0.48) & (bg < 0.44)
+        out = np.where(moss_j, IX["pine"], out)
+        # Gentle worn stone catchlight on dry stepping stones
+        out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (st_h > 0.68) & (bg < 0.32), IX["stone"], out)
+
+        is_edge = (
+            ((~ctx["n_up_path"]) & (ly == 0))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 1))
+            | ((~ctx["n_lt_path"]) & (lx == 0))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 1))
+        )
+        out = np.where(is_edge & (bg < 0.68), IX["pine"], out)
+        buf[mask] = out[mask]
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_water"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        ly = ctx["ly"]
+        bg = ctx["bg"]
+
+        # Luminous blue subterranean spring water with smooth ripples & crisp ice shoreline foam
+        rip = fbm_grid(H, W, 18.0, seed=s.seed + 331, octaves=2, sx=0.65, sy=1.6)
+        w_dist = chamfer_dist(mask)
+        shallow = np.clip(1.0 - w_dist / 12.0, 0.0, 1.0) * 0.22
+        field = np.clip(rip * 0.68 + shallow + 0.08, 0.0, 0.999)
+        out = ramp_blend((s.water_deep, s.water_mid, s.water_hi), field, bg)
+
+        # Crisp specular acoustic ripple dashes
+        dash = (rip > 0.72) & (ys % 4 == 1) & (bg < 0.48) & (w_dist > 2.0)
+        out = np.where(dash, IX[s.water_foam], out)
+
+        # Crisp ice shoreline foam halo
+        foam = (w_dist <= 2.4) & ((w_dist <= 1.1) | ((1.0 - w_dist / 2.8) > bg * 1.1))
+        out = np.where(foam, IX[s.water_foam], out)
+
+        # Recessed dark north stone overhang lip
+        bank_n = ctx["n_up_land"] & (ly < 2)
+        out = np.where(bank_n & (ly == 0), IX["void"], out)
+        out = np.where(bank_n & (ly == 1) & (bg < 0.72), IX[s.water_foam], out)
+        buf[mask] = out[mask]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Warm cavern iron-mounted lanterns every 40px along south rock cliffs
+        sx_w = xs % 40
+        sconce = south_wall & (sx_w >= 19) & (sx_w <= 21) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[sconce] = IX["apricot"]
+        flame = south_wall & (sx_w == 20) & ((ly == ts - 4) | (ly == ts - 3))
+        buf[flame] = IX["gold"]
+
+        # Warm Bayer-dithered floor light aprons beneath cavern lanterns
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 20 + 20) % 40) - 20).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 9.0, dy / 7.5), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 8) & (fall > 0.0)
+            buf[zone & ((fall * 0.42) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.28) > bg)] = IX["gold"]
 
 
 class WickCellarPainter(ThemePainter):
@@ -714,11 +998,11 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             path_edge="pine",
             path_trim="apricot",
             wall_style="masonry",
-            wall_cap=("dusk", "mauve", "stone"),
-            wall_lip="stone",
-            wall_face="dusk",
-            wall_face_hi="mauve",
-            wall_base="night",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="mauve",
+            wall_face="night",
+            wall_face_hi="dusk",
+            wall_base="void",
             water_style="rain_water",
             water_deep="deep",
             water_mid="blue",
@@ -739,9 +1023,99 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="island1_doors",
             special_tiles=(),
             default_decor=("stain",),
-            notes="Bell Isle outer districts: twilight meadow grass with domain-warped mossy stone paths breaking rigid grids.",
+            notes="Bell Isle outer districts: twilight meadow grass with domain-warped mossy stone paths and grounded deep twilight walls.",
         ),
         BellOuterPainter,
+    ),
+    (
+        ThemeSpec(
+            id="belfry_nave",
+            name="The Belfry Nave",
+            island=1,
+            floor_style="flagstone_crypt",
+            floor_ramp=("dusk", "plum", "mauve"),
+            floor_seam="night",
+            floor_bevel="stone",
+            floor_accent_a="apricot",
+            floor_accent_b="gold",
+            path_style="carpet_runner",
+            path_main="plum",
+            path_hi="wine",
+            path_edge="night",
+            path_trim="gold",
+            wall_style="masonry",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="apricot",
+            wall_face="night",
+            wall_face_hi="dusk",
+            wall_base="void",
+            water_style="rain_water",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
+            pit_style="crypt_abyss",
+            void_style="crypt_abyss",
+            rim_hi="apricot",
+            rim_mid="mauve",
+            bridge_style="stone_arch",
+            bridge_main="mauve",
+            bridge_hi="stone",
+            bridge_rail="apricot",
+            bridge_dark="dusk",
+            seed=115,
+            prop_sheet="theme_great_toll_shaft",
+            door_sheet="theme_great_toll_shaft_doors",
+            special_tiles=("S:stairs", "D:carpet"),
+            default_decor=("circle", "cracks", "light_shaft"),
+            notes="Bell Isle lower belfry nave: luminous cathedral slate flagstones, royal plum runners, vaulted lancet niches & warm bronze sconces.",
+        ),
+        BelfryNavePainter,
+    ),
+    (
+        ThemeSpec(
+            id="bell_cavern",
+            name="Bell Isle Acoustic Grotto",
+            island=1,
+            floor_style="cave_floor",
+            floor_ramp=("dusk", "plum", "mauve"),
+            floor_seam="night",
+            floor_bevel="stone",
+            floor_accent_a="teal",
+            floor_accent_b="apricot",
+            path_style="flagstone",
+            path_main="plum",
+            path_hi="mauve",
+            path_edge="pine",
+            path_trim="stone",
+            wall_style="cavern_rock",
+            wall_cap=("night", "night", "dusk"),
+            wall_lip="mauve",
+            wall_face="night",
+            wall_face_hi="dusk",
+            wall_base="void",
+            water_style="rain_water",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
+            pit_style="crypt_abyss",
+            void_style="crypt_abyss",
+            rim_hi="stone",
+            rim_mid="mauve",
+            bridge_style="timber",
+            bridge_main="plum",
+            bridge_hi="apricot",
+            bridge_rail="gold",
+            bridge_dark="night",
+            seed=161,
+            prop_sheet="theme_cave_1",
+            door_sheet="theme_cave_1_doors",
+            special_tiles=(),
+            default_decor=("stain", "cracks", "light_shaft"),
+            notes="Acoustic twilight cavern beneath Bell Isle: calm slate strata, worn mossy stepping stones, luminous blue spring water & warm lanterns.",
+        ),
+        BellCavernPainter,
     ),
     (
         ThemeSpec(
@@ -805,10 +1179,10 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             path_edge="night",
             path_trim="gold",
             wall_style="riveted_iron",
-            wall_cap=("night", "dusk", "plum"),
+            wall_cap=("void", "night", "dusk"),
             wall_lip="gold",
-            wall_face="dusk",
-            wall_face_hi="apricot",
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="rain_water",
             water_deep="void",
@@ -829,9 +1203,9 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_great_toll_shaft_doors",
             special_tiles=("H:grate",),
             default_decor=("circle", "grate", "cracks"),
-            notes="Falling belfry set piece: radial bell-tower decking, bronze gear rings, rushing vertical drop.",
+            notes="Falling belfry set piece: radial bell-tower decking, deep iron bulkheads, brass sconce aprons, bronze gear rings & vertical drop.",
         ),
-        ThemePainter,
+        GreatTollShaftPainter,
     ),
     (
         ThemeSpec(

@@ -250,16 +250,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        144,
-        104,
-        256,
-        160
-      ],
-      "style": "brass"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         272,

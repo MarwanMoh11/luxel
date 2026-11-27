@@ -158,13 +158,8 @@ static func draw_intro_backdrop(ci: CanvasItem, t: float) -> void:
 		_draw_stars(ci, t, 30, 8.0, 124.0, 73, true, 0.0, 76.0, 100.0)
 		var lit_states: Array = []
 		for ii: int in range(8):
-			var snuff_at: float = 0.25 + float(ii) * 0.24
-			if lt2 < snuff_at:
-				lit_states.append(1.0)
-			elif lt2 < snuff_at + 0.30:
-				lit_states.append(1.0 - (lt2 - snuff_at) / 0.30)
-			else:
-				lit_states.append(0.0)
+			var sa: float = 0.25 + float(ii) * 0.24
+			lit_states.append(1.0 if lt2 < sa else (1.0 - (lt2 - sa) / 0.30 if lt2 < sa + 0.30 else 0.0))
 		_draw_archipelago_silhouettes(ci, 148.0, lit_states, t)
 	else:
 		# Beat 3 (5.0-7.5s): Single warm brass lantern ignites at (160, 128) with pixel gold ring & sparks.
@@ -544,7 +539,9 @@ static func _draw_archipelago_silhouettes(ci: CanvasItem, horizon_y: float, lit_
 		ci.draw_rect(Rect2(0.0, horizon_y, 320.0, 180.0 - horizon_y), LxPalette.PAL["void"])
 		_dither(ci, 0.0, 320.0, horizon_y - 1.0, LxPalette.PAL["void"])
 	else:
-		_dither(ci, 0.0, 320.0, horizon_y - 1.0, LxPalette.PAL["night"])
+		ci.draw_rect(Rect2(0.0, horizon_y, 320.0, 1.0), LxPalette.PAL["deep"])
+		_dither(ci, 0.0, 320.0, horizon_y + 1.0, LxPalette.PAL["dusk"], 5)
+		_dither(ci, 0.0, 320.0, horizon_y + 3.0, LxPalette.PAL["deep"], 9)
 	var lamps: Array = [[20, 149], [59, 150], [97, 152], [137, 149], [176, 148], [215, 150], [253, 149], [293, 149]]
 	for bi: int in range(8):
 		var bx: float = float((lamps[bi] as Array)[0])
@@ -563,9 +560,11 @@ static func _draw_archipelago_silhouettes(ci: CanvasItem, horizon_y: float, lit_
 				ci.draw_rect(Rect2(bx, by - 9.0, 1.0, 1.0), LxPalette.PAL["cream"] if lit_c else bc_glow)
 		elif st >= 1.0:
 			var flk2: bool = fr or fmod(elapsed * 3.0 + float(bi) * 0.4, 1.0) < 0.6
+			var gw: float = 0.0 if fr else roundf(sin(elapsed * 2.4 + float(bi) * 1.1))
 			ci.draw_rect(Rect2(bx - 1.0, by - 1.0, 2.0, 2.0), LxPalette.PAL["gold" if flk2 else "apricot"])
 			ci.draw_rect(Rect2(bx, by - 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
-			ci.draw_rect(Rect2(bx - 1.0, horizon_y + 2.0 + float(bi % 3) * 2.0, 2.0, 1.0), LxPalette.PAL["apricot" if flk2 else "wine"])
+			ci.draw_rect(Rect2(bx - 1.0 + gw, horizon_y + 2.0, 3.0, 1.0), LxPalette.PAL["gold" if flk2 else "apricot"])
+			ci.draw_rect(Rect2(bx - gw, horizon_y + 4.0 + float(bi % 2) * 2.0, 2.0, 1.0), LxPalette.PAL["apricot" if flk2 else "wine"])
 		elif st > 0.0:
 			var su: float = 1.0 - st
 			ci.draw_rect(Rect2(bx, by - 1.0, 1.0, 1.0), LxPalette.PAL["coral" if su < 0.5 else "wine"])

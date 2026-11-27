@@ -248,11 +248,12 @@ func _draw_sky_and_moon() -> void:
 	draw_rect(Rect2(226.0, 126.0, 94.0, 20.0), LxPalette.PAL["deep"])
 	_draw_dither_band(212.0, 320.0, 124.0, LxPalette.PAL["deep"], 6)
 
-	# Twinkling 1 px and 3 px cross-sparkle stars.
+	# Twinkling 1 px and 3 px cross-sparkle stars (calm steady depth under flash_reduced).
+	var fred: bool = LxHudFx.flash_reduced()
 	for st: Dictionary in _stars:
 		var sx: float = float(st["x"])
 		var sy: float = float(st["y"])
-		var phase: float = fmod(_elapsed + float(st["off"]), float(st["per"]))
+		var phase: float = (0.25 if fmod(float(st["off"]), 1.0) < 0.55 else 0.70) if fred else fmod(_elapsed + float(st["off"]), float(st["per"]))
 		draw_rect(Rect2(sx, sy, 1.0, 1.0), LxPalette.color(str(st["hi"]) if phase < 0.48 else str(st["lo"])))
 		if bool(st["cross"]) and phase < 0.34:
 			var arm: Color = LxPalette.color(str(st["arm"]))
@@ -280,7 +281,7 @@ func _draw_dither_band(x0: float, x1: float, y: float, col: Color, seed_k: int =
 
 
 func _draw_crescent_moon(ox: float, oy: float) -> void:
-	var halo: Color = LxPalette.PAL["blue"] if fmod(_elapsed, 2.4) < 1.2 else LxPalette.PAL["deep"]
+	var halo: Color = LxPalette.PAL["blue"] if (LxHudFx.flash_reduced() or fmod(_elapsed, 2.4) < 1.2) else LxPalette.PAL["deep"]
 	_px([[ox - 2.0, oy + 6.0, 1.0, 1.0], [ox + 3.0, oy - 2.0, 1.0, 1.0], [ox + 3.0, oy + 14.0, 1.0, 1.0]], halo)
 	_px([[ox - 1.0, oy + 1.0, 1.0, 1.0], [ox - 1.0, oy + 11.0, 1.0, 1.0]], LxPalette.PAL["deep"])
 	for r: int in range(MOON_ROWS.size()):
@@ -304,7 +305,8 @@ func _draw_archipelago() -> void:
 	_px([[34, 128, 1, 6], [35, 120, 1, 8]], dusk)
 	_px([[20, 134, 16, 1], [35, 124, 5, 1]], plum)
 	draw_rect(Rect2(38.0, 112.0, 1.0, 1.0), LxPalette.PAL["mauve"])
-	var lh_p: float = 0.5 + 0.5 * sin(_elapsed * 1.9)
+	var fred: bool = LxHudFx.flash_reduced()
+	var lh_p: float = 0.75 if fred else (0.5 + 0.5 * sin(_elapsed * 1.9))
 	draw_rect(Rect2(37.0, 116.0, 2.0, 2.0), LxPalette.PAL["cream"] if lh_p > 0.72 else (LxPalette.PAL["gold"] if lh_p > 0.35 else LxPalette.PAL["apricot"]))
 	if lh_p > 0.52:
 		_px([[34, 117, 2, 1], [40, 117, 2, 1]], LxPalette.PAL["gold"] if lh_p > 0.78 else LxPalette.PAL["apricot"])
@@ -340,11 +342,11 @@ func _draw_archipelago() -> void:
 	# Gently swaying glowing lantern hanging off the west belfry arm.
 	draw_rect(Rect2(244.0, 105.0, 9.0, 1.0), night)
 	draw_rect(Rect2(244.0, 106.0, 2.0, 1.0), dusk)
-	var sway: float = roundf(sin(_elapsed * 1.55) * 1.2)
+	var sway: float = 0.0 if fred else roundf(sin(_elapsed * 1.55) * 1.2)
 	var lx: float = 244.0 + sway
 	var ly: float = 111.0
 	draw_rect(Rect2(244.0 + roundf(sway * 0.5), 107.0, 1.0, 2.0), dusk)
-	var flk: bool = fmod(_elapsed * 2.6, 1.0) < 0.6
+	var flk: bool = fred or fmod(_elapsed * 2.6, 1.0) < 0.6
 	_px([[lx - 4, ly, 1, 1], [lx + 4, ly, 1, 1], [lx, ly - 4, 1, 1], [lx, ly + 4, 1, 1], [lx - 3, ly - 3, 1, 1], [lx + 3, ly + 3, 1, 1], [lx - 3, ly + 3, 1, 1], [lx + 3, ly - 3, 1, 1]], LxPalette.PAL["coral"] if flk else LxPalette.PAL["wine"])
 	_px([[lx - 2, ly, 1, 1], [lx + 2, ly, 1, 1], [lx, ly - 2, 1, 1], [lx, ly + 2, 1, 1]], LxPalette.PAL["gold"] if flk else LxPalette.PAL["apricot"])
 	_px([[lx - 1, ly - 2, 3, 1], [lx - 1, ly + 2, 3, 1]], night)
@@ -363,33 +365,34 @@ func _draw_sea() -> void:
 	draw_rect(Rect2(236.0, 146.0, 84.0, 1.0), LxPalette.PAL["blue"])
 
 	# Animated horizontal pixel wave glints (keep ENTER OR CLICK TO BEGIN safe band clear).
+	var fred: bool = LxHudFx.flash_reduced()
 	var safe_band := Rect2(90.0, 158.0, 140.0, 14.0)
 	for i: int in range(18):
 		var wy: float = 149.0 + float((i * 5) % 23)
 		var bx: float = float((i * 53 + 11) % 304)
-		var drift: float = roundf(sin(_elapsed * (0.9 + float(i % 3) * 0.35) + float(i) * 1.1) * 3.0)
+		var drift: float = 0.0 if fred else roundf(sin(_elapsed * (0.9 + float(i % 3) * 0.35) + float(i) * 1.1) * 3.0)
 		var wr := Rect2(bx + drift, wy, 5.0 + float(i % 4) * 2.0, 1.0)
 		if mode == Mode.MAIN and wr.intersects(safe_band):
 			continue
 		draw_rect(wr, LxPalette.PAL["blue"] if (bx > 175.0 or i % 3 == 0) else LxPalette.PAL["dusk"])
 
 	# Vertical flickering golden reflection beneath Bell Tower lantern & ice/sky under moon.
-	var sway_ref: float = roundf(sin(_elapsed * 1.55) * 1.2)
+	var sway_ref: float = 0.0 if fred else roundf(sin(_elapsed * 1.55) * 1.2)
 	for r: int in range(10):
-		var wob: float = roundf(sin(_elapsed * 2.9 + float(r) * 0.95) * (1.2 + float(r) * 0.2))
-		var rw: float = roundf(maxf(2.0, 8.0 - float(r) * 0.55 + (1.0 if fmod(_elapsed * 3.0 + float(r), 1.0) < 0.5 else 0.0)))
+		var wob: float = 0.0 if fred else roundf(sin(_elapsed * 2.9 + float(r) * 0.95) * (1.2 + float(r) * 0.2))
+		var rw: float = roundf(maxf(2.0, 8.0 - float(r) * 0.55 + (0.0 if fred else (1.0 if fmod(_elapsed * 3.0 + float(r), 1.0) < 0.5 else 0.0))))
 		var lcol: Color = LxPalette.PAL["cream"] if r == 0 else (LxPalette.PAL["gold"] if r < 4 else (LxPalette.PAL["apricot"] if r < 7 else LxPalette.PAL["coral"]))
 		draw_rect(Rect2(roundf(244.0 + sway_ref + wob - rw * 0.5), roundf(148.0 + float(r) * 2.6), rw, 1.0), lcol)
 		if r < 9:
-			var mwob: float = roundf(sin(_elapsed * 2.1 + float(r) * 0.8) * (1.4 + float(r) * 0.22))
+			var mwob: float = 0.0 if fred else roundf(sin(_elapsed * 2.1 + float(r) * 0.8) * (1.4 + float(r) * 0.22))
 			var mrw: float = roundf(maxf(2.0, 9.0 - float(r) * 0.6))
 			var mcol: Color = LxPalette.PAL["ice"] if r < 3 else (LxPalette.PAL["sky"] if r < 6 else LxPalette.PAL["blue"])
 			draw_rect(Rect2(roundf(273.0 + mwob - mrw * 0.5), roundf(149.0 + float(r) * 2.8), mrw, 1.0), mcol)
 
-	var lh_p: float = 0.5 + 0.5 * sin(_elapsed * 1.9)
+	var lh_p: float = 0.75 if fred else (0.5 + 0.5 * sin(_elapsed * 1.9))
 	if lh_p > 0.42:
 		for r: int in range(4):
-			var wob: float = roundf(sin(_elapsed * 2.5 + float(r)) * 1.5)
+			var wob: float = 0.0 if fred else roundf(sin(_elapsed * 2.5 + float(r)) * 1.5)
 			draw_rect(Rect2(36.0 + wob, 149.0 + float(r) * 3.0, maxf(2.0, 5.0 - float(r)), 1.0), LxPalette.PAL["gold"] if (r == 0 and lh_p > 0.72) else LxPalette.PAL["apricot"])
 
 
@@ -401,10 +404,11 @@ func _draw_atmosphere() -> void:
 		draw_rect(Rect2(wx + 2.0, wy, ww - 4.0, 1.0), LxPalette.color(str(w["col"])))
 		_px([[wx, wy + 1.0, 4.0, 1.0], [wx + ww - 4.0, wy + 1.0, 4.0, 1.0]], LxPalette.PAL["dusk"])
 
+	var fred_a: bool = LxHudFx.flash_reduced()
 	for ff: Dictionary in _fireflies:
-		var fx: float = roundf(float(ff["x"]) + sin(_elapsed * 1.3 + float(ff["off"])) * 5.0)
+		var fx: float = roundf(float(ff["x"]) + (0.0 if fred_a else sin(_elapsed * 1.3 + float(ff["off"])) * 5.0))
 		var fy: float = roundf(float(ff["y"]))
-		var pulse: float = fmod(_elapsed + float(ff["off"]), 1.6)
+		var pulse: float = 0.4 if fred_a else fmod(_elapsed + float(ff["off"]), 1.6)
 		if pulse < 0.65:
 			draw_rect(Rect2(fx, fy, 2.0, 2.0), LxPalette.PAL["gold"])
 			draw_rect(Rect2(fx, fy, 1.0, 1.0), LxPalette.PAL["cream"])
@@ -455,7 +459,7 @@ func _draw_main() -> void:
 			_draw_wick_lantern(r.position.x + 5.0, r.position.y + 3.0)
 			_draw_wick_lantern(r.end.x - 12.0, r.position.y + 3.0)
 
-	var pulse_col: Color = LxPalette.PAL["cream"] if fmod(_elapsed, 1.6) < 0.8 else LxPalette.PAL["stone"]
+	var pulse_col: Color = LxPalette.PAL["cream"] if (LxHudFx.flash_reduced() or fmod(_elapsed, 1.6) < 0.8) else LxPalette.PAL["stone"]
 	LxPixelFont.draw_centered(self, LxStrings.text("TITLE_PROMPT"), 160.0, 162.0, pulse_col, 1)
 
 

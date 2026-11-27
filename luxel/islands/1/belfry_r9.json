@@ -509,5 +509,6 @@
         "exit": "exit_r9_north"
       }
     ]
-  }
+  },
+  "theme": "belfry_nave"
 }

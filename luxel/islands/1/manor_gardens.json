@@ -378,15 +378,6 @@
   "events": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        344,
-        96,
-        80,
-        48
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         384,

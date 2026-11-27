@@ -334,15 +334,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        400,
-        224,
-        64,
-        32
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         56,

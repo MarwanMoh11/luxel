@@ -230,16 +230,6 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        192,
-        56,
-        160,
-        40
-      ],
-      "style": "brass"
-    },
-    {
       "kind": "cracks",
       "pos": [
         296,

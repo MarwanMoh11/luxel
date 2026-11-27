@@ -311,16 +311,6 @@
       ],
       "radius": 22,
       "glow": false
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        40,
-        36,
-        56,
-        48
-      ],
-      "style": "brass"
     }
   ],
   "scenery": [

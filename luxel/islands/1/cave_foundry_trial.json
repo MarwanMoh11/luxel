@@ -256,15 +256,6 @@
       ],
       "radius": 24,
       "style": "gear"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        356,
-        36,
-        48,
-        56
-      ]
     }
   ],
   "scenery": [

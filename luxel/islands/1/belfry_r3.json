@@ -290,15 +290,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        192,
-        88,
-        112,
-        48
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         240,
@@ -510,5 +501,6 @@
         "exit": "exit_r3_east"
       }
     ]
-  }
+  },
+  "theme": "belfry_nave"
 }

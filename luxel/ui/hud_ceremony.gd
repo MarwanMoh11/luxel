@@ -66,8 +66,12 @@ func trigger_mote_now(dir: Vector2, screen_origin: Vector2) -> void:
 	_mote_cd = MOTE_INTERVAL_S
 
 
+func is_ceremony_active() -> bool:
+	return bool(boss_intro.get("active", false)) or bool(reward_card.get("active", false))
+
+
 func has_skippable() -> bool:
-	return bool(boss_intro.get("active", false)) or bool(reward_card.get("active", false)) or bool(prev_bar.get("active", false))
+	return is_ceremony_active() or bool(prev_bar.get("active", false))
 
 
 func try_skip(event: InputEvent) -> bool:
@@ -212,27 +216,52 @@ func _draw_reward_ceremony(ci: CanvasItem) -> void:
 	var acc_k: String = str(reward_card.get("accent", "gold"))
 	var acc_c: Color = LxPalette.color(acc_k, "gold")
 	var title_s: String = str(reward_card.get("title", ""))
-	var box_w: float = clampf(float(LxPixelFont.width(title_s, 1)) + 44.0, 112.0, 240.0)
+	var skip_s: String = LxStrings.text("INTRO_SKIP")
+	var skip_w: float = float(LxPixelFont.width(skip_s, 1))
+	var min_w: float = maxf(192.0, 20.0 + 2.0 * (skip_w + 28.0))
+	var box_w: float = roundf(clampf(maxf(float(LxPixelFont.width(title_s, 1)) + 44.0, min_w), 192.0, 268.0))
 	var box := Rect2(roundf(160.0 - box_w * 0.5), 52.0, box_w, 40.0)
 	ci.draw_rect(Rect2(box.position + Vector2(2.0, 2.0), box.size), pal["void"] as Color)
 	LxPixelFont.draw_panel(ci, box, "night", acc_k, "void")
+	# Crisp 1 px inner corner accents & subtle filigree wings flanking the medallion
+	for cp: Vector2 in [
+		Vector2(box.position.x + 2.0, box.position.y + 2.0),
+		Vector2(box.end.x - 3.0, box.position.y + 2.0),
+		Vector2(box.position.x + 2.0, box.end.y - 3.0),
+		Vector2(box.end.x - 3.0, box.end.y - 3.0),
+	]:
+		ci.draw_rect(Rect2(cp, Vector2.ONE), acc_c)
+	var fy: float = box.position.y + 13.0
+	ci.draw_rect(Rect2(132.0, fy, 10.0, 1.0), pal["dusk"] as Color)
+	ci.draw_rect(Rect2(178.0, fy, 10.0, 1.0), pal["dusk"] as Color)
+	ci.draw_rect(Rect2(140.0, fy, 2.0, 1.0), acc_c)
+	ci.draw_rect(Rect2(178.0, fy, 2.0, 1.0), acc_c)
 	# Subtle radial pixel sparks (static when flash_reduced)
 	var fr: bool = LxHudFx.flash_reduced()
 	for si: int in range(6):
 		var ang: float = TAU * float(si) / 6.0 + (0.0 if fr else t * 1.4)
-		var sp: Vector2 = (Vector2(160.0, box.position.y + 13.0) + Vector2(cos(ang) * 14.0, sin(ang) * 7.0)).round()
+		var sp: Vector2 = (Vector2(160.0, fy) + Vector2(cos(ang) * 14.0, sin(ang) * 7.0)).round()
 		ci.draw_rect(Rect2(sp, Vector2.ONE), (pal["cream"] if si % 2 == 0 else acc_c) as Color)
-	# Centered 2x icon medallion
+	# Centered 2x icon medallion with crisp rim corner glints
 	var ic_box := Rect2(150.0, box.position.y + 4.0, 20.0, 20.0)
 	ci.draw_rect(ic_box, pal["void"] as Color)
 	ci.draw_rect(ic_box, acc_c, false, 1.0)
+	if fade > 0.35:
+		var glint_c: Color = pal["cream"] as Color
+		for mc: Vector2 in [
+			ic_box.position,
+			Vector2(ic_box.end.x - 1.0, ic_box.position.y),
+			Vector2(ic_box.position.x, ic_box.end.y - 1.0),
+			ic_box.end - Vector2.ONE,
+		]:
+			ci.draw_rect(Rect2(mc, Vector2.ONE), glint_c)
 	LxBubble.draw_icon(ci, str(reward_card.get("icon", "lantern")), Vector2(151.0, box.position.y + 5.0), 2.0)
 	LxPixelFont.draw_faded(ci, title_s, Vector2(160.0, box.position.y + 27.0), fade, acc_k, 1, HORIZONTAL_ALIGNMENT_CENTER)
 	var subs: Array = reward_card.get("sub_icons", []) as Array
 	for k: int in range(mini(subs.size(), 3)):
 		LxBubble.draw_icon(ci, str(subs[k]), Vector2(box.position.x + 6.0 + float(k * 11), box.position.y + 8.0), 1.0)
 	if t >= 0.25:
-		LxPixelFont.draw_right(ci, LxStrings.text("INTRO_SKIP"), box.end.x - 4.0, box.position.y + 4.0, pal["mauve"] as Color, 1)
+		LxPixelFont.draw_right(ci, skip_s, box.end.x - 5.0, box.position.y + 5.0, pal["mauve"] as Color, 1)
 
 
 func _draw_previously_bar(ci: CanvasItem) -> void:
@@ -251,6 +280,6 @@ func _draw_previously_bar(ci: CanvasItem) -> void:
 	var box := Rect2(roundf(160.0 - box_w * 0.5), 31.0, box_w, 15.0)
 	LxPixelFont.draw_panel(ci, box, "night", "gold", "void")
 	LxPixelFont.draw_left(ci, lbl, box.position + Vector2(6.0, 5.0), LxPalette.fade_step(fade, "gold"), 1)
-	var ix: float = box.position.x + lw + 12.0
+	var ix: float = roundf(box.position.x + lw + 12.0)
 	for i: int in range(icons.size()):
 		LxBubble.draw_icon(ci, str(icons[i]), Vector2(ix + float(i * 11), box.position.y + 3.0), 1.0)

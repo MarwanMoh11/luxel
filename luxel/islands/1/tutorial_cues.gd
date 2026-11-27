@@ -19,8 +19,8 @@ const SNATCHER_DASH_RANGE: float = 76.0
 const GULP_FX_DUR: float = 1.15
 const LEADING_LAMPS: Array[Dictionary] = [
 	{"id": "lamp_plaza_w", "pos": Vector2(512.0, 344.0)},
-	{"id": "lamp_orchard_turn", "pos": Vector2(448.0, 304.0)},
-	{"id": "lamp_orchard_e", "pos": Vector2(424.0, 216.0)},
+	{"id": "lamp_orchard_turn", "pos": Vector2(456.0, 288.0)},
+	{"id": "lamp_orchard_e", "pos": Vector2(456.0, 200.0)},
 ]
 
 var _clock: float = 0.0
@@ -347,28 +347,27 @@ func _draw() -> void:
 		var col: Color = LxPalette.fade_step(1.0 - u, "cream" if u < 0.35 else "gold")
 		if col.a > 0.0:
 			draw_arc(_pickup_burst_pos.round(), roundf(lerpf(6.0, 26.0 if fred else 32.0, u)), 0.0, TAU, 20, col, 1.0, false)
+	var show_inputs: bool = not _is_ceremony_open()
 	if _s0_w > 0.08: _draw_stage0_lantern_pull(wpos, _s0_w, fred)
-	if _s1_w > 0.08: _draw_stage1_shoot_cue(wpos, _s1_w, fred)
+	if _s1_w > 0.08: _draw_stage1_shoot_cue(wpos, _s1_w, fred, show_inputs)
 	if _s2_w > 0.08: _draw_stage2_leading_path(wpos, _s2_w, fred)
 	if _s3_halo_w > 0.08: _draw_stage3_orchard_harmony(_s3_halo_w, fred)
-	if _s3_gap_w > 0.08: _draw_stage3_dash_chasm(_s3_gap_w, fred)
-	if _s4_w > 0.08: _draw_stage4_river_throw(wpos, _s4_w, fred)
+	if _s3_gap_w > 0.08: _draw_stage3_dash_chasm(_s3_gap_w, fred, show_inputs)
+	if _s4_w > 0.08: _draw_stage4_river_throw(wpos, _s4_w, fred, show_inputs)
 	if not _snatcher_killed and _gulp_fx_t > 0.0:
 		var gu: float = 1.0 - clampf(_gulp_fx_t / GULP_FX_DUR, 0.0, 1.0)
 		G.draw_gulp_reject_x(self, _gulp_fx_pos, gu, clampf(_gulp_fx_t / 0.45, 0.0, 1.0), fred)
 	if _s5_w > 0.08 and _active_snatcher != null and is_instance_valid(_active_snatcher) and _active_snatcher.is_alive():
-		_draw_stage5_snatcher(wpos, _active_snatcher, _s5_w, fred)
+		_draw_stage5_snatcher(wpos, _active_snatcher, _s5_w, fred, show_inputs)
 
 
 func _draw_stage0_lantern_pull(wpos: Vector2, w: float, fred: bool) -> void:
 	G.draw_stage0_lantern(self, wpos, _interactable_pos("lantern_pickup_1", POS_LANTERN).round(), w, _clock, fred)
 
-
-func _draw_stage1_shoot_cue(wpos: Vector2, w: float, fred: bool) -> void:
+func _draw_stage1_shoot_cue(wpos: Vector2, w: float, fred: bool, show_input: bool = true) -> void:
 	var warden: LxEnemyBrain = _find_warden()
 	var w_target: Vector2 = warden.pos if (warden != null and warden.is_alive()) else POS_WARDEN
-	G.draw_stage1_shoot(self, wpos, w_target, w, _clock, fred)
-
+	G.draw_stage1_shoot(self, wpos, w_target, w, _clock, fred, show_input)
 
 func _draw_stage2_leading_path(wpos: Vector2, w: float, fred: bool) -> void:
 	var pts: Array[Vector2] = [
@@ -389,24 +388,20 @@ func _draw_stage2_leading_path(wpos: Vector2, w: float, fred: bool) -> void:
 	var show_head: bool = not (targeting_beacon and wpos.distance_to(next_pos) <= 96.0)
 	G.draw_stage2_path(self, pts, next_pos, show_head, _celebrate_t, w, _clock, fred)
 
-
 func _draw_stage3_orchard_harmony(w: float, fred: bool) -> void:
 	var s_pos: Vector2 = _interactable_pos("shrine_dash", POS_SHRINE_DASH) + Vector2(15.0, 2.0)
 	var b_pos: Vector2 = _interactable_pos("beacon_orchard", POS_BEACON_ORCHARD) + Vector2(-15.0, 2.0)
 	G.draw_stage3_orchard(self, s_pos, b_pos, w, _clock, fred)
 
+func _draw_stage3_dash_chasm(w: float, fred: bool, show_input: bool = true) -> void:
+	G.draw_stage3_chasm(self, POS_CHASM_TOP, POS_CHASM_BOT, _show_dash_cap and show_input, w, _clock, fred)
 
-func _draw_stage3_dash_chasm(w: float, fred: bool) -> void:
-	G.draw_stage3_chasm(self, POS_CHASM_TOP, POS_CHASM_BOT, _show_dash_cap, w, _clock, fred)
-
-
-func _draw_stage4_river_throw(wpos: Vector2, w: float, fred: bool) -> void:
+func _draw_stage4_river_throw(wpos: Vector2, w: float, fred: bool, show_input: bool = true) -> void:
 	var lan: Dictionary = _lantern_status()
-	var brazier_pos: Vector2 = _interactable_pos("brazier_river_east", POS_BRAZIER_EAST)
-	G.draw_stage4_river(self, wpos, brazier_pos, POS_PIER_LIP, bool(lan["out"]), lan["pos"] as Vector2, w, _clock, fred)
+	G.draw_stage4_river(self, wpos, _interactable_pos("brazier_river_east", POS_BRAZIER_EAST), POS_PIER_LIP, bool(lan["out"]), lan["pos"] as Vector2, w, _clock, fred, show_input)
 
 
-func _draw_stage5_snatcher(wpos: Vector2, sn: LxSnatcherBrain, w: float, fred: bool) -> void:
+func _draw_stage5_snatcher(wpos: Vector2, sn: LxSnatcherBrain, w: float, fred: bool, show_input: bool = true) -> void:
 	var lan: Dictionary = _lantern_status()
 	var lan_out: bool = bool(lan["out"])
 	var lan_carried: bool = bool(lan["carried"])
@@ -423,8 +418,9 @@ func _draw_stage5_snatcher(wpos: Vector2, sn: LxSnatcherBrain, w: float, fred: b
 		G.draw_stolen_alert_ring(self, sn_center, w, _clock, fred)
 		if has_dash:
 			G.draw_strike_chevrons(self, wpos + Vector2(0.0, -5.0), sn_center, w, _clock, fred, true)
-			var d_side: float = -18.0 if sn_center.x >= wpos.x else 18.0
-			G.draw_dash_keycap(self, (wpos + Vector2(d_side, -23.0 + bob)).round(), w, _clock, fred)
+			if show_input:
+				var d_side: float = -18.0 if sn_center.x >= wpos.x else 18.0
+				G.draw_dash_keycap(self, (wpos + Vector2(d_side, -23.0 + bob)).round(), w, _clock, fred)
 		return
 
 	if _snatcher_killed:
@@ -442,8 +438,9 @@ func _draw_stage5_snatcher(wpos: Vector2, sn: LxSnatcherBrain, w: float, fred: b
 			G.draw_target_brackets(self, sn_center, br, c_br)
 		G.draw_zip_blast_zone(self, z_target, sn_center, diving_or_close, w, _clock, fred)
 		G.draw_strike_chevrons(self, wpos + Vector2(0.0, -5.0), z_target, w, _clock, fred, false)
-		var l_side: float = -15.0 if z_target.x >= wpos.x else 15.0
-		G.draw_pixel_mouse(self, (wpos + Vector2(l_side, -22.0 + bob)).round(), false, w, _clock, fred)
+		if show_input:
+			var l_side: float = -15.0 if z_target.x >= wpos.x else 15.0
+			G.draw_pixel_mouse(self, (wpos + Vector2(l_side, -22.0 + bob)).round(), false, w, _clock, fred)
 		return
 
 	# Case C: Bird is baffled right beside Wick while lantern is back in hand -> Dash strike opening
@@ -452,16 +449,18 @@ func _draw_stage5_snatcher(wpos: Vector2, sn: LxSnatcherBrain, w: float, fred: b
 		if c_bf.a > 0.0:
 			G.draw_target_brackets(self, sn_center, 10.0, c_bf)
 		G.draw_strike_chevrons(self, wpos + Vector2(0.0, -5.0), sn_center, w, _clock, fred, true)
-		var b_side: float = -18.0 if sn_center.x >= wpos.x else 18.0
-		G.draw_dash_keycap(self, (wpos + Vector2(b_side, -23.0 + bob)).round(), w, _clock, fred)
+		if show_input:
+			var b_side: float = -18.0 if sn_center.x >= wpos.x else 18.0
+			G.draw_dash_keycap(self, (wpos + Vector2(b_side, -23.0 + bob)).round(), w, _clock, fred)
 		return
 
 	# Case 0: Lantern in hand -> throw lantern as bait (RMB)
 	if lan_in_hand and (_snatcher_gulped_any or sn.gulp_count > 0 or _snatcher_near_t >= SNATCHER_LINGER_S):
 		var bait_pos: Vector2 = _find_bait_ground(wpos, sn)
 		G.draw_bait_guide(self, wpos + Vector2(0.0, -6.0), bait_pos, w, _clock, fred)
-		var r_side: float = -15.0 if bait_pos.x >= wpos.x else 15.0
-		G.draw_pixel_mouse(self, (wpos + Vector2(r_side, -22.0 + bob)).round(), true, w, _clock, fred)
+		if show_input:
+			var r_side: float = -15.0 if bait_pos.x >= wpos.x else 15.0
+			G.draw_pixel_mouse(self, (wpos + Vector2(r_side, -22.0 + bob)).round(), true, w, _clock, fred)
 
 
 func _find_bait_ground(wpos: Vector2, sn: LxSnatcherBrain) -> Vector2:
@@ -578,6 +577,17 @@ func _is_inter_bool(id: String, prop: String) -> bool:
 func _is_beacon_lit(bid: String) -> bool:
 	return (Lx.state != null and (Lx.state.lit_beacons.has(bid) or bool(Lx.state.story_flags.get(bid, false)))) or _is_inter_bool(bid, "lit")
 
+
+func _is_ceremony_open() -> bool:
+	if Lx.ui == null or not is_instance_valid(Lx.ui): return false
+	var hv: Variant = Lx.ui.get("hud")
+	if not (hv is Object) or not is_instance_valid(hv): return false
+	var cv: Variant = (hv as Object).get("ceremony")
+	if not (cv is Object) or not is_instance_valid(cv): return false
+	var cer: Object = cv as Object
+	if cer.has_method("is_ceremony_active"): return bool(cer.call("is_ceremony_active"))
+	var rc: Variant = cer.get("reward_card"); var bi: Variant = cer.get("boss_intro")
+	return (rc is Dictionary and bool((rc as Dictionary).get("active", false))) or (bi is Dictionary and bool((bi as Dictionary).get("active", false)))
 
 func _is_river_resolved() -> bool:
 	if _river_crossed: return true

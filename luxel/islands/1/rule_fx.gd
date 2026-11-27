@@ -126,10 +126,10 @@ func _draw() -> void:
 		var r_fr: float = float(obj.get("radius")) if (obj.get("radius") is float or obj.get("radius") is int) else 10.0
 		r_fr = clampf(r_fr, 8.0, 32.0)
 		var fr_rect := Rect2((op - Vector2(r_fr, r_fr)).round(), Vector2(r_fr * 2.0, r_fr * 2.0).round())
-		draw_rect(fr_rect, Color(LxPalette.PAL["ice"] as Color, 0.22))
+		draw_rect(fr_rect, Color(LxPalette.PAL["ice"] as Color, 0.16 if red else 0.22))
 		draw_rect(fr_rect, LxPalette.PAL["ice"] as Color, false, 1.0)
 		var frac: float = clampf(float(ent["left"]) / maxf(0.1, float(ent["max_t"])), 0.0, 1.0)
-		LxToyDraw.draw_bar(self, Vector2(op.x - 7.0, op.y - r_fr - 5.0), 14.0, frac, LxPalette.PAL["ice"] as Color)
+		LxToyDraw.draw_bar(self, Vector2(op.x - 7.0, op.y - r_fr - 5.0).round(), 14.0, frac, LxPalette.PAL["ice"] as Color)
 
 	# 4. Subtle Shutter Hood shadow-cloak ring around cloaked Wick
 	if rule.is_wick_cloaked() and Lx.player is LxWick and is_instance_valid(Lx.player):

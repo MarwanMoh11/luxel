@@ -406,16 +406,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        104,
-        28,
-        232,
-        36
-      ],
-      "style": "brass"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         248,

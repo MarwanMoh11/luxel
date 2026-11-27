@@ -51,7 +51,7 @@ static func draw_gamepad_glyph(ci: CanvasItem, center: Vector2, action_id: Strin
 	if not glyph.is_empty():
 		LxPixelFont.draw_centered(ci, glyph, rect.position.x + bw * 0.5, rect.position.y + 3.0, c_txt, 1)
 	else:
-		ci.draw_rect(Rect2(center - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_txt)
+		ci.draw_rect(Rect2((center - Vector2(1.0, 1.0)).round(), Vector2(2.0, 2.0)), c_txt)
 
 
 static func draw_dash_keycap(ci: CanvasItem, center: Vector2, w: float, clock: float, fred: bool) -> void:
@@ -62,6 +62,7 @@ static func draw_dash_keycap(ci: CanvasItem, center: Vector2, w: float, clock: f
 	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_dash"), 6) if Lx.input != null else ""
 	var bw: float = maxf(15.0, (float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 7.0) + 8.0)
 	var rect := Rect2(roundf(center.x - bw * 0.5), roundf(center.y - 5.5), bw, 11.0)
+	ci.draw_rect(Rect2(rect.position + Vector2(1.0, rect.size.y), Vector2(bw - 2.0, 1.0)), PAL["void"] as Color)
 	LxPixelFont.draw_panel(ci, rect, "night", "cream" if pulse else "gold", "void")
 	if not glyph.is_empty():
 		LxPixelFont.draw_centered(ci, glyph, rect.position.x + bw * 0.5, rect.position.y + 3.0, col, 1)
@@ -84,6 +85,9 @@ static func draw_down_chevron(ci: CanvasItem, tip: Vector2, c_hi: Color, c_mid: 
 
 static func draw_right_chevron(ci: CanvasItem, tip: Vector2, c_hi: Color, c_mid: Color) -> void:
 	var p: Vector2 = tip.round()
+	var cv: Color = PAL["void"] as Color
+	for rv: Rect2 in [Rect2(-4.0, -4.0, 2.0, 3.0), Rect2(-4.0, 2.0, 2.0, 3.0), Rect2(-3.0, -3.0, 2.0, 3.0), Rect2(-3.0, 1.0, 2.0, 3.0), Rect2(-2.0, -2.0, 3.0, 5.0), Rect2(0.0, -1.0, 2.0, 3.0)]:
+		ci.draw_rect(Rect2(p + rv.position, rv.size), cv)
 	for rm: Rect2 in [Rect2(-3.0, -3.0, 1.0, 2.0), Rect2(-3.0, 2.0, 1.0, 2.0)]:
 		ci.draw_rect(Rect2(p + rm.position, rm.size), c_mid)
 	for rh: Rect2 in [Rect2(-2.0, -2.0, 1.0, 2.0), Rect2(-2.0, 1.0, 1.0, 2.0), Rect2(-1.0, -1.0, 1.0, 3.0), Rect2(0.0, 0.0, 1.0, 1.0)]:
@@ -119,10 +123,12 @@ static func draw_dir_chevron(ci: CanvasItem, tip: Vector2, dir: Vector2, c_hi: C
 
 static func draw_target_brackets(ci: CanvasItem, center: Vector2, r: float, col: Color) -> void:
 	var cv: Color = PAL["void"] as Color
+	var ctr: Vector2 = center.round()
+	var rr: float = roundf(r)
 	for sx: float in [-1.0, 1.0]:
 		for sy: float in [-1.0, 1.0]:
-			var cx: float = center.x + sx * r
-			var cy: float = center.y + sy * r
+			var cx: float = ctr.x + sx * rr
+			var cy: float = ctr.y + sy * rr
 			var hx: float = cx if sx < 0.0 else cx - 2.0
 			var vy: float = cy if sy < 0.0 else cy - 2.0
 			ci.draw_rect(Rect2(hx - 1.0, cy - 1.0, 5.0, 3.0), cv)
@@ -231,6 +237,7 @@ static func draw_zip_blast_zone(ci: CanvasItem, lan_center: Vector2, sn_center: 
 		var d: float = 10.0 + shift
 		while d < d_sn - 10.0:
 			var pt: Vector2 = (sn_center + dir_in * d).round()
+			ci.draw_rect(Rect2(pt + Vector2(0.0, 1.0), Vector2(2.0, 1.0)), PAL["void"] as Color)
 			ci.draw_rect(Rect2(pt, Vector2(2.0, 1.0)), c_hi if d > d_sn - 24.0 else c_mid)
 			d += 7.0
 
@@ -274,7 +281,7 @@ static func draw_stage0_lantern(ci: CanvasItem, wpos: Vector2, lpos: Vector2, w:
 	draw_down_chevron(ci, lpos + Vector2(0.0, -21.0 + (0.0 if fred else roundf(sin(clock * 4.2) * 2.0))), c_cream, c_gold)
 
 
-static func draw_stage1_shoot(ci: CanvasItem, wpos: Vector2, w_target: Vector2, w: float, clock: float, fred: bool) -> void:
+static func draw_stage1_shoot(ci: CanvasItem, wpos: Vector2, w_target: Vector2, w: float, clock: float, fred: bool, show_input: bool = true) -> void:
 	var tpos: Vector2 = w_target + Vector2(0.0, -7.0)
 	var origin: Vector2 = wpos + Vector2(0.0, -6.0)
 	var c_gold: Color = LxPalette.fade_step(w, "gold")
@@ -294,9 +301,10 @@ static func draw_stage1_shoot(ci: CanvasItem, wpos: Vector2, w_target: Vector2, 
 			d += 8.0
 	var br: float = 11.0 + (0.0 if fred else roundf(sin(clock * 4.0) * 1.2))
 	draw_target_brackets(ci, tpos.round(), br, c_cream if (fred or sin(clock * 4.0) > 0.2) else c_gold)
-	var mid: Vector2 = wpos.lerp(w_target, 0.38 if dist < 58.0 else 0.5)
-	var lift: float = -24.0 if dist < 58.0 else -20.0
-	draw_pixel_mouse(ci, (mid + Vector2(0.0, lift + (0.0 if fred else roundf(sin(clock * 3.4) * 1.0)))).round(), false, w, clock, fred)
+	if show_input:
+		var mid: Vector2 = wpos.lerp(w_target, 0.38 if dist < 58.0 else 0.5)
+		var lift: float = -24.0 if dist < 58.0 else -20.0
+		draw_pixel_mouse(ci, (mid + Vector2(0.0, lift + (0.0 if fred else roundf(sin(clock * 3.4) * 1.0)))).round(), false, w, clock, fred)
 
 
 static func draw_stage2_path(ci: CanvasItem, pts: Array[Vector2], next_pos: Vector2, show_head: bool, celebrate_t: float, w: float, clock: float, fred: bool) -> void:
@@ -345,18 +353,21 @@ static func draw_stage3_chasm(ci: CanvasItem, top_p: Vector2, bot_p: Vector2, sh
 	var c_apr: Color = LxPalette.fade_step(w, "apricot")
 	if c_gold.a <= 0.0:
 		return
+	var tp: Vector2 = top_p.round()
+	var bp: Vector2 = bot_p.round()
 	var spd: float = 0.45 if fred else 1.15
 	for ci_i: int in range(3):
 		var u: float = fmod(clock * spd + float(ci_i) / 3.0, 1.0)
-		var cy: float = roundf(lerpf(top_p.y + 6.0, bot_p.y - 4.0, u))
-		draw_down_chevron(ci, Vector2(top_p.x, cy), c_cream if u > 0.65 else (c_gold if u > 0.28 else c_apr), c_gold)
-	ci.draw_rect(Rect2(bot_p.x - 4.0, bot_p.y + 2.0, 9.0, 1.0), LxPalette.fade_step(w, "mauve"))
-	ci.draw_rect(Rect2(bot_p.x - 2.0, bot_p.y + 2.0, 5.0, 1.0), c_gold)
+		var cy: float = roundf(lerpf(tp.y + 6.0, bp.y - 4.0, u))
+		draw_down_chevron(ci, Vector2(tp.x, cy), c_cream if u > 0.65 else (c_gold if u > 0.28 else c_apr), c_gold)
+	ci.draw_rect(Rect2(bp.x - 5.0, bp.y + 1.0, 11.0, 3.0), PAL["void"] as Color)
+	ci.draw_rect(Rect2(bp.x - 4.0, bp.y + 2.0, 9.0, 1.0), LxPalette.fade_step(w, "mauve"))
+	ci.draw_rect(Rect2(bp.x - 2.0, bp.y + 2.0, 5.0, 1.0), c_gold)
 	if show_cap:
 		draw_dash_keycap(ci, Vector2(184.0, 196.0 + (0.0 if fred else roundf(sin(clock * 3.4) * 1.0))).round(), w, clock, fred)
 
 
-static func draw_stage4_river(ci: CanvasItem, wpos: Vector2, brazier_pos: Vector2, pier_lip: Vector2, lan_out: bool, lan_pos: Vector2, w: float, clock: float, fred: bool) -> void:
+static func draw_stage4_river(ci: CanvasItem, wpos: Vector2, brazier_pos: Vector2, pier_lip: Vector2, lan_out: bool, lan_pos: Vector2, w: float, clock: float, fred: bool, show_input: bool = true) -> void:
 	var bob: float = 0.0 if fred else roundf(sin(clock * 3.4) * 1.0)
 	var mpos: Vector2 = (wpos + Vector2(14.0, -22.0 + bob)).round()
 	if lan_out and lan_pos.x >= 1004.0:
@@ -371,7 +382,8 @@ static func draw_stage4_river(ci: CanvasItem, wpos: Vector2, brazier_pos: Vector
 				var u: float = fmod(clock * spd_z + float(zi) * 0.25, 1.0)
 				draw_right_chevron(ci, origin.lerp(lpos, lerpf(0.16, 0.84, u)).round(), c_cream if u > 0.65 else c_ice, c_sky)
 			ci.draw_arc(lpos.round(), 10.0 + (0.0 if fred else roundf(sin(clock * 5.0) * 1.5)), 0.0, TAU, 16, c_ice, 1.0, false)
-		draw_pixel_mouse(ci, mpos, false, w, clock, fred)
+		if show_input:
+			draw_pixel_mouse(ci, mpos, false, w, clock, fred)
 		return
 	var c_gold: Color = LxPalette.fade_step(w, "gold")
 	var c_cream: Color = LxPalette.fade_step(w, "cream")
@@ -408,7 +420,8 @@ static func draw_stage4_river(ci: CanvasItem, wpos: Vector2, brazier_pos: Vector
 	ci.draw_rect(Rect2(dc + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), c_cream if hot_d else c_gold)
 	ci.draw_rect(Rect2(dc + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), c_cream if hot_d else c_gold)
 	draw_down_chevron(ci, bc + Vector2(0.0, -20.0 + tbob), c_cream if hot_d else c_gold, c_apr)
-	draw_pixel_mouse(ci, mpos, true, w, clock, fred)
+	if show_input:
+		draw_pixel_mouse(ci, mpos, true, w, clock, fred)
 
 
 static func quad_bezier(a: Vector2, b: Vector2, c: Vector2, t: float) -> Vector2:

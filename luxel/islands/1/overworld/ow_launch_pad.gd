@@ -190,13 +190,18 @@ func _restore_wick_visuals(wick: Node2D, snap_safe: bool) -> void:
 			w.queue_redraw()
 
 func _ignite_runway_tile(idx: int, fred: bool) -> void:
-	var tc := Vector2(RUNWAY_XS[clampi(idx, 0, RUNWAY_XS.size() - 1)], RUNWAY_Y)
+	var ci: int = clampi(idx, 0, RUNWAY_XS.size() - 1)
+	var tc := Vector2(RUNWAY_XS[ci], RUNWAY_Y)
+	var frac: float = float(ci) / float(maxi(1, RUNWAY_XS.size() - 1))
 	if Lx.audio != null: Lx.audio.play_sfx("prop_chime", tc, false)
-	_burst_light(tc, 76.0, 0.85 if fred else 1.20, 0.38)
+	_burst_light(tc, 72.0 + frac * 28.0, (0.85 if fred else 1.15) + frac * (0.15 if fred else 0.30), 0.38)
+	if Lx.camera != null and not fred:
+		Lx.camera.add_shake(lerpf(0.02, 0.05, frac))
 	var count: int = 3 if fred else 6
 	for k: int in range(count):
 		var dy: float = -12.0 + float(k) * (24.0 / float(maxi(1, count - 1)))
-		_add_spark(tc + Vector2(-4.0, dy * 0.5), Vector2(18.0 + float(k % 3) * 14.0, -16.0 - float(k % 2) * 12.0), 0.38, "cream" if k % 2 == 0 else "gold", 2.0 if k == 0 else 1.0)
+		var ck: String = "ice" if (ci == 5 and k % 2 == 0) else ("cream" if (ci >= 3 and k % 2 == 0) else ("gold" if (ci >= 1 or k % 2 == 0) else "apricot"))
+		_add_spark(tc + Vector2(-4.0, dy * 0.5), Vector2(18.0 + float(k % 3) * 14.0, -16.0 - float(k % 2) * 12.0), 0.38, ck, 2.0 if k == 0 else 1.0)
 
 func _trigger_liftoff(w: LxWick, fred: bool) -> void:
 	if Lx.audio != null:
@@ -235,46 +240,64 @@ func _age_sparks(dt: float) -> void:
 func _draw() -> void:
 	if not visible: return
 	var fred: bool = LxHudFx.flash_reduced()
-	var c_gold: Color = PAL["gold"] as Color; var c_apricot: Color = PAL["apricot"] as Color
-	var c_cream: Color = PAL["cream"] as Color; var c_ice: Color = PAL["ice"] as Color
+	var c_void: Color = PAL["void"] as Color; var c_gold: Color = PAL["gold"] as Color
+	var c_apricot: Color = PAL["apricot"] as Color; var c_cream: Color = PAL["cream"] as Color
+	var c_ice: Color = PAL["ice"] as Color; var c_sky: Color = PAL["sky"] as Color
 	var breath: float = 0.78 if fred else (0.64 + 0.36 * sin(_clock * 2.8))
 	var flare: float = 0.0
 	if _launching:
 		flare = sin(clampf(_launch_t / PHASE1_END, 0.0, 1.0) * PI) if _launch_t < PHASE1_END else clampf(1.0 - (_launch_t - PHASE1_END) / 0.85, 0.28, 0.85)
 		if fred: flare *= 0.65
-	# Compass rose breathing glow & flare at [1160, 168], radius 20
-	draw_circle(COMPASS_POS, COMPASS_RADIUS, Color(c_apricot, (0.10 + flare * 0.16) * breath))
-	draw_circle(COMPASS_POS, 11.0, Color(c_gold, (0.14 + flare * 0.24) * breath))
-	draw_arc(COMPASS_POS, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), 1.5 if flare > 0.25 else 1.0)
-	draw_arc(COMPASS_POS, 12.0, 0.0, TAU, 16, Color(c_cream, clampf((0.28 + flare * 0.46) * breath, 0.0, 0.92)), 1.0)
+	var cp: Vector2 = COMPASS_POS.round()
+	# Compass rose breathing glow & crisp Phase 1 flare at [1160, 168], radius 20
+	draw_circle(cp, COMPASS_RADIUS, Color(c_apricot, (0.10 + flare * 0.16) * breath))
+	draw_circle(cp, 11.0, Color(c_gold, (0.14 + flare * 0.24) * breath))
+	draw_arc(cp, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), 1.5 if flare > 0.25 else 1.0)
+	draw_arc(cp, 12.0, 0.0, TAU, 16, Color(c_cream, clampf((0.28 + flare * 0.46) * breath, 0.0, 0.92)), 1.0)
 	for k: int in range(8):
 		var ang: float = float(k) * (PI * 0.25)
 		var is_card: bool = (k % 2 == 0)
 		var r_in: float = 5.0 if is_card else 12.0
 		var r_out: float = (19.0 if k == 0 else 17.0) if is_card else 16.0
-		draw_line((COMPASS_POS + Vector2.from_angle(ang) * r_in).round(), (COMPASS_POS + Vector2.from_angle(ang) * r_out).round(), Color(c_cream if (k == 0 or flare > 0.45) else c_gold, clampf((0.52 + flare * 0.42) * breath, 0.0, 0.95)), 1.0)
-	draw_rect(Rect2(COMPASS_POS - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), Color(c_gold, clampf(0.55 + flare * 0.40, 0.0, 0.95)))
-	draw_rect(Rect2(COMPASS_POS - Vector2.ONE, Vector2(2.0, 2.0)), Color(c_cream, clampf(0.75 + flare * 0.25, 0.0, 1.0)))
-	# Runway guide pips & tile-by-tile ignition across tiles x=74..79 (1184..1280), y=144..192
+		draw_line((cp + Vector2.from_angle(ang) * r_in).round(), (cp + Vector2.from_angle(ang) * r_out).round(), Color(c_cream if (k == 0 or flare > 0.45) else c_gold, clampf((0.52 + flare * 0.42) * breath, 0.0, 0.95)), 1.0)
+	if _launching and flare > 0.22:
+		var fa: float = roundf(lerpf(4.0, 11.0 if fred else 15.0, flare))
+		draw_rect(Rect2(cp.x - fa, cp.y, fa * 2.0 + 1.0, 1.0), Color(c_cream, flare * 0.90))
+		draw_rect(Rect2(cp.x, cp.y - fa, 1.0, fa * 2.0 + 1.0), Color(c_gold, flare * 0.85))
+	draw_rect(Rect2(cp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), Color(c_gold, clampf(0.55 + flare * 0.40, 0.0, 0.95)))
+	draw_rect(Rect2(cp - Vector2.ONE, Vector2(2.0, 2.0)), Color(c_cream, clampf(0.75 + flare * 0.25, 0.0, 1.0)))
+	# Runway guide pips & escalating tile-by-tile ignition (apricot -> gold -> cream -> ice at lip idx 5)
 	var wave: float = fposmod(_clock * (0.65 if fred else 1.45), float(RUNWAY_XS.size()))
 	for i: int in range(RUNWAY_XS.size()):
-		var cx: float = RUNWAY_XS[i]
+		var cx: float = roundf(RUNWAY_XS[i])
+		var ry: float = roundf(RUNWAY_Y)
 		if _launching and i <= _lit_tiles:
 			var hot: float = clampf(1.0 - maxf(0.0, (_launch_t - PHASE1_END) - float(i) * TILE_STEP_S) * 2.2, 0.0, 1.0)
-			draw_rect(Rect2(cx - 8.0, RUNWAY_Y - 3.0, 16.0, 6.0), Color(c_apricot, 0.36 + hot * 0.24))
-			draw_rect(Rect2(cx - 8.0, RUNWAY_Y - 2.0, 16.0, 4.0), Color(c_gold, 0.78 + hot * 0.20))
-			draw_rect(Rect2(cx - 7.0, RUNWAY_Y - 1.0, 14.0, 2.0), Color(c_cream, 0.82 + hot * 0.18))
-			_draw_chevron(Vector2(cx + 3.0, RUNWAY_Y), c_cream if hot > 0.35 else c_gold, 0.95, 4.0)
+			var is_lip: bool = (i == RUNWAY_XS.size() - 1)
+			var outer_c: Color = c_apricot if i < 2 else (c_gold if i < 4 else (c_cream if i == 4 else c_sky))
+			var mid_c: Color = c_apricot if i == 0 else (c_gold if i < 4 else (c_cream if i == 4 else c_ice))
+			var core_c: Color = c_gold if i == 0 else (c_cream if not is_lip else (c_ice if hot < 0.45 else c_cream))
+			draw_rect(Rect2(cx - 8.0, ry - 3.0, 16.0, 6.0), Color(outer_c, 0.34 + hot * 0.24))
+			draw_rect(Rect2(cx - 8.0, ry - 2.0, 16.0, 4.0), Color(mid_c, 0.78 + hot * 0.20))
+			draw_rect(Rect2(cx - 7.0, ry - 1.0, 14.0, 2.0), Color(core_c, 0.85 + hot * 0.15))
+			_draw_chevron(Vector2(cx + 3.0, ry), c_ice if is_lip else (c_cream if (hot > 0.30 or i >= 3) else c_gold), 0.96, 4.0)
+			if is_lip:
+				draw_rect(Rect2(cx + 5.0, ry - 6.0, 2.0, 12.0), Color(c_ice, 0.75 + hot * 0.25))
+				draw_rect(Rect2(cx + 5.0, ry - 4.0, 1.0, 8.0), Color(c_cream, 0.92))
 			for ey: float in [150.0, 185.0]:
-				draw_rect(Rect2(cx - 2.0, ey, 4.0, 2.0), Color(c_gold, 0.85))
-				draw_rect(Rect2(cx - 1.0, ey, 2.0, 1.0), Color(c_cream if hot > 0.2 else c_ice, 0.92))
+				draw_rect(Rect2(cx - 3.0, ey - 1.0, 6.0, 4.0), Color(c_void, 0.80))
+				draw_rect(Rect2(cx - 2.0, ey, 4.0, 2.0), Color(c_ice if is_lip else (c_cream if i == 4 else c_gold), 0.90))
+				draw_rect(Rect2(cx - 1.0, ey, 2.0, 1.0), Color(c_cream if (hot > 0.2 or not is_lip) else c_ice, 0.96))
 		else:
 			var d_w: float = minf(absf(float(i) - wave), float(RUNWAY_XS.size()) - absf(float(i) - wave))
 			var pip: float = 0.55 if fred else clampf(1.0 - d_w * 0.55, 0.24, 1.0)
-			draw_rect(Rect2(cx - 4.0, RUNWAY_Y - 1.0, 8.0, 2.0), Color(c_gold, 0.32 * pip * breath))
-			_draw_chevron(Vector2(cx + 2.0, RUNWAY_Y), c_cream if pip > 0.72 else c_gold, 0.62 * pip * breath, 3.0)
+			var is_east_lip: bool = (i == RUNWAY_XS.size() - 1)
+			draw_rect(Rect2(cx - 4.0, ry - 1.0, 8.0, 2.0), Color(c_ice if is_east_lip else c_gold, 0.34 * pip * breath))
+			_draw_chevron(Vector2(cx + 2.0, ry), c_ice if is_east_lip else (c_cream if pip > 0.72 else c_gold), 0.65 * pip * breath, 3.0)
 			for ey: float in [150.0, 185.0]:
-				draw_rect(Rect2(cx - 1.0, ey, 2.0, 1.0), Color(c_apricot if pip < 0.65 else c_gold, 0.55 * pip))
+				draw_rect(Rect2(cx - 2.0, ey - 1.0, 4.0, 3.0), Color(c_void, 0.55))
+				var ec: Color = (c_ice if pip > 0.60 else c_sky) if is_east_lip else (c_apricot if pip < 0.65 else c_gold)
+				draw_rect(Rect2(cx - 1.0, ey, 2.0, 1.0), Color(ec, 0.62 * pip))
 
 func _draw_chevron(tip: Vector2, col: Color, alpha: float, arm: float) -> void:
 	var t: Vector2 = tip.round(); var c := Color(col, clampf(alpha, 0.0, 1.0))
@@ -286,34 +309,82 @@ func _draw_air_fx() -> void:
 	var fred: bool = LxHudFx.flash_reduced()
 	var c_gold: Color = PAL["gold"] as Color; var c_apricot: Color = PAL["apricot"] as Color
 	var c_cream: Color = PAL["cream"] as Color; var c_ice: Color = PAL["ice"] as Color
+	var cp: Vector2 = COMPASS_POS.round(); var ap: Vector2 = ALIGN_POS.round()
 	if not _launching:
 		for m: int in range(3):
 			var u: float = fposmod(_clock * (0.28 if fred else 0.45) + float(m) * 0.333, 1.0)
-			_air_fx.draw_rect(Rect2(roundf(COMPASS_POS.x + sin(_clock * 1.4 + float(m) * 2.1) * 12.0), roundf(COMPASS_POS.y + 5.0 - u * 22.0), 1.0, 1.0), Color(c_cream if u < 0.4 else c_gold, sin(u * PI) * 0.75))
+			_air_fx.draw_rect(Rect2(roundf(cp.x + sin(_clock * 1.4 + float(m) * 2.1) * 12.0), roundf(cp.y + 5.0 - u * 22.0), 1.0, 1.0), Color(c_cream if u < 0.4 else c_gold, sin(u * PI) * 0.75))
+		# Ambient drifting gold/ice beckoning motes gliding east along the runway
+		var mote_n: int = 4 if fred else 6
+		for rm: int in range(mote_n):
+			var ru: float = fposmod(_clock * (0.24 if fred else 0.42) + float(rm) / float(mote_n), 1.0)
+			var rx: float = roundf(lerpf(RUNWAY_XS[0] - 4.0, RUNWAY_XS[RUNWAY_XS.size() - 1] + 2.0, ru))
+			var lane: float = (float(rm % 3) - 1.0) * 8.0
+			var ry: float = roundf(RUNWAY_Y + lane + (0.0 if fred else sin(_clock * 2.2 + float(rm) * 1.7) * 2.0))
+			var ma: float = sin(ru * PI) * (0.68 if fred else 0.85)
+			var mc: Color = c_ice if (ru > 0.72 or rm % 3 == 2) else (c_cream if ru > 0.45 else c_gold)
+			_air_fx.draw_rect(Rect2(rx, ry, 2.0 if ru > 0.55 else 1.0, 1.0), Color(mc, ma))
+		# Crisp pixel-snapped moonward glint at east lip (x=1272)
+		var gp: float = 0.72 if fred else (0.55 + 0.45 * sin(_clock * 3.1))
+		var garm: float = roundf(lerpf(2.0, 4.0 if fred else 5.0, gp))
+		var lip := Vector2(roundf(RUNWAY_XS[RUNWAY_XS.size() - 1]), roundf(RUNWAY_Y))
+		_air_fx.draw_rect(Rect2(lip.x - garm, lip.y, garm * 2.0 + 1.0, 1.0), Color(c_ice, gp * 0.82))
+		_air_fx.draw_rect(Rect2(lip.x, lip.y - garm, 1.0, garm * 2.0 + 1.0), Color(c_ice, gp * 0.82))
+		_air_fx.draw_rect(Rect2(lip - Vector2.ONE, Vector2(3.0, 3.0)), Color(c_ice, gp * 0.35))
+		_air_fx.draw_rect(Rect2(lip, Vector2.ONE), Color(c_cream, clampf(gp + 0.18, 0.0, 1.0)))
 		return
+	# Phase 1 inward light-gather streaks into COMPASS_POS & ALIGN_POS
+	if _launch_t < PHASE1_END:
+		var u1: float = clampf(_launch_t / PHASE1_END, 0.0, 1.0)
+		var g_n: int = 4 if fred else 8
+		for gi: int in range(g_n):
+			var ang: float = TAU * float(gi) / float(g_n) + 0.20
+			var r_head: float = roundf(lerpf(26.0, 5.0, u1 * u1))
+			var r_tail: float = roundf(lerpf(32.0, 11.0, u1))
+			var p_in: Vector2 = (cp + Vector2.from_angle(ang) * r_head).round()
+			var p_out: Vector2 = (cp + Vector2.from_angle(ang) * r_tail).round()
+			_air_fx.draw_line(p_out, p_in, Color(c_cream if gi % 2 == 0 else c_gold, sin(u1 * PI) * (0.65 if fred else 0.90)), 1.0)
+		var a_n: int = 2 if fred else 4
+		for ai: int in range(a_n):
+			var aang: float = TAU * float(ai) / float(a_n) + PI * 0.25
+			var ah: Vector2 = (ap + Vector2.from_angle(aang) * roundf(lerpf(18.0, 3.0, u1))).round()
+			var at: Vector2 = (ap + Vector2.from_angle(aang) * roundf(lerpf(23.0, 8.0, u1))).round()
+			_air_fx.draw_line(at, ah, Color(c_gold if ai % 2 == 0 else c_ice, sin(u1 * PI) * 0.78), 1.0)
 	if _launch_t < 0.52:
 		var u_r: float = clampf(_launch_t / 0.52, 0.0, 1.0)
-		_air_fx.draw_arc(COMPASS_POS, roundf(lerpf(6.0, 32.0 if fred else 38.0, u_r)), 0.0, TAU, 24, Color(c_cream if u_r < 0.35 else c_gold, (1.0 - u_r) * (0.65 if fred else 0.92)), 1.5)
+		_air_fx.draw_arc(cp, roundf(lerpf(6.0, 32.0 if fred else 38.0, u_r)), 0.0, TAU, 24, Color(c_cream if u_r < 0.35 else c_gold, (1.0 - u_r) * (0.65 if fred else 0.92)), 1.5)
 	if _liftoff_fired:
 		var u_l: float = clampf((_launch_t - PHASE2_END) / 0.42, 0.0, 1.0)
 		if u_l < 1.0:
-			_air_fx.draw_arc(ALIGN_POS, roundf(lerpf(5.0, 30.0 if fred else 38.0, u_l)), 0.0, TAU, 22, Color(c_gold, (1.0 - u_l) * 0.85), 1.5)
-			_air_fx.draw_arc(ALIGN_POS, roundf(lerpf(3.0, 22.0, u_l)), 0.0, TAU, 18, Color(c_cream, (1.0 - u_l) * 0.90), 1.0)
+			_air_fx.draw_arc(ap, roundf(lerpf(5.0, 30.0 if fred else 38.0, u_l)), 0.0, TAU, 22, Color(c_gold, (1.0 - u_l) * 0.85), 1.5)
+			_air_fx.draw_arc(ap, roundf(lerpf(3.0, 22.0, u_l)), 0.0, TAU, 18, Color(c_cream, (1.0 - u_l) * 0.90), 1.0)
+		if u_l < 0.65:
+			var lf_a: float = sin(clampf(u_l / 0.65, 0.0, 1.0) * PI)
+			var larm: float = roundf(lerpf(3.0, 7.0 if fred else 11.0, lf_a))
+			_air_fx.draw_rect(Rect2(ap.x - larm, ap.y, larm * 2.0 + 1.0, 1.0), Color(c_cream, lf_a * (0.72 if fred else 0.95)))
+			_air_fx.draw_rect(Rect2(ap.x, ap.y - larm, 1.0, larm * 2.0 + 1.0), Color(c_ice, lf_a * (0.72 if fred else 0.95)))
+			_air_fx.draw_rect(Rect2(ap - Vector2.ONE, Vector2(3.0, 3.0)), Color(c_cream, lf_a * 0.85))
 	if _trail.size() >= 2:
 		var n: int = _trail.size()
 		for i: int in range(1, n):
 			var frac: float = float(i) / float(n - 1)
 			var p0: Vector2 = _trail[i - 1].round(); var p1: Vector2 = _trail[i].round()
-			_air_fx.draw_line(p0, p1, Color(c_apricot if frac < 0.45 else c_gold, frac * 0.82), 3.0 if frac > 0.6 else 2.0)
-			_air_fx.draw_line(p0, p1, Color(c_cream, frac * 0.94), 1.0)
+			var w_out: float = (3.0 if fred else 4.0) if frac > 0.65 else (2.0 if frac > 0.30 else 1.0)
+			_air_fx.draw_line(p0, p1, Color(c_apricot if frac < 0.45 else c_gold, frac * (0.58 if fred else 0.78)), w_out)
+			_air_fx.draw_line(p0, p1, Color(c_ice if frac > 0.82 else c_gold, frac * 0.88), 2.0 if frac > 0.45 else 1.0)
+			_air_fx.draw_line(p0, p1, Color(c_cream, frac * 0.95), 1.0)
 		var head: Vector2 = _trail[n - 1].round()
 		var u3: float = clampf((_launch_t - PHASE2_END) / (TOTAL_DUR - PHASE2_END), 0.0, 1.0)
-		if u3 > 0.68:
-			var star_a: float = sin(clampf((u3 - 0.68) / 0.32, 0.0, 1.0) * PI)
-			var arm: float = roundf(lerpf(3.0, 7.0 if fred else 10.0, star_a))
-			_air_fx.draw_line(head + Vector2(-arm, 0.0), head + Vector2(arm, 0.0), Color(c_cream, star_a), 1.0)
-			_air_fx.draw_line(head + Vector2(0.0, -arm), head + Vector2(0.0, arm), Color(c_ice, star_a), 1.0)
-			_air_fx.draw_rect(Rect2(head - Vector2.ONE, Vector2(2.0, 2.0)), Color(c_cream, star_a))
+		if u3 > 0.65:
+			var star_a: float = sin(clampf((u3 - 0.65) / 0.35, 0.0, 1.0) * PI)
+			var arm: float = roundf(lerpf(3.0, 7.0 if fred else 11.0, star_a))
+			_air_fx.draw_rect(Rect2(head.x - arm, head.y, arm * 2.0 + 1.0, 1.0), Color(c_cream, star_a))
+			_air_fx.draw_rect(Rect2(head.x, head.y - arm, 1.0, arm * 2.0 + 1.0), Color(c_ice, star_a))
+			if not fred and arm >= 5.0:
+				var da: float = roundf(arm * 0.45)
+				for dp: Vector2 in [Vector2(-da, -da), Vector2(da, -da), Vector2(-da, da), Vector2(da, da)]:
+					_air_fx.draw_rect(Rect2(head + dp, Vector2.ONE), Color(c_gold, star_a * 0.85))
+			_air_fx.draw_rect(Rect2(head - Vector2.ONE, Vector2(3.0, 3.0)), Color(c_cream, star_a))
 	for s: Dictionary in _sparks:
 		var sa: float = 1.0 - clampf(float(s["age"]) / maxf(0.01, float(s["life"])), 0.0, 1.0)
 		var sz: float = float(s["sz"])

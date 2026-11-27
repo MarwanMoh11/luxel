@@ -319,15 +319,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        28,
-        92,
-        40,
-        40
-      ]
-    },
-    {
       "kind": "rug",
       "rect": [
         192,

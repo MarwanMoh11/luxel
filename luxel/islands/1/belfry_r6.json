@@ -629,5 +629,6 @@
         "belfry_spire_crank"
       ]
     }
-  }
+  },
+  "theme": "belfry_nave"
 }

@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "ISL1_Z_GROTTO",
-  "theme": "cave_1",
+  "theme": "bell_cavern",
   "music": "isl1_undercroft",
   "ambience": [
     "night_breeze"

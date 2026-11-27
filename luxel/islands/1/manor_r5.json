@@ -211,16 +211,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        176,
-        88,
-        128,
-        128
-      ],
-      "style": "brass"
-    },
-    {
       "kind": "cracks",
       "pos": [
         168,

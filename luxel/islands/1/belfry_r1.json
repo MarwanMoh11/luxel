@@ -538,5 +538,6 @@
         "exit": "exit_r1_west"
       }
     ]
-  }
+  },
+  "theme": "belfry_nave"
 }

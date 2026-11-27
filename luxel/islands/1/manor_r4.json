@@ -305,16 +305,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        176,
-        128,
-        128,
-        64
-      ],
-      "style": "brass"
-    },
-    {
       "kind": "stain",
       "pos": [
         344,
