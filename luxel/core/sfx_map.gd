@@ -154,9 +154,9 @@ const SFX_BASE_TRIM_DB: Dictionary = {
 	"heavy_hit": -4.0, "sunflare_burst": -4.5, "mirror_ping": -4.5, "prism_bounce": -5.0, "lens_reveal": -3.5,
 	"perfect_counter": -2.5, "wick_hurt": -2.5, "beam_charge": -2.5, "beam_fire": -3.0,
 	"bell_dawn_ring": -4.0, "bell_dusk_ring": -4.0, "bell_war_ring": -5.0, "dusk_clock_chime": -4.0,
-	"moon_pool_silver": -3.5, "moon_pool_black": -3.5, "dawn_burst": -4.5, "great_lamp_bloom": -4.5,
+	"moon_pool_silver": -3.5, "moon_pool_black": -3.5, "dawn_burst": -5.0, "great_lamp_bloom": -5.0,
 	"ui_move": -6.5, "ui_confirm": -5.5, "ui_back": -6.5, "ui_pause": -6.5, "denied": -6.0, "shop_buy": -3.5,
-	"menu_open": -5.5, "menu_close": -5.5, "map_open": -5.5, "intro_toll": -2.0, "boss_awaken": -2.0,
+	"menu_open": -5.5, "menu_close": -5.5, "map_open": -5.5, "intro_toll": -2.5, "boss_awaken": -3.0,
 	"owl_lock": -1.5, "warden_alert": -1.5, "shadow_whisper": -1.5, "clockwork_chime": -1.5,
 	"enemy_kill": -3.5, "warden_swing": -3.0, "phantom_phase": -4.0, "bell_toll_heavy": -3.0,
 	"bell_slam": -3.5, "anchor_slam": -3.5, "golem_stomp": -3.5, "star_lance": -3.5, "magma_crack": -3.5,
@@ -164,13 +164,30 @@ const SFX_BASE_TRIM_DB: Dictionary = {
 	"wing_gale": -3.5, "gust_whoosh": -3.5, "slag_pour": -4.5, "slag_cool": -4.5,
 	"shield_shatter": -3.0, "stagger_break": -2.5, "phase_shift_crown": -2.5,
 	"boss_armour_chip": -4.0, "boss_armour_glint": -3.5, "hush_pulse": -3.5, "hush_shatter": -3.0,
-	"void_hum": -2.0, "boss_kill": -2.5, "boss_victory": -3.0, "arena_bars_rise": -3.5, "arena_bars_fall": -3.5,
+	"void_hum": -2.0, "boss_kill": -3.5, "boss_victory": -3.5, "arena_bars_rise": -4.0, "arena_bars_fall": -3.5,
 	"earth_burrow": -3.0, "marsh_splash": -3.5, "spore_pop": -3.5, "thorn_burst": -3.5, "bramble_burn": -3.5,
 	"tide_surge": -3.5, "tide_wave": -3.5, "hollow_dash": -3.5, "beak_strike": -3.5, "shell_snap": -3.5,
 	"barnacle_shot": -4.0, "orrery_bolt": -4.0, "eclipse_wave": -3.5, "lighthouse_beam": -3.5, "moon_blink": -3.5,
 	"quest_done": -3.0, "shard_pickup": -4.5, "boss_roar": -2.5,
 	"boss_bellkeeper_roar": -2.5, "boss_hermit_roar": -2.5, "boss_matron_roar": -2.5, "boss_abbess_roar": -2.5,
 	"boss_astronomer_roar": -2.5, "boss_kilnmother_roar": -2.5, "boss_hollow_wick_roar": -2.5, "boss_hush_roar": -2.5,
+	"miniboss_bell_warden_roar": -2.5, "miniboss_sporecap_roar": -2.5, "miniboss_clockwork_roar": -2.5,
+	"miniboss_forge_roar": -2.5, "miniboss_harbinger_roar": -2.5, "tide_captain_roar": -2.5, "hopper_king_roar": -2.5,
+	"star_ignite": -5.5, "star_snuff": -4.5, "star_constellation": -4.5, "star_bell_turn": -4.5,
+	"gravity_well_pull": -4.0, "gravity_well_push": -4.0, "polarity_flip": -4.0, "meteor_orb_roll": -4.5, "meteor_orb_shatter": -3.5,
+	"steam_whistle": -4.5, "train_brake": -4.0, "coupler_snap": -4.0, "anvil_temper_skip": -4.5, "anvil_temper_scatter": -4.5, "anvil_temper_lance": -4.5,
+	"skiff_recoil_pop": -4.5, "skiff_hull_bump": -4.0, "skiff_dock": -4.0, "tide_organ_ebb": -4.0, "tide_organ_half": -4.0, "tide_organ_flood": -4.0,
+	"water_level_sweep": -4.0, "harbor_creak": -4.5, "seed_bloom": -4.5, "seed_wilt": -4.5, "wood_shift": -4.0, "shrink_swirl": -4.0,
+	"silk_spark_run": -5.0, "silk_snap": -4.5, "dew_focus_ray": -4.0, "echo_rose_record": -4.0, "echo_rose_replay": -4.0,
+	"weather_wheel_turn": -4.0, "weather_shift_rain": -4.0, "weather_shift_sun": -4.0, "weather_shift_wind": -4.0, "updraft_catch": -4.0,
+	"mask_steal": -3.5, "mask_reclaim": -3.5, "toll_coin_clink": -5.0, "setting_sold_visual": -4.5, "setting_sold_audio": -4.5, "setting_sold_hud": -4.5,
+	"boon_draft": -4.0, "express_lift": -4.0, "echo_clapper_pulse": -4.5, "coffin_slide": -4.0, "portrait_blink": -4.5, "cuckoo_pop": -4.5,
+	"display_sell": -4.5, "pane_fit": -4.5, "moth_catch": -4.0, "hub_medal_bronze": -4.0, "hub_medal_silver": -4.0, "hub_medal_gold": -4.0,
+	"half_lantern_pickup": -3.5, "waystone_warp": -3.5, "waystone_lit": -3.5, "waystone_rest": -3.5, "beacon_lit": -3.5, "shrine_claimed": -3.5,
+	"chest_open": -3.5, "door_open": -4.0, "door_locked": -4.5, "key_pickup": -4.0, "key_drop": -4.5, "heart_pickup": -4.0, "ember_pickup": -4.5,
+	"seal_break": -3.5, "seal_shatter_heavy": -3.5, "stone_break": -3.5, "prism_chain": -5.0, "prism_hit": -4.5, "beam_ready": -4.0,
+	"shield_strain": -4.5, "shield_reform": -4.0, "owl_dive": -4.0, "web_burn": -4.0, "snuffer_gulp": -4.0, "marsh_croak": -4.5,
+	"magpie_grab": -4.0, "magpie_gulp": -4.0, "magpie_drop": -4.5, "feather_flutter": -5.5, "bridge_rise": -3.5, "perfect_dodge": -3.5, "wings_glide": -5.5,
 }
 
 const EXACT: Dictionary = {
@@ -530,7 +547,7 @@ static func resolve(sfx_id: String) -> Dictionary:
 		if not pe.is_empty():
 			var cid: String = str(pe.get("id", pe.get("cue", "")))
 			if not cid.is_empty():
-				return {"id": cid, "pitch": float(pe.get("pitch", 1.0)), "db": float(pe.get("db", 0.0))}
+				return {"id": cid, "pitch": float(pe.get("pitch", 1.0)), "db": minf(float(pe.get("db", 0.0)), 0.0)}
 	if EXACT.has(sfx_id):
 		return EXACT[sfx_id] as Dictionary
 	if EPIC_EXACT.has(sfx_id):

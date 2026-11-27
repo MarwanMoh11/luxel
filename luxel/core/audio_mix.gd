@@ -67,7 +67,9 @@ const MIN_INTERVAL_BY_ID: Dictionary = {
 	"bolt_wall": 0.085,
 	"mirror_ping": 0.09,
 	"prism_bounce": 0.09,
-	"prop_chime": 0.12,
+	"prism_chain": 0.09,
+	"prism_hit": 0.09,
+	"prop_chime": 0.065,
 	"bell_toll": 0.22,
 	"bell_toll_heavy": 0.22,
 	"bell_dawn_ring": 0.16,
@@ -88,6 +90,27 @@ const MIN_INTERVAL_BY_ID: Dictionary = {
 	"golem_stomp": 0.18,
 	"boss_armour_chip": 0.12,
 	"star_lance": 0.14,
+	"star_ignite": 0.10,
+	"star_snuff": 0.12,
+	"star_bell_turn": 0.12,
+	"gravity_well_pull": 0.16,
+	"gravity_well_push": 0.16,
+	"polarity_flip": 0.14,
+	"steam_whistle": 0.24,
+	"coupler_snap": 0.14,
+	"piston_hiss": 0.16,
+	"anvil_temper_skip": 0.12,
+	"anvil_temper_scatter": 0.12,
+	"anvil_temper_lance": 0.12,
+	"skiff_recoil_pop": 0.12,
+	"skiff_hull_bump": 0.16,
+	"water_level_sweep": 0.24,
+	"seed_bloom": 0.12,
+	"silk_snap": 0.10,
+	"toll_coin_clink": 0.08,
+	"stone_break": 0.12,
+	"seal_break": 0.14,
+	"key_drop": 0.12,
 	"hush_pulse": 0.18,
 	"void_hum": 0.22,
 	"boss_kill": 0.25,
@@ -168,14 +191,16 @@ static func max_polyphony_for(base_id: String) -> int:
 
 
 static func cue_trim_db(cue_name: String) -> float:
-	if cue_name == "title":
+	if cue_name == "title" or cue_name == "credits":
+		return 2.5
+	if cue_name == "hub":
 		return 2.0
-	if cue_name == "hub" or cue_name == "credits":
-		return 1.5
 	if cue_name == "ending_dawn":
-		return -1.0
+		return -1.8
 	if cue_name.begins_with("island6_boss") or cue_name.begins_with("island7_boss") or cue_name.begins_with("island8_boss"):
 		return -1.5
+	if cue_name.begins_with("island5_boss"):
+		return -0.8
 	if cue_name.begins_with("isl6_") or cue_name.begins_with("isl7_") or cue_name.begins_with("isl8_") \
 			or cue_name in ["island6_dungeon", "island7_dungeon", "island8_dungeon"]:
 		return -1.0

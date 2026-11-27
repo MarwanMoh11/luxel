@@ -36,23 +36,16 @@ const SFX_POOL_SIZE: int = 12
 const SFX_2D_POOL_SIZE: int = 12
 const SFX_MIN_INTERVAL_S: float = 0.05
 
-var _music_bus_idx: int = -1
-var _sfx_bus_idx: int = -1
-var _amb_bus_idx: int = -1
-var _ui_bus_idx: int = -1
+var _music_bus_idx: int = -1; var _sfx_bus_idx: int = -1
+var _amb_bus_idx: int = -1; var _ui_bus_idx: int = -1
 var _lowpass: AudioEffectLowPassFilter = null
 var _amb_lowpass: AudioEffectLowPassFilter = null
 var _sfx_reverb: AudioEffectReverb = null
-var _is_indoor: bool = false
-var _stinger_duck_t: float = 0.0
-var _sfx_duck_db: float = 0.0
-var _sfx_duck_t: float = 0.0
-var _music_fade: float = 1.0
-var _music_fade_target: float = 1.0
-var _music_fade_rate: float = 1.0 / CUE_XFADE_S
-var _fade_out_gain: float = 0.0
-var _fade_out_rate: float = 1.0 / CUE_XFADE_S
-var _fade_out_trim_db: float = 0.0
+var _is_indoor: bool = false; var _amb_lp_target_hz: float = AMB_LP_HZ
+var _stinger_duck_t: float = 0.0; var _music_duck_cur: float = 0.0
+var _sfx_duck_db: float = 0.0; var _sfx_duck_t: float = 0.0
+var _music_fade: float = 1.0; var _music_fade_target: float = 1.0; var _music_fade_rate: float = 1.0 / CUE_XFADE_S
+var _fade_out_gain: float = 0.0; var _fade_out_rate: float = 1.0 / CUE_XFADE_S; var _fade_out_trim_db: float = 0.0
 
 # Primary (explore/track), outgoing crossfade deck, and synced combat stem players.
 var _explore_player: AudioStreamPlayer = null
@@ -62,6 +55,8 @@ var _stinger_player: AudioStreamPlayer = null
 var _amb_players: Array[AudioStreamPlayer] = []
 var _amb_gains: Array[float] = []
 var _amb_target_gains: Array[float] = []
+var _amb_fade_players: Array[AudioStreamPlayer] = []
+var _amb_fade_gains: Array[float] = []
 var _current_amb_key: String = ""
 var _sfx_pool: Array[AudioStreamPlayer] = []
 var _sfx_2d_pool: Array[AudioStreamPlayer2D] = []
@@ -70,15 +65,11 @@ var _sfx_2d_pool_ids: PackedStringArray = PackedStringArray()
 var _sfx_cursor: int = 0
 var _sfx_2d_cursor: int = 0
 
-var _stream_cache: Dictionary = {}
-var _sfx_missing: Dictionary = {}
-var _sfx_last_t: Dictionary = {}
-var _sfx_variant_idx: Dictionary = {}
+var _stream_cache: Dictionary = {}; var _sfx_missing: Dictionary = {}
+var _sfx_last_t: Dictionary = {}; var _sfx_variant_idx: Dictionary = {}
 var _sfx_clock: float = 0.0
-var _shard_streak: int = 0
-var _shard_streak_t: float = -10.0
-var _mirror_streak: int = 0
-var _mirror_streak_t: float = -10.0
+var _shard_streak: int = 0; var _shard_streak_t: float = -10.0
+var _mirror_streak: int = 0; var _mirror_streak_t: float = -10.0
 var _saved_positions: Dictionary = {}
 
 var current_track_group: String = ""
@@ -111,7 +102,7 @@ func _setup_buses() -> void:
 	_amb_bus_idx = _ensure_bus(BUS_AMBIENCE)
 	_ui_bus_idx = _ensure_bus(BUS_UI)
 
-	AudioMix.ensure_limiter(0, -1.2, -3.0, 2.0)
+	AudioMix.ensure_limiter(0, -1.2, -1.2, 2.0)
 
 	_lowpass = null
 	for i: int in range(AudioServer.get_bus_effect_count(_music_bus_idx)):
@@ -128,8 +119,8 @@ func _setup_buses() -> void:
 	if _sfx_reverb == null:
 		_sfx_reverb = AudioEffectReverb.new(); _sfx_reverb.room_size = 0.24; _sfx_reverb.damping = 0.72; _sfx_reverb.wet = 0.03; _sfx_reverb.dry = 1.0
 		AudioServer.add_bus_effect(_sfx_bus_idx, _sfx_reverb)
-	AudioMix.ensure_limiter(_sfx_bus_idx, -2.2, -5.0, 2.0)
-	AudioMix.ensure_limiter(_ui_bus_idx, -4.0, -6.0, 1.5)
+	AudioMix.ensure_limiter(_sfx_bus_idx, -2.2, -2.2, 2.0)
+	AudioMix.ensure_limiter(_ui_bus_idx, -4.0, -4.0, 1.5)
 
 	_amb_lowpass = null
 	for i: int in range(AudioServer.get_bus_effect_count(_amb_bus_idx)):
@@ -164,9 +155,10 @@ func _setup_players() -> void:
 	_stinger_player.bus = BUS_MUSIC; _stinger_player.process_mode = Node.PROCESS_MODE_ALWAYS
 	add_child(_stinger_player)
 	for i: int in range(2):
-		var ap := AudioStreamPlayer.new()
-		ap.bus = BUS_AMBIENCE; ap.volume_db = SILENT_DB; ap.process_mode = Node.PROCESS_MODE_ALWAYS
+		var ap := AudioStreamPlayer.new(); ap.bus = BUS_AMBIENCE; ap.volume_db = SILENT_DB; ap.process_mode = Node.PROCESS_MODE_ALWAYS
 		add_child(ap); _amb_players.append(ap); _amb_gains.append(0.0); _amb_target_gains.append(0.0)
+		var fp := AudioStreamPlayer.new(); fp.bus = BUS_AMBIENCE; fp.volume_db = SILENT_DB; fp.process_mode = Node.PROCESS_MODE_ALWAYS
+		add_child(fp); _amb_fade_players.append(fp); _amb_fade_gains.append(0.0)
 	_sfx_pool_ids.resize(SFX_POOL_SIZE)
 	for i: int in range(SFX_POOL_SIZE):
 		var sp := AudioStreamPlayer.new()
@@ -288,8 +280,7 @@ func _set_indoor_acoustics(indoor: bool, is_boss: bool = false) -> void:
 	if _sfx_reverb != null:
 		_sfx_reverb.room_size = 0.46 if is_boss else (0.40 if indoor else 0.22)
 		_sfx_reverb.wet = 0.12 if is_boss else (0.11 if indoor else 0.03)
-	if _amb_lowpass != null:
-		_amb_lowpass.cutoff_hz = AMB_BOSS_LP_HZ if is_boss else (AMB_INDOOR_LP_HZ if indoor else AMB_LP_HZ)
+	_amb_lp_target_hz = AMB_BOSS_LP_HZ if is_boss else (AMB_INDOOR_LP_HZ if indoor else AMB_LP_HZ)
 
 
 func _start_island_ambience(island_id: int) -> void:
@@ -302,15 +293,12 @@ func _start_ambience_layers(names: Array, key: String) -> void:
 	for raw_n: Variant in names:
 		var mapped: String = AudioMix.resolve_ambience_name(str(raw_n))
 		var st: AudioStream = _load_ambience_stream(mapped, "night_breeze")
-		if st != null and not resolved_streams.has(st):
-			resolved_streams.append(st)
-		if resolved_streams.size() >= _amb_players.size():
-			break
+		if st != null and not resolved_streams.has(st): resolved_streams.append(st)
+		if resolved_streams.size() >= _amb_players.size(): break
 	if _current_amb_key == key:
 		var all_active: bool = true
 		for i: int in range(resolved_streams.size()):
-			if not _amb_players[i].playing or _amb_players[i].stream != resolved_streams[i]:
-				all_active = false; break
+			if not _amb_players[i].playing or _amb_players[i].stream != resolved_streams[i]: all_active = false; break
 		if all_active:
 			for i: int in range(_amb_players.size()): _amb_target_gains[i] = 1.0 if i < resolved_streams.size() else 0.0
 			return
@@ -321,6 +309,9 @@ func _start_ambience_layers(names: Array, key: String) -> void:
 			var st2: AudioStream = resolved_streams[i]
 			_amb_target_gains[i] = 1.0
 			if ap.stream != st2 or not ap.playing:
+				if ap.playing and ap.stream != null and _amb_gains[i] > 0.01 and i < _amb_fade_players.size():
+					var fp: AudioStreamPlayer = _amb_fade_players[i]
+					fp.stream = ap.stream; _amb_fade_gains[i] = _amb_gains[i]; fp.volume_db = ap.volume_db; fp.play(ap.get_playback_position())
 				ap.stream = st2; _amb_gains[i] = 0.0; ap.volume_db = SILENT_DB; ap.play()
 		else:
 			_amb_target_gains[i] = 0.0
@@ -333,6 +324,9 @@ func _fade_out_ambience(immediate: bool = false) -> void:
 		if immediate:
 			_amb_gains[i] = 0.0; _amb_players[i].volume_db = SILENT_DB
 			if _amb_players[i].playing: _amb_players[i].stop()
+			if i < _amb_fade_players.size():
+				_amb_fade_gains[i] = 0.0; _amb_fade_players[i].volume_db = SILENT_DB
+				if _amb_fade_players[i].playing: _amb_fade_players[i].stop()
 
 
 func play_cue(cue_name: String) -> void:
@@ -354,7 +348,7 @@ func play_cue(cue_name: String) -> void:
 		_set_indoor_acoustics(true, true)
 		return
 	if cue_name in ["title", "ending_dawn", "credits"]:
-		_fade_out_ambience(cue_name == "ending_dawn"); _set_indoor_acoustics(false)
+		_fade_out_ambience(false); _set_indoor_acoustics(false)
 	elif cue_name == "hub":
 		_set_indoor_acoustics(false)
 	elif _is_boss_cue(cue_name):
@@ -417,7 +411,10 @@ func tick(dt: float, in_combat: bool = false) -> void:
 	_sfx_clock += dt
 	_stinger_duck_t = maxf(0.0, _stinger_duck_t - dt)
 	if _sfx_duck_t > 0.0: _sfx_duck_t = maxf(0.0, _sfx_duck_t - dt)
-	else: _sfx_duck_db = move_toward(_sfx_duck_db, 0.0, dt * 7.5)
+	else: _sfx_duck_db = move_toward(_sfx_duck_db, 0.0, dt * 6.5)
+	var duck_tgt: float = maxf(6.0 * clampf(_stinger_duck_t / 0.8, 0.0, 1.0), _sfx_duck_db)
+	_music_duck_cur = move_toward(_music_duck_cur, duck_tgt, dt * (48.0 if duck_tgt > _music_duck_cur else 14.0))
+	if _amb_lowpass != null: _amb_lowpass.cutoff_hz = move_toward(_amb_lowpass.cutoff_hz, _amb_lp_target_hz, dt * 8000.0)
 	_music_fade = move_toward(_music_fade, _music_fade_target, dt * _music_fade_rate)
 	if _fade_out_gain > 0.0: _fade_out_gain = move_toward(_fade_out_gain, 0.0, dt * _fade_out_rate)
 	if _is_overworld_layer_active():
@@ -432,14 +429,16 @@ func tick(dt: float, in_combat: bool = false) -> void:
 	else:
 		_combat_request_timer = 0.0; _combat_tail_timer = 0.0; _target_combat_blend = 0.0; combat_blend = 0.0
 	var amb_step: float = dt / maxf(AMB_FADE_S, 0.05)
-	for i: int in range(_amb_players.size()): _amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
+	for i: int in range(_amb_players.size()):
+		_amb_gains[i] = move_toward(_amb_gains[i], _amb_target_gains[i], amb_step)
+		if i < _amb_fade_gains.size() and _amb_fade_gains[i] > 0.0:
+			_amb_fade_gains[i] = move_toward(_amb_fade_gains[i], 0.0, amb_step)
 	_update_layer_volumes()
 
 
 func _update_layer_volumes() -> void:
-	var stinger_duck: float = 6.0 * clampf(_stinger_duck_t / 0.8, 0.0, 1.0)
 	var cue_trim: float = AudioMix.cue_trim_db(current_track_group)
-	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - maxf(stinger_duck, _sfx_duck_db)
+	var duck: float = (PAUSE_DUCK_DB if is_paused else 0.0) - _music_duck_cur
 	var in_curve: float = sin(clampf(_music_fade, 0.0, 1.0) * PI * 0.5)
 	var out_curve: float = sin(clampf(_fade_out_gain, 0.0, 1.0) * PI * 0.5)
 	var exp_gain: float = cos(combat_blend * PI * 0.5) * in_curve
@@ -447,8 +446,7 @@ func _update_layer_volumes() -> void:
 	if _explore_player != null:
 		_explore_player.volume_db = BASE_MUSIC_DB + cue_trim + duck + linear_to_db(maxf(exp_gain, 0.0001)) if exp_gain > 0.001 else SILENT_DB
 	if _fade_player != null:
-		if out_curve > 0.001:
-			_fade_player.volume_db = BASE_MUSIC_DB + _fade_out_trim_db + duck + linear_to_db(out_curve)
+		if out_curve > 0.001: _fade_player.volume_db = BASE_MUSIC_DB + _fade_out_trim_db + duck + linear_to_db(out_curve)
 		else:
 			_fade_player.volume_db = SILENT_DB
 			if _fade_player.playing: _fade_player.stop()
@@ -457,18 +455,24 @@ func _update_layer_volumes() -> void:
 	var amb_duck: float = (AMB_PAUSE_DUCK_DB if is_paused else 0.0) + (AMB_INDOOR_DUCK_DB if _is_indoor else 0.0)
 	amb_duck += AMB_COMBAT_DUCK_DB * (1.0 if _is_boss_cue(current_track_group) else combat_blend)
 	for i: int in range(_amb_players.size()):
-		var ap: AudioStreamPlayer = _amb_players[i]; var g: float = _amb_gains[i]
-		if g > 0.001:
-			ap.volume_db = BASE_AMBIENCE_DB + (AMB_LAYER2_OFFSET_DB if i > 0 else 0.0) + amb_duck + linear_to_db(g)
+		var ap: AudioStreamPlayer = _amb_players[i]; var g: float = sin(clampf(_amb_gains[i], 0.0, 1.0) * PI * 0.5)
+		var l2: float = AMB_LAYER2_OFFSET_DB if i > 0 else 0.0
+		if g > 0.001: ap.volume_db = BASE_AMBIENCE_DB + l2 + amb_duck + linear_to_db(g)
 		else:
 			ap.volume_db = SILENT_DB
 			if _amb_target_gains[i] <= 0.001 and ap.playing: ap.stop()
+		if i < _amb_fade_players.size():
+			var fp: AudioStreamPlayer = _amb_fade_players[i]; var fg: float = sin(clampf(_amb_fade_gains[i], 0.0, 1.0) * PI * 0.5)
+			if fg > 0.001: fp.volume_db = BASE_AMBIENCE_DB + l2 + amb_duck + linear_to_db(fg)
+			else:
+				fp.volume_db = SILENT_DB
+				if fp.playing: fp.stop()
 
 
 func play_stinger(stinger_name: String) -> void:
 	var st: AudioStream = _load_music_stream(stinger_name, "")
 	if st != null and _stinger_player != null:
-		_stinger_player.stream = st; _stinger_player.volume_db = -3.0; _stinger_player.play(); _stinger_duck_t = 2.8
+		_stinger_player.stream = st; _stinger_player.volume_db = -6.0; _stinger_player.play(); _stinger_duck_t = 2.8
 
 
 func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool = false, ui_bus: bool = false) -> void:
@@ -496,10 +500,9 @@ func play_sfx(sfx_id: String, world_pos: Vector2 = Vector2.ZERO, spatial: bool =
 					pitch_mul *= float(mapped2.get("pitch", 1.0))
 					gain_db += float(mapped2.get("db", 0.0)) + SfxMap.base_trim_db(m2_id)
 	if st == null: return
-	var min_iv: float = AudioMix.min_interval_for(eff_id, base_id, SFX_MIN_INTERVAL_S)
-	if not ui_bus:
-		if _sfx_last_t.has(eff_id) and (_sfx_clock - float(_sfx_last_t[eff_id])) < min_iv: return
-		if base_id != eff_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < min_iv: return
+	var min_iv: float = 0.035 if ui_bus else AudioMix.min_interval_for(eff_id, base_id, SFX_MIN_INTERVAL_S)
+	if _sfx_last_t.has(eff_id) and (_sfx_clock - float(_sfx_last_t[eff_id])) < min_iv: return
+	if not ui_bus and base_id != eff_id and _sfx_last_t.has(base_id) and (_sfx_clock - float(_sfx_last_t[base_id])) < min_iv: return
 	if base_id == "shield_clang" and (_sfx_clock - float(_sfx_last_t.get("shield_strain", -1.0))) < 0.09: return
 	_sfx_last_t[eff_id] = _sfx_clock; _sfx_last_t[base_id] = _sfx_clock
 
