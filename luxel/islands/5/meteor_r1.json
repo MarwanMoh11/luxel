@@ -581,6 +581,16 @@
           240,
           232
         ],
+        "target": "well_r1_hub",
+        "if_var": "dungeon:meteor_vault.well_phase==push",
+        "wait_hit": 0.4
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          232
+        ],
         "target": [
           177,
           183

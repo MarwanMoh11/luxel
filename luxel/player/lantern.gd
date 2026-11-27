@@ -315,10 +315,10 @@ func tick_sim(dt: float, wick: LxWick, world_ctx: Node) -> void:
 					_sweep_hits(wick, world_ctx, move_dir, LxHit.SOURCE_RECALL, recall_damage)
 		State.CARRIED:
 			vel = Vector2.ZERO
-			if carrier != null and is_instance_valid(carrier) and wick.is_entity_alive(carrier):
-				pos = wick.get_entity_pos(carrier)
-			else:
-				carrier = null; state = State.RECALLING; harmless_recall = false; _begin_recall_arc(wick); hit_ids.clear()
+			var alive_c: bool = carrier != null and is_instance_valid(carrier) and wick.is_entity_alive(carrier)
+			var still_c: bool = alive_c and (not (carrier.get("carrying_lantern") is bool) or bool(carrier.get("carrying_lantern")))
+			if still_c: pos = wick.get_entity_pos(carrier)
+			else: carrier = null; state = State.RECALLING; harmless_recall = false; _begin_recall_arc(wick); hit_ids.clear()
 
 	global_position = pos.round()
 

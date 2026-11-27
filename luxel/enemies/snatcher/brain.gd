@@ -19,6 +19,7 @@ const GRAB_TIME_DEFAULT: float = 0.72
 const GRAB_R: float = 6.5
 const CARRY_SPEED_DEFAULT: float = 36.0
 const CARRY_AWAY: float = 44.0
+const CARRY_MAX_TIME: float = 5.5
 const BAFFLED_TIME: float = 1.05
 const STAGGER_TIME: float = 0.65
 const KNOCK_SPEED: float = 160.0
@@ -125,6 +126,7 @@ func try_catch_lantern(lantern_obj: Object = null) -> bool:
 	goal = _nearest_perch(CARRY_AWAY)
 	sub_state = SubState.CARRY
 	state = State.RETURN
+	state_timer = CARRY_MAX_TIME
 	if lantern_obj != null and is_instance_valid(lantern_obj) and lantern_obj.has_method("on_grabbed"):
 		lantern_obj.call("on_grabbed", self)
 	elif Lx.events != null:
@@ -250,15 +252,20 @@ func _step_brain(dt: float) -> void:
 				_take_lantern()
 		SubState.CARRY:
 			state = State.RETURN
+			state_timer -= dt
 			var ls: int = _get_lantern_state()
 			if not carrying_lantern or (ls != 4 and ls != 2 and ls != 0):
 				carrying_lantern = false
 				_enter_baffled()
-			elif _walk_to(goal, carry_speed, dt):
-				pos = goal
+			elif _walk_to(goal, carry_speed, dt) or state_timer <= 0.0:
+				if pos.distance_to(goal) <= 2.5:
+					pos = goal
 				carrying_lantern = false
 				_release_all_claims()
-				if Lx.events != null:
+				var lan_c: LxLantern = _carried_wick_lantern()
+				if lan_c != null:
+					lan_c.on_perched_loss()
+				elif Lx.events != null:
 					Lx.events.lantern_perched_loss.emit(pos)
 				_emit_sfx("snatcher_perch_loss")
 				sub_state = SubState.PERCH
@@ -320,7 +327,11 @@ func _take_lantern() -> void:
 	goal = _nearest_perch(CARRY_AWAY)
 	sub_state = SubState.CARRY
 	state = State.RETURN
-	if Lx.events != null:
+	state_timer = CARRY_MAX_TIME
+	var lan: LxLantern = _wick_lantern()
+	if lan != null and lan.is_lure_active():
+		lan.on_grabbed(self)
+	elif Lx.events != null:
 		Lx.events.lantern_stolen.emit(self, pos)
 	_emit_sfx("snatcher_grab")
 
@@ -344,11 +355,29 @@ func _go_to(dest: Vector2, sub: int, st: int) -> void:
 	perch_i = maxi(0, perches.find(goal))
 
 
+func _wick_lantern() -> LxLantern:
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var lan: LxLantern = (Lx.player as LxWick).lantern
+		if lan != null and is_instance_valid(lan):
+			return lan
+	return null
+
+
+func _carried_wick_lantern() -> LxLantern:
+	var lan: LxLantern = _wick_lantern()
+	if lan != null and lan.state == LxLantern.State.CARRIED and lan.carrier == self:
+		return lan
+	return null
+
+
 func _drop_carried_lantern() -> void:
 	if not carrying_lantern:
 		return
 	carrying_lantern = false
-	if Lx.events != null:
+	var lan_c: LxLantern = _carried_wick_lantern()
+	if lan_c != null:
+		lan_c.on_dropped(pos)
+	elif Lx.events != null:
 		Lx.events.lantern_dropped.emit(pos)
 
 

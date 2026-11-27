@@ -238,11 +238,21 @@ func get_interact_prompt() -> String:
 	return "PROMPT_LEAVE_CART" if rider != null else "PROMPT_BOARD_CART"
 
 
+func on_lantern_pull(pull_dir: Vector2, _source: String = "recall") -> void:
+	if not active or rider != null or pull_dir.length_squared() <= 0.0001:
+		return
+	var push: float = pull_dir.normalized().dot(tangent)
+	if absf(push) > 0.15:
+		rail_vel = clampf(rail_vel + signf(push) * speed * 1.05, -speed, speed)
+		_emit_sfx("shield_clang")
+
+
 func save_state() -> Dictionary:
 	var d: Dictionary = super.save_state()
 	if persist:
-		d["rail_dist"] = rail_dist
 		d["using_alt"] = using_alt
+		if bool(props.get("persist_pos", false)):
+			d["rail_dist"] = rail_dist
 	return d
 
 
@@ -250,7 +260,10 @@ func load_state(d: Dictionary) -> void:
 	super.load_state(d)
 	if persist:
 		using_alt = bool(d.get("using_alt", using_alt))
-		rail_dist = float(d.get("rail_dist", rail_dist))
+		if bool(props.get("persist_pos", false)) and d.has("rail_dist"):
+			rail_dist = float(d.get("rail_dist", rail_dist))
+		else:
+			rail_dist = 0.0
 		_update_pose_on_rail()
 	queue_redraw()
 

@@ -70,6 +70,8 @@ func get_solid_rect() -> Rect2:
 func interact(_actor: Node = null) -> bool:
 	if not active:
 		return false
+	if _is_bell_rung() and _has_flag(CLAIMED_FLAG):
+		return false
 	_flash_t = 0.60
 	if _is_bell_rung():
 		set_powered(true)
@@ -107,7 +109,7 @@ func tick(dt: float) -> void:
 
 
 func get_interact_prompt() -> String:
-	if not active:
+	if not active or (_is_bell_rung() and _has_flag(CLAIMED_FLAG)):
 		return ""
 	return "ISL8_SC_PROMPT_CHAIN" if LxStrings.has_id("ISL8_SC_PROMPT_CHAIN") else ""
 

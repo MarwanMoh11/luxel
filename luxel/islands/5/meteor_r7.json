@@ -459,7 +459,7 @@
       {
         "op": "rotate",
         "target": "trans_r7",
-        "steps": 1
+        "angle": 45
       },
       {
         "op": "goto",

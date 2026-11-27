@@ -59,6 +59,12 @@ func is_targetable() -> bool:
 	return is_alive() and surfaced
 
 
+func try_catch_lantern(lantern_obj: Object = null) -> bool:
+	if not surfaced:
+		return false
+	return super.try_catch_lantern(lantern_obj)
+
+
 func wants_token() -> bool:
 	if cooldown > 0.0:
 		return false

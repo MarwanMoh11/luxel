@@ -386,6 +386,11 @@
     "optional": true,
     "solution": [
       {
+        "op": "rotate",
+        "target": "tf_sluice",
+        "angle": 135
+      },
+      {
         "op": "goto",
         "to": [
           104,

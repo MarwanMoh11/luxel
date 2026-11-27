@@ -60,7 +60,11 @@ func _toy_setup() -> void:
 	_shift_t = 0.0
 	_sound_ring_t = 0.0
 	_wick_was_on_pedal = false
-	_sync_from_world_var()
+	if not persist and var_scope.begins_with("room:"):
+		_synced_val = str(get_current_value())
+		LxToyDraw.world_set_var(var_scope, var_name, get_current_value())
+	else:
+		_sync_from_world_var()
 	powered = current_index > 0
 	queue_redraw()
 

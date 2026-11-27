@@ -13,6 +13,7 @@ const DIVE_MAX_TIME: float = 1.85
 const GRAB_R: float = 8.0
 const HOIST_TIME: float = 0.65
 const CARRY_SPEED: float = 38.0
+const CARRY_MAX_TIME: float = 6.0
 const BAFFLED_TIME: float = 0.85
 const STAGGER_TIME: float = 0.55
 const AGAIN_CD: float = 1.25
@@ -208,19 +209,25 @@ func _step_brain(dt: float) -> void:
 			elif state_timer <= 0.0:
 				sub_state = SubState.CARRY
 				state = State.RETURN
+				state_timer = CARRY_MAX_TIME
 				carry_goal = _farthest_perch()
 		SubState.CARRY:
 			state = State.RETURN
+			state_timer -= dt
 			altitude = move_toward(altitude, ALT_CARRY, 32.0 * dt)
 			var ls: int = _get_lantern_state()
 			if not carrying_lantern or (ls != 4 and ls != 2 and ls != 0):
 				carrying_lantern = false
 				_enter_baffled()
-			elif _fly_to(carry_goal, CARRY_SPEED, dt):
-				pos = carry_goal
+			elif _fly_to(carry_goal, CARRY_SPEED, dt) or state_timer <= 0.0:
+				if pos.distance_to(carry_goal) <= 2.5:
+					pos = carry_goal
 				carrying_lantern = false
 				_release_all_claims()
-				if Lx.events != null:
+				var lan_c: LxLantern = _carried_wick_lantern()
+				if lan_c != null:
+					lan_c.on_perched_loss()
+				elif Lx.events != null:
 					Lx.events.lantern_perched_loss.emit(pos)
 				_emit_sfx("gull_water_loss")
 				sub_state = SubState.CIRCLE
@@ -301,7 +308,10 @@ func _begin_hoist() -> void:
 	state = State.RECOVER
 	state_timer = maxf(MIN_RECOVER_TIME, HOIST_TIME)
 	last_recover_duration = state_timer
-	if Lx.events != null:
+	var lan: LxLantern = _wick_lantern()
+	if lan != null and lan.is_lure_active():
+		lan.on_grabbed(self)
+	elif Lx.events != null:
 		Lx.events.lantern_stolen.emit(self, pos)
 	_emit_sfx("gull_snatch")
 
@@ -315,11 +325,27 @@ func _enter_baffled(dur: float = BAFFLED_TIME) -> void:
 	last_recover_duration = state_timer
 	cooldown = AGAIN_CD
 
+func _wick_lantern() -> LxLantern:
+	if Lx.player is LxWick and is_instance_valid(Lx.player):
+		var lan: LxLantern = (Lx.player as LxWick).lantern
+		if lan != null and is_instance_valid(lan):
+			return lan
+	return null
+
+func _carried_wick_lantern() -> LxLantern:
+	var lan: LxLantern = _wick_lantern()
+	if lan != null and lan.state == LxLantern.State.CARRIED and lan.carrier == self:
+		return lan
+	return null
+
 func _drop_carried_lantern() -> void:
 	if not carrying_lantern:
 		return
 	carrying_lantern = false
-	if Lx.events != null:
+	var lan_c: LxLantern = _carried_wick_lantern()
+	if lan_c != null:
+		lan_c.on_dropped(pos)
+	elif Lx.events != null:
 		Lx.events.lantern_dropped.emit(pos)
 
 func _release_all_claims() -> void:

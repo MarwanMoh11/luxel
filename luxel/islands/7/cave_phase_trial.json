@@ -487,6 +487,16 @@
     "target": "pickup_moon_phase",
     "solution": [
       {
+        "op": "rotate",
+        "target": "mirror_pt_w",
+        "angle": 135
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_pt_e",
+        "angle": 135
+      },
+      {
         "op": "interact",
         "target": "trial_gate_phase"
       },
