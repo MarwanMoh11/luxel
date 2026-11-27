@@ -461,7 +461,7 @@
         296,
         420
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },

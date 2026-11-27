@@ -484,7 +484,7 @@ func _trigger_seal_shatter() -> void:
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.28)
+		_emit_shake(0.28)
 		_emit_narration("CUE_SEAL_SHATTER_4", "title", 3.5)
 		_emit_narration("DUNGEON_4_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_4")
@@ -520,21 +520,17 @@ func _on_enemy_killed(_enemy: Object, kind: String, _pos: Vector2, _opened_kill:
 
 
 func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
+	if _events == null or phase < 2:
+		return
 	if boss_id == "boss_last_hour":
-		if phase >= 2 and _events != null:
-			_events.music_mode_requested.emit("superboss_a")
-			_events.shake_requested.emit(0.32 if phase == 2 else 0.38)
-		return
-	if boss_id in ["boss_shear_keeper", "boss_gardener_twice", "boss_cloud_deacon", "boss_drowned_choir", "boss_toastmaster"]:
-		if phase >= 2 and _events != null:
-			_events.music_mode_requested.emit("isl4_boss_minor_p2")
-			_events.shake_requested.emit(0.28 if phase == 2 else 0.34)
-		return
-	if boss_id != BOSS_ID and boss_id != MINI_BOSS_KIND:
-		return
-	if phase >= 2 and _events != null:
+		_events.music_mode_requested.emit("superboss_a")
+		_emit_shake(0.32 if phase == 2 else 0.38)
+	elif boss_id in ["boss_shear_keeper", "boss_gardener_twice", "boss_cloud_deacon", "boss_drowned_choir", "boss_toastmaster"]:
+		_events.music_mode_requested.emit("isl4_boss_minor_p2")
+		_emit_shake(0.28 if phase == 2 else 0.34)
+	elif boss_id == BOSS_ID or boss_id == MINI_BOSS_KIND:
 		_events.music_mode_requested.emit("island4_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+		_emit_shake(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
@@ -588,6 +584,11 @@ func _on_great_lamp_relit(island_id: int) -> void:
 func _emit_narration(string_id: String, style: String, duration: float) -> void:
 	if _events != null and LxStrings.has_id(string_id):
 		_events.narration_requested.emit(string_id, style, duration)
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _get_state() -> LxGameState:

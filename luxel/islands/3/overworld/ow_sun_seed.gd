@@ -92,7 +92,7 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if awake:
-		return Vector4(pos.x, pos.y - 6.0, 60.0, 0.95)
+		return Vector4(pos.x, pos.y - 6.0, 60.0, 0.84 if LxHudFx.flash_reduced() else 0.95)
 	return Vector4(pos.x, pos.y - 4.0, 20.0, 0.28)
 
 
@@ -120,32 +120,37 @@ func _draw() -> void:
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 3.0)
 	# Leafy calyx base
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 4.0), c_void)
 	draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), c_pine)
 	draw_rect(Rect2(-4.0, 1.0, 8.0, 2.0), c_jade if awake else c_teal)
 
 	if not awake:
-		# Closed dormant bud with tiny golden seam
+		# Closed dormant bud with vertical recessed seam notch
 		draw_rect(Rect2(-4.0, -7.0, 8.0, 9.0), c_void)
 		draw_rect(Rect2(-3.0, -6.0, 6.0, 7.0), c_teal)
 		draw_rect(Rect2(-2.0, -5.0, 4.0, 5.0), c_jade)
 		draw_rect(Rect2(-1.0, -4.0, 2.0, 3.0), c_lime)
+		draw_rect(Rect2(0.0, -5.0, 1.0, 4.0), c_void)
 		draw_rect(Rect2(0.0, -4.0, 1.0, 2.0), c_gold)
 		return
 
-	# Radiant awakened Sun-Seed canopy blossom
+	# Radiant awakened Sun-Seed canopy blossom with 4-point center starburst
 	draw_rect(Rect2(-2.0, -3.0, 4.0, 5.0), c_jade)
 	draw_rect(Rect2(-7.0, -11.0, 14.0, 10.0), c_void)
 	draw_rect(Rect2(-6.0, -10.0, 12.0, 8.0), c_apricot)
 	draw_rect(Rect2(-5.0, -9.0, 10.0, 6.0), c_gold)
 	draw_rect(Rect2(-2.0, -8.0, 4.0, 4.0), c_cream)
+	draw_rect(Rect2(-4.0, -7.0, 8.0, 2.0), c_cream)
+	draw_rect(Rect2(-1.0, -10.0, 2.0, 8.0), c_cream)
 	# 4 outward petal tips
 	for off: Vector2 in [Vector2(-7.0, -7.0), Vector2(6.0, -7.0), Vector2(-1.0, -12.0), Vector2(-1.0, -2.0)]:
 		draw_rect(Rect2(off, Vector2(2.0, 2.0)), c_lime)
 
 	if _bloom_t > 0.0:
 		var u: float = 1.0 - clampf(_bloom_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(4.0, 20.0, u)), 0.0, TAU, 16, c_cream if u < 0.5 else c_gold, 1.2)
+		var red: bool = LxHudFx.flash_reduced()
+		var ring_c: Color = Color(c_gold, 0.55) if red else (c_cream if u < 0.5 else c_gold)
+		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(4.0, 20.0, u)), 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()

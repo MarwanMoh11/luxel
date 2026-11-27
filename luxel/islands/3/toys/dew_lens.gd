@@ -362,7 +362,7 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if ray_vis_t > 0.0:
-		return Vector4(pos.x, pos.y, 44.0, 0.92)
+		return Vector4(pos.x, pos.y, 44.0, 0.68 if LxHudFx.flash_reduced() else 0.92)
 	if is_frozen():
 		return Vector4(pos.x, pos.y, 30.0, 0.55)
 	return Vector4(pos.x, pos.y, 20.0, 0.32)
@@ -393,15 +393,23 @@ func _draw() -> void:
 	var c_pine: Color = PAL["pine"] as Color
 	var c_jade: Color = PAL["jade"] as Color
 
-	# Rail groove indicator when constrained to x/y axis
+	# Rail groove indicator + end-cap stops when constrained to x/y axis
 	if rail_axis == "x":
 		draw_rect(Rect2(-14.0, 3.0, 28.0, 2.0), c_void)
 		draw_rect(Rect2(-13.0, 3.0, 26.0, 1.0), PAL["dusk"] as Color)
+		draw_rect(Rect2(-14.0, 2.0, 2.0, 4.0), c_void)
+		draw_rect(Rect2(12.0, 2.0, 2.0, 4.0), c_void)
+		draw_rect(Rect2(-13.0, 2.0, 1.0, 3.0), c_cream)
+		draw_rect(Rect2(12.0, 2.0, 1.0, 3.0), c_cream)
 	elif rail_axis == "y":
 		draw_rect(Rect2(-1.0, -14.0, 2.0, 28.0), c_void)
 		draw_rect(Rect2(-1.0, -13.0, 1.0, 26.0), PAL["dusk"] as Color)
+		draw_rect(Rect2(-2.0, -14.0, 4.0, 2.0), c_void)
+		draw_rect(Rect2(-2.0, 12.0, 4.0, 2.0), c_void)
+		draw_rect(Rect2(-1.0, -13.0, 3.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, 12.0, 3.0, 1.0), c_cream)
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 3.0)
 	# Sculpted 3-leaf mossy petal cradle beneath the droplet
 	draw_rect(Rect2(-8.0, 2.0, 16.0, 5.0), c_void)
 	draw_rect(Rect2(-7.0, 3.0, 14.0, 3.0), c_pine)
@@ -428,17 +436,20 @@ func _draw() -> void:
 		draw_colored_polygon(top_facet, c_sky)
 		draw_rect(Rect2(-2.0, -5.0, 4.0, 3.0), c_ice)
 		draw_rect(Rect2(-2.0, -5.0, 2.0, 2.0), c_cream)
-		# 3-way split pips
-		draw_rect(Rect2(-6.0, -7.0, 2.0, 1.0), c_cream)
-		draw_rect(Rect2(4.0, -7.0, 2.0, 1.0), c_cream)
-		draw_rect(Rect2(-1.0, -10.0, 2.0, 1.0), c_cream)
+		# Void-backed 3-way split pips above frozen prism (reads unmistakably in greyscale)
+		draw_rect(Rect2(-7.0, -9.0, 3.0, 3.0), c_void)
+		draw_rect(Rect2(4.0, -9.0, 3.0, 3.0), c_void)
+		draw_rect(Rect2(-2.0, -12.0, 4.0, 3.0), c_void)
+		draw_rect(Rect2(-6.0, -8.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(4.0, -8.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, -11.0, 2.0, 1.0), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / frozen_secs, 0.0, 1.0), c_ice, c_sky)
 	else:
 		# Translucent domed water-droplet orb with curved specular crescent & warm caustic base
 		draw_circle(Vector2(0.0, -1.0), 8.0, c_void)
 		draw_circle(Vector2(0.0, -1.0), 7.0, c_deep)
-		draw_circle(Vector2(0.0, -1.5), 6.0, c_blue)
-		draw_circle(Vector2(-0.5, -2.0), 4.5, c_sky)
+		draw_circle(Vector2(0.0, -2.0), 6.0, c_blue)
+		draw_circle(Vector2(-1.0, -2.0), 4.0, c_sky)
 		draw_arc(Vector2(0.0, -1.0), 6.0, PI * 0.9, PI * 1.55, 10, c_ice, 1.0)
 		draw_rect(Rect2(-3.0, -5.0, 3.0, 2.0), c_ice)
 		draw_rect(Rect2(-3.0, -5.0, 2.0, 1.0), c_cream)
@@ -452,18 +463,22 @@ func _draw() -> void:
 			draw_rect(Rect2(-8.0, -1.0, 1.0, 2.0), c_cream)
 			draw_rect(Rect2(7.0, -1.0, 1.0, 2.0), c_cream)
 
-	# Render active focused "dew_ray" polyline segments
+	# Render active focused "dew_ray" polyline segments (integer-snapped stroke widths)
 	if ray_vis_t > 0.0 and not ray_segments.is_empty():
 		var u: float = clampf(ray_vis_t / RAY_VIS_SECS, 0.0, 1.0)
-		var f_sc: float = 0.72 if LxHudFx.flash_reduced() else 1.0
+		var f_sc: float = 0.68 if LxHudFx.flash_reduced() else 1.0
+		var w_out: float = maxf(2.0, roundf(RAY_WIDTH_PX * u))
+		var w_mid: float = maxf(1.0, roundf((RAY_WIDTH_PX - 2.0) * u))
+		var w_core: float = maxf(1.0, roundf(2.0 * u))
+		var r_tip: float = maxf(1.0, roundf(3.0 * u))
 		for seg: Dictionary in ray_segments:
 			var a: Vector2 = ((seg["start"] as Vector2) - pos).round()
 			var b: Vector2 = ((seg["end"] as Vector2) - pos).round()
 			var is_b: bool = str(seg.get("color", LxHit.COLOR_YELLOW)) == LxHit.COLOR_BLUE
 			var outer_c: Color = c_sky if is_b else c_apricot
 			var mid_c: Color = c_ice if is_b else c_gold
-			draw_line(a, b, Color(outer_c, u * 0.78 * f_sc), maxf(2.0, RAY_WIDTH_PX * u))
-			draw_line(a, b, Color(mid_c, u * 0.95 * f_sc), maxf(1.0, (RAY_WIDTH_PX - 2.0) * u))
-			draw_line(a, b, Color(c_cream, u), maxf(1.0, 2.0 * u))
-			draw_circle(b, 3.5 * u, Color(c_cream, u * f_sc))
+			draw_line(a, b, Color(outer_c, u * 0.78 * f_sc), w_out)
+			draw_line(a, b, Color(mid_c, u * 0.95 * f_sc), w_mid)
+			draw_line(a, b, Color(c_cream, u * f_sc), w_core)
+			draw_circle(b, r_tip, Color(c_cream, u * f_sc))
 	_draw_signal_pulses()

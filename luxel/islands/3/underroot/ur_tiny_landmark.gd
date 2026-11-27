@@ -43,7 +43,7 @@ func blocks_sight() -> bool:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
-	if variant in ["jar_shadow", "grass_cathedral"]:
+	if variant in ["jar_shadow", "grass_cathedral"] and not LxHudFx.flash_reduced():
 		_glide_t += dt
 		queue_redraw()
 
@@ -135,16 +135,18 @@ func _draw_grass_cathedral(sx: float) -> void:
 			var cy: float = roundf(-u * bh)
 			var seg_w: float = maxf(2.0, roundf(bw * (1.0 - u * 0.72)))
 			var seg_h: float = ceilf(bh / float(steps)) + 1.0
-			draw_rect(Rect2(cx - seg_w * 0.5 - 1.0, cy - seg_h, seg_w + 2.0, seg_h + 1.0), c_void)
-			draw_rect(Rect2(cx - seg_w * 0.5, cy - seg_h, seg_w, seg_h), b["c1"] as Color)
+			var lx: float = floorf(cx - seg_w * 0.5)
+			draw_rect(Rect2(lx - 1.0, cy - seg_h, seg_w + 2.0, seg_h + 1.0), c_void)
+			draw_rect(Rect2(lx, cy - seg_h, seg_w, seg_h), b["c1"] as Color)
 			if seg_w >= 3.0:
-				draw_rect(Rect2(cx - seg_w * 0.5, cy - seg_h, maxf(1.0, seg_w - 2.0), seg_h), b["c2"] as Color)
-				draw_rect(Rect2(cx - seg_w * 0.5, cy - seg_h, 1.0, seg_h), b["c3"] as Color)
+				draw_rect(Rect2(lx, cy - seg_h, maxf(1.0, seg_w - 2.0), seg_h), b["c2"] as Color)
+				draw_rect(Rect2(lx, cy - seg_h, 1.0, seg_h), b["c3"] as Color)
 	# Clinging giant dewdrop on tallest blade
 	var dx: float = roundf(lerpf(0.0, (10.0 + sway) * sx, 0.55))
-	draw_circle(Vector2(dx + 2.0 * sx, -36.0), 3.0, c_void)
-	draw_circle(Vector2(dx + 2.0 * sx, -36.0), 2.0, c_ice)
-	draw_rect(Rect2(dx + 1.0 * sx, -37.0, 1.0, 1.0), c_cream)
+	var dpx: float = roundf(dx + 2.0 * sx)
+	draw_circle(Vector2(dpx, -36.0), 3.0, c_void)
+	draw_circle(Vector2(dpx, -36.0), 2.0, c_ice)
+	draw_rect(Rect2(roundf(dx + 1.0 * sx), -37.0, 1.0, 1.0), c_cream)
 
 
 func _draw_acorn_boulder(sx: float) -> void:
@@ -206,25 +208,25 @@ func _draw_jar_shadow() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	# Curved glass jar specular bands across top & bottom walls
-	var half_s: float = span_px * 0.5
+	var half_s: float = roundf(span_px * 0.5)
+	var red: bool = LxHudFx.flash_reduced()
 	draw_line(Vector2(-half_s, -78.0), Vector2(half_s, -78.0), Color(c_sky, 0.35), 2.0)
 	draw_line(Vector2(-half_s + 16.0, -76.0), Vector2(half_s - 24.0, -76.0), Color(c_ice, 0.55), 1.0)
 	draw_line(Vector2(-half_s + 40.0, -75.0), Vector2(-half_s + 110.0, -75.0), Color(c_cream, 0.65), 1.0)
 	draw_line(Vector2(-half_s, 78.0), Vector2(half_s, 78.0), Color(c_sky, 0.28), 2.0)
 	# Wordless horror/wonder scene: Hundred Lamps' colossal dark shadow gliding outside the glass!
-	var speed: float = 0.0 if LxHudFx.flash_reduced() else 0.34
-	var cycle: float = fmod(_glide_t * speed, 1.0)
+	var cycle: float = 0.48 if red else fmod(_glide_t * 0.34, 1.0)
 	var head_x: float = lerpf(-half_s - 90.0, half_s + 120.0, cycle)
 	for si: int in range(8):
-		var sx_p: float = head_x - float(si) * 24.0
-		if sx_p < -half_s - 20.0 or sx_p > half_s + 20.0:
+		var px: float = roundf(head_x - float(si) * 24.0)
+		if px < -half_s - 20.0 or px > half_s + 20.0:
 			continue
-		var wave_y: float = -96.0 + roundf(sin(_glide_t * 2.2 + float(si) * 0.7) * 4.0)
-		draw_circle(Vector2(roundf(sx_p), wave_y), 13.0, Color(c_void, 0.62))
-		draw_circle(Vector2(roundf(sx_p), wave_y), 9.0, Color(c_night, 0.50))
+		var wave_y: float = -96.0 if red else (-96.0 + roundf(sin(_glide_t * 2.2 + float(si) * 0.7) * 4.0))
+		draw_circle(Vector2(px, wave_y), 13.0, Color(c_void, 0.55 if red else 0.62))
+		draw_circle(Vector2(px, wave_y), 9.0, Color(c_night, 0.45 if red else 0.50))
 		# Faint golden lantern-organ dot gleaming through the frosted glass
 		if si % 2 == 0:
-			draw_rect(Rect2(roundf(sx_p) - 1.0, wave_y - 1.0, 2.0, 2.0), Color(c_gold, 0.45))
-		# Skittering outer leg silhouettes
-		var leg_off: float = roundf(sin(_glide_t * 6.0 + float(si)) * 3.0)
-		draw_line(Vector2(roundf(sx_p), wave_y + 10.0), Vector2(roundf(sx_p) + leg_off, wave_y + 20.0), Color(c_void, 0.52), 2.0)
+			draw_rect(Rect2(px - 1.0, wave_y - 1.0, 2.0, 2.0), Color(c_gold, 0.35 if red else 0.45))
+		# Skittering outer leg silhouettes (held calm under flash_reduced)
+		var leg_off: float = 0.0 if red else roundf(sin(_glide_t * 6.0 + float(si)) * 3.0)
+		draw_line(Vector2(px, wave_y + 10.0), Vector2(px + leg_off, wave_y + 20.0), Color(c_void, 0.45 if red else 0.52), 2.0)

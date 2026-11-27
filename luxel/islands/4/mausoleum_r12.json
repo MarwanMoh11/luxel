@@ -196,7 +196,7 @@
       "kind": "boss_drowned_choir",
       "pos": [
         256,
-        152
+        192
       ],
       "zone": "ms_r12_apse"
     }
@@ -229,7 +229,7 @@
       "kind": "circle",
       "pos": [
         256,
-        160
+        192
       ],
       "radius": 56,
       "style": "clock"
@@ -256,7 +256,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        120
+        152
       ],
       "size": [
         60,
@@ -271,10 +271,10 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "mausoleum_arch_gate",
       "pos": [
-        264,
+        256,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

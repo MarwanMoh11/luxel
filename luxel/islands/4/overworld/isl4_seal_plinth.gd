@@ -101,11 +101,13 @@ func _draw() -> void:
 	elif seal_kind == "party":
 		accent = PAL["rose"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 0.0, 16.0, 6.0), c_night, c_dusk, c_stone, c_void)
 	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -16.0, 12.0, 17.0), c_night, c_dusk, accent if seal_lit else c_mauve, c_void)
-	# Crest emblem by wing
-	var crest_c: Color = c_cream if (seal_lit or _pulse_t > 0.0) else c_mauve
+	# Crest emblem by wing (void-backed socket for greyscale contrast)
+	draw_rect(Rect2(-4.0, -14.0, 8.0, 12.0), c_void)
+	var crest_c: Color = c_cream if (seal_lit or (_pulse_t > 0.0 and not fred)) else c_mauve
 	var fill_c: Color = accent if seal_lit else c_dusk
 	if seal_kind == "hourglass":
 		draw_rect(Rect2(-3.0, -13.0, 6.0, 2.0), crest_c)
@@ -124,9 +126,13 @@ func _draw() -> void:
 		draw_rect(Rect2(1.0, -5.0, 2.0, 1.0), crest_c)
 
 	if seal_lit:
-		var flick: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 5.0) * 1.0)
+		var flick: float = 0.0 if fred else roundf(sin(_clock * 5.0) * 1.0)
+		draw_rect(Rect2(-6.0, -18.0, 2.0, 2.0), accent)
+		draw_rect(Rect2(4.0, -18.0, 2.0, 2.0), accent)
+		draw_rect(Rect2(-3.0, -23.0 + flick, 6.0, 6.0), c_void)
 		draw_rect(Rect2(-2.0, -21.0 + flick, 4.0, 4.0), accent)
 		draw_rect(Rect2(-1.0, -22.0 + flick, 2.0, 3.0), c_cream)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.75, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(6.0, 18.0, u)), 0.0, TAU, 14, c_cream if seal_lit else accent, 1.0)
+		var pa: float = (1.0 - u) * (0.48 if fred else 0.88)
+		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(6.0, 18.0, u)), 0.0, TAU, 14, Color(c_cream if seal_lit else accent, pa), 1.0)

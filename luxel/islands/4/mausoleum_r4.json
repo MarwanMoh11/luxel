@@ -373,7 +373,7 @@
         248,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -394,8 +394,8 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "weather_vane_spire",
       "pos": [
-        392,
-        184
+        376,
+        200
       ],
       "layer": "sort",
       "flip_x": true,
@@ -442,7 +442,7 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "weeping_stone_urn",
       "pos": [
-        296,
+        304,
         56
       ],
       "layer": "sort",

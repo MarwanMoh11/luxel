@@ -36,7 +36,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["hg_echo_bud"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL4_PROMPT_ECHO_BUD", "title", 3.4)
-		Lx.events.shake_requested.emit(0.14)
+		Lx.events.shake_requested.emit(0.14 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.05)
 	_emit_sfx("shrine_claimed")
@@ -92,26 +92,35 @@ func _draw() -> void:
 	draw_rect(Rect2(-5.0, -4.0, 10.0, 2.0), PAL["pine"] as Color)
 	draw_rect(Rect2(-4.0, -4.0, 8.0, 1.0), c_jade)
 
+	var fred: bool = LxHudFx.flash_reduced()
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.2) * 2.0)
+		var bob: float = 0.0 if fred else roundf(sin(_clock * 3.2) * 2.0)
 		var cy: float = -12.0 + bob
-		# Concentric rose-gold time ripples
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 12.0, 10.0))
-		var r2: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 12.0 + 5.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_rose, 0.65), 1.0, false)
-		draw_arc(Vector2(0.0, cy), roundf(r2), 0.0, TAU, 16, Color(c_gold, 0.45), 1.0, false)
-		# Floating glass Echo Bud silhouette
+		# Concentric rose-gold time ripples (calm static radii & softened alpha under flash_reduced)
+		var r1: float = 8.0 if fred else roundf(8.0 + fmod(_clock * 12.0, 10.0))
+		var r2: float = 11.0 if fred else roundf(8.0 + fmod(_clock * 12.0 + 5.0, 10.0))
+		draw_arc(Vector2(0.0, cy), r1, 0.0, TAU, 16, Color(c_rose, 0.38 if fred else 0.65), 1.0, false)
+		draw_arc(Vector2(0.0, cy), r2, 0.0, TAU, 16, Color(c_gold, 0.26 if fred else 0.45), 1.0, false)
+		# Floating glass Echo Bud silhouette + 4-way corner crown ticks
 		draw_rect(Rect2(-5.0, cy - 5.0, 10.0, 10.0), c_void)
 		draw_rect(Rect2(-4.0, cy - 4.0, 8.0, 8.0), c_wine)
 		draw_rect(Rect2(-3.0, cy - 3.0, 6.0, 6.0), c_rose)
 		draw_rect(Rect2(-2.0, cy - 2.0, 4.0, 4.0), c_gold)
 		draw_rect(Rect2(-1.0, cy - 1.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-1.0, cy - 7.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-7.0, cy - 1.0, 2.0, 2.0), c_gold)
+		draw_rect(Rect2(5.0, cy - 1.0, 2.0, 2.0), c_gold)
 		# Stem and twin emerald sepals
 		draw_rect(Rect2(-1.0, cy + 5.0, 2.0, 4.0), c_jade)
 		draw_rect(Rect2(-3.0, cy + 5.0, 2.0, 2.0), c_jade)
 		draw_rect(Rect2(1.0, cy + 5.0, 2.0, 2.0), c_jade)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.70, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, c_rose, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, c_cream, 1.0, false)
+	else:
+		# Recessed empty bud cradle slot on claimed plinth (greyscale-legible)
+		draw_rect(Rect2(-4.0, -4.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -3.0, 6.0, 1.0), PAL["dusk"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.70, 0.0, 1.0)
+			var ra: float = (1.0 - u) * (0.48 if fred else 0.85)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, Color(c_rose, ra), 1.0 if fred else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, Color(c_cream, ra), 1.0, false)
 	_draw_signal_pulses()

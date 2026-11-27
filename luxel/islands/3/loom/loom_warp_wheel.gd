@@ -154,7 +154,7 @@ func interact(_actor: Node = null) -> bool:
 func on_hit(hit: LxHit) -> bool:
 	if hit == null or not active or _cd > 0.0:
 		return false
-	if hit.source in ["bolt", "prism_bolt", "beam", "throw", "recall"]:
+	if hit.source in [LxHit.SOURCE_BOLT, LxHit.SOURCE_PRISM, LxHit.SOURCE_BEAM, LxHit.SOURCE_THROW, LxHit.SOURCE_RECALL]:
 		return interact(null)
 	return false
 
@@ -209,18 +209,33 @@ func _draw() -> void:
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 9.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -1.0, 16.0, 7.0), c_plum, c_wine, c_apricot, c_void)
 	var center := Vector2(0.0, -6.0)
+	var red: bool = LxHudFx.flash_reduced()
 	var rim_c: Color = c_ice if frost_locked else (c_gold if is_low else c_apricot)
 	var spoke_c: Color = c_sky if frost_locked else (c_cream if is_low else c_gold)
-	var rot: float = (PI * 0.5 if is_low else 0.0) + _spin_t * 4.0
+	var rot: float = (PI * 0.5 if is_low else 0.0) + (0.0 if red else _spin_t * 4.0)
 	draw_circle(center, 8.0, c_void)
 	draw_arc(center, 6.0, 0.0, TAU, 16, rim_c, 2.0)
 	for k: int in range(6):
 		var a: float = rot + float(k) * (TAU / 6.0)
-		var tip: Vector2 = (center + Vector2(cos(a) * 7.5, sin(a) * 7.5)).round()
+		var tip: Vector2 = (center + Vector2(cos(a) * 7.0, sin(a) * 7.0)).round()
 		draw_line(center, tip, spoke_c, 1.0)
 	draw_rect(Rect2(center - Vector2.ONE, Vector2(2.0, 2.0)), c_cream)
-	if is_low and not frost_locked and snap_t > 0.0:
-		LxToyDraw.draw_bar(self, Vector2(-7.0, 7.0), 14.0, clampf(snap_t / snap_secs, 0.0, 1.0), c_gold, PAL["coral"] as Color)
-	elif frost_locked:
-		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -15.0), 1, true, c_sky, c_ice)
+	if frost_locked:
+		# 4 cardinal ice lock studs + crystal diamond crest (greyscale-distinct frost lock)
+		for off: Vector2 in [Vector2(0.0, -7.0), Vector2(0.0, 7.0), Vector2(-7.0, 0.0), Vector2(7.0, 0.0)]:
+			draw_rect(Rect2(center + off - Vector2.ONE, Vector2(2.0, 2.0)), c_void)
+			draw_rect(Rect2(center + off - Vector2.ONE, Vector2(1.0, 1.0)), c_cream)
+		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -16.0), 1, true, c_sky, c_ice)
+	elif is_low:
+		# Downward micro-chevron above wheel indicating lowered warp
+		draw_rect(Rect2(-2.0, -17.0, 5.0, 1.0), c_gold)
+		draw_rect(Rect2(-1.0, -16.0, 3.0, 1.0), c_cream)
+		draw_rect(Rect2(0.0, -15.0, 1.0, 1.0), c_cream)
+		if snap_t > 0.0:
+			LxToyDraw.draw_bar(self, Vector2(-7.0, 7.0), 14.0, clampf(snap_t / snap_secs, 0.0, 1.0), c_gold, PAL["coral"] as Color)
+	else:
+		# Upward micro-chevron above wheel indicating high tension
+		draw_rect(Rect2(0.0, -17.0, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, -16.0, 3.0, 1.0), c_apricot)
+		draw_rect(Rect2(-2.0, -15.0, 5.0, 1.0), c_apricot)
 	_draw_signal_pulses()

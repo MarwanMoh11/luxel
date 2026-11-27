@@ -292,7 +292,7 @@
         376,
         128
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },
@@ -323,7 +323,7 @@
       "prop": "glow_mineral_vein",
       "pos": [
         128,
-        204
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -344,7 +344,7 @@
       "sheet": "theme_cave_4",
       "prop": "rock_cairn_marker",
       "pos": [
-        344,
+        328,
         56
       ],
       "layer": "sort",

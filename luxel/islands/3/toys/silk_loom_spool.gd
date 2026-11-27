@@ -388,7 +388,7 @@ func get_light_pool() -> Vector4:
 		var sp0: Dictionary = _sparks[0]
 		var u: float = clampf(float(sp0["t"]) / maxf(1.0, float(sp0["len"])), 0.0, 1.0)
 		var p: Vector2 = pos.lerp(sp0["to"] as Vector2, u)
-		return Vector4(p.x, p.y, 42.0, 0.85)
+		return Vector4(p.x, p.y, 42.0, 0.68 if LxHudFx.flash_reduced() else 0.85)
 	if thread_state == "frozen":
 		return Vector4(pos.x, pos.y, 26.0, 0.45)
 	return Vector4.ZERO
@@ -422,11 +422,14 @@ func _draw() -> void:
 	var c_stone: Color = PAL["stone"] as Color
 	var frz: bool = thread_state == "frozen"
 	var cut: bool = thread_state == "cut"
+	var red: bool = LxHudFx.flash_reduced()
 
-	# 1. Draw linked silk threads
+	# 1. Draw linked silk threads (integer pixel-snapped stroke widths)
 	if not cut:
-		var line_w: float = 3.0 if walkable else 1.5
-		var warn_blink: bool = burn_warn_t > 0.0 and (LxHudFx.flash_reduced() or int(floorf(_clock * 14.0)) % 2 == 0)
+		var w_void: float = 5.0 if walkable else 4.0
+		var w_edge: float = 3.0 if walkable else 2.0
+		var w_core: float = 2.0 if walkable else 1.0
+		var warn_blink: bool = burn_warn_t > 0.0 and (red or int(floorf(_clock * 14.0)) % 2 == 0)
 		var thread_c: Color = c_ice if frz else (c_coral if warn_blink else (c_apricot if dry else c_cream))
 		var edge_c: Color = c_sky if frz else (c_gold if warn_blink else (c_wine if dry else c_stone))
 		for tid: String in linked_to:
@@ -434,13 +437,13 @@ func _draw() -> void:
 			if t == null or not is_instance_valid(t):
 				continue
 			var rel: Vector2 = (t.pos - pos).round()
-			draw_line(Vector2.ZERO, rel, c_void, line_w + 2.0)
-			draw_line(Vector2.ZERO, rel, edge_c, line_w + 0.5)
-			draw_line(Vector2.ZERO, rel, thread_c, maxf(1.0, line_w - 0.5))
+			draw_line(Vector2.ZERO, rel, c_void, w_void)
+			draw_line(Vector2.ZERO, rel, edge_c, w_edge)
+			draw_line(Vector2.ZERO, rel, thread_c, w_core)
 		if shuttle_active:
 			var srel: Vector2 = (shuttle_end - pos).round()
-			draw_line(Vector2.ZERO, srel, c_void, 3.0)
-			draw_line(Vector2.ZERO, srel, c_gold, 1.5)
+			draw_line(Vector2.ZERO, srel, c_void, 4.0)
+			draw_line(Vector2.ZERO, srel, c_gold, 2.0)
 			draw_line(Vector2.ZERO, srel, c_cream, 1.0)
 	else:
 		# Frayed snapped stubs when cut
@@ -467,9 +470,16 @@ func _draw() -> void:
 		for wy: float in [-4.0, -1.0, 2.0]:
 			draw_line(Vector2(-4.0, wy), Vector2(4.0, wy - 1.0), band_hi, 1.0)
 			draw_line(Vector2(-4.0, wy + 1.0), Vector2(4.0, wy), band_sh, 1.0)
-	# Top turned brass flange + center finial pin
+	else:
+		# Crisp cut X notch across empty spool core (greyscale-legible)
+		draw_line(Vector2(-3.0, -4.0), Vector2(3.0, 2.0), c_void, 1.0)
+		draw_line(Vector2(3.0, -4.0), Vector2(-3.0, 2.0), c_void, 1.0)
+	# Top turned brass flange + center finial pin (+ shear notches when dry/snappable)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -9.0, 16.0, 4.0), c_wine, c_apricot, c_ice if frz else c_gold, c_void)
 	draw_rect(Rect2(-6.0, -8.0, 7.0, 1.0), c_cream)
+	if dry and not cut:
+		draw_rect(Rect2(-5.0, -9.0, 1.0, 2.0), c_void)
+		draw_rect(Rect2(4.0, -9.0, 1.0, 2.0), c_void)
 	draw_rect(Rect2(-2.0, -11.0, 4.0, 2.0), c_void)
 	draw_rect(Rect2(-1.0, -10.0, 2.0, 1.0), c_cream if frz else c_gold)
 	if accepts_shuttle and not cut:
@@ -477,6 +487,9 @@ func _draw() -> void:
 		LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -13.0), 1, shuttle_active, c_apricot, c_cream if shuttle_active else c_gold)
 	if frz:
 		draw_arc(Vector2(0.0, -1.0), 10.0, 0.0, TAU, 14, c_ice, 1.0)
+		# 4 cardinal frost-lock studs (greyscale firebreak indicator)
+		for foff: Vector2 in [Vector2(-1.0, -11.0), Vector2(-1.0, 9.0), Vector2(-11.0, -2.0), Vector2(9.0, -2.0)]:
+			draw_rect(Rect2(foff, Vector2(2.0, 2.0)), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / freeze_secs, 0.0, 1.0), c_ice, c_sky)
 	elif cut and regrow_secs > 0.0:
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, 1.0 - clampf(regrow_t / regrow_secs, 0.0, 1.0), c_gold, c_plum)
@@ -486,7 +499,7 @@ func _draw() -> void:
 		var u: float = clampf(float(sp["t"]) / maxf(1.0, float(sp["len"])), 0.0, 1.0)
 		var rel_p: Vector2 = ((sp["to"] as Vector2) - pos) * u
 		var rp: Vector2 = rel_p.round()
-		draw_circle(rp, 4.0, Color(c_gold, 0.55))
+		draw_circle(rp, 4.0, Color(c_gold, 0.35 if red else 0.55))
 		draw_rect(Rect2(rp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_apricot)
 		draw_rect(Rect2(rp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_cream)
 	_draw_signal_pulses()

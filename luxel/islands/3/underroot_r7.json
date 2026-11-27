@@ -397,8 +397,8 @@
       "sheet": "theme_under_root",
       "prop": "beetle_hitching_post",
       "pos": [
-        64,
-        116
+        24,
+        128
       ],
       "layer": "sort",
       "flip_x": false,
@@ -433,8 +433,8 @@
       "sheet": "theme_under_root",
       "prop": "amber_sap_urn",
       "pos": [
-        456,
-        104
+        440,
+        120
       ],
       "layer": "sort",
       "flip_x": false,

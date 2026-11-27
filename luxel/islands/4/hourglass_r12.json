@@ -211,8 +211,8 @@
       "id": "gardener_twice_r12",
       "kind": "boss_gardener_twice",
       "pos": [
-        264,
-        168
+        256,
+        188
       ],
       "zone": "hg_r12_arena"
     }
@@ -222,7 +222,7 @@
       "kind": "circle",
       "pos": [
         256,
-        176
+        192
       ],
       "radius": 53,
       "style": "clock"
@@ -258,7 +258,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        144
+        160
       ],
       "size": [
         56,
@@ -274,7 +274,7 @@
       "prop": "hourglass_floor_dial",
       "pos": [
         256,
-        176
+        192
       ],
       "layer": "ground",
       "flip_x": false,
@@ -288,7 +288,7 @@
         256,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -345,7 +345,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "echo_rose_trellis",
       "pos": [
-        88,
+        80,
         136
       ],
       "layer": "sort",

@@ -37,7 +37,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["ms_vane_rod"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL4_PROMPT_VANE_ROD", "title", 3.4)
-		Lx.events.shake_requested.emit(0.14)
+		Lx.events.shake_requested.emit(0.14 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.05)
 	_emit_sfx("shrine_claimed")
@@ -87,7 +87,8 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_teal: Color = PAL["teal"] as Color
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 11.0, 3.2)
+	var fred: bool = LxHudFx.flash_reduced()
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 11.0, 3.0)
 	# Carved slate cistern pedestal with brass trim
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), PAL["night"] as Color, PAL["deep"] as Color, PAL["stone"] as Color, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), c_gold if not claimed else PAL["mauve"] as Color)
@@ -95,12 +96,12 @@ func _draw() -> void:
 	draw_rect(Rect2(-4.0, -4.0, 8.0, 1.0), c_teal)
 
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.0) * 2.0)
+		var bob: float = 0.0 if fred else roundf(sin(_clock * 3.0) * 2.0)
 		var cy: float = -13.0 + bob
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 11.0, 10.0))
-		var r2: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 11.0 + 5.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_sky, 0.65), 1.0, false)
-		draw_arc(Vector2(0.0, cy), roundf(r2), 0.0, TAU, 16, Color(c_gold, 0.48), 1.0, false)
+		var r1: float = 8.0 if fred else roundf(8.0 + fmod(_clock * 11.0, 10.0))
+		var r2: float = 11.0 if fred else roundf(8.0 + fmod(_clock * 11.0 + 5.0, 10.0))
+		draw_arc(Vector2(0.0, cy), r1, 0.0, TAU, 16, Color(c_sky, 0.38 if fred else 0.65), 1.0, false)
+		draw_arc(Vector2(0.0, cy), r2, 0.0, TAU, 16, Color(c_gold, 0.26 if fred else 0.48), 1.0, false)
 		# Floating brass Vane Rod silhouette (crossbar + arrow vane + crystal drop)
 		draw_rect(Rect2(-2.0, cy - 7.0, 4.0, 15.0), c_void)
 		draw_rect(Rect2(-1.0, cy - 6.0, 2.0, 13.0), c_gold)
@@ -109,8 +110,13 @@ func _draw() -> void:
 		draw_rect(Rect2(4.0, cy - 4.0, 2.0, 5.0), c_ice)
 		draw_rect(Rect2(-5.0, cy - 3.0, 2.0, 3.0), c_sky)
 		draw_rect(Rect2(-1.0, cy - 6.0, 2.0, 2.0), c_cream)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.75, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 38.0, u)), 0.0, TAU, 20, c_sky, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, c_cream, 1.0, false)
+	else:
+		# Recessed empty vane-rod cradle slot on claimed cistern pedestal
+		draw_rect(Rect2(-4.0, -4.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -3.0, 6.0, 1.0), PAL["dusk"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.75, 0.0, 1.0)
+			var ra: float = (1.0 - u) * (0.48 if fred else 0.85)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 38.0, u)), 0.0, TAU, 20, Color(c_sky, ra), 1.0 if fred else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, Color(c_cream, ra), 1.0, false)
 	_draw_signal_pulses()

@@ -42,7 +42,6 @@ class Island3HudOverlay:
 	var rule: LxIsland3Rule = null
 	var canvas: Node2D = null
 	var shift_flash_t: float = 0.0
-	var horn_flash_t: float = 0.0
 
 	func _ready() -> void:
 		layer = 14
@@ -53,15 +52,10 @@ class Island3HudOverlay:
 		add_child(canvas)
 
 	func _process(dt: float) -> void:
-		var dirty: bool = false
 		if shift_flash_t > 0.0:
 			shift_flash_t = maxf(0.0, shift_flash_t - dt)
-			dirty = true
-		if horn_flash_t > 0.0:
-			horn_flash_t = maxf(0.0, horn_flash_t - dt)
-			dirty = true
-		if dirty and canvas != null:
-			canvas.queue_redraw()
+			if canvas != null:
+				canvas.queue_redraw()
 
 	func refresh() -> void:
 		if canvas != null:
@@ -106,19 +100,24 @@ class Island3HudOverlay:
 			canvas.draw_rect(Rect2(bx, y_cur, bw, bh), c_void)
 			canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, bh - 2.0), c_night)
 			canvas.draw_rect(Rect2(bx + 1.0, y_cur + 1.0, bw - 2.0, 1.0), rim)
-			# 3-wedge compass pips (distinct greyscale + colour)
+			# 3-wedge compass pips: raised crowned active pip vs flat recessed inactive slots (greyscale-legible)
 			for i: int in range(3):
 				var px: float = bx + 4.0 + float(i) * 5.0
 				var active_w: bool = i == eff_t
 				var wc: Color = c_lime if i == 0 else (c_rose if i == 1 else c_gold)
-				canvas.draw_rect(Rect2(px, y_cur + 4.0, 3.0, 5.0), wc if active_w else c_dusk)
 				if active_w:
-					canvas.draw_rect(Rect2(px + 1.0, y_cur + 5.0, 1.0, 3.0), c_cream)
+					canvas.draw_rect(Rect2(px, y_cur + 3.0, 3.0, 6.0), wc)
+					canvas.draw_rect(Rect2(px + 1.0, y_cur + 4.0, 1.0, 4.0), c_cream)
+				else:
+					canvas.draw_rect(Rect2(px, y_cur + 6.0, 3.0, 2.0), c_dusk)
 			var lbl_key: String = TURN_KEYS[clampi(eff_t, 0, 2)]
 			var lbl: String = LxStrings.text(lbl_key) if LxStrings.has_id(lbl_key) else ""
 			if not lbl.is_empty():
 				LxPixelFont.draw(canvas, lbl, Vector2(bx + 22.0, y_cur + 4.0), c_cream if pinned else c_gold)
 			if pinned:
+				# Raised pin-corner studs on badge right edge
+				canvas.draw_rect(Rect2(bx + bw - 3.0, y_cur + 2.0, 1.0, 2.0), c_cream)
+				canvas.draw_rect(Rect2(bx + bw - 3.0, y_cur + bh - 4.0, 1.0, 2.0), c_cream)
 				var pk: String = LxStrings.text("ISL3_HUD_PIN") if LxStrings.has_id("ISL3_HUD_PIN") else ""
 				if not pk.is_empty():
 					LxPixelFont.draw(canvas, pk, Vector2(bx + bw - 18.0, y_cur + 4.0), c_lime)
@@ -135,9 +134,13 @@ class Island3HudOverlay:
 			canvas.draw_rect(Rect2(bx2, y_cur, bw2, bh2), c_void)
 			canvas.draw_rect(Rect2(bx2 + 1.0, y_cur + 1.0, bw2 - 2.0, bh2 - 2.0), c_night)
 			canvas.draw_rect(Rect2(bx2 + 1.0, y_cur + 1.0, bw2 - 2.0, 1.0), c_gold)
-			# Mini sunburst icon
+			# Mini sunburst icon with 4 cardinal ray ticks
 			canvas.draw_rect(Rect2(bx2 + 4.0, y_cur + 4.0, 4.0, 4.0), c_apricot)
 			canvas.draw_rect(Rect2(bx2 + 5.0, y_cur + 5.0, 2.0, 2.0), c_cream)
+			canvas.draw_rect(Rect2(bx2 + 5.0, y_cur + 3.0, 2.0, 1.0), c_gold)
+			canvas.draw_rect(Rect2(bx2 + 5.0, y_cur + 8.0, 2.0, 1.0), c_gold)
+			canvas.draw_rect(Rect2(bx2 + 3.0, y_cur + 5.0, 1.0, 2.0), c_gold)
+			canvas.draw_rect(Rect2(bx2 + 8.0, y_cur + 5.0, 1.0, 2.0), c_gold)
 			var t_lbl: String = LxStrings.text("ISL3_HUD_TINY") if LxStrings.has_id("ISL3_HUD_TINY") else ""
 			if not t_lbl.is_empty():
 				LxPixelFont.draw(canvas, t_lbl, Vector2(bx2 + 12.0, y_cur + 4.0), c_cream)
@@ -151,7 +154,12 @@ class Island3HudOverlay:
 			canvas.draw_rect(Rect2(bx3, y_cur, bw3, bh3), c_void)
 			canvas.draw_rect(Rect2(bx3 + 1.0, y_cur + 1.0, bw3 - 2.0, bh3 - 2.0), c_night)
 			canvas.draw_rect(Rect2(bx3 + 1.0, y_cur + 1.0, bw3 - 2.0, 1.0), c_apricot if sap_hi else c_jade)
-			canvas.draw_rect(Rect2(bx3 + 4.0, y_cur + (4.0 if sap_hi else 6.0), 4.0, 5.0 if sap_hi else 3.0), c_gold if sap_hi else c_jade)
+			canvas.draw_rect(Rect2(bx3 + 4.0, y_cur + 3.0, 4.0, 6.0), c_dusk)
+			if sap_hi:
+				canvas.draw_rect(Rect2(bx3 + 4.0, y_cur + 3.0, 4.0, 6.0), c_gold)
+				canvas.draw_rect(Rect2(bx3 + 4.0, y_cur + 3.0, 4.0, 1.0), c_cream)
+			else:
+				canvas.draw_rect(Rect2(bx3 + 4.0, y_cur + 7.0, 4.0, 2.0), c_jade)
 			var s_key: String = "ISL3_HUD_SAP_HI" if sap_hi else "ISL3_HUD_SAP_LO"
 			var s_lbl: String = LxStrings.text(s_key) if LxStrings.has_id(s_key) else ""
 			if not s_lbl.is_empty():
@@ -382,8 +390,7 @@ func advance_wood_turn(with_tell: bool = true) -> int:
 	if with_tell:
 		if _events != null:
 			_events.sfx_requested.emit("wood_shift", Vector2.ZERO, false)
-			if LxHudFx.shake_enabled():
-				_events.shake_requested.emit(0.08)
+			_emit_shake(0.08)
 			var note_key: String = TURN_NOTE_KEYS[clampi(nxt, 0, 2)]
 			var st: LxGameState = _state if _state != null else Lx.state
 			var taught: bool = st != null and bool(st.story_flags.get("isl3_pin_taught", false))
@@ -444,6 +451,11 @@ func _current_region_data() -> Dictionary:
 	return {}
 
 
+func _emit_shake(amp: float) -> void:
+	if _events != null and LxHudFx.shake_enabled():
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
+
+
 ## Sap-Horn acoustic pulse: commands/halts all `beetle_mount` toys within `call_radius`.
 static func call_sap_horn(origin: Vector2, call_radius: float = 220.0, region_node: Node = null) -> int:
 	var ctx: Node = region_node if region_node != null else Lx.world
@@ -456,7 +468,9 @@ static func call_sap_horn(origin: Vector2, call_radius: float = 220.0, region_no
 					it.call("on_sap_horn", origin)
 					count += 1
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
-		(Lx.player as LxWick).spawn_ring(origin, 4.0, minf(48.0, call_radius * 0.4), 0.30, LxPalette.PAL["gold"] as Color, 1.5)
+		var red: bool = LxHudFx.flash_reduced()
+		var ring_col: Color = Color(LxPalette.PAL["gold"] as Color, 0.70 if red else 1.0)
+		(Lx.player as LxWick).spawn_ring(origin, 4.0, roundf(minf(48.0, call_radius * 0.4)), 0.30, ring_col, 1.0 if red else 2.0)
 	if Lx.events != null:
 		Lx.events.sfx_requested.emit("sap_horn_call", origin, true)
 	return count

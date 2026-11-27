@@ -76,8 +76,8 @@ func tick(dt: float) -> void:
 	if not active:
 		return
 	_refresh_open_state()
-	if open:
-		_swirl_phase += dt * (2.2 if LxHudFx.flash_reduced() else 4.8)
+	if open and not LxHudFx.flash_reduced():
+		_swirl_phase += dt * 4.8
 		queue_redraw()
 	if _trans_t > 0.0:
 		_trans_t = maxf(0.0, _trans_t - dt)
@@ -98,8 +98,9 @@ func interact(actor: Node = null) -> bool:
 	_emit_sfx("shrink_swirl")
 	_emit_gust(48.0, 38.0)
 	if _trans_actor != null and is_instance_valid(_trans_actor):
-		var col: Color = (PAL["lime"] if _resolved_size() == "tiny" else PAL["gold"]) as Color
-		_trans_actor.spawn_ring(pos, 12.0 if _resolved_size() == "tiny" else 3.0, 3.0 if _resolved_size() == "tiny" else 16.0, 0.34, col, 1.5)
+		var red: bool = LxHudFx.flash_reduced()
+		var col: Color = Color((PAL["lime"] if _resolved_size() == "tiny" else PAL["gold"]) as Color, 0.65 if red else 1.0)
+		_trans_actor.spawn_ring(pos, 12.0 if _resolved_size() == "tiny" else 3.0, 3.0 if _resolved_size() == "tiny" else 16.0, 0.34, col, 1.0 if red else 2.0)
 	queue_redraw()
 	return true
 
@@ -142,7 +143,8 @@ func get_light_pool() -> Vector4:
 	if not active or not open:
 		return Vector4.ZERO
 	var boost: float = 18.0 if _trans_t > 0.0 else 0.0
-	return Vector4(pos.x, pos.y - 2.0, 34.0 + boost, 0.58 if _trans_t > 0.0 else 0.36)
+	var trans_i: float = 0.46 if LxHudFx.flash_reduced() else 0.58
+	return Vector4(pos.x, pos.y - 2.0, 34.0 + boost, trans_i if _trans_t > 0.0 else 0.36)
 
 
 func _draw() -> void:
@@ -191,9 +193,11 @@ func _draw() -> void:
 	draw_rect(Rect2(-5.0, -3.0, 10.0, 6.0), c_night)
 
 	if not open:
-		# Dormant dry bark seal + hollow sap drop glyph (readable in greyscale)
-		draw_rect(Rect2(-4.0, -1.0, 8.0, 3.0), c_dusk)
+		# Dormant 3-bar dry-bark grate seal + sap drop glyph (unmistakable in greyscale)
+		for by: float in [-2.0, 0.0, 2.0]:
+			draw_rect(Rect2(-5.0, by, 10.0, 1.0), c_dusk)
 		if powered_by_sap:
+			draw_rect(Rect2(-2.0, -3.0, 4.0, 5.0), c_void)
 			draw_rect(Rect2(-1.0, -2.0, 2.0, 1.0), c_apricot)
 			draw_rect(Rect2(-2.0, -1.0, 4.0, 3.0), c_dusk)
 			draw_rect(Rect2(-1.0, 0.0, 2.0, 1.0), c_gold)
@@ -207,16 +211,20 @@ func _draw() -> void:
 	draw_rect(Rect2(-4.0, -1.0, 8.0, 3.0), v_mid)
 	for i: int in range(4):
 		var a: float = _swirl_phase + float(i) * (PI * 0.5)
-		var r: float = 3.5 if (_trans_t <= 0.0) else lerpf(4.5, 1.0, 1.0 - _trans_t / TRANSITION_SECS)
+		var r: float = 4.0 if (_trans_t <= 0.0) else lerpf(4.0, 1.0, 1.0 - _trans_t / TRANSITION_SECS)
 		var sp := Vector2(roundf(cos(a) * r), roundf(sin(a) * r * 0.55))
 		draw_rect(Rect2(sp, Vector2(1.0, 1.0)), c_cream if i % 2 == 0 else v_hi)
 	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_cream if _trans_t > 0.0 else v_hi)
-	# Crisp directional arrow pip above rim (down-inward chevron for tiny, up-outward for normal)
+	# Void-backed directional chevron pip above rim (down-inward for tiny, up-outward for normal)
 	if shrink_mode:
+		draw_rect(Rect2(-3.0, -10.0, 7.0, 3.0), c_void)
+		draw_rect(Rect2(-1.0, -8.0, 3.0, 2.0), c_void)
 		draw_rect(Rect2(-2.0, -9.0, 5.0, 1.0), c_lime)
 		draw_rect(Rect2(-1.0, -8.0, 3.0, 1.0), c_cream)
 		draw_rect(Rect2(0.0, -7.0, 1.0, 1.0), c_cream)
 	else:
+		draw_rect(Rect2(-1.0, -11.0, 3.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -9.0, 7.0, 3.0), c_void)
 		draw_rect(Rect2(0.0, -10.0, 1.0, 1.0), c_cream)
 		draw_rect(Rect2(-1.0, -9.0, 3.0, 1.0), c_cream)
 		draw_rect(Rect2(-2.0, -8.0, 5.0, 1.0), c_gold)

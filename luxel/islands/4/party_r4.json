@@ -452,7 +452,7 @@
         416,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },

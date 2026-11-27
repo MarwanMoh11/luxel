@@ -358,7 +358,7 @@
         232,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -416,7 +416,7 @@
       "prop": "wet_moss_pillar",
       "pos": [
         88,
-        184
+        192
       ],
       "layer": "sort",
       "flip_x": false,

@@ -463,7 +463,7 @@
       "prop": "rain_lantern_post",
       "pos": [
         440,
-        120
+        128
       ],
       "layer": "sort",
       "flip_x": true,

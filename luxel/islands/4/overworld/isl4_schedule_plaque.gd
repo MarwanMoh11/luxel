@@ -101,11 +101,12 @@ func _draw() -> void:
 		PAL["coral"] as Color,
 	]
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 2.8)
+	var fred: bool = LxHudFx.flash_reduced()
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 8.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 0.0, 16.0, 6.0), c_night, c_dusk, c_stone, c_void)
 	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -17.0, 14.0, 18.0), c_night, c_dusk, c_gold, c_void)
 
-	# 6-hour schedule ledger bars (2 columns x 3 rows)
+	# 6-hour schedule ledger bars (2 columns x 3 rows; greyscale-distinct raised active vs highlight vs recessed)
 	for i: int in range(6):
 		var hr: int = i + 1
 		var col_i: int = i / 3
@@ -114,10 +115,17 @@ func _draw() -> void:
 		var py: float = -14.0 + float(row_i) * 4.0
 		var is_cur: bool = (hr == current_hour)
 		var is_hi: bool = highlight_hours.has(hr)
-		var c: Color = c_cream if is_cur else (hour_cols[i] if (is_hi or highlight_hours.is_empty()) else c_dusk)
-		draw_rect(Rect2(px, py, 4.0, 2.0), c)
 		if is_cur:
+			draw_rect(Rect2(px - 1.0, py - 1.0, 6.0, 4.0), c_void)
 			draw_rect(Rect2(px - 1.0, py, 1.0, 2.0), c_gold)
+			draw_rect(Rect2(px, py, 4.0, 2.0), c_cream)
+		elif is_hi or highlight_hours.is_empty():
+			draw_rect(Rect2(px, py, 4.0, 2.0), hour_cols[i])
+			if is_hi:
+				draw_rect(Rect2(px, py, 1.0, 1.0), c_cream)
+		else:
+			draw_rect(Rect2(px, py + 1.0, 4.0, 1.0), c_dusk)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -8.0), roundf(lerpf(6.0, 16.0, u)), 0.0, TAU, 14, c_cream, 1.0)
+		var fa: float = (1.0 - u) * (0.45 if fred else 0.85)
+		draw_arc(Vector2(0.0, -8.0), roundf(lerpf(6.0, 16.0, u)), 0.0, TAU, 14, Color(c_cream, fa), 1.0)

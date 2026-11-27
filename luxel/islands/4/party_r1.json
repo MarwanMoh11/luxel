@@ -237,7 +237,7 @@
         224,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },
@@ -278,8 +278,8 @@
       "sheet": "theme_garden_party",
       "prop": "banquet_table_cloth",
       "pos": [
-        352,
-        56
+        360,
+        40
       ],
       "layer": "sort",
       "flip_x": false,

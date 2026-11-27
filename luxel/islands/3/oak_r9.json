@@ -418,8 +418,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        184,
-        44
+        192,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -442,8 +442,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        156,
-        44
+        128,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -490,8 +490,8 @@
       "sheet": "island3_scenery",
       "prop": "hanging_spore_lantern",
       "pos": [
-        176,
-        196
+        152,
+        192
       ],
       "layer": "sort",
       "flip_x": false,

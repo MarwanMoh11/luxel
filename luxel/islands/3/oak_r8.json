@@ -345,8 +345,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        140,
-        40
+        144,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -393,8 +393,8 @@
       "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        344,
-        30
+        352,
+        40
       ],
       "layer": "sort",
       "flip_x": true,
@@ -429,8 +429,8 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        68,
-        48
+        64,
+        40
       ],
       "layer": "sort",
       "flip_x": false,

@@ -230,11 +230,16 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	var r: float = roundf(visual_radius)
-	LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 8.0), r * 0.92, 4.0)
+	LxToyDraw.draw_contact_shadow(self, Vector2(2.0, 8.0), roundf(r * 0.92), 4.0)
 
 	# Stepped sunlit limestone pedestal plinth (3/4 south face + bevelled top)
 	LxToyDraw.draw_bevel_box(self, Rect2(-r + 1.0, -r + 5.0, (r - 1.0) * 2.0, (r - 1.0) * 2.0 - 2.0), c_night, c_dusk, c_mauve, c_void)
+	if region_hour_lock:
+		# Four brass corner rivets distinguish room-locked sundials in greyscale
+		for rp: Vector2 in [Vector2(-r + 2.0, -r + 6.0), Vector2(r - 4.0, -r + 6.0), Vector2(-r + 2.0, r - 1.0), Vector2(r - 4.0, r - 1.0)]:
+			draw_rect(Rect2(rp, Vector2(2.0, 2.0)), c_gold)
 	draw_circle(Vector2(0.0, 2.0), r, c_void)
 	draw_circle(Vector2(0.0, 2.0), r - 1.0, c_mauve)
 	draw_circle(Vector2(0.0, 0.0), r - 1.0, c_void)
@@ -249,7 +254,7 @@ func _draw() -> void:
 		var sp_e := Vector2(roundf(cos(sa) * (r - 6.0)), roundf(sin(sa) * (r - 6.0)))
 		draw_line(Vector2.ZERO, sp_e, c_night, 1.0)
 
-	# 6-pip (or 4-pip) hour markers around rim, distinct in greyscale
+	# 6-pip (or 4-pip) hour markers around rim, distinct in greyscale (4x4 current vs 2x2 past vs 1x1 future)
 	var hand_ang: float = -PI * 0.5
 	for i: int in range(max_hour):
 		var h_i: int = i + 1
@@ -262,10 +267,12 @@ func _draw() -> void:
 			draw_rect(Rect2(pp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
 			draw_rect(Rect2(pp - Vector2.ONE, Vector2(3.0, 3.0)), c_gold)
 			draw_rect(Rect2(pp, Vector2.ONE), c_cream)
+		elif h_i < current_hour:
+			draw_rect(Rect2(pp - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+			draw_rect(Rect2(pp - Vector2.ONE, Vector2(2.0, 2.0)), c_apricot)
 		else:
-			var pc: Color = c_apricot if h_i < current_hour else c_stone
 			draw_rect(Rect2(pp - Vector2.ONE, Vector2(2.0, 2.0)), c_void)
-			draw_rect(Rect2(pp - Vector2.ONE, Vector2(1.0, 1.0)), pc)
+			draw_rect(Rect2(pp - Vector2.ONE, Vector2.ONE), c_stone)
 
 	# Raised triangular brass gnomon fin casting directional shadow to current hour
 	var tip := Vector2(roundf(cos(hand_ang) * (r - 5.0)), roundf(sin(hand_ang) * (r - 5.0)))
@@ -277,17 +284,17 @@ func _draw() -> void:
 	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
 	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_cream)
 
-	# Hold-to-rewind progress arc
+	# Hold-to-rewind progress arc (integer stroke width)
 	if _hold_t > 0.05 and can_rewind:
 		var hf: float = clampf(_hold_t / HOLD_REWIND_S, 0.0, 1.0)
-		draw_arc(Vector2(0.0, 1.0), r + 2.0, -PI * 0.5, -PI * 0.5 + TAU * hf, 16, c_rose, 1.5)
+		draw_arc(Vector2(0.0, 1.0), r + 2.0, -PI * 0.5, -PI * 0.5 + TAU * hf, 16, Color(c_rose, 0.65 if fred else 1.0), 1.0 if fred else 2.0)
 
-	# Sweep / Rewind ripple ring
+	# Sweep / Rewind ripple ring (integer stroke width)
 	if _state_t > 0.0:
 		var dur: float = REWIND_DUR if state == State.REWINDING else SWEEP_DUR
 		var u: float = 1.0 - clampf(_state_t / maxf(dur, 0.01), 0.0, 1.0)
 		var ring_r: float = roundf(lerpf(r + 12.0, 4.0, u) if state == State.REWINDING else lerpf(6.0, r + 12.0, u))
 		var rc: Color = c_rose if state == State.REWINDING else c_gold
-		var ring_a: float = (1.0 - u * 0.8) * (0.55 if LxHudFx.flash_reduced() else 1.0)
-		draw_arc(Vector2(0.0, 1.0), ring_r, 0.0, TAU, 16, Color(rc, ring_a), 1.5)
+		var ring_a: float = (1.0 - u * 0.8) * (0.48 if fred else 0.90)
+		draw_arc(Vector2(0.0, 1.0), ring_r, 0.0, TAU, 16, Color(rc, ring_a), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

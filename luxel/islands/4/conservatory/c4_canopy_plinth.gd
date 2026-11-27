@@ -83,24 +83,39 @@ func _draw() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var lit: bool = _is_seal_broken()
+	var fred: bool = LxHudFx.flash_reduced()
+	var blessed_done: bool = Lx.state != null and bool(Lx.state.story_flags.get(claimed_flag, false))
 
 	LxToyDraw.draw_contact_shadow(self, Vector2(0.0, 5.0), 9.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -14.0, 14.0, 18.0), c_night, c_dusk, c_gold if lit else c_teal, c_void)
-	# Visible seal socket in plinth body: hollow teal ring until r17 breaks the Canopy Seal, then golden core
+	# Visible seal socket in plinth body: recessed dark hollow until r17 breaks the Canopy Seal, then solid golden core
 	draw_rect(Rect2(-4.0, -9.0, 8.0, 8.0), c_void)
 	draw_rect(Rect2(-3.0, -8.0, 6.0, 6.0), c_gold if lit else c_dusk)
-	draw_rect(Rect2(-2.0, -7.0, 4.0, 4.0), c_cream if lit else c_teal)
-	var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_pulse_t) * 1.2)
+	if lit:
+		draw_rect(Rect2(-2.0, -7.0, 4.0, 4.0), c_cream)
+	else:
+		draw_rect(Rect2(-2.0, -7.0, 4.0, 4.0), c_teal)
+		draw_rect(Rect2(-1.0, -6.0, 2.0, 2.0), c_void)
+	# Blessing shoulder pips (raised bright gems when r9 blessing is ready, flat recessed slots once claimed)
+	if grant_blessing and lit:
+		for sx: float in [-6.0, 4.0]:
+			draw_rect(Rect2(sx, -13.0, 2.0, 2.0 if not blessed_done else 1.0), c_cream if not blessed_done else c_dusk)
+	var bob: float = 0.0 if fred else roundf(sin(_pulse_t) * 1.2)
 	var cy: float = -18.0 + bob
-	draw_circle(Vector2(0.0, cy), 4.5, c_void)
-	draw_circle(Vector2(0.0, cy), 3.5, c_gold if lit else c_sky)
-	draw_circle(Vector2(0.0, cy), 1.5, c_cream if lit else c_dusk)
-	if lit and not LxHudFx.flash_reduced():
-		var rr: float = 9.0 + sin(_pulse_t) * 1.6
-		draw_arc(Vector2(0.0, -6.0), roundf(rr), 0.0, TAU, 16, Color(c_gold, 0.55), 1.0)
-	elif not lit:
-		# Subtle westward canopy pointer chevron on unsealed plinth
-		var pulse_x: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_pulse_t) * 1.0)
+	draw_circle(Vector2(0.0, cy), 5.0, c_void)
+	draw_circle(Vector2(0.0, cy), 4.0, c_gold if lit else c_sky)
+	draw_circle(Vector2(0.0, cy), 2.0, c_cream if lit else c_dusk)
+	if lit:
+		# 4-point starburst crown ticks around lit canopy orb (greyscale-legible)
+		draw_rect(Rect2(-1.0, cy - 7.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-7.0, cy - 1.0, 2.0, 2.0), c_gold)
+		draw_rect(Rect2(5.0, cy - 1.0, 2.0, 2.0), c_gold)
+		var rr: float = 9.0 if fred else roundf(9.0 + sin(_pulse_t) * 1.6)
+		draw_arc(Vector2(0.0, -6.0), rr, 0.0, TAU, 16, Color(c_gold, 0.36 if fred else 0.55), 1.0)
+	else:
+		# Void-backed westward canopy pointer chevron on unsealed plinth
+		var pulse_x: float = 0.0 if fred else roundf(sin(_pulse_t) * 1.0)
+		draw_line(Vector2(-8.0 + pulse_x, -5.0), Vector2(-13.0 + pulse_x, -5.0), c_void, 2.0)
 		draw_line(Vector2(-9.0 + pulse_x, -5.0), Vector2(-12.0 + pulse_x, -5.0), c_sky, 1.0)
 		draw_line(Vector2(-10.0 + pulse_x, -7.0), Vector2(-12.0 + pulse_x, -5.0), c_sky, 1.0)
 		draw_line(Vector2(-10.0 + pulse_x, -3.0), Vector2(-12.0 + pulse_x, -5.0), c_sky, 1.0)

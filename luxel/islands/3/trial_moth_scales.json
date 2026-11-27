@@ -283,7 +283,7 @@
         80,
         72
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -293,7 +293,7 @@
       "prop": "ant_lantern_post",
       "pos": [
         344,
-        160
+        152
       ],
       "layer": "sort",
       "flip_x": true,
@@ -316,8 +316,8 @@
       "sheet": "theme_under_root",
       "prop": "glow_spore_cluster",
       "pos": [
-        56,
-        36
+        48,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -352,8 +352,8 @@
       "sheet": "theme_under_root",
       "prop": "pebble_milestone",
       "pos": [
-        144,
-        128
+        128,
+        112
       ],
       "layer": "sort",
       "flip_x": false,

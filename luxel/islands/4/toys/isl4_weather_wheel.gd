@@ -225,7 +225,8 @@ func _draw() -> void:
 	var c_lime: Color = PAL["lime"] as Color
 	var c_mauve: Color = PAL["mauve"] as Color
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 12.0, 3.5)
+	var fred: bool = LxHudFx.flash_reduced()
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 12.0, 4.0)
 	# Outer carved stone wheel frame
 	draw_circle(Vector2.ZERO, 13.0, c_void)
 	draw_circle(Vector2.ZERO, 12.0, c_night)
@@ -240,6 +241,9 @@ func _draw() -> void:
 		var act: bool = (i == state_idx)
 		var st_name: String = states[i]
 		if act:
+			var notch := Vector2(roundf(cos(ang) * 13.0), roundf(sin(ang) * 13.0))
+			draw_rect(Rect2(notch - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+			draw_rect(Rect2(notch - Vector2.ONE, Vector2(2.0, 2.0)), c_cream)
 			draw_circle(sc, 4.0, c_void)
 			draw_circle(sc, 3.0, rim_c)
 		match st_name:
@@ -261,16 +265,17 @@ func _draw() -> void:
 			_:
 				draw_rect(Rect2(sc - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if act else c_mauve)
 
-	# Rotating brass pointer needle
+	# Rotating brass pointer needle (void-backed for greyscale contrast)
 	var tip := Vector2(roundf(cos(_needle_ang) * 9.0), roundf(sin(_needle_ang) * 9.0))
+	draw_line(Vector2.ZERO, tip, c_void, 2.0)
 	draw_line(Vector2.ZERO, tip, c_cream, 1.0)
 	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
 	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), rim_c)
 
-	# 1.0 s weather transition sweep ring
+	# 1.0 s weather transition sweep ring (integer stroke width)
 	if sweep_t > 0.0:
 		var u: float = 1.0 - clampf(sweep_t / SWEEP_DUR, 0.0, 1.0)
 		var r_sw: float = roundf(lerpf(10.0, 30.0, u))
-		var sw_a: float = (1.0 - u) * (0.50 if LxHudFx.flash_reduced() else 0.85)
-		draw_arc(Vector2.ZERO, r_sw, 0.0, TAU, 18, Color(rim_c, sw_a), 1.5)
+		var sw_a: float = (1.0 - u) * (0.48 if fred else 0.85)
+		draw_arc(Vector2.ZERO, r_sw, 0.0, TAU, 18, Color(rim_c, sw_a), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

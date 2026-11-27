@@ -303,7 +303,7 @@
         112,
         36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -372,8 +372,8 @@
       "sheet": "theme_loom",
       "prop": "hanging_silk_banner",
       "pos": [
-        76,
-        36
+        48,
+        32
       ],
       "layer": "sort",
       "flip_x": false,

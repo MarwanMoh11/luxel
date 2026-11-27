@@ -275,8 +275,8 @@
       "sheet": "theme_under_root",
       "prop": "colossal_acorn_dome",
       "pos": [
-        328,
-        112
+        312,
+        104
       ],
       "layer": "sort",
       "shadow": true
@@ -295,7 +295,7 @@
       "sheet": "theme_under_root",
       "prop": "amber_sap_urn",
       "pos": [
-        264,
+        272,
         48
       ],
       "layer": "sort",

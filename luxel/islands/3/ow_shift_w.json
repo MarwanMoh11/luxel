@@ -337,7 +337,7 @@
         80,
         212
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -406,8 +406,8 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        96,
-        248
+        88,
+        256
       ],
       "layer": "sort",
       "flip_x": false,
@@ -430,7 +430,7 @@
       "sheet": "island3_scenery",
       "prop": "canopy_vine_post",
       "pos": [
-        184,
+        176,
         72
       ],
       "layer": "sort",
@@ -443,7 +443,7 @@
       "prop": "canopy_vine_post",
       "pos": [
         248,
-        72
+        64
       ],
       "layer": "sort",
       "flip_x": true,

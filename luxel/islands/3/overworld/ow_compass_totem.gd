@@ -131,23 +131,30 @@ func _draw() -> void:
 		var is_cur: bool = i == turn
 		LxToyDraw.draw_shape_glyph(self, wp, shapes[i], is_cur, cols[i] if is_cur else c_dusk, c_cream if is_cur else c_pine)
 		if is_cur:
-			draw_line(Vector2(0.0, 4.0), wp, c_cream if relit else cols[i], 1.5)
+			draw_line(Vector2(0.0, 4.0), wp, c_cream if relit else cols[i], 2.0)
 
 	# Carved heartwood totem pillar
 	LxToyDraw.draw_bevel_box(self, Rect2(-5.0, -16.0, 10.0, 18.0), c_night, c_pine if not relit else c_apricot, c_gold if relit else c_stone, c_void)
-	# Three clearing pin-pips (W / E / N)
+	# Three clearing pin-pips (W / E / N): raised 2x3 crowned gems vs flat 2x1 recessed slots
 	var clr_keys: Array[String] = ["w", "e", "n"]
 	for j: int in range(3):
-		var px: float = -3.0 + float(j) * 3.0
+		var px: float = -4.0 + float(j) * 3.0
 		var pinned: bool = _is_pinned(clr_keys[j])
-		draw_rect(Rect2(px, -13.0, 2.0, 2.0), c_cream if pinned else c_dusk)
 		if pinned:
-			draw_rect(Rect2(px, -14.0, 2.0, 1.0), c_gold)
-	# Sun crown atop totem
+			draw_rect(Rect2(px, -14.0, 2.0, 3.0), c_gold)
+			draw_rect(Rect2(px, -13.0, 2.0, 2.0), c_cream)
+		else:
+			draw_rect(Rect2(px, -12.0, 2.0, 1.0), c_dusk)
+	# Sun crown atop totem (+ 4-point starburst spikes when relit & steerable)
 	draw_rect(Rect2(-3.0, -19.0, 6.0, 3.0), c_void)
 	draw_rect(Rect2(-2.0, -18.0, 4.0, 2.0), c_cream if relit else c_gold)
+	if relit:
+		draw_rect(Rect2(-1.0, -21.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-5.0, -18.0, 2.0, 1.0), c_gold)
+		draw_rect(Rect2(3.0, -18.0, 2.0, 1.0), c_gold)
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 18, c_cream if relit else c_lime, 1.0)
+		var ring_c: Color = Color(c_cream if relit else c_lime, 0.50 if LxHudFx.flash_reduced() else 1.0)
+		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 18, ring_c, 1.0)
 	_draw_signal_pulses()

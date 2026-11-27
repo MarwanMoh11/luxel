@@ -65,7 +65,8 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 6.0, 48.0 if wings_cast else 24.0, 0.54 if wings_cast else 0.30)
+	var lit_i: float = 0.48 if LxHudFx.flash_reduced() else 0.54
+	return Vector4(pos.x, pos.y - 6.0, 48.0 if wings_cast else 24.0, lit_i if wings_cast else 0.30)
 
 
 func _draw() -> void:
@@ -78,26 +79,28 @@ func _draw() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var c_ice: Color = PAL["ice"] as Color
+	var red: bool = LxHudFx.flash_reduced()
 
 	# Double-winged shadow cast onto north sanctuary wall once twin braziers burn!
 	if _wing_t >= 0.25:
 		var span: float = maxf(10.0, roundf(34.0 * _wing_t))
 		var lift: float = maxf(4.0, roundf(24.0 * _wing_t))
 		var inner_x: float = maxf(6.0, span - 6.0)
+		var mid_y: float = roundf(-4.0 - lift * 0.5)
 		var l_wing := PackedVector2Array([
 			Vector2(-4.0, -14.0), Vector2(-span, -14.0 - lift),
-			Vector2(-inner_x, -4.0 - lift * 0.5), Vector2(-5.0, -4.0),
+			Vector2(-inner_x, mid_y), Vector2(-5.0, -4.0),
 		])
 		var r_wing := PackedVector2Array([
 			Vector2(4.0, -14.0), Vector2(span, -14.0 - lift),
-			Vector2(inner_x, -4.0 - lift * 0.5), Vector2(5.0, -4.0),
+			Vector2(inner_x, mid_y), Vector2(5.0, -4.0),
 		])
 		draw_colored_polygon(l_wing, Color(c_void, 0.82))
 		draw_colored_polygon(r_wing, Color(c_void, 0.82))
-		draw_polyline(l_wing, Color(c_plum, 0.70), 1.0)
-		draw_polyline(r_wing, Color(c_plum, 0.70), 1.0)
+		draw_polyline(l_wing, Color(c_plum, 0.55 if red else 0.70), 1.0)
+		draw_polyline(r_wing, Color(c_plum, 0.55 if red else 0.70), 1.0)
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	# Amber fossil monolith encasing Hollow Wick silhouette
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -20.0, 18.0, 26.0), c_wine, c_apricot, c_gold, c_void)
 	draw_rect(Rect2(-6.0, -17.0, 12.0, 20.0), c_apricot)
@@ -106,7 +109,14 @@ func _draw() -> void:
 	draw_rect(Rect2(-4.0, -8.0, 8.0, 8.0), c_void)
 	draw_rect(Rect2(-2.0, -12.0, 1.0, 1.0), c_ice)
 	draw_rect(Rect2(1.0, -12.0, 1.0, 1.0), c_ice)
-	# Unlit seed-lantern held at side
+	# Unlit seed-lantern held at side; crowned 4-point starburst when wings awaken (greyscale-distinct)
 	draw_rect(Rect2(3.0, -7.0, 3.0, 4.0), c_dusk)
 	draw_rect(Rect2(4.0, -6.0, 1.0, 2.0), c_cream if wings_cast else c_plum)
+	if wings_cast:
+		draw_rect(Rect2(-4.0, -22.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -21.0, 6.0, 1.0), c_cream)
+		draw_rect(Rect2(4.0, -8.0, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(4.0, -3.0, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(2.0, -5.0, 1.0, 1.0), c_cream)
+		draw_rect(Rect2(6.0, -5.0, 1.0, 1.0), c_cream)
 	_draw_signal_pulses()

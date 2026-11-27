@@ -13,6 +13,7 @@ var var_scope: String = "room:3:oak_r6b"
 var sap_scope: String = "dungeon:hollow_oak"
 var _cd: float = 0.0
 var _pulse_t: float = 0.0
+var _deny_t: float = 0.0
 
 
 func _toy_setup() -> void:
@@ -24,6 +25,7 @@ func _toy_setup() -> void:
 	radius = 12.0
 	_cd = 0.0
 	_pulse_t = 0.0
+	_deny_t = 0.0
 	if Lx.vars != null and str(Lx.vars.get_var(var_scope, var_name, "")).is_empty():
 		Lx.vars.set_var(var_scope, var_name, 0)
 	queue_redraw()
@@ -44,6 +46,7 @@ func trigger_turn() -> bool:
 		return false
 	_cd = 0.30
 	if not is_lubricated():
+		_deny_t = 0.35
 		_emit_sfx("denied")
 		if Lx.events != null and LxStrings.has_id("ISL3_OAK_DRY_ROTOR"):
 			Lx.events.narration_requested.emit("ISL3_OAK_DRY_ROTOR", "narration", 2.8)
@@ -79,10 +82,16 @@ func on_hit(hit: LxHit) -> bool:
 
 func tick(dt: float) -> void:
 	super.tick(dt)
+	var dirty: bool = false
 	if _cd > 0.0:
 		_cd = maxf(0.0, _cd - dt)
 	if _pulse_t > 0.0:
 		_pulse_t = maxf(0.0, _pulse_t - dt)
+		dirty = true
+	if _deny_t > 0.0:
+		_deny_t = maxf(0.0, _deny_t - dt)
+		dirty = true
+	if dirty:
 		queue_redraw()
 
 
@@ -101,7 +110,8 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if not active or not is_lubricated():
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 2.0, 38.0 if _pulse_t > 0.0 else 28.0, 0.60 if _pulse_t > 0.0 else 0.40)
+	var burst_i: float = 0.48 if LxHudFx.flash_reduced() else 0.60
+	return Vector4(pos.x, pos.y - 2.0, 38.0 if _pulse_t > 0.0 else 28.0, burst_i if _pulse_t > 0.0 else 0.40)
 
 
 func _draw() -> void:
@@ -109,15 +119,39 @@ func _draw() -> void:
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_jade: Color = PAL["jade"] as Color
+	var c_coral: Color = PAL["coral"] as Color
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var lub: bool = is_lubricated()
 	var rot: int = get_hub_rot()
+	var red: bool = LxHudFx.flash_reduced()
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -7.0, 12.0, 13.0), c_night, c_dusk, c_gold if lub else c_dusk, c_void)
-	# Amber crystal prism diamond inside brass cradle
+	# Amber crystal prism diamond inside brass cradle + raised crown studs when lubricated
 	var col: Color = c_gold if (lub and rot == 1) else (c_apricot if lub else c_dusk)
-	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -1.0), 1, lub, col, c_cream if _pulse_t > 0.0 else c_jade)
+	var hi_c: Color = c_cream if (_pulse_t > 0.0 and not red) else (c_gold if lub else c_jade)
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -1.0), 1, lub, col, hi_c)
+	if lub:
+		# Raised crown studs + directional E (>) / W (<) pointer above plinth
+		draw_rect(Rect2(-5.0, -8.0, 2.0, 2.0), c_gold)
+		draw_rect(Rect2(3.0, -8.0, 2.0, 2.0), c_gold)
+		if rot == 0:
+			draw_rect(Rect2(-1.0, -11.0, 2.0, 1.0), c_cream)
+			draw_rect(Rect2(0.0, -10.0, 2.0, 1.0), c_gold)
+			draw_rect(Rect2(-1.0, -9.0, 2.0, 1.0), c_cream)
+		else:
+			draw_rect(Rect2(-1.0, -11.0, 2.0, 1.0), c_cream)
+			draw_rect(Rect2(-2.0, -10.0, 2.0, 1.0), c_gold)
+			draw_rect(Rect2(-1.0, -9.0, 2.0, 1.0), c_cream)
+	else:
+		# Recessed dry bar across top indicating locked/unlubricated rotor
+		draw_rect(Rect2(-4.0, -5.0, 8.0, 1.0), c_void)
+		if _deny_t > 0.0:
+			var xc: Color = Color(c_coral, 0.55 if red else 1.0)
+			draw_line(Vector2(-4.0, -5.0), Vector2(4.0, 3.0), c_void, 3.0)
+			draw_line(Vector2(4.0, -5.0), Vector2(-4.0, 3.0), c_void, 3.0)
+			draw_line(Vector2(-4.0, -5.0), Vector2(4.0, 3.0), xc, 1.0)
+			draw_line(Vector2(4.0, -5.0), Vector2(-4.0, 3.0), xc, 1.0)
 	_draw_signal_pulses()

@@ -89,8 +89,9 @@ func choose_verdict() -> bool:
 		if LxStrings.has_id(sk):
 			Lx.events.narration_requested.emit(sk, "narration", 3.4)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
-		var col: Color = (PAL["lime"] if verdict == "mercy" else PAL["coral"]) as Color
-		(Lx.player as LxWick).spawn_ring(pos, 5.0, 26.0, 0.36, col, 1.8)
+		var red: bool = LxHudFx.flash_reduced()
+		var col: Color = Color((PAL["lime"] if verdict == "mercy" else PAL["coral"]) as Color, 0.65 if red else 1.0)
+		(Lx.player as LxWick).spawn_ring(pos, 5.0, 26.0, 0.36, col, 1.0 if red else 2.0)
 	queue_redraw()
 	return true
 
@@ -140,7 +141,8 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if lit:
-		return Vector4(pos.x, pos.y - 4.0, 62.0 if _pulse_t > 0.0 else 48.0, 0.88 if _pulse_t > 0.0 else 0.68)
+		var burst_i: float = 0.72 if LxHudFx.flash_reduced() else 0.88
+		return Vector4(pos.x, pos.y - 4.0, 62.0 if _pulse_t > 0.0 else 48.0, burst_i if _pulse_t > 0.0 else 0.68)
 	if _can_choose():
 		return Vector4(pos.x, pos.y - 2.0, 24.0, 0.28)
 	return Vector4.ZERO
@@ -190,23 +192,42 @@ func _draw() -> void:
 	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, 2.0), 1 if is_mercy else 0, lit, rim_c, c_cream if lit else c_gold)
 
 	if locked_out:
-		# Ash cap sealing the unchosen brazier
+		# Ash cap + diagonal void-backed X seal (unmistakable locked-out silhouette in greyscale)
 		draw_rect(Rect2(-6.0, -5.0, 12.0, 3.0), c_dusk)
+		draw_line(Vector2(-5.0, -8.0), Vector2(5.0, -2.0), c_void, 3.0)
+		draw_line(Vector2(5.0, -8.0), Vector2(-5.0, -2.0), c_void, 3.0)
+		draw_line(Vector2(-5.0, -8.0), Vector2(5.0, -2.0), c_stone, 1.0)
+		draw_line(Vector2(5.0, -8.0), Vector2(-5.0, -2.0), c_stone, 1.0)
 		return
 
 	if lit:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 9.0))
+		var red: bool = LxHudFx.flash_reduced()
+		var bob: float = 0.0 if red else roundf(sin(_clock * 9.0))
 		var outer: Color = c_jade if is_mercy else c_coral
 		var mid: Color = c_lime if is_mercy else c_apricot
-		draw_rect(Rect2(-5.0, -11.0 + bob, 10.0, 7.0), outer)
-		draw_rect(Rect2(-3.0, -13.0 + bob, 6.0, 8.0), mid)
-		draw_rect(Rect2(-2.0, -10.0 + bob, 4.0, 4.0), c_gold)
-		draw_rect(Rect2(-1.0, -9.0 + bob, 2.0, 2.0), c_cream)
-		if _pulse_t > 0.0 and not LxHudFx.flash_reduced():
+		if is_mercy:
+			# Mercy: wide crowned twin-leaf blossom flame silhouette
+			draw_rect(Rect2(-6.0, -10.0 + bob, 12.0, 6.0), outer)
+			draw_rect(Rect2(-4.0, -12.0 + bob, 8.0, 7.0), mid)
+			draw_rect(Rect2(-2.0, -14.0 + bob, 4.0, 3.0), c_lime)
+			draw_rect(Rect2(-2.0, -10.0 + bob, 4.0, 4.0), c_gold)
+			draw_rect(Rect2(-1.0, -9.0 + bob, 2.0, 2.0), c_cream)
+		else:
+			# Fire: tall jagged twin-spired flame spear silhouette
+			draw_rect(Rect2(-4.0, -11.0 + bob, 8.0, 7.0), outer)
+			draw_rect(Rect2(-3.0, -14.0 + bob, 2.0, 6.0), mid)
+			draw_rect(Rect2(1.0, -13.0 + bob, 2.0, 5.0), mid)
+			draw_rect(Rect2(-1.0, -15.0 + bob, 2.0, 9.0), c_gold)
+			draw_rect(Rect2(-1.0, -10.0 + bob, 2.0, 3.0), c_cream)
+		if _pulse_t > 0.0:
 			var u: float = 1.0 - clampf(_pulse_t / 0.50, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -6.0), roundf(lerpf(8.0, 20.0, u)), 0.0, TAU, 16, c_cream, 1.0)
+			draw_arc(Vector2(0.0, -6.0), roundf(lerpf(8.0, 20.0, u)), 0.0, TAU, 16, Color(c_cream, 0.45 if red else 1.0), 1.0)
 	elif ready:
-		# Inviting ember seed waiting for verdict
-		draw_rect(Rect2(-3.0, -7.0, 6.0, 3.0), c_jade if is_mercy else c_coral)
-		draw_rect(Rect2(-1.0, -8.0, 2.0, 2.0), c_gold)
+		# Inviting ember seed waiting for verdict (rounded leaf bud for Mercy vs sharp spire for Fire)
+		if is_mercy:
+			draw_rect(Rect2(-4.0, -7.0, 8.0, 3.0), c_jade)
+			draw_rect(Rect2(-2.0, -8.0, 4.0, 2.0), c_gold)
+		else:
+			draw_rect(Rect2(-3.0, -7.0, 6.0, 3.0), c_coral)
+			draw_rect(Rect2(-1.0, -10.0, 2.0, 4.0), c_gold)
 	_draw_signal_pulses()

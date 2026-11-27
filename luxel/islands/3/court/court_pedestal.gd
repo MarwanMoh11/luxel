@@ -43,7 +43,8 @@ func place_relic() -> bool:
 	_emit_sfx("ba_court_gavel")
 	_emit_gust(48.0, 34.0)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
-		(Lx.player as LxWick).spawn_ring(pos, 4.0, 20.0, 0.32, PAL["gold"] as Color, 1.5)
+		var red: bool = LxHudFx.flash_reduced()
+		(Lx.player as LxWick).spawn_ring(pos, 4.0, 20.0, 0.32, Color(PAL["gold"] as Color, 0.65 if red else 1.0), 1.0 if red else 2.0)
 	queue_redraw()
 	return true
 
@@ -84,7 +85,8 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if not active or not placed:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 4.0, 44.0 if _pulse_t > 0.0 else 32.0, 0.72 if _pulse_t > 0.0 else 0.48)
+	var burst_i: float = 0.58 if LxHudFx.flash_reduced() else 0.72
+	return Vector4(pos.x, pos.y - 4.0, 44.0 if _pulse_t > 0.0 else 32.0, burst_i if _pulse_t > 0.0 else 0.48)
 
 
 func save_state() -> Dictionary:
@@ -122,11 +124,20 @@ func _draw() -> void:
 	draw_rect(Rect2(-5.0, -5.0, 10.0, 2.0), c_apricot if placed else c_plum)
 
 	if not placed:
-		# Recessed socket outline showing which relic belongs here
-		draw_rect(Rect2(-3.0, -4.0, 6.0, 4.0), c_night)
-		draw_rect(Rect2(-2.0, -3.0, 4.0, 2.0), c_jade if relic == "acorn" else c_plum)
+		# Recessed socket silhouettes distinct by shape in greyscale: acorn cup vs wide shuttle boat
+		if relic == "acorn":
+			draw_rect(Rect2(-3.0, -5.0, 6.0, 5.0), c_night)
+			draw_rect(Rect2(-1.0, -6.0, 2.0, 1.0), c_stone)
+			draw_rect(Rect2(-2.0, -3.0, 4.0, 2.0), c_jade)
+		else:
+			draw_rect(Rect2(-5.0, -4.0, 10.0, 3.0), c_night)
+			draw_rect(Rect2(-4.0, -3.0, 8.0, 1.0), c_plum)
+			draw_rect(Rect2(-2.0, -4.0, 4.0, 3.0), c_dusk)
 		return
 
+	# Raised corner brass studs on plinth rim when relic is placed
+	draw_rect(Rect2(-7.0, -4.0, 2.0, 2.0), c_gold)
+	draw_rect(Rect2(5.0, -4.0, 2.0, 2.0), c_gold)
 	if relic == "acorn":
 		# Heartwood Acorn glowing emerald & gold
 		draw_rect(Rect2(-4.0, -12.0, 8.0, 7.0), c_void)
@@ -141,7 +152,8 @@ func _draw() -> void:
 		draw_rect(Rect2(-4.0, -10.0, 8.0, 3.0), c_apricot)
 		draw_rect(Rect2(-3.0, -10.0, 6.0, 2.0), c_gold)
 		draw_rect(Rect2(-1.0, -9.0, 2.0, 1.0), c_cream)
-	if _pulse_t > 0.0 and not LxHudFx.flash_reduced():
+	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.42, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(6.0, 16.0, u)), 0.0, TAU, 16, c_cream, 1.0)
+		var ring_c: Color = Color(c_gold, 0.50) if LxHudFx.flash_reduced() else c_cream
+		draw_arc(Vector2(0.0, -6.0), roundf(lerpf(6.0, 16.0, u)), 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()

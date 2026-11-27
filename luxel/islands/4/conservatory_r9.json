@@ -362,7 +362,7 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        208,
+        200,
         48
       ],
       "layer": "sort",
@@ -373,7 +373,7 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        240,
+        248,
         48
       ],
       "layer": "sort",
@@ -384,8 +384,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        368,
-        168
+        360,
+        152
       ],
       "layer": "sort",
       "flip_x": false,

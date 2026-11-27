@@ -453,8 +453,8 @@
       "sheet": "theme_under_root",
       "prop": "ant_lantern_post",
       "pos": [
-        96,
-        208
+        104,
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -465,7 +465,7 @@
       "sheet": "theme_under_root",
       "prop": "ant_lantern_post",
       "pos": [
-        416,
+        400,
         152
       ],
       "layer": "sort",

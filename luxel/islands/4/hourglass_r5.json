@@ -222,7 +222,7 @@
       "kind": "boss_shear_keeper",
       "pos": [
         248,
-        152
+        160
       ],
       "zone": "hg_r5_lawn"
     }
@@ -232,7 +232,7 @@
       "kind": "circle",
       "pos": [
         248,
-        152
+        160
       ],
       "radius": 52,
       "style": "ritual"
@@ -275,7 +275,7 @@
       "prop": "hourglass_floor_dial",
       "pos": [
         248,
-        152
+        160
       ],
       "layer": "ground",
       "flip_x": false,
@@ -289,7 +289,7 @@
         248,
         46
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

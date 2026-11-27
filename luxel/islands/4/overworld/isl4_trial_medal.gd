@@ -96,15 +96,33 @@ func _draw() -> void:
 	elif medal_tier >= 3:
 		c_medal = PAL["gold"] as Color
 
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -10.0, 12.0, 14.0), c_night, c_dusk, c_stone, c_void)
-	# Winged medal disc
+	var fred: bool = LxHudFx.flash_reduced()
+	var c_cream: Color = PAL["cream"] as Color
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 7.0, 3.0)
+	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, -10.0, 12.0, 14.0), c_night, c_dusk, c_medal if medal_tier > 0 else c_stone, c_void)
+	# Winged medal disc with tier-distinct silhouette (stubs=Bronze, wings=Silver, wings+crown=Gold)
+	if medal_tier >= 1:
+		var ww: float = 3.0 if medal_tier >= 2 else 2.0
+		draw_rect(Rect2(-4.0 - ww, -6.0, ww, 3.0), c_void)
+		draw_rect(Rect2(4.0, -6.0, ww, 3.0), c_void)
+		draw_rect(Rect2(-3.0 - ww, -5.0, ww, 2.0), c_medal)
+		draw_rect(Rect2(3.0, -5.0, ww, 2.0), c_medal)
+	if medal_tier >= 3:
+		draw_rect(Rect2(-2.0, -10.0, 4.0, 3.0), c_void)
+		draw_rect(Rect2(-1.0, -10.0, 2.0, 2.0), c_cream)
 	draw_circle(Vector2(0.0, -4.0), 4.0, c_void)
-	draw_circle(Vector2(0.0, -4.0), 3.0, c_medal)
+	draw_circle(Vector2(0.0, -4.0), 3.0, c_medal if medal_tier > 0 else c_dusk)
 	if medal_tier > 0:
-		draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), PAL["cream"] as Color)
-		for p: int in range(medal_tier):
-			draw_rect(Rect2(-3.0 + float(p) * 3.0, 1.0, 2.0, 2.0), c_medal)
+		draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), c_cream)
+	# 3 permanent tier sockets along plinth bottom (raised 2x2 earned vs flat 2x1 empty)
+	for p: int in range(3):
+		var sx: float = -4.0 + float(p) * 3.0
+		if p < medal_tier:
+			draw_rect(Rect2(sx, 1.0, 2.0, 2.0), c_medal)
+			draw_rect(Rect2(sx, 1.0, 2.0, 1.0), c_cream)
+		else:
+			draw_rect(Rect2(sx, 2.0, 2.0, 1.0), c_void)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.85, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -4.0), roundf(lerpf(5.0, 18.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.2)
+		var fa: float = (1.0 - u) * (0.48 if fred else 0.88)
+		draw_arc(Vector2(0.0, -4.0), roundf(lerpf(5.0, 18.0, u)), 0.0, TAU, 16, Color(c_cream, fa), 1.0)

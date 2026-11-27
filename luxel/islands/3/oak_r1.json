@@ -387,8 +387,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        248,
-        184
+        256,
+        192
       ],
       "layer": "sort",
       "flip_x": true,

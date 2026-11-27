@@ -215,25 +215,42 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_stone: Color = PAL["stone"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	# Outer sunken cistern buoy well
 	draw_rect(Rect2(-16.0, -16.0, 32.0, 32.0), c_void)
 	draw_rect(Rect2(-15.0, -15.0, 30.0, 30.0), c_deep if floating else c_night)
-	draw_rect(Rect2(-14.0, -14.0, 28.0, 28.0), Color(c_sky, 0.25 if floating else 0.08))
+	draw_rect(Rect2(-14.0, -14.0, 28.0, 28.0), Color(c_sky, (0.18 if fred else 0.25) if floating else 0.08))
 
-	# Rising wooden/bronze buoy raft pad
+	# Rising wooden/bronze buoy raft pad + grounded dry chocks vs floating foam collar
 	var lift_y: float = -roundf(_lift_vis * 5.0)
 	var pad := Rect2(-12.0, -12.0 + lift_y, 24.0, 24.0)
+	if floating:
+		draw_rect(Rect2(-13.0, -13.0 + lift_y, 26.0, 26.0), Color(c_ice, 0.34 if fred else 0.55))
+	else:
+		draw_rect(Rect2(-13.0, -2.0, 2.0, 4.0), c_stone)
+		draw_rect(Rect2(11.0, -2.0, 2.0, 4.0), c_stone)
 	LxToyDraw.draw_bevel_box(self, pad, c_night, PAL["dusk"] as Color, c_gold if latched else (c_sky if floating else c_stone), c_void)
 
-	# Four corner elevation latch pins (snap bright gold when armed/latched!)
-	var pin_c: Color = c_cream if _flash_t > 0.0 else (c_gold if latched else (c_ice if pin_armed else PAL["mauve"] as Color))
+	# Four corner elevation latch pins: recessed sockets (unarmed) vs raised pins (armed) vs locked 4x4 clamps (latched)
+	var flash_hi: bool = _flash_t > 0.0 and not fred
+	var pin_c: Color = c_cream if flash_hi else (c_gold if latched else (c_ice if pin_armed else PAL["mauve"] as Color))
 	for off_p: Vector2 in [Vector2(-13.0, -13.0), Vector2(10.0, -13.0), Vector2(-13.0, 10.0), Vector2(10.0, 10.0)]:
-		draw_rect(Rect2(off_p, Vector2(3.0, 3.0)), c_void)
-		draw_rect(Rect2(off_p + Vector2.ONE, Vector2(2.0, 2.0)), pin_c)
+		if latched:
+			draw_rect(Rect2(off_p - Vector2(0.0, 1.0), Vector2(4.0, 4.0)), c_void)
+			draw_rect(Rect2(off_p, Vector2(3.0, 3.0)), pin_c)
+			draw_rect(Rect2(off_p + Vector2.ONE, Vector2.ONE), c_cream)
+		elif pin_armed:
+			draw_rect(Rect2(off_p, Vector2(3.0, 3.0)), c_void)
+			draw_rect(Rect2(off_p + Vector2.ONE, Vector2(2.0, 2.0)), pin_c)
+		else:
+			draw_rect(Rect2(off_p, Vector2(3.0, 3.0)), c_void)
+			draw_rect(Rect2(off_p + Vector2.ONE, Vector2(2.0, 1.0)), pin_c)
 
-	# Center alignment target diamond
+	# Center alignment target ring + 4-way cardinal lock ticks when latched
 	var mid_c: Color = c_gold if (latched or mirror_docked) else c_sky
 	draw_arc(Vector2(0.0, lift_y), 8.0, 0.0, TAU, 16, mid_c, 1.0)
 	if latched:
-		draw_arc(Vector2(0.0, lift_y), 13.0, 0.0, TAU, 18, Color(c_gold, 0.72), 1.2)
+		draw_arc(Vector2(0.0, lift_y), 13.0, 0.0, TAU, 18, Color(c_gold, 0.42 if fred else 0.72), 1.0 if fred else 2.0)
+		for tick_p: Vector2 in [Vector2(-1.0, lift_y - 10.0), Vector2(-1.0, lift_y + 8.0), Vector2(-10.0, lift_y - 1.0), Vector2(8.0, lift_y - 1.0)]:
+			draw_rect(Rect2(tick_p, Vector2(2.0, 2.0)), c_cream)
 	_draw_signal_pulses()

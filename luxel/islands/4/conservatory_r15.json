@@ -356,7 +356,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "brass_sundial_pedestal",
       "pos": [
-        88,
+        96,
         224
       ],
       "layer": "sort",
@@ -370,7 +370,7 @@
         208,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },
@@ -424,8 +424,8 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        64,
-        176
+        56,
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -436,8 +436,8 @@
       "sheet": "island4_scenery",
       "prop": "conservatory_pillar",
       "pos": [
-        240,
-        160
+        232,
+        152
       ],
       "layer": "sort",
       "flip_x": true,

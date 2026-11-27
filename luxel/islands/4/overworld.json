@@ -1185,7 +1185,7 @@
         544,
         262
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -1266,7 +1266,7 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        636,
+        624,
         288
       ],
       "layer": "sort",
@@ -1362,7 +1362,7 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        244,
+        256,
         520
       ],
       "layer": "sort",
@@ -1509,7 +1509,7 @@
         524,
         528
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -1521,7 +1521,7 @@
         676,
         528
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
@@ -1542,7 +1542,7 @@
       "sheet": "island4_scenery",
       "prop": "mossy_planter_urn",
       "pos": [
-        564,
+        576,
         512
       ],
       "layer": "sort",
@@ -1725,7 +1725,7 @@
         1048,
         248
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.25
@@ -1759,7 +1759,7 @@
       "prop": "blooming_lotus",
       "pos": [
         328,
-        144
+        136
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1854,8 +1854,8 @@
       "sheet": "island4_scenery",
       "prop": "flooded_statue",
       "pos": [
-        656,
-        296
+        664,
+        280
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1891,7 +1891,7 @@
       "prop": "blooming_lotus",
       "pos": [
         168,
-        360
+        368
       ],
       "layer": "sort",
       "flip_x": false,
@@ -2178,8 +2178,8 @@
       "sheet": "island4_scenery",
       "prop": "heron_lantern_post",
       "pos": [
-        196,
-        548
+        160,
+        576
       ],
       "layer": "sort",
       "flip_x": false,
@@ -2250,8 +2250,8 @@
       "sheet": "island4_scenery",
       "prop": "floating_lantern_lily",
       "pos": [
-        144,
-        548
+        160,
+        512
       ],
       "layer": "sort",
       "flip_x": true,
@@ -2263,7 +2263,7 @@
       "prop": "blooming_lotus",
       "pos": [
         136,
-        524
+        496
       ],
       "layer": "sort",
       "flip_x": false,

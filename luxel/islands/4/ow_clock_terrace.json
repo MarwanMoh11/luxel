@@ -484,7 +484,7 @@
         288,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },
@@ -581,7 +581,7 @@
       "prop": "masked_statue_plinth",
       "pos": [
         488,
-        176
+        168
       ],
       "layer": "sort",
       "flip_x": false,

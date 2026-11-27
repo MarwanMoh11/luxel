@@ -344,7 +344,7 @@
         352,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -438,7 +438,7 @@
       "prop": "spindle_totem",
       "pos": [
         176,
-        240
+        224
       ],
       "layer": "sort",
       "flip_x": false,

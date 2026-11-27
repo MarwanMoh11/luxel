@@ -320,7 +320,7 @@
         368,
         198
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
@@ -426,7 +426,7 @@
       "prop": "canopy_vine_post",
       "pos": [
         248,
-        72
+        64
       ],
       "layer": "sort",
       "flip_x": true,

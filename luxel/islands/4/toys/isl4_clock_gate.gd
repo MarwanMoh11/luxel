@@ -23,7 +23,6 @@ var max_pip: int = 6
 var state: int = State.CLOSED
 var current_hour: int = 1
 var _phys_open: bool = false
-var _anim_open: float = 0.0
 var _warn_tick_cd: float = 0.0
 var _vars_bound: LxWorldState = null
 
@@ -53,7 +52,6 @@ func _toy_setup() -> void:
 	_warn_tick_cd = 0.0
 	_bind_vars()
 	_evaluate_gate(false)
-	_anim_open = 1.0 if _phys_open else 0.0
 	queue_redraw()
 
 
@@ -146,10 +144,6 @@ func tick(dt: float) -> void:
 		queue_redraw()
 	else:
 		_warn_tick_cd = 0.0
-	var target_a: float = 1.0 if _phys_open else 0.0
-	if not is_equal_approx(_anim_open, target_a):
-		_anim_open = move_toward(_anim_open, target_a, dt * 6.5)
-		queue_redraw()
 
 
 func _check_pin_sconce() -> void:
@@ -267,8 +261,9 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	var rustle: float = 0.0
-	if state == State.WARNING and not LxHudFx.flash_reduced():
+	if state == State.WARNING and not fred:
 		rustle = 1.0 if int(floorf(_clock * 14.0)) % 2 == 0 else -1.0
 
 	var c_teal: Color = PAL["teal"] as Color
@@ -281,10 +276,16 @@ func _draw() -> void:
 			draw_line(Vector2(x0 + jb, 0.0), Vector2(x0 + w - jb, 0.0), Color(c_gold, 0.38), 1.0)
 			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, jb, h), c_pine, c_teal, post_hi, c_void)
 			LxToyDraw.draw_bevel_box(self, Rect2(x0 + w - jb, y0, jb, h), c_pine, c_teal, post_hi, c_void)
+			if state == State.PINNED_OPEN:
+				draw_rect(Rect2(x0 + 1.0, y0 - 2.0, jb - 2.0, 2.0), c_cream)
+				draw_rect(Rect2(x0 + w - jb + 1.0, y0 - 2.0, jb - 2.0, 2.0), c_cream)
 		else:
 			draw_line(Vector2(0.0, y0 + jb), Vector2(0.0, y0 + h - jb), Color(c_gold, 0.38), 1.0)
 			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, jb), c_pine, c_teal, post_hi, c_void)
 			LxToyDraw.draw_bevel_box(self, Rect2(x0, y0 + h - jb, w, jb), c_pine, c_teal, post_hi, c_void)
+			if state == State.PINNED_OPEN:
+				draw_rect(Rect2(x0 - 2.0, y0 + 1.0, 2.0, jb - 2.0), c_cream)
+				draw_rect(Rect2(x0 + w, y0 + 1.0, 2.0, jb - 2.0), c_cream)
 		_draw_brass_plaque(Vector2(0.0, y0 + 3.0 if h > w else 0.0))
 		return
 
@@ -305,7 +306,7 @@ func _draw() -> void:
 			draw_rect(Rect2(x0 + 2.0 + rustle, gy - 2.0, 2.0, 1.0), c_lime)
 			draw_rect(Rect2(x0 + w - 6.0 + rustle, gy - 1.0, 3.0, 2.0), c_pine)
 			draw_rect(Rect2(x0 + 1.0 + rustle, gy, w - 2.0, 2.0), c_void)
-			draw_rect(Rect2(x0 + 2.0 + rustle, gy, w - 4.0, 1.0), c_cream if (bi % 2 == 0 and state == State.WARNING) else bar_c)
+			draw_rect(Rect2(x0 + 2.0 + rustle, gy, w - 4.0, 1.0), c_cream if (bi % 2 == 0 and state == State.WARNING and not fred) else bar_c)
 			gy += 7.0
 			bi += 1
 	else:
@@ -318,6 +319,10 @@ func _draw() -> void:
 			draw_rect(Rect2(gx + rustle, y0 + 1.0, 2.0, h - 2.0), c_void)
 			draw_rect(Rect2(gx + rustle, y0 + 2.0, 1.0, h - 4.0), bar_c)
 			gx += 7.0
+	if state == State.WARNING:
+		# Static warning corner brackets (clear in greyscale and under flash_reduced)
+		draw_rect(Rect2(x0 - 1.0 + rustle, y0 - 1.0, 3.0, 2.0), c_cream)
+		draw_rect(Rect2(x0 + w - 2.0 + rustle, y0 + h - 1.0, 3.0, 2.0), c_cream)
 	# Central ornate brass clock-lock ring framing the hour plaque
 	draw_circle(Vector2(rustle, 0.0), 7.0, c_void)
 	draw_circle(Vector2(rustle, 0.0), 6.0, c_wine)
@@ -349,9 +354,11 @@ func _draw_brass_plaque(center: Vector2) -> void:
 		var ix: float = px0 + 2.0 + float(i) * 2.0
 		var is_open_h: bool = open_on.has(h_i)
 		var is_now: bool = (h_i == current_hour)
-		var col_p: Color = c_mauve
 		if is_now:
-			col_p = c_coral if state == State.WARNING else c_cream
+			var now_c: Color = c_coral if state == State.WARNING else c_cream
+			draw_rect(Rect2(ix, py0 + 1.0, 1.0, 4.0), now_c)
+			draw_rect(Rect2(ix, py0 - 1.0, 1.0, 1.0), now_c)
 		elif is_open_h:
-			col_p = c_gold
-		draw_rect(Rect2(ix, py0 + 2.0, 1.0, 2.0 if (is_open_h or is_now) else 1.0), col_p)
+			draw_rect(Rect2(ix, py0 + 2.0, 1.0, 2.0), c_gold)
+		else:
+			draw_rect(Rect2(ix, py0 + 3.0, 1.0, 1.0), c_mauve)

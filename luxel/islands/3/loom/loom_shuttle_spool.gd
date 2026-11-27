@@ -173,10 +173,23 @@ func _draw() -> void:
 	super._draw()
 	if wire_tied and thread_state != "cut":
 		var rel: Vector2 = (_current_wire_end() - pos).round()
+		var c_void: Color = PAL["void"] as Color
 		var c_gold: Color = PAL["gold"] as Color
 		var c_cream: Color = PAL["cream"] as Color
+		var red: bool = LxHudFx.flash_reduced()
 		if _weave_flash_t > 0.0:
-			draw_line(Vector2.ZERO, rel, c_cream, 2.0)
-		# Knot jewel at the tied hook endpoint
-		draw_rect(Rect2(rel - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), PAL["void"] as Color)
-		draw_rect(Rect2(rel - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if _weave_flash_t > 0.0 else c_gold)
+			draw_line(Vector2.ZERO, rel, Color(c_cream, 0.55 if red else 1.0), 1.0 if red else 2.0)
+		# Midpoint directional chevron along custom-woven wire (greyscale-legible)
+		if rel.length_squared() >= 144.0:
+			var mid: Vector2 = (rel * 0.5).round()
+			var d: Vector2 = rel.normalized()
+			var p := Vector2(-d.y, d.x)
+			var tip: Vector2 = (mid + d * 3.0).round()
+			var w1: Vector2 = (mid - d * 2.0 + p * 3.0).round()
+			var w2: Vector2 = (mid - d * 2.0 - p * 3.0).round()
+			draw_line(w1, tip, c_void, 3.0)
+			draw_line(w2, tip, c_void, 3.0)
+			draw_line(w1, tip, c_cream, 1.0)
+			draw_line(w2, tip, c_cream, 1.0)
+		# Raised diamond knot jewel at the tied hook endpoint
+		LxToyDraw.draw_shape_glyph(self, rel, 1, true, c_gold, c_cream if (_weave_flash_t > 0.0 and not red) else c_gold)

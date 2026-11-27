@@ -87,16 +87,32 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(0.0, 4.0), 16.0, 3.0)
-	# Twin gilded clockwork lanterns flanking the heist threshold
+	# Twin gilded clockwork lanterns flanking the heist threshold (tall flames once started vs recessed caps)
 	for sx: float in [-14.0, 10.0]:
 		LxToyDraw.draw_bevel_box(self, Rect2(sx, -14.0, 4.0, 18.0), c_night, c_dusk, c_gold, c_void)
-		draw_rect(Rect2(sx, -16.0, 4.0, 3.0), c_cream if started else c_rose)
+		if started:
+			draw_rect(Rect2(sx - 1.0, -19.0, 6.0, 5.0), c_void)
+			draw_rect(Rect2(sx, -18.0, 4.0, 4.0), c_gold)
+			draw_rect(Rect2(sx + 1.0, -18.0, 2.0, 2.0), c_cream)
+		else:
+			draw_rect(Rect2(sx, -16.0, 4.0, 2.0), c_rose)
 	# Overhead chime bell bar
 	draw_rect(Rect2(-14.0, -16.0, 28.0, 3.0), c_void)
 	draw_rect(Rect2(-13.0, -15.0, 26.0, 1.0), c_gold)
+	draw_circle(Vector2(0.0, -13.0), 4.0, c_void)
 	draw_circle(Vector2(0.0, -13.0), 3.0, c_cream if started else c_gold)
+	if started:
+		# Flanking greyscale chime resonance ticks beside active heist bell
+		draw_rect(Rect2(-6.0, -14.0, 1.0, 3.0), c_cream)
+		draw_rect(Rect2(5.0, -14.0, 1.0, 3.0), c_cream)
+	else:
+		# Downward threshold prompt chevron under unstarted arch
+		draw_line(Vector2(-3.0, -8.0), Vector2(0.0, -5.0), c_gold, 1.0)
+		draw_line(Vector2(3.0, -8.0), Vector2(0.0, -5.0), c_gold, 1.0)
 	if _ring_t > 0.0:
 		var u: float = 1.0 - clampf(_ring_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 14, Color(c_gold, 1.0 - u), 1.4)
+		var ra: float = (1.0 - u) * (0.48 if fred else 0.85)
+		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 14, Color(c_gold, ra), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

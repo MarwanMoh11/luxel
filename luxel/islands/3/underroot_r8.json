@@ -386,7 +386,7 @@
         224,
         42
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -407,7 +407,7 @@
       "sheet": "theme_under_root",
       "prop": "ant_lantern_post",
       "pos": [
-        292,
+        304,
         48
       ],
       "layer": "sort",
@@ -431,8 +431,8 @@
       "sheet": "theme_under_root",
       "prop": "colossal_acorn_dome",
       "pos": [
-        356,
-        224
+        336,
+        232
       ],
       "layer": "sort",
       "flip_x": true,

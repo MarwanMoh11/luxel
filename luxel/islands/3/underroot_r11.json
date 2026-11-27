@@ -208,7 +208,7 @@
       "kind": "hundred_lamps",
       "pos": [
         256,
-        112
+        168
       ],
       "zone": "ur_r11"
     }
@@ -218,7 +218,7 @@
       "kind": "circle",
       "pos": [
         256,
-        160
+        168
       ],
       "radius": 62,
       "style": "ritual"
@@ -227,7 +227,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        160
+        168
       ],
       "size": [
         56,
@@ -281,7 +281,7 @@
         256,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

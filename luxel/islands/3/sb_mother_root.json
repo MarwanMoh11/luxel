@@ -28,7 +28,7 @@
       "kind": "circle",
       "pos": [
         256,
-        168
+        192
       ],
       "radius": 62,
       "style": "ritual",
@@ -39,7 +39,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        104
+        144
       ],
       "size": [
         72,
@@ -71,7 +71,7 @@
       "kind": "mother_root",
       "pos": [
         256,
-        152
+        192
       ],
       "route": [],
       "zone": "heartwood_sanctum",
@@ -199,7 +199,7 @@
         256,
         60
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -305,7 +305,7 @@
       "prop": "petal_drift_floor",
       "pos": [
         256,
-        168
+        192
       ],
       "layer": "ground",
       "flip_x": false,

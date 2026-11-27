@@ -287,8 +287,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        56,
-        84
+        72,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -371,7 +371,7 @@
       "sheet": "island3_scenery",
       "prop": "tiny_shrooms",
       "pos": [
-        260,
+        272,
         184
       ],
       "layer": "sort",

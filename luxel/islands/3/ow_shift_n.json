@@ -394,7 +394,7 @@
         224,
         52
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -416,7 +416,7 @@
       "prop": "spore_brazier_stump",
       "pos": [
         120,
-        40
+        24
       ],
       "layer": "sort",
       "flip_x": true,

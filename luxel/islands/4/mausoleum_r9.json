@@ -399,7 +399,7 @@
         248,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -481,7 +481,7 @@
       "prop": "storm_brazier_bowl",
       "pos": [
         424,
-        104
+        112
       ],
       "layer": "sort",
       "flip_x": false,

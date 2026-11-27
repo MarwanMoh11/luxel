@@ -448,7 +448,7 @@
         280,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -469,7 +469,7 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "weather_vane_spire",
       "pos": [
-        216,
+        224,
         168
       ],
       "layer": "sort",
@@ -494,7 +494,7 @@
       "prop": "rain_lantern_post",
       "pos": [
         328,
-        296
+        288
       ],
       "layer": "sort",
       "flip_x": true,
@@ -541,7 +541,7 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "flood_gauge_marker",
       "pos": [
-        376,
+        384,
         232
       ],
       "layer": "sort",

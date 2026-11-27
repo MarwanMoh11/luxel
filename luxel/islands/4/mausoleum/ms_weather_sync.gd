@@ -12,12 +12,14 @@ const SCOPE_LEGACY: String = "dungeon:mausoleum"
 var _vars_bound: LxWorldState = null
 var _syncing: bool = false
 var _weather: String = "rain"
+var _shift_t: float = 0.0
 
 
 func _toy_setup() -> void:
 	kind = "ms_weather_sync"
 	z_index = -5
 	radius = 8.0
+	_shift_t = 0.0
 	_bind_vars()
 	_initial_sync()
 	queue_redraw()
@@ -66,6 +68,7 @@ func _on_var_changed(scope: String, nm: String, value: Variant) -> void:
 	if w not in ["sun", "rain", "wind"]:
 		return
 	_weather = w
+	_shift_t = 0.45
 	_syncing = true
 	if scope == SCOPE_CANON:
 		Lx.vars.set_var(SCOPE_LEGACY, "weather", w)
@@ -77,10 +80,37 @@ func _on_var_changed(scope: String, nm: String, value: Variant) -> void:
 	queue_redraw()
 
 
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if _shift_t > 0.0:
+		_shift_t = maxf(0.0, _shift_t - dt)
+		queue_redraw()
+
+
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
-	var c_ring: Color = (PAL["gold"] if _weather == "sun" else (PAL["ice"] if _weather == "wind" else PAL["sky"])) as Color
-	draw_circle(Vector2.ZERO, 6.0, c_void)
-	draw_circle(Vector2.ZERO, 5.0, PAL["night"] as Color)
-	draw_arc(Vector2.ZERO, 5.0, 0.0, TAU, 12, c_ring, 1.0)
-	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	var c_cream: Color = PAL["cream"] as Color
+	var c_ice: Color = PAL["ice"] as Color
+	var c_ring: Color = (PAL["gold"] if _weather == "sun" else (c_ice if _weather == "wind" else PAL["sky"])) as Color
+	var fred: bool = LxHudFx.flash_reduced()
+	draw_circle(Vector2.ZERO, 7.0, c_void)
+	draw_circle(Vector2.ZERO, 6.0, PAL["night"] as Color)
+	draw_arc(Vector2.ZERO, 6.0, 0.0, TAU, 14, c_ring, 1.0)
+	# Distinct greyscale-legible weather glyph inside brass barometer dial
+	if _weather == "sun":
+		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), c_ring)
+		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), c_ring)
+		draw_rect(Rect2(0.0, 0.0, 1.0, 1.0), c_cream)
+	elif _weather == "wind":
+		draw_rect(Rect2(-3.0, -1.0, 5.0, 1.0), c_ice)
+		draw_rect(Rect2(-2.0, 1.0, 5.0, 1.0), PAL["sky"] as Color)
+		draw_rect(Rect2(2.0, -2.0, 1.0, 1.0), c_cream)
+	else:
+		draw_rect(Rect2(-2.0, -2.0, 1.0, 2.0), c_ring)
+		draw_rect(Rect2(0.0, -1.0, 1.0, 3.0), c_ice)
+		draw_rect(Rect2(2.0, 0.0, 1.0, 2.0), c_ring)
+	if _shift_t > 0.0:
+		var u: float = 1.0 - clampf(_shift_t / 0.45, 0.0, 1.0)
+		var sa: float = (1.0 - u) * (0.42 if fred else 0.78)
+		var sr: float = 8.0 if fred else roundf(lerpf(6.0, 13.0, u))
+		draw_arc(Vector2.ZERO, sr, 0.0, TAU, 14, Color(c_ring, sa), 1.0)

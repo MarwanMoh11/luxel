@@ -245,7 +245,7 @@
         192,
         42
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -278,8 +278,8 @@
       "sheet": "theme_under_root",
       "prop": "moss_cap_shroom",
       "pos": [
-        320,
-        184
+        312,
+        192
       ],
       "layer": "sort",
       "flip_x": false,

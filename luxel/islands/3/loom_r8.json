@@ -332,7 +332,7 @@
         224,
         36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -353,8 +353,8 @@
       "sheet": "theme_loom",
       "prop": "loom_lantern_brazier",
       "pos": [
-        272,
-        40
+        280,
+        24
       ],
       "layer": "sort",
       "flip_x": true,

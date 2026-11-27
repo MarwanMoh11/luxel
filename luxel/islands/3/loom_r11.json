@@ -59,7 +59,7 @@
       "kind": "loom_widow",
       "pos": [
         256,
-        132
+        168
       ],
       "zone": "lm_r11"
     }
@@ -174,7 +174,7 @@
       "kind": "circle",
       "pos": [
         256,
-        160
+        168
       ],
       "radius": 68,
       "style": "ritual",
@@ -185,7 +185,7 @@
       "kind": "compass",
       "pos": [
         256,
-        160
+        168
       ],
       "radius": 44,
       "color": "gold",
@@ -195,7 +195,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        160
+        168
       ],
       "size": [
         58,
@@ -211,7 +211,7 @@
       "prop": "woven_floor_medallion",
       "pos": [
         256,
-        160
+        168
       ],
       "layer": "ground",
       "flip_x": false,
@@ -225,7 +225,7 @@
         256,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

@@ -399,15 +399,15 @@
         192,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "shadow": true
     },
     {
       "sheet": "theme_briar_court",
       "prop": "heraldic_court_banner",
       "pos": [
-        152,
-        42
+        144,
+        32
       ],
       "layer": "sort",
       "shadow": true
@@ -417,7 +417,7 @@
       "prop": "heraldic_court_banner",
       "pos": [
         232,
-        42
+        24
       ],
       "layer": "sort",
       "shadow": true
@@ -427,7 +427,7 @@
       "prop": "court_bench_stone",
       "pos": [
         128,
-        72
+        80
       ],
       "layer": "sort",
       "shadow": true
@@ -436,7 +436,7 @@
       "sheet": "theme_briar_court",
       "prop": "court_bench_stone",
       "pos": [
-        256,
+        232,
         72
       ],
       "layer": "sort",

@@ -199,7 +199,7 @@
       "kind": "boss_cloud_deacon",
       "pos": [
         256,
-        136
+        156
       ],
       "zone": "ms_r5_chapel"
     }
@@ -225,7 +225,7 @@
       "kind": "circle",
       "pos": [
         256,
-        152
+        160
       ],
       "radius": 58,
       "style": "ritual"
@@ -243,7 +243,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        96
+        120
       ],
       "size": [
         52,
@@ -258,10 +258,10 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "mausoleum_arch_gate",
       "pos": [
-        264,
+        256,
         40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

@@ -118,28 +118,45 @@ func _draw() -> void:
 	var c_sky: Color = PAL["sky"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
+	var scale_ok: bool = _is_scale_ready()
 	LxToyDraw.draw_contact_shadow(self, Vector2(0.0, 5.0), 10.0, 3.0)
 	# Wordless Scene #2: flanking ghost glass teacups gently lifting to an absent banquet
-	var cup_bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_ghost_t) * 2.0)
+	var cup_bob: float = 0.0 if fred else roundf(sin(_ghost_t) * 2.0)
 	for sx: float in [-24.0, 24.0]:
 		var cp := Vector2(sx, -6.0 + cup_bob * (1.0 if sx > 0.0 else -1.0))
-		draw_rect(Rect2(cp + Vector2(-3.0, -2.0), Vector2(6.0, 4.0)), Color(c_sky, 0.45))
-		draw_rect(Rect2(cp + Vector2(-2.0, -1.0), Vector2(4.0, 2.0)), Color(c_ice, 0.78))
-		draw_rect(Rect2(cp + Vector2(-1.0, -4.0), Vector2(2.0, 1.0)), Color(c_cream, 0.55))
+		draw_rect(Rect2(cp + Vector2(-3.0, -2.0), Vector2(6.0, 4.0)), Color(c_sky, 0.35 if fred else 0.45))
+		draw_rect(Rect2(cp + Vector2(-2.0, -1.0), Vector2(4.0, 2.0)), Color(c_ice, 0.58 if fred else 0.78))
+		draw_rect(Rect2(cp + Vector2(-1.0, -4.0), Vector2(2.0, 1.0)), Color(c_cream, 0.40 if fred else 0.55))
 
 	# Marble & brass key pedestal
-	var rim_c: Color = c_coral if _warn_t > 0.0 else (c_gold if _is_scale_ready() else c_dusk)
+	var warn_hi: bool = _warn_t > 0.0
+	var rim_c: Color = (c_coral if not fred else c_dusk) if warn_hi else (c_gold if scale_ok else c_dusk)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -8.0, 16.0, 14.0), c_night, c_dusk, rim_c, c_void)
 	if not claimed:
-		var kbob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_ghost_t * 1.5) * 1.5)
+		if scale_ok:
+			draw_rect(Rect2(-7.0, -9.0, 2.0, 2.0), c_cream)
+			draw_rect(Rect2(5.0, -9.0, 2.0, 2.0), c_cream)
+		else:
+			# Closed counterweight lock-bar across pedestal front until scale is balanced
+			draw_rect(Rect2(-5.0, -3.0, 10.0, 3.0), c_void)
+			draw_rect(Rect2(-4.0, -2.0, 8.0, 1.0), c_coral if warn_hi else c_dusk)
+		if warn_hi:
+			draw_line(Vector2(-4.0, -6.0), Vector2(4.0, 2.0), c_void, 2.0)
+			draw_line(Vector2(4.0, -6.0), Vector2(-4.0, 2.0), c_void, 2.0)
+			draw_line(Vector2(-4.0, -6.0), Vector2(4.0, 2.0), c_coral, 1.0)
+			draw_line(Vector2(4.0, -6.0), Vector2(-4.0, 2.0), c_coral, 1.0)
+		var kbob: float = 0.0 if fred else roundf(sin(_ghost_t * 1.5) * 1.5)
 		var ky: float = -15.0 + kbob
 		draw_circle(Vector2(0.0, ky), 4.0, c_void)
 		draw_circle(Vector2(0.0, ky), 3.0, c_gold)
-		draw_circle(Vector2(0.0, ky), 1.5, c_cream)
+		draw_rect(Rect2(-1.0, ky - 1.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-2.0, ky + 3.0, 4.0, 7.0), c_void)
 		draw_rect(Rect2(-1.0, ky + 3.0, 2.0, 6.0), c_gold)
 		draw_rect(Rect2(1.0, ky + 6.0, 2.0, 2.0), c_cream)
 	else:
-		# Counterweight silhouette resting on velvet cushion
+		# Void-backed counterweight silhouette resting on velvet cushion
+		draw_rect(Rect2(-5.0, -12.0, 10.0, 6.0), c_void)
 		draw_rect(Rect2(-4.0, -11.0, 8.0, 4.0), c_dusk)
 		draw_rect(Rect2(-3.0, -10.0, 6.0, 2.0), c_ice)
 	_draw_signal_pulses()

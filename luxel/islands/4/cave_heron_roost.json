@@ -306,7 +306,7 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "chime_rain_rod",
       "pos": [
-        200,
+        208,
         64
       ],
       "layer": "sort",
@@ -317,8 +317,8 @@
       "sheet": "theme_rain_mausoleum",
       "prop": "chime_rain_rod",
       "pos": [
-        264,
-        216
+        272,
+        224
       ],
       "layer": "sort",
       "flip_x": false,

@@ -380,8 +380,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        396,
-        92
+        400,
+        112
       ],
       "layer": "sort",
       "flip_x": false,
@@ -392,8 +392,8 @@
       "sheet": "island3_scenery",
       "prop": "heartwood_pillar",
       "pos": [
-        396,
-        176
+        400,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -416,8 +416,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        316,
-        200
+        304,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -428,8 +428,8 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        132,
-        184
+        128,
+        160
       ],
       "layer": "sort",
       "flip_x": false,

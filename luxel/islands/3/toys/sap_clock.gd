@@ -181,7 +181,8 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if is_sap_high():
-		return Vector4(pos.x, pos.y - 4.0, 42.0 if _pulse_t > 0.0 else 30.0, 0.72 if _pulse_t > 0.0 else 0.48)
+		var burst_i: float = 0.56 if LxHudFx.flash_reduced() else 0.72
+		return Vector4(pos.x, pos.y - 4.0, 42.0 if _pulse_t > 0.0 else 30.0, burst_i if _pulse_t > 0.0 else 0.48)
 	return Vector4.ZERO
 
 
@@ -214,19 +215,31 @@ func _draw() -> void:
 	var hi: bool = is_sap_high()
 	var frz: bool = is_frozen()
 	var tel: bool = is_telegraphing()
+	var red: bool = LxHudFx.flash_reduced()
 
 	if mode == "dial":
-		# Flat Heartwood growth-ring floor dial
+		# Flat Heartwood growth-ring floor dial (raised cardinal ticks when high vs flat slot when low)
 		draw_circle(Vector2.ZERO, 12.0, c_void)
 		draw_circle(Vector2.ZERO, 11.0, c_night)
-		draw_arc(Vector2.ZERO, 9.0, 0.0, TAU, 20, c_apricot if hi else c_dusk, 1.5)
+		draw_arc(Vector2.ZERO, 9.0, 0.0, TAU, 20, c_apricot if hi else c_dusk, 2.0 if hi else 1.0)
 		draw_arc(Vector2.ZERO, 5.0, 0.0, TAU, 16, c_gold if hi else c_jade, 1.0)
-		draw_circle(Vector2.ZERO, 3.0, c_cream if hi else c_dusk)
+		if hi:
+			draw_circle(Vector2.ZERO, 3.0, c_cream)
+			for off: Vector2 in [Vector2(-1.0, -11.0), Vector2(-1.0, 9.0), Vector2(-11.0, -1.0), Vector2(9.0, -1.0)]:
+				draw_rect(Rect2(off, Vector2(2.0, 2.0)), c_gold)
+		else:
+			draw_rect(Rect2(-3.0, -1.0, 6.0, 2.0), c_dusk)
 		return
 
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 9.0, 3.0)
-	# Stepped carved-wood & brass base plinth
+	# Stepped carved-wood & brass base plinth + directional ^/v micro-chevron
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, 3.0, 16.0, 5.0), c_night, c_wine, c_apricot, c_void)
+	if hi:
+		draw_rect(Rect2(-1.0, 4.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-2.0, 5.0, 4.0, 1.0), c_gold)
+	else:
+		draw_rect(Rect2(-2.0, 4.0, 4.0, 1.0), c_jade)
+		draw_rect(Rect2(-1.0, 5.0, 2.0, 1.0), c_dusk)
 	# Glass amber sap reservoir tube framed by twin vertical brass struts
 	draw_rect(Rect2(-7.0, -10.0, 14.0, 14.0), c_void)
 	draw_rect(Rect2(-6.0, -9.0, 12.0, 12.0), PAL["deep"] as Color if frz else c_night)
@@ -235,12 +248,16 @@ func _draw() -> void:
 	draw_rect(Rect2(5.0, -9.0, 2.0, 12.0), c_wine)
 	draw_rect(Rect2(-7.0, -9.0, 1.0, 11.0), c_gold)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -11.0, 16.0, 4.0), c_wine, c_apricot, c_ice if frz else c_gold, c_void)
+	if tel:
+		# Flanking telegraph warning pips on top collar (greyscale + flash_reduced legible)
+		draw_rect(Rect2(-10.0, -10.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(8.0, -10.0, 2.0, 2.0), c_cream)
 
 	# Inner glowing amber sap fluid column (rises high or sits low — unmistakable in greyscale!)
 	var fill_h: float = 10.0 if hi else 3.0
 	if mode == "timed" and hi:
 		fill_h = maxf(2.0, roundf(10.0 * clampf(timer_left / secs, 0.0, 1.0)))
-	var sap_col: Color = c_ice if frz else (c_coral if (tel and not LxHudFx.flash_reduced()) else (c_apricot if hi else c_jade))
+	var sap_col: Color = c_ice if frz else (c_coral if (tel and not red) else (c_apricot if hi else c_jade))
 	var sap_hi: Color = c_cream if (frz or hi) else c_gold
 	draw_rect(Rect2(-4.0, 3.0 - fill_h, 8.0, fill_h), sap_col)
 	draw_rect(Rect2(-3.0, 3.0 - fill_h, 6.0, maxf(1.0, fill_h - 1.0)), c_gold if (hi and not frz) else sap_col)
@@ -248,7 +265,7 @@ func _draw() -> void:
 	# Vertical glass reflection streak + tiny rising amber bubble when high
 	draw_rect(Rect2(-3.0, -7.0, 1.0, 9.0), c_cream if hi else c_sky)
 	if hi and not frz:
-		var bub_y: float = -2.0 if LxHudFx.flash_reduced() else roundf(-6.0 + fposmod(-_clock * 6.0, maxf(2.0, fill_h - 2.0)))
+		var bub_y: float = -2.0 if red else roundf(-6.0 + fposmod(-_clock * 6.0, maxf(2.0, fill_h - 2.0)))
 		draw_rect(Rect2(1.0, clampf(bub_y, 3.0 - fill_h + 1.0, 1.0), 2.0, 1.0), c_cream)
 
 	# Ornate spoked brass valve wheel atop stem
@@ -261,10 +278,14 @@ func _draw() -> void:
 	draw_rect(Rect2(5.0, -14.0, 1.0, 2.0), c_wine)
 
 	if frz:
+		# Corner frost lock studs on reservoir frame
+		for fp: Vector2 in [Vector2(-8.0, -11.0), Vector2(6.0, -11.0), Vector2(-8.0, 2.0), Vector2(6.0, 2.0)]:
+			draw_rect(Rect2(fp, Vector2(2.0, 2.0)), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(frozen_t / freeze_secs, 0.0, 1.0), c_ice, c_sky)
 	elif mode == "cycle" or (mode == "timed" and hi):
 		LxToyDraw.draw_bar(self, Vector2(-7.0, 8.0), 14.0, clampf(timer_left / secs, 0.0, 1.0), c_gold, c_coral)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(6.0, 15.0, u)), 0.0, TAU, 16, c_cream if hi else c_jade, 1.0)
+		var ring_c: Color = Color(c_cream if hi else c_jade, 0.55 if red else 1.0)
+		draw_arc(Vector2(0.0, -2.0), roundf(lerpf(6.0, 15.0, u)), 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()

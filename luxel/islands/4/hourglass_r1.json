@@ -462,7 +462,7 @@
         256,
         44
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -483,7 +483,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "tall_hourglass_pillar",
       "pos": [
-        328,
+        320,
         120
       ],
       "layer": "sort",
@@ -495,7 +495,7 @@
       "sheet": "theme_hourglass_maze",
       "prop": "echo_rose_trellis",
       "pos": [
-        168,
+        160,
         248
       ],
       "layer": "sort",

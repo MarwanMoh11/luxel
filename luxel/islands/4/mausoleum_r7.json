@@ -462,7 +462,7 @@
       "prop": "storm_brazier_bowl",
       "pos": [
         264,
-        40
+        32
       ],
       "layer": "sort",
       "flip_x": true,

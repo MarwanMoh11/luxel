@@ -161,8 +161,9 @@ func _check_wick_catch() -> void:
 		_catch_cd = 0.38
 		_burst_t = 0.34
 		_emit_sfx("updraft_catch")
-		w.spawn_ring(pos, 4.0, vent_radius + 4.0, 0.24, PAL["ice"] as Color, 1.5)
-		w.spawn_sparks(w.global_position, Vector2.UP, 6, PAL["cream"] as Color, 18.0, 56.0, 0.24)
+		var fred: bool = LxHudFx.flash_reduced()
+		w.spawn_ring(pos, 4.0, roundf(vent_radius) + 4.0, 0.24, PAL["ice"] as Color, 1.0 if fred else 2.0)
+		w.spawn_sparks(w.global_position, Vector2.UP, 3 if fred else 6, PAL["cream"] as Color, 18.0, 56.0, 0.24)
 		_emit_gust(vent_radius + 16.0, 52.0)
 
 
@@ -183,6 +184,8 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 
 	var blowing: bool = is_blowing()
+	var fred: bool = LxHudFx.flash_reduced()
+	var vr: float = roundf(vent_radius)
 	# Sunken bronze grate base (16x16 core)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -8.0, 16.0, 16.0), c_night, c_dusk, c_gold if blowing else c_apricot, c_void)
 	for sy: float in [-5.0, -1.0, 3.0]:
@@ -191,34 +194,58 @@ func _draw() -> void:
 			draw_rect(Rect2(-5.0, sy, 10.0, 1.0), c_sky)
 
 	if not blowing:
-		# Dormant center pip + faint boundary ring so inactive vents still read clearly
-		draw_arc(Vector2.ZERO, vent_radius - 2.0, 0.0, TAU, 16, Color(c_sky, 0.24), 1.0)
+		# Dormant recessed center lock + 4 cardinal ticks so inactive vents read distinct in greyscale
+		draw_arc(Vector2.ZERO, vr - 2.0, 0.0, TAU, 16, Color(c_sky, 0.20), 1.0)
+		for cp: Vector2 in [Vector2(-1.0, -vr + 1.0), Vector2(-1.0, vr - 3.0), Vector2(-vr + 1.0, -1.0), Vector2(vr - 3.0, -1.0)]:
+			draw_rect(Rect2(cp, Vector2(2.0, 2.0)), c_dusk)
+		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_void)
 		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_dusk)
 		return
 
 	# Plume outer boundary ring (shows exact catch radius cleanly)
-	var ring_a: float = 0.36 if LxHudFx.flash_reduced() else 0.52
-	draw_arc(Vector2.ZERO, vent_radius, 0.0, TAU, 20, Color(c_sky, ring_a), 1.0)
-	draw_arc(Vector2.ZERO, vent_radius - 5.0, _helix_t, _helix_t + PI * 1.15, 14, Color(c_ice, 0.80), 1.0)
-	draw_arc(Vector2.ZERO, vent_radius - 5.0, _helix_t + PI, _helix_t + TAU * 0.85, 14, Color(c_cream, 0.72), 1.0)
+	var ring_a: float = 0.36 if fred else 0.52
+	draw_arc(Vector2.ZERO, vr, 0.0, TAU, 20, Color(c_sky, ring_a), 1.0)
+	var sw_ang: float = 0.0 if fred else _helix_t
+	draw_arc(Vector2.ZERO, vr - 5.0, sw_ang, sw_ang + PI * 1.15, 14, Color(c_ice, 0.45 if fred else 0.80), 1.0)
+	draw_arc(Vector2.ZERO, vr - 5.0, sw_ang + PI, sw_ang + TAU * 0.85, 14, Color(c_cream, 0.40 if fred else 0.72), 1.0)
 
-	# Rising swirling pixel helix ribbons (sky/ice/cream)
-	for k: int in range(6):
-		var frac: float = fposmod(float(k) / 6.0 + _helix_t / TAU, 1.0)
-		var ang: float = _helix_t * 1.4 + float(k) * (TAU / 3.0)
-		var hr: float = lerpf(4.0, vent_radius * 0.65, 1.0 - frac * 0.35)
-		var hx: float = roundf(cos(ang) * hr)
-		var hy: float = roundf(2.0 - frac * 18.0 + sin(ang) * 3.0)
-		var col_m: Color = c_cream if (k % 3 == 0) else (c_ice if k % 3 == 1 else c_sky)
-		draw_rect(Rect2(hx, hy, 2.0 if k % 2 == 0 else 1.0, 2.0), col_m)
+	# Rising swirling pixel helix ribbons (calm symmetric static guide pips under flash_reduced)
+	if fred:
+		for k: int in range(4):
+			var ang: float = float(k) * (TAU * 0.25) + PI * 0.25
+			var px: float = roundf(cos(ang) * roundf(vr * 0.45))
+			var py: float = roundf(sin(ang) * roundf(vr * 0.45) - 4.0)
+			draw_rect(Rect2(px, py, 2.0, 2.0), Color(c_ice if k % 2 == 0 else c_cream, 0.55))
+	else:
+		for k: int in range(6):
+			var frac: float = fposmod(float(k) / 6.0 + _helix_t / TAU, 1.0)
+			var ang: float = _helix_t * 1.4 + float(k) * (TAU / 3.0)
+			var hr: float = lerpf(4.0, vr * 0.65, 1.0 - frac * 0.35)
+			var hx: float = roundf(cos(ang) * hr)
+			var hy: float = roundf(2.0 - frac * 18.0 + sin(ang) * 3.0)
+			var col_m: Color = c_cream if (k % 3 == 0) else (c_ice if k % 3 == 1 else c_sky)
+			draw_rect(Rect2(hx, hy, 2.0 if k % 2 == 0 else 1.0, 2.0), col_m)
+
+	# Upward lift chevron over center grate (greyscale active silhouette)
+	draw_line(Vector2(-3.0, -3.0), Vector2(0.0, -6.0), c_void, 2.0)
+	draw_line(Vector2(3.0, -3.0), Vector2(0.0, -6.0), c_void, 2.0)
+	draw_line(Vector2(-3.0, -3.0), Vector2(0.0, -6.0), c_cream, 1.0)
+	draw_line(Vector2(3.0, -3.0), Vector2(0.0, -6.0), c_cream, 1.0)
 
 	# Directional tailwind chevron if dir != ZERO
 	if nudge_dir.length_squared() > 0.01:
-		var ch_p: Vector2 = (nudge_dir * 6.0).round()
-		draw_rect(Rect2(ch_p - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
-		draw_rect(Rect2(ch_p, Vector2.ONE), c_cream)
+		var tip: Vector2 = (nudge_dir * 8.0).round()
+		var back: Vector2 = (nudge_dir * 4.0).round()
+		var perp := Vector2(-nudge_dir.y, nudge_dir.x)
+		var w1: Vector2 = (back + perp * 3.0).round()
+		var w2: Vector2 = (back - perp * 3.0).round()
+		draw_line(w1, tip, c_void, 2.0)
+		draw_line(w2, tip, c_void, 2.0)
+		draw_line(w1, tip, c_cream, 1.0)
+		draw_line(w2, tip, c_cream, 1.0)
 
 	if _burst_t > 0.0:
 		var u: float = 1.0 - clampf(_burst_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, vent_radius + 6.0, u)), 0.0, TAU, 18, Color(c_cream, 1.0 - u), 1.5)
+		var ba: float = (1.0 - u) * (0.48 if fred else 0.90)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, vr + 6.0, u)), 0.0, TAU, 18, Color(c_cream, ba), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

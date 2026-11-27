@@ -357,8 +357,8 @@
       "sheet": "theme_hourglass_maze",
       "prop": "mossy_garden_obelisk",
       "pos": [
-        256,
-        28
+        240,
+        32
       ],
       "layer": "sort",
       "flip_x": false,

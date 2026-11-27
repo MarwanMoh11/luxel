@@ -430,7 +430,7 @@
         208,
         36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -559,8 +559,8 @@
       "sheet": "theme_loom",
       "prop": "spindle_totem",
       "pos": [
-        360,
-        176
+        344,
+        192
       ],
       "layer": "sort",
       "flip_x": false,

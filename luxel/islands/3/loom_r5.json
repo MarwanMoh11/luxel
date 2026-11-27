@@ -368,7 +368,7 @@
         384,
         36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -473,7 +473,7 @@
       "sheet": "theme_loom",
       "prop": "dyed_bolt_of_cloth",
       "pos": [
-        420,
+        400,
         208
       ],
       "layer": "sort",

@@ -318,7 +318,7 @@
         64,
         42
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -387,7 +387,7 @@
       "sheet": "theme_under_root",
       "prop": "colossal_acorn_dome",
       "pos": [
-        168,
+        176,
         256
       ],
       "layer": "sort",
@@ -411,8 +411,8 @@
       "sheet": "theme_under_root",
       "prop": "fern_canopy_frond",
       "pos": [
-        204,
-        252
+        224,
+        256
       ],
       "layer": "sort",
       "flip_x": true,
@@ -423,8 +423,8 @@
       "sheet": "theme_under_root",
       "prop": "moss_cap_shroom",
       "pos": [
-        368,
-        240
+        376,
+        224
       ],
       "layer": "sort",
       "flip_x": false,

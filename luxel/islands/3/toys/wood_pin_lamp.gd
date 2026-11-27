@@ -175,7 +175,7 @@ func get_solid_rect() -> Rect2:
 func get_light_pool() -> Vector4:
 	if not active or not lit:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 8.0, 76.0, 1.05)
+	return Vector4(pos.x, pos.y - 8.0, 76.0, 0.88 if LxHudFx.flash_reduced() else 1.05)
 
 
 func save_state() -> Dictionary:
@@ -216,32 +216,35 @@ func _draw() -> void:
 	draw_circle(center, 16.0, c_void)
 	draw_circle(center, 15.0, c_night)
 	if lit:
-		# Solid golden lock-ring + 4 cardinal pin-ticks (reads immediately as PINNED)
-		draw_arc(center, 15.0, 0.0, TAU, 24, c_gold, 1.5)
+		# Solid 2px golden lock-ring + 4 cardinal pin-ticks (reads immediately as PINNED)
+		draw_arc(center, 15.0, 0.0, TAU, 24, c_gold, 2.0)
 		draw_arc(center, 12.0, 0.0, TAU, 20, cur_col, 1.0)
 		for k: int in range(4):
 			var ka: float = float(k) * (PI * 0.5)
 			var kp: Vector2 = (center + Vector2(cos(ka), sin(ka)) * 16.0).round()
 			draw_rect(Rect2(kp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_cream)
 	else:
-		# Slowly orbiting 3-arc turn indicator (reads immediately as UNPINNED / WILL ROTATE)
+		# Slowly orbiting 1px 3-arc turn indicator (reads immediately as UNPINNED / WILL ROTATE)
 		draw_arc(center, 14.0, 0.0, TAU, 20, c_dusk, 1.0)
 		for k: int in range(3):
 			var a0: float = _orbit_t + float(k) * (TAU / 3.0)
-			draw_arc(center, 15.0, a0, a0 + 0.85, 8, cur_col, 1.5)
+			draw_arc(center, 15.0, a0, a0 + 0.85, 8, cur_col, 1.0)
 	for i: int in range(3):
-		var wp: Vector2 = (center + wedge_dirs[i] * 9.5).round()
+		var wp: Vector2 = (center + wedge_dirs[i] * 9.0).round()
 		var is_cur: bool = i == turn
 		LxToyDraw.draw_shape_glyph(self, wp, wedge_shapes[i], is_cur, wedge_cols[i] if is_cur else c_dusk, c_cream if is_cur else c_pine)
 		if is_cur:
-			draw_line(center, wp, c_cream if lit else wedge_cols[i], 1.5)
-	# Crisp outer directional pointer pointing straight toward the currently open exit!
+			draw_line(center, wp, c_cream if lit else wedge_cols[i], 2.0 if lit else 1.0)
+	# Crisp pixel-snapped outer directional pointer pointing straight toward the currently open exit!
 	var edir: Vector2 = _exit_dir_for_turn(turn)
 	var eperp := Vector2(-edir.y, edir.x)
 	var tip: Vector2 = (center + edir * 22.0).round()
 	var b1: Vector2 = (center + edir * 16.0 + eperp * 4.0).round()
 	var b2: Vector2 = (center + edir * 16.0 - eperp * 4.0).round()
-	draw_colored_polygon(PackedVector2Array([tip + edir, b1 - edir * 0.5 + eperp, b2 - edir * 0.5 - eperp]), c_void)
+	var o_tip: Vector2 = (tip + edir).round()
+	var o_b1: Vector2 = (b1 - edir + eperp).round()
+	var o_b2: Vector2 = (b2 - edir - eperp).round()
+	draw_colored_polygon(PackedVector2Array([o_tip, o_b1, o_b2]), c_void)
 	draw_colored_polygon(PackedVector2Array([tip, b1, b2]), c_cream if lit else cur_col)
 
 	# 2. Brass woodland lantern post
@@ -263,5 +266,6 @@ func _draw() -> void:
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.36, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(5.0, 16.0, u)), 0.0, TAU, 16, c_cream if lit else c_sky, 1.0)
+		var ring_c: Color = Color(c_cream if lit else c_sky, 0.55 if LxHudFx.flash_reduced() else 1.0)
+		draw_arc(Vector2(0.0, -12.0), roundf(lerpf(5.0, 16.0, u)), 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()

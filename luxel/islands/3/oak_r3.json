@@ -303,8 +303,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        56,
-        148
+        72,
+        160
       ],
       "layer": "sort",
       "flip_x": true,
@@ -400,7 +400,7 @@
       "prop": "spore_brazier_stump",
       "pos": [
         296,
-        152
+        144
       ],
       "layer": "sort",
       "flip_x": true,

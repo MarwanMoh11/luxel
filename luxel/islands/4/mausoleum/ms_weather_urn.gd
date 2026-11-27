@@ -212,36 +212,53 @@ func _draw() -> void:
 
 	var exp: bool = is_exposed()
 	var is_nxt: bool = is_next_in_order()
+	var fred: bool = LxHudFx.flash_reduced()
 	var w_col: Color = c_gold if weather_req == "sun" else (c_sky if weather_req == "rain" else c_lime)
 
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 9.0, 3.0)
-	# Pulsing harmonic floor halo for next-in-sequence or silenced urn
+	# Pulsing harmonic floor halo for next-in-sequence or silenced urn (integer stroke width)
 	if (is_nxt or silenced) and not _err_t > 0.0:
-		var hr: float = 12.0 + (0.0 if (LxHudFx.flash_reduced() or silenced) else sin(_clock * 6.0) * 1.5)
-		draw_arc(Vector2.ZERO, roundf(hr), 0.0, TAU, 16, c_cream if silenced else (w_col if exp else PAL["mauve"] as Color), 1.5 if (is_nxt and exp) else 1.0)
+		var hr: float = 12.0 + (0.0 if (fred or silenced) else sin(_clock * 6.0) * 1.5)
+		var hc: Color = c_cream if silenced else (w_col if exp else PAL["mauve"] as Color)
+		var ha: float = 0.48 if fred else 0.88
+		draw_arc(Vector2.ZERO, roundf(hr), 0.0, TAU, 16, Color(hc, ha), 2.0 if (is_nxt and exp and not fred) else 1.0)
 
 	# Carved choral pedestal + porcelain singing bust-urn
 	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -1.0, 14.0, 8.0), c_night, c_dusk, c_gold if silenced else c_stone, c_void)
-	var body_c: Color = c_coral if _err_t > 0.0 else (c_cream if _flash_t > 0.0 else (c_ice if (exp or silenced) else PAL["mauve"] as Color))
+	var err_hi: bool = _err_t > 0.0
+	var body_c: Color = (c_coral if not fred else PAL["mauve"] as Color) if err_hi else (c_cream if (_flash_t > 0.0 and not fred) else (c_ice if (exp or silenced) else PAL["mauve"] as Color))
 	draw_circle(Vector2(0.0, -7.0), 6.0, c_void)
 	draw_circle(Vector2(0.0, -7.0), 5.0, body_c)
 
-	if silenced:
-		# Closed peaceful eyes + warm gold chime crown
+	if err_hi:
+		# Crisp greyscale-legible diagonal X reject slash on wrong order / veiled hit
+		draw_line(Vector2(-3.0, -10.0), Vector2(3.0, -4.0), c_void, 2.0)
+		draw_line(Vector2(3.0, -10.0), Vector2(-3.0, -4.0), c_void, 2.0)
+		draw_line(Vector2(-3.0, -10.0), Vector2(3.0, -4.0), c_coral, 1.0)
+		draw_line(Vector2(3.0, -10.0), Vector2(-3.0, -4.0), c_coral, 1.0)
+	elif silenced:
+		# Closed peaceful eyes + raised warm gold chime crown
 		draw_line(Vector2(-3.0, -8.0), Vector2(-1.0, -8.0), c_night, 1.0)
 		draw_line(Vector2(1.0, -8.0), Vector2(3.0, -8.0), c_night, 1.0)
+		draw_rect(Rect2(-3.0, -14.0, 6.0, 3.0), c_void)
 		draw_rect(Rect2(-2.0, -13.0, 4.0, 2.0), c_gold)
+		draw_rect(Rect2(-1.0, -15.0, 2.0, 2.0), c_cream)
 	elif exp:
-		# Open singing mouth ring in weather color
-		draw_circle(Vector2(0.0, -5.0), 2.2 if is_nxt else 1.5, w_col)
-		draw_circle(Vector2(0.0, -5.0), 0.9, c_void)
+		# Open singing mouth ring in weather color + flanking sound-wave ticks when next-in-order
+		draw_circle(Vector2(0.0, -5.0), 2.0 if is_nxt else 1.0, w_col)
+		draw_circle(Vector2(0.0, -5.0), 1.0, c_void)
+		if is_nxt:
+			draw_rect(Rect2(-8.0, -9.0, 1.0, 4.0), c_cream)
+			draw_rect(Rect2(7.0, -9.0, 1.0, 4.0), c_cream)
 	else:
-		# Veiled in rain/mist bars showing it cannot be silenced in this weather
-		draw_rect(Rect2(-5.0, -10.0, 10.0, 6.0), Color(PAL["deep"] as Color, 0.65))
+		# Veiled in twin rain/mist shutter bars showing it cannot be silenced in this weather
+		draw_rect(Rect2(-5.0, -10.0, 10.0, 6.0), Color(PAL["deep"] as Color, 0.72))
 		draw_line(Vector2(-4.0, -9.0), Vector2(4.0, -5.0), PAL["mauve"] as Color, 1.0)
+		draw_line(Vector2(-4.0, -6.0), Vector2(4.0, -9.0), PAL["mauve"] as Color, 1.0)
 
-	# Weather crest icon above urn (gold cross = SUN, sky drops = RAIN, lime bars = WIND)
-	var iy: float = -17.0
+	# Void-backed weather crest icon above urn (gold cross = SUN, sky drops = RAIN, lime bars = WIND)
+	var iy: float = -18.0
+	draw_rect(Rect2(-3.0, iy - 3.0, 7.0, 7.0), Color(c_void, 0.72))
 	match weather_req:
 		"sun":
 			draw_rect(Rect2(-2.0, iy, 5.0, 1.0), w_col)
@@ -254,8 +271,9 @@ func _draw() -> void:
 			draw_rect(Rect2(-2.0, iy - 1.0, 4.0, 1.0), w_col)
 			draw_rect(Rect2(-1.0, iy + 1.0, 4.0, 1.0), c_ice)
 
-	# Roman order pips along plinth bottom (1..4 pips)
+	# Void-backed Roman order pips along plinth bottom (1..4 pips)
 	for pi: int in range(urn_index):
-		var px: float = -float(urn_index - 1) * 1.5 + float(pi) * 3.0
-		draw_rect(Rect2(roundf(px), 3.0, 2.0, 2.0), c_cream if silenced else w_col)
+		var px: float = roundf(-float(urn_index - 1) * 1.5 + float(pi) * 3.0)
+		draw_rect(Rect2(px - 1.0, 2.0, 4.0, 4.0), c_void)
+		draw_rect(Rect2(px, 3.0, 2.0, 2.0), c_cream if silenced else w_col)
 	_draw_signal_pulses()

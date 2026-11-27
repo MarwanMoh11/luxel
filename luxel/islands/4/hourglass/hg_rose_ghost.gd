@@ -59,25 +59,32 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 	var c_jade: Color = PAL["jade"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	# Pedestal planter with single glass rose on the right (+14, 0)
-	LxToyDraw.draw_contact_shadow(self, Vector2(14.0, 5.0), 7.0, 2.5)
+	LxToyDraw.draw_contact_shadow(self, Vector2(14.0, 5.0), 7.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(8.0, 0.0, 12.0, 6.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
+	draw_rect(Rect2(12.0, -7.0, 4.0, 7.0), c_void)
 	draw_rect(Rect2(13.0, -7.0, 2.0, 7.0), c_jade)
+	draw_rect(Rect2(11.0, -4.0, 2.0, 1.0), c_jade)
+	draw_rect(Rect2(15.0, -3.0, 2.0, 1.0), c_jade)
 	var rose_wilted: bool = _cycle_t >= 4.4
 	if not rose_wilted:
 		draw_rect(Rect2(10.0, -13.0, 8.0, 7.0), c_void)
 		draw_rect(Rect2(11.0, -12.0, 6.0, 5.0), c_rose if _cycle_t < 3.4 else c_gold)
 		draw_rect(Rect2(12.0, -11.0, 4.0, 3.0), c_cream if _cycle_t >= 3.4 else c_apricot)
 	else:
-		# Falling golden sand petals
+		# Drooped empty stem tip + falling golden sand petals
+		draw_rect(Rect2(14.0, -8.0, 3.0, 2.0), c_void)
+		draw_rect(Rect2(15.0, -7.0, 2.0, 1.0), c_jade)
 		var fall_u: float = clampf((_cycle_t - 4.4) / 1.8, 0.0, 1.0)
 		for k: int in range(5):
-			var px: float = roundf(10.0 + float(k) * 2.0 + sin(_clock * 4.0 + float(k)) * 1.5)
+			var sway_x: float = 0.0 if fred else sin(_clock * 4.0 + float(k)) * 1.5
+			var px: float = roundf(10.0 + float(k) * 2.0 + sway_x)
 			var py: float = roundf(-11.0 + fall_u * (14.0 + float(k % 3) * 2.0))
-			draw_rect(Rect2(px, py, 2.0, 2.0), c_gold if k % 2 == 0 else c_cream)
+			draw_rect(Rect2(px, py, 2.0, 2.0), Color(c_gold if k % 2 == 0 else c_cream, 0.72 if fred else 1.0))
 
 	# Golden Gardener ghost stepping in from (-16, 0) -> (-2, 0), pruning twice, dissolving to sand
-	var ghost_a: float = 0.72 if LxHudFx.flash_reduced() else 0.85
+	var ghost_a: float = 0.70 if fred else 0.85
 	var gx: float = -16.0
 	if _cycle_t < 1.2:
 		gx = lerpf(-18.0, -4.0, _cycle_t / 1.2)
@@ -90,17 +97,19 @@ func _draw() -> void:
 	if ghost_a > 0.06:
 		var gp := Vector2(roundf(gx), 0.0)
 		LxToyDraw.draw_contact_shadow(self, gp + Vector2(0.0, 5.0), 6.0, 2.0)
-		# Coat & cloche dome silhouette
+		# Coat & cloche dome silhouette (integer radii + dark rim)
 		draw_rect(Rect2(gp.x - 5.0, gp.y - 18.0, 10.0, 19.0), Color(c_wine, ghost_a * 0.7))
 		draw_rect(Rect2(gp.x - 4.0, gp.y - 17.0, 8.0, 16.0), Color(c_apricot, ghost_a))
 		draw_rect(Rect2(gp.x - 3.0, gp.y - 16.0, 6.0, 12.0), Color(c_gold, ghost_a))
-		draw_circle(gp + Vector2(0.0, -21.0), 4.5, Color(c_ice, ghost_a * 0.85))
+		draw_circle(gp + Vector2(0.0, -21.0), 5.0, Color(c_void, ghost_a * 0.65))
+		draw_circle(gp + Vector2(0.0, -21.0), 4.0, Color(c_ice, ghost_a * 0.85))
 		draw_rect(Rect2(gp.x - 2.0, gp.y - 22.0, 1.0, 1.0), Color(c_cream, ghost_a))
 		draw_rect(Rect2(gp.x + 1.0, gp.y - 22.0, 1.0, 1.0), Color(c_cream, ghost_a))
-		# Twin golden shears snipping at t=1.8s and t=3.4s
+		# Twin golden shears snipping at t=1.8s and t=3.4s (integer stroke widths)
 		var snip_flash: bool = (_cycle_t >= 1.70 and _cycle_t <= 2.05) or (_cycle_t >= 3.30 and _cycle_t <= 3.65)
 		var sx: float = gp.x + (11.0 if snip_flash else 8.0)
-		draw_line(gp + Vector2(3.0, -11.0), Vector2(sx, gp.y - (10.0 if snip_flash else 13.0)), Color(c_cream if snip_flash else c_gold, ghost_a), 1.5)
-		draw_line(gp + Vector2(3.0, -9.0), Vector2(sx, gp.y - (10.0 if snip_flash else 7.0)), Color(c_cream if snip_flash else c_rose, ghost_a), 1.5)
-		if snip_flash and not LxHudFx.flash_reduced():
-			draw_arc(Vector2(14.0, -10.0), 7.0, 0.0, TAU, 12, Color(c_cream, 0.8), 1.0)
+		var sw: float = 2.0 if (snip_flash and not fred) else 1.0
+		draw_line(gp + Vector2(3.0, -11.0), Vector2(sx, gp.y - (10.0 if snip_flash else 13.0)), Color(c_cream if snip_flash else c_gold, ghost_a), sw)
+		draw_line(gp + Vector2(3.0, -9.0), Vector2(sx, gp.y - (10.0 if snip_flash else 7.0)), Color(c_cream if snip_flash else c_rose, ghost_a), sw)
+		if snip_flash:
+			draw_arc(Vector2(14.0, -10.0), 7.0, 0.0, TAU, 12, Color(c_cream, 0.36 if fred else 0.78), 1.0)

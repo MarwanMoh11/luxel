@@ -37,7 +37,7 @@ func on_signal(_from_id: String, is_on: bool) -> void:
 		_dropped = true
 		_emit_sfx("bell_slam")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.16)
+			Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		queue_redraw()
 
 
@@ -101,9 +101,14 @@ func _draw_hanging_bobbin() -> void:
 		draw_rect(Rect2(-1.0 + sway, -5.0, 2.0, 2.0), c_cream)
 		LxToyDraw.draw_bevel_box(self, Rect2(-9.0 + sway, 5.0, 18.0, 4.0), PAL["wine"] as Color, c_apricot, c_gold, c_void)
 	else:
-		# Empty parted cradle rim
+		# Empty parted cradle rim + snapped upper cable stubs (greyscale-clear hoisted state)
+		draw_line(Vector2(-32.0, -24.0), Vector2(-24.0, -19.0), c_void, 3.0)
+		draw_line(Vector2(-32.0, -24.0), Vector2(-24.0, -19.0), PAL["dusk"] as Color, 1.0)
+		draw_line(Vector2(32.0, -24.0), Vector2(24.0, -19.0), c_void, 3.0)
+		draw_line(Vector2(32.0, -24.0), Vector2(24.0, -19.0), PAL["dusk"] as Color, 1.0)
 		draw_rect(Rect2(-8.0, -2.0, 16.0, 4.0), c_void)
 		draw_rect(Rect2(-7.0, -1.0, 14.0, 2.0), PAL["dusk"] as Color)
+		draw_rect(Rect2(-3.0, -1.0, 6.0, 1.0), PAL["night"] as Color)
 
 
 func _draw_loom_tapestry() -> void:
@@ -114,6 +119,7 @@ func _draw_loom_tapestry() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
+	var sx: float = -1.0 if flip_x else 1.0
 	# Tall wooden tapestry crossbeam + woven cloth
 	LxToyDraw.draw_bevel_box(self, Rect2(-22.0, -34.0, 44.0, 5.0), c_plum, c_wine, PAL["apricot"] as Color, c_void)
 	LxToyDraw.draw_bevel_box(self, Rect2(-18.0, -29.0, 36.0, 32.0), c_plum, c_wine, c_rose, c_void)
@@ -123,7 +129,8 @@ func _draw_loom_tapestry() -> void:
 	draw_rect(Rect2(4.0, -21.0, 8.0, 10.0), c_void)
 	draw_rect(Rect2(-3.0, -23.0, 6.0, 16.0), c_void)
 	draw_rect(Rect2(-1.0, -20.0, 2.0, 2.0), c_ice)
-	draw_rect(Rect2(6.0, -14.0, 4.0, 5.0), c_ice)
+	var lan_x: float = 6.0 if sx > 0.0 else -10.0
+	draw_rect(Rect2(lan_x, -14.0, 4.0, 5.0), c_ice)
 	# Gold thread border & ash horizon
 	draw_rect(Rect2(-15.0, -4.0, 30.0, 2.0), PAL["stone"] as Color)
 	draw_rect(Rect2(-16.0, -27.0, 32.0, 1.0), c_gold)
@@ -140,6 +147,8 @@ func _draw_overhead_beam() -> void:
 		LxToyDraw.draw_bevel_box(self, Rect2(-14.0, -4.0, 28.0, 8.0), PAL["plum"] as Color, c_wine, c_apricot, c_void)
 		draw_rect(Rect2(-10.0, -2.0, 20.0, 2.0), c_gold)
 	else:
+		draw_line(Vector2(-10.0, -24.0), Vector2(-10.0, -14.0), c_void, 3.0)
+		draw_line(Vector2(10.0, -24.0), Vector2(10.0, -14.0), c_void, 3.0)
 		draw_line(Vector2(-10.0, -24.0), Vector2(-10.0, -14.0), PAL["cream"] as Color, 1.0)
 		draw_line(Vector2(10.0, -24.0), Vector2(10.0, -14.0), PAL["cream"] as Color, 1.0)
 		LxToyDraw.draw_bevel_box(self, Rect2(-14.0, -16.0, 28.0, 7.0), PAL["plum"] as Color, c_wine, c_apricot, c_void)
@@ -151,7 +160,11 @@ func _draw_counterweight() -> void:
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	if _dropped:
+		draw_line(Vector2(0.0, -24.0), Vector2(0.0, -17.0), c_void, 3.0)
+		draw_line(Vector2(0.0, -24.0), Vector2(0.0, -17.0), PAL["dusk"] as Color, 1.0)
+		draw_rect(Rect2(-6.0, -3.0, 12.0, 6.0), c_void)
 		draw_rect(Rect2(-4.0, -2.0, 8.0, 4.0), PAL["dusk"] as Color)
+		draw_rect(Rect2(-2.0, -1.0, 4.0, 2.0), PAL["night"] as Color)
 		return
 	draw_line(Vector2(0.0, -24.0), Vector2(0.0, -8.0), c_gold, 2.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-10.0, -8.0, 20.0, 16.0), PAL["wine"] as Color, c_apricot, c_gold, c_void)

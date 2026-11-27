@@ -457,7 +457,7 @@
         272,
         36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -467,7 +467,7 @@
       "prop": "standing_oak_loom",
       "pos": [
         56,
-        184
+        176
       ],
       "layer": "sort",
       "flip_x": false,
@@ -526,8 +526,8 @@
       "sheet": "theme_loom",
       "prop": "hanging_silk_banner",
       "pos": [
-        232,
-        36
+        240,
+        32
       ],
       "layer": "sort",
       "flip_x": false,
@@ -538,8 +538,8 @@
       "sheet": "theme_loom",
       "prop": "hanging_silk_banner",
       "pos": [
-        312,
-        36
+        304,
+        32
       ],
       "layer": "sort",
       "flip_x": true,

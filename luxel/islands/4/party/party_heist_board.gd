@@ -90,23 +90,31 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_rose: Color = PAL["rose"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(0.0, 6.0), 18.0, 4.0)
 	# Brass-framed easel board
 	draw_rect(Rect2(-16.0, -2.0, 3.0, 8.0), c_dusk)
 	draw_rect(Rect2(13.0, -2.0, 3.0, 8.0), c_dusk)
 	LxToyDraw.draw_bevel_box(self, Rect2(-20.0, -18.0, 40.0, 18.0), c_night, c_wine, c_gold, c_void)
 	draw_rect(Rect2(-18.0, -16.0, 36.0, 14.0), c_night)
-	# Top header bar
-	draw_rect(Rect2(-16.0, -15.0, 32.0, 2.0), c_cream if _inspected_t > 0.0 else c_apricot)
-	# 6 permanent Roman-hour medallions (I-VI)
+	# Top header bar (calmed under flash_reduced)
+	draw_rect(Rect2(-16.0, -15.0, 32.0, 2.0), c_cream if (_inspected_t > 0.0 and not fred) else c_apricot)
+	# 6 permanent Roman-hour medallions (I-VI; exact integer 6px stride; raised crowned lit vs recessed empty)
 	for i: int in range(6):
 		var lit: bool = _is_stamp_lit(i)
-		var mx: float = -15.0 + float(i) * 5.6
+		var mx: float = -17.0 + float(i) * 6.0
 		var my: float = -10.0
-		draw_rect(Rect2(roundf(mx), my, 4.0, 6.0), c_void)
-		draw_rect(Rect2(roundf(mx) + 1.0, my + 1.0, 2.0, 4.0), c_gold if lit else c_dusk)
 		if lit:
-			draw_rect(Rect2(roundf(mx) + 1.0, my + 1.0, 2.0, 1.0), c_cream)
-		elif i == 5:
-			draw_rect(Rect2(roundf(mx) + 1.0, my + 2.0, 2.0, 1.0), c_rose)
+			draw_rect(Rect2(mx, my - 1.0, 4.0, 7.0), c_void)
+			draw_rect(Rect2(mx + 1.0, my, 2.0, 5.0), c_gold)
+			draw_rect(Rect2(mx + 1.0, my, 2.0, 2.0), c_cream)
+		else:
+			draw_rect(Rect2(mx, my + 2.0, 4.0, 4.0), c_void)
+			draw_rect(Rect2(mx + 1.0, my + 3.0, 2.0, 2.0), c_dusk)
+			if i == 5:
+				draw_rect(Rect2(mx + 1.0, my + 1.0, 2.0, 2.0), c_rose)
+	if _inspected_t > 0.0:
+		var u: float = 1.0 - clampf(_inspected_t / 0.65, 0.0, 1.0)
+		var ia: float = (1.0 - u) * (0.42 if fred else 0.78)
+		draw_rect(Rect2(-20.0, -18.0, 40.0, 18.0), Color(c_cream, ia), false, 1.0)
 	_draw_signal_pulses()

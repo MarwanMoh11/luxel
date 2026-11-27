@@ -57,7 +57,6 @@ var _hud_layer: CanvasLayer = null
 var _hud_node: DuskSundialHud = null
 var _last_phys_frame: int = -1
 var _sim_driver_id: int = 0
-var _sim_step_seq: int = 0
 var _vars_bound: LxWorldState = null
 
 
@@ -172,7 +171,6 @@ static func notify_sim_tick(dt: float, caller_id: int) -> void:
 	if inst._sim_driver_id != caller_id:
 		return
 	inst._last_phys_frame = Engine.get_physics_frames()
-	inst._sim_step_seq += 1
 	inst.tick_rule(dt)
 
 
@@ -367,15 +365,15 @@ func _draw_hud(ci: CanvasItem) -> void:
 	var c_ice: Color = pal["ice"] as Color
 	var c_rose: Color = pal["rose"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	# 1. Screen-space gentle sweep overlay on skip (0.4 s) / rewind (0.6 s) / wrap (1.2 s)
 	if sweep_t > 0.0 and sweep_dur > 0.01:
 		var u: float = 1.0 - clampf(sweep_t / sweep_dur, 0.0, 1.0)
-		var fred: bool = LxHudFx.flash_reduced()
-		var a: float = sin(u * PI) * (0.28 if fred else 0.52)
+		var a: float = sin(u * PI) * (0.22 if fred else 0.52)
 		var band_x: float = roundf(lerpf(320.0, -24.0, u) if sweep_mode == "rewind" else lerpf(-24.0, 320.0, u))
 		var sweep_c: Color = c_rose if sweep_mode == "rewind" else c_gold
 		ci.draw_rect(Rect2(band_x - 8.0, 0.0, 18.0, 180.0), Color(sweep_c, a * 0.45))
-		ci.draw_rect(Rect2(band_x, 0.0, 2.0, 180.0), Color(c_cream, a * 0.85))
+		ci.draw_rect(Rect2(band_x, 0.0, 2.0, 180.0), Color(c_cream, a * (0.55 if fred else 0.85)))
 		if sweep_mode == "wrap" and not fred:
 			for k: int in range(6):
 				var px: float = roundf(band_x + float((k % 3) - 1) * 7.0)
@@ -391,21 +389,19 @@ func _draw_hud(ci: CanvasItem) -> void:
 	ci.draw_rect(Rect2(ox, oy, bw, bh), c_night)
 	ci.draw_rect(Rect2(ox, oy, bw, 1.0), c_dusk if dusk_paused else c_mauve)
 
-	# 6 hour petals (left 20px, 3px stride)
+	# 6 hour petals (left 20px, 3px stride; greyscale-distinct tall active vs mid past vs flat future)
 	for i: int in range(HOURS_TOTAL):
 		var h_idx: int = i + 1
 		var px: float = ox + 2.0 + float(i) * 3.0
 		var py: float = oy + 2.0
-		var col_p: Color = c_dusk
-		if dusk_paused:
-			col_p = c_mauve if h_idx == dusk_hour else c_dusk
-		elif h_idx == dusk_hour:
-			col_p = c_cream
+		if h_idx == dusk_hour:
+			var body_c: Color = c_mauve if dusk_paused else c_gold
+			ci.draw_rect(Rect2(px, py, 2.0, 5.0), body_c)
+			ci.draw_rect(Rect2(px, py, 2.0, 2.0 if not dusk_paused else 1.0), c_dusk if dusk_paused else c_cream)
 		elif h_idx < dusk_hour:
-			col_p = c_apricot
-		ci.draw_rect(Rect2(px, py, 2.0, 4.0 if h_idx == dusk_hour else 3.0), col_p)
-		if h_idx == dusk_hour and not dusk_paused:
-			ci.draw_rect(Rect2(px, py + 4.0, 2.0, 1.0), c_gold)
+			ci.draw_rect(Rect2(px, py + 1.0, 2.0, 3.0), c_dusk if dusk_paused else c_apricot)
+		else:
+			ci.draw_rect(Rect2(px, py + 3.0, 2.0, 1.0), c_dusk)
 
 	# Weather / pause icon (right 6px)
 	var wx: float = ox + 21.0
@@ -413,6 +409,8 @@ func _draw_hud(ci: CanvasItem) -> void:
 	if dusk_paused:
 		ci.draw_rect(Rect2(wx + 1.0, wy, 1.0, 4.0), c_mauve)
 		ci.draw_rect(Rect2(wx + 3.0, wy, 1.0, 4.0), c_mauve)
+		ci.draw_rect(Rect2(wx + 1.0, wy, 1.0, 1.0), c_cream)
+		ci.draw_rect(Rect2(wx + 3.0, wy, 1.0, 1.0), c_cream)
 	else:
 		var wmode: String = get_effective_weather()
 		if wmode == "rain":
@@ -431,12 +429,17 @@ func _draw_hud(ci: CanvasItem) -> void:
 	# Smooth sand-sweep progress bar along bottom (24px wide)
 	var bar_w: float = 24.0
 	var frac: float = get_hour_progress()
+	var near_wrap: bool = (not dusk_paused) and dusk_hour == HOURS_TOTAL and frac > 0.80
 	ci.draw_rect(Rect2(ox + 2.0, oy + 8.0, bar_w, 2.0), c_void)
 	var fill_w: float = roundf(bar_w * frac)
 	if fill_w >= 1.0:
-		var bc: Color = c_mauve if dusk_paused else (c_rose if (dusk_hour == HOURS_TOTAL and frac > 0.80) else c_gold)
+		var bc: Color = c_mauve if dusk_paused else (c_rose if near_wrap else c_gold)
 		ci.draw_rect(Rect2(ox + 2.0, oy + 8.0, fill_w, 2.0), bc)
 		ci.draw_rect(Rect2(ox + 2.0, oy + 8.0, fill_w, 1.0), c_dusk if dusk_paused else c_cream)
+		if not dusk_paused and fill_w >= 2.0:
+			ci.draw_rect(Rect2(ox + 1.0 + fill_w, oy + 8.0, 1.0, 2.0), c_cream)
+	if near_wrap:
+		ci.draw_rect(Rect2(ox + 24.0, oy + 7.0, 2.0, 1.0), c_cream if fred else c_rose)
 
 
 func _emit_narration(string_id: String, style: String, duration: float) -> void:

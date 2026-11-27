@@ -277,7 +277,7 @@
         192,
         32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -335,7 +335,7 @@
       "prop": "mossy_boulder_large",
       "pos": [
         136,
-        176
+        168
       ],
       "layer": "sort",
       "flip_x": false,
@@ -346,8 +346,8 @@
       "sheet": "theme_cave_3",
       "prop": "subterranean_shroom",
       "pos": [
-        248,
-        176
+        256,
+        168
       ],
       "layer": "sort",
       "flip_x": true,

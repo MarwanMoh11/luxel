@@ -70,7 +70,7 @@ func rotate_chamber() -> bool:
 		region.call("apply_layers")
 	_emit_sfx("wood_shift")
 	if Lx.events != null and LxHudFx.shake_enabled():
-		Lx.events.shake_requested.emit(0.14)
+		Lx.events.shake_requested.emit(0.14 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	emit_power(true)
 	queue_redraw()
 	return true
@@ -139,7 +139,7 @@ func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
 	if _flash_t > 0.0:
-		return Vector4(pos.x, pos.y, 64.0, 0.72)
+		return Vector4(pos.x, pos.y, 64.0, 0.52 if LxHudFx.flash_reduced() else 0.72)
 	return Vector4(pos.x, pos.y, 28.0, 0.34)
 
 
@@ -154,23 +154,29 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_sky: Color = PAL["sky"] as Color
 	var rot: int = get_rot()
+	var red: bool = LxHudFx.flash_reduced()
+	var flash_on: bool = _flash_t > 0.0 and not red
 
 	# Heartwood Growth-Ring floor compass dial
 	draw_circle(Vector2.ZERO, 17.0, c_void)
 	draw_circle(Vector2.ZERO, 15.0, c_night)
-	draw_arc(Vector2.ZERO, 13.0, 0.0, TAU, 24, c_apricot if _flash_t > 0.0 else c_dusk, 1.5)
+	draw_arc(Vector2.ZERO, 13.0, 0.0, TAU, 24, c_apricot if flash_on else c_dusk, 2.0 if flash_on else 1.0)
 	draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 16, c_jade, 1.0)
-	# 4 cardinal pips; gold arrow points toward Key Vault quadrant (N=0, E=1, S=2, W=3)
-	var dirs: Array[Vector2] = [Vector2(0, -11), Vector2(11, 0), Vector2(0, 11), Vector2(-11, 0)]
+	# 4 cardinal pips: crowned arrow+orb for Key Vault (N=0,E=1,S=2,W=3), diamond for Prism, flat slots for dark
+	var dirs: Array[Vector2] = [Vector2(0.0, -11.0), Vector2(11.0, 0.0), Vector2(0.0, 11.0), Vector2(-11.0, 0.0)]
 	for i: int in range(4):
 		var dp: Vector2 = dirs[i]
 		var is_vault: bool = i == rot
 		var is_prism: bool = i == ((rot + 1) % 4)
-		var col: Color = c_gold if is_vault else (c_sky if is_prism else c_pine)
-		draw_circle(dp, 3.0 if is_vault else 2.0, col)
 		if is_vault:
+			draw_line(Vector2.ZERO, dp, c_gold, 2.0)
+			draw_circle(dp, 3.0, c_gold)
 			draw_rect(Rect2(dp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_cream)
+		elif is_prism:
+			LxToyDraw.draw_shape_glyph(self, dp, 1, true, c_sky, PAL["ice"] as Color)
+		else:
+			draw_rect(Rect2(dp - Vector2(1.0, 1.0), Vector2(2.0, 2.0)), c_pine)
 	if _dark_timer > 0.0:
 		var prog: float = clampf(_dark_timer / dark_secs, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, 15.5, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, c_cream if _flash_t > 0.0 else c_gold, 2.0)
+		draw_arc(Vector2.ZERO, 15.0, -PI * 0.5, -PI * 0.5 + TAU * prog, 20, c_cream if flash_on else c_gold, 2.0)
 	_draw_signal_pulses()

@@ -5,7 +5,6 @@ extends LxToy
 ## folds her wet wings beneath falling rainlight.
 
 var _anim_t: float = 0.0
-var _seen: bool = false
 
 
 func _toy_setup() -> void:
@@ -13,7 +12,6 @@ func _toy_setup() -> void:
 	radius = 24.0
 	size = Vector2(64.0, 22.0)
 	_anim_t = 0.0
-	_seen = powered
 	queue_redraw()
 
 
@@ -24,7 +22,6 @@ func get_interact_prompt() -> String:
 func interact(_actor: Node = null) -> bool:
 	if not active:
 		return false
-	_seen = true
 	if Lx.events != null and LxStrings.has_id("ISL4_C4_VISTA_LINE"):
 		Lx.events.narration_requested.emit("ISL4_C4_VISTA_LINE", "narration", 3.4)
 	_emit_sfx("prop_chime")
@@ -56,26 +53,38 @@ func _draw() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 
+	var fred: bool = LxHudFx.flash_reduced()
 	# Stained-glass bay-window casement overlooking r10 below
-	LxToyDraw.draw_bevel_box(self, Rect2(-32.0, -14.0, 64.0, 22.0), c_void, c_night, c_gold, c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(-32.0, -14.0, 64.0, 22.0), c_void, c_night, c_cream if powered else c_gold, c_void)
 	draw_rect(Rect2(-29.0, -11.0, 58.0, 16.0), c_deep)
 	# Translucent conservatory water & dome mullions
-	draw_rect(Rect2(-27.0, -9.0, 54.0, 12.0), Color(c_teal, 0.45))
+	draw_rect(Rect2(-27.0, -9.0, 54.0, 12.0), Color(c_teal, 0.36 if fred else 0.45))
 	for mx: float in [-14.0, 0.0, 14.0]:
 		draw_rect(Rect2(mx, -11.0, 1.0, 16.0), c_night)
 	# Distant Great Lamp glow at top of dome
-	draw_circle(Vector2(0.0, -7.0), 3.0, Color(c_gold, 0.72))
+	draw_circle(Vector2(0.0, -7.0), 3.0, Color(c_gold, 0.48 if fred else 0.72))
 	draw_rect(Rect2(-1.0, -8.0, 2.0, 2.0), c_cream)
-	# Heron Abbess folding her wet wings below the glass
-	var fold: float = 0.0 if LxHudFx.flash_reduced() else sin(_anim_t) * 2.5
+	# Heron Abbess folding her wet wings below the glass (void-backed silhouette)
+	var fold: float = 0.0 if fred else sin(_anim_t) * 2.5
 	var wing_w: float = roundf(7.0 + fold)
+	draw_rect(Rect2(-wing_w - 1.0, -4.0, wing_w * 2.0 + 2.0, 5.0), c_void)
+	draw_rect(Rect2(-3.0, -7.0, 6.0, 9.0), c_void)
 	draw_rect(Rect2(-wing_w, -3.0, wing_w * 2.0, 3.0), c_sky)
 	draw_rect(Rect2(-2.0, -5.0, 4.0, 6.0), c_ice)
 	draw_rect(Rect2(-1.0, -6.0, 2.0, 2.0), c_cream)
-	# Falling silver rain streaks across the pane
-	if not LxHudFx.flash_reduced():
+	# Falling silver rain streaks across the pane (calm frosted beads under flash_reduced)
+	if fred:
+		for k: int in range(3):
+			var rx: float = -18.0 + float(k) * 18.0
+			draw_rect(Rect2(rx, -8.0 + float(k % 2) * 3.0, 1.0, 2.0), Color(c_ice, 0.38))
+	else:
 		for k: int in range(5):
 			var rx: float = -22.0 + float(k) * 11.0
 			var ry: float = -10.0 + fposmod(_anim_t * 6.0 + float(k) * 3.0, 11.0)
 			draw_rect(Rect2(roundf(rx), roundf(ry), 1.0, 3.0), Color(c_ice, 0.55))
+	# Raised brass sill clasp star once inspected (greyscale-legible)
+	if powered:
+		draw_rect(Rect2(-3.0, 5.0, 6.0, 3.0), c_void)
+		draw_rect(Rect2(-2.0, 6.0, 4.0, 1.0), c_gold)
+		draw_rect(Rect2(-1.0, 5.0, 2.0, 3.0), c_cream)
 	_draw_signal_pulses()

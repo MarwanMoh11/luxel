@@ -52,8 +52,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl4_boss_minor_p1"
 	music_p2_cue = "isl4_boss_minor_p2"
-	max_hp = 180.0
-	hp = 180.0
+	max_hp = 204.0
+	hp = 204.0
 	body_radius = 10.0
 	move_speed = 44.0
 	stagger_threshold = 20.0
@@ -64,7 +64,7 @@ func _init() -> void:
 
 
 func _configure_boss(spec: Dictionary) -> void:
-	max_hp = 180.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
+	max_hp = 204.0 * maxf(0.1, float(spec.get("hp_scale", 1.0)))
 	hp = max_hp
 	configure_phases([0.66, 0.33])
 

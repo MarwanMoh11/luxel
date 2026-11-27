@@ -503,7 +503,7 @@
         128,
         52
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true
     },

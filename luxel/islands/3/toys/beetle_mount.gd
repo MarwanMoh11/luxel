@@ -329,7 +329,7 @@ func _draw() -> void:
 	# 6 articulated beetle legs striding gently along facing axis
 	var step_o: float = 0.0 if red else (1.0 if int(floorf(_leg_phase)) % 2 == 0 else -1.0)
 	for i: int in range(3):
-		var along: float = -5.0 + float(i) * 4.5 + (step_o if i % 2 == 0 else -step_o) * 0.6
+		var along: float = roundf(-5.0 + float(i) * 4.5 + (step_o if i % 2 == 0 else -step_o) * 0.6)
 		var base_l: Vector2 = (f * along + perp * 5.0).round()
 		var tip_l: Vector2 = (f * (along + 1.0) + perp * 8.0).round()
 		var base_r: Vector2 = (f * along - perp * 5.0).round()
@@ -350,10 +350,11 @@ func _draw() -> void:
 	draw_line(h_root, h_mid_r, c_void, 3.0)
 	draw_line(h_mid_r, h_tip_r, c_void, 3.0)
 	var horn_c: Color = c_gold if tame else c_apricot
-	draw_line(h_root, h_mid_l, horn_c, 1.5)
-	draw_line(h_mid_l, h_tip_l, c_cream if _horn_ring_t > 0.0 else horn_c, 1.5)
-	draw_line(h_root, h_mid_r, horn_c, 1.5)
-	draw_line(h_mid_r, h_tip_r, c_cream if _horn_ring_t > 0.0 else horn_c, 1.5)
+	var horn_tip_c: Color = c_cream if (_horn_ring_t > 0.0 and not red) else horn_c
+	draw_line(h_root, h_mid_l, horn_c, 1.0)
+	draw_line(h_mid_l, h_tip_l, horn_tip_c, 1.0)
+	draw_line(h_root, h_mid_r, horn_c, 1.0)
+	draw_line(h_mid_r, h_tip_r, horn_tip_c, 1.0)
 
 	# Rounded domed iridescent carapace (abdomen + pronotum head shield)
 	var body_dark: Color = c_pine if tame else c_plum
@@ -366,14 +367,25 @@ func _draw() -> void:
 	draw_circle(head, 5.0, c_void)
 	draw_circle(rear, 7.0, body_dark)
 	draw_circle(head, 4.0, body_dark)
-	draw_circle((rear + Vector2(-0.5, -0.5)).round(), 6.0, body_mid)
-	draw_circle((head + Vector2(-0.5, -0.5)).round(), 3.0, body_hi)
+	draw_circle(rear + Vector2(-1.0, -1.0), 6.0, body_mid)
+	draw_circle(head + Vector2(-1.0, -1.0), 3.0, body_hi)
 	# Wing-case elytra dorsal seam + mirrored Prism sheen crest
-	var sheen_c: Color = c_cream if _reflect_flash_t > 0.0 else (c_ice if tame else c_gold)
-	draw_circle((rear + Vector2(-1.0, -1.5)).round(), 4.0, c_sky if tame else body_hi)
-	draw_rect(Rect2((rear + Vector2(-2.0, -3.0)).round(), Vector2(4.0, 2.0)), sheen_c)
+	var sheen_c: Color = c_cream if (_reflect_flash_t > 0.0 and not red) else (c_ice if tame else c_gold)
+	draw_circle(rear + Vector2(-1.0, -2.0), 4.0, c_sky if tame else body_hi)
+	draw_rect(Rect2(rear + Vector2(-2.0, -3.0), Vector2(4.0, 2.0)), sheen_c)
 	draw_line((rear - f * 5.0).round(), (rear + f * 4.0).round(), c_night, 1.0)
-	draw_rect(Rect2((rear - f * 2.0 + Vector2(-1.0, -2.0)).round(), Vector2(2.0, 1.0)), body_rim)
+	draw_rect(Rect2((rear - f * 2.0).round() + Vector2(-1.0, -2.0), Vector2(2.0, 1.0)), body_rim)
+	# Greyscale-distinct tame saddle bolster vs wild dorsal spine pips
+	if tame:
+		var s_l: Vector2 = (rear + perp * 4.0).round()
+		var s_r: Vector2 = (rear - perp * 4.0).round()
+		draw_line(s_l, s_r, c_void, 3.0)
+		draw_line(s_l, s_r, c_cream, 1.0)
+	else:
+		for sp_i: int in [-3, 0, 3]:
+			var sp_p: Vector2 = (rear + f * float(sp_i)).round()
+			draw_rect(Rect2(sp_p - Vector2.ONE, Vector2(2.0, 2.0)), c_void)
+			draw_rect(Rect2(sp_p, Vector2.ONE), c_cream)
 	# Bright beetle eyes on head sides
 	draw_rect(Rect2((head + f * 1.5 + perp * 2.5).round(), Vector2(1.0, 1.0)), c_cream)
 	draw_rect(Rect2((head + f * 1.5 - perp * 2.5).round(), Vector2(1.0, 1.0)), c_cream)
@@ -384,7 +396,14 @@ func _draw() -> void:
 	elif rider != null:
 		draw_rect(Rect2(-2.0, -2.0, 4.0, 3.0), c_jade)
 		draw_rect(Rect2(-1.0, -2.0, 2.0, 1.0), c_cream)
+		if _charge_t > 0.0:
+			var c_tip: Vector2 = (f * 16.0).round()
+			var c_l: Vector2 = (f * 13.0 + perp * 3.0).round()
+			var c_r: Vector2 = (f * 13.0 - perp * 3.0).round()
+			draw_line(c_l, c_tip, c_cream, 1.0)
+			draw_line(c_r, c_tip, c_cream, 1.0)
 	if _horn_ring_t > 0.0:
 		var u: float = 1.0 - clampf(_horn_ring_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, u)), 0.0, TAU, 16, c_gold if u > 0.4 else c_cream, 1.0)
+		var ring_c: Color = Color(c_gold, 0.55) if red else (c_gold if u > 0.4 else c_cream)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, u)), 0.0, TAU, 16, ring_c, 1.0)
 	_draw_signal_pulses()

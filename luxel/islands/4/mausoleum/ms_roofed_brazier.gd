@@ -171,15 +171,22 @@ func _draw() -> void:
 	LxToyDraw.draw_bevel_box(self, Rect2(-6.0, 0.0, 12.0, 6.0), c_night, c_dusk, PAL["mauve"] as Color, c_void)
 	LxToyDraw.draw_bevel_box(self, Rect2(-7.0, -5.0, 14.0, 5.0), PAL["deep"] as Color, PAL["teal"] as Color, c_stone, c_void)
 
-	# Warm sheltered flame inside the stone arch
+	var fred: bool = LxHudFx.flash_reduced()
+	# Warm sheltered flame inside the stone arch (integer pixel coordinates)
 	if lit:
-		var sway: float = 0.0 if LxHudFx.flash_reduced() else (1.0 if _flicker_frame % 2 == 0 else -1.0)
+		var sway: float = 0.0 if fred else (1.0 if _flicker_frame % 2 == 0 else -1.0)
 		draw_rect(Rect2(-4.0, -12.0, 8.0, 7.0), c_apricot)
-		draw_rect(Rect2(-2.0 + sway * 0.5, -13.0, 4.0, 7.0), c_gold)
+		draw_rect(Rect2(-2.0, -13.0, 4.0, 7.0), c_gold)
 		draw_rect(Rect2(-1.0 + sway, -14.0, 2.0, 3.0), c_cream)
+		if secs > 0.0:
+			var frac: float = clampf(time_left / secs, 0.0, 1.0)
+			draw_rect(Rect2(-5.0, 2.0, 10.0, 2.0), c_void)
+			var bw: float = roundf(8.0 * frac)
+			if bw >= 1.0:
+				draw_rect(Rect2(-4.0, 2.0, bw, 2.0), c_gold)
 	else:
-		draw_rect(Rect2(-4.0, -6.0, 8.0, 2.0), c_night)
-		draw_rect(Rect2(-2.0, -6.0, 4.0, 1.0), PAL["plum"] as Color)
+		draw_rect(Rect2(-4.0, -6.0, 8.0, 2.0), c_void)
+		draw_rect(Rect2(-3.0, -6.0, 6.0, 1.0), PAL["plum"] as Color)
 
 	# Carved gothic pitched slate roof canopy (unmistakable visual rain shelter!)
 	draw_rect(Rect2(-13.0, -19.0, 26.0, 4.0), c_void)
@@ -187,17 +194,23 @@ func _draw() -> void:
 	draw_rect(Rect2(-10.0, -21.0, 20.0, 3.0), c_void)
 	draw_rect(Rect2(-9.0, -20.0, 18.0, 2.0), c_stone)
 	draw_rect(Rect2(-5.0, -23.0, 10.0, 3.0), c_void)
-	draw_rect(Rect2(-4.0, -22.0, 8.0, 2.0), c_ice if _rain_glint_t > 0.0 else c_stone)
-	draw_rect(Rect2(-1.0, -24.0, 2.0, 2.0), c_gold if lit else c_stone)
+	draw_rect(Rect2(-4.0, -22.0, 8.0, 2.0), c_ice if (_rain_glint_t > 0.0 and not fred) else c_stone)
+	if lit:
+		draw_rect(Rect2(-2.0, -26.0, 4.0, 3.0), c_void)
+		draw_rect(Rect2(-1.0, -25.0, 2.0, 2.0), c_cream)
+	else:
+		draw_rect(Rect2(-1.0, -24.0, 2.0, 1.0), c_stone)
 
 	# Rain deflection droplets off the stone canopy when RAIN hits while lit
 	if _rain_glint_t > 0.0:
-		draw_rect(Rect2(-13.0, -16.0, 1.0, 2.0), c_sky)
-		draw_rect(Rect2(12.0, -16.0, 1.0, 2.0), c_sky)
-		draw_rect(Rect2(-7.0, -23.0, 2.0, 1.0), c_ice)
-		draw_rect(Rect2(5.0, -23.0, 2.0, 1.0), c_ice)
+		var da: float = 0.55 if fred else 0.90
+		draw_rect(Rect2(-13.0, -16.0, 1.0, 2.0), Color(c_sky, da))
+		draw_rect(Rect2(12.0, -16.0, 1.0, 2.0), Color(c_sky, da))
+		draw_rect(Rect2(-7.0, -23.0, 2.0, 1.0), Color(c_ice, da))
+		draw_rect(Rect2(5.0, -23.0, 2.0, 1.0), Color(c_ice, da))
 
 	if _ignite_t > 0.0:
 		var u: float = 1.0 - clampf(_ignite_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(4.0, 14.0, u)), 0.0, TAU, 14, c_cream if u < 0.4 else c_gold, 1.0)
+		var ia: float = (1.0 - u) * (0.48 if fred else 0.88)
+		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(4.0, 14.0, u)), 0.0, TAU, 14, Color(c_cream if u < 0.4 else c_gold, ia), 1.0)
 	_draw_signal_pulses()

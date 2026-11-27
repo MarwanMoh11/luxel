@@ -467,7 +467,7 @@ func _step_bolt_enemies(b: Dictionary, bp: Vector2, nxt: Vector2) -> bool:
 			en.call("on_echo_bolt_hit", eh)
 			return true
 		if is_blue and (en.is_boss or not en.boss_id.is_empty()):
-			en.on_hit(eh)
+			en.apply_hit(eh)
 			return true
 	return false
 

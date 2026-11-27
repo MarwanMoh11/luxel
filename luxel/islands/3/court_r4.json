@@ -113,7 +113,7 @@
       "kind": "briar_arbiter",
       "pos": [
         256,
-        152
+        156
       ],
       "route": [],
       "zone": "court_r4",
@@ -321,7 +321,7 @@
         256,
         54
       ],
-      "layer": "sort",
+      "layer": "over",
       "shadow": true
     },
     {
@@ -331,7 +331,7 @@
         168,
         52
       ],
-      "layer": "sort",
+      "layer": "over",
       "shadow": true
     },
     {
@@ -368,7 +368,7 @@
       "sheet": "theme_briar_court",
       "prop": "clipped_rose_urn",
       "pos": [
-        344,
+        328,
         264
       ],
       "layer": "sort",

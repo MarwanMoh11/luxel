@@ -44,7 +44,7 @@ func tick(dt: float) -> void:
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 16.0, 6.0)
 		queue_redraw()
-	elif _unlocked and not claimed:
+	elif _unlocked and not claimed and not LxHudFx.flash_reduced():
 		queue_redraw()
 
 
@@ -60,7 +60,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["loom_r6_balcony_open"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL3_PWR_SHUTTLE", "title", 3.6)
-		Lx.events.shake_requested.emit(0.16)
+		Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -85,7 +85,8 @@ func get_light_pool() -> Vector4:
 		return Vector4.ZERO
 	if _claim_t > 0.0:
 		var u: float = clampf(_claim_t / 0.70, 0.0, 1.0)
-		return Vector4(pos.x, pos.y - 6.0, 78.0 * u, 1.2 * u)
+		var peak: float = 0.85 if LxHudFx.flash_reduced() else 1.20
+		return Vector4(pos.x, pos.y - 6.0, roundf(78.0 * u), peak * u)
 	if claimed:
 		return Vector4(pos.x, pos.y - 4.0, 28.0, 0.38)
 	return Vector4(pos.x, pos.y - 6.0, 56.0, 0.92)
@@ -117,14 +118,15 @@ func _draw() -> void:
 	var c_apricot: Color = PAL["apricot"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var red: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), c_plum, c_wine, c_rose, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), c_gold if not claimed else c_rose)
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 2.0)
+		var bob: float = 0.0 if red else roundf(sin(_clock * 3.4) * 2.0)
 		var cy: float = -12.0 + bob
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 14.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_gold, 0.65), 1.0, false)
+		var r1: float = 8.0 + (0.0 if red else fmod(_clock * 14.0, 10.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_gold, 0.40 if red else 0.65), 1.0, false)
 		# Pointed Brass Shuttle boat silhouette with golden bobbin core
 		var pts := PackedVector2Array([
 			Vector2(-9.0, cy), Vector2(-4.0, cy - 4.0), Vector2(4.0, cy - 4.0),
@@ -138,8 +140,12 @@ func _draw() -> void:
 		draw_colored_polygon(inner, c_apricot)
 		draw_rect(Rect2(-3.0, cy - 2.0, 6.0, 4.0), c_gold)
 		draw_rect(Rect2(-2.0, cy - 1.0, 4.0, 2.0), c_cream)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.70, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, c_gold, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, c_cream, 1.0, false)
+	else:
+		# Recessed empty shuttle cradle slot on claimed plinth (greyscale-distinct)
+		draw_rect(Rect2(-6.0, -1.0, 12.0, 3.0), PAL["night"] as Color)
+		draw_rect(Rect2(-4.0, 0.0, 8.0, 1.0), c_void)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.70, 0.0, 1.0)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 20, Color(c_gold, 0.55 if red else 1.0), 1.0 if red else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 26.0, u)), 0.0, TAU, 16, Color(c_cream, 0.45 if red else 1.0), 1.0, false)
 	_draw_signal_pulses()

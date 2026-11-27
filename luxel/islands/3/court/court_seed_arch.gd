@@ -34,18 +34,21 @@ func tick(dt: float) -> void:
 	if bloomed and _bloom_t < 1.0:
 		_bloom_t = minf(1.0, _bloom_t + dt * 0.9)
 		queue_redraw()
-	elif bloomed:
-		queue_redraw()
+	elif bloomed and not LxHudFx.flash_reduced():
+		if int(floorf(_clock * 3.0)) != int(floorf((_clock - dt) * 3.0)):
+			queue_redraw()
 
 
 func get_light_pool() -> Vector4:
 	if not active or not bloomed:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 6.0, 74.0 * _bloom_t, 0.78 * _bloom_t)
+	var l_int: float = 0.64 if LxHudFx.flash_reduced() else 0.78
+	return Vector4(pos.x, pos.y - 6.0, roundf(74.0 * _bloom_t), l_int * _bloom_t)
 
 
 func _draw() -> void:
 	var c_void: Color = PAL["void"] as Color
+	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_pine: Color = PAL["pine"] as Color
 	var c_jade: Color = PAL["jade"] as Color
@@ -57,9 +60,11 @@ func _draw() -> void:
 	# Mossy inlaid court plinth always visible
 	draw_circle(Vector2.ZERO, 16.0, c_void)
 	draw_circle(Vector2.ZERO, 14.0, c_pine)
-	draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 20, c_gold if bloomed else c_dusk, 1.2)
+	draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 20, c_gold if bloomed else c_dusk, 2.0 if bloomed else 1.0)
 	if not bloomed:
-		draw_rect(Rect2(-3.0, -2.0, 6.0, 4.0), c_dusk)
+		# Recessed empty scale-beam slot (greyscale-distinct from bloomed arch)
+		draw_rect(Rect2(-6.0, -2.0, 12.0, 4.0), c_night)
+		draw_rect(Rect2(-4.0, -1.0, 8.0, 2.0), c_dusk)
 		return
 
 	# Laid-down brass Justice Scales + golden sprouting seed-arch
@@ -67,10 +72,18 @@ func _draw() -> void:
 	draw_line(Vector2(-10.0, 2.0), Vector2(10.0, 2.0), c_apricot, 2.0)
 	draw_circle(Vector2(-10.0, 3.0), 3.0, c_gold)
 	draw_circle(Vector2(10.0, 3.0), 3.0, c_gold)
-	# Twin golden sapling vines curving into a glowing crown
-	draw_line(Vector2(-8.0, 0.0), Vector2(-6.0, -h), c_jade, 2.5)
-	draw_line(Vector2(8.0, 0.0), Vector2(6.0, -h), c_jade, 2.5)
+	# Twin golden sapling vines curving into a glowing void-backed crown
+	draw_line(Vector2(-8.0, 0.0), Vector2(-6.0, -h), c_void, 3.0)
+	draw_line(Vector2(8.0, 0.0), Vector2(6.0, -h), c_void, 3.0)
+	draw_line(Vector2(-8.0, 0.0), Vector2(-6.0, -h), c_jade, 2.0)
+	draw_line(Vector2(8.0, 0.0), Vector2(6.0, -h), c_jade, 2.0)
 	draw_line(Vector2(-6.0, -h), Vector2(0.0, -h - 4.0), c_lime, 2.0)
 	draw_line(Vector2(6.0, -h), Vector2(0.0, -h - 4.0), c_lime, 2.0)
 	draw_circle(Vector2(0.0, -h - 3.0), 4.0, c_gold)
 	draw_circle(Vector2(0.0, -h - 3.0), 2.0, c_cream)
+	# 4-point crown starburst (calm static under flash_reduced)
+	var glint: bool = LxHudFx.flash_reduced() or int(floorf(_clock * 3.0)) % 2 == 0
+	if glint:
+		draw_rect(Rect2(-1.0, -h - 8.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(-6.0, -h - 4.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(4.0, -h - 4.0, 2.0, 1.0), c_cream)

@@ -325,8 +325,8 @@
       "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        192,
-        38
+        200,
+        32
       ],
       "layer": "sort",
       "shadow": true
@@ -335,8 +335,8 @@
       "sheet": "island3_scenery",
       "prop": "spider_silk_banner",
       "pos": [
-        288,
-        38
+        280,
+        40
       ],
       "layer": "sort",
       "shadow": true
@@ -346,7 +346,7 @@
       "prop": "heartwood_pillar",
       "pos": [
         56,
-        88
+        80
       ],
       "layer": "sort",
       "shadow": true

@@ -988,7 +988,7 @@
         352,
         166
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -1214,7 +1214,7 @@
       "prop": "giant_glowshroom_cluster",
       "pos": [
         72,
-        424
+        416
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1237,8 +1237,8 @@
       "sheet": "island3_scenery",
       "prop": "fern_cluster",
       "pos": [
-        76,
-        444
+        80,
+        464
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1285,8 +1285,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        476,
-        348
+        480,
+        368
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1297,8 +1297,8 @@
       "sheet": "island3_scenery",
       "prop": "spore_brazier_stump",
       "pos": [
-        476,
-        404
+        464,
+        400
       ],
       "layer": "sort",
       "flip_x": true,
@@ -1417,8 +1417,8 @@
       "sheet": "island3_scenery",
       "prop": "giant_glowshroom_cluster",
       "pos": [
-        96,
-        712
+        104,
+        704
       ],
       "layer": "sort",
       "flip_x": false,
@@ -1729,8 +1729,8 @@
       "sheet": "island3_scenery",
       "prop": "mossy_stump",
       "pos": [
-        194,
-        942
+        200,
+        936
       ],
       "layer": "sort",
       "flip_x": false,
