@@ -2,7 +2,15 @@ class_name LxSpriteSheet
 extends RefCounted
 ## Cached JSON + PNG sprite-sheet loader and CanvasItem renderer for Luxel 1.0 art sheets.
 
+const MAX_CACHED_SHEETS: int = 56
+const PINNED_SHEETS: Dictionary = {
+	"res://luxel/art/props/puzzle_interactables.json": true,
+	"res://luxel/art/props/island1_props.json": true,
+	"res://luxel/art/wick/wick.json": true,
+}
+
 static var _cache: Dictionary = {}
+static var _lru: Array[String] = []
 
 var tex: Texture2D = null
 var animations: Dictionary = {}
@@ -10,10 +18,29 @@ var props: Dictionary = {}
 var default_anchor: Vector2 = Vector2.ZERO
 
 
+static func _touch_lru(json_path: String) -> void:
+	if PINNED_SHEETS.has(json_path):
+		return
+	var idx: int = _lru.find(json_path)
+	if idx >= 0:
+		if idx < _lru.size() - 1:
+			_lru.remove_at(idx)
+			_lru.append(json_path)
+	else:
+		_lru.append(json_path)
+	while _lru.size() > MAX_CACHED_SHEETS:
+		var evict: String = _lru[0]
+		_lru.remove_at(0)
+		_cache.erase(evict)
+
+
 static func load_sheet(json_path: String) -> LxSpriteSheet:
 	if _cache.has(json_path):
 		var cached: Variant = _cache[json_path]
-		return cached as LxSpriteSheet if cached != null else null
+		if cached != null:
+			_touch_lru(json_path)
+			return cached as LxSpriteSheet
+		return null
 	var data: Dictionary = _read_json(json_path)
 	var sheet_name: String = str(data.get("sheet", ""))
 	if data.is_empty() or sheet_name.is_empty():
@@ -33,11 +60,13 @@ static func load_sheet(json_path: String) -> LxSpriteSheet:
 		sheet.props = props_var as Dictionary
 	sheet.default_anchor = _to_vec2(data.get("anchor", null), Vector2.ZERO)
 	_cache[json_path] = sheet
+	_touch_lru(json_path)
 	return sheet
 
 
 static func clear_cache() -> void:
 	_cache.clear()
+	_lru.clear()
 
 
 func draw_actor(canvas: CanvasItem, origin: Vector2, anim_name: String, facing: Vector2, time_s: float, modulate: Color = Color.WHITE, scale: Vector2 = Vector2.ONE) -> bool:

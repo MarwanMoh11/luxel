@@ -249,67 +249,57 @@ func setup(spec: Dictionary) -> void:
 
 
 func _process(dt: float) -> void:
+	if _graze_cd > 0.0: _graze_cd = maxf(0.0, _graze_cd - dt)
+	if _sfx_cd > 0.0: _sfx_cd = maxf(0.0, _sfx_cd - dt)
+	if _sway_cd > 0.0: _sway_cd = maxf(0.0, _sway_cd - dt)
+	if _flare_cd > 0.0: _flare_cd = maxf(0.0, _flare_cd - dt)
 	var has_p: bool = Lx.player != null and is_instance_valid(Lx.player) and (Lx.player is Node2D)
-	if _graze_cd > 0.0:
-		_graze_cd = maxf(0.0, _graze_cd - dt)
-	if _sfx_cd > 0.0:
-		_sfx_cd = maxf(0.0, _sfx_cd - dt)
+	var pp: Vector2 = (Lx.player as Node2D).global_position if has_p else Vector2(-99999.0, -99999.0)
+	var idle_fx: bool = _sway_t <= 0.0 and _flare_t <= 0.0 and _ring_t <= 0.0 and _flakes.is_empty() and is_equal_approx(_occlude_a, 1.0)
+	if idle_fx and has_p and (absf(pp.x - position.x) > 56.0 or absf(pp.y - position.y) > maxf(56.0, _frame_size.y + 8.0)):
+		var lan_chk: Variant = (Lx.player as LxWick).lantern if Lx.player is LxWick else Lx.player.get("lantern")
+		if not (_can_sway and _sway_cd <= 0.0 and lan_chk is LxLantern and (lan_chk as LxLantern).is_out()):
+			return
 	if _can_occlude and has_p:
-		var pp: Vector2 = (Lx.player as Node2D).global_position
 		var behind: bool = pp.y < position.y - 2.0 and pp.y > position.y - _frame_size.y - 2.0 and absf(pp.x - position.x) < _frame_size.x * 0.46
 		var target_a: float = 0.48 if behind else 1.0
 		if not is_equal_approx(_occlude_a, target_a):
-			_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5)
-			modulate.a = _occlude_a
+			_occlude_a = move_toward(_occlude_a, target_a, dt * 4.5); modulate.a = _occlude_a
 	if _can_sway or _sway_t > 0.0:
-		if _sway_cd > 0.0:
-			_sway_cd = maxf(0.0, _sway_cd - dt)
 		if _can_sway and has_p and _sway_cd <= 0.0:
-			var pp2: Vector2 = (Lx.player as Node2D).global_position
-			var d2: float = pp2.distance_squared_to(position)
+			var d2: float = pp.distance_squared_to(position)
 			if d2 < 324.0:
 				var vel_v: Variant = Lx.player.get("velocity")
 				var vel: Vector2 = vel_v as Vector2 if vel_v is Vector2 else Vector2.ZERO
 				if vel.length_squared() > 400.0:
-					_sway_t = 0.36
-					_sway_cd = 0.24
-					_sway_dir = -1.0 if (pp2.x > position.x) else 1.0
-					if absf(vel.x) > 25.0:
-						_sway_dir = signf(vel.x)
+					_sway_t = 0.36; _sway_cd = 0.24
+					_sway_dir = signf(vel.x) if absf(vel.x) > 25.0 else (-1.0 if (pp.x > position.x) else 1.0)
 					_sway_amp = 2.0 if vel.length_squared() > 14400.0 else 1.2
 					_play_sway_sfx()
 			else:
-				var lan_v: Variant = Lx.player.get("lantern")
+				var lan_v: Variant = (Lx.player as LxWick).lantern if Lx.player is LxWick else Lx.player.get("lantern")
 				if lan_v is Object and is_instance_valid(lan_v as Object) and bool((lan_v as Object).call("is_out")):
 					var lpos: Vector2 = (lan_v as Object).get("pos") as Vector2
 					var lvel: Vector2 = (lan_v as Object).get("vel") as Vector2
 					if lvel.length_squared() > 400.0 and lpos.distance_squared_to(position) < 484.0:
-						_sway_t = 0.36
-						_sway_cd = 0.24
+						_sway_t = 0.36; _sway_cd = 0.24
 						_sway_dir = signf(lvel.x) if absf(lvel.x) > 25.0 else (-1.0 if (lpos.x > position.x) else 1.0)
-						_sway_amp = 2.0
-						_play_sway_sfx()
+						_sway_amp = 2.0; _play_sway_sfx()
 		if _sway_t > 0.0:
 			_sway_t = maxf(0.0, _sway_t - dt)
 			var next_px: float = roundf(sin(_sway_t * 24.0) * _sway_amp * (_sway_t / 0.36) * _sway_dir) if _sway_t > 0.0 else 0.0
 			if not is_equal_approx(next_px, _sway_px):
-				_sway_px = next_px
-				queue_redraw()
+				_sway_px = next_px; queue_redraw()
 	if _is_glow:
-		if _flare_cd > 0.0:
-			_flare_cd = maxf(0.0, _flare_cd - dt)
 		if _flare_t > 0.0:
-			_flare_t = maxf(0.0, _flare_t - dt)
-			queue_redraw()
-		elif has_p and _flare_cd <= 0.0:
-			var pp3: Vector2 = (Lx.player as Node2D).global_position
-			if pp3.distance_squared_to(position) < 484.0:
-				var vel_g: Variant = Lx.player.get("velocity")
-				if vel_g is Vector2 and (vel_g as Vector2).length_squared() > 2500.0:
-					_flare_t = 0.38 if (vel_g as Vector2).length_squared() > 6400.0 else 0.28
-					_flare_cd = 0.55
-					_flare_dir = signf((vel_g as Vector2).x) if absf((vel_g as Vector2).x) > 10.0 else 1.0
-					queue_redraw()
+			_flare_t = maxf(0.0, _flare_t - dt); queue_redraw()
+		elif has_p and _flare_cd <= 0.0 and pp.distance_squared_to(position) < 484.0:
+			var vel_g: Variant = Lx.player.get("velocity")
+			if vel_g is Vector2 and (vel_g as Vector2).length_squared() > 2500.0:
+				_flare_t = 0.38 if (vel_g as Vector2).length_squared() > 6400.0 else 0.28
+				_flare_cd = 0.55
+				_flare_dir = signf((vel_g as Vector2).x) if absf((vel_g as Vector2).x) > 10.0 else 1.0
+				queue_redraw()
 	var fx_dirty: bool = false
 	if _ring_t > 0.0:
 		_ring_t = maxf(0.0, _ring_t - dt)

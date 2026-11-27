@@ -21,19 +21,14 @@ static var _ground_missing: Dictionary = {}
 
 
 static func flag_truthy(v: Variant) -> bool:
-	if v == null:
-		return false
-	if v is bool:
-		return bool(v)
-	if v is int or v is float:
-		return not is_zero_approx(float(v))
+	if v == null: return false
+	if v is bool: return bool(v)
+	if v is int or v is float: return not is_zero_approx(float(v))
 	if v is String:
 		var s: String = (v as String).strip_edges().to_lower()
 		return not s.is_empty() and s != "false" and s != "0"
-	if v is Array:
-		return not (v as Array).is_empty()
-	if v is Dictionary:
-		return not (v as Dictionary).is_empty()
+	if v is Array: return not (v as Array).is_empty()
+	if v is Dictionary: return not (v as Dictionary).is_empty()
 	return true
 
 
@@ -288,11 +283,18 @@ static func poll_signals(region: LxRegionLoader, prev: Dictionary) -> void:
 				region.set_room_anchor(it.pos)
 
 
+const SIGNAL_PROPS: PackedStringArray = ["powered", "lit", "opened", "activated", "shattered", "broken", "burned", "claimed", "collected", "is_current_anchor"]
+const SUPPORTABLE_TILES: Dictionary = {"pit": true, "void": true, "water": true, "tide": true, "phantom": true}
+
 static func _interactable_signal_state(it: LxInteractable) -> bool:
-	for prop: String in ["powered", "lit", "opened", "activated", "shattered", "broken", "burned", "claimed", "collected", "is_current_anchor"]:
+	if it is LxToy: return (it as LxToy).powered
+	if it is LxDoor: return (it as LxDoor).opened
+	if it is LxBrazier: return (it as LxBrazier).lit
+	if it is LxSwitchEye: return (it as LxSwitchEye).activated
+	if it is LxBeacon: return (it as LxBeacon).lit
+	for prop: String in SIGNAL_PROPS:
 		var v: Variant = it.get(prop)
-		if v is bool and bool(v):
-			return true
+		if v is bool and bool(v): return true
 	return false
 
 
@@ -391,7 +393,7 @@ static func is_tile_supported(region: LxRegionLoader, tile_type: String, tile_ce
 			if ml != null and ml.unlocked:
 				if ml.is_pulse_active() and tile_center.distance_squared_to(w.global_position) <= ml.pulse_radius * ml.pulse_radius: return true
 				if ml.is_anchor_active() and w.lantern != null and tile_center.distance_squared_to(w.lantern.pos) <= ml.hung_radius * ml.hung_radius: return true
-	if tile_type in ["pit", "void", "water", "tide", "phantom"]:
+	if SUPPORTABLE_TILES.has(tile_type):
 		for it: LxInteractable in region.get_interactables():
 			if it != null and it.is_platform_solid() and it.get_platform_rect().has_point(tile_center): return true
 	return false

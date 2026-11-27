@@ -153,7 +153,11 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		_sync_events()
 	_clock += dt
 	_boss_phase = _active_boss_phase(region)
-	_update_biome_tint(dt, region)
+	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
+	var relit_dng: bool = (not wave_active) and region != null and region.is_dungeon and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
+	var lit_b: int = 0 if (relit_ow or wave_active) else _lit_beacon_count(region)
+	var flash_red: bool = LxHudFx.flash_reduced()
+	_update_biome_tint(dt, region, lit_b, flash_red)
 	_tick_burst_lights(dt)
 
 	if wave_active:
@@ -172,9 +176,6 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_veil.size = view_sz
 
 	var cam_center: Vector2 = Lx.camera.global_position if (Lx.camera != null and is_instance_valid(Lx.camera)) else view_sz * 0.5
-	var relit_ow: bool = (not wave_active) and region != null and (not region.is_dungeon) and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
-	var relit_dng: bool = (not wave_active) and region != null and region.is_dungeon and Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(region.current_island_id)
-	var lit_b: int = 0 if (relit_ow or wave_active) else _lit_beacon_count(region)
 	var target_lift: float = 0.14 if relit_ow else (0.17 if _sanctum_cleared else (0.09 if relit_dng else (0.032 * float(lit_b))))
 	_beacon_lift = move_toward(_beacon_lift, target_lift, dt * 0.16) if dt > 0.0 else target_lift
 	var b_off: float = LxBiomeRules.active_instance.get_darkness_offset() if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance)) else 0.0
@@ -185,7 +186,7 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	var eff_dark: float = clampf((darkness_strength + b_off) * 0.58 - _beacon_lift, 0.0, max_dark)
 	var target_vig: float = 0.0
 	if b_id >= 2 and _boss_phase >= 2:
-		var fr_v: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		var fr_v: float = 0.65 if flash_red else 1.0
 		target_vig = minf(float(_boss_phase - 1) * 0.03 * fr_v, maxf(0.0, 0.18 - vignette_strength))
 	_boss_vig = move_toward(_boss_vig, target_vig, dt * 0.18) if dt > 0.0 else target_vig
 	_mat.set_shader_parameter("cam_origin", (cam_center - view_sz * 0.5).round())
@@ -197,7 +198,6 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_mat.set_shader_parameter("vignette_strength", clampf(vignette_strength + _boss_vig, 0.0, 0.5))
 	var dpulse: float = 0.0
 	if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.hearts > 0.0 and Lx.state.hearts <= 1.0:
-		var flash_red: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
 		dpulse = 0.45 if flash_red else (0.52 + 0.48 * sin(_clock * 6.4))
 	_mat.set_shader_parameter("danger_pulse", dpulse)
 	if _trans_fade > 0.0 and dt > 0.0:
@@ -214,8 +214,7 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	_mat.set_shader_parameter("dungeon_shafts", use_shafts)
 
 	# Dual-frequency organic flame breath (calm gentle breath when flash_reduction is enabled)
-	var fr_flk: bool = Lx.save != null and bool(Lx.save.settings.get("flash_reduction", false))
-	var flicker: float = (0.985 + 0.015 * sin(_clock * 2.4)) if fr_flk else (0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7))
+	var flicker: float = (0.985 + 0.015 * sin(_clock * 2.4)) if flash_red else (0.955 + 0.030 * sin(_clock * 5.2) + 0.015 * sin(_clock * 13.7))
 	var lights := PackedVector4Array()
 	_append_player_lights(lights, flicker, is_dng)
 
@@ -225,28 +224,35 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		var u: float = clampf(float(b["age"]) / maxf(0.01, float(b["dur"])), 0.0, 1.0)
 		var br: float = float(b["r"]) * (0.62 + 0.38 * (1.0 - u))
 		var bi: float = float(b["i"]) * (1.0 - u) * (1.0 - u)
-		if bi > 0.02 and bpos.distance_to(cam_center) <= 320.0 + br:
-			candidates.append({"d": bpos.distance_squared_to(cam_center) - 1800.0, "v": Vector4(bpos.x, bpos.y, br, bi)})
+		var lim_b: float = 320.0 + br
+		var d2_b: float = bpos.distance_squared_to(cam_center)
+		if bi > 0.02 and d2_b <= lim_b * lim_b:
+			candidates.append({"d": d2_b - 1800.0, "v": Vector4(bpos.x, bpos.y, br, bi)})
 
 	if region != null:
 		for pool: Vector4 in region.get_light_pools():
 			if pool.z <= 1.0 or pool.w <= 0.001:
 				continue
 			var p := Vector2(pool.x, pool.y)
-			if p.distance_to(cam_center) <= 340.0 + pool.z:
-				candidates.append({"d": p.distance_squared_to(cam_center), "v": Vector4(pool.x, pool.y, pool.z * flicker, pool.w)})
+			var lim_p: float = 340.0 + pool.z
+			var d2_p: float = p.distance_squared_to(cam_center)
+			if d2_p <= lim_p * lim_p:
+				candidates.append({"d": d2_p, "v": Vector4(pool.x, pool.y, pool.z * flicker, pool.w)})
 		for e: LxEnemyBrain in region.get_enemies():
 			if e != null and is_instance_valid(e) and e.is_alive() and e.is_boss:
 				var bp: Vector2 = e.global_position + Vector2(0.0, -10.0)
-				if bp.distance_to(cam_center) <= 320.0:
+				var d2_e: float = bp.distance_squared_to(cam_center)
+				if d2_e <= 102400.0:
 					var ph_b: float = float(maxi(0, e.phase - 1))
-					candidates.append({"d": bp.distance_squared_to(cam_center) - 2400.0, "v": Vector4(bp.x, bp.y, (70.0 + ph_b * 10.0) * flicker, 0.94 + ph_b * 0.12)})
+					candidates.append({"d": d2_e - 2400.0, "v": Vector4(bp.x, bp.y, (70.0 + ph_b * 10.0) * flicker, 0.94 + ph_b * 0.12)})
 
 	if LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance):
 		for bpool: Vector4 in LxBiomeRules.active_instance.get_light_pools():
 			var bp2 := Vector2(bpool.x, bpool.y)
-			if bp2.distance_to(cam_center) <= 320.0 + bpool.z:
-				candidates.append({"d": bp2.distance_squared_to(cam_center) - 800.0, "v": bpool})
+			var lim_br: float = 320.0 + bpool.z
+			var d2_br: float = bp2.distance_squared_to(cam_center)
+			if d2_br <= lim_br * lim_br:
+				candidates.append({"d": d2_br - 800.0, "v": bpool})
 	if region != null and not region.is_dungeon:
 		var dpts: Array[Vector2] = []
 		if b_id == 1 and LxBellChimes.active_instance != null and is_instance_valid(LxBellChimes.active_instance):
@@ -257,35 +263,43 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		var dr_d: float = (48.0 if harm_d else 36.0) * flicker
 		var di_d: float = 0.72 if harm_d else 0.52
 		for dp: Vector2 in dpts:
-			if dp.distance_to(cam_center) <= 300.0:
-				candidates.append({"d": dp.distance_squared_to(cam_center) + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, dr_d, di_d)})
+			var d2_dp: float = dp.distance_squared_to(cam_center)
+			if d2_dp <= 90000.0:
+				candidates.append({"d": d2_dp + 1200.0, "v": Vector4(dp.x, dp.y - 6.0, dr_d, di_d)})
 		if relit_ow:
 			var kp: Vector2 = _interactable_pos("door_ward_barrier" if b_id == 1 else "door_dungeon_%d" % b_id, "door")
-			if kp != Vector2.ZERO and kp.distance_to(cam_center) <= 320.0:
-				candidates.append({"d": kp.distance_squared_to(cam_center) + 600.0, "v": Vector4(kp.x, kp.y - 28.0, 88.0 * flicker, 0.96)})
+			var d2_kp: float = kp.distance_squared_to(cam_center)
+			if kp != Vector2.ZERO and d2_kp <= 102400.0:
+				candidates.append({"d": d2_kp + 600.0, "v": Vector4(kp.x, kp.y - 28.0, 88.0 * flicker, 0.96)})
 	if LxPortalFx.active_instance != null and is_instance_valid(LxPortalFx.active_instance):
 		for ppool: Vector4 in LxPortalFx.active_instance.get_light_pools():
 			var pp_v := Vector2(ppool.x, ppool.y)
-			if pp_v.distance_to(cam_center) <= 300.0 + ppool.z:
-				candidates.append({"d": pp_v.distance_squared_to(cam_center) + 900.0, "v": Vector4(ppool.x, ppool.y, ppool.z * flicker, ppool.w)})
+			var lim_pp: float = 300.0 + ppool.z
+			var d2_pp: float = pp_v.distance_squared_to(cam_center)
+			if d2_pp <= lim_pp * lim_pp:
+				candidates.append({"d": d2_pp + 900.0, "v": Vector4(ppool.x, ppool.y, ppool.z * flicker, ppool.w)})
 
 	for extra: Vector4 in extra_lights:
 		if extra.z <= 1.0 or extra.w <= 0.001:
 			continue
 		var ep := Vector2(extra.x, extra.y)
-		if ep.distance_to(cam_center) <= 300.0 + extra.z:
-			candidates.append({"d": ep.distance_squared_to(cam_center) + 2500.0, "v": extra})
+		var lim_ex: float = 300.0 + extra.z
+		var d2_ex: float = ep.distance_squared_to(cam_center)
+		if d2_ex <= lim_ex * lim_ex:
+			candidates.append({"d": d2_ex + 2500.0, "v": extra})
 
 	if Lx.player != null and is_instance_valid(Lx.player):
 		var bolts_var: Variant = Lx.player.get("bolts")
 		if bolts_var is Array:
 			for b: Variant in (bolts_var as Array):
 				var bp: Variant = b.get("pos") if (b is Dictionary or b is Object) else null
-				if bp is Vector2 and (bp as Vector2).distance_to(cam_center) <= 240.0:
+				if bp is Vector2:
 					var bpos: Vector2 = bp as Vector2
-					var is_p: Variant = b.get("is_prism") if (b is Dictionary or b is Object) else null
-					var bounced: bool = is_p is bool and bool(is_p)
-					candidates.append({"d": bpos.distance_squared_to(cam_center) + (3200.0 if bounced else 5000.0), "v": Vector4(bpos.x, bpos.y, 48.0 if bounced else 34.0, 1.18 if bounced else 0.85)})
+					var d2_bl: float = bpos.distance_squared_to(cam_center)
+					if d2_bl <= 57600.0:
+						var is_p: Variant = b.get("is_prism") if (b is Dictionary or b is Object) else null
+						var bounced: bool = is_p is bool and bool(is_p)
+						candidates.append({"d": d2_bl + (3200.0 if bounced else 5000.0), "v": Vector4(bpos.x, bpos.y, 48.0 if bounced else 34.0, 1.18 if bounced else 0.85)})
 		var beam_v: Variant = Lx.player.get("move_beam")
 		if beam_v is Object and is_instance_valid(beam_v):
 			if bool((beam_v as Object).get("charging")) and (beam_v as Object).has_method("charge_progress"):
@@ -313,7 +327,8 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 				var fr: float = float((flare_v as Object).get("flare_radius"))
 				candidates.append({"d": fo.distance_squared_to(cam_center) - 3200.0, "v": Vector4(fo.x, fo.y, fr * 2.0 * (0.45 + 0.55 * (1.0 - ff)), 1.85 * ff)})
 
-	candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["d"]) < float(b["d"]))
+	if candidates.size() > MAX_LIGHTS - lights.size():
+		candidates.sort_custom(func(a: Dictionary, b: Dictionary) -> bool: return float(a["d"]) < float(b["d"]))
 	for entry: Dictionary in candidates:
 		if lights.size() >= MAX_LIGHTS:
 			break
@@ -327,18 +342,30 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 	var zrects := PackedVector4Array()
 	var zfades := PackedFloat32Array()
 	if region != null:
-		for z: Dictionary in region.get_zones():
-			var zid: String = str(z.get("id", ""))
-			if zid.is_empty():
-				continue
-			var target: float = 1.0 if region.is_zone_lit(zid) else 0.0
-			var cur: float = float(_zone_fades.get(zid, target))
-			cur = move_toward(cur, target, dt * 1.15) if dt > 0.0 else target
-			_zone_fades[zid] = cur
-			if cur > 0.005 and zrects.size() < MAX_LIT_ZONES:
-				var r: Rect2 = LxMapFormat.to_rect2(z.get("rect", []))
-				zrects.append(Vector4(r.position.x, r.position.y, r.size.x, r.size.y))
-				zfades.append(clampf(cur, 0.0, 1.0))
+		var reg_zones: Array[Dictionary] = region.get_zones()
+		if not reg_zones.is_empty():
+			var isl_relit: bool = Lx.state != null and Lx.state.relit_islands.has(region.current_island_id)
+			var lit_zmap: Dictionary = {}
+			if not isl_relit:
+				for it: LxInteractable in region.get_interactables():
+					if it != null and it.kind == "beacon" and (it.get("lit") == true):
+						var bz: String = str(it.props.get("zone", ""))
+						if not bz.is_empty(): lit_zmap[bz] = true
+						var rz: Variant = it.props.get("relit_zones", [])
+						if rz is Array:
+							for rzv: Variant in (rz as Array): lit_zmap[str(rzv)] = true
+			for z: Dictionary in reg_zones:
+				var zid: String = str(z.get("id", ""))
+				if zid.is_empty(): continue
+				var z_lit: bool = isl_relit or not bool(z.get("dark", true)) or lit_zmap.has(zid)
+				var target: float = 1.0 if z_lit else 0.0
+				var cur: float = float(_zone_fades.get(zid, target))
+				cur = move_toward(cur, target, dt * 1.15) if dt > 0.0 else target
+				_zone_fades[zid] = cur
+				if cur > 0.005 and zrects.size() < MAX_LIT_ZONES:
+					var r: Rect2 = LxMapFormat.to_rect2(z.get("rect", []))
+					zrects.append(Vector4(r.position.x, r.position.y, r.size.x, r.size.y))
+					zfades.append(clampf(cur, 0.0, 1.0))
 
 	var zcount: int = mini(zrects.size(), MAX_LIT_ZONES)
 	zrects.resize(MAX_LIT_ZONES)
@@ -351,7 +378,7 @@ func sync(dt: float, region: LxRegionLoader = null, extra_lights: Array[Vector4]
 		_mat.set_shader_parameter("wave_origin", wave_origin)
 		_mat.set_shader_parameter("wave_radius", wave_radius)
 
-func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
+func _update_biome_tint(dt: float, region: LxRegionLoader, lit_b: int = -1, flash_red: bool = false) -> void:
 	var isl_id: int = 1
 	if region != null and region.current_island_id > 0:
 		isl_id = region.current_island_id
@@ -362,13 +389,13 @@ func _update_biome_tint(dt: float, region: LxRegionLoader) -> void:
 		if Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id):
 			desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.38)
 		else:
-			var lit_b: int = _lit_beacon_count(region)
-			if lit_b > 0:
-				desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.085 * float(lit_b))
+			var lb: int = lit_b if lit_b >= 0 else _lit_beacon_count(region)
+			if lb > 0:
+				desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.085 * float(lb))
 	elif region != null and region.is_dungeon and (_sanctum_cleared or (Lx.state != null and is_instance_valid(Lx.state) and Lx.state.relit_islands.has(isl_id))):
 		desired = desired.lerp(Vector3(0.58, 0.52, 0.66), 0.32 if _sanctum_cleared else 0.18)
 	if isl_id >= 2 and _boss_phase >= 2:
-		var fr_p: float = 0.65 if LxHudFx.flash_reduced() else 1.0
+		var fr_p: float = 0.65 if flash_red else 1.0
 		if isl_id == 8 and _boss_phase >= 4:
 			desired = desired.lerp(Vector3(0.76, 0.56, 0.64), 0.38 * fr_p)
 		else:

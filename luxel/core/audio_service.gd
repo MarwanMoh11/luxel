@@ -65,7 +65,7 @@ var _sfx_2d_pool_ids: PackedStringArray = PackedStringArray()
 var _sfx_cursor: int = 0
 var _sfx_2d_cursor: int = 0
 
-var _stream_cache: Dictionary = {}; var _sfx_missing: Dictionary = {}
+var _stream_cache: Dictionary = {}; var _music_lru: Array[String] = []; var _sfx_missing: Dictionary = {}
 var _sfx_last_t: Dictionary = {}; var _sfx_variant_idx: Dictionary = {}
 var _sfx_clock: float = 0.0
 var _shard_streak: int = 0; var _shard_streak_t: float = -10.0
@@ -575,16 +575,23 @@ func _load_sfx_stream(sfx_id: String) -> AudioStream:
 		if loaded != null: return loaded
 	_sfx_missing[sfx_id] = true; return null
 
+func _touch_music_lru(path: String) -> void:
+	if not (path.contains("/music/") or path.contains("/ambience/")): return
+	var idx: int = _music_lru.find(path)
+	if idx >= 0: _music_lru.remove_at(idx)
+	_music_lru.append(path)
+	while _music_lru.size() > 16: _stream_cache.erase(_music_lru.pop_front())
+
 func _load_cached_ogg(path: String, set_loop: bool, allow_disk_ogg: bool = true) -> AudioStream:
-	if _stream_cache.has(path): return _stream_cache[path] as AudioStream
+	if _stream_cache.has(path): _touch_music_lru(path); return _stream_cache[path] as AudioStream
 	if ResourceLoader.exists(path):
 		var res: Resource = ResourceLoader.load(path)
 		if res is AudioStream:
 			if res is AudioStreamOggVorbis and allow_disk_ogg: (res as AudioStreamOggVorbis).loop = set_loop
-			_stream_cache[path] = res; return res as AudioStream
+			_stream_cache[path] = res; _touch_music_lru(path); return res as AudioStream
 	if allow_disk_ogg:
 		var abs_p: String = ProjectSettings.globalize_path(path)
 		if FileAccess.file_exists(abs_p):
 			var ogg: AudioStreamOggVorbis = AudioStreamOggVorbis.load_from_file(abs_p)
-			if ogg != null: ogg.loop = set_loop; _stream_cache[path] = ogg; return ogg
+			if ogg != null: ogg.loop = set_loop; _stream_cache[path] = ogg; _touch_music_lru(path); return ogg
 	return null

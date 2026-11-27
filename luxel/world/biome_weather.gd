@@ -25,6 +25,8 @@ var _comets: Array[Dictionary] = []
 var _gulls: Array[Dictionary] = []
 var _amb_sfx_cd: float = 9.0
 var _amb_side: float = 1.0
+var _cached_lit_b: int = 0
+var _beacon_scan_cd: float = 0.0
 
 
 func _ready() -> void:
@@ -44,6 +46,8 @@ func configure(island_id: int, is_dungeon: bool, cam_center: Vector2) -> void:
 	rng.seed = int(_island_id * 11939 + (401 if is_dungeon else 73))
 	_amb_sfx_cd = rng.randf_range(7.5, 11.5)
 	_amb_side = 1.0 if (_island_id % 2 == 0) else -1.0
+	_beacon_scan_cd = 0.0
+	_cached_lit_b = _lit_beacon_progress()
 	if not is_dungeon:
 		match _island_id:
 			1: # Gentle twilight bell-blossom petals -> warm golden dawn pollen when relit
@@ -99,6 +103,10 @@ func tick(dt: float, cam_center: Vector2) -> void:
 	if dt <= 0.0 or _is_dungeon:
 		return
 	_clock += dt
+	_beacon_scan_cd -= dt
+	if _beacon_scan_cd <= 0.0:
+		_beacon_scan_cd = 0.25
+		_cached_lit_b = _lit_beacon_progress()
 	var relit: bool = _is_relit()
 	_amb_sfx_cd -= dt
 	if _amb_sfx_cd <= 0.0:
@@ -150,7 +158,7 @@ func _draw() -> void:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
 	var relit: bool = _is_relit()
-	var lit_b: int = _lit_beacon_progress()
+	var lit_b: int = 3 if relit else _cached_lit_b
 	match _island_id:
 		1:
 			if relit or lit_b >= 3:

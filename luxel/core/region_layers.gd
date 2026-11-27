@@ -61,11 +61,13 @@ func clear() -> void:
 	for sp: Variant in _overlay_sprites.values():
 		if sp is Node and is_instance_valid(sp as Node):
 			var n: Node = sp as Node
+			if n is Sprite2D:
+				(n as Sprite2D).texture = null
 			if n is CanvasItem:
 				(n as CanvasItem).visible = false
 			if n.get_parent() != null:
 				n.get_parent().remove_child(n)
-			n.queue_free()
+			n.free()
 	_overlay_sprites.clear()
 	if _greybox_overlay != null and is_instance_valid(_greybox_overlay):
 		_greybox_overlay.queue_redraw()

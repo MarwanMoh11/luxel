@@ -10,6 +10,13 @@ const GreyboxDraw := preload("res://luxel/world/greybox_draw.gd")
 const ROOM_W: float = 320.0
 const ROOM_H: float = 180.0
 const ROOM_SLIDE_S: float = 0.4
+const FLOOR_KINDS: Dictionary = {
+	"blue_portal": true, "phantom_platform": true, "floor_switch": true, "room_anchor": true, "pressure_plate": true,
+	"floor_sigil": true, "scale": true, "logic_gate": true, "light_plant": true, "conveyor": true, "crumble_floor": true,
+	"spike_floor": true, "moon_pool": true, "star_node": true, "star_bell_socket": true, "updraft_vent": true, "optic_well": true, "tide_raft": true,
+}
+const VOID_TILES: Dictionary = {"pit": true, "void": true, "phantom": true, "water": true, "tide": true}
+const COYOTE_OFFSETS: Array[Vector2] = [Vector2(2.5, 0.0), Vector2(-2.5, 0.0), Vector2(0.0, 2.5), Vector2(0.0, -2.5)]
 
 var current_island_id: int = 0
 var current_region_id: String = ""
@@ -203,6 +210,7 @@ func _clear_loaded() -> void:
 	_room_anchor_pos = Vector2(-1.0, -1.0); _exits_locked = false
 	if _ground_sprite != null:
 		if is_instance_valid(_ground_sprite):
+			_ground_sprite.texture = null
 			if _ground_sprite.get_parent() != null: _ground_sprite.get_parent().remove_child(_ground_sprite)
 			_ground_sprite.free()
 		_ground_sprite = null
@@ -216,6 +224,9 @@ func _clear_loaded() -> void:
 		if root_node != null:
 			for c: Node in root_node.get_children():
 				if c is CanvasItem: (c as CanvasItem).visible = false
+				if c is LxEnemyBrain: (c as LxEnemyBrain).set("_sprite_sheet", null)
+				elif c is LxDoor: (c as LxDoor).set("_door_sheet", null)
+				elif c.get("_sheet") is LxSpriteSheet: c.set("_sheet", null)
 				root_node.remove_child(c)
 				c.queue_free()
 
@@ -359,14 +370,10 @@ func get_room_anchor() -> Vector2: return _room_anchor_pos if _room_anchor_pos.x
 
 func _is_floor_interactable(item: LxInteractable) -> bool:
 	if item == null: return false
+	if FLOOR_KINDS.has(item.kind): return true
 	if item.has_method("is_floor_toy") and bool(item.call("is_floor_toy")): return true
-	if item.kind in [
-		"blue_portal", "phantom_platform", "floor_switch", "room_anchor", "pressure_plate",
-		"floor_sigil", "scale", "logic_gate", "light_plant", "conveyor", "crumble_floor", "spike_floor",
-		"moon_pool", "star_node", "star_bell_socket", "updraft_vent", "optic_well", "tide_raft",
-	]: return true
 	if item.kind == "star_bell" and (not item.is_solid() or bool(item.props.get("socket", false))): return true
-	if item.kind in ["toggle_block", "tone_door", "shadow_gate"] and not item.is_solid(): return true
+	if (item.kind == "toggle_block" or item.kind == "tone_door" or item.kind == "shadow_gate") and not item.is_solid(): return true
 	if item is LxDoor:
 		var d: LxDoor = item as LxDoor
 		return d.door_type == "bridge_platform" or (bool(d.get("_is_light_bridge")) and d.opened)
@@ -432,16 +439,16 @@ func is_solid_tile(tile_type: String, can_cross_pit: bool = false, can_cross_wat
 func is_lethal_void_at(world_pos: Vector2) -> bool:
 	if width <= 0 or height <= 0: return false
 	var ttype: String = tile_at(world_pos)
-	if ttype in ["pit", "void", "phantom", "water", "tide"]:
+	if VOID_TILES.has(ttype):
 		var ts: float = float(tile_size)
 		var tc := Vector2((floorf(world_pos.x / ts) + 0.5) * ts, (floorf(world_pos.y / ts) + 0.5) * ts)
 		if _is_tile_supported(ttype, world_pos) or _is_tile_supported(ttype, tc):
 			return false
 		# 2.5px foot-rim coyote footing so Wick doesn't dangle/die on a 1px floor edge
-		for off: Vector2 in [Vector2(2.5, 0.0), Vector2(-2.5, 0.0), Vector2(0.0, 2.5), Vector2(0.0, -2.5)]:
+		for off: Vector2 in COYOTE_OFFSETS:
 			var p2: Vector2 = world_pos + off
 			var t2: String = tile_at(p2)
-			if t2 in ["ground", "path", "bridge"] or (t2 in ["pit", "void", "phantom", "water", "tide"] and _is_tile_supported(t2, p2)):
+			if t2 == "ground" or t2 == "path" or t2 == "bridge" or (VOID_TILES.has(t2) and _is_tile_supported(t2, p2)):
 				return false
 		return true
 	return false
@@ -494,7 +501,7 @@ func tick(dt: float, player_pos: Vector2 = Vector2(-9999.0, -9999.0)) -> void:
 	for it: LxInteractable in _interactables:
 		if it != null:
 			it.tick(dt)
-			if it is LxDoor or it.kind in ["toggle_block", "tone_door", "shadow_gate"] or it.has_method("is_floor_toy"): _sync_interactable_layer(it)
+			if it is LxDoor or it.kind == "toggle_block" or it.kind == "tone_door" or it.kind == "shadow_gate" or it.kind == "star_bell": _sync_interactable_layer(it)
 	LxRegionRuntime.poll_signals(self, _signal_states)
 	if current_island_id != start_isl or current_region_id != start_reg: return
 	if room_script != null and room_script.has_method("tick"): room_script.call("tick", dt)

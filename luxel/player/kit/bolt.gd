@@ -38,54 +38,32 @@ var is_held: bool = false
 
 
 func can_use() -> bool:
-	if not super.can_use():
-		return false
-	if not wick.has_lantern():
-		return false
-	if wick.dead or wick.is_dashing() or wick.is_zipping() or wick.is_beam_charging() or wick.is_grabbing():
-		return false
-	if wick.lantern != null and not wick.lantern.is_in_hand():
-		return false
-	return true
-
+	if not super.can_use() or not wick.has_lantern(): return false
+	if wick.dead or wick.is_dashing() or wick.is_zipping() or wick.is_beam_charging() or wick.is_grabbing(): return false
+	return wick.lantern == null or wick.lantern.is_in_hand()
 
 func press() -> bool:
 	is_held = true
-	if not can_use():
-		return false
-	return _fire_bolt()
+	return _fire_bolt() if can_use() else false
 
-
-func release() -> void:
-	is_held = false
-
+func release() -> void: is_held = false
 
 func tick(dt: float) -> void:
 	super.tick(dt)
-	if is_held and can_use():
-		_fire_bolt()
-
+	if is_held and can_use(): _fire_bolt()
 
 func reset() -> void:
-	super.reset()
-	is_held = false
-	_sync_saved_temper()
-
+	super.reset(); is_held = false; _sync_saved_temper()
 
 func _sync_saved_temper() -> void:
-	if wick == null:
-		return
+	if wick == null: return
 	var saved_t: String = ""
-	if Lx.state != null:
-		saved_t = str(Lx.state.story_flags.get("wick_temper", "")).strip_edges().to_lower()
-	elif Lx.vars != null:
-		saved_t = str(Lx.vars.get_var("game", "wick_temper", "")).strip_edges().to_lower()
+	if Lx.state != null: saved_t = str(Lx.state.story_flags.get("wick_temper", "")).strip_edges().to_lower()
+	elif Lx.vars != null: saved_t = str(Lx.vars.get_var("game", "wick_temper", "")).strip_edges().to_lower()
 	wick.temper = saved_t if saved_t in ["skip", "scatter", "lance"] else ""
 
-
 func _push_bolt(b: Bolt) -> void:
-	if wick.bolts.size() >= MAX_BOLTS:
-		wick.bolts.remove_at(0)
+	if wick.bolts.size() >= MAX_BOLTS: wick.bolts.remove_at(0)
 	wick.bolts.append(b)
 
 
@@ -259,18 +237,20 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 	var pierce: bool = bool(data.get("pierce", false))
 	var prism_mult: float = wick.move_prism.get_damage_mult() if wick.move_prism != null else float(Lx.get_move_data("prism").get("damage_mult", 1.15))
 	var prism_range: float = wick.move_prism.get_range_refresh() if wick.move_prism != null else float(Lx.get_move_data("prism").get("range_refresh", 118.0))
+	var enemies: Array = wick.world_get_enemies(world_ctx)
+	var inters: Array = wick.world_get_interactables(world_ctx)
+	var props_v: Variant = world_ctx.get("_scenery_props") if (world_ctx != null and is_instance_valid(world_ctx)) else null
+	var has_fields: bool = LxFields.has_fields()
 
 	var i: int = wick.bolts.size() - 1
 	while i >= 0:
 		var b: Bolt = wick.bolts[i] as Bolt
 		if b == null:
-			wick.bolts.remove_at(i)
-			i -= 1
-			continue
+			wick.bolts.remove_at(i); i -= 1; continue
 
 		b.age += dt
 		b.prev_pos = b.pos
-		if LxFields.has_fields():
+		if has_fields:
 			var fa: Vector2 = LxFields.accel_at(b.pos, "bolt")
 			if fa.length_squared() > 0.01:
 				var old_dir: Vector2 = b.dir
@@ -285,7 +265,6 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 		var reflected: bool = false
 
 		# 1. Enemy collision
-		var enemies: Array = wick.world_get_enemies(world_ctx)
 		for e_var: Variant in enemies:
 			if not is_instance_valid(e_var) or not (e_var is Object):
 				continue
@@ -350,20 +329,17 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 
 		# 2. Interactables (brass LxMirrors, custom reflect_bolt surfaces, switches, eyes, braziers)
 		if not dead:
-			var inters: Array = wick.world_get_interactables(world_ctx)
 			for it_var: Variant in inters:
-				if not is_instance_valid(it_var) or not (it_var is Object):
-					continue
+				if not is_instance_valid(it_var) or not (it_var is Object): continue
 				var item: Object = it_var as Object
-				if item.get("active") is bool and not bool(item.get("active")):
-					continue
+				if item is LxInteractable:
+					if not (item as LxInteractable).active: continue
+				elif item.get("active") is bool and not bool(item.get("active")): continue
 				var iid: int = item.get_instance_id()
-				if b.hit_ids.has(iid):
-					continue
-				var ipos: Vector2 = wick.get_entity_pos(item)
-				var irad: float = wick.get_entity_radius(item, 8.0)
-				if not _bolt_hits_item(b.pos, nxt, item, ipos, irad):
-					continue
+				if b.hit_ids.has(iid): continue
+				var ipos: Vector2 = (item as LxInteractable).pos if item is LxInteractable else wick.get_entity_pos(item)
+				var irad: float = (item as LxInteractable).radius if item is LxInteractable else wick.get_entity_radius(item, 8.0)
+				if not _bolt_hits_item(b.pos, nxt, item, ipos, irad): continue
 
 				if b.bounces_left > 0 and wick.move_prism != null:
 					var refl: Dictionary = wick.move_prism.try_reflect_interactable(item, b.pos, nxt, b.dir)
@@ -417,20 +393,19 @@ func tick_bolts(dt: float, world_ctx: Node) -> void:
 				reflected = true
 
 		# 3b. Scenery prop grazing (once per bolt per prop)
-		if not dead and not reflected and world_ctx != null and is_instance_valid(world_ctx):
-			var props_v: Variant = world_ctx.get("_scenery_props")
-			if props_v is Array:
-				for pv: Variant in (props_v as Array):
-					if not is_instance_valid(pv) or not (pv is LxSceneryProp):
-						continue
-					var sp: LxSceneryProp = pv as LxSceneryProp
-					var pid: int = sp.get_instance_id()
-					if b.hit_ids.has(pid):
-						continue
-					var cp: Vector2 = Geometry2D.get_closest_point_to_segment(sp.position, b.pos, nxt)
-					if cp.distance_squared_to(sp.position) <= 169.0:
-						b.hit_ids.append(pid)
-						sp.on_bolt_graze(cp, b.dir, b.is_prism or b.light_color == LxHit.COLOR_BLUE)
+		if not dead and not reflected and props_v is Array:
+			var bx0: float = minf(b.pos.x, nxt.x) - 14.0; var bx1: float = maxf(b.pos.x, nxt.x) + 14.0
+			var by0: float = minf(b.pos.y, nxt.y) - 14.0; var by1: float = maxf(b.pos.y, nxt.y) + 14.0
+			for pv: Variant in (props_v as Array):
+				if not is_instance_valid(pv) or not (pv is LxSceneryProp): continue
+				var sp: LxSceneryProp = pv as LxSceneryProp
+				if sp.position.x < bx0 or sp.position.x > bx1 or sp.position.y < by0 or sp.position.y > by1: continue
+				var pid: int = sp.get_instance_id()
+				if b.hit_ids.has(pid): continue
+				var cp: Vector2 = Geometry2D.get_closest_point_to_segment(sp.position, b.pos, nxt)
+				if cp.distance_squared_to(sp.position) <= 169.0:
+					b.hit_ids.append(pid)
+					sp.on_bolt_graze(cp, b.dir, b.is_prism or b.light_color == LxHit.COLOR_BLUE)
 
 		# 4. Wall / max range check (with Skip temper wall ricochet)
 		if not dead and not reflected:
@@ -543,12 +518,22 @@ func _apply_prism_bounce(
 
 
 func _bolt_hits_item(from_p: Vector2, to_p: Vector2, item: Object, ipos: Vector2, irad: float) -> bool:
-	if Geometry2D.get_closest_point_to_segment(ipos, from_p, to_p).distance_to(ipos) <= irad + 2.0:
+	var rpad: float = irad + 2.0
+	if Geometry2D.get_closest_point_to_segment(ipos, from_p, to_p).distance_squared_to(ipos) <= rpad * rpad:
 		return true
+	if item is LxInteractable:
+		var it: LxInteractable = item as LxInteractable
+		if not it.is_solid(): return false
+		var srect: Rect2 = it.get_solid_rect()
+		if srect.size.x > 0.0 and srect.size.y > 0.0:
+			var g: Rect2 = srect.grow(1.5)
+			if g.has_point(to_p) or g.has_point(from_p.lerp(to_p, 0.5)): return true
+		return false
 	if item.has_method("get_solid_rect"):
-		var srect: Rect2 = item.call("get_solid_rect") as Rect2
-		if srect.has_area() and (srect.grow(1.5).has_point(to_p) or srect.grow(1.5).has_point(from_p.lerp(to_p, 0.5))):
-			return true
+		var srect2: Rect2 = item.call("get_solid_rect") as Rect2
+		if srect2.has_area():
+			var g2: Rect2 = srect2.grow(1.5)
+			if g2.has_point(to_p) or g2.has_point(from_p.lerp(to_p, 0.5)): return true
 	return false
 
 

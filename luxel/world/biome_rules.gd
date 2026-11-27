@@ -212,7 +212,7 @@ func tick(dt: float, cam_center: Vector2) -> void:
 			7: _tick_island7()
 			8: _tick_island8(dt)
 	if _mechanics != null and is_instance_valid(_mechanics): _mechanics.tick(dt, cam_center)
-	queue_redraw()
+	if island_id > 1 and legacy_active: queue_redraw()
 
 func _tick_island2(dt: float) -> void:
 	if not is_dungeon:

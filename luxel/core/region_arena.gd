@@ -157,6 +157,20 @@ static func collide_world(
 	)
 	var ts: float = float(region.tile_size)
 	var items: Array[LxInteractable] = region.get_interactables()
+	var solid_rects: Array[Rect2] = []
+	for it: LxInteractable in items:
+		if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
+			if is_flying and it.has_method("blocks_flyer") and not bool(it.call("blocks_flyer")):
+				continue
+			var srect: Rect2 = it.get_solid_rect()
+			if srect.size.x > 0.0 and srect.size.y > 0.0:
+				solid_rects.append(srect)
+	var exit_rects: Array[Rect2] = []
+	if arena_locked:
+		for ex: Dictionary in region.exits:
+			var er: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
+			if er.has_area():
+				exit_rects.append(er)
 	for _pass: int in range(2):
 		var tx0: int = maxi(0, int(floor((p.x - radius) / ts)))
 		var tx1: int = mini(region.width - 1, int(floor((p.x + radius) / ts)))
@@ -175,18 +189,10 @@ static func collide_world(
 					var su: bool = _is_solid_grid_cell(region, tx, ty - 1, ts, can_cross_pit, can_cross_water)
 					var sd: bool = _is_solid_grid_cell(region, tx, ty + 1, ts, can_cross_pit, can_cross_water)
 					p = push_circle_out_of_tile(p, radius, tile_rect, sl, sr, su, sd)
-		for it: LxInteractable in items:
-			if it != null and it.is_solid() and (ignore_id.is_empty() or it.id != ignore_id):
-				if is_flying and it.has_method("blocks_flyer") and not bool(it.call("blocks_flyer")):
-					continue
-				var srect: Rect2 = it.get_solid_rect()
-				if srect.size.x > 0.0 and srect.size.y > 0.0:
-					p = push_circle_out_of_rect(p, radius, srect)
-		if arena_locked:
-			for ex: Dictionary in region.exits:
-				var er: Rect2 = LxMapFormat.to_rect2(ex.get("rect", []))
-				if er.has_area():
-					p = push_circle_out_of_rect(p, radius, er)
+		for srect: Rect2 in solid_rects:
+			p = push_circle_out_of_rect(p, radius, srect)
+		for er: Rect2 in exit_rects:
+			p = push_circle_out_of_rect(p, radius, er)
 	p = Vector2(
 		clampf(p.x, b.position.x + radius, maxf(b.position.x + radius, b.end.x - radius)),
 		clampf(p.y, b.position.y + radius, maxf(b.position.y + radius, b.end.y - radius))
@@ -272,14 +278,34 @@ static func clear_view_world(region: LxRegionLoader, a: Vector2, b: Vector2, ski
 	if dist <= 1.0:
 		return true
 	var steps: int = maxi(1, int(ceil(dist / 4.0)))
-	var items: Array[LxInteractable] = region.get_interactables()
+	var seg_rect := Rect2(Vector2(minf(a.x, b.x), minf(a.y, b.y)), Vector2(absf(b.x - a.x), absf(b.y - a.y))).grow(1.0)
+	var blockers: Array[Rect2] = []
+	for it: LxInteractable in region.get_interactables():
+		if it != null and it != skip_item and it.blocks_sight():
+			var srect: Rect2 = it.get_solid_rect()
+			if srect.size.x > 0.0 and srect.size.y > 0.0 and srect.intersects(seg_rect):
+				blockers.append(srect)
+	var inv_steps: float = 1.0 / float(steps)
+	var has_blockers: bool = not blockers.is_empty()
+	var ts: float = float(region.tile_size)
+	var rw: int = region.width
+	var rh: int = region.height
+	var rgrid: Array[PackedStringArray] = region.grid
+	var inv_ts: float = (1.0 / ts) if ts > 0.0 else 0.0
 	for i: int in range(1, steps):
-		var pt: Vector2 = a.lerp(b, float(i) / float(steps))
-		if LxMapFormat.blocks_sight_tile(region.tile_at(pt)):
+		var pt: Vector2 = a.lerp(b, float(i) * inv_steps)
+		var tt: String = "void"
+		if inv_ts > 0.0:
+			var tx: int = int(floorf(pt.x * inv_ts))
+			var ty: int = int(floorf(pt.y * inv_ts))
+			if tx >= 0 and ty >= 0 and tx < rw and ty < rh:
+				tt = rgrid[ty][tx]
+		if LxMapFormat.blocks_sight_tile(tt):
 			return false
-		for it: LxInteractable in items:
-			if it != null and it != skip_item and it.blocks_sight() and it.get_solid_rect().has_point(pt):
-				return false
+		if has_blockers:
+			for sr: Rect2 in blockers:
+				if sr.has_point(pt):
+					return false
 	return true
 
 

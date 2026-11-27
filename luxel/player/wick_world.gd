@@ -122,8 +122,16 @@ func get_mirror_hit(world_ctx: Node, from_p: Vector2, to_p: Vector2) -> Dictiona
 	return {}
 
 
+const RADIUS_KEYS: PackedStringArray = ["body_radius", "radius", "body"]
+
 func world_list(wick: LxWick, world_ctx: Node, getter: String, prop: String, group_name: String) -> Array:
 	if world_ctx != null:
+		if world_ctx is LxRegionLoader:
+			var rl: LxRegionLoader = world_ctx as LxRegionLoader
+			if getter == "get_interactables":
+				return rl.get_interactables()
+			if getter == "get_enemies":
+				return rl.get_enemies()
 		if world_ctx.has_method(getter):
 			var a: Variant = world_ctx.call(getter)
 			if a is Array:
@@ -142,7 +150,11 @@ func get_entity_pos(entity: Object) -> Vector2:
 
 
 func get_entity_radius(entity: Object, fallback: float = 8.0) -> float:
-	for key: String in ["body_radius", "radius", "body"]:
+	if entity is LxInteractable:
+		return (entity as LxInteractable).radius
+	if entity is LxEnemyBrain:
+		return (entity as LxEnemyBrain).body_radius
+	for key: String in RADIUS_KEYS:
 		var rv: Variant = entity.get(key)
 		if rv is float or rv is int:
 			return float(rv)
@@ -152,6 +164,9 @@ func get_entity_radius(entity: Object, fallback: float = 8.0) -> float:
 func is_entity_alive(entity: Object) -> bool:
 	if entity == null or not is_instance_valid(entity):
 		return false
+	if entity is LxEnemyBrain:
+		var eb: LxEnemyBrain = entity as LxEnemyBrain
+		return eb.is_alive() and eb.is_targetable()
 	if entity.has_method("is_dead") and bool(entity.call("is_dead")):
 		return false
 	if entity.has_method("is_targetable") and not bool(entity.call("is_targetable")):

@@ -440,49 +440,43 @@ func _find_pickup_pos(wick: LxWick, world_ctx: Node) -> Vector2:
 
 
 func _notify_light(wick: LxWick, world_ctx: Node) -> void:
-	if not _has_lantern():
-		return
+	if not _has_lantern(): return
 	var rad: float = get_light_radius()
 	var src_tag: String = "lantern_hung" if is_lure_active() else ("lantern_recall" if state == State.RECALLING else "lantern_hand")
-	var inters: Array = wick.world_get_interactables(world_ctx)
-	for it_var: Variant in inters:
-		if not is_instance_valid(it_var) or not (it_var is Object):
-			continue
-		var item: Object = it_var as Object
-		if not item.has_method("on_light"):
-			continue
-		var ipos: Vector2 = wick.get_entity_pos(item)
-		var irad: float = wick.get_entity_radius(item, 0.0)
-		var dist: float = ipos.distance_to(pos)
-		if src_tag == "lantern_hand" and str(item.get("kind")) == "brazier":
-			if dist > 28.0:
-				continue
-		elif dist > rad + irad:
-			continue
-		var pad_i: float = irad + 2.0 if (item.has_method("blocks_sight") and bool(item.call("blocks_sight"))) else 2.0
-		if not wick.world_has_clear_view(world_ctx, pos, ipos, pad_i):
-			continue
-		item.call("on_light", rad, src_tag)
+	var hand_tag: bool = src_tag == "lantern_hand"
+	for it_var: Variant in wick.world_get_interactables(world_ctx):
+		if not is_instance_valid(it_var): continue
+		if it_var is LxInteractable:
+			var it: LxInteractable = it_var as LxInteractable
+			var max_d: float = 28.0 if (hand_tag and it.kind == "brazier") else (rad + it.radius)
+			if it.pos.distance_squared_to(pos) > max_d * max_d: continue
+			var pad_i: float = (it.radius + 2.0) if it.blocks_sight() else 2.0
+			if not wick.world_has_clear_view(world_ctx, pos, it.pos, pad_i): continue
+			it.on_light(rad, src_tag)
+		elif it_var is Object and (it_var as Object).has_method("on_light"):
+			var item: Object = it_var as Object
+			var ipos: Vector2 = wick.get_entity_pos(item)
+			var irad: float = wick.get_entity_radius(item, 0.0)
+			var max_d2: float = 28.0 if (hand_tag and str(item.get("kind")) == "brazier") else (rad + irad)
+			if ipos.distance_squared_to(pos) > max_d2 * max_d2: continue
+			var pad_o: float = irad + 2.0 if (item.has_method("blocks_sight") and bool(item.call("blocks_sight"))) else 2.0
+			if not wick.world_has_clear_view(world_ctx, pos, ipos, pad_o): continue
+			item.call("on_light", rad, src_tag)
 
-	var enemies: Array = wick.world_get_enemies(world_ctx)
-	for e_var: Variant in enemies:
-		if not is_instance_valid(e_var) or not (e_var is Object):
-			continue
+	for e_var: Variant in wick.world_get_enemies(world_ctx):
+		if not is_instance_valid(e_var) or not (e_var is Object): continue
 		var enemy: Object = e_var as Object
-		if not enemy.has_method("on_light"):
-			continue
-		if enemy.has_method("is_dead") and bool(enemy.call("is_dead")):
-			continue
+		if not enemy.has_method("on_light"): continue
+		if enemy is LxEnemyBrain and not (enemy as LxEnemyBrain).is_alive(): continue
+		if not (enemy is LxEnemyBrain) and enemy.has_method("is_dead") and bool(enemy.call("is_dead")): continue
 		var epos: Vector2 = wick.get_entity_pos(enemy)
 		var erad: float = wick.get_entity_radius(enemy, 8.0)
-		if epos.distance_to(pos) <= rad + erad and wick.world_has_clear_view(world_ctx, pos, epos, erad + 2.0):
+		var er: float = rad + erad
+		if epos.distance_squared_to(pos) <= er * er and wick.world_has_clear_view(world_ctx, pos, epos, erad + 2.0):
 			var arity: int = wick.get_method_arity(enemy, "on_light")
-			if arity >= 3:
-				enemy.call("on_light", rad, pos, src_tag)
-			elif arity == 2:
-				enemy.call("on_light", rad, src_tag)
-			else:
-				enemy.call("on_light", rad)
+			if arity >= 3: enemy.call("on_light", rad, pos, src_tag)
+			elif arity == 2: enemy.call("on_light", rad, src_tag)
+			else: enemy.call("on_light", rad)
 
 
 func get_flame_color() -> Color:

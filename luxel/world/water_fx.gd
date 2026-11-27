@@ -6,6 +6,7 @@ extends Node2D
 const PAL: Dictionary = LxPalette.PAL
 const HALF_W: float = 176.0
 const HALF_H: float = 108.0
+const ROW_BUCKET_PX: float = 64.0
 const MAX_RIPPLES: int = 12
 const MAX_SPRAYS: int = 28
 
@@ -19,6 +20,9 @@ var _cam_center: Vector2 = Vector2.ZERO
 var _shores: Array[Dictionary] = [] # {x, y, mask, phase}
 var _glints: Array[Dictionary] = [] # {x, y, w, phase, spd, tide}
 var _abyss: Array[Dictionary] = []  # {x, y, phase, kind} kind: 0=star, 1=magma
+var _shore_rows: Dictionary = {}
+var _glint_rows: Dictionary = {}
+var _abyss_rows: Dictionary = {}
 var _ripples: Array[Dictionary] = []
 var _sprays: Array[Dictionary] = [] # {pos, vel, age, dur, col, sz}
 var _water_cells: Dictionary = {}
@@ -49,6 +53,9 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 	_shores.clear()
 	_glints.clear()
 	_abyss.clear()
+	_shore_rows.clear()
+	_glint_rows.clear()
+	_abyss_rows.clear()
 	_ripples.clear()
 	_sprays.clear()
 	_water_cells.clear()
@@ -105,8 +112,24 @@ func configure(grid: Array[PackedStringArray], tile_size: int, island_id: int, i
 						"phase": float(hash_v % 628) * 0.01,
 						"kind": 1 if (use_magma and t == "pit") else 0,
 					})
+	_rebuild_row_buckets()
 	_sky_accents.configure(grid, _tile_size, _island_id, _is_dungeon)
 	queue_redraw()
+
+
+func _rebuild_row_buckets() -> void:
+	for sh: Dictionary in _shores:
+		var rk: int = int(floorf(float(sh["y"]) / ROW_BUCKET_PX))
+		if not _shore_rows.has(rk): _shore_rows[rk] = []
+		(_shore_rows[rk] as Array).append(sh)
+	for gl: Dictionary in _glints:
+		var rk2: int = int(floorf(float(gl["y"]) / ROW_BUCKET_PX))
+		if not _glint_rows.has(rk2): _glint_rows[rk2] = []
+		(_glint_rows[rk2] as Array).append(gl)
+	for ab: Dictionary in _abyss:
+		var rk3: int = int(floorf(float(ab["y"]) / ROW_BUCKET_PX))
+		if not _abyss_rows.has(rk3): _abyss_rows[rk3] = []
+		(_abyss_rows[rk3] as Array).append(ab)
 
 
 func _push_ripple(world_pos: Vector2, col_key: String, max_r: float, dur: float = -1.0, v_wake: bool = false, wake_dir: Vector2 = Vector2.RIGHT, col2_override: String = "") -> void:
@@ -296,58 +319,63 @@ func _draw() -> void:
 	var foam_hi: Color = (PAL["cream"] if surging2 else (PAL["rose"] if (relit_sea and _island_id == 4) else (PAL["lime"] if _island_id == 3 else (PAL["cream"] if _island_id == 7 else PAL["ice"])))) as Color
 	var foam_lo: Color = (PAL["ice"] if surging2 else (PAL["ice"] if (relit_sea and _island_id == 4) else (PAL["jade"] if _island_id == 3 else (PAL["teal"] if _island_id == 4 else PAL["sky"])))) as Color
 	var foam_spd: float = 3.2 if (surging2 and not LxHudFx.flash_reduced()) else 2.1
-	for sh: Dictionary in _shores:
-		var sx: float = float(sh["x"])
-		var sy: float = float(sh["y"])
-		if sx + ts < min_x or sx > max_x or sy + ts < min_y or sy > max_y:
-			continue
-		var ph: float = float(sh["phase"])
-		var wv: float = sin(_clock * foam_spd + ph)
-		var inset: float = 1.0 if wv > 0.25 else 0.0
-		var col: Color = foam_hi if wv > 0.45 else foam_lo
-		var m: int = int(sh["mask"])
-		var south_off: float = 0.0 if _is_dungeon else 5.0
-		if (m & 1) != 0:
-			draw_rect(Rect2(sx + 2.0, sy + south_off + inset, ts - 4.0, 1.0), col)
-		if (m & 2) != 0:
-			draw_rect(Rect2(sx + 2.0, sy + ts - 1.0 - inset, ts - 4.0, 1.0), col)
-		if (m & 4) != 0:
-			draw_rect(Rect2(sx + inset, sy + 2.0, 1.0, ts - 4.0), col)
-		if (m & 8) != 0:
-			draw_rect(Rect2(sx + ts - 1.0 - inset, sy + 2.0, 1.0, ts - 4.0), col)
+	var r0: int = int(floorf((min_y - ts) / ROW_BUCKET_PX))
+	var r1: int = int(floorf((max_y + ts) / ROW_BUCKET_PX))
+	var south_off: float = 0.0 if _is_dungeon else 5.0
+	for rk: int in range(r0, r1 + 1):
+		var s_arr: Variant = _shore_rows.get(rk, null)
+		if not (s_arr is Array): continue
+		for sh_v: Variant in (s_arr as Array):
+			var sh: Dictionary = sh_v as Dictionary
+			var sx: float = float(sh["x"])
+			var sy: float = float(sh["y"])
+			if sx + ts < min_x or sx > max_x or sy + ts < min_y or sy > max_y: continue
+			var wv: float = sin(_clock * foam_spd + float(sh["phase"]))
+			var inset: float = 1.0 if wv > 0.25 else 0.0
+			var col: Color = foam_hi if wv > 0.45 else foam_lo
+			var m: int = int(sh["mask"])
+			if (m & 1) != 0: draw_rect(Rect2(sx + 2.0, sy + south_off + inset, ts - 4.0, 1.0), col)
+			if (m & 2) != 0: draw_rect(Rect2(sx + 2.0, sy + ts - 1.0 - inset, ts - 4.0, 1.0), col)
+			if (m & 4) != 0: draw_rect(Rect2(sx + inset, sy + 2.0, 1.0, ts - 4.0), col)
+			if (m & 8) != 0: draw_rect(Rect2(sx + ts - 1.0 - inset, sy + 2.0, 1.0, ts - 4.0), col)
 
 	var gl_hi: Color = (PAL["cream"] if relit_sea else (PAL["gold"] if _island_id in [1, 2] else (PAL["lime"] if _island_id in [3, 4] else PAL["cream"]))) as Color
 	var gl_lo: Color = (PAL["gold"] if relit_sea else (PAL["sky"] if _island_id in [1, 2, 5, 7, 8] else PAL["teal"])) as Color
-	for gl: Dictionary in _glints:
-		var gx: float = float(gl["x"])
-		var gy: float = float(gl["y"])
-		if gx < min_x or gx > max_x or gy < min_y or gy > max_y:
-			continue
-		var s: float = sin(_clock * float(gl["spd"]) + float(gl["phase"]))
-		if s < -0.15:
-			continue
-		var dx: float = roundf(s * 2.0)
-		var wpx: float = float(gl["w"]) if s > 0.35 else maxf(2.0, float(gl["w"]) - 1.0)
-		var col: Color = gl_hi if s > 0.72 else ((PAL["apricot"] if relit_sea else PAL["ice"]) if bool(gl["tide"]) and s > 0.30 else gl_lo)
-		draw_rect(Rect2(roundf(gx + dx), gy, wpx, 1.0), col)
+	for rk2: int in range(r0, r1 + 1):
+		var g_arr: Variant = _glint_rows.get(rk2, null)
+		if not (g_arr is Array): continue
+		for gl_v: Variant in (g_arr as Array):
+			var gl: Dictionary = gl_v as Dictionary
+			var gx: float = float(gl["x"])
+			var gy: float = float(gl["y"])
+			if gx < min_x or gx > max_x or gy < min_y or gy > max_y: continue
+			var s: float = sin(_clock * float(gl["spd"]) + float(gl["phase"]))
+			if s < -0.15: continue
+			var dx: float = roundf(s * 2.0)
+			var wpx: float = float(gl["w"]) if s > 0.35 else maxf(2.0, float(gl["w"]) - 1.0)
+			var col: Color = gl_hi if s > 0.72 else ((PAL["apricot"] if relit_sea else PAL["ice"]) if bool(gl["tide"]) and s > 0.30 else gl_lo)
+			draw_rect(Rect2(roundf(gx + dx), gy, wpx, 1.0), col)
 
-	for ab: Dictionary in _abyss:
-		var ax: float = float(ab["x"])
-		var ay: float = float(ab["y"])
-		if ax < min_x or ax > max_x or ay < min_y or ay > max_y:
-			continue
-		var p: float = sin(_clock * 1.4 + float(ab["phase"]))
-		if int(ab["kind"]) == 1:
-			if p > 0.15:
-				var mc: Color = (PAL["cream"] if p > 0.78 else (PAL["gold"] if p > 0.48 else PAL["apricot"])) as Color if relit_sea else (PAL["apricot"] if p > 0.75 else (PAL["coral"] if p > 0.45 else PAL["wine"])) as Color
-				draw_rect(Rect2(ax, ay, 2.0 if p > 0.55 else 1.0, 1.0), mc)
-		else:
-			if p > 0.25:
-				var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and (_island_id == 8 or p > 0.84)) else _abyss_star_color(p)
-				var wide_st: bool = (_island_id == 5 or (relit_sea and _island_id in [1, 5, 7, 8])) and p > 0.88
-				draw_rect(Rect2(ax, ay, 2.0 if wide_st else 1.0, 1.0), sc)
-				if relit_sea and p > 0.92:
-					draw_rect(Rect2(ax, ay - 1.0, 1.0, 3.0), Color(PAL["gold"] as Color, 0.55))
+	for rk3: int in range(r0, r1 + 1):
+		var a_arr: Variant = _abyss_rows.get(rk3, null)
+		if not (a_arr is Array): continue
+		for ab_v: Variant in (a_arr as Array):
+			var ab: Dictionary = ab_v as Dictionary
+			var ax: float = float(ab["x"])
+			var ay: float = float(ab["y"])
+			if ax < min_x or ax > max_x or ay < min_y or ay > max_y: continue
+			var p: float = sin(_clock * 1.4 + float(ab["phase"]))
+			if int(ab["kind"]) == 1:
+				if p > 0.15:
+					var mc: Color = (PAL["cream"] if p > 0.78 else (PAL["gold"] if p > 0.48 else PAL["apricot"])) as Color if relit_sea else (PAL["apricot"] if p > 0.75 else (PAL["coral"] if p > 0.45 else PAL["wine"])) as Color
+					draw_rect(Rect2(ax, ay, 2.0 if p > 0.55 else 1.0, 1.0), mc)
+			else:
+				if p > 0.25:
+					var sc: Color = (PAL["cream"] if p > 0.78 else PAL["gold"]) as Color if (relit_sea and (_island_id == 8 or p > 0.84)) else _abyss_star_color(p)
+					var wide_st: bool = (_island_id == 5 or (relit_sea and _island_id in [1, 5, 7, 8])) and p > 0.88
+					draw_rect(Rect2(ax, ay, 2.0 if wide_st else 1.0, 1.0), sc)
+					if relit_sea and p > 0.92:
+						draw_rect(Rect2(ax, ay - 1.0, 1.0, 3.0), Color(PAL["gold"] as Color, 0.55))
 
 	_sky_accents.draw_accents(self, _clock, _cam_center, relit_sea)
 	var fr_a: float = 0.75 if LxHudFx.flash_reduced() else 1.0
