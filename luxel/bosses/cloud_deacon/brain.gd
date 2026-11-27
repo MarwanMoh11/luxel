@@ -204,22 +204,24 @@ func _check_player_bolt_interactions() -> void:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 		return
 	var w: LxWick = Lx.player as LxWick
-	if w.move_bolt == null or not (w.move_bolt.get("bolts") is Array):
-		return
-	for b_v: Variant in (w.move_bolt.get("bolts") as Array):
-		if not (b_v is Dictionary):
+	for bi: int in range(w.bolts.size() - 1, -1, -1):
+		var bv: Variant = w.bolts[bi]
+		if not (bv is Object):
 			continue
-		var bd: Dictionary = b_v as Dictionary
-		if not bool(bd.get("active", true)):
+		var bo: Object = bv as Object
+		var bp_v: Variant = bo.get("pos")
+		if not (bp_v is Vector2):
 			continue
-		var bp: Vector2 = bd.get("pos", Vector2.INF) as Vector2
+		var bp: Vector2 = bp_v as Vector2
 		if not bp.is_finite():
 			continue
+		var pp_v: Variant = bo.get("prev_pos")
+		var prev_p: Vector2 = (pp_v as Vector2) if (pp_v is Vector2 and (pp_v as Vector2).is_finite()) else bp
 		# Fallback arena weather wheel (for boss_lab when no room weather_wheel exists)
-		if not _has_room_wheel and _wheel_cd <= 0.0 and bp.distance_to(_wheel_pos) <= 13.0:
+		if not _has_room_wheel and _wheel_cd <= 0.0 and Geometry2D.get_closest_point_to_segment(_wheel_pos, prev_p, bp).distance_to(_wheel_pos) <= 13.0:
 			_wheel_cd = 0.55
 			_cycle_local_weather()
-			bd["active"] = false
+			w.bolts.remove_at(bi)
 			continue
 		# Shooting blown-wide urns in WIND (or directly) shatters them!
 		var urn_hit_r: float = 11.0 if _weather == "wind" else 7.5
@@ -227,10 +229,10 @@ func _check_player_bolt_interactions() -> void:
 			if not bool(u_d["intact"]):
 				continue
 			var up: Vector2 = _urn_world_pos(u_d)
-			if bp.distance_to(up) <= urn_hit_r:
+			if Geometry2D.get_closest_point_to_segment(up, prev_p, bp).distance_to(up) <= urn_hit_r:
 				u_d["intact"] = false
 				u_d["flash_t"] = 0.25
-				bd["active"] = false
+				w.bolts.remove_at(bi)
 				stage.play_sfx("deacon_urn_break", up)
 				if _intact_urn_count() == 0:
 					_urn_respawn_t = URN_RESPAWN_S
@@ -362,13 +364,13 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var wp: Vector2 = (_wheel_pos - pos).round()
 		var wc: Color = (PAL["gold"] if _weather == "sun" else (PAL["ice"] if _weather == "wind" else PAL["sky"])) as Color
 		draw_circle(wp, 10.0, Color(PAL["night"] as Color, 0.82))
-		draw_arc(wp, 10.0, 0.0, TAU, 16, wc, 1.5)
+		draw_arc(wp, 10.0, 0.0, TAU, 16, wc, 2.0)
 		draw_circle(wp, 3.0, wc)
 
 	# Rain-shield shimmer when in RAIN with intact urns
 	if _weather == "rain" and _intact_urn_count() > 0 and boss_state != BossState.DEATH:
 		var sa: float = 0.25 if is_flash_reduced() else 0.42
-		draw_arc((off + Vector2(0.0, -14.0)).round(), 18.0, 0.0, TAU, 20, Color(PAL["sky"] as Color, sa), 1.6)
+		draw_arc((off + Vector2(0.0, -14.0)).round(), 18.0, 0.0, TAU, 20, Color(PAL["sky"] as Color, sa), 2.0)
 
 	# Orbiting Porcelain Rain-Urns (wide in WIND, tight in RAIN!)
 	if boss_state != BossState.DEATH:
@@ -386,7 +388,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _weather == "sun" and boss_state != BossState.DEATH:
 		var fred: bool = is_flash_reduced()
 		var fan_x: float = (sin(anim_t * 5.0) * 2.1) if fred else (sin(anim_t * 18.0) * 6.0)
-		draw_line((off + Vector2(10.0, -16.0)).round(), (off + Vector2(14.0 + fan_x, -26.0)).round(), PAL["cream"] as Color, 1.4)
+		draw_line((off + Vector2(10.0, -16.0)).round(), (off + Vector2(14.0 + fan_x, -26.0)).round(), PAL["cream"] as Color, 1.0)
 
 	# Death steam puffs
 	for st: Dictionary in _death_steam:

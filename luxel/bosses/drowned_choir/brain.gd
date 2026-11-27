@@ -22,6 +22,7 @@ var _sing_timer: float = 0.0
 var _sing_cursor: int = 0
 var _wheel_pos: Vector2 = Vector2.ZERO
 var _wheel_cd: float = 0.0
+var _discord_cd: float = 0.0
 var _has_room_wheel: bool = false
 var _death_petals: Array[Dictionary] = []
 
@@ -135,6 +136,7 @@ func _on_reset_encounter() -> void:
 	_weather = _read_weather()
 	_wheel_pos = arena_rect.get_center() + Vector2(0.0, 32.0)
 	_wheel_cd = 0.0
+	_discord_cd = 0.0
 	_has_room_wheel = _detect_room_wheel()
 	_stanza_seq.clear()
 	_stanza_step = 0
@@ -208,6 +210,7 @@ func _on_phase_enter(new_phase: int) -> void:
 
 func _on_boss_tick(dt: float, _target: Vector2) -> void:
 	_wheel_cd = maxf(0.0, _wheel_cd - dt)
+	_discord_cd = maxf(0.0, _discord_cd - dt)
 	var live_w: String = _read_weather()
 	if not live_w.is_empty():
 		_weather = live_w
@@ -237,31 +240,44 @@ func _check_player_bust_shots() -> void:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 		return
 	var w: LxWick = Lx.player as LxWick
-	if w.move_bolt == null or not (w.move_bolt.get("bolts") is Array):
-		return
-	for b_v: Variant in (w.move_bolt.get("bolts") as Array):
-		if not (b_v is Dictionary):
+	for bi: int in range(w.bolts.size() - 1, -1, -1):
+		var bv: Variant = w.bolts[bi]
+		if not (bv is Object):
 			continue
-		var bd: Dictionary = b_v as Dictionary
-		if not bool(bd.get("active", true)):
+		var bo: Object = bv as Object
+		var bp_v: Variant = bo.get("pos")
+		if not (bp_v is Vector2):
 			continue
-		var bp: Vector2 = bd.get("pos", Vector2.INF) as Vector2
+		var bp: Vector2 = bp_v as Vector2
 		if not bp.is_finite():
 			continue
-		if not _has_room_wheel and _wheel_cd <= 0.0 and bp.distance_to(_wheel_pos) <= 13.0:
+		var pp_v: Variant = bo.get("prev_pos")
+		var prev_p: Vector2 = (pp_v as Vector2) if (pp_v is Vector2 and (pp_v as Vector2).is_finite()) else bp
+		if not _has_room_wheel and _wheel_cd <= 0.0 and Geometry2D.get_closest_point_to_segment(_wheel_pos, prev_p, bp).distance_to(_wheel_pos) <= 10.0:
 			_wheel_cd = 0.55
 			_cycle_local_weather()
-			bd["active"] = false
+			w.bolts.remove_at(bi)
 			continue
 		if not _stanza_active or _stanza_step >= _stanza_seq.size():
 			continue
 		for b_d: Dictionary in _busts:
 			if bool(b_d["silenced"]):
 				continue
+			var bi_idx: int = int(b_d["idx"])
 			var bpos: Vector2 = b_d["pos"] as Vector2
-			if bp.distance_to(bpos) <= 13.0:
-				bd["active"] = false
-				_on_bust_shot(int(b_d["idx"]), bpos)
+			if Geometry2D.get_closest_point_to_segment(bpos, prev_p, bp).distance_to(bpos) <= 9.0:
+				var expected: int = _stanza_seq[_stanza_step]
+				if bi_idx == expected and _is_bust_exposed(bi_idx):
+					w.bolts.remove_at(bi)
+					_on_bust_shot(bi_idx, bpos)
+					break
+				if _is_bust_exposed(bi_idx) and _stanza_step > 0:
+					w.bolts.remove_at(bi)
+					_on_bust_shot(bi_idx, bpos)
+					break
+				# Veiled or pre-stanza stray shot: shimmer feedback without blocking shots aimed at the Conductor Organ
+				if float(b_d["flash_t"]) <= 0.0:
+					b_d["flash_t"] = 0.18
 				break
 
 
@@ -279,10 +295,13 @@ func _on_bust_shot(bust_idx: int, bpos: Vector2) -> void:
 			_stanza_active = false
 			_trigger_resonant_shatter()
 	else:
-		# Wrong order or weather-veiled bust: mild telegraphed 36 px warning ripple (never unwarned!)
+		# Wrong order or weather-veiled bust: clear discord cue (telegraphed pulse only mid-stanza on exposed mismatch)
 		_busts[bust_idx]["flash_t"] = 0.24
-		ground.warn_ring(bpos, 36.0, 0.50, 1.0, "coral", "rose")
-		stage.play_sfx("choir_discord", bpos)
+		if _discord_cd <= 0.0:
+			_discord_cd = 4.0
+			if _stanza_step > 0 and _is_bust_exposed(bust_idx):
+				ground.warn_ring(bpos, 20.0, 0.60, 0.5, "coral", "rose")
+			stage.play_sfx("choir_discord", bpos)
 
 
 func _is_bust_exposed(bust_idx: int) -> bool:
@@ -368,7 +387,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		var wp: Vector2 = (_wheel_pos - pos).round()
 		var wc: Color = (PAL["gold"] if _weather == "sun" else (PAL["ice"] if _weather == "wind" else PAL["sky"])) as Color
 		draw_circle(wp, 10.0, Color(PAL["night"] as Color, 0.80))
-		draw_arc(wp, 10.0, 0.0, TAU, 16, wc, 1.4)
+		draw_arc(wp, 10.0, 0.0, TAU, 16, wc, 1.0)
 		draw_circle(wp, 3.0, wc)
 
 	# Draw the 5 Porcelain Choral Busts (V1..V5) with Roman pips, singing halos, & peaceful closed eyes!
@@ -385,13 +404,13 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		# Floor stave halo glow
 		if glowing and not silenced:
 			var r_h: float = 13.0 + (0.0 if is_flash_reduced() else sin(anim_t * 10.0) * 1.5)
-			draw_arc(bp, r_h, 0.0, TAU, 16, col, 1.8 if is_next else 1.2)
+			draw_arc(bp, r_h, 0.0, TAU, 16, col, 2.0 if is_next else 1.0)
 		# Porcelain pedestal & bust head
 		draw_circle(bp + Vector2(0.0, 4.0), 7.5, Color(PAL["void"] as Color, 0.45))
 		draw_rect(Rect2(bp + Vector2(-6.0, -4.0), Vector2(12.0, 9.0)), (PAL["dusk"] if silenced else PAL["stone"]) as Color)
 		var head_c: Color = (PAL["cream"] if float(b_d["flash_t"]) > 0.0 else (PAL["mauve"] if not exposed else (PAL["dusk"] if silenced else PAL["ice"]))) as Color
 		draw_circle(bp + Vector2(0.0, -7.0), 5.5, head_c)
-		draw_arc(bp + Vector2(0.0, -7.0), 5.5, 0.0, TAU, 12, PAL["night"] as Color, 1.1)
+		draw_arc(bp + Vector2(0.0, -7.0), 5.5, 0.0, TAU, 12, PAL["night"] as Color, 1.0)
 		if silenced:
 			# Eyes closed peacefully
 			draw_line(bp + Vector2(-3.0, -8.0), bp + Vector2(-1.0, -8.0), PAL["night"] as Color, 1.0)

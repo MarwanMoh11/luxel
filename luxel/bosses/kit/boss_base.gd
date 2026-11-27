@@ -147,7 +147,7 @@ func register_attack(id: String, cfg: Dictionary) -> void:
 func reset_encounter() -> void:
 	_ensure_kit()
 	hp = max_hp; phase = 1; pos = home; position = pos.round()
-	knock = Vector2.ZERO; flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0
+	knock = Vector2.ZERO; flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0; pip_mark_t = 0.0
 	cooldown = 0.25; stagger_meter = 0.0; stagger_immunity_t = 0.0; engaged = false; _wick_entered_arena = false
 	active_attack_id = ""; last_attack_id = ""
 	_commit_elapsed = 0.0; _commit_hit_done = false
@@ -412,7 +412,7 @@ func add_stagger(amount: float) -> bool:
 		staggered.emit(stagger_duration)
 		if Lx.hitstop != null and is_instance_valid(Lx.hitstop): Lx.hitstop.trigger(0.065)
 		if Lx.player != null and is_instance_valid(Lx.player):
-			if Lx.player.has_method("spawn_ring"): Lx.player.call("spawn_ring", pos, body_radius + 2.0, body_radius + 24.0, 0.30, PAL["gold"] as Color, 1.8)
+			if Lx.player.has_method("spawn_ring"): Lx.player.call("spawn_ring", pos, body_radius + 2.0, body_radius + 24.0, 0.30, PAL["gold"] as Color, 2.0)
 			if Lx.player.has_method("spawn_sparks"): Lx.player.call("spawn_sparks", pos, Vector2.UP, 8, PAL["cream"] as Color, 32.0, 96.0, 0.28)
 		LxDamageFx.boss_impact(pos, 0.18, 76.0, 82.0, 80.0, 1.38, 0.32)
 		_emit_sfx("stagger_break")
@@ -550,8 +550,8 @@ func _draw_extra(off: Vector2) -> void:
 		var rr: float = roundf(body_radius + 6.0 + rp * (16.0 if boss_state == BossState.INTRO else 22.0))
 		var bcol: Color = LxBiomePalette.col(island_id, "glow")
 		var alpha_s: float = (1.0 - rp * 0.65) * (0.55 if fred_b else 0.88)
-		draw_arc(c_off, rr, 0.0, TAU, 24, Color(PAL["void"] as Color, alpha_s * 0.8), 2.8)
-		draw_arc(c_off, rr, 0.0, TAU, 24, Color(bcol, alpha_s), 1.4)
+		draw_arc(c_off, rr, 0.0, TAU, 24, Color(PAL["void"] as Color, alpha_s * 0.8), 3.0)
+		draw_arc(c_off, rr, 0.0, TAU, 24, Color(bcol, alpha_s), 1.0)
 		for ki: int in range(4):
 			var ka: float = float(ki) * (PI * 0.5) + rp * (0.25 if fred_b else 0.75)
 			var kp: Vector2 = (c_off + Vector2.from_angle(ka) * rr).round()
@@ -560,7 +560,7 @@ func _draw_extra(off: Vector2) -> void:
 		var s_pulse: float = 0.0 if fred_b else sin(anim_t * 10.0) * 1.2
 		var sr: float = roundf(body_radius + 6.5 + s_pulse)
 		draw_arc(c_off, sr, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
-		draw_arc(c_off, sr, 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+		draw_arc(c_off, sr, 0.0, TAU, 20, PAL["gold"] as Color, 2.0)
 	if stagger_meter > stagger_threshold * 0.25 and boss_state != BossState.STAGGER and boss_state != BossState.DEATH:
 		var frac: float = clampf(stagger_meter / maxf(stagger_threshold, 0.01), 0.0, 1.0)
 		var bw: float = roundf(body_radius * 2.2)

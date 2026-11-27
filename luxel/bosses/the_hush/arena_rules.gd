@@ -73,6 +73,7 @@ var comeback_burst_t: float = 0.0
 
 func _init(p_boss: LxBossBase = null) -> void:
 	boss = p_boss
+	# LxFields teardown is owned by LxTheHushBoss._exit_tree(), _on_reset_encounter(), and _on_death_start() calling cleanup().
 
 
 func cleanup() -> void:
@@ -326,8 +327,17 @@ func _tick_mirror_shatter(on_shatter: Callable) -> void:
 			return
 	for bi: int in range(w.bolts.size() - 1, -1, -1):
 		var bv: Variant = w.bolts[bi]
-		if bv is Object and (bv.get("pos") as Vector2).distance_to(mirror_pos) <= 14.0:
-			var is_b: bool = str(bv.get("color")) == LxHit.COLOR_BLUE
+		if not (bv is Object):
+			continue
+		var bo: Object = bv as Object
+		var bp_v: Variant = bo.get("pos")
+		if not (bp_v is Vector2):
+			continue
+		var bp: Vector2 = bp_v as Vector2
+		var pp_v: Variant = bo.get("prev_pos")
+		var prev_p: Vector2 = (pp_v as Vector2) if (pp_v is Vector2 and (pp_v as Vector2).is_finite()) else bp
+		if Geometry2D.get_closest_point_to_segment(mirror_pos, prev_p, bp).distance_to(mirror_pos) <= 14.0:
+			var is_b: bool = (str(bo.get("light_color")) == LxHit.COLOR_BLUE) or bool(bo.get("is_prism"))
 			w.bolts.remove_at(bi)
 			if is_b:
 				shatter_p4_mirror()

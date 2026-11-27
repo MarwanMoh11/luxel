@@ -249,20 +249,25 @@ func _check_temporal_annihilation() -> void:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 		return
 	var w: LxWick = Lx.player as LxWick
-	if w.move_bolt == null or not (w.move_bolt.get("bolts") is Array):
-		return
-	for b_v: Variant in (w.move_bolt.get("bolts") as Array):
-		if not (b_v is Dictionary) or not bool((b_v as Dictionary).get("active", true)):
+	for bi: int in range(w.bolts.size() - 1, -1, -1):
+		var bv: Variant = w.bolts[bi]
+		if not (bv is Object):
 			continue
-		var bp: Vector2 = (b_v as Dictionary).get("pos", Vector2.INF) as Vector2
+		var bo: Object = bv as Object
+		var bp_v: Variant = bo.get("pos")
+		if not (bp_v is Vector2):
+			continue
+		var bp: Vector2 = bp_v as Vector2
 		if not bp.is_finite():
 			continue
+		var pp_v: Variant = bo.get("prev_pos")
+		var prev_p: Vector2 = (pp_v as Vector2) if (pp_v is Vector2 and (pp_v as Vector2).is_finite()) else bp
 		for eb: LxBossBolt in patterns.pool:
 			if not eb.active or eb.reflected:
 				continue
-			if bp.distance_to(eb.pos) <= eb.radius + 7.0:
+			if Geometry2D.get_closest_point_to_segment(eb.pos, prev_p, bp).distance_to(eb.pos) <= eb.radius + 7.0:
 				var mid: Vector2 = bp.lerp(eb.pos, 0.5)
-				(b_v as Dictionary)["active"] = false
+				w.bolts.remove_at(bi)
 				eb.deactivate()
 				_annihilate_fx.append({"pos": mid, "ttl": 0.34})
 				_annihilate_charge += 1.0
@@ -336,24 +341,24 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	var face_r: float = minf(arena_rect.size.x, arena_rect.size.y) * 0.44
 
 	# Floating 12-Numeral Clock-Face on arena floor + Gold Damage-Etched Arc!
-	draw_arc(c_loc, face_r, 0.0, TAU, 36, Color(PAL["gold"] as Color, 0.34), 1.2)
+	draw_arc(c_loc, face_r, 0.0, TAU, 36, Color(PAL["gold"] as Color, 0.34), 1.0)
 	var dmg_frac: float = 1.0 - clampf(hp / maxf(max_hp, 0.01), 0.0, 1.0)
 	if dmg_frac > 0.02:
 		# Dealt damage stays permanently etched in glowing gold glass!
-		draw_arc(c_loc, face_r - 3.0, -PI * 0.5, -PI * 0.5 + TAU * dmg_frac, 32, Color(PAL["gold"] as Color, 0.75), 1.8)
+		draw_arc(c_loc, face_r - 3.0, -PI * 0.5, -PI * 0.5 + TAU * dmg_frac, 32, Color(PAL["gold"] as Color, 0.75), 2.0)
 	for i: int in range(NUMERAL_COUNT):
 		var a: float = -PI * 0.5 + float(i) * (TAU / float(NUMERAL_COUNT))
 		var p0: Vector2 = (c_loc + Vector2.from_angle(a) * (face_r - 4.0)).round()
 		var p1: Vector2 = (c_loc + Vector2.from_angle(a) * (face_r + 1.5)).round()
-		draw_line(p0, p1, (PAL["cream"] if i % 3 == 0 else PAL["gold"]) as Color, 1.4 if i % 3 == 0 else 1.0)
+		draw_line(p0, p1, (PAL["cream"] if i % 3 == 0 else PAL["gold"]) as Color, 2.0 if i % 3 == 0 else 1.0)
 
 	# Counter-clockwise Hour Hand & P2+ Sweeping Minute Hand
 	var h_tip: Vector2 = (c_loc + Vector2.from_angle(_hour_ang) * (face_r * 0.56)).round()
-	draw_line(c_loc, h_tip, Color(PAL["coral"] as Color, 0.65), 2.2)
+	draw_line(c_loc, h_tip, Color(PAL["coral"] as Color, 0.65), 2.0)
 	if phase >= 2 or _death_forward_ticked:
 		var m_tip: Vector2 = (c_loc + Vector2.from_angle(_minute_ang) * (face_r * 0.96)).round()
 		var sweeping: bool = boss_state == BossState.COMMIT and active_attack_id == "minute_hand_sweep"
-		draw_line(c_loc, m_tip, (PAL["cream"] if sweeping else PAL["ice"]) as Color, 3.0 if sweeping else 1.6)
+		draw_line(c_loc, m_tip, (PAL["cream"] if sweeping else PAL["ice"]) as Color, 3.0 if sweeping else 2.0)
 		# P2+ Central Echo Rose bloom
 		var rp: Vector2 = (_echo_rose_pos - pos).round()
 		draw_circle(rp, 5.0, Color(PAL["pine"] as Color, 0.72))
@@ -364,7 +369,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	if _afterimage_active:
 		var ap: Vector2 = (_afterimage_pos - pos).round()
 		var a_col: Color = Color(PAL["ice"] as Color, 0.52 if is_flash_reduced() else 0.78)
-		draw_arc(ap + Vector2(0.0, -16.0), 11.0, 0.0, TAU, 16, a_col, 1.5)
+		draw_arc(ap + Vector2(0.0, -16.0), 11.0, 0.0, TAU, 16, a_col, 2.0)
 		draw_rect(Rect2(ap + Vector2(-5.0, -24.0), Vector2(10.0, 20.0)), Color(PAL["sky"] as Color, 0.40))
 		draw_circle(ap + Vector2(0.0, -28.0), 4.5, a_col)
 
@@ -377,7 +382,7 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	for fx: Dictionary in _annihilate_fx:
 		var fp: Vector2 = ((fx["pos"] as Vector2) - pos).round()
 		var fu: float = 1.0 - clampf(float(fx["ttl"]) / 0.34, 0.0, 1.0)
-		draw_arc(fp, lerpf(4.0, 18.0, fu), 0.0, TAU, 14, PAL["ice"] as Color, 1.6)
+		draw_arc(fp, lerpf(4.0, 18.0, fu), 0.0, TAU, 14, PAL["ice"] as Color, 2.0)
 		draw_circle(fp, maxf(1.5, 4.0 * (1.0 - fu)), PAL["cream"] as Color)
 
 	# Death golden moth floating down at XII

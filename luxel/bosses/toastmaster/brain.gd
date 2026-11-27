@@ -170,15 +170,22 @@ func _check_bell_ring() -> void:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 		return
 	var w: LxWick = Lx.player as LxWick
-	if w.move_bolt == null or not (w.move_bolt.get("bolts") is Array):
-		return
-	for b_v: Variant in (w.move_bolt.get("bolts") as Array):
-		if not (b_v is Dictionary) or not bool((b_v as Dictionary).get("active", true)):
+	for bi: int in range(w.bolts.size() - 1, -1, -1):
+		var bv: Variant = w.bolts[bi]
+		if not (bv is Object):
 			continue
-		var bp: Vector2 = (b_v as Dictionary).get("pos", Vector2.INF) as Vector2
+		var bo: Object = bv as Object
+		var bp_v: Variant = bo.get("pos")
+		if not (bp_v is Vector2):
+			continue
+		var bp: Vector2 = bp_v as Vector2
+		if not bp.is_finite():
+			continue
+		var pp_v: Variant = bo.get("prev_pos")
+		var prev_p: Vector2 = (pp_v as Vector2) if (pp_v is Vector2 and (pp_v as Vector2).is_finite()) else bp
 		for bell_p: Vector2 in bell_pts:
-			if bp.is_finite() and bp.distance_to(bell_p) <= 13.0:
-				(b_v as Dictionary)["active"] = false
+			if Geometry2D.get_closest_point_to_segment(bell_p, prev_p, bp).distance_to(bell_p) <= 13.0:
+				w.bolts.remove_at(bi)
 				_bell_cd = 6.0
 				_bell_ring_t = 0.55
 				stage.play_sfx("toast_glass_clink", bell_p)
@@ -271,7 +278,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 		draw_circle(bp, 5.5, (PAL["cream"] if _bell_ring_t > 0.0 else PAL["gold"]) as Color)
 		draw_rect(Rect2(bp + Vector2(-4.0, 3.0), Vector2(8.0, 2.0)), PAL["apricot"] as Color)
 		if _bell_ring_t > 0.0:
-			draw_arc(bp, 11.0 + (0.55 - _bell_ring_t) * 24.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.4)
+			draw_arc(bp, 11.0 + (0.55 - _bell_ring_t) * 24.0, 0.0, TAU, 16, PAL["gold"] as Color, 1.0)
 
 	# Comedy indicator: exposed spinning wind-up key during compulsive formal bow!
 	if _bowing and boss_state == BossState.STAGGER:
@@ -279,10 +286,10 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var fred: bool = is_flash_reduced()
 		var spin: float = roundf((sin(anim_t * 5.0) * 1.4) if fred else (sin(anim_t * 20.0) * 4.0))
 		draw_circle(kp, 4.5, PAL["gold"] as Color)
-		draw_line((kp + Vector2(-spin, -3.0)).round(), (kp + Vector2(spin, 3.0)).round(), PAL["cream"] as Color, 1.6)
+		draw_line((kp + Vector2(-spin, -3.0)).round(), (kp + Vector2(spin, 3.0)).round(), PAL["cream"] as Color, 2.0)
 
 	# Death wind-up springs & teacup steam
 	for sp: Dictionary in _death_springs:
 		var pp: Vector2 = ((sp["pos"] as Vector2) - pos).round()
-		draw_arc(pp, 2.5, 0.0, TAU, 8, PAL["gold"] as Color, 1.2)
+		draw_arc(pp, 2.5, 0.0, TAU, 8, PAL["gold"] as Color, 1.0)
 		draw_rect(Rect2(pp, Vector2.ONE), PAL["cream"] as Color)
