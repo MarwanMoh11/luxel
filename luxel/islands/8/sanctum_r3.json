@@ -389,6 +389,15 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island8_scenery",
+      "prop": "void_lantern_post",
+      "pos": [
+        200,
+        72
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -401,38 +410,7 @@
       "radius": 24,
       "style": "astrolabe",
       "color": "sky",
-      "secondary": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        144,
-        32,
-        240,
-        48
-      ],
-      "color": "plum"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        224,
-        144
-      ],
-      "radius": 24,
-      "style": "ritual",
-      "color": "gold",
-      "secondary": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        112,
-        32,
-        176,
-        32
-      ],
-      "color": "gold"
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

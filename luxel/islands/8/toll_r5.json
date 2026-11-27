@@ -358,16 +358,9 @@
         168
       ],
       "radius": 44,
-      "style": "ritual"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        112,
-        80,
-        192,
-        160
-      ]
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "stain",
@@ -399,17 +392,6 @@
       "color": "wine",
       "hi": "rose",
       "trim": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        224,
-        160
-      ],
-      "radius": 42,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "cream"
     }
   ],
   "triggers": [],

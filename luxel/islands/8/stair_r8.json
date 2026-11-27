@@ -410,27 +410,7 @@
       "radius": 64,
       "style": "astrolabe",
       "color": "sky",
-      "secondary": "ice"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        136,
-        32,
-        32
-      ],
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        136,
-        32,
-        32
-      ],
-      "color": "sky"
+      "secondary": "apricot"
     },
     {
       "kind": "rug",
@@ -449,23 +429,12 @@
     {
       "kind": "circle",
       "pos": [
-        240,
-        160
-      ],
-      "radius": 48,
-      "style": "compass",
-      "color": "sky",
-      "secondary": "ice"
-    },
-    {
-      "kind": "circle",
-      "pos": [
         144,
         152
       ],
       "radius": 20,
       "style": "mosaic",
-      "color": "ice",
+      "color": "rose",
       "secondary": "sky"
     },
     {
@@ -476,7 +445,7 @@
       ],
       "radius": 20,
       "style": "mosaic",
-      "color": "ice",
+      "color": "rose",
       "secondary": "sky"
     }
   ],

@@ -401,21 +401,10 @@
         240,
         144
       ],
-      "radius": 62,
+      "radius": 48,
       "style": "ritual",
-      "color": "gold",
-      "secondary": "lime"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        240,
-        144
-      ],
-      "radius": 34,
-      "style": "mosaic",
       "color": "apricot",
-      "secondary": "cream"
+      "secondary": "lime"
     },
     {
       "kind": "light_shaft",

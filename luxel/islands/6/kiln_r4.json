@@ -313,6 +313,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.23
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "iron_weapon_rack",
+      "pos": [
+        360,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.98
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        360,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.53
     }
   ],
   "is_2x2_room": true,

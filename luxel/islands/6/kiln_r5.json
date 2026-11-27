@@ -260,7 +260,9 @@
         104
       ],
       "radius": 36,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "circle",
@@ -269,7 +271,9 @@
         120
       ],
       "radius": 52,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     }
   ],
   "scenery": [

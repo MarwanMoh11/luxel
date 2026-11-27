@@ -305,26 +305,6 @@
       "style": "gear"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        348,
-        40,
-        76,
-        72
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        76,
-        36,
-        92,
-        56
-      ],
-      "color": "sky"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         256,

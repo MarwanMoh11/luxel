@@ -418,7 +418,9 @@
         80
       ],
       "radius": 36,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "grate",

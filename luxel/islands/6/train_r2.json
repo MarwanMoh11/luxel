@@ -335,15 +335,6 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        24,
-        24,
-        128,
-        80
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         296,

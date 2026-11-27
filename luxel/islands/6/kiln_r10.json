@@ -248,7 +248,9 @@
         136
       ],
       "radius": 64,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "cracks",
@@ -380,6 +382,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "slag_chimney_vent",
+      "pos": [
+        88,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
     }
   ],
   "is_2x2_room": true,

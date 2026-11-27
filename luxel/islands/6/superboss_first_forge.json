@@ -404,16 +404,9 @@
         192
       ],
       "radius": 64,
-      "style": "gear"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 36,
-      "style": "ritual"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "grate",
@@ -424,15 +417,6 @@
         64
       ],
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        80,
-        256,
-        208
-      ]
     },
     {
       "kind": "cracks",

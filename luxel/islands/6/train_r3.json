@@ -254,15 +254,6 @@
       ],
       "radius": 24,
       "style": "soot"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        368,
-        88,
-        48,
-        64
-      ]
     }
   ],
   "scenery": [
@@ -385,6 +376,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        376,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.22
     }
   ],
   "triggers": [],

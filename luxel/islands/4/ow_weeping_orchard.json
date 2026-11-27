@@ -493,15 +493,6 @@
       ],
       "radius": 24,
       "style": "clock"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        456,
-        336,
-        72,
-        72
-      ]
     }
   ],
   "scenery": [

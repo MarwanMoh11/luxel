@@ -366,6 +366,24 @@
       ],
       "layer": "sort",
       "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        216,
+        122
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        88,
+        122
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -386,16 +404,8 @@
         224
       ],
       "radius": 22,
-      "color": "jade"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        160,
-        32,
-        144,
-        48
-      ]
+      "color": "jade",
+      "secondary": "mauve"
     }
   ],
   "layers": [],

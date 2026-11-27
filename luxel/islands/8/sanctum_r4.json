@@ -333,7 +333,7 @@
       "radius": 44,
       "style": "ritual",
       "color": "deep",
-      "secondary": "ice"
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -356,17 +356,6 @@
       "color": "wine",
       "hi": "rose",
       "trim": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        240,
-        144
-      ],
-      "radius": 42,
-      "style": "ritual",
-      "color": "gold",
-      "secondary": "rose"
     }
   ],
   "layers": [],

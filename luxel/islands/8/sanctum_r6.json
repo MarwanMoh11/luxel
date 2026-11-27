@@ -366,7 +366,7 @@
       "radius": 58,
       "style": "ritual",
       "color": "plum",
-      "secondary": "gold"
+      "secondary": "mauve"
     },
     {
       "kind": "circle",
@@ -376,19 +376,8 @@
       ],
       "radius": 30,
       "style": "mosaic",
-      "color": "gold",
-      "secondary": "cream"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        176
-      ],
-      "radius": 52,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "rose"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

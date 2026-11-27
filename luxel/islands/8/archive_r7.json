@@ -390,6 +390,24 @@
       ],
       "layer": "sort",
       "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        440,
+        42
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        120,
+        42
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -400,7 +418,8 @@
         128
       ],
       "radius": 34,
-      "color": "blue"
+      "color": "blue",
+      "secondary": "mauve"
     },
     {
       "kind": "circle",
@@ -409,7 +428,8 @@
         152
       ],
       "radius": 24,
-      "color": "sky"
+      "color": "sky",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -420,27 +440,6 @@
         64
       ],
       "style": "ornate"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        288,
-        176
-      ],
-      "radius": 38,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        224,
-        112,
-        160,
-        128
-      ],
-      "color": "gold"
     }
   ],
   "layers": [],

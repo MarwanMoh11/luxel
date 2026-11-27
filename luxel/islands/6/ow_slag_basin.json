@@ -751,7 +751,9 @@
         192
       ],
       "radius": 46,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "grate",

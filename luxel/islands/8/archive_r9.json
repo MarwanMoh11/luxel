@@ -404,7 +404,8 @@
         168
       ],
       "radius": 36,
-      "color": "ice"
+      "color": "sky",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -428,7 +429,7 @@
       "radius": 30,
       "style": "compass",
       "color": "sky",
-      "secondary": "cream"
+      "secondary": "mauve"
     },
     {
       "kind": "circle",
@@ -439,7 +440,7 @@
       "radius": 30,
       "style": "ritual",
       "color": "rose",
-      "secondary": "cream"
+      "secondary": "mauve"
     }
   ],
   "layers": [],

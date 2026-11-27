@@ -311,26 +311,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        68,
-        56,
-        84,
-        48
-      ],
-      "color": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        296,
-        56,
-        84,
-        48
-      ],
-      "color": "rose"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         224,

@@ -35,20 +35,6 @@
       "secondary": "gold"
     },
     {
-      "kind": "inlay",
-      "pos": [
-        344,
-        216
-      ],
-      "rect": [
-        336,
-        200,
-        56,
-        40
-      ],
-      "color": "mauve"
-    },
-    {
       "kind": "stain",
       "pos": [
         168,
@@ -553,5 +539,6 @@
         "exit": "exit_shift_e_burrow"
       }
     ]
-  }
+  },
+  "theme": "thornwood_overworld"
 }

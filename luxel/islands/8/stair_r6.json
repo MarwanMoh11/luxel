@@ -486,17 +486,7 @@
       "radius": 44,
       "style": "compass",
       "color": "sky",
-      "secondary": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        72,
-        208,
-        336,
-        48
-      ],
-      "color": "sky"
+      "secondary": "apricot"
     }
   ],
   "layers": [

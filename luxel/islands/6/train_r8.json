@@ -295,15 +295,6 @@
       "glow": true
     },
     {
-      "kind": "inlay",
-      "rect": [
-        144,
-        96,
-        208,
-        80
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         272,
@@ -433,6 +424,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.69
+    },
+    {
+      "sheet": "theme_ember_express",
+      "prop": "carriage_wall_lamp",
+      "pos": [
+        312,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.54
     }
   ],
   "triggers": [],

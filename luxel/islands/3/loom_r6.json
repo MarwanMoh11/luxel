@@ -189,36 +189,6 @@
       "secondary": "plum"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        56,
-        84,
-        336,
-        12
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        56,
-        138,
-        336,
-        12
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        56,
-        192,
-        336,
-        12
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         224,

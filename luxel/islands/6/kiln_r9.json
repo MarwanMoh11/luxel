@@ -343,15 +343,6 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        48,
-        104,
-        56,
-        72
-      ]
-    },
-    {
       "kind": "grate",
       "rect": [
         192,

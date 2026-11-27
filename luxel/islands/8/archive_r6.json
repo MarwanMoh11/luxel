@@ -316,22 +316,14 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        96,
-        80,
-        264,
-        152
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         224,
         160
       ],
       "radius": 44,
-      "color": "rose"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",

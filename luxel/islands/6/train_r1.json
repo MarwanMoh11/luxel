@@ -254,15 +254,6 @@
       "glow": true
     },
     {
-      "kind": "inlay",
-      "rect": [
-        192,
-        164,
-        48,
-        40
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         152,

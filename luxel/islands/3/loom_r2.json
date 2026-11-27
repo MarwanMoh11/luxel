@@ -302,16 +302,6 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        144,
-        48,
-        224,
-        40
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "circle",
       "pos": [
         256,
@@ -332,16 +322,6 @@
       ],
       "tint": "warm",
       "shear": 0.3
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        328,
-        32,
-        48,
-        28
-      ],
-      "color": "rose"
     }
   ],
   "scenery": [

@@ -43,7 +43,7 @@
       "radius": 32,
       "style": "ritual",
       "color": "plum",
-      "secondary": "gold"
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -625,5 +625,6 @@
         "exit": "exit_shift_n_mother"
       }
     ]
-  }
+  },
+  "theme": "thornwood_overworld"
 }

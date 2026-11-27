@@ -535,16 +535,6 @@
       "color": "wine"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        48,
-        208,
-        128,
-        48
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "rug",
       "rect": [
         128,
@@ -565,7 +555,7 @@
       ],
       "radius": 36,
       "style": "compass",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "apricot"
     }
   ],

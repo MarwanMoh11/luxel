@@ -478,16 +478,6 @@
       "style": "astrolabe",
       "color": "sky",
       "secondary": "dusk"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        200,
-        60,
-        80,
-        40
-      ],
-      "color": "sky"
     }
   ],
   "layers": [

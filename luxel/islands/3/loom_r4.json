@@ -240,16 +240,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        176,
-        88,
-        96,
-        80
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         224,

@@ -422,24 +422,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        32,
-        64,
-        112,
-        96
-      ]
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        368,
-        48,
-        96,
-        176
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         248,

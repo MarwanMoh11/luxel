@@ -446,28 +446,8 @@
       ],
       "radius": 44,
       "style": "ritual",
-      "color": "gold",
+      "color": "rose",
       "secondary": "dusk"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        48,
-        88,
-        72,
-        88
-      ],
-      "color": "apricot"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        96,
-        88,
-        96
-      ],
-      "color": "gold"
     }
   ],
   "layers": [

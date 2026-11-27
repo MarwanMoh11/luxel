@@ -475,26 +475,6 @@
       "style": "ornate",
       "color": "wine",
       "trim": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        32,
-        96,
-        128,
-        96
-      ],
-      "color": "apricot"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        112,
-        96,
-        64
-      ],
-      "color": "sky"
     }
   ],
   "layers": [],

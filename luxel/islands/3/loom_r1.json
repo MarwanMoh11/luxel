@@ -397,16 +397,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        112,
-        156,
-        120,
-        24
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         208,
@@ -418,16 +408,6 @@
       ],
       "tint": "warm",
       "shear": 0.35
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        176,
-        28,
-        64,
-        24
-      ],
-      "color": "rose"
     }
   ],
   "scenery": [

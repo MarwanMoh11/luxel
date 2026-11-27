@@ -309,15 +309,6 @@
         64
       ],
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        368,
-        112,
-        80,
-        80
-      ]
     }
   ],
   "scenery": [
@@ -440,6 +431,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        376,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.22
     }
   ],
   "triggers": [],

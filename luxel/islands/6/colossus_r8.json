@@ -314,22 +314,15 @@
       "glow": true
     },
     {
-      "kind": "inlay",
-      "rect": [
-        112,
-        136,
-        288,
-        64
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         256,
         168
       ],
       "radius": 44,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "cracks",

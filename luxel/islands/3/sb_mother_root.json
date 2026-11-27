@@ -30,21 +30,10 @@
         256,
         168
       ],
-      "radius": 80,
+      "radius": 62,
       "style": "ritual",
       "color": "pine",
       "secondary": "lime"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        168
-      ],
-      "radius": 44,
-      "style": "mosaic",
-      "color": "apricot",
-      "secondary": "gold"
     },
     {
       "kind": "light_shaft",

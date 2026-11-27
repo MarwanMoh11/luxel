@@ -563,7 +563,8 @@
         176
       ],
       "radius": 44,
-      "color": "rose"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

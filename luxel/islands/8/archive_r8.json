@@ -424,6 +424,24 @@
       ],
       "layer": "sort",
       "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        232,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        152,
+        26
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -444,16 +462,8 @@
         224
       ],
       "radius": 22,
-      "color": "coral"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        208,
-        160,
-        160,
-        48
-      ]
+      "color": "coral",
+      "secondary": "mauve"
     }
   ],
   "layers": [],

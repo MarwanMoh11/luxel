@@ -272,16 +272,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        200,
-        176,
-        172,
-        32
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "rug",
       "rect": [
         96,
@@ -303,16 +293,6 @@
       ],
       "tint": "cool",
       "shear": 0.35
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        184,
-        48,
-        40,
-        32
-      ],
-      "color": "rose"
     }
   ],
   "scenery": [

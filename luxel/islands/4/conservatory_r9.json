@@ -482,15 +482,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        16,
-        32,
-        64,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         232,

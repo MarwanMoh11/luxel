@@ -391,6 +391,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.46
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        56,
+        164
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        136,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.08
     }
   ],
   "is_2x2_room": true,

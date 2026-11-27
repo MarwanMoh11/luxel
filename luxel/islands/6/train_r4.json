@@ -236,7 +236,9 @@
         152
       ],
       "radius": 38,
-      "style": "compass"
+      "style": "compass",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "light_shaft",
@@ -250,15 +252,6 @@
       ],
       "tint": "warm",
       "shear": 0.3
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        440,
-        112,
-        64,
-        80
-      ]
     }
   ],
   "scenery": [

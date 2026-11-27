@@ -531,7 +531,8 @@
         192
       ],
       "radius": 56,
-      "color": "gold"
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

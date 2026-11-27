@@ -418,27 +418,7 @@
       "phase": 0.0
     }
   ],
-  "decor": [
-    {
-      "kind": "circle",
-      "pos": [
-        288,
-        200
-      ],
-      "radius": 84,
-      "color": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        248,
-        72,
-        80,
-        32
-      ],
-      "color": "gold"
-    }
-  ],
+  "decor": [],
   "layers": [
     {
       "id": "relit_dawn",

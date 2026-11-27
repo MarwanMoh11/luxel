@@ -547,18 +547,8 @@
       ],
       "radius": 28,
       "style": "ritual",
-      "color": "gold",
-      "secondary": "cream"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        336,
-        48,
-        80,
-        64
-      ],
-      "color": "apricot"
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",

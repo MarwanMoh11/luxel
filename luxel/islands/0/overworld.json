@@ -6,12 +6,20 @@
   "theme": "wick_house",
   "name_key": "ZONE_WICK_HOUSE",
   "music": "hub",
-  "spawn": [240, 260],
+  "spawn": [
+    240,
+    260
+  ],
   "zones": [
     {
       "id": "wick_house_hall",
       "name_key": "ZONE_WICK_HOUSE",
-      "rect": [0, 0, 512, 352],
+      "rect": [
+        0,
+        0,
+        512,
+        352
+      ],
       "dark": false
     }
   ],
@@ -26,135 +34,588 @@
     "why": "Central hearth sanctuary connecting all 8 rooms of Wick House and the archipelago.",
     "optional": true,
     "solution": [
-      {"op": "interact", "target": "ws_hub"},
-      {"op": "goto", "to": "curio_ow_hearth"},
-      {"op": "interact", "target": "curio_ow_hearth"},
-      {"op": "goto", "to": "curio_ow_kettle"},
-      {"op": "interact", "target": "curio_ow_kettle"}
+      {
+        "op": "interact",
+        "target": "ws_hub"
+      },
+      {
+        "op": "goto",
+        "to": "curio_ow_hearth"
+      },
+      {
+        "op": "interact",
+        "target": "curio_ow_hearth"
+      },
+      {
+        "op": "goto",
+        "to": "curio_ow_kettle"
+      },
+      {
+        "op": "interact",
+        "target": "curio_ow_kettle"
+      }
     ]
   },
   "decor": [
-    {"kind": "rug", "rect": [176, 96, 112, 80], "style": "hearth"},
-    {"kind": "window_strip", "y": 24, "x0": 80, "x1": 176, "style": "sunset"},
-    {"kind": "window_strip", "y": 24, "x0": 320, "x1": 432, "style": "stars"},
-    {"kind": "light_shaft", "pos": [128, 72], "size": [48, 84], "tint": "warm", "shear": 0.35},
-    {"kind": "light_shaft", "pos": [356, 72], "size": [44, 80], "tint": "cool", "shear": 0.35},
-    {"kind": "inlay", "rect": [200, 224, 80, 48]}
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        96,
+        112,
+        80
+      ],
+      "style": "hearth"
+    },
+    {
+      "kind": "window_strip",
+      "y": 24,
+      "x0": 80,
+      "x1": 176,
+      "style": "sunset"
+    },
+    {
+      "kind": "window_strip",
+      "y": 24,
+      "x0": 320,
+      "x1": 432,
+      "style": "stars"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        128,
+        72
+      ],
+      "size": [
+        48,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        356,
+        72
+      ],
+      "size": [
+        44,
+        80
+      ],
+      "tint": "cool",
+      "shear": 0.35
+    }
   ],
   "exits": [
-    {"id": "ex_ow_attic", "rect": [208, 16, 48, 16], "to_island": 0, "to_region": "attic", "to_spawn": [224, 240]},
-    {"id": "ex_ow_workshop", "rect": [32, 144, 16, 48], "to_island": 0, "to_region": "workshop", "to_spawn": [400, 144]},
-    {"id": "ex_ow_gallery", "rect": [464, 144, 16, 48], "to_island": 0, "to_region": "gallery", "to_spawn": [48, 144]},
-    {"id": "ex_ow_cellar", "rect": [400, 240, 48, 16], "to_island": 0, "to_region": "cellar", "to_spawn": [240, 48]}
+    {
+      "id": "ex_ow_attic",
+      "rect": [
+        208,
+        16,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "attic",
+      "to_spawn": [
+        224,
+        240
+      ]
+    },
+    {
+      "id": "ex_ow_workshop",
+      "rect": [
+        32,
+        144,
+        16,
+        48
+      ],
+      "to_island": 0,
+      "to_region": "workshop",
+      "to_spawn": [
+        400,
+        144
+      ]
+    },
+    {
+      "id": "ex_ow_gallery",
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
+      "to_island": 0,
+      "to_region": "gallery",
+      "to_spawn": [
+        48,
+        144
+      ]
+    },
+    {
+      "id": "ex_ow_cellar",
+      "rect": [
+        400,
+        240,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "cellar",
+      "to_spawn": [
+        240,
+        48
+      ]
+    }
   ],
   "enemies": [],
   "layers": [
     {
       "id": "relit_1",
       "when": "hub_relit>=1",
-      "tiles": [[11, 6, 7, 1, "path"], [11, 11, 7, 1, "path"]],
-      "enable": ["lamp_ow_growth_1", "curio_ow_moth_jar"]
+      "tiles": [
+        [
+          11,
+          6,
+          7,
+          1,
+          "path"
+        ],
+        [
+          11,
+          11,
+          7,
+          1,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_ow_growth_1",
+        "curio_ow_moth_jar"
+      ]
     },
     {
       "id": "relit_3",
       "when": "hub_relit>=3",
-      "tiles": [[6, 8, 2, 4, "path"], [22, 8, 3, 4, "path"]],
-      "enable": ["lamp_ow_growth_3", "curio_ow_chimes"]
+      "tiles": [
+        [
+          6,
+          8,
+          2,
+          4,
+          "path"
+        ],
+        [
+          22,
+          8,
+          3,
+          4,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_ow_growth_3",
+        "curio_ow_chimes"
+      ]
     },
     {
       "id": "relit_6",
       "when": "hub_relit>=6",
-      "tiles": [[10, 4, 9, 2, "path"]],
-      "enable": ["lamp_ow_growth_6"]
+      "tiles": [
+        [
+          10,
+          4,
+          9,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_ow_growth_6"
+      ]
     },
     {
       "id": "folk_scribe",
       "when": "flag:folk:scribe_worm",
-      "enable": ["lamp_ow_scribe"]
+      "enable": [
+        "lamp_ow_scribe"
+      ]
     }
   ],
   "interactables": [
     {
       "id": "ws_hub",
       "kind": "waystone",
-      "pos": [240, 248],
-      "props": {"lit": true, "zone": "wick_house_hall", "name_key": "ZONE_WICK_HOUSE"}
+      "pos": [
+        240,
+        248
+      ],
+      "props": {
+        "lit": true,
+        "zone": "wick_house_hall",
+        "name_key": "ZONE_WICK_HOUSE"
+      }
     },
     {
       "id": "hub_return_jetty",
       "kind": "hub_station",
-      "pos": [240, 326],
-      "props": {"role": "return_jetty"}
+      "pos": [
+        240,
+        326
+      ],
+      "props": {
+        "role": "return_jetty"
+      }
     },
     {
       "id": "hub_journal_desk",
       "kind": "hub_station",
-      "pos": [108, 200],
-      "props": {"role": "journal_desk"}
+      "pos": [
+        108,
+        200
+      ],
+      "props": {
+        "role": "journal_desk"
+      }
     },
     {
       "id": "hub_music_box",
       "kind": "hub_station",
-      "pos": [182, 198],
-      "props": {"role": "music_box"}
+      "pos": [
+        182,
+        198
+      ],
+      "props": {
+        "role": "music_box"
+      }
     },
     {
       "id": "npc_hub_grandma",
       "kind": "hub_npc",
-      "pos": [268, 212],
+      "pos": [
+        268,
+        212
+      ],
       "props": {
         "folk": "candle_grandma",
         "routine": [
-          {"pos": [268, 212], "wait": 3.4, "anim": "happy"},
-          {"pos": [216, 148], "wait": 2.6, "anim": "idle"},
-          {"pos": [156, 164], "wait": 2.4, "anim": "idle"}
+          {
+            "pos": [
+              268,
+              212
+            ],
+            "wait": 3.4,
+            "anim": "happy"
+          },
+          {
+            "pos": [
+              216,
+              148
+            ],
+            "wait": 2.6,
+            "anim": "idle"
+          },
+          {
+            "pos": [
+              156,
+              164
+            ],
+            "wait": 2.4,
+            "anim": "idle"
+          }
         ],
         "bubbles": [
-          ["home", "lantern", "heart"],
-          ["moth", "arrow_n", "light_on"]
+          [
+            "home",
+            "lantern",
+            "heart"
+          ],
+          [
+            "moth",
+            "arrow_n",
+            "light_on"
+          ]
         ]
       }
     },
     {
       "id": "npc_hub_scribe",
       "kind": "hub_npc",
-      "pos": [140, 174],
+      "pos": [
+        140,
+        174
+      ],
       "props": {
         "folk": "scribe_worm",
         "require_flag": "folk:scribe_worm",
         "quest": "q_hub_dusk_ink",
         "service": "journal",
         "routine": [
-          {"pos": [140, 174], "wait": 3.2, "anim": "idle"},
-          {"pos": [116, 168], "wait": 2.2, "anim": "happy"}
+          {
+            "pos": [
+              140,
+              174
+            ],
+            "wait": 3.2,
+            "anim": "idle"
+          },
+          {
+            "pos": [
+              116,
+              168
+            ],
+            "wait": 2.2,
+            "anim": "happy"
+          }
         ],
-        "bubbles": [["book", "clock", "happy"]]
+        "bubbles": [
+          [
+            "book",
+            "clock",
+            "happy"
+          ]
+        ]
       }
     },
-    {"id": "curio_ow_hearth", "kind": "hub_curio", "pos": [288, 72], "props": {"curio": "hearth_fire"}},
-    {"id": "curio_ow_kettle", "kind": "hub_curio", "pos": [80, 72], "props": {"curio": "kettle"}},
-    {"id": "curio_ow_trophy", "kind": "hub_curio", "pos": [424, 76], "props": {"curio": "trophy_rack"}},
-    {"id": "curio_ow_porch_bell", "kind": "hub_curio", "pos": [304, 248], "props": {"curio": "porch_bell"}},
-    {"id": "curio_ow_moth_jar", "kind": "hub_curio", "pos": [192, 68], "props": {"curio": "moth_jar"}},
-    {"id": "curio_ow_chimes", "kind": "hub_curio", "pos": [344, 184], "props": {"curio": "chime_rack"}},
-    {"id": "lamp_ow_nw", "kind": "road_lamp", "pos": [184, 88], "props": {"lit": true}},
-    {"id": "lamp_ow_ne", "kind": "road_lamp", "pos": [316, 92], "props": {"lit": true}},
-    {"id": "lamp_ow_sw", "kind": "road_lamp", "pos": [196, 224], "props": {"lit": true}},
-    {"id": "lamp_ow_se", "kind": "road_lamp", "pos": [304, 224], "props": {"lit": true}},
-    {"id": "lamp_ow_growth_1", "kind": "road_lamp", "pos": [88, 136], "props": {"lit": true}},
-    {"id": "lamp_ow_growth_3", "kind": "road_lamp", "pos": [420, 136], "props": {"lit": true}},
-    {"id": "lamp_ow_growth_6", "kind": "road_lamp", "pos": [256, 88], "props": {"lit": true}},
-    {"id": "lamp_ow_scribe", "kind": "road_lamp", "pos": [92, 208], "props": {"lit": true}}
+    {
+      "id": "curio_ow_hearth",
+      "kind": "hub_curio",
+      "pos": [
+        288,
+        72
+      ],
+      "props": {
+        "curio": "hearth_fire"
+      }
+    },
+    {
+      "id": "curio_ow_kettle",
+      "kind": "hub_curio",
+      "pos": [
+        80,
+        72
+      ],
+      "props": {
+        "curio": "kettle"
+      }
+    },
+    {
+      "id": "curio_ow_trophy",
+      "kind": "hub_curio",
+      "pos": [
+        424,
+        76
+      ],
+      "props": {
+        "curio": "trophy_rack"
+      }
+    },
+    {
+      "id": "curio_ow_porch_bell",
+      "kind": "hub_curio",
+      "pos": [
+        304,
+        248
+      ],
+      "props": {
+        "curio": "porch_bell"
+      }
+    },
+    {
+      "id": "curio_ow_moth_jar",
+      "kind": "hub_curio",
+      "pos": [
+        192,
+        68
+      ],
+      "props": {
+        "curio": "moth_jar"
+      }
+    },
+    {
+      "id": "curio_ow_chimes",
+      "kind": "hub_curio",
+      "pos": [
+        344,
+        184
+      ],
+      "props": {
+        "curio": "chime_rack"
+      }
+    },
+    {
+      "id": "lamp_ow_nw",
+      "kind": "road_lamp",
+      "pos": [
+        184,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_ne",
+      "kind": "road_lamp",
+      "pos": [
+        316,
+        92
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_sw",
+      "kind": "road_lamp",
+      "pos": [
+        196,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_se",
+      "kind": "road_lamp",
+      "pos": [
+        304,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_growth_1",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_growth_3",
+      "kind": "road_lamp",
+      "pos": [
+        420,
+        136
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_growth_6",
+      "kind": "road_lamp",
+      "pos": [
+        256,
+        88
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_ow_scribe",
+      "kind": "road_lamp",
+      "pos": [
+        92,
+        208
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "theme_wick_house", "prop": "cozy_stone_hearth", "pos": [288, 56], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "braided_hearth_rug", "pos": [232, 136], "layer": "ground"},
-    {"sheet": "theme_wick_house", "prop": "cottage_dining_table", "pos": [368, 124], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "wooden_bookshelf_home", "pos": [96, 184], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [168, 56], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [432, 120], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [204, 288], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [284, 288], "layer": "sort"}
+    {
+      "sheet": "theme_wick_house",
+      "prop": "cozy_stone_hearth",
+      "pos": [
+        288,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "braided_hearth_rug",
+      "pos": [
+        232,
+        136
+      ],
+      "layer": "ground"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "cottage_dining_table",
+      "pos": [
+        368,
+        124
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_bookshelf_home",
+      "pos": [
+        96,
+        184
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        168,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        432,
+        120
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        204,
+        288
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        284,
+        288
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "music_box_phonograph",
+      "pos": [
+        344,
+        250
+      ],
+      "layer": "sort"
+    }
   ]
 }

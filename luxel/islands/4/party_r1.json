@@ -216,15 +216,6 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        304,
-        32,
-        96,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         216,

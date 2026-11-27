@@ -202,16 +202,9 @@
         176
       ],
       "radius": 68,
-      "style": "gear"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        272,
-        176
-      ],
-      "radius": 38,
-      "style": "ritual"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "grate",
@@ -222,15 +215,6 @@
         64
       ],
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        144,
-        80,
-        256,
-        192
-      ]
     },
     {
       "kind": "cracks",

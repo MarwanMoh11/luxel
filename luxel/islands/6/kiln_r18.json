@@ -184,7 +184,9 @@
         136
       ],
       "radius": 54,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "grate",

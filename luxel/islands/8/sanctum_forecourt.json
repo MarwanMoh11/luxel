@@ -452,7 +452,8 @@
         216
       ],
       "radius": 52,
-      "color": "plum"
+      "color": "plum",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -489,17 +490,6 @@
       "color": "wine",
       "hi": "rose",
       "trim": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        304,
-        224
-      ],
-      "radius": 44,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "rose"
     }
   ],
   "layers": [],

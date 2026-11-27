@@ -1777,5 +1777,6 @@
     "reward": "seal_broken_8+moth_8_01",
     "why": "Preserves approved Island 8 overworld silhouette while linking all Epic expansion wings.",
     "optional": true
-  }
+  },
+  "theme": "long_night_overworld"
 }

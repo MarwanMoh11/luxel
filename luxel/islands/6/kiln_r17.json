@@ -279,15 +279,6 @@
       ],
       "radius": 32,
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        304,
-        96,
-        96,
-        96
-      ]
     }
   ],
   "scenery": [

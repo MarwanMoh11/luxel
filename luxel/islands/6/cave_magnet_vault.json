@@ -319,6 +319,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.92
+    },
+    {
+      "sheet": "theme_cave_6",
+      "prop": "cave_lantern_post",
+      "pos": [
+        56,
+        228
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.85
     }
   ],
   "layers": [],
@@ -408,5 +420,49 @@
         "target": "pickup_anvil_strike"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        208,
+        176
+      ],
+      "radius": 26,
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        208,
+        96
+      ],
+      "size": [
+        32,
+        44
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        248
+      ],
+      "radius": 18,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        288,
+        248
+      ],
+      "radius": 18,
+      "style": "soot"
+    }
+  ]
 }

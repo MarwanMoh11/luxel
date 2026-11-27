@@ -416,6 +416,24 @@
       ],
       "layer": "sort",
       "flip_x": true
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        152,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        72,
+        26
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -436,7 +454,8 @@
         184
       ],
       "radius": 22,
-      "color": "lime"
+      "color": "lime",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",

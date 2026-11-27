@@ -579,8 +579,8 @@
       ],
       "radius": 32,
       "style": "ritual",
-      "color": "gold",
-      "secondary": "cream"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -593,16 +593,6 @@
       "style": "ornate",
       "color": "wine",
       "trim": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        352,
-        80,
-        96,
-        32
-      ],
-      "color": "rose"
     },
     {
       "kind": "rug",

@@ -680,5 +680,31 @@
     ]
   },
   "is_2x2_room": true,
-  "theme": "conservatory"
+  "theme": "conservatory",
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        144,
+        136
+      ],
+      "radius": 20,
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        448,
+        128
+      ],
+      "size": [
+        36,
+        64
+      ],
+      "tint": "cool",
+      "shear": 0.45
+    }
+  ]
 }

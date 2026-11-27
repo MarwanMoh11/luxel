@@ -471,28 +471,8 @@
       ],
       "radius": 52,
       "style": "astrolabe",
-      "color": "gold",
+      "color": "rose",
       "secondary": "dusk"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        312,
-        112,
-        88,
-        72
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        184,
-        32,
-        64,
-        48
-      ],
-      "color": "apricot"
     }
   ],
   "layers": [],

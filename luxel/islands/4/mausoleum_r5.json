@@ -231,15 +231,6 @@
       "style": "ritual"
     },
     {
-      "kind": "circle",
-      "pos": [
-        264,
-        216
-      ],
-      "radius": 22,
-      "style": "clock"
-    },
-    {
       "kind": "cracks",
       "pos": [
         344,

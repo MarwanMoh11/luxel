@@ -344,7 +344,9 @@
         152
       ],
       "radius": 44,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "grate",
@@ -355,15 +357,6 @@
         32
       ],
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        256,
-        24,
-        48,
-        48
-      ]
     },
     {
       "kind": "cracks",

@@ -418,22 +418,14 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        176,
-        64,
-        144,
-        48
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         88,
         176
       ],
       "radius": 24,
-      "color": "gold"
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "layers": [],

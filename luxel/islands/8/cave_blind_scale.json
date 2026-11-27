@@ -303,29 +303,36 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "toll_clerk_lantern",
+      "pos": [
+        280,
+        106
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "filing_cabinet_tall",
+      "pos": [
+        296,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_toll_house",
+      "prop": "stacked_ledger_tower",
+      "pos": [
+        328,
+        168
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
-    {
-      "kind": "inlay",
-      "rect": [
-        96,
-        144,
-        32,
-        32
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        256,
-        144,
-        32,
-        32
-      ],
-      "color": "sky"
-    },
     {
       "kind": "rug",
       "rect": [
@@ -344,7 +351,7 @@
       ],
       "radius": 42,
       "style": "compass",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "rose"
     },
     {

@@ -6,9 +6,22 @@
   "theme": "wick_house",
   "name_key": "ZONE_HUB_OBSERVATORY",
   "music": "hub",
-  "spawn": [248, 240],
+  "spawn": [
+    248,
+    240
+  ],
   "zones": [
-    {"id": "hub_observatory", "name_key": "ZONE_HUB_OBSERVATORY", "rect": [0, 0, 480, 288], "dark": false}
+    {
+      "id": "hub_observatory",
+      "name_key": "ZONE_HUB_OBSERVATORY",
+      "rect": [
+        0,
+        0,
+        480,
+        288
+      ],
+      "dark": false
+    }
   ],
   "design": {
     "idea": "Open rooftop observatory for the Bell Choir ring-wave memory trial and star gazing across the archipelago.",
@@ -21,94 +34,436 @@
     "why": "Highest point of Wick House overlooking the eight island lamps and night stars.",
     "optional": true,
     "solution": [
-      {"op": "goto", "to": "curio_obs_scope"},
-      {"op": "interact", "target": "curio_obs_scope"},
-      {"op": "goto", "to": "choir_bell_dawn"},
-      {"op": "ring", "target": "choir_bell_dawn"},
-      {"op": "ring", "target": "choir_bell_dusk"},
-      {"op": "ring", "target": "choir_bell_war"},
-      {"op": "goto", "to": "curio_obs_vane"},
-      {"op": "interact", "target": "curio_obs_vane"}
+      {
+        "op": "goto",
+        "to": "curio_obs_scope"
+      },
+      {
+        "op": "interact",
+        "target": "curio_obs_scope"
+      },
+      {
+        "op": "goto",
+        "to": "choir_bell_dawn"
+      },
+      {
+        "op": "ring",
+        "target": "choir_bell_dawn"
+      },
+      {
+        "op": "ring",
+        "target": "choir_bell_dusk"
+      },
+      {
+        "op": "ring",
+        "target": "choir_bell_war"
+      },
+      {
+        "op": "goto",
+        "to": "curio_obs_vane"
+      },
+      {
+        "op": "interact",
+        "target": "curio_obs_vane"
+      }
     ]
   },
   "decor": [
-    {"kind": "compass", "pos": [248, 120], "radius": 44},
-    {"kind": "window_strip", "y": 14, "x0": 64, "x1": 416, "style": "stars"},
-    {"kind": "circle", "pos": [128, 96], "radius": 22, "style": "ritual"},
-    {"kind": "circle", "pos": [368, 104], "radius": 22, "style": "ritual"},
-    {"kind": "light_shaft", "pos": [248, 84], "size": [64, 96], "tint": "cool", "shear": 0.3}
+    {
+      "kind": "compass",
+      "pos": [
+        248,
+        120
+      ],
+      "radius": 44,
+      "color": "apricot",
+      "secondary": "mauve"
+    },
+    {
+      "kind": "window_strip",
+      "y": 14,
+      "x0": 64,
+      "x1": 416,
+      "style": "stars"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        96
+      ],
+      "radius": 22,
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        368,
+        104
+      ],
+      "radius": 22,
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        84
+      ],
+      "size": [
+        64,
+        96
+      ],
+      "tint": "cool",
+      "shear": 0.3
+    }
   ],
   "exits": [
-    {"id": "ex_obs_attic", "rect": [224, 272, 48, 16], "to_island": 0, "to_region": "attic", "to_spawn": [312, 40]}
+    {
+      "id": "ex_obs_attic",
+      "rect": [
+        224,
+        272,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "attic",
+      "to_spawn": [
+        312,
+        40
+      ]
+    }
   ],
   "enemies": [],
   "layers": [
     {
       "id": "folk_owl",
       "when": "flag:folk:owl_chick",
-      "enable": ["lamp_obs_owl"]
+      "enable": [
+        "lamp_obs_owl"
+      ]
     },
     {
       "id": "relit_4",
       "when": "hub_relit>=4",
-      "tiles": [[11, 11, 8, 2, "path"]],
-      "enable": ["lamp_obs_relit_4"]
+      "tiles": [
+        [
+          11,
+          11,
+          8,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_obs_relit_4"
+      ]
     }
   ],
   "interactables": [
-    {"id": "choir_bell_dawn", "kind": "bell", "pos": [128, 96], "props": {"tone": "dawn", "wave_radius": 140.0}},
-    {"id": "choir_bell_dusk", "kind": "bell", "pos": [248, 68], "props": {"tone": "dusk", "wave_radius": 140.0}},
-    {"id": "choir_bell_war", "kind": "bell", "pos": [368, 104], "props": {"tone": "war", "wave_radius": 140.0}},
+    {
+      "id": "choir_bell_dawn",
+      "kind": "bell",
+      "pos": [
+        128,
+        96
+      ],
+      "props": {
+        "tone": "dawn",
+        "wave_radius": 140.0
+      }
+    },
+    {
+      "id": "choir_bell_dusk",
+      "kind": "bell",
+      "pos": [
+        248,
+        68
+      ],
+      "props": {
+        "tone": "dusk",
+        "wave_radius": 140.0
+      }
+    },
+    {
+      "id": "choir_bell_war",
+      "kind": "bell",
+      "pos": [
+        368,
+        104
+      ],
+      "props": {
+        "tone": "war",
+        "wave_radius": 140.0
+      }
+    },
     {
       "id": "hub_mg_choir",
       "kind": "mg_bell_choir",
-      "pos": [248, 172],
-      "props": {"bells": ["choir_bell_dawn", "choir_bell_dusk", "choir_bell_war"]}
+      "pos": [
+        248,
+        172
+      ],
+      "props": {
+        "bells": [
+          "choir_bell_dawn",
+          "choir_bell_dusk",
+          "choir_bell_war"
+        ]
+      }
     },
     {
       "id": "npc_hub_owl",
       "kind": "hub_npc",
-      "pos": [104, 188],
+      "pos": [
+        104,
+        188
+      ],
       "props": {
         "folk": "owl_chick",
         "require_flag": "folk:owl_chick",
         "quest": "q_hub_star_prism",
         "routine": [
-          {"pos": [104, 188], "wait": 2.8, "anim": "idle"},
-          {"pos": [84, 112], "wait": 2.6, "anim": "happy"}
+          {
+            "pos": [
+              104,
+              188
+            ],
+            "wait": 2.8,
+            "anim": "idle"
+          },
+          {
+            "pos": [
+              84,
+              112
+            ],
+            "wait": 2.6,
+            "anim": "happy"
+          }
         ],
-        "bubbles": [["star", "isl_5", "eye"]]
+        "bubbles": [
+          [
+            "star",
+            "isl_5",
+            "eye"
+          ]
+        ]
       }
     },
     {
       "id": "npc_hub_snail",
       "kind": "hub_npc",
-      "pos": [380, 188],
+      "pos": [
+        380,
+        188
+      ],
       "props": {
         "folk": "bell_snail",
         "require_flag": "folk:bell_snail",
         "quest": "q_hub_bell_echo",
         "routine": [
-          {"pos": [380, 188], "wait": 3.0, "anim": "happy"},
-          {"pos": [348, 160], "wait": 2.6, "anim": "idle"}
+          {
+            "pos": [
+              380,
+              188
+            ],
+            "wait": 3.0,
+            "anim": "happy"
+          },
+          {
+            "pos": [
+              348,
+              160
+            ],
+            "wait": 2.6,
+            "anim": "idle"
+          }
         ],
-        "bubbles": [["bell", "music", "happy"]]
+        "bubbles": [
+          [
+            "bell",
+            "music",
+            "happy"
+          ]
+        ]
       }
     },
-    {"id": "curio_obs_scope", "kind": "hub_curio", "pos": [56, 60], "props": {"curio": "telescope"}},
-    {"id": "curio_obs_vane", "kind": "hub_curio", "pos": [424, 60], "props": {"curio": "weathervane"}},
-    {"id": "curio_obs_chart", "kind": "hub_curio", "pos": [60, 254], "props": {"curio": "star_chart"}},
-    {"id": "curio_obs_chimes", "kind": "hub_curio", "pos": [420, 254], "props": {"curio": "chime_rack"}},
-    {"id": "lamp_obs_w", "kind": "road_lamp", "pos": [148, 216], "props": {"lit": true}},
-    {"id": "lamp_obs_e", "kind": "road_lamp", "pos": [336, 216], "props": {"lit": true}},
-    {"id": "lamp_obs_owl", "kind": "road_lamp", "pos": [88, 68], "props": {"lit": true}},
-    {"id": "lamp_obs_relit_4", "kind": "road_lamp", "pos": [248, 124], "props": {"lit": true}}
+    {
+      "id": "curio_obs_scope",
+      "kind": "hub_curio",
+      "pos": [
+        56,
+        60
+      ],
+      "props": {
+        "curio": "telescope"
+      }
+    },
+    {
+      "id": "curio_obs_vane",
+      "kind": "hub_curio",
+      "pos": [
+        424,
+        60
+      ],
+      "props": {
+        "curio": "weathervane"
+      }
+    },
+    {
+      "id": "curio_obs_chart",
+      "kind": "hub_curio",
+      "pos": [
+        60,
+        254
+      ],
+      "props": {
+        "curio": "star_chart"
+      }
+    },
+    {
+      "id": "curio_obs_chimes",
+      "kind": "hub_curio",
+      "pos": [
+        420,
+        254
+      ],
+      "props": {
+        "curio": "chime_rack"
+      }
+    },
+    {
+      "id": "lamp_obs_w",
+      "kind": "road_lamp",
+      "pos": [
+        148,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_obs_e",
+      "kind": "road_lamp",
+      "pos": [
+        336,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_obs_owl",
+      "kind": "road_lamp",
+      "pos": [
+        88,
+        68
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_obs_relit_4",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        124
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [196, 56], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [308, 56], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [144, 248], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "cottage_dining_table", "pos": [332, 240], "layer": "sort"}
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        196,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        308,
+        56
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        144,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "cottage_dining_table",
+      "pos": [
+        332,
+        240
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "pane_stained_easel",
+      "pos": [
+        232,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        152,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_bookshelf_home",
+      "pos": [
+        72,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        344,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "music_box_phonograph",
+      "pos": [
+        376,
+        266
+      ],
+      "layer": "sort"
+    }
   ]
 }

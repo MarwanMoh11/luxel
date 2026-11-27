@@ -224,17 +224,8 @@
         256,
         176
       ],
-      "radius": 68,
+      "radius": 53,
       "style": "clock"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        176
-      ],
-      "radius": 40,
-      "style": "ritual"
     },
     {
       "kind": "cracks",

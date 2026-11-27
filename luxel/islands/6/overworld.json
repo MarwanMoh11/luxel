@@ -1840,7 +1840,9 @@
         272
       ],
       "radius": 42,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "circle",
@@ -1849,7 +1851,9 @@
         224
       ],
       "radius": 52,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "grate",
@@ -1887,15 +1891,6 @@
       ],
       "radius": 38,
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        1248,
-        176,
-        128,
-        96
-      ]
     }
   ]
 }

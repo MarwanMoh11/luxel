@@ -553,7 +553,7 @@
       "radius": 38,
       "style": "ritual",
       "color": "plum",
-      "secondary": "gold"
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -566,16 +566,6 @@
       "style": "ornate",
       "color": "wine",
       "trim": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        32,
-        128,
-        64,
-        32
-      ],
-      "color": "apricot"
     }
   ],
   "layers": [],

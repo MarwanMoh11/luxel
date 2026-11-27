@@ -565,5 +565,47 @@
         "target": "chest_ember_6_temper"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        84
+      ],
+      "size": [
+        36,
+        44
+      ],
+      "tint": "warm",
+      "shear": 0.42
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        320,
+        152
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        128,
+        168
+      ],
+      "radius": 18,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        224,
+        200
+      ],
+      "radius": 18,
+      "style": "soot"
+    }
+  ]
 }

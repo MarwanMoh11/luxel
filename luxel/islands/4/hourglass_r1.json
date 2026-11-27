@@ -420,15 +420,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        72,
-        152,
-        64,
-        96
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         408,

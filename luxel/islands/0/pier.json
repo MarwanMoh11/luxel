@@ -6,9 +6,22 @@
   "theme": "wick_house",
   "name_key": "ZONE_HUB_PIER",
   "music": "hub",
-  "spawn": [112, 56],
+  "spawn": [
+    112,
+    56
+  ],
   "zones": [
-    {"id": "hub_pier", "name_key": "ZONE_HUB_PIER", "rect": [0, 0, 672, 416], "dark": false}
+    {
+      "id": "hub_pier",
+      "name_key": "ZONE_HUB_PIER",
+      "rect": [
+        0,
+        0,
+        672,
+        416
+      ],
+      "dark": false
+    }
   ],
   "design": {
     "idea": "Garden bank and wooden skiff pier opening onto a wide lagoon time-trial course using gun-recoil sailing.",
@@ -21,97 +34,430 @@
     "why": "Waterside garden where Ferry Beetle moors the racing skiff and Gardener Frog tends herbs.",
     "optional": true,
     "solution": [
-      {"op": "goto", "to": "curio_pier_herbs"},
-      {"op": "interact", "target": "curio_pier_herbs"},
-      {"op": "goto", "to": "curio_pier_ship"},
-      {"op": "interact", "target": "curio_pier_ship"},
-      {"op": "goto", "to": "hub_mg_skiff"},
-      {"op": "interact", "target": "hub_mg_skiff"}
+      {
+        "op": "goto",
+        "to": "curio_pier_herbs"
+      },
+      {
+        "op": "interact",
+        "target": "curio_pier_herbs"
+      },
+      {
+        "op": "goto",
+        "to": "curio_pier_ship"
+      },
+      {
+        "op": "interact",
+        "target": "curio_pier_ship"
+      },
+      {
+        "op": "goto",
+        "to": "hub_mg_skiff"
+      },
+      {
+        "op": "interact",
+        "target": "hub_mg_skiff"
+      }
     ]
   },
   "decor": [
-    {"kind": "stain", "pos": [80, 96], "radius": 34, "style": "moss"},
-    {"kind": "stain", "pos": [112, 312], "radius": 32, "style": "petal"},
-    {"kind": "light_shaft", "pos": [168, 128], "size": [52, 84], "tint": "warm", "shear": 0.35},
-    {"kind": "inlay", "rect": [64, 240, 120, 64]}
+    {
+      "kind": "stain",
+      "pos": [
+        80,
+        96
+      ],
+      "radius": 34,
+      "style": "moss"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        112,
+        312
+      ],
+      "radius": 32,
+      "style": "petal"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        168,
+        128
+      ],
+      "size": [
+        52,
+        84
+      ],
+      "tint": "warm",
+      "shear": 0.35
+    }
   ],
   "exits": [
-    {"id": "ex_pier_gal", "rect": [96, 0, 48, 16], "to_island": 0, "to_region": "gallery", "to_spawn": [312, 240]},
-    {"id": "ex_pier_cellar", "rect": [0, 160, 16, 48], "to_island": 0, "to_region": "cellar", "to_spawn": [432, 160]}
+    {
+      "id": "ex_pier_gal",
+      "rect": [
+        96,
+        0,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "gallery",
+      "to_spawn": [
+        312,
+        240
+      ]
+    },
+    {
+      "id": "ex_pier_cellar",
+      "rect": [
+        0,
+        160,
+        16,
+        48
+      ],
+      "to_island": 0,
+      "to_region": "cellar",
+      "to_spawn": [
+        432,
+        160
+      ]
+    }
   ],
   "enemies": [],
   "layers": [
     {
       "id": "folk_frog",
       "when": "flag:folk:gardener_frog",
-      "tiles": [[4, 15, 6, 4, "path"]],
-      "enable": ["lamp_pier_frog"]
+      "tiles": [
+        [
+          4,
+          15,
+          6,
+          4,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_pier_frog"
+      ]
     },
     {
       "id": "folk_beetle",
       "when": "flag:folk:ferry_beetle",
-      "enable": ["lamp_pier_beetle"]
+      "enable": [
+        "lamp_pier_beetle"
+      ]
     }
   ],
   "interactables": [
     {
       "id": "hub_mg_skiff",
       "kind": "mg_skiff_race",
-      "pos": [264, 176],
+      "pos": [
+        264,
+        176
+      ],
       "props": {
         "skiff_id": "hub_race_skiff",
         "gates": [
-          [400, 112], [536, 104], [608, 200], [576, 328],
-          [464, 360], [360, 296], [424, 192], [360, 176]
+          [
+            400,
+            112
+          ],
+          [
+            536,
+            104
+          ],
+          [
+            608,
+            200
+          ],
+          [
+            576,
+            328
+          ],
+          [
+            464,
+            360
+          ],
+          [
+            360,
+            296
+          ],
+          [
+            424,
+            192
+          ],
+          [
+            360,
+            176
+          ]
         ]
       }
     },
-    {"id": "hub_race_skiff", "kind": "vehicle_skiff", "pos": [348, 176], "props": {"dir": [1.0, 0.0]}},
+    {
+      "id": "hub_race_skiff",
+      "kind": "vehicle_skiff",
+      "pos": [
+        348,
+        176
+      ],
+      "props": {
+        "dir": [
+          1.0,
+          0.0
+        ]
+      }
+    },
     {
       "id": "npc_hub_frog",
       "kind": "hub_npc",
-      "pos": [120, 268],
+      "pos": [
+        120,
+        268
+      ],
       "props": {
         "folk": "gardener_frog",
         "require_flag": "folk:gardener_frog",
         "quest": "q_hub_canopy_bulb",
         "routine": [
-          {"pos": [120, 268], "wait": 3.0, "anim": "happy"},
-          {"pos": [84, 328], "wait": 2.6, "anim": "idle"}
+          {
+            "pos": [
+              120,
+              268
+            ],
+            "wait": 3.0,
+            "anim": "happy"
+          },
+          {
+            "pos": [
+              84,
+              328
+            ],
+            "wait": 2.6,
+            "anim": "idle"
+          }
         ],
-        "bubbles": [["seed", "toy_plant", "heart"]]
+        "bubbles": [
+          [
+            "seed",
+            "toy_plant",
+            "heart"
+          ]
+        ]
       }
     },
     {
       "id": "npc_hub_beetle",
       "kind": "hub_npc",
-      "pos": [216, 136],
+      "pos": [
+        216,
+        136
+      ],
       "props": {
         "folk": "ferry_beetle",
         "require_flag": "folk:ferry_beetle",
         "quest": "q_hub_tide_chart",
         "routine": [
-          {"pos": [216, 136], "wait": 2.8, "anim": "idle"},
-          {"pos": [248, 212], "wait": 2.4, "anim": "happy"}
+          {
+            "pos": [
+              216,
+              136
+            ],
+            "wait": 2.8,
+            "anim": "idle"
+          },
+          {
+            "pos": [
+              248,
+              212
+            ],
+            "wait": 2.4,
+            "anim": "happy"
+          }
         ],
-        "bubbles": [["toy_skiff", "wave", "happy"]]
+        "bubbles": [
+          [
+            "toy_skiff",
+            "wave",
+            "happy"
+          ]
+        ]
       }
     },
-    {"id": "curio_pier_herbs", "kind": "hub_curio", "pos": [52, 64], "props": {"curio": "herb_pot"}},
-    {"id": "curio_pier_ship", "kind": "hub_curio", "pos": [224, 68], "props": {"curio": "ship_bottle"}},
-    {"id": "curio_pier_pond", "kind": "hub_curio", "pos": [60, 356], "props": {"curio": "pond_lantern"}},
-    {"id": "curio_pier_bell", "kind": "hub_curio", "pos": [240, 356], "props": {"curio": "porch_bell"}},
-    {"id": "lamp_pier_n", "kind": "road_lamp", "pos": [168, 96], "props": {"lit": true}},
-    {"id": "lamp_pier_dock", "kind": "road_lamp", "pos": [264, 216], "props": {"lit": true}},
-    {"id": "lamp_pier_frog", "kind": "road_lamp", "pos": [128, 328], "props": {"lit": true}},
-    {"id": "lamp_pier_beetle", "kind": "road_lamp", "pos": [248, 128], "props": {"lit": true}}
+    {
+      "id": "curio_pier_herbs",
+      "kind": "hub_curio",
+      "pos": [
+        52,
+        64
+      ],
+      "props": {
+        "curio": "herb_pot"
+      }
+    },
+    {
+      "id": "curio_pier_ship",
+      "kind": "hub_curio",
+      "pos": [
+        224,
+        68
+      ],
+      "props": {
+        "curio": "ship_bottle"
+      }
+    },
+    {
+      "id": "curio_pier_pond",
+      "kind": "hub_curio",
+      "pos": [
+        60,
+        356
+      ],
+      "props": {
+        "curio": "pond_lantern"
+      }
+    },
+    {
+      "id": "curio_pier_bell",
+      "kind": "hub_curio",
+      "pos": [
+        240,
+        356
+      ],
+      "props": {
+        "curio": "porch_bell"
+      }
+    },
+    {
+      "id": "lamp_pier_n",
+      "kind": "road_lamp",
+      "pos": [
+        168,
+        96
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pier_dock",
+      "kind": "road_lamp",
+      "pos": [
+        264,
+        216
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pier_frog",
+      "kind": "road_lamp",
+      "pos": [
+        128,
+        328
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_pier_beetle",
+      "kind": "road_lamp",
+      "pos": [
+        248,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [76, 112], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [184, 304], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "cottage_dining_table", "pos": [128, 124], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [276, 136], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [104, 236], "layer": "sort"}
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        76,
+        112
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        184,
+        304
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "cottage_dining_table",
+      "pos": [
+        128,
+        124
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        276,
+        136
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        104,
+        236
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        312,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_bookshelf_home",
+      "pos": [
+        312,
+        378
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        232,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "music_box_phonograph",
+      "pos": [
+        264,
+        314
+      ],
+      "layer": "sort"
+    }
   ]
 }

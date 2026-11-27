@@ -470,16 +470,9 @@
         174,
         148
       ],
-      "radius": 38
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        112,
-        96,
-        76
-      ]
+      "radius": 38,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -524,7 +517,7 @@
       ],
       "radius": 34,
       "style": "compass",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "rose"
     }
   ],

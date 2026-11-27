@@ -488,7 +488,8 @@
         232
       ],
       "radius": 40,
-      "color": "sky"
+      "color": "sky",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

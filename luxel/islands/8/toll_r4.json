@@ -454,15 +454,6 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        64,
-        144,
-        240,
-        80
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         104,
@@ -496,7 +487,7 @@
       ],
       "radius": 32,
       "style": "ritual",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "apricot"
     }
   ],

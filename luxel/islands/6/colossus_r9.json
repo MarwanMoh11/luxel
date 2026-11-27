@@ -291,16 +291,9 @@
         136
       ],
       "radius": 34,
-      "style": "gear"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        464,
-        216,
-        80,
-        36
-      ]
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "grate",

@@ -284,16 +284,9 @@
         216
       ],
       "radius": 28,
-      "style": "gear"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        232,
-        196,
-        64,
-        48
-      ]
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "wine"
     },
     {
       "kind": "stain",

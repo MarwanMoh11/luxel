@@ -378,18 +378,8 @@
       ],
       "radius": 62,
       "style": "ritual",
-      "color": "gold",
+      "color": "rose",
       "secondary": "coral"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        184,
-        72,
-        80,
-        32
-      ],
-      "color": "gold"
     },
     {
       "kind": "rug",
@@ -403,17 +393,6 @@
       "color": "wine",
       "hi": "apricot",
       "trim": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        224,
-        160
-      ],
-      "radius": 44,
-      "style": "sun",
-      "color": "gold",
-      "secondary": "apricot"
     }
   ],
   "layers": [],

@@ -430,8 +430,8 @@
       ],
       "radius": 22,
       "style": "sun",
-      "color": "gold",
-      "secondary": "cream"
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -456,7 +456,7 @@
       "radius": 22,
       "style": "compass",
       "color": "sky",
-      "secondary": "ice"
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -481,7 +481,7 @@
       "radius": 22,
       "style": "ritual",
       "color": "rose",
-      "secondary": "cream"
+      "secondary": "mauve"
     },
     {
       "kind": "circle",
@@ -491,8 +491,8 @@
       ],
       "radius": 18,
       "style": "mosaic",
-      "color": "gold",
-      "secondary": "cream"
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "window_strip",

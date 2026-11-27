@@ -428,6 +428,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.92
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "quench_barrel_tub",
+      "pos": [
+        376,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.22
     }
   ],
   "layers": [],
@@ -584,5 +596,38 @@
         "target": "pickup_slag_coat"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        200,
+        144
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "warm",
+      "shear": 0.42
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        296,
+        176
+      ],
+      "radius": 20,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        240,
+        128
+      ],
+      "radius": 18,
+      "style": "soot"
+    }
+  ]
 }

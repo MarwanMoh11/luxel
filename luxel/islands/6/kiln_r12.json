@@ -282,24 +282,6 @@
         48
       ],
       "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        136,
-        160,
-        32,
-        64
-      ]
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        312,
-        160,
-        32,
-        64
-      ]
     }
   ],
   "scenery": [
@@ -410,6 +392,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        56,
+        52
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.44
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        408,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.8
     }
   ],
   "triggers": [],

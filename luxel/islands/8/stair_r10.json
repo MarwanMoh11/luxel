@@ -371,28 +371,7 @@
       "radius": 78,
       "style": "astrolabe",
       "color": "rose",
-      "secondary": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        176
-      ],
-      "radius": 44,
-      "style": "ritual",
-      "color": "cream",
-      "secondary": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        208,
-        48,
-        176,
-        40
-      ],
-      "color": "rose"
+      "secondary": "apricot"
     },
     {
       "kind": "rug",
@@ -407,28 +386,6 @@
       "hi": "rose",
       "trim": "gold",
       "edge": "void"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        176
-      ],
-      "radius": 58,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "cream"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        176
-      ],
-      "radius": 34,
-      "style": "sun",
-      "color": "rose",
-      "secondary": "gold"
     }
   ],
   "layers": [],

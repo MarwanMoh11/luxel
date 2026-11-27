@@ -328,26 +328,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        172,
-        172,
-        40,
-        40
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        268,
-        140,
-        40,
-        100
-      ],
-      "color": "sky"
-    },
-    {
       "kind": "rug",
       "rect": [
         308,

@@ -412,16 +412,9 @@
         152
       ],
       "radius": 34,
-      "style": "clock"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        72,
-        208,
-        144
-      ]
+      "style": "clock",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -457,17 +450,6 @@
       "color": "wine",
       "hi": "rose",
       "trim": "gold"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        224,
-        160
-      ],
-      "radius": 34,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "rose"
     }
   ],
   "triggers": [],

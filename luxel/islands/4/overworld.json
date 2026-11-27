@@ -2463,5 +2463,6 @@
     "reward": "beacon_4_1..3, moth_4_01, ember_4_1..2, access to all 3 districts and 3 side caves",
     "why": "Central living-clock lagoon linking every Island 4 district, cave, and the Drowned Conservatory.",
     "optional": true
-  }
+  },
+  "theme": "mirefen_overworld"
 }

@@ -361,6 +361,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.69
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "ingot_mold_trough",
+      "pos": [
+        24,
+        84
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.41
+    },
+    {
+      "sheet": "theme_forge_deep",
+      "prop": "bellows_hearth_stand",
+      "pos": [
+        120,
+        28
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.5
     }
   ],
   "layers": [],
@@ -477,5 +501,49 @@
         "flag": "lore_hollow_kiln"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        216,
+        144
+      ],
+      "radius": 32,
+      "style": "sun",
+      "color": "apricot",
+      "secondary": "coral"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        120
+      ],
+      "size": [
+        34,
+        52
+      ],
+      "tint": "warm",
+      "shear": 0.44
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        112,
+        144
+      ],
+      "radius": 18,
+      "glow": true
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        320,
+        144
+      ],
+      "radius": 16,
+      "style": "soot"
+    }
+  ]
 }

@@ -324,7 +324,9 @@
         160
       ],
       "radius": 34,
-      "style": "gear"
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "cracks",

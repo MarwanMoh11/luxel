@@ -426,26 +426,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        180,
-        132,
-        64,
-        92
-      ],
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        236,
-        36,
-        72,
-        40
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "rug",
       "rect": [
         48,

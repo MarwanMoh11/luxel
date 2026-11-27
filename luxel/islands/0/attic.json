@@ -6,9 +6,22 @@
   "theme": "wick_house",
   "name_key": "ZONE_HUB_ATTIC",
   "music": "hub",
-  "spawn": [224, 240],
+  "spawn": [
+    224,
+    240
+  ],
   "zones": [
-    {"id": "hub_attic", "name_key": "ZONE_HUB_ATTIC", "rect": [0, 0, 448, 288], "dark": false}
+    {
+      "id": "hub_attic",
+      "name_key": "ZONE_HUB_ATTIC",
+      "rect": [
+        0,
+        0,
+        448,
+        288
+      ],
+      "dark": false
+    }
   ],
   "design": {
     "idea": "Moth Attic housing the Moth Lantern ceremony shrine and the Lantern Juggling loft trial.",
@@ -21,75 +34,382 @@
     "why": "Upper loft where rescued moths gather around the great sanctuary lantern.",
     "optional": true,
     "solution": [
-      {"op": "goto", "to": "curio_at_trunk"},
-      {"op": "interact", "target": "curio_at_trunk"},
-      {"op": "goto", "to": "curio_at_jar"},
-      {"op": "interact", "target": "curio_at_jar"},
-      {"op": "goto", "to": "hub_mg_juggle"},
-      {"op": "interact", "target": "hub_mg_juggle"}
+      {
+        "op": "goto",
+        "to": "curio_at_trunk"
+      },
+      {
+        "op": "interact",
+        "target": "curio_at_trunk"
+      },
+      {
+        "op": "goto",
+        "to": "curio_at_jar"
+      },
+      {
+        "op": "interact",
+        "target": "curio_at_jar"
+      },
+      {
+        "op": "goto",
+        "to": "hub_mg_juggle"
+      },
+      {
+        "op": "interact",
+        "target": "hub_mg_juggle"
+      }
     ]
   },
   "decor": [
-    {"kind": "rug", "rect": [56, 48, 96, 68], "style": "ornate"},
-    {"kind": "circle", "pos": [288, 152], "radius": 44, "style": "spotlight"},
-    {"kind": "window_strip", "y": 14, "x0": 64, "x1": 160, "style": "stars"},
-    {"kind": "light_shaft", "pos": [96, 64], "size": [52, 88], "tint": "warm", "shear": 0.4}
+    {
+      "kind": "rug",
+      "rect": [
+        56,
+        48,
+        96,
+        68
+      ],
+      "style": "ornate"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        288,
+        152
+      ],
+      "radius": 44,
+      "style": "spotlight"
+    },
+    {
+      "kind": "window_strip",
+      "y": 14,
+      "x0": 64,
+      "x1": 160,
+      "style": "stars"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        96,
+        64
+      ],
+      "size": [
+        52,
+        88
+      ],
+      "tint": "warm",
+      "shear": 0.4
+    }
   ],
   "exits": [
-    {"id": "ex_attic_ow", "rect": [192, 272, 64, 16], "to_island": 0, "to_region": "overworld", "to_spawn": [232, 48]},
-    {"id": "ex_attic_obs", "rect": [288, 0, 48, 16], "to_island": 0, "to_region": "observatory", "to_spawn": [248, 240]}
+    {
+      "id": "ex_attic_ow",
+      "rect": [
+        192,
+        272,
+        64,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "overworld",
+      "to_spawn": [
+        232,
+        48
+      ]
+    },
+    {
+      "id": "ex_attic_obs",
+      "rect": [
+        288,
+        0,
+        48,
+        16
+      ],
+      "to_island": 0,
+      "to_region": "observatory",
+      "to_spawn": [
+        248,
+        240
+      ]
+    }
   ],
   "enemies": [],
   "layers": [
     {
       "id": "moths_10",
       "when": "hub_moths>=10",
-      "tiles": [[4, 4, 4, 2, "path"]],
-      "enable": ["lamp_at_moth_10"]
+      "tiles": [
+        [
+          4,
+          4,
+          4,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_at_moth_10"
+      ]
     },
     {
       "id": "relit_2",
       "when": "hub_relit>=2",
-      "tiles": [[16, 12, 5, 2, "path"]],
-      "enable": ["lamp_at_relit_2"]
+      "tiles": [
+        [
+          16,
+          12,
+          5,
+          2,
+          "path"
+        ]
+      ],
+      "enable": [
+        "lamp_at_relit_2"
+      ]
     }
   ],
   "interactables": [
-    {"id": "hub_moth_lantern", "kind": "hub_station", "pos": [104, 84], "props": {"role": "moth_lantern"}},
-    {"id": "hub_mg_juggle", "kind": "mg_lantern_juggle", "pos": [352, 168], "props": {}},
+    {
+      "id": "hub_moth_lantern",
+      "kind": "hub_station",
+      "pos": [
+        104,
+        84
+      ],
+      "props": {
+        "role": "moth_lantern"
+      }
+    },
+    {
+      "id": "hub_mg_juggle",
+      "kind": "mg_lantern_juggle",
+      "pos": [
+        352,
+        168
+      ],
+      "props": {}
+    },
     {
       "id": "npc_hub_moth_kid",
       "kind": "hub_npc",
-      "pos": [168, 172],
+      "pos": [
+        168,
+        172
+      ],
       "props": {
         "folk": "moth_kid",
         "quest": "q_hub_moths",
         "routine": [
-          {"pos": [168, 172], "wait": 2.8, "anim": "happy"},
-          {"pos": [116, 148], "wait": 2.4, "anim": "idle"},
-          {"pos": [212, 164], "wait": 2.2, "anim": "happy"}
+          {
+            "pos": [
+              168,
+              172
+            ],
+            "wait": 2.8,
+            "anim": "happy"
+          },
+          {
+            "pos": [
+              116,
+              148
+            ],
+            "wait": 2.4,
+            "anim": "idle"
+          },
+          {
+            "pos": [
+              212,
+              164
+            ],
+            "wait": 2.2,
+            "anim": "happy"
+          }
         ],
         "bubbles": [
-          ["moth", "light_on", "happy"],
-          ["move_throw", "arrow_e", "spark"]
+          [
+            "moth",
+            "light_on",
+            "happy"
+          ],
+          [
+            "move_throw",
+            "arrow_e",
+            "spark"
+          ]
         ]
       }
     },
-    {"id": "curio_at_jar", "kind": "hub_curio", "pos": [52, 52], "props": {"curio": "moth_jar"}},
-    {"id": "curio_at_trunk", "kind": "hub_curio", "pos": [60, 252], "props": {"curio": "old_trunk"}},
-    {"id": "curio_at_chart", "kind": "hub_curio", "pos": [396, 52], "props": {"curio": "star_chart"}},
-    {"id": "curio_at_tally", "kind": "hub_curio", "pos": [396, 252], "props": {"curio": "tally_board"}},
-    {"id": "lamp_at_sw", "kind": "road_lamp", "pos": [156, 232], "props": {"lit": true}},
-    {"id": "lamp_at_ne", "kind": "road_lamp", "pos": [348, 60], "props": {"lit": true}},
-    {"id": "lamp_at_moth_10", "kind": "road_lamp", "pos": [60, 128], "props": {"lit": true}},
-    {"id": "lamp_at_relit_2", "kind": "road_lamp", "pos": [296, 224], "props": {"lit": true}}
+    {
+      "id": "curio_at_jar",
+      "kind": "hub_curio",
+      "pos": [
+        52,
+        52
+      ],
+      "props": {
+        "curio": "moth_jar"
+      }
+    },
+    {
+      "id": "curio_at_trunk",
+      "kind": "hub_curio",
+      "pos": [
+        60,
+        252
+      ],
+      "props": {
+        "curio": "old_trunk"
+      }
+    },
+    {
+      "id": "curio_at_chart",
+      "kind": "hub_curio",
+      "pos": [
+        396,
+        52
+      ],
+      "props": {
+        "curio": "star_chart"
+      }
+    },
+    {
+      "id": "curio_at_tally",
+      "kind": "hub_curio",
+      "pos": [
+        396,
+        252
+      ],
+      "props": {
+        "curio": "tally_board"
+      }
+    },
+    {
+      "id": "lamp_at_sw",
+      "kind": "road_lamp",
+      "pos": [
+        156,
+        232
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_at_ne",
+      "kind": "road_lamp",
+      "pos": [
+        348,
+        60
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_at_moth_10",
+      "kind": "road_lamp",
+      "pos": [
+        60,
+        128
+      ],
+      "props": {
+        "lit": true
+      }
+    },
+    {
+      "id": "lamp_at_relit_2",
+      "kind": "road_lamp",
+      "pos": [
+        296,
+        224
+      ],
+      "props": {
+        "lit": true
+      }
+    }
   ],
   "triggers": [],
   "scenery": [
-    {"sheet": "theme_wick_house", "prop": "moth_lantern_tree", "pos": [104, 62], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "wooden_cot_bed", "pos": [76, 196], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "wooden_bookshelf_home", "pos": [372, 48], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "potted_herb_urn", "pos": [264, 48], "layer": "sort"},
-    {"sheet": "theme_wick_house", "prop": "warm_porch_lantern", "pos": [180, 248], "layer": "sort"}
+    {
+      "sheet": "theme_wick_house",
+      "prop": "moth_lantern_tree",
+      "pos": [
+        104,
+        62
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_cot_bed",
+      "pos": [
+        76,
+        196
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_bookshelf_home",
+      "pos": [
+        372,
+        48
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        264,
+        48
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        180,
+        248
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "warm_porch_lantern",
+      "pos": [
+        152,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "wooden_bookshelf_home",
+      "pos": [
+        424,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "potted_herb_urn",
+      "pos": [
+        216,
+        74
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_wick_house",
+      "prop": "music_box_phonograph",
+      "pos": [
+        24,
+        26
+      ],
+      "layer": "sort"
+    }
   ]
 }

@@ -181,16 +181,9 @@
         144
       ],
       "radius": 52,
-      "style": "gear"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        144,
-        88,
-        240,
-        112
-      ]
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "coral"
     },
     {
       "kind": "cracks",

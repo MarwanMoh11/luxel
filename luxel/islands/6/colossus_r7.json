@@ -480,15 +480,6 @@
       "glow": false
     },
     {
-      "kind": "inlay",
-      "rect": [
-        232,
-        32,
-        80,
-        48
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         224,

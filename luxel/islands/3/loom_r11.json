@@ -203,16 +203,6 @@
       ],
       "tint": "cool",
       "shear": 0.25
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        220,
-        32,
-        72,
-        24
-      ],
-      "color": "gold"
     }
   ],
   "scenery": [

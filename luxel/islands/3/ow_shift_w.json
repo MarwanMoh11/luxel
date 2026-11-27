@@ -572,5 +572,6 @@
         "exit": "exit_shift_w_amber"
       }
     ]
-  }
+  },
+  "theme": "thornwood_overworld"
 }

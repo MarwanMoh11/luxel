@@ -578,7 +578,9 @@
         296
       ],
       "radius": 24,
-      "style": "moon"
+      "style": "moon",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -589,15 +591,6 @@
         32
       ],
       "style": "ornate"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        152,
-        136,
-        128
-      ]
     },
     {
       "kind": "light_shaft",
@@ -633,7 +626,7 @@
       ],
       "radius": 34,
       "style": "compass",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "rose"
     },
     {

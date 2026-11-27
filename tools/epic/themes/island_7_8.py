@@ -1366,83 +1366,1356 @@ class MoonShoalsCavePainter(ThemePainter):
         _paint_sconce_aprons(buf, ctx, spacing=40, phase=20, reach_y=7, reach_x=8, col_hi="gold", col_mid="apricot", strength=0.34)
 
 
-class ArchiveMemoryPainter(ThemePainter):
-    """Archive of Lost Lamps: base library + optional island 1..8 memory-echo inlaid border strip."""
+# ------------------------------------------------------------------ ISLAND 8 & HUB HELPERS
+def _paint_starry_abyss(
+    buf: np.ndarray,
+    ctx: dict[str, Any],
+    mask: np.ndarray,
+    seed: int,
+    lip_col: str = "dusk",
+    face_col: str = "night",
+    base_col: str = "void",
+    star_hi: str = "ice",
+    star_mid: str = "sky",
+    star_warm: str = "gold",
+    drop_h: int = 6,
+    neb_strength: float = 0.56,
+) -> None:
+    """Smooth deep starry twilight cosmos (ZERO blocky Bayer-checkerboard corners!)
+    with twinkling constellation stars and a sculpted obsidian cliff drop-face below land."""
+    if not np.any(mask):
+        return
+    H, W = ctx["H"], ctx["W"]
+    xs, ys = ctx["xs"], ctx["ys"]
+    lx, ly = ctx["lx"], ctx["ly"]
+    bg = ctx["bg"]
+    warm = ctx["warm"]
 
-    def __init__(self, spec: ThemeSpec, echo_hi: str = "gold", echo_mid: str = "apricot") -> None:
+    neb = fbm_grid(H, W, 56.0, seed=seed + 401, octaves=2)
+    neb2 = fbm_grid(H, W, 28.0, seed=seed + 405, octaves=2, sx=1.5, sy=0.65)
+    # Smoothly map nebula into void -> void -> night -> deep (never flat 50% checker blobs)
+    nf = np.clip((neb * 0.65 + neb2 * 0.35 - 0.18) * neb_strength, 0.0, 0.999)
+    out = ramp_blend(("void", "void", "void", "night", "deep"), nf, bg)
+
+    # Sparse crisp stars (warm gold stars toward west, cool sky/ice east)
+    sh = hash01_grid(xs, ys, seed + 409)
+    out = np.where(sh > 0.9968, IX[star_hi], out)
+    out = np.where((sh > 0.9928) & (sh <= 0.9968), np.where(warm > 0.56, IX[star_warm], IX[star_mid]), out)
+    out = np.where((sh > 0.9895) & (sh <= 0.9928), IX["dusk"], out)
+
+    # Sculpted recessed obsidian cliff skirt where north tile is walkable/land
+    drop_n = ctx["n_up_land"] & (ly < drop_h)
+    stone_j = ((xs + (ly // 2) * 5) % 10) == 0
+    out = np.where(drop_n & (ly == 0), IX[lip_col], out)
+    out = np.where(
+        drop_n & (ly >= 1) & (ly < drop_h - 2),
+        np.where(stone_j, IX[base_col], IX[face_col]),
+        out,
+    )
+    out = np.where(drop_n & (ly == drop_h - 2), IX[base_col], out)
+    out = np.where(drop_n & (ly == drop_h - 1), IX["void"], out)
+    out = np.where(ctx["n_lt_land"] & (lx < 2) & (~drop_n), IX["night"], out)
+
+    buf[mask] = out[mask]
+
+
+def _paint_velvet_runner(
+    buf: np.ndarray,
+    ctx: dict[str, Any],
+    ramp: tuple[str, ...],
+    trim_col: str,
+    accent_col: str,
+    edge_col: str,
+    medallion_step: int = 24,
+    stair_rods: bool = False,
+) -> None:
+    """Plush Bayer-velvet aisle/stair runner (ZERO diagonal barcode hatching!)."""
+    mask = ctx["m_path"]
+    if not np.any(mask):
+        return
+    xs, ys = ctx["xs"], ctx["ys"]
+    lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+    bg = ctx["bg"]
+    nb = ctx["n_broad"]
+
+    edge_n = (~ctx["n_up_path"]) & (ly == 0)
+    edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+    edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+    edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+    is_edge = edge_n | edge_s | edge_w | edge_e
+
+    in_edge = (
+        ((~ctx["n_up_path"]) & (ly == 1))
+        | ((~ctx["n_dn_path"]) & (ly == ts - 2))
+        | ((~ctx["n_lt_path"]) & (lx == 1))
+        | ((~ctx["n_rt_path"]) & (lx == ts - 2))
+    )
+
+    out = ramp_blend(ramp, np.clip(nb * 0.52 + 0.18, 0.0, 0.999), bg)
+    if stair_rods:
+        # Subtle gilded brass stair-rod clamps perpendicular to runner direction
+        is_horiz = (ctx["n_lt_path"] | ctx["n_rt_path"]) & (~(ctx["n_up_path"] | ctx["n_dn_path"]))
+        rod_v = (~is_horiz) & (ys % 16 == 14) & (~is_edge) & (~in_edge)
+        rod_h = is_horiz & (xs % 16 == 14) & (~is_edge) & (~in_edge)
+        out = np.where((rod_v & (xs % 4 != 0)) | (rod_h & (ys % 4 != 0)), IX[accent_col], out)
+        out = np.where((rod_v & (xs % 8 == 0)) | (rod_h & (ys % 8 == 0)), IX[trim_col], out)
+        out = np.where(((~is_horiz) & (ys % 16 == 15) & (~is_edge)) | (is_horiz & (xs % 16 == 15) & (~is_edge)), IX[edge_col], out)
+    elif medallion_step > 0:
+        half = medallion_step // 2
+        dm = (np.abs((xs % medallion_step) - half) + np.abs((ys % medallion_step) - half)) == 4
+        out = np.where(dm & (bg < 0.68), IX[trim_col], out)
+    out = np.where(in_edge & (((xs + ys) % 4) != 0), IX[trim_col], out)
+    out = np.where(in_edge & (((xs + ys) % 4) == 0), IX[accent_col], out)
+    out = np.where(is_edge, IX[edge_col], out)
+
+    buf[mask] = out[mask]
+
+
+def _paint_hearth_and_plush_rugs(
+    painter: ThemePainter,
+    buf: np.ndarray,
+    ctx: dict[str, Any],
+    decor_list: list[dict[str, Any]],
+    default_main: str,
+    default_hi: str,
+    default_trim: str,
+    default_edge: str,
+) -> None:
+    """Render cozy braided oval hearth rugs softly (no harsh yellow/white bullseyes)
+    and delegate rectangular rugs + other decor to _paint_plush_rug_decor."""
+    rest: list[dict[str, Any]] = []
+    hearths: list[dict[str, Any]] = []
+    for item in decor_list:
+        if (
+            isinstance(item, dict)
+            and str(item.get("kind", "")).strip().lower() == "rug"
+            and str(item.get("style", "")).strip().lower() == "hearth"
+        ):
+            hearths.append(item)
+        else:
+            rest.append(item)
+    if rest:
+        _paint_plush_rug_decor(painter, buf, ctx, rest, default_main, default_hi, default_trim, default_edge)
+    if not hearths:
+        return
+
+    H, W = ctx["H"], ctx["W"]
+    walk = ctx["m_walk"]
+    bg = ctx["bg"]
+    nb = ctx["n_broad"]
+
+    for item in hearths:
+        rect = item.get("rect")
+        if not (isinstance(rect, list) and len(rect) >= 4):
+            continue
+        x0, y0, rw, rh = [int(v) for v in rect[:4]]
+        x1, y1 = min(W, x0 + rw), min(H, y0 + rh)
+        x0, y0 = max(0, x0), max(0, y0)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        cx_r, cy_r = (x0 + x1) * 0.5, (y0 + y1) * 0.5
+        rx_r, ry_r = max(1.0, rw * 0.48), max(1.0, rh * 0.48)
+        c_edge = IX[default_edge]
+        c_dk = IX["dusk"]
+        c_main = IX[default_main]
+        c_hi = IX[default_hi]
+        c_trim = IX[default_trim]
+        for y in range(y0, y1):
+            for x in range(x0, x1):
+                if not walk[y, x]:
+                    continue
+                e = math.hypot((x - cx_r) / rx_r, (y - cy_r) / ry_r)
+                if e > 1.0:
+                    continue
+                if e > 0.93:
+                    buf[y, x] = c_edge
+                elif e > 0.85:
+                    buf[y, x] = c_trim if ((x + y) % 3 != 0) else c_dk
+                elif e > 0.68:
+                    buf[y, x] = c_main if (nb[y, x] > 0.35 or bg[y, x] < 0.55) else c_dk
+                elif e > 0.60:
+                    buf[y, x] = c_trim if ((x + y) % 2 == 0) else c_hi
+                elif e > 0.34:
+                    buf[y, x] = c_hi if (nb[y, x] > 0.45 and bg[y, x] < 0.48) else c_main
+                elif e > 0.27:
+                    buf[y, x] = c_dk
+                else:
+                    buf[y, x] = c_hi if bg[y, x] < 0.58 else c_main
+
+
+# ------------------------------------------------------------------ ISLAND 8 & HUB PAINTERS
+class ArchiveMemoryPainter(ThemePainter):
+    """Archive of Lost Lamps (archive + archive_1..8):
+    Calm 16x16 satin library parquet (~74-86 luma, ZERO noisy 6px plank stripes!),
+    dark sculpted oak-and-leather bookshelf colonnade walls (~34-42 luma) with warm
+    reading-lamp sconce aprons, plush velvet runners, and distinct Island 1-8 memory tints."""
+
+    def __init__(
+        self,
+        spec: ThemeSpec,
+        echo_hi: str = "gold",
+        echo_mid: str = "apricot",
+        island_mem: int = 0,
+    ) -> None:
         super().__init__(spec)
         self.echo_hi = echo_hi
         self.echo_mid = echo_mid
+        self.island_mem = island_mem
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Calm 16x16 alternating horizontal/vertical satin-library parquet blocks
+        bx = xs // 16
+        by = ys // 16
+        horiz = ((bx + by) & 1) == 0
+        sub_i = np.where(horiz, ys % 8, xs % 8)
+        sub_id = np.where(horiz, ys // 8, xs // 8)
+        bh = hash01_grid(bx, by * 7 + sub_id, s.seed + 71)
+
+        # Compress tonal field gently so every memory wing stays calm (~75-85 luma)
+        pf = np.clip(nb * 0.38 + bh * 0.26 + warm * 0.08 + 0.14, 0.04, 0.94)
+        out = ramp_blend(s.floor_ramp, pf, bg)
+
+        # Soft Bayer-dithered parquet joints one shade darker (NO harsh black barcode stripes!)
+        is_sub = (sub_i == 0) & (bg < 0.40)
+        is_blk = ((xs % 16 == 0) | (ys % 16 == 0)) & (bg < 0.54)
+        out = np.where(is_sub | is_blk, SHADE_IX[out], out)
+
+        # Subtle satin bevel only on select lit parquet tiles
+        bev = (sub_i == 1) & (bh > 0.74) & (bg < 0.24)
+        out = np.where(bev, LIGHT_IX[out], out)
+
+        # Quiet 48x48 library reading-bay corner inlay pin in the memory's accent hue
+        pin = (xs % 48 == 24) & (ys % 48 == 24)
+        out = np.where(pin, IX[self.echo_mid], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        s = self.spec
+        p_dk = "dusk" if s.path_main in ("plum", "wine", "mauve") else ("night" if s.path_main in ("deep", "blue") else "pine")
+        _paint_velvet_runner(
+            buf,
+            ctx,
+            ramp=(p_dk, s.path_main, s.path_main),
+            trim_col=s.path_trim,
+            accent_col=self.echo_mid,
+            edge_col="night",
+            medallion_step=24,
+        )
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_wall"] | ctx["m_foliage"]
+        if not np.any(mask):
+            return
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        up_open = ~ctx["n_up_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        lt_open = ~ctx["n_lt_wall"]
+        rt_open = ~ctx["n_rt_wall"]
+
+        # Dark carved library oak-and-obsidian cornice cap (~35-40 luma — clearly darker than floor!)
+        cap_n = fbm_grid(H, W, 24.0, seed=s.seed + 201, octaves=2)
+        wall_d = chamfer_dist(ctx["m_wall"])
+        edge_lift = np.clip(1.0 - wall_d / 14.0, 0.0, 1.0) * 0.22
+        cap_f = np.clip(cap_n * 0.54 + edge_lift + 0.14, 0.0, 0.999)
+        out = ramp_blend(("void", "night", "night", "dusk"), cap_f, bg)
+        # Subtle timber cornice coffer lines
+        coffer = ((ly % 8 == 0) | (lx % 16 == 0)) & (bg < 0.38)
+        out = np.where(coffer, IX["void"], out)
+
+        # 7px sculpted south-facing library bookshelf bays (skip bottom viewport border row)
+        south = dn_open & (ctx["ty"] < ctx["h_t"] - 1) & (ly >= ts - 7)
+        bay_w = 24
+        bay_x = xs % bay_w
+        out = np.where(south & (ly == ts - 7), IX[self.echo_mid], out)  # cornice trim
+        out = np.where(south & (ly > ts - 7) & (ly < ts - 1), IX["night"], out)
+
+        # Recessed bookshelf interior (bay_x in 3..21): two shelves of rich muted leather book spines
+        in_shelf = south & (bay_x >= 3) & (bay_x <= bay_w - 3) & (ly > ts - 7) & (ly < ts - 1)
+        sh_id = xs // 2
+        row_id = np.where(ly <= ts - 5, 0, 1)
+        bh = hash01_grid(sh_id, row_id + ctx["ty"] * 3, s.seed + 211)
+        spine_c = np.where(
+            bh < 0.28,
+            IX["dusk"],
+            np.where(
+                bh < 0.54,
+                IX["plum"],
+                np.where(
+                    bh < 0.74,
+                    IX["wine"],
+                    np.where(bh < 0.88, IX["deep"], IX[self.echo_mid]),
+                ),
+            ),
+        )
+        # Alternate dark 1px shadow between book spines so books read cleanly without noise
+        spine_col = np.where((xs % 2) == 1, SHADE_IX[spine_c], spine_c)
+        out = np.where(in_shelf, spine_col, out)
+        # Horizontal oak shelf ledge dividing upper & lower rows
+        out = np.where(in_shelf & (ly == ts - 4), IX["void"], out)
+        # Tiny memory-tinted gilded folio spine glint
+        out = np.where(in_shelf & (ly == ts - 5) & (bh > 0.93) & ((xs % 2) == 0), IX[self.echo_hi], out)
+
+        # Dark carved library pilasters framing each 24px bookshelf bay + brass reading sconce jewel
+        pilaster = south & (ly > ts - 7) & (ly < ts - 1) & ((bay_x <= 2) | (bay_x >= bay_w - 2))
+        out = np.where(pilaster, IX["dusk"], out)
+        out = np.where(south & (ly > ts - 7) & (ly < ts - 1) & (bay_x == 0), IX["void"], out)
+        out = np.where(south & (bay_x == 1) & (ly == ts - 4), IX["gold"], out)
+        out = np.where(south & (bay_x == 1) & (ly == ts - 3), IX["apricot"], out)
+        out = np.where(south & (ly == ts - 1), IX["void"], out)
+
+        # Crisp north lip & directional WNW rim light (skip outer viewport borders)
+        out = np.where(up_open & (ctx["ty"] > 0) & (ly == 0), IX[self.echo_mid], out)
+        west_rim = lt_open & (ctx["tx"] > 0) & (lx == 0) & (~south)
+        out = np.where(west_rim & (bg < 0.45 + 0.35 * warm), LIGHT_IX[out], out)
+        east_rim = rt_open & (ctx["tx"] < ctx["w_t"] - 1) & (lx == ts - 1) & (~south)
+        out = np.where(east_rim, IX["void"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        if not np.any(ctx["m_water"]):
+            return
+        if self.island_mem == 6:
+            # Ashen Kiln memory: refined molten slag channel with dark stone bank
+            ThemePainter.paint_water(self, buf, ctx)
+            return
+        if self.island_mem == 4:
+            # Mirefen memory: serene starry twilight fen pool (NO loud polka-dot lily pads!)
+            _paint_moon_mirror_water(
+                buf,
+                ctx,
+                ramp=("pine", "teal", "blue", "sky"),
+                foam_col="ice",
+                star_col="rose",
+                seed=self.spec.seed,
+                bank_col="night",
+                shore_width=2.8,
+            )
+            return
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col=self.echo_hi,
+            seed=self.spec.seed,
+            bank_col="night",
+            shore_width=2.8,
+        )
+
+    def paint_void(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_void"],
+            seed=self.spec.seed,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi=self.echo_hi,
+            star_mid=self.echo_mid,
+            drop_h=6,
+        )
+
+    def paint_pit(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        if self.island_mem == 6:
+            ThemePainter.paint_pit(self, buf, ctx)
+            return
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_pit"],
+            seed=self.spec.seed + 53,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi=self.echo_hi,
+            star_mid=self.echo_mid,
+            drop_h=5,
+            neb_strength=0.45,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "mauve"),
+            rail_col=self.echo_mid,
+            stud_col=self.echo_hi,
+            seam_col="night",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        s = self.spec
+        rug_hi_map = {
+            "wine": "plum",
+            "plum": "mauve",
+            "deep": "blue",
+            "blue": "mauve",
+            "pine": "teal",
+            "teal": "jade",
+        }
+        rug_hi = rug_hi_map.get(s.path_main, "plum")
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, s.path_main, rug_hi, s.path_trim, "night")
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
-        # Subtle memory-colored glowing rune inlay running 3px inside room perimeter walls
+        # Subtle memory-tinted rune border + warm reading-lamp sconce aprons beneath pilasters
         m_walk = ctx["m_walk"]
-        xs, ys = ctx["xs"], ctx["ys"]
-        ly, ts = ctx["ly"], ctx["ts"]
-        inlay_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 4) < 3)
+        xs, ly = ctx["xs"], ctx["ly"]
+        inlay_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 6) < 3)
         buf[inlay_n] = IX[self.echo_mid]
-        buf[inlay_n & ((xs % 16) == 0)] = IX[self.echo_hi]
+        buf[inlay_n & ((xs % 24) == 0)] = IX[self.echo_hi]
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=7,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.34,
+        )
 
 
 class WickHousePainter(ThemePainter):
-    """Wick House Hub: warm golden hearth-glow wash radiating softly near the north-center wall."""
+    """Wick House Hub (0:overworld, attic, gallery, observatory, pier, workshop):
+    Warm, intimate Last Light sanctuary: rich twilight-mahogany/cedar floorboards (~78-86 luma
+    with gentle sunset-west glow), clearly darker timber-wainscot & stone-hearth walls (~38-46 luma)
+    with warm brass sconce aprons, refined woven sanctuary rugs & hearth ovals, and serene starry-moonlit
+    pier water."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Cozy wide 8px twilight-mahogany & cedar floorboards (~79-85 luma, warm sunset-west glow)
+        ph = 8
+        pr = ys // ph
+        py = ys % ph
+        butt_off = (pr * 19) % 40
+        px_b = (xs + butt_off) % 40
+        plank_h = hash01_grid((xs + butt_off) // 40, pr, s.seed + 77)
+
+        pf = np.clip(nb * 0.36 + plank_h * 0.24 + warm * 0.20 + 0.06, 0.04, 0.92)
+        out = ramp_blend(("dusk", "plum", "plum", "wine"), pf, bg)
+
+        # Soft Bayer-dithered plank seams (NO harsh black horizontal stripes!)
+        is_hseam = (py == 0) & (bg < 0.46)
+        is_vseam = (px_b == 0) & (py > 0) & (bg < 0.42)
+        out = np.where(is_hseam | is_vseam, SHADE_IX[out], out)
+
+        # Gentle warm sunset-lit cedar bevel on select sunlit western boards
+        sun_bev = (py == 1) & (px_b > 2) & (px_b < 37) & (plank_h > 0.72) & (warm > 0.35) & (bg < 0.24)
+        out = np.where(sun_bev, IX["coral"], out)
+        # Tiny muted dowel pegs near plank ends
+        out = np.where((px_b == 3) & (py == 4) & (plank_h > 0.62), IX["dusk"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+
+        edge_n = (~ctx["n_up_path"]) & (ly == 0)
+        edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+        edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+        edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+        is_edge = edge_n | edge_s | edge_w | edge_e
+
+        in_edge = (
+            ((~ctx["n_up_path"]) & (ly == 1))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 2))
+            | ((~ctx["n_lt_path"]) & (lx == 1))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 2))
+        )
+
+        # Warm inlaid cedar-and-stone sanctuary walkway (~86 luma — cohesive with floorboards, NO bright lavender slab!)
+        pf = np.clip(nb * 0.42 + warm * 0.14 + 0.26, 0.0, 0.999)
+        out = ramp_blend(("dusk", "plum", "wine", "mauve"), pf, bg)
+        # Subtle dressed boardwalk / herringbone plank seams
+        row_id = ys // 8
+        ox = np.where((row_id & 1) == 1, 8, 0)
+        seam = ((ys % 8 == 0) | (((xs + ox) % 16) == 0)) & (bg < 0.48)
+        out = np.where(seam, SHADE_IX[out], out)
+        # Warm brass tack highlights along walkway curb
+        out = np.where(in_edge & (((xs + ys) % 8) == 0), IX["apricot"], out)
+        out = np.where(is_edge & (bg < 0.78), IX["night"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_wall"] | ctx["m_foliage"]
+        if not np.any(mask):
+            return
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        up_open = ~ctx["n_up_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        lt_open = ~ctx["n_lt_wall"]
+        rt_open = ~ctx["n_rt_wall"]
+
+        # Deep warm walnut-timber & twilight hearthstone cap (~36-44 luma — clearly darker than floor!)
+        cap_n = fbm_grid(H, W, 24.0, seed=s.seed + 201, octaves=2)
+        wall_d = chamfer_dist(ctx["m_wall"])
+        edge_lift = np.clip(1.0 - wall_d / 14.0, 0.0, 1.0) * 0.24
+        cap_f = np.clip(cap_n * 0.58 + edge_lift + warm * 0.08, 0.0, 0.999)
+        out = ramp_blend(("void", "night", "night", "dusk"), cap_f, bg)
+        # Subtle stone/timber cap coursing
+        cap_seam = ((ly % 8 == 0) | (((lx + np.where(((ly // 8) & 1) == 1, 8, 0)) % 16) == 0)) & (bg < 0.42)
+        out = np.where(cap_seam, IX["void"], out)
+
+        # 7px sculpted south-facing timber-wainscot & stone-hearth wall face (skip bottom viewport border)
+        south = dn_open & (ctx["ty"] < ctx["h_t"] - 1) & (ly >= ts - 7)
+        out = np.where(south & (ly == ts - 7), IX["apricot"], out)  # warm cedar crown moulding
+        out = np.where(south & (ly > ts - 7) & (ly < ts - 1), IX["dusk"], out)
+
+        # Wainscot timber panels every 16px with warm recessed moulding
+        pan_x = xs % 16
+        in_pan = south & (ly >= ts - 5) & (ly <= ts - 2) & (pan_x >= 3) & (pan_x <= 12)
+        out = np.where(in_pan, IX["night"], out)
+        out = np.where(in_pan & ((ly == ts - 5) | (pan_x == 3)), IX["plum"], out)
+        out = np.where(in_pan & ((ly == ts - 2) | (pan_x == 12)), IX["void"], out)
+
+        # Timber vertical stiles & brass hearth-lantern sconces every 32px
+        stile = south & (ly > ts - 7) & (ly < ts - 1) & ((pan_x <= 1) | (pan_x == 15))
+        out = np.where(stile, IX["plum"], out)
+        out = np.where(south & (ly > ts - 7) & (ly < ts - 1) & (pan_x == 0), IX["void"], out)
+        sconce_x = xs % 32
+        out = np.where(south & (sconce_x == 1) & (ly == ts - 4), IX["gold"], out)
+        out = np.where(south & (sconce_x == 1) & (ly == ts - 3), IX["apricot"], out)
+        out = np.where(south & (ly == ts - 1), IX["void"], out)
+
+        # Crisp north lip & directional WNW rim light (skip outer viewport borders)
+        out = np.where(up_open & (ctx["ty"] > 0) & (ly == 0), IX["apricot"], out)
+        west_rim = lt_open & (ctx["tx"] > 0) & (lx == 0) & (~south)
+        out = np.where(west_rim & (bg < 0.45 + 0.35 * warm), LIGHT_IX[out], out)
+        east_rim = rt_open & (ctx["tx"] < ctx["w_t"] - 1) & (lx == ts - 1) & (~south)
+        out = np.where(east_rim, IX["void"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        # Serene starry-moonlit pier water (replaces noisy green-dot koi pond!)
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col="gold",
+            seed=self.spec.seed,
+            bank_col="night",
+            shore_width=3.2,
+            cliff_skirt=True,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        # Refined warm cedar-and-brass sanctuary pier bridge
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "wine"),
+            rail_col="apricot",
+            stud_col="gold",
+            seam_col="night",
+            west_stud_col="gold",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_hearth_and_plush_rugs(self, buf, ctx, decor_list, "wine", "plum", "apricot", "night")
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
-        m_walk = ctx["m_walk"]
-        H, W = ctx["H"], ctx["W"]
-        xs, ys, bg = ctx["xs"], ctx["ys"], ctx["bg"]
-        cx, cy = W * 0.5, 42.0
-        d = np.hypot((xs - cx) / 52.0, (ys - cy) / 34.0)
-        glow = m_walk & (d < 1.0) & (((1.0 - d) * 0.42) > bg)
-        buf[glow] = IX["gold"]
+        # 1. Warm brass wall-sconce light aprons beneath interior north walls
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=32,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.34,
+        )
+        # 2. Crisp pier-edge coping bordering moonlit water (0:pier, 0:overworld)
+        walk = ctx["m_walk"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        rim = (
+            (walk & ctx["n_dn_water"] & (ly == ts - 1))
+            | (walk & ctx["n_up_water"] & (ly == 0))
+            | (walk & ctx["n_lt_water"] & (lx == 0))
+            | (walk & ctx["n_rt_water"] & (lx == ts - 1))
+        )
+        buf[rim] = np.where(((xs + ys) % 6 == 0), IX["gold"], IX["apricot"])[rim]
+
+
+class WickCellarPainter(ThemePainter):
+    """Wick House Cellar & Corridor (0:cellar, 0:corridor):
+    Calm warm subterranean cellar flagstones (~72-78 luma), dark dressed stone cellar walls
+    (~34-42 luma) with arched cellar-lantern niches & warm golden cellar-lantern floor aprons."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Calm 16x10 staggered warm cellar flagstones (~73-77 luma — NO limestone confetti!)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
+
+        sf = np.clip(nb * 0.38 + slab_h * 0.26 + warm * 0.08 + 0.16, 0.04, 0.92)
+        out = ramp_blend(("dusk", "plum", "plum", "mauve"), sf, bg)
+
+        # Quiet Bayer-dithered mortar joints
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.56)
+        out = np.where(is_seam, IX["night"], out)
+        # Subtle warm stone bevel on select slabs
+        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.26)
+        out = np.where(is_bev, IX["mauve"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+
+        edge_n = (~ctx["n_up_path"]) & (ly == 0)
+        edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+        edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+        edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+        is_edge = edge_n | edge_s | edge_w | edge_e
+        in_edge = (
+            ((~ctx["n_up_path"]) & (ly == 1))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 2))
+            | ((~ctx["n_lt_path"]) & (lx == 1))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 2))
+        )
+
+        # Warm worn hearth-brick cellar stone runner (~80 luma)
+        out = ramp_blend(("dusk", "plum", "wine"), np.clip(nb * 0.46 + 0.26, 0.0, 0.999), bg)
+        row_id = ys // 8
+        ox = np.where((row_id & 1) == 1, 8, 0)
+        seam = ((ys % 8 == 0) | (((xs + ox) % 16) == 0)) & (bg < 0.52)
+        out = np.where(seam, IX["night"], out)
+        out = np.where(in_edge & (((xs + ys) % 8) == 0), IX["apricot"], out)
+        out = np.where(is_edge & (bg < 0.78), IX["night"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_colonnade_walls(
+            buf,
+            ctx,
+            cap_ramp=("void", "night", "night", "dusk"),
+            lip_col="apricot",
+            face_col="night",
+            pilaster_col="dusk",
+            base_col="void",
+            arch_bg="void",
+            arch_mid="dusk",
+            arch_hi="plum",
+            seed=self.spec.seed,
+            bay_w=24,
+            sconce_col="gold",
+            cap_bias=0.14,
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, "plum", "wine", "apricot", "night")
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.36,
+        )
+
+
+class LongNightOverworldPainter(ThemePainter):
+    """Island 8 Overworld — The Long Night:
+    Monumental obsidian-and-twilight-slate sky-islands (~74-80 luma, subtle warm sunset-gold west
+    fading to starlit plum/indigo east), dark carved obsidian parapet walls (~36-44 luma) with
+    hanging starry-cosmos cliff skirts, warm golden vigil-beacon aprons, luminous starry reflection
+    water, and refined starlit obsidian-and-silver stone arch bridges."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        nm = ctx["n_med"]
+        nf = ctx["n_fine"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Monumental 16x10 dressed obsidian-and-twilight-slate sky-island flagstones (~75-80 luma)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 53)
+
+        field = np.clip(nb * 0.42 + slab_h * 0.28 + nm * 0.12 + 0.16, 0.04, 0.96)
+        # Warm sunset-plum/wine west fading smoothly into starlit obsidian-indigo/mauve east
+        west_slab = ramp_blend(("dusk", "plum", "plum", "wine"), field, bg)
+        east_slab = ramp_blend(("deep", "dusk", "plum", "mauve"), field, bg)
+        out = np.where(warm > (0.48 + (nb - 0.5) * 0.22 + (bg - 0.5) * 0.18), west_slab, east_slab)
+
+        # Quiet Bayer-dithered obsidian mortar joints
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.58)
+        out = np.where(is_seam, IX["night"], out)
+
+        # Subtle lit bevel on select slabs (warm rose/apricot west, cool sky/mauve east)
+        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.70) & (bg < 0.28)
+        out = np.where(is_bev, np.where(warm > 0.50, IX["rose"], IX["sky"]), out)
+
+        # Rare starlight dust flecks
+        out = np.where((nf > 0.9965) & (nb > 0.52), np.where(warm > 0.52, IX["gold"], IX["ice"]), out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+
+        edge_n = (~ctx["n_up_path"]) & (ly == 0)
+        edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+        edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+        edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+        is_edge = edge_n | edge_s | edge_w | edge_e
+        in_edge = (
+            ((~ctx["n_up_path"]) & (ly == 1))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 2))
+            | ((~ctx["n_lt_path"]) & (lx == 1))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 2))
+        )
+
+        # Ceremonial vigil causeway promenade (~84 luma)
+        pf = np.clip(nb * 0.44 + 0.26, 0.0, 0.999)
+        p_warm = ramp_blend(("dusk", "plum", "wine", "mauve"), pf, bg)
+        p_cool = ramp_blend(("dusk", "deep", "plum", "mauve"), pf, bg)
+        out = np.where(warm > (0.48 + (bg - 0.5) * 0.16), p_warm, p_cool)
+
+        row_id = ys // 8
+        ox = np.where((row_id & 1) == 1, 8, 0)
+        seam = ((ys % 8 == 0) | (((xs + ox) % 16) == 0)) & (bg < 0.56)
+        out = np.where(seam, IX["night"], out)
+        stud_c = np.where(warm > 0.48, IX["gold"], IX["rose"])
+        out = np.where(in_edge & (((xs + ys) % 8) == 0), stud_c, out)
+        out = np.where(is_edge & (bg < 0.80), IX["void"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_colonnade_walls(
+            buf,
+            ctx,
+            cap_ramp=("void", "void", "night", "dusk"),
+            lip_col="gold",
+            face_col="night",
+            pilaster_col="dusk",
+            base_col="void",
+            arch_bg="void",
+            arch_mid="dusk",
+            arch_hi="rose",
+            seed=self.spec.seed,
+            bay_w=24,
+            sconce_col="gold",
+            cap_bias=-0.10,
+        )
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col="gold",
+            seed=self.spec.seed,
+            bank_col="night",
+            shore_width=3.2,
+            cliff_skirt=True,
+        )
+
+    def paint_void(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_void"],
+            seed=self.spec.seed,
+            lip_col="plum",
+            face_col="dusk",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=6,
+            neb_strength=0.62,
+        )
+
+    def paint_pit(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_pit"],
+            seed=self.spec.seed + 71,
+            lip_col="plum",
+            face_col="dusk",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=5,
+            neb_strength=0.48,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "mauve"),
+            rail_col="rose",
+            stud_col="gold",
+            seam_col="night",
+            west_stud_col="gold",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, "wine", "plum", "gold", "void")
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        # 1. Warm golden vigil-beacon aprons beneath obsidian parapet walls
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.40,
+        )
+        # 2. Luminous coping along water shorelines
+        walk = ctx["m_walk"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        rim = (
+            (walk & ctx["n_dn_water"] & (ly == ts - 1))
+            | (walk & ctx["n_up_water"] & (ly == 0))
+            | (walk & ctx["n_lt_water"] & (lx == 0))
+            | (walk & ctx["n_rt_water"] & (lx == ts - 1))
+        )
+        buf[rim] = np.where(((xs + ys) % 6 == 0), IX["gold"], IX["rose"])[rim]
 
 
 class TollHousePainter(ThemePainter):
-    """The Toll House: gilded ledger counting-house brass trim, pit rim studs, and warm hearthpools."""
+    """The Toll House (17 rooms):
+    Calm dressed twilight-slate ledger flagstones (~76-82 luma) with restrained brass ledger columns,
+    clearly darker gothic counting-house wainscot colonnades (~36-42 luma) with warm sconce aprons,
+    plush crimson velvet runners (ZERO diamond barcode hatching!), and smooth starry chasms."""
 
-    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
-        m_walk = ctx["m_walk"]
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
         xs, ys = ctx["xs"], ctx["ys"]
-        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
-        # Brass-ruled ledger border running along north wall bases with gold corner rivets
-        rule_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 4) < 3)
-        buf[rule_n] = IX["apricot"]
-        buf[rule_n & ((xs % 16) == 0)] = IX["gold"]
-        # Brass guardrail studs along south/north pit rims for crisp figure-ground contrast
-        pit_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 3) & ((xs % 8) < 2)
-        buf[pit_s] = IX["gold"]
-        pit_n = m_walk & ctx["n_up_abyss"] & (ly == 2) & ((xs % 8) < 2)
-        buf[pit_n] = IX["apricot"]
-        # Subtle ledger column brass ticks on every 4th tile intersection
-        tick = m_walk & (lx == 0) & (ly == 0) & (((xs // ts) % 3) == 0) & (((ys // ts) % 2) == 0)
-        buf[tick] = IX["gold"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
 
+        # Calm 16x10 dressed twilight ledger flagstones (~78-82 luma — down from noisy 105!)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
 
-class EndlessStairPainter(ThemePainter):
-    """The Endless Stair: brass stair-rod highlights on treads and subtle starry rim shimmer."""
+        sf = np.clip(nb * 0.38 + slab_h * 0.26 + warm * 0.08 + 0.12, 0.04, 0.92)
+        out = ramp_blend(("dusk", "plum", "plum", "mauve"), sf, bg)
+
+        # Quiet Bayer-dithered mortar seams (NO heavy black grid!)
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.58)
+        out = np.where(is_seam, IX["night"], out)
+        # Subtle lit bevel on select slabs
+        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.26)
+        out = np.where(is_bev, IX["mauve"], out)
+
+        # Restrained vertical brass ledger-column dashes every 48px + quiet gold intersection pin
+        col_rule = (xs % 48 == 0) & ((ys % 4) == 0) & (bg < 0.50)
+        out = np.where(col_rule, IX["apricot"], out)
+        pin = (xs % 48 == 0) & (ys % 32 == 0)
+        out = np.where(pin, IX["gold"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_velvet_runner(
+            buf,
+            ctx,
+            ramp=("plum", "wine", "wine"),
+            trim_col="gold",
+            accent_col="apricot",
+            edge_col="night",
+            medallion_step=24,
+        )
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_colonnade_walls(
+            buf,
+            ctx,
+            cap_ramp=("void", "night", "night", "dusk"),
+            lip_col="gold",
+            face_col="night",
+            pilaster_col="dusk",
+            base_col="void",
+            arch_bg="void",
+            arch_mid="plum",
+            arch_hi="apricot",
+            seed=self.spec.seed,
+            bay_w=24,
+            sconce_col="gold",
+            cap_bias=0.14,
+        )
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col="gold",
+            seed=self.spec.seed,
+            bank_col="void",
+            shore_width=2.8,
+        )
+
+    def paint_void(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_void"],
+            seed=self.spec.seed,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="gold",
+            star_mid="rose",
+            drop_h=6,
+            neb_strength=0.45,
+        )
+
+    def paint_pit(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_pit"],
+            seed=self.spec.seed + 61,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="gold",
+            star_mid="rose",
+            drop_h=5,
+            neb_strength=0.38,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "mauve"),
+            rail_col="gold",
+            stud_col="apricot",
+            seam_col="night",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, "wine", "plum", "gold", "night")
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         m_walk = ctx["m_walk"]
         xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
-        # Brass stair-rod glints at tread risers
-        rod = m_walk & (ly == 1) & ((xs % 12) == 2)
-        buf[rod] = IX["gold"]
-        # Rose-gold starlight coping along abyss drop-offs
+        # Warm brass counting-house sconce aprons beneath north pilasters
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.38,
+        )
+        # Brass guardrail studs along chasm rims
+        pit_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 3) & ((xs % 8) < 2)
+        buf[pit_s] = IX["gold"]
+        pit_n = m_walk & ctx["n_up_abyss"] & (ly == 2) & ((xs % 8) < 2)
+        buf[pit_n] = IX["apricot"]
+
+
+class EndlessStairPainter(ThemePainter):
+    """The Endless Stair (13 rooms + 13 stair layers):
+    Monumental 16px stepped twilight-obsidian stair treads (~76-82 luma, ZERO horizontal barcode noise!),
+    dark gothic tower colonnade walls (~34-42 luma), plush crimson velvet stair runners with brass
+    stair-rods, luminous starry-mirror water pools (~94-106 luma), and smooth starry cosmos abyss."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Monumental 16px stepped stone treads (clean, calm, unmistakably architectural stairs!)
+        step_h = 16
+        step_row = ys // step_h
+        step_y = ys % step_h
+        ox = np.where((step_row & 1) == 1, 16, 0)
+        step_x = (xs + ox) % 32
+        sh = hash01_grid((xs + ox) // 32, step_row, s.seed + 149)
+
+        # Gentle vertical gradient across each tread: slightly lit top nosing fading subtly into riser
+        tread_grad = (1.0 - step_y.astype(np.float32) / float(step_h)) * 0.14
+        sf = np.clip(nb * 0.36 + sh * 0.26 + warm * 0.08 + tread_grad + 0.04, 0.0, 0.90)
+        out = ramp_blend(("dusk", "dusk", "plum", "mauve"), sf, bg)
+
+        # Soft lit tread nosing on select blocks + crisp recessed riser shadow at step_y == 15
+        nosing = (step_y == 1) & (step_x > 2) & (step_x < 29) & (sh > 0.56) & (bg < 0.36)
+        out = np.where(nosing, IX["mauve"], out)
+        riser_soft = (step_y == step_h - 2) & (bg < 0.42)
+        out = np.where(riser_soft, SHADE_IX[out], out)
+        out = np.where((step_y == step_h - 1) & (bg < 0.78), IX["night"], out)
+        out = np.where((step_x == 0) & (step_y < step_h - 1) & (bg < 0.48), IX["night"], out)
+
+        # Quiet brass stair-rod glints along riser crease
+        rod = (step_y == step_h - 3) & ((xs % 16) >= 6) & ((xs % 16) <= 9) & (bg < 0.55)
+        out = np.where(rod, IX["apricot"], out)
+        out = np.where((step_y == step_h - 3) & ((xs % 16) == 7) & (sh > 0.50), IX["gold"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_velvet_runner(
+            buf,
+            ctx,
+            ramp=("plum", "wine", "wine"),
+            trim_col="gold",
+            accent_col="apricot",
+            edge_col="night",
+            medallion_step=0,
+            stair_rods=True,
+        )
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_colonnade_walls(
+            buf,
+            ctx,
+            cap_ramp=("void", "night", "night", "dusk"),
+            lip_col="rose",
+            face_col="night",
+            pilaster_col="dusk",
+            base_col="void",
+            arch_bg="void",
+            arch_mid="deep",
+            arch_hi="sky",
+            seed=self.spec.seed,
+            bay_w=24,
+            sconce_col="gold",
+            cap_bias=0.12,
+        )
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        # Luminous starry-mirror water (~96-106 luma, lifted from pitch-black 14.8!)
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col="rose",
+            seed=self.spec.seed,
+            bank_col="night",
+            shore_width=2.8,
+        )
+
+    def paint_void(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_void"],
+            seed=self.spec.seed,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=6,
+            neb_strength=0.58,
+        )
+
+    def paint_pit(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_pit"],
+            seed=self.spec.seed + 73,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=5,
+            neb_strength=0.45,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "mauve"),
+            rail_col="rose",
+            stud_col="gold",
+            seam_col="night",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, "wine", "plum", "gold", "night")
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_walk = ctx["m_walk"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.36,
+        )
+        # Rose-gold starlight coping studs along abyss drop-offs
         edge_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 2) & ((xs % 6) < 2)
         buf[edge_s] = IX["rose"]
 
 
 class BellSanctumPainter(ThemePainter):
-    """The Bell Sanctum: luminous obsidian-violet cathedral flagstones with gilded nave inlays."""
+    """The Bell Sanctum (9 rooms):
+    Regal obsidian-violet cathedral nave flagstones (~76-82 luma) with quiet 48x36 gilded corner
+    filigree, deep solemn gothic cathedral lancet walls (~34-40 luma — crisp ~40-point separation
+    from floor!), plush crimson choir runners, luminous starry reflection pools, and smooth starry cosmos."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        bg = ctx["bg"]
+        nb = ctx["n_broad"]
+        warm = ctx["warm"]
+        s = self.spec
+
+        # Regal 16x12 cathedral nave flagstones (~78-82 luma)
+        sh, sw = 12, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 61)
+
+        sf = np.clip(nb * 0.38 + slab_h * 0.26 + warm * 0.08 + 0.14, 0.04, 0.92)
+        out = ramp_blend(("dusk", "plum", "plum", "mauve"), sf, bg)
+
+        # Quiet cathedral mortar seams
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.58)
+        out = np.where(is_seam, IX["night"], out)
+        # Restrained rose-silver bevel on select lit slabs
+        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.28)
+        out = np.where(is_bev, IX["mauve"], out)
+
+        # Understated 48x36 gilded cathedral nave corner brackets
+        fx, fy = xs % 48, ys % 36
+        corner_h = ((fy == 2) | (fy == 34)) & (((fx >= 2) & (fx <= 5)) | ((fx >= 43) & (fx <= 46)))
+        corner_v = ((fx == 2) | (fx == 46)) & (((fy >= 2) & (fy <= 5)) | ((fy >= 31) & (fy <= 34)))
+        out = np.where((corner_h | corner_v) & (bg < 0.48), IX["rose"], out)
+        vertex = ((fx == 2) | (fx == 46)) & ((fy == 2) | (fy == 34))
+        out = np.where(vertex, IX["gold"], out)
+
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_velvet_runner(
+            buf,
+            ctx,
+            ramp=("plum", "wine", "wine"),
+            trim_col="gold",
+            accent_col="rose",
+            edge_col="void",
+            medallion_step=24,
+        )
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_colonnade_walls(
+            buf,
+            ctx,
+            cap_ramp=("void", "night", "night", "dusk"),
+            lip_col="gold",
+            face_col="night",
+            pilaster_col="dusk",
+            base_col="void",
+            arch_bg="night",
+            arch_mid="wine",
+            arch_hi="rose",
+            seed=self.spec.seed,
+            bay_w=24,
+            sconce_col="gold",
+            cap_bias=0.14,
+        )
+
+    def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_moon_mirror_water(
+            buf,
+            ctx,
+            ramp=("deep", "blue", "blue", "sky"),
+            foam_col="ice",
+            star_col="gold",
+            seed=self.spec.seed,
+            bank_col="void",
+            shore_width=2.8,
+        )
+
+    def paint_void(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_void"],
+            seed=self.spec.seed,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=6,
+            neb_strength=0.58,
+        )
+
+    def paint_pit(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_starry_abyss(
+            buf,
+            ctx,
+            ctx["m_pit"],
+            seed=self.spec.seed + 83,
+            lip_col="dusk",
+            face_col="night",
+            base_col="void",
+            star_hi="ice",
+            star_mid="sky",
+            star_warm="gold",
+            drop_h=5,
+            neb_strength=0.44,
+        )
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_silver_arch_bridge(
+            buf,
+            ctx,
+            deck_ramp=("dusk", "plum", "mauve"),
+            rail_col="gold",
+            stud_col="rose",
+            seam_col="void",
+        )
+
+    def paint_decor(self, buf: np.ndarray, ctx: dict[str, Any], decor_list: list[dict[str, Any]]) -> None:
+        _paint_plush_rug_decor(self, buf, ctx, decor_list, "wine", "plum", "gold", "void")
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         m_walk = ctx["m_walk"]
         xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
-        # Ornate gilded nave border strip beneath north cathedral walls
-        inlay_n = m_walk & ctx["n_up_wall"] & (ly == 5) & ((xs % 6) < 4)
-        buf[inlay_n] = IX["rose"]
-        buf[inlay_n & ((xs % 12) == 0)] = IX["gold"]
-        # Gilded lip studs along cathedral chasm rims so void edges pop clearly
+        _paint_sconce_aprons(
+            buf,
+            ctx,
+            spacing=24,
+            phase=1,
+            reach_y=7,
+            reach_x=8,
+            col_hi="gold",
+            col_mid="apricot",
+            strength=0.38,
+        )
+        # Gilded lip studs along cathedral chasm rims
         rim_s = m_walk & ctx["n_dn_abyss"] & (ly == ts - 2) & ((xs % 8) < 3)
         buf[rim_s] = IX["gold"]
         rim_n = m_walk & ctx["n_up_abyss"] & (ly == 2) & ((xs % 8) < 3)
@@ -1779,46 +3052,91 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
     ),
     (
         ThemeSpec(
+            id="long_night_overworld",
+            name="The Long Night (Overworld)",
+            island=8,
+            floor_style="flagstone_crypt",
+            floor_ramp=("dusk", "plum", "mauve"),
+            floor_seam="night",
+            floor_bevel="rose",
+            floor_accent_a="apricot",
+            floor_accent_b="gold",
+            path_style="inlaid_strip",
+            path_main="plum",
+            path_hi="mauve",
+            path_edge="void",
+            path_trim="gold",
+            wall_style="masonry",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="gold",
+            wall_face="night",
+            wall_face_hi="dusk",
+            wall_base="void",
+            water_style="moon_mirror",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
+            pit_style="star_chasm",
+            void_style="starry_cosmos",
+            rim_hi="gold",
+            rim_mid="rose",
+            bridge_style="stone_arch",
+            bridge_main="dusk",
+            bridge_hi="plum",
+            bridge_rail="rose",
+            bridge_dark="night",
+            seed=801,
+            prop_sheet="island8_scenery",
+            door_sheet="island8_doors",
+            special_tiles=("D:carpet",),
+            default_decor=("circle", "light_shaft"),
+            notes="Long Night Overworld: monumental obsidian-and-twilight-slate sky-islands with warm sunset-gold west fading to starlit plum/indigo east, dark carved parapets, and starry cosmos cliffs.",
+        ),
+        LongNightOverworldPainter,
+    ),
+    (
+        ThemeSpec(
             id="toll_house",
             name="The Toll House",
             island=8,
             floor_style="ledger_stone",
-            floor_ramp=("dusk", "plum", "mauve", "stone"),
+            floor_ramp=("dusk", "dusk", "plum", "mauve"),
             floor_seam="night",
-            floor_bevel="stone",
+            floor_bevel="mauve",
             floor_accent_a="apricot",
             floor_accent_b="gold",
             path_style="carpet_runner",
             path_main="wine",
-            path_hi="rose",
+            path_hi="plum",
             path_edge="night",
             path_trim="gold",
             wall_style="wainscot",
-            wall_cap=("night", "dusk", "plum"),
+            wall_cap=("void", "night", "dusk"),
             wall_lip="gold",
-            wall_face="plum",
-            wall_face_hi="mauve",
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="moon_mirror",
-            water_deep="void",
-            water_mid="night",
-            water_hi="dusk",
-            water_foam="rose",
-            pit_style="crypt_abyss",
-            void_style="crypt_abyss",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
+            pit_style="star_chasm",
+            void_style="starry_cosmos",
             rim_hi="gold",
             rim_mid="apricot",
             bridge_style="stone_arch",
-            bridge_main="plum",
-            bridge_hi="mauve",
+            bridge_main="dusk",
+            bridge_hi="plum",
             bridge_rail="gold",
             bridge_dark="night",
             seed=811,
             prop_sheet="theme_toll_house",
             door_sheet="theme_toll_house_doors",
             special_tiles=("D:carpet",),
-            default_decor=("inlay", "rug", "circle"),
-            notes="The settings menu as architecture: gilded ledger-ruled stone floor, plum wainscot, crimson-gold runner.",
+            default_decor=("rug", "circle"),
+            notes="The settings menu as gothic counting-house architecture: calm twilight ledger flagstones, dark carved colonnades, plush crimson-gold velvet runners.",
         ),
         TollHousePainter,
     ),
@@ -1828,42 +3146,42 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Endless Stair",
             island=8,
             floor_style="stepped_stair",
-            floor_ramp=("dusk", "plum", "mauve", "stone"),
+            floor_ramp=("dusk", "dusk", "plum", "mauve"),
             floor_seam="night",
-            floor_bevel="stone",
-            floor_accent_a="gold",
+            floor_bevel="mauve",
+            floor_accent_a="apricot",
             floor_accent_b="rose",
             path_style="carpet_runner",
             path_main="wine",
-            path_hi="rose",
+            path_hi="plum",
             path_edge="night",
             path_trim="gold",
             wall_style="masonry",
-            wall_cap=("night", "dusk", "mauve"),
+            wall_cap=("void", "night", "dusk"),
             wall_lip="rose",
-            wall_face="dusk",
-            wall_face_hi="plum",
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="moon_mirror",
-            water_deep="void",
-            water_mid="night",
-            water_hi="deep",
-            water_foam="sky",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
             pit_style="star_chasm",
             void_style="starry_cosmos",
             rim_hi="rose",
             rim_mid="gold",
             bridge_style="stone_arch",
-            bridge_main="mauve",
-            bridge_hi="stone",
-            bridge_rail="gold",
-            bridge_dark="dusk",
+            bridge_main="dusk",
+            bridge_hi="plum",
+            bridge_rail="rose",
+            bridge_dark="night",
             seed=831,
             prop_sheet="theme_endless_stair",
             door_sheet="theme_endless_stair_doors",
             special_tiles=("S:stairs", "D:carpet"),
-            default_decor=("circle", "inlay"),
-            notes="Twelve-floor spiral ascent: stepped masonry treads with brass stair rods over bottomless star-void.",
+            default_decor=("circle", "rug"),
+            notes="Twelve-floor spiral ascent: monumental 16px twilight-obsidian stair treads with brass stair-rods, dark tower colonnades, plush stair runners, and smooth starry cosmos.",
         ),
         EndlessStairPainter,
     ),
@@ -1873,42 +3191,42 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Bell Sanctum",
             island=8,
             floor_style="flagstone_crypt",
-            floor_ramp=("dusk", "plum", "mauve", "stone"),
+            floor_ramp=("dusk", "dusk", "plum", "mauve"),
             floor_seam="night",
-            floor_bevel="stone",
+            floor_bevel="mauve",
             floor_accent_a="rose",
             floor_accent_b="gold",
             path_style="carpet_runner",
             path_main="wine",
-            path_hi="rose",
-            path_edge="night",
+            path_hi="plum",
+            path_edge="void",
             path_trim="gold",
             wall_style="masonry",
-            wall_cap=("night", "dusk", "plum"),
+            wall_cap=("void", "night", "dusk"),
             wall_lip="gold",
-            wall_face="dusk",
-            wall_face_hi="mauve",
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="moon_mirror",
-            water_deep="void",
-            water_mid="night",
-            water_hi="deep",
-            water_foam="rose",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
             pit_style="star_chasm",
             void_style="starry_cosmos",
             rim_hi="gold",
             rim_mid="rose",
             bridge_style="stone_arch",
-            bridge_main="mauve",
-            bridge_hi="stone",
+            bridge_main="dusk",
+            bridge_hi="plum",
             bridge_rail="gold",
-            bridge_dark="dusk",
+            bridge_dark="void",
             seed=841,
             prop_sheet="island8_scenery",
             door_sheet="island8_doors",
             special_tiles=("D:carpet",),
-            default_decor=("circle", "rug", "inlay"),
-            notes="Luminous obsidian-violet cathedral sanctum with gilded nave inlays, crimson choir carpets, and starry abyss chasms.",
+            default_decor=("circle", "rug"),
+            notes="Regal obsidian-violet cathedral sanctum: calm nave flagstones with gilded corner inlays, deep lancet-arch colonnades, plush choir runners, and starry reflection pools.",
         ),
         BellSanctumPainter,
     ),
@@ -1916,25 +3234,25 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
         ThemeSpec(
             id="wick_house",
             name="The Wick House (Hub)",
-            island=1,
+            island=0,
             floor_style="cottage_hearth",
-            floor_ramp=("plum", "wine", "coral"),
+            floor_ramp=("dusk", "plum", "plum", "wine"),
             floor_seam="night",
-            floor_bevel="apricot",
-            floor_accent_a="gold",
-            floor_accent_b="cream",
+            floor_bevel="coral",
+            floor_accent_a="apricot",
+            floor_accent_b="gold",
             path_style="boardwalk",
-            path_main="mauve",
-            path_hi="stone",
-            path_edge="plum",
-            path_trim="gold",
+            path_main="plum",
+            path_hi="wine",
+            path_edge="night",
+            path_trim="apricot",
             wall_style="wainscot",
-            wall_cap=("plum", "mauve", "stone"),
-            wall_lip="gold",
-            wall_face="wine",
-            wall_face_hi="apricot",
-            wall_base="night",
-            water_style="koi_pond",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="apricot",
+            wall_face="dusk",
+            wall_face_hi="plum",
+            wall_base="void",
+            water_style="moon_mirror",
             water_deep="deep",
             water_mid="blue",
             water_hi="sky",
@@ -1944,18 +3262,63 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="gold",
             rim_mid="apricot",
             bridge_style="timber",
-            bridge_main="coral",
-            bridge_hi="apricot",
-            bridge_rail="gold",
-            bridge_dark="plum",
+            bridge_main="plum",
+            bridge_hi="wine",
+            bridge_rail="apricot",
+            bridge_dark="night",
             seed=901,
             prop_sheet="theme_wick_house",
             door_sheet="theme_wick_house_doors",
             special_tiles=("D:carpet", "H:hearth"),
             default_decor=("rug", "light_shaft", "window_strip"),
-            notes="Cozy lamplit cottage hub on a rock between islands: honey-wood planks, braided hearth rug, warm sunset void.",
+            notes="Warm Last Light sanctuary hub: sunset-lit twilight-mahogany floorboards, dark timber-wainscot walls with brass sconces, plush rugs, and serene starry-moonlit pier water.",
         ),
         WickHousePainter,
+    ),
+    (
+        ThemeSpec(
+            id="wick_cellar",
+            name="Wick House Cellar (Hub)",
+            island=0,
+            floor_style="flagstone_crypt",
+            floor_ramp=("dusk", "dusk", "plum", "mauve"),
+            floor_seam="night",
+            floor_bevel="mauve",
+            floor_accent_a="wine",
+            floor_accent_b="apricot",
+            path_style="sand_trail",
+            path_main="plum",
+            path_hi="wine",
+            path_edge="night",
+            path_trim="apricot",
+            wall_style="masonry",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="apricot",
+            wall_face="night",
+            wall_face_hi="dusk",
+            wall_base="void",
+            water_style="moon_mirror",
+            water_deep="deep",
+            water_mid="blue",
+            water_hi="sky",
+            water_foam="ice",
+            pit_style="crypt_abyss",
+            void_style="crypt_abyss",
+            rim_hi="apricot",
+            rim_mid="mauve",
+            bridge_style="timber",
+            bridge_main="plum",
+            bridge_hi="wine",
+            bridge_rail="apricot",
+            bridge_dark="night",
+            seed=151,
+            prop_sheet="theme_wick_house",
+            door_sheet="theme_wick_house_doors",
+            special_tiles=(),
+            default_decor=("stain", "cracks"),
+            notes="Warm subterranean cellar & corridor beneath Wick House: calm twilight stone flagstones, dark arched cellar walls, and warm lantern floor aprons.",
+        ),
+        WickCellarPainter,
     ),
 ]
 
@@ -1963,14 +3326,14 @@ SPECS_7_8: list[tuple[ThemeSpec, type[ThemePainter]]] = [
 # ------------------------------------------------------------------ ARCHIVE + 8 MEMORY VARIANTS
 _ARCHIVE_MEMORIES: list[tuple[int, str, tuple[str, ...], str, str, str, str]] = [
     # (island, label, floor_ramp, path_main, path_trim, echo_mid, echo_hi)
-    (1, "Bell Isle Memory", ("dusk", "mauve", "stone"), "plum", "gold", "jade", "gold"),
-    (2, "Tidewater Memory", ("deep", "blue", "mauve"), "deep", "ice", "sky", "ice"),
-    (3, "Thornwood Memory", ("pine", "teal", "mauve"), "pine", "lime", "jade", "lime"),
-    (4, "Mirefen Memory", ("pine", "teal", "stone"), "teal", "rose", "sky", "rose"),
-    (5, "Starfall Memory", ("deep", "blue", "dusk"), "deep", "gold", "blue", "gold"),
-    (6, "Ashen Kiln Memory", ("dusk", "plum", "wine"), "wine", "apricot", "coral", "gold"),
-    (7, "Moon Shoals Memory", ("deep", "blue", "sky"), "blue", "ice", "sky", "cream"),
-    (8, "Long Night Memory", ("dusk", "plum", "mauve"), "plum", "rose", "wine", "rose"),
+    (1, "Bell Isle Memory", ("dusk", "plum", "plum", "mauve"), "plum", "gold", "jade", "gold"),
+    (2, "Tidewater Memory", ("deep", "blue", "blue", "mauve"), "deep", "ice", "sky", "ice"),
+    (3, "Thornwood Memory", ("pine", "teal", "teal", "mauve"), "pine", "lime", "jade", "lime"),
+    (4, "Mirefen Memory", ("pine", "teal", "teal", "mauve"), "teal", "rose", "sky", "rose"),
+    (5, "Starfall Memory", ("deep", "blue", "blue", "mauve"), "deep", "gold", "sky", "gold"),
+    (6, "Ashen Kiln Memory", ("dusk", "plum", "wine", "wine"), "wine", "apricot", "coral", "gold"),
+    (7, "Moon Shoals Memory", ("deep", "blue", "blue", "mauve"), "blue", "ice", "sky", "ice"),
+    (8, "Long Night Memory", ("dusk", "plum", "plum", "wine"), "plum", "rose", "rose", "gold"),
 ]
 
 
@@ -1982,44 +3345,44 @@ def build_archive_painters() -> list[tuple[ThemeSpec, ThemePainter]]:
         name="The Archive of Lost Lamps",
         island=8,
         floor_style="archive_parquet",
-        floor_ramp=("dusk", "plum", "mauve"),
+        floor_ramp=("dusk", "plum", "plum", "wine"),
         floor_seam="night",
-        floor_bevel="stone",
+        floor_bevel="mauve",
         floor_accent_a="apricot",
         floor_accent_b="gold",
         path_style="carpet_runner",
         path_main="wine",
-        path_hi="rose",
+        path_hi="plum",
         path_edge="night",
         path_trim="gold",
         wall_style="bookshelf",
-        wall_cap=("night", "plum", "wine"),
-        wall_lip="gold",
-        wall_face="plum",
-        wall_face_hi="apricot",
+        wall_cap=("void", "night", "dusk"),
+        wall_lip="apricot",
+        wall_face="night",
+        wall_face_hi="dusk",
         wall_base="void",
         water_style="moon_mirror",
-        water_deep="void",
-        water_mid="night",
-        water_hi="deep",
-        water_foam="sky",
+        water_deep="deep",
+        water_mid="blue",
+        water_hi="sky",
+        water_foam="ice",
         pit_style="star_chasm",
-        void_style="crypt_abyss",
+        void_style="starry_cosmos",
         rim_hi="gold",
-        rim_mid="mauve",
+        rim_mid="apricot",
         bridge_style="timber",
-        bridge_main="plum",
-        bridge_hi="apricot",
-        bridge_rail="gold",
+        bridge_main="dusk",
+        bridge_hi="plum",
+        bridge_rail="apricot",
         bridge_dark="night",
         seed=820,
         prop_sheet="theme_archive",
         door_sheet="theme_archive_doors",
         special_tiles=("D:carpet",),
         default_decor=("rug", "circle", "light_shaft"),
-        notes="Archive of Lost Lamps main hall: leather-bound bookshelf walls, scholarly wood flooring, warm reading light.",
+        notes="Archive of Lost Lamps main hall: calm 16x16 satin mahogany parquet, dark leather-bound bookshelf colonnades, plush velvet runners, warm reading-lamp aprons.",
     )
-    out.append((base_spec, ArchiveMemoryPainter(base_spec, "gold", "apricot")))
+    out.append((base_spec, ArchiveMemoryPainter(base_spec, "gold", "apricot", island_mem=0)))
 
     for isl, label, framp, pmain, ptrim, emid, ehi in _ARCHIVE_MEMORIES:
         mspec = ThemeSpec(
@@ -2029,7 +3392,7 @@ def build_archive_painters() -> list[tuple[ThemeSpec, ThemePainter]]:
             floor_style="archive_parquet",
             floor_ramp=framp,
             floor_seam="night",
-            floor_bevel="stone" if isl != 7 else "ice",
+            floor_bevel="sky" if isl in (2, 5, 7) else "mauve",
             floor_accent_a=emid,
             floor_accent_b=ehi,
             path_style="carpet_runner",
@@ -2038,18 +3401,18 @@ def build_archive_painters() -> list[tuple[ThemeSpec, ThemePainter]]:
             path_edge="night",
             path_trim=ptrim,
             wall_style="bookshelf",
-            wall_cap=("night", "dusk", "plum"),
-            wall_lip=ehi,
-            wall_face="plum",
-            wall_face_hi=emid,
+            wall_cap=("void", "night", "dusk"),
+            wall_lip=emid,
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="magma_river" if isl == 6 else ("koi_pond" if isl == 4 else "moon_mirror"),
             water_deep="wine" if isl == 6 else "deep",
             water_mid="coral" if isl == 6 else "blue",
-            water_hi="apricot" if isl == 6 else emid,
-            water_foam="gold" if isl == 6 else ehi,
+            water_hi="apricot" if isl == 6 else "sky",
+            water_foam="gold" if isl == 6 else "ice",
             pit_style="lava_pit" if isl == 6 else "star_chasm",
-            void_style="starry_cosmos" if isl in (5, 7, 8) else "crypt_abyss",
+            void_style="starry_cosmos",
             rim_hi=ehi,
             rim_mid=emid,
             bridge_style="iron_grate" if isl == 6 else "timber",
@@ -2062,7 +3425,7 @@ def build_archive_painters() -> list[tuple[ThemeSpec, ThemePainter]]:
             door_sheet="theme_archive_doors",
             special_tiles=("D:carpet",),
             default_decor=("rug", "circle", "light_shaft"),
-            notes=f"Archive memory wing echoing Island {isl} ({label}): bookshelf walls + {emid}/{ehi} memory inlay.",
+            notes=f"Archive memory wing echoing Island {isl} ({label}): calm memory-tinted satin parquet, dark bookshelf walls, plush runners, and {emid}/{ehi} accents.",
         )
-        out.append((mspec, ArchiveMemoryPainter(mspec, ehi, emid)))
+        out.append((mspec, ArchiveMemoryPainter(mspec, ehi, emid, island_mem=isl)))
     return out

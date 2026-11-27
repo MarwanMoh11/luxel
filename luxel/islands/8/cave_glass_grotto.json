@@ -305,38 +305,8 @@
         136
       ],
       "radius": 28,
-      "color": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        208,
-        128,
-        48,
-        32
-      ],
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        352,
-        128,
-        64,
-        32
-      ],
-      "color": "plum"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        56,
-        144
-      ],
-      "radius": 26,
-      "style": "compass",
-      "color": "ice",
-      "secondary": "rose"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",

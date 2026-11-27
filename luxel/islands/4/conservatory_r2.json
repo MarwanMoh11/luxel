@@ -367,15 +367,6 @@
       "style": "moss"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        336,
-        128,
-        64,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         184,

@@ -547,22 +547,15 @@
       "style": "ornate"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        96,
-        112,
-        320,
-        128
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         248,
         184
       ],
       "radius": 28,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -576,17 +569,6 @@
       ],
       "tint": "warm",
       "shear": 0.35
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        224,
-        168
-      ],
-      "radius": 38,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "apricot"
     }
   ],
   "triggers": [],

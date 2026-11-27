@@ -280,16 +280,8 @@
         192
       ],
       "radius": 96,
-      "color": "plum"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 44,
-      "color": "gold"
+      "color": "plum",
+      "secondary": "mauve"
     }
   ],
   "layers": [],

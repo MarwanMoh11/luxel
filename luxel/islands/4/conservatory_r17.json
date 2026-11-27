@@ -382,15 +382,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        48,
-        48,
-        176,
-        80
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         168,

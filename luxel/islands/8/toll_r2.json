@@ -360,15 +360,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        96,
-        112,
-        96,
-        96
-      ]
-    },
-    {
       "kind": "rug",
       "rect": [
         176,
@@ -412,7 +403,7 @@
       ],
       "radius": 26,
       "style": "ritual",
-      "color": "gold",
+      "color": "apricot",
       "secondary": "apricot"
     }
   ],

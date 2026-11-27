@@ -429,6 +429,24 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        424,
+        296
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        296,
+        296
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -441,17 +459,7 @@
       "radius": 34,
       "style": "clock",
       "color": "plum",
-      "secondary": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        192,
-        24,
-        112,
-        32
-      ],
-      "color": "sky"
+      "secondary": "apricot"
     },
     {
       "kind": "circle",
@@ -461,7 +469,7 @@
       ],
       "radius": 28,
       "style": "compass",
-      "color": "gold",
+      "color": "rose",
       "secondary": "rose"
     },
     {

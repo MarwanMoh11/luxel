@@ -294,16 +294,9 @@
         184
       ],
       "radius": 52,
-      "style": "ritual"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        96,
-        80,
-        288,
-        176
-      ]
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -317,17 +310,6 @@
       ],
       "tint": "warm",
       "shear": 0.3
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        240,
-        176
-      ],
-      "radius": 48,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "cream"
     }
   ],
   "triggers": [],

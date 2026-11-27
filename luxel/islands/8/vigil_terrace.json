@@ -621,7 +621,8 @@
         208
       ],
       "radius": 44,
-      "color": "gold"
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -632,16 +633,6 @@
         48
       ],
       "color": "wine"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        400,
-        296,
-        120,
-        72
-      ],
-      "color": "apricot"
     }
   ],
   "layers": [

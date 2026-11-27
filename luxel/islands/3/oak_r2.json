@@ -446,16 +446,6 @@
   "music": "island3_dungeon",
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        128,
-        32,
-        64,
-        64
-      ],
-      "color": "apricot"
-    },
-    {
       "kind": "stain",
       "pos": [
         192,

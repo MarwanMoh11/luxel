@@ -287,15 +287,6 @@
       "glow": true
     },
     {
-      "kind": "inlay",
-      "rect": [
-        304,
-        224,
-        112,
-        48
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         208,

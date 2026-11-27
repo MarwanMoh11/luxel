@@ -347,15 +347,6 @@
       "style": "clock"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        208,
-        80,
-        80,
-        96
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         152,

@@ -493,57 +493,7 @@
       "radius": 44,
       "style": "ritual",
       "color": "rose",
-      "secondary": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        80,
-        176,
-        320,
-        32
-      ],
-      "color": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        96,
-        288,
-        288,
-        48
-      ],
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        80,
-        64,
-        320,
-        16
-      ],
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        80,
-        160,
-        320,
-        16
-      ],
-      "color": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        80,
-        240,
-        320,
-        16
-      ],
-      "color": "gold"
+      "secondary": "apricot"
     }
   ],
   "layers": [

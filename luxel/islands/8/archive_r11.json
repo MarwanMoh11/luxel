@@ -313,6 +313,24 @@
       ],
       "layer": "ground",
       "flip_x": false
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "tall_bookshelf_unit",
+      "pos": [
+        312,
+        26
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_archive",
+      "prop": "memory_glass_jar_stand",
+      "pos": [
+        104,
+        74
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -323,16 +341,8 @@
         144
       ],
       "radius": 32,
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        144,
-        48,
-        128,
-        48
-      ]
+      "color": "sky",
+      "secondary": "mauve"
     }
   ],
   "layers": [],

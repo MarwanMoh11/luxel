@@ -310,6 +310,24 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "hourglass_milestone",
+      "pos": [
+        136,
+        58
+      ],
+      "layer": "sort"
+    },
+    {
+      "sheet": "theme_endless_stair",
+      "prop": "void_chime_post",
+      "pos": [
+        360,
+        42
+      ],
+      "layer": "sort"
     }
   ],
   "decor": [
@@ -320,7 +338,8 @@
         144
       ],
       "radius": 44,
-      "color": "rose"
+      "color": "rose",
+      "secondary": "apricot"
     },
     {
       "kind": "rug",

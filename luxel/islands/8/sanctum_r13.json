@@ -578,8 +578,8 @@
       ],
       "radius": 34,
       "style": "ritual",
-      "color": "gold",
-      "secondary": "cream"
+      "color": "rose",
+      "secondary": "mauve"
     },
     {
       "kind": "rug",
@@ -592,47 +592,6 @@
       "style": "ornate",
       "color": "wine",
       "trim": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        24,
-        200,
-        64,
-        80
-      ],
-      "color": "sky"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        424,
-        64,
-        64,
-        56
-      ],
-      "color": "rose"
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        256,
-        160
-      ],
-      "radius": 42,
-      "style": "compass",
-      "color": "gold",
-      "secondary": "cream"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        48,
-        324,
-        416,
-        32
-      ],
-      "color": "gold"
     }
   ],
   "layers": [],

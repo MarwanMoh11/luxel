@@ -348,16 +348,8 @@
         192
       ],
       "radius": 60,
-      "color": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        112,
-        96,
-        288,
-        192
-      ]
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
