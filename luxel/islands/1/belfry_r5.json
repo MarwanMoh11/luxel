@@ -225,7 +225,7 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        104,
+        96,
         56
       ],
       "layer": "sort",
@@ -237,8 +237,8 @@
       "sheet": "island1_scenery",
       "prop": "candelabra_tall",
       "pos": [
-        360,
-        56
+        368,
+        64
       ],
       "layer": "sort",
       "flip_x": true,
@@ -285,7 +285,7 @@
       "sheet": "island1_scenery",
       "prop": "belfry_bell_hanging",
       "pos": [
-        272,
+        264,
         40
       ],
       "layer": "sort",

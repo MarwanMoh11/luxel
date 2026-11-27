@@ -506,7 +506,7 @@
         384,
         328
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -516,7 +516,7 @@
       "prop": "belfry_bell_hanging",
       "pos": [
         384,
-        344
+        336
       ],
       "layer": "sort",
       "flip_x": false,

@@ -369,8 +369,8 @@
       "sheet": "island1_scenery",
       "prop": "mossy_column",
       "pos": [
-        200,
-        168
+        184,
+        160
       ],
       "layer": "sort",
       "flip_x": false,

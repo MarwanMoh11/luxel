@@ -28,11 +28,10 @@ func attach(events: LxEventBus = null, state: LxGameState = null) -> void:
 
 
 func detach() -> void:
-	if not _attached or _events == null:
-		_attached = false
-		return
-	if _events.region_entered.is_connected(_on_region_entered):
+	if _events != null and _events.region_entered.is_connected(_on_region_entered):
 		_events.region_entered.disconnect(_on_region_entered)
+	_events = null
+	_state = null
 	_attached = false
 
 
@@ -45,7 +44,8 @@ func on_region_loaded(region_id: String) -> void:
 	LxHubTracker.ensure()
 	sync_hub_layers(region_id)
 	if Lx.audio != null:
-		var track: String = str(Lx.state.story_flags.get("hub:music_track", "hub")) if Lx.state != null else "hub"
+		var st: LxGameState = _state if _state != null else Lx.state
+		var track: String = str(st.story_flags.get("hub:music_track", "hub")).strip_edges() if st != null else "hub"
 		Lx.audio.play_cue(track if not track.is_empty() else "hub")
 
 

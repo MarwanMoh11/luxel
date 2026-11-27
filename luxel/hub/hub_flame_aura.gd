@@ -53,16 +53,20 @@ func _draw() -> void:
 	# Crisp opaque Last Light pixel halo ring + rising ember pips (zero semi-transparent fog)
 	var r: float = 7.0 if fred else 7.0 + roundf(sin(_clock * 4.5) * 1.0)
 	for i: int in range(6):
-		var ang: float = (_clock * (0.7 if fred else 1.8)) + float(i) * (TAU / 6.0)
+		var ang: float = (0.0 if fred else (_clock * 1.8)) + float(i) * (TAU / 6.0)
 		var pt := (center + Vector2(cos(ang) * r, sin(ang) * r * 0.72)).round()
 		draw_rect(Rect2(pt, Vector2(1.0, 1.0)), main_c if i % 2 == 0 else rim_c)
-	# Bright tinted core pip right on the lantern wick
+	# Void-backed bright tinted core pip right on the lantern wick
 	var bob: float = 0.0 if fred else roundf(sin(_clock * 6.5) * 0.6)
+	draw_rect(Rect2(center + Vector2(-2.0, -3.0 + bob), Vector2(4.0, 4.0)), LxPalette.PAL["void"])
 	draw_rect(Rect2(center + Vector2(-1.0, -2.0 + bob), Vector2(2.0, 2.0)), main_c)
 	draw_rect(Rect2(center + Vector2(0.0, -2.0 + bob), Vector2(1.0, 1.0)), core_c)
-	# Two gentle rising sparks
-	for si: int in range(2):
-		var ph: float = fmod(_clock * (0.45 if fred else 0.9) + float(si) * 0.5, 1.0)
-		var sx: float = roundf(sin(_clock * 2.1 + float(si) * PI) * 3.0)
-		var sy: float = roundf(-4.0 - ph * 9.0)
-		draw_rect(Rect2(center + Vector2(sx, sy), Vector2(1.0, 1.0)), core_c if ph < 0.45 else main_c)
+	# Gentle rising sparks (single steady ember under flash_reduced)
+	if fred:
+		draw_rect(Rect2(center + Vector2(0.0, -6.0), Vector2(1.0, 1.0)), main_c)
+	else:
+		for si: int in range(2):
+			var ph: float = fmod(_clock * 0.9 + float(si) * 0.5, 1.0)
+			var sx: float = roundf(sin(_clock * 2.1 + float(si) * PI) * 3.0)
+			var sy: float = roundf(-4.0 - ph * 9.0)
+			draw_rect(Rect2(center + Vector2(sx, sy), Vector2(1.0, 1.0)), core_c if ph < 0.45 else main_c)

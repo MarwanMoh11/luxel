@@ -10,6 +10,7 @@ var _driver_id: int = 0
 var _ticked_by_toy: bool = false
 var _hud_layer: CanvasLayer = null
 var _hud_draw: Node2D = null
+var _hud_sig: String = ""
 
 
 func _ready() -> void:
@@ -44,9 +45,18 @@ func sync_hud_visible() -> void:
 	if _hud_layer == null or not is_instance_valid(_hud_layer):
 		return
 	var modal_open: bool = Lx.ui != null and Lx.ui.has_method("is_modal_open") and bool(Lx.ui.call("is_modal_open"))
-	_hud_layer.visible = (not modal_open) and rule != null and rule.should_show_hud_badge()
-	if _hud_layer.visible and _hud_draw != null and is_instance_valid(_hud_draw):
-		_hud_draw.queue_redraw()
+	var vis: bool = (not modal_open) and rule != null and rule.should_show_hud_badge()
+	var vis_changed: bool = _hud_layer.visible != vis
+	_hud_layer.visible = vis
+	if vis and _hud_draw != null and is_instance_valid(_hud_draw):
+		var st: LxGameState = rule._get_state()
+		var sig: String = "%s|%s|%s|%s|%s|%s" % [
+			rule.is_midnight(), rule.has_echo_clapper(), rule.has_shutter_hood(),
+			rule.is_wick_cloaked(), rule.stealth_alert, st != null and st.max_hearts > 6
+		]
+		if vis_changed or sig != _hud_sig:
+			_hud_sig = sig
+			_hud_draw.queue_redraw()
 
 
 func _process(_dt: float) -> void:
@@ -97,8 +107,8 @@ func _draw() -> void:
 					var p := Vector2(float(tx) * ts, float(ty) * ts)
 					var ph: float = fmod(_clock * 2.2 + float(tx * 3 + ty * 5) * 0.17, 1.0)
 					var c_gl: Color = LxPalette.PAL["ice"] as Color if (red or ph < 0.5) else LxPalette.PAL["sky"] as Color
-					draw_rect(Rect2(p + Vector2(2.0, 2.0), Vector2(2.0, 1.0)), Color(c_gl, 0.65))
-					draw_rect(Rect2(p + Vector2(12.0, 13.0), Vector2(2.0, 1.0)), Color(c_gl, 0.55))
+					draw_rect(Rect2(p + Vector2(2.0, 2.0), Vector2(2.0, 1.0)), Color(c_gl, 0.45 if red else 0.65))
+					draw_rect(Rect2(p + Vector2(12.0, 13.0), Vector2(2.0, 1.0)), Color(c_gl, 0.38 if red else 0.55))
 
 	# 2. 1.2 s Town Bell Evening <-> Midnight transition ring
 	if rule.transition_t > 0.0:
@@ -126,15 +136,19 @@ func _draw() -> void:
 		var r_fr: float = float(obj.get("radius")) if (obj.get("radius") is float or obj.get("radius") is int) else 10.0
 		r_fr = clampf(r_fr, 8.0, 32.0)
 		var fr_rect := Rect2((op - Vector2(r_fr, r_fr)).round(), Vector2(r_fr * 2.0, r_fr * 2.0).round())
-		draw_rect(fr_rect, Color(LxPalette.PAL["ice"] as Color, 0.16 if red else 0.22))
+		draw_rect(fr_rect, Color(LxPalette.PAL["ice"] as Color, 0.14 if red else 0.22))
 		draw_rect(fr_rect, LxPalette.PAL["ice"] as Color, false, 1.0)
+		draw_rect(Rect2(fr_rect.position - Vector2.ONE, Vector2(3.0, 3.0)), LxPalette.PAL["void"] as Color)
+		draw_rect(Rect2(fr_rect.position, Vector2(2.0, 2.0)), LxPalette.PAL["cream"] as Color)
+		draw_rect(Rect2(fr_rect.end - Vector2(2.0, 2.0), Vector2(3.0, 3.0)), LxPalette.PAL["void"] as Color)
+		draw_rect(Rect2(fr_rect.end - Vector2(2.0, 2.0), Vector2(2.0, 2.0)), LxPalette.PAL["cream"] as Color)
 		var frac: float = clampf(float(ent["left"]) / maxf(0.1, float(ent["max_t"])), 0.0, 1.0)
 		LxToyDraw.draw_bar(self, Vector2(op.x - 7.0, op.y - r_fr - 5.0).round(), 14.0, frac, LxPalette.PAL["ice"] as Color)
 
 	# 4. Subtle Shutter Hood shadow-cloak ring around cloaked Wick
 	if rule.is_wick_cloaked() and Lx.player is LxWick and is_instance_valid(Lx.player):
 		var wp: Vector2 = (Lx.player as LxWick).global_position.round()
-		draw_arc(wp + Vector2(0.0, -3.0), 9.0, 0.0, TAU, 16, Color(LxPalette.PAL["plum"] as Color, 0.72), 1.0)
+		draw_arc(wp + Vector2(0.0, -3.0), 9.0, 0.0, TAU, 16, Color(LxPalette.PAL["plum"] as Color, 0.48 if red else 0.72), 1.0)
 		draw_rect(Rect2(wp + Vector2(-3.0, -11.0), Vector2(6.0, 2.0)), LxPalette.PAL["night"] as Color)
 		draw_rect(Rect2(wp + Vector2(-2.0, -11.0), Vector2(4.0, 1.0)), LxPalette.PAL["sky"] as Color)
 
@@ -151,19 +165,32 @@ func _draw_hud_badge() -> void:
 	var w_box: float = 34.0 + (10.0 if has_echo else 0.0) + (10.0 if has_hood else 0.0)
 	var c_void: Color = LxPalette.PAL["void"] as Color
 	var c_rim: Color = LxPalette.PAL["sky"] as Color if is_mid else LxPalette.PAL["gold"] as Color
-	_hud_draw.draw_rect(Rect2(x0, y0, w_box, 10.0), Color(c_void, 0.78))
+	_hud_draw.draw_rect(Rect2(x0, y0, w_box, 10.0), Color(c_void, 0.82))
 	_hud_draw.draw_rect(Rect2(x0, y0, w_box, 10.0), c_rim, false, 1.0)
+	# Greyscale-distinct top accent: bright cap for Evening, recessed twin corner notches for Midnight
+	if not is_mid:
+		_hud_draw.draw_rect(Rect2(x0 + 1.0, y0, w_box - 2.0, 1.0), LxPalette.PAL["cream"] as Color)
+	else:
+		_hud_draw.draw_rect(Rect2(x0 + 1.0, y0 + 1.0, 1.0, 1.0), LxPalette.PAL["ice"] as Color)
+		_hud_draw.draw_rect(Rect2(x0 + w_box - 2.0, y0 + 1.0, 1.0, 1.0), LxPalette.PAL["ice"] as Color)
 	LxToyDraw.draw_tone_crest(_hud_draw, Vector2(x0 + 5.0, y0 + 5.0), "dusk" if is_mid else "dawn", true)
 	var lbl_id: String = "ISL1_HUD_MID" if is_mid else "ISL1_HUD_EVE"
 	var lbl: String = LxStrings.text(lbl_id) if LxStrings.has_id(lbl_id) else ""
 	LxPixelFont.draw_left(_hud_draw, lbl, Vector2(x0 + 10.0, y0 + 2.0), LxPalette.PAL["ice"] as Color if is_mid else LxPalette.PAL["cream"] as Color, 1)
 	var cx: float = x0 + 34.0
 	if has_echo:
+		_hud_draw.draw_rect(Rect2(cx, y0 + 1.0, 8.0, 8.0), c_void)
 		_hud_draw.draw_arc(Vector2(cx + 4.0, y0 + 5.0), 3.0, 0.0, TAU, 10, LxPalette.PAL["gold"] as Color, 1.0)
 		_hud_draw.draw_rect(Rect2(cx + 3.0, y0 + 4.0, 2.0, 2.0), LxPalette.PAL["cream"] as Color)
 		cx += 10.0
 	if has_hood:
 		var cloak: bool = rule.is_wick_cloaked()
-		var c_h: Color = LxPalette.PAL["ice"] as Color if cloak else (LxPalette.PAL["coral"] as Color if rule.stealth_alert == "spotted" else LxPalette.PAL["mauve"] as Color)
+		var spotted: bool = rule.stealth_alert == "spotted"
+		var c_h: Color = LxPalette.PAL["ice"] as Color if cloak else (LxPalette.PAL["coral"] as Color if spotted else LxPalette.PAL["mauve"] as Color)
+		_hud_draw.draw_rect(Rect2(cx, y0 + 1.0, 8.0, 8.0), c_void)
 		_hud_draw.draw_rect(Rect2(cx + 1.0, y0 + 2.0, 6.0, 6.0), LxPalette.PAL["night"] as Color)
 		_hud_draw.draw_rect(Rect2(cx + 2.0, y0 + 4.0, 4.0, 2.0), c_h)
+		if cloak:
+			_hud_draw.draw_rect(Rect2(cx + 2.0, y0 + 2.0, 4.0, 1.0), LxPalette.PAL["cream"] as Color)
+		elif spotted:
+			_hud_draw.draw_rect(Rect2(cx + 3.0, y0 + 1.0, 2.0, 3.0), LxPalette.PAL["cream"] as Color)

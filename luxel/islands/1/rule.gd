@@ -163,6 +163,7 @@ func sync_shutter_hood() -> void:
 	if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 		return
 	var w: LxWick = Lx.player as LxWick
+	var prev_applied: bool = _applied_hood_scale
 	if is_wick_cloaked():
 		if not is_equal_approx(w.light_scale, SHUTTER_LIGHT_SCALE):
 			w.set_light_scale(SHUTTER_LIGHT_SCALE)
@@ -172,6 +173,9 @@ func sync_shutter_hood() -> void:
 	elif _applied_hood_scale:
 		w.set_light_scale(1.0)
 		_applied_hood_scale = false
+	if _applied_hood_scale != prev_applied and _fx != null and is_instance_valid(_fx):
+		_fx.queue_redraw()
+		_fx.sync_hud_visible()
 
 
 func _restore_hood_light_scale() -> void:
@@ -294,6 +298,7 @@ func tick(dt: float) -> void:
 	if dt <= 0.0:
 		return
 	sync_shutter_hood()
+	var had_trans: bool = transition_t > 0.0
 	if transition_t > 0.0:
 		transition_t = maxf(0.0, transition_t - dt)
 	if _alert_sfx_cd > 0.0:
@@ -302,16 +307,17 @@ func tick(dt: float) -> void:
 		_alert_decay_t = maxf(0.0, _alert_decay_t - dt)
 		if _alert_decay_t <= 0.0:
 			stealth_alert = "calm"
-	_tick_frozen(dt)
+	var frozen_dirty: bool = _tick_frozen(dt)
 	_tick_shutter_dash_slip(dt)
 	if _fx != null and is_instance_valid(_fx):
-		_fx.queue_redraw()
+		if had_trans or frozen_dirty or is_wick_cloaked() or (is_midnight() and not LxHudFx.flash_reduced()):
+			_fx.queue_redraw()
 		_fx.sync_hud_visible()
 
 
-func _tick_frozen(dt: float) -> void:
+func _tick_frozen(dt: float) -> bool:
 	if _frozen.is_empty():
-		return
+		return false
 	var done_ids: Array[int] = []
 	for oid_v: Variant in _frozen.keys():
 		var oid: int = int(oid_v)
@@ -328,6 +334,7 @@ func _tick_frozen(dt: float) -> void:
 			done_ids.append(oid)
 	for oid: int in done_ids:
 		_frozen.erase(oid)
+	return true
 
 
 func _restore_frozen_entry(ent: Dictionary) -> void:
@@ -398,7 +405,7 @@ func _apply_bell_hour_transition(hour: String, silent: bool) -> void:
 		if _events != null:
 			var sfx_id: String = _pick_sfx("bell_dusk_ring" if is_mid else "bell_dawn_ring", "bell_toll_heavy" if is_mid else "bell_toll")
 			_events.sfx_requested.emit(sfx_id, Vector2.ZERO, false)
-			_events.shake_requested.emit(0.18 if not LxHudFx.flash_reduced() else 0.08)
+			_emit_shake(0.18)
 			var nar_id: String = "ISL1_HOUR_MID" if is_mid else "ISL1_HOUR_EVE"
 			if LxStrings.has_id(nar_id):
 				_events.narration_requested.emit(nar_id, "narration", 3.2)
@@ -507,6 +514,11 @@ func _pick_sfx(preferred: String, fallback: String) -> String:
 	if Lx.packs != null and not Lx.packs.sfx_cue(preferred).is_empty():
 		return preferred
 	return fallback
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _get_state() -> LxGameState:

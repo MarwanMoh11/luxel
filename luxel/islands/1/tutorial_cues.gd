@@ -344,7 +344,7 @@ func _draw() -> void:
 	var wpos: Vector2 = _player_pos()
 	if _pickup_burst_t > 0.0:
 		var u: float = 1.0 - clampf(_pickup_burst_t / 0.65, 0.0, 1.0)
-		var col: Color = LxPalette.fade_step(1.0 - u, "cream" if u < 0.35 else "gold")
+		var col: Color = LxPalette.fade_step(1.0 - u, "cream" if (u < 0.35 and not fred) else "gold")
 		if col.a > 0.0:
 			draw_arc(_pickup_burst_pos.round(), roundf(lerpf(6.0, 26.0 if fred else 32.0, u)), 0.0, TAU, 20, col, 1.0, false)
 	var show_inputs: bool = not _is_ceremony_open()

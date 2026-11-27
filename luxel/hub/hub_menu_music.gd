@@ -50,7 +50,8 @@ func _ready() -> void:
 
 func open() -> void:
 	_rebuild()
-	_playing_cue = str(Lx.state.story_flags.get("hub:music_track", "hub")) if Lx.state != null else "hub"
+	var saved_cue: String = str(Lx.state.story_flags.get("hub:music_track", "hub")).strip_edges() if Lx.state != null else "hub"
+	_playing_cue = saved_cue if not saved_cue.is_empty() else "hub"
 	_idx = 0
 	_hover_close = false
 	for i: int in range(_rows.size()):
@@ -257,7 +258,7 @@ func _draw() -> void:
 
 	var cr: Rect2 = _close_rect()
 	LxPixelFont.draw_panel(self, cr, "coral" if _hover_close else "dusk", "gold" if _hover_close else "mauve", "void")
-	LxPixelFont.draw_centered(self, "X", cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_centered(self, "X", roundf(cr.get_center().x), roundf(cr.position.y + 3.0), LxPalette.PAL["cream"], 1)
 
 	var unl_n: int = 0
 	for r: Dictionary in _rows:
@@ -278,15 +279,26 @@ func _draw() -> void:
 		LxPixelFont.draw_panel(self, rr, "plum" if sel else "void", "gold" if sel else "dusk", "void")
 		var lbl: String = LxStrings.text(str(row["name_key"])) if unl else LxStrings.text("HUB_MUSIC_LOCKED")
 		var col: Color = LxPalette.PAL["gold"] if is_now else (LxPalette.PAL["cream"] if unl else LxPalette.PAL["mauve"])
-		LxPixelFont.draw(self, lbl, Vector2(rr.position.x + 6.0, rr.position.y + 4.0), col, 1)
 		if is_now:
-			# Pixel equalizer bars (calm stepped static silhouette under flash_reduced)
+			draw_rect(Rect2(roundf(rr.position.x + 3.0), roundf(rr.position.y + 5.0), 2.0, 3.0), LxPalette.PAL["gold"])
+			draw_rect(Rect2(roundf(rr.position.x + 4.0), roundf(rr.position.y + 6.0), 1.0, 1.0), LxPalette.PAL["cream"])
+		LxPixelFont.draw(self, lbl, Vector2(rr.position.x + (8.0 if is_now else 6.0), rr.position.y + 4.0), col, 1)
+		if is_now:
+			# Void-backed pixel equalizer bars (calm stepped static silhouette under flash_reduced)
+			draw_rect(Rect2(roundf(rr.end.x - 23.0), roundf(rr.end.y - 11.0), 18.0, 9.0), LxPalette.PAL["void"])
 			for bi: int in range(4):
 				var bh: float = EQ_STATIC[bi] if fred else clampf(roundf(3.0 + 4.0 * absf(sin(_clock * 5.2 + float(bi) * 1.1))), 2.0, 7.0)
 				var bx: float = roundf(rr.end.x - 21.0 + float(bi * 4))
 				var by: float = roundf(rr.end.y - 3.0 - bh)
 				draw_rect(Rect2(bx, by, 2.0, bh), LxPalette.PAL["gold"])
 				draw_rect(Rect2(bx, by, 2.0, 1.0), LxPalette.PAL["cream"])
+		elif not unl:
+			# Crisp locked padlock silhouette pip
+			var lx: float = roundf(rr.end.x - 10.0)
+			var ly: float = roundf(rr.position.y + 4.0)
+			draw_rect(Rect2(lx, ly + 2.0, 5.0, 4.0), LxPalette.PAL["dusk"])
+			draw_rect(Rect2(lx + 1.0, ly, 3.0, 2.0), LxPalette.PAL["mauve"])
+			draw_rect(Rect2(lx + 2.0, ly + 1.0, 1.0, 1.0), LxPalette.PAL["void"])
 
 	# Scrollbar when list exceeds visible rows
 	if _rows.size() > VISIBLE_ROWS:

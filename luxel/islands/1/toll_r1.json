@@ -378,7 +378,7 @@
       "prop": "iron_pulley_wheel",
       "pos": [
         288,
-        168
+        176
       ],
       "layer": "sort",
       "flip_x": true,
@@ -390,7 +390,7 @@
       "prop": "hanging_pendulum_weight",
       "pos": [
         264,
-        120
+        112
       ],
       "layer": "sort",
       "flip_x": false,

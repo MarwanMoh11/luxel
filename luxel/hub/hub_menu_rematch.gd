@@ -248,7 +248,7 @@ func _draw() -> void:
 	# Close button
 	var cr: Rect2 = _close_rect()
 	LxPixelFont.draw_panel(self, cr, "coral" if _hover_close else "wine", "gold" if _hover_close else "mauve", "void")
-	LxPixelFont.draw_centered(self, "X", cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_centered(self, "X", roundf(cr.get_center().x), roundf(cr.position.y + 3.0), LxPalette.PAL["cream"], 1)
 
 	# Summary counter
 	var def_n: int = 0
@@ -262,6 +262,8 @@ func _draw() -> void:
 	LxPixelFont.draw(self, sum_s, Vector2(PANEL.position.x + 10.0, PANEL.position.y + 21.0), LxPalette.PAL["stone"], 1)
 
 	# Boss rows
+	var fred: bool = LxHudFx.flash_reduced()
+	var sel_pip_c: Color = LxPalette.PAL["gold"] if (fred or int(_clock * 4.0) % 2 == 0) else LxPalette.PAL["cream"]
 	for ri: int in range(VISIBLE_ROWS):
 		var ei: int = _scroll + ri
 		if ei >= _entries.size():
@@ -271,13 +273,15 @@ func _draw() -> void:
 		var sel: bool = ei == _idx
 		var is_def: bool = bool(e["defeated"])
 		LxPixelFont.draw_panel(self, r, "plum" if sel else "void", "gold" if sel else "dusk", "void")
+		if sel:
+			draw_rect(Rect2(roundf(r.position.x + 2.0), roundf(r.position.y + 4.0), 2.0, 5.0), sel_pip_c)
 		var meta: Dictionary = e["meta"] as Dictionary
 		var rec: Dictionary = e["rec"] as Dictionary
 		var isl: int = int(e["island"])
 		var name_str: String = LxStrings.text(str(meta.get("name_key", ""))) if is_def else LxStrings.text("HUB_REMATCH_UNKNOWN")
 		var label: String = "I%d %s" % [isl, name_str.substr(0, 22)]
 		var col: Color = LxPalette.PAL["cream"] if is_def else LxPalette.PAL["mauve"]
-		LxPixelFont.draw(self, label, Vector2(r.position.x + 5.0, r.position.y + 4.0), col, 1)
+		LxPixelFont.draw(self, label, Vector2(r.position.x + (6.0 if sel else 5.0), r.position.y + 4.0), col, 1)
 		if is_def:
 			var best_s: float = float(rec.get("best_s", -1.0))
 			var t_str: String = ("%04.1fS" % best_s) if best_s > 0.0 else "--.-S"
@@ -311,7 +315,7 @@ func _draw() -> void:
 	var fy: float = PANEL.end.y - 22.0
 	draw_rect(Rect2(PANEL.position.x + 4.0, fy - 2.0, PANEL.size.x - 8.0, 1.0), LxPalette.PAL["dusk"])
 	if not _msg_key.is_empty():
-		LxPixelFont.draw_centered(self, LxStrings.text(_msg_key), PANEL.position.x + PANEL.size.x * 0.5, fy + 3.0, LxPalette.PAL["coral"], 1)
+		LxPixelFont.draw_centered(self, LxStrings.text(_msg_key), roundf(PANEL.position.x + PANEL.size.x * 0.5), roundf(fy + 3.0), LxPalette.PAL["coral"], 1)
 	elif not _entries.is_empty() and _idx < _entries.size():
 		var cur: Dictionary = _entries[_idx]
 		var tgt: Vector3 = LxHubState.boss_time_targets(cur["meta"] as Dictionary)

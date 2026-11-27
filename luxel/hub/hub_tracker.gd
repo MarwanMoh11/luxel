@@ -31,6 +31,7 @@ var _stashed_defeated: Array[String] = []
 var _hud_layer: CanvasLayer = null
 var _hud_draw: Node2D = null
 var _bound_events: LxEventBus = null
+var _hit_flash_t: float = 0.0
 
 
 static func ensure() -> LxHubTracker:
@@ -65,6 +66,12 @@ static func reset_singleton() -> void:
 
 func _exit_tree() -> void:
 	_unbind()
+	if _hud_draw != null and is_instance_valid(_hud_draw) and _hud_draw.draw.is_connected(_draw_rematch_hud):
+		_hud_draw.draw.disconnect(_draw_rematch_hud)
+	_hud_draw = null
+	if _hud_layer != null and is_instance_valid(_hud_layer):
+		_hud_layer.queue_free()
+	_hud_layer = null
 	if active == self:
 		active = null
 
@@ -145,6 +152,7 @@ func start_rematch(boss_id: String) -> bool:
 	rematch_elapsed = 0.0
 	rematch_hits = 0
 	_return_delay_t = 0.0
+	_hit_flash_t = 0.0
 	_ensure_rematch_hud()
 
 	var ok: bool = bool(Lx.root.call("load_island_region", isl, reg))
@@ -165,6 +173,7 @@ func cancel_rematch() -> void:
 	rematch_boss_id = ""
 	rematch_boss_meta.clear()
 	_return_delay_t = 0.0
+	_hit_flash_t = 0.0
 	if _hud_layer != null and is_instance_valid(_hud_layer):
 		_hud_layer.visible = false
 
@@ -197,6 +206,8 @@ func _process(delta: float) -> void:
 		if _hud_draw != null and is_instance_valid(_hud_draw):
 			_hud_draw.queue_redraw()
 		return
+	if _hit_flash_t > 0.0:
+		_hit_flash_t = maxf(0.0, _hit_flash_t - delta)
 	rematch_elapsed += delta
 	if _hud_draw != null and is_instance_valid(_hud_draw):
 		_hud_draw.queue_redraw()
@@ -215,6 +226,7 @@ func _on_region_entered(island_id: int, region_id: String) -> void:
 func _on_player_damaged(_amt: float, _from: Vector2, _kdir: Vector2, _src: String) -> void:
 	if rematch_active and not rematch_returning:
 		rematch_hits += 1
+		_hit_flash_t = 0.35
 
 
 func _on_player_died() -> void:
@@ -294,12 +306,26 @@ func _ensure_rematch_hud() -> void:
 func _draw_rematch_hud() -> void:
 	if not rematch_active or _hud_draw == null:
 		return
+	var fr: bool = LxHudFx.flash_reduced()
 	var bar := Rect2(102.0, 4.0, 116.0, 15.0)
+	var bdr_k: String = "coral" if (_hit_flash_t > 0.0 and (fr or int(_hit_flash_t * 20.0) % 2 == 0)) else "gold"
 	_hud_draw.draw_rect(Rect2(bar.position + Vector2(1.0, 1.0), bar.size), LxPalette.PAL["void"])
-	LxPixelFont.draw_panel(_hud_draw, bar, "night", "gold", "void")
+	LxPixelFont.draw_panel(_hud_draw, bar, "night", bdr_k, "void")
 	var t_str: String = "%02d:%04.1f" % [int(rematch_elapsed / 60.0), fmod(rematch_elapsed, 60.0)]
 	var lbl: String = LxStrings.fmt("HUB_REMATCH_HUD", [t_str])
 	LxPixelFont.draw(_hud_draw, lbl, Vector2(bar.position.x + 6.0, bar.position.y + 5.0), LxPalette.PAL["cream"], 1)
 	var nh_col: Color = LxPalette.PAL["lime"] if rematch_hits == 0 else LxPalette.PAL["coral"]
 	var nh_str: String = LxStrings.text("HUB_NO_HIT_OK" if rematch_hits == 0 else "HUB_NO_HIT_LOST")
 	LxPixelFont.draw_right(_hud_draw, nh_str, bar.end.x - 6.0, bar.position.y + 5.0, nh_col, 1)
+	# Compact void-backed live speed-medal pace tray (Bronze / Silver / Gold)
+	var tgts: Vector3 = LxHubState.boss_time_targets(rematch_boss_meta)
+	var pace_m: int = 3 if rematch_elapsed <= tgts.x else (2 if rematch_elapsed <= tgts.y else (1 if rematch_elapsed <= tgts.z else 0))
+	var tx: float = 149.0
+	var ty: float = bar.end.y
+	_hud_draw.draw_rect(Rect2(tx, ty, 22.0, 5.0), LxPalette.PAL["void"])
+	for mi: int in range(3):
+		var mc: Color = LxPalette.PAL["gold"] if mi == 2 else (LxPalette.PAL["ice"] if mi == 1 else LxPalette.PAL["apricot"])
+		var px: float = tx + 2.0 + float(mi * 6)
+		_hud_draw.draw_rect(Rect2(px, ty + 1.0, 5.0, 3.0), mc if pace_m > mi else LxPalette.PAL["dusk"])
+		if pace_m > mi:
+			_hud_draw.draw_rect(Rect2(px, ty + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])

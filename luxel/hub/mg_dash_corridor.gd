@@ -86,7 +86,8 @@ func _on_trial_tick(dt: float) -> void:
 					streak = 0
 					_emit_sfx("shield_clang")
 					if w.has_method("spawn_ring"):
-						w.spawn_ring(w.global_position, 2.0, 12.0, 0.16, LxPalette.PAL["coral"] as Color, 1.2)
+						var fr_hit: bool = LxHudFx.flash_reduced()
+						w.spawn_ring(w.global_position, 2.0, 9.0 if fr_hit else 12.0, 0.16, (LxPalette.PAL["apricot"] if fr_hit else LxPalette.PAL["coral"]) as Color, 1.0)
 		if next_x < _corridor_rect.position.x - 16.0 or next_x > _corridor_rect.end.x + 16.0:
 			_waves.remove_at(i)
 	trial_subtext = "DODGE %d x%d" % [dodges, streak]
@@ -105,7 +106,8 @@ func register_perfect_dodge(w: LxWick = null) -> void:
 		if w.move_dash != null:
 			w.move_dash.cooldown_left = 0.0
 		if w.has_method("spawn_ring"):
-			w.spawn_ring(w.global_position, 3.0, 18.0, 0.22, LxPalette.PAL["gold"] as Color, 1.5)
+			var fr_d: bool = LxHudFx.flash_reduced()
+			w.spawn_ring(w.global_position, 3.0, 13.0 if fr_d else 18.0, 0.22, (LxPalette.PAL["apricot"] if fr_d else LxPalette.PAL["gold"]) as Color, 1.0 if fr_d else 2.0)
 
 
 func _spawn_wave() -> void:
@@ -146,18 +148,46 @@ func _draw_waves() -> void:
 	if not trial_running or _wave_overlay == null:
 		return
 	var fred: bool = LxHudFx.flash_reduced()
+	var c_void: Color = LxPalette.PAL["void"]
+	var rx0: float = roundf(_corridor_rect.position.x)
+	var ry0: float = roundf(_corridor_rect.position.y)
+	var rw: float = roundf(_corridor_rect.size.x)
+	var rh: float = roundf(_corridor_rect.size.y)
+	# Subtle void-backed corridor zone lane rails
+	for sx: int in range(int(rx0), int(rx0 + rw), 16):
+		_wave_overlay.draw_rect(Rect2(float(sx), ry0 - 1.0, 8.0, 2.0), c_void)
+		_wave_overlay.draw_rect(Rect2(float(sx) + 1.0, ry0, 6.0, 1.0), LxPalette.PAL["dusk"])
+		_wave_overlay.draw_rect(Rect2(float(sx), ry0 + rh - 1.0, 8.0, 2.0), c_void)
+		_wave_overlay.draw_rect(Rect2(float(sx) + 1.0, ry0 + rh - 1.0, 6.0, 1.0), LxPalette.PAL["dusk"])
 	for wv: Dictionary in _waves:
 		var wx: float = roundf(float(wv["x"]))
+		var dir_x: float = float(wv["dir"])
 		var tell: float = float(wv["tell_t"])
 		if tell > 0.0:
-			var c: Color = LxPalette.PAL["apricot"] if fred else LxPalette.PAL["coral"]
-			for sy: int in range(int(_corridor_rect.position.y), int(_corridor_rect.end.y), 10):
+			var prog: float = clampf(1.0 - tell / 0.55, 0.0, 1.0)
+			var c: Color = LxPalette.PAL["apricot"] if fred else (LxPalette.PAL["gold"] if prog > 0.72 else LxPalette.PAL["coral"])
+			for sy: int in range(int(ry0), int(ry0 + rh), 10):
+				_wave_overlay.draw_rect(Rect2(wx - 3.0, float(sy) - 1.0, 6.0, 7.0), c_void)
 				_wave_overlay.draw_rect(Rect2(wx - 2.0, float(sy), 4.0, 5.0), c)
+			# Inward directional chevron & timing bar at corridor mid-height
+			var my: float = roundf(ry0 + rh * 0.5)
+			var tip_x: float = wx + dir_x * 6.0
+			_wave_overlay.draw_rect(Rect2(tip_x - 2.0, my - 4.0, 4.0, 8.0), c_void)
+			_wave_overlay.draw_rect(Rect2(tip_x - 1.0, my - 3.0, 2.0, 6.0), c)
+			_wave_overlay.draw_rect(Rect2(tip_x + dir_x * 1.0, my - 1.0, 2.0, 2.0), LxPalette.PAL["cream"])
 		else:
-			var col: Color = LxPalette.PAL["lime"] if bool(wv["dodged"]) else LxPalette.PAL["coral"]
-			_wave_overlay.draw_rect(Rect2(wx - 3.0, _corridor_rect.position.y, 6.0, _corridor_rect.size.y), LxPalette.PAL["void"])
-			_wave_overlay.draw_rect(Rect2(wx - 2.0, _corridor_rect.position.y, 4.0, _corridor_rect.size.y), col)
-			_wave_overlay.draw_rect(Rect2(wx - 1.0, _corridor_rect.position.y, 2.0, _corridor_rect.size.y), LxPalette.PAL["cream"])
+			var dodged: bool = bool(wv["dodged"])
+			var hit_w: bool = bool(wv["hit_wick"])
+			var col: Color = LxPalette.PAL["lime"] if dodged else (LxPalette.PAL["mauve"] if hit_w else LxPalette.PAL["coral"])
+			_wave_overlay.draw_rect(Rect2(wx - 3.0, ry0, 6.0, rh), c_void)
+			_wave_overlay.draw_rect(Rect2(wx - 2.0, ry0, 4.0, rh), col)
+			var lead_x: float = wx if dir_x >= 0.0 else (wx - 2.0)
+			_wave_overlay.draw_rect(Rect2(lead_x, ry0, 2.0, rh), LxPalette.PAL["cream"])
+			if dodged and not fred:
+				var cy: float = roundf(ry0 + rh * 0.5)
+				_wave_overlay.draw_rect(Rect2(wx - 3.0, cy - 3.0, 6.0, 6.0), c_void)
+				_wave_overlay.draw_rect(Rect2(wx - 2.0, cy - 2.0, 4.0, 4.0), LxPalette.PAL["gold"])
+				_wave_overlay.draw_rect(Rect2(wx - 1.0, cy - 1.0, 2.0, 2.0), LxPalette.PAL["cream"])
 
 
 func _get_plinth_icon() -> String: return "move_dash"

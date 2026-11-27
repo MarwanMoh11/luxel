@@ -172,9 +172,15 @@ func handle_menu_input(event: InputEvent) -> bool:
 		var k: int = (event as InputEventKey).keycode
 		if k == KEY_ESCAPE or k == KEY_BACKSPACE:
 			_play_ui("menu_close"); closed.emit(); return true
-		if k == KEY_UP or k == KEY_W or k == KEY_LEFT or k == KEY_A:
+		if k == KEY_UP or k == KEY_W:
+			var step_u: int = 4 if (mode == Mode.TAILOR and _idx >= 4) else 1
+			select_index(_idx - step_u); _play_ui("ui_move"); return true
+		if k == KEY_DOWN or k == KEY_S:
+			var step_d: int = 4 if (mode == Mode.TAILOR and _idx + 4 < _item_count()) else 1
+			select_index(_idx + step_d); _play_ui("ui_move"); return true
+		if k == KEY_LEFT or k == KEY_A:
 			select_index(_idx - 1); _play_ui("ui_move"); return true
-		if k == KEY_DOWN or k == KEY_S or k == KEY_RIGHT or k == KEY_D:
+		if k == KEY_RIGHT or k == KEY_D:
 			select_index(_idx + 1); _play_ui("ui_move"); return true
 		if k == KEY_ENTER or k == KEY_SPACE or k == KEY_E:
 			confirm_selected(); return true
@@ -182,9 +188,15 @@ func handle_menu_input(event: InputEvent) -> bool:
 		_play_ui("menu_close"); closed.emit(); return true
 	if event.is_action_pressed("lx_ui_accept"):
 		confirm_selected(); return true
-	if event.is_action_pressed("lx_move_up") or event.is_action_pressed("lx_move_left"):
+	if event.is_action_pressed("lx_move_up"):
+		var step_gu: int = 4 if (mode == Mode.TAILOR and _idx >= 4) else 1
+		select_index(_idx - step_gu); _play_ui("ui_move"); return true
+	if event.is_action_pressed("lx_move_down"):
+		var step_gd: int = 4 if (mode == Mode.TAILOR and _idx + 4 < _item_count()) else 1
+		select_index(_idx + step_gd); _play_ui("ui_move"); return true
+	if event.is_action_pressed("lx_move_left"):
 		select_index(_idx - 1); _play_ui("ui_move"); return true
-	if event.is_action_pressed("lx_move_down") or event.is_action_pressed("lx_move_right"):
+	if event.is_action_pressed("lx_move_right"):
 		select_index(_idx + 1); _play_ui("ui_move"); return true
 	return false
 
@@ -302,7 +314,7 @@ func _draw() -> void:
 		draw_rect(Rect2(rv, Vector2.ONE), LxPalette.PAL["gold"])
 	var cr: Rect2 = _close_rect()
 	LxPixelFont.draw_panel(self, cr, "coral" if _hover_close else "wine", "gold" if _hover_close else "mauve", "void")
-	LxPixelFont.draw_centered(self, "X", cr.get_center().x, cr.position.y + 3.0, LxPalette.PAL["cream"], 1)
+	LxPixelFont.draw_centered(self, "X", roundf(cr.get_center().x), roundf(cr.position.y + 3.0), LxPalette.PAL["cream"], 1)
 
 	match mode:
 		Mode.MOTH_CEREMONY: _draw_moth_ceremony()
@@ -318,9 +330,9 @@ func _draw() -> void:
 			draw_rect(Rect2(ir.end.x - 1.0, ir.position.y, 1.0, ir.size.y), LxPalette.PAL["gold"])
 		else:
 			var u: float = 1.0 - clampf(_ceremony_t / 1.6, 0.0, 1.0)
-			draw_arc(PANEL.get_center().round(), roundf(14.0 + u * 72.0), 0.0, TAU, 24, LxPalette.PAL["gold"], 1.5)
+			draw_arc(PANEL.get_center().round(), roundf(14.0 + u * 72.0), 0.0, TAU, 24, LxPalette.PAL["gold"], 2.0)
 	if not _status_key.is_empty():
-		LxPixelFont.draw_centered(self, LxStrings.text(_status_key), PANEL.position.x + PANEL.size.x * 0.5, PANEL.end.y - 12.0, LxPalette.color(_status_col, "gold"), 1)
+		LxPixelFont.draw_centered(self, LxStrings.text(_status_key), roundf(PANEL.position.x + PANEL.size.x * 0.5), roundf(PANEL.end.y - 12.0), LxPalette.color(_status_col, "gold"), 1)
 
 
 func _draw_moth_ceremony() -> void:
@@ -353,15 +365,20 @@ func _draw_moth_ceremony() -> void:
 		LxPixelFont.draw_centered(self, st_lbl, roundf(box.position.x + 16.0), roundf(box.position.y + 28.0), LxPalette.PAL["lime"] if claimed else (LxPalette.PAL["gold"] if reached else LxPalette.PAL["mauve"]), 1)
 
 	var desc_key: String = "HUB_MOTH_TEASER_80" if mc >= 80 else "HUB_MOTH_CEREMONY_DESC"
-	LxPixelFont.draw_centered(self, LxStrings.text(desc_key), PANEL.position.x + PANEL.size.x * 0.5, PANEL.position.y + 92.0, LxPalette.PAL["ice"] if mc >= 80 else LxPalette.PAL["stone"], 1)
+	LxPixelFont.draw_centered(self, LxStrings.text(desc_key), roundf(PANEL.position.x + PANEL.size.x * 0.5), roundf(PANEL.position.y + 92.0), LxPalette.PAL["ice"] if mc >= 80 else LxPalette.PAL["stone"], 1)
 
 	var btn: Rect2 = _action_btn_rect()
 	var btn_fill: String = ("coral" if _hover_action else "wine") if can_claim else ("dusk" if _hover_action else "night")
 	var btn_bdr: String = ("cream" if _hover_action else "gold") if can_claim else ("mauve" if _hover_action else "dusk")
 	LxPixelFont.draw_panel(self, btn, btn_fill, btn_bdr, "void")
+	if can_claim:
+		var shimmer: bool = LxHudFx.flash_reduced() or (int(_clock * 4.0) % 2 == 0)
+		var glint_c: Color = LxPalette.PAL["cream"] if shimmer else LxPalette.PAL["gold"]
+		draw_rect(Rect2(btn.position.x + 3.0, btn.position.y + 6.0, 2.0, 2.0), glint_c)
+		draw_rect(Rect2(btn.end.x - 5.0, btn.position.y + 6.0, 2.0, 2.0), glint_c)
 	var btxt: String = LxStrings.text("HUB_MOTH_CLAIM_BTN" if can_claim else "HUB_MOTH_NONE_BTN")
 	var bcol: Color = LxPalette.PAL["cream"] if (can_claim and _hover_action) else (LxPalette.PAL["gold"] if can_claim else LxPalette.PAL["stone"])
-	LxPixelFont.draw_centered(self, btxt, btn.get_center().x, btn.position.y + 5.0, bcol, 1)
+	LxPixelFont.draw_centered(self, btxt, roundf(btn.get_center().x), roundf(btn.position.y + 5.0), bcol, 1)
 
 
 func _draw_lead_shop() -> void:
@@ -428,4 +445,4 @@ func _draw_tailor() -> void:
 
 	if _idx >= 0 and _idx < LxHubState.FLAME_CATALOG.size():
 		var cur_n: String = LxStrings.text(str(LxHubState.FLAME_CATALOG[_idx]["name_key"]))
-		LxPixelFont.draw_centered(self, cur_n, PANEL.position.x + PANEL.size.x * 0.5, PANEL.end.y - 26.0, LxPalette.color(str(LxHubState.FLAME_CATALOG[_idx]["id"]), "gold"), 1)
+		LxPixelFont.draw_centered(self, cur_n, roundf(PANEL.position.x + PANEL.size.x * 0.5), roundf(PANEL.end.y - 26.0), LxPalette.color(str(LxHubState.FLAME_CATALOG[_idx]["id"]), "gold"), 1)

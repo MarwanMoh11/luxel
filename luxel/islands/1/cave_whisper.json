@@ -244,7 +244,7 @@
         368,
         112
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -337,8 +337,8 @@
       "sheet": "theme_undercroft",
       "prop": "mossy_headstone",
       "pos": [
-        264,
-        232
+        256,
+        240
       ],
       "layer": "sort",
       "flip_x": false,

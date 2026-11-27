@@ -10,6 +10,8 @@ var chain_timer: float = 0.0
 var last_source: String = ""
 var _mote_seq: int = 0
 var _motes: Array[LxGalleryTarget] = []
+var _juggle_overlay: Node2D = null
+var _pops: Array[Dictionary] = [] # {pos: Vector2, age: float, life: float, alt: bool}
 
 
 func setup(spec: Dictionary) -> void:
@@ -31,14 +33,18 @@ func _on_trial_start() -> void:
 	chain_timer = 0.0
 	last_source = ""
 	_mote_seq = 0
+	_pops.clear()
 	_clear_motes()
+	_ensure_overlay()
 	_spawn_mote()
 	_spawn_mote()
 	trial_subtext = "CHAIN 0"
 
 
 func _on_trial_end() -> void:
+	_pops.clear()
 	_clear_motes()
+	_clear_overlay()
 
 
 func _on_trial_tick(dt: float) -> void:
@@ -47,6 +53,10 @@ func _on_trial_tick(dt: float) -> void:
 		if chain_timer <= 0.0:
 			chain_count = 0
 			last_source = ""
+	for pi: int in range(_pops.size() - 1, -1, -1):
+		_pops[pi]["age"] = float(_pops[pi]["age"]) + dt
+		if float(_pops[pi]["age"]) >= float(_pops[pi]["life"]):
+			_pops.remove_at(pi)
 	var alive: int = 0
 	for i: int in range(_motes.size() - 1, -1, -1):
 		var m: LxGalleryTarget = _motes[i]
@@ -63,6 +73,8 @@ func _on_trial_tick(dt: float) -> void:
 		_spawn_mote()
 		alive += 1
 	trial_subtext = "CHAIN x%d" % chain_count
+	if _juggle_overlay != null and is_instance_valid(_juggle_overlay):
+		_juggle_overlay.queue_redraw()
 
 
 func _spawn_mote() -> void:
@@ -85,7 +97,7 @@ func _spawn_mote() -> void:
 		_motes.append(gt)
 
 
-func _on_mote_hit(_tgt: LxGalleryTarget, hit: LxHit, pts: int) -> void:
+func _on_mote_hit(tgt: LxGalleryTarget, hit: LxHit, pts: int) -> void:
 	if not trial_running:
 		return
 	chain_count += 1
@@ -95,11 +107,73 @@ func _on_mote_hit(_tgt: LxGalleryTarget, hit: LxHit, pts: int) -> void:
 	if hit != null:
 		last_source = hit.source
 	trial_score += float(pts + alt_bonus)
+	if tgt != null and is_instance_valid(tgt):
+		_pops.append({"pos": tgt.pos.round(), "age": 0.0, "life": 0.32, "alt": alt_bonus > 0})
 	_spawn_mote()
 
 
 func _exit_tree() -> void:
+	_clear_overlay()
 	_clear_motes()
+	super._exit_tree()
+
+
+func _ensure_overlay() -> void:
+	if region == null:
+		return
+	_clear_overlay()
+	_juggle_overlay = Node2D.new()
+	_juggle_overlay.name = "LanternJuggleOverlay"
+	_juggle_overlay.z_index = 4
+	_juggle_overlay.draw.connect(_draw_juggle)
+	region.add_child(_juggle_overlay)
+
+
+func _clear_overlay() -> void:
+	if _juggle_overlay != null and is_instance_valid(_juggle_overlay):
+		if _juggle_overlay.draw.is_connected(_draw_juggle):
+			_juggle_overlay.draw.disconnect(_draw_juggle)
+		_juggle_overlay.queue_free()
+	_juggle_overlay = null
+
+
+func _draw_juggle() -> void:
+	if not trial_running or _juggle_overlay == null:
+		return
+	var fr: bool = LxHudFx.flash_reduced()
+	var c_void: Color = LxPalette.PAL["void"]
+	# Subtle dashed pixel tether between live motes while a chain is hot
+	if chain_count >= 2 and _motes.size() >= 2:
+		var m0: LxGalleryTarget = _motes[0]
+		var m1: LxGalleryTarget = _motes[1]
+		if is_instance_valid(m0) and is_instance_valid(m1) and m0.active and m1.active:
+			var a: Vector2 = m0.pos.round() + Vector2(0.0, -8.0)
+			var b: Vector2 = m1.pos.round() + Vector2(0.0, -8.0)
+			for si: int in range(1, 5):
+				var pt: Vector2 = a.lerp(b, float(si) / 5.0).round()
+				_juggle_overlay.draw_rect(Rect2(pt + Vector2(-1.0, -1.0), Vector2(3.0, 3.0)), c_void)
+				_juggle_overlay.draw_rect(Rect2(pt, Vector2(1.0, 1.0)), LxPalette.PAL["lime"] if fr else LxPalette.PAL["gold"])
+	# Score hit-pop rings (integer radii & stroke width)
+	for pop: Dictionary in _pops:
+		var u: float = clampf(float(pop["age"]) / maxf(float(pop["life"]), 0.01), 0.0, 1.0)
+		var pc: Vector2 = (pop["pos"] as Vector2) + Vector2(0.0, -8.0)
+		var r: float = roundf(5.0 + u * (9.0 if fr else 15.0))
+		var col: Color = (LxPalette.PAL["gold"] if bool(pop["alt"]) else LxPalette.PAL["lime"])
+		_juggle_overlay.draw_arc(pc, r + 1.0, 0.0, TAU, 16, c_void, 2.0)
+		_juggle_overlay.draw_arc(pc, r, 0.0, TAU, 16, col, 1.0)
+	# Chain-decay bar & last-move badge above the plinth
+	if chain_timer > 0.0:
+		var frac: float = clampf(chain_timer / 5.0, 0.0, 1.0)
+		var bx: float = roundf(pos.x - 16.0)
+		var by: float = roundf(pos.y - 28.0)
+		var bar_c: Color = LxPalette.PAL["coral"] if frac < 0.25 else (LxPalette.PAL["gold"] if frac < 0.5 else LxPalette.PAL["lime"])
+		_juggle_overlay.draw_rect(Rect2(bx, by, 32.0, 5.0), c_void)
+		_juggle_overlay.draw_rect(Rect2(bx + 1.0, by + 1.0, 30.0, 3.0), LxPalette.PAL["night"])
+		_juggle_overlay.draw_rect(Rect2(bx + 1.0, by + 1.0, roundf(30.0 * frac), 3.0), bar_c)
+		if not last_source.is_empty():
+			var ic: String = "move_dash" if last_source == LxHit.SOURCE_ZIP else ("lantern" if last_source == LxHit.SOURCE_RECALL else "move_throw")
+			_juggle_overlay.draw_rect(Rect2(bx + 34.0, by - 3.0, 10.0, 10.0), c_void)
+			LxBubble.draw_icon(_juggle_overlay, ic, Vector2(bx + 35.0, by - 2.0), 1.0)
 
 
 func _clear_motes() -> void:

@@ -85,14 +85,16 @@ func get_light_pool() -> Vector4:
 	var r: float = float(meta.get("light", 0.0))
 	if r <= 0.0:
 		return Vector4.ZERO
-	var boost: float = 10.0 if _react_t > 0.0 else 0.0
-	return Vector4(pos.x, pos.y - 6.0, r + boost, 0.72 if _react_t <= 0.0 else 0.98)
+	var fr: bool = LxHudFx.flash_reduced()
+	var boost: float = (5.0 if fr else 10.0) if _react_t > 0.0 else 0.0
+	var strength: float = (0.84 if fr else 0.98) if _react_t > 0.0 else (0.64 if fr else 0.72)
+	return Vector4(pos.x, pos.y - 6.0, r + boost, strength)
 
 
 func _draw() -> void:
 	if not active:
 		return
-	_draw_ground_shadow(7.0, 2.5, Vector2(0.0, 1.0))
+	_draw_ground_shadow(7.0, 3.0, Vector2(0.0, 1.0))
 	var fr: bool = LxHudFx.flash_reduced()
 	var wobble: float = 0.0 if (fr or _react_t <= 0.0) else roundf(sin(_react_t * 26.0) * 1.5)
 	var meta: Dictionary = CURIO_META[curio_kind] as Dictionary
@@ -107,11 +109,14 @@ func _draw() -> void:
 
 	match curio_kind:
 		"hearth_fire":
+			var relit_n: int = Lx.state.relit_islands.size() if Lx.state != null else 0
+			var extra_h: float = 1.0 if relit_n >= 4 else 0.0
 			draw_rect(Rect2(-12.0, -15.0, 24.0, 17.0), c_void)
 			draw_rect(Rect2(-11.0, -14.0, 22.0, 15.0), c_dusk)
 			draw_rect(Rect2(-11.0, -14.0, 22.0, 2.0), c_stone)
 			draw_rect(Rect2(-7.0, -9.0, 14.0, 10.0), c_night)
-			var fh: float = 6.0 if fr else 5.0 + roundf(sin(_clock * 8.0) * 1.5)
+			draw_rect(Rect2(-6.0, -2.0, 12.0, 2.0), LxPalette.PAL["wine"])
+			var fh: float = (6.0 + extra_h) if fr else (5.0 + extra_h + roundf(sin(_clock * 8.0) * 1.0))
 			draw_rect(Rect2(-5.0, -1.0 - fh, 10.0, fh), LxPalette.PAL["coral"])
 			draw_rect(Rect2(-3.0, -fh, 6.0, fh - 1.0), c_gold)
 			draw_rect(Rect2(-1.0, -fh + 2.0, 2.0, 2.0), c_cream)
@@ -128,8 +133,8 @@ func _draw() -> void:
 			draw_rect(Rect2(-3.0 + wobble, -13.0, 6.0, 3.0), c_void)
 			draw_rect(Rect2(-2.0 + wobble, -12.0, 4.0, 1.0), c_stone)
 			draw_rect(Rect2(-1.0 + wobble, -11.0, 2.0, 2.0), c_gold)
-			var st_y: float = -13.0 if fr else -13.0 - fmod(_clock * 4.5, 4.0)
-			draw_rect(Rect2(-8.0 + wobble, roundf(st_y), 2.0, 2.0), c_cream if _react_t > 0.0 else LxPalette.PAL["ice"])
+			var st_y: float = -13.0 if fr else -13.0 - roundf(fmod(_clock * 4.5, 4.0))
+			draw_rect(Rect2(-8.0 + wobble, st_y, 2.0, 2.0), c_cream if (_react_t > 0.0 and not fr) else LxPalette.PAL["ice"])
 		"telescope":
 			draw_rect(Rect2(-5.0, -3.0, 2.0, 4.0), c_dusk)
 			draw_rect(Rect2(3.0, -3.0, 2.0, 4.0), c_dusk)
@@ -141,13 +146,18 @@ func _draw() -> void:
 			draw_rect(Rect2(5.0 + wobble, -14.0, 3.0, 4.0), LxPalette.PAL["ice"])
 			draw_rect(Rect2(6.0 + wobble, -13.0, 1.0, 2.0), c_cream)
 		"moth_jar":
+			var mc: int = LxQuests.current().get_moth_count()
+			var moth_vis: int = 3 if mc >= 20 else (2 if mc >= 5 else 1)
 			draw_rect(Rect2(-5.0, -14.0, 10.0, 15.0), c_void)
 			draw_rect(Rect2(-4.0, -12.0, 8.0, 12.0), LxPalette.PAL["deep"])
 			draw_rect(Rect2(-3.0, -11.0, 1.0, 9.0), LxPalette.PAL["sky"])
 			draw_rect(Rect2(-4.0, -14.0, 8.0, 2.0), c_apricot)
-			var my: float = -7.0 + (0.0 if fr else roundf(sin(_clock * 5.0) * 2.0))
-			draw_rect(Rect2(-2.0, my, 4.0, 2.0), c_gold)
-			draw_rect(Rect2(-1.0, my, 2.0, 1.0), c_cream)
+			var base_pts: Array[Vector2] = [Vector2(-2.0, -7.0), Vector2(0.0, -10.0), Vector2(-3.0, -4.0)]
+			for mi: int in range(moth_vis):
+				var bp: Vector2 = base_pts[mi]
+				var dy: float = 0.0 if fr else roundf(sin(_clock * 5.0 + float(mi) * 2.1) * 1.0)
+				draw_rect(Rect2(bp.x, bp.y + dy, 3.0, 2.0), c_gold)
+				draw_rect(Rect2(bp.x + 1.0, bp.y + dy, 1.0, 1.0), c_cream)
 		"ship_bottle":
 			# Miniature ship inside glass bottle on cradle stand
 			draw_rect(Rect2(-7.0, -3.0, 14.0, 4.0), c_void)
@@ -189,18 +199,33 @@ func _draw() -> void:
 			draw_rect(Rect2(-8.0, -9.0, 12.0, 1.0), c_cream)
 			draw_rect(Rect2(-5.0, -6.0, 9.0, 3.0), c_dusk)
 			if _react_t > 0.0:
-				draw_rect(Rect2(-2.0 + wobble, -12.0, 2.0, 2.0), c_gold)
+				draw_rect(Rect2(-2.0 + wobble, -12.0, 2.0, 2.0), c_apricot if fr else c_gold)
+				if not fr:
+					draw_rect(Rect2(2.0 - wobble, -13.0, 2.0, 2.0), c_cream)
 		"trophy_rack":
-			draw_rect(Rect2(-10.0, -15.0, 20.0, 16.0), c_void)
-			draw_rect(Rect2(-9.0, -14.0, 18.0, 14.0), LxPalette.PAL["wine"])
-			draw_rect(Rect2(-9.0, -14.0, 18.0, 2.0), c_apricot)
-			draw_rect(Rect2(-8.0, -6.0, 16.0, 1.0), c_dusk)
-			var meds: int = LxHubState.get_total_medals()
-			for i: int in range(6):
-				var mc: Color = c_gold if i * 3 < meds else c_night
-				draw_rect(Rect2(-7.0 + float((i % 3) * 6), -11.0 + float((i / 3) * 6), 4.0, 4.0), mc)
-				if i * 3 < meds:
-					draw_rect(Rect2(-6.0 + float((i % 3) * 6), -11.0 + float((i / 3) * 6), 1.0, 1.0), c_cream)
+			# 6 individual minigame medal cubbies: empty dark plinth vs Bronze / Silver / Gold cup
+			draw_rect(Rect2(-11.0, -16.0, 22.0, 17.0), c_void)
+			draw_rect(Rect2(-10.0, -15.0, 20.0, 15.0), LxPalette.PAL["wine"])
+			draw_rect(Rect2(-10.0, -15.0, 20.0, 2.0), c_apricot)
+			draw_rect(Rect2(-9.0, -7.0, 18.0, 1.0), c_dusk)
+			for i: int in range(mini(6, LxHubState.MINIGAME_IDS.size())):
+				var cx: float = -9.0 + float((i % 3) * 6)
+				var cy: float = -12.0 + float((i / 3) * 6)
+				draw_rect(Rect2(cx, cy, 5.0, 5.0), c_night)
+				var m: int = LxHubState.get_minigame_medal(LxHubState.MINIGAME_IDS[i])
+				if m <= 0:
+					# Empty locked plinth silhouette
+					draw_rect(Rect2(cx + 1.0, cy + 3.0, 3.0, 1.0), c_dusk)
+				else:
+					var cup_c: Color = c_gold if m >= 3 else (LxPalette.PAL["ice"] if m == 2 else c_apricot)
+					if m >= 3:
+						draw_rect(Rect2(cx, cy + 1.0, 5.0, 2.0), cup_c)
+					else:
+						draw_rect(Rect2(cx + 1.0, cy + 1.0, 3.0, 2.0), cup_c)
+					draw_rect(Rect2(cx + 2.0, cy + 3.0, 1.0, 1.0), cup_c)
+					draw_rect(Rect2(cx + 1.0, cy + 4.0, 3.0, 1.0), c_apricot if m >= 3 else cup_c)
+					if m >= 2:
+						draw_rect(Rect2(cx + 1.0, cy + 1.0, 1.0, 1.0), c_cream)
 		"cellar_cask":
 			# Banded oak cellar barrel with brass tap spigot
 			draw_rect(Rect2(-7.0 + wobble, -14.0, 14.0, 15.0), c_void)
@@ -215,7 +240,7 @@ func _draw() -> void:
 			draw_rect(Rect2(-8.0, -15.0, 16.0, 2.0), LxPalette.PAL["wine"])
 			draw_rect(Rect2(-8.0, -14.0, 2.0, 15.0), c_void)
 			draw_rect(Rect2(6.0, -14.0, 2.0, 15.0), c_void)
-			var sway: float = 0.0 if fr else roundf(sin(_clock * 2.4) * 0.8) + wobble
+			var sway: float = 0.0 if fr else roundf(sin(_clock * 2.4) * 1.0) + wobble
 			var lens: Array[float] = [10.0, 8.0, 11.0, 7.0]
 			for ci: int in range(4):
 				var cx: float = -5.0 + float(ci * 3) + sway
@@ -238,7 +263,7 @@ func _draw() -> void:
 			draw_rect(Rect2(-4.0, -2.0, 8.0, 2.0), c_stone)
 			draw_rect(Rect2(-3.0, -10.0, 6.0, 8.0), c_void)
 			draw_rect(Rect2(-2.0, -9.0, 4.0, 6.0), c_gold)
-			var glow_h: float = 4.0 if fr else 3.0 + roundf(sin(_clock * 6.0) * 0.8)
+			var glow_h: float = 4.0 if fr else 3.0 + roundf(sin(_clock * 6.0) * 1.0)
 			draw_rect(Rect2(-1.0, -8.0, 2.0, glow_h), c_cream)
 			draw_rect(Rect2(-7.0, -13.0, 14.0, 4.0), c_void)
 			draw_rect(Rect2(-6.0, -12.0, 12.0, 2.0), LxPalette.PAL["mauve"])
@@ -282,6 +307,7 @@ func _draw() -> void:
 
 	if _react_t > 0.0:
 		var u: float = 1.0 - clampf(_react_t / 0.85, 0.0, 1.0)
-		var sy: float = roundf(-18.0 - u * 9.0)
+		var sy: float = roundf(-18.0 - u * (4.0 if fr else 9.0))
+		draw_rect(Rect2(-3.0, sy - 1.0, 6.0, 4.0), c_void)
 		draw_rect(Rect2(-2.0, sy, 4.0, 2.0), accent)
-		draw_rect(Rect2(-1.0, sy - 1.0, 2.0, 4.0), c_cream)
+		draw_rect(Rect2(-1.0, sy - 1.0, 2.0, 4.0), accent if fr else c_cream)

@@ -62,8 +62,7 @@ func interact(_actor: Node = null) -> bool:
 	_bolt_fired = false
 	_emit_sfx("bell_toll_heavy")
 	_emit_gust(72.0, 60.0)
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.16 if not LxHudFx.flash_reduced() else 0.06)
+	_emit_shake(0.16)
 	queue_redraw()
 	return true
 
@@ -77,15 +76,17 @@ func tick(dt: float) -> void:
 		if not _bolt_fired and _cameo_t >= 0.45:
 			_bolt_fired = true
 			_emit_sfx("shield_shatter")
-			if Lx.events != null:
-				Lx.events.shake_requested.emit(0.28 if not LxHudFx.flash_reduced() else 0.10)
-				if LxStrings.has_id("ISL1_TOLL_CUT"):
-					Lx.events.narration_requested.emit("ISL1_TOLL_CUT", "title", 2.8)
+			_emit_shake(0.28)
+			if Lx.events != null and LxStrings.has_id("ISL1_TOLL_CUT"):
+				Lx.events.narration_requested.emit("ISL1_TOLL_CUT", "title", 2.8)
 		if _cameo_t >= CAMEO_DUR:
 			_finish_sever()
 		queue_redraw()
-	elif stage == Stage.READY:
-		queue_redraw()
+
+
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _finish_sever() -> void:
@@ -140,16 +141,22 @@ func _draw() -> void:
 		draw_line(Vector2(0.0, -56.0), Vector2(-3.0, -38.0), c_coral, 2.0)
 		draw_line(Vector2(0.0, -24.0), Vector2(4.0, -18.0), c_apricot, 2.0)
 
+	var red: bool = LxHudFx.flash_reduced()
 	# Great Bell bronze dome
-	var drop_y: float = 0.0 if stage == Stage.READY else (clampf((_cameo_t - 0.45) / 0.70, 0.0, 1.0) * 6.0 if stage == Stage.CAMEO else 6.0)
+	var drop_y: float = 0.0 if stage == Stage.READY else (roundf(clampf((_cameo_t - 0.45) / 0.70, 0.0, 1.0) * 6.0) if stage == Stage.CAMEO else 6.0)
 	_draw_ground_shadow(22.0, 8.0, Vector2(0.0, 14.0))
 	draw_circle(Vector2(0.0, drop_y), 21.0, c_void)
 	draw_circle(Vector2(0.0, drop_y), 19.0, c_dusk)
 	draw_arc(Vector2(0.0, drop_y), 17.0, 0.0, TAU, 24, c_gold if stage != Stage.READY else c_apricot, 2.0)
 	draw_arc(Vector2(0.0, drop_y), 10.0, 0.0, TAU, 18, c_night, 1.0)
-	# Clapper socket (gold once fitted)
+	# Clapper socket: hollow dark ring when READY vs filled bright stud once fitted
 	draw_circle(Vector2(0.0, drop_y), 5.0, c_night)
-	draw_circle(Vector2(0.0, drop_y), 3.0, c_cream if stage != Stage.READY else c_coral)
+	if stage == Stage.READY:
+		draw_circle(Vector2(0.0, drop_y), 3.0, c_void)
+		draw_arc(Vector2(0.0, drop_y), 4.0, 0.0, TAU, 12, c_coral, 1.0)
+	else:
+		draw_circle(Vector2(0.0, drop_y), 4.0, c_gold)
+		draw_circle(Vector2(0.0, drop_y), 2.0, c_cream)
 
 	# Wordless Hollow Wick silhouette on upper rafters during cameo
 	if stage == Stage.CAMEO:
@@ -164,9 +171,11 @@ func _draw() -> void:
 		# Violet bolt slicing the master cable at t=0.45s
 		if _cameo_t >= 0.35 and _cameo_t <= 0.78:
 			var bu: float = clampf((_cameo_t - 0.35) / 0.22, 0.0, 1.0)
-			var bpt: Vector2 = hpos.lerp(Vector2(0.0, -34.0), bu)
-			draw_line(hpos, bpt, Color(c_plum, 0.9), 3.0)
-			draw_line(hpos, bpt, Color(c_coral, 0.95), 1.0)
+			var bpt: Vector2 = hpos.lerp(Vector2(0.0, -34.0), bu).round()
+			draw_line(hpos, bpt, Color(c_plum, 0.62 if red else 0.90), 2.0 if red else 3.0)
+			draw_line(hpos, bpt, Color(c_coral, 0.68 if red else 0.95), 1.0)
 			if bu >= 0.9:
-				draw_arc(Vector2(0.0, -34.0), roundf(4.0 + (_cameo_t - 0.55) * 32.0), 0.0, TAU, 14, c_coral, 1.5)
+				var ru: float = clampf((_cameo_t - 0.55) / 0.23, 0.0, 1.0)
+				var r_col := Color(c_coral, (1.0 - ru) * (0.55 if red else 0.90))
+				draw_arc(Vector2(0.0, -34.0), roundf(4.0 + ru * (14.0 if red else 20.0)), 0.0, TAU, 14, r_col, 1.0 if red else 2.0)
 	_draw_signal_pulses()

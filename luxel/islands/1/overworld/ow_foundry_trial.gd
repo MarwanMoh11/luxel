@@ -142,6 +142,7 @@ func _ensure_hud() -> void:
 	_hud_layer.layer = 25
 	add_child(_hud_layer)
 	_hud_draw = Node2D.new()
+	_hud_draw.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	_hud_draw.draw.connect(_draw_hud)
 	_hud_layer.add_child(_hud_draw)
 
@@ -156,17 +157,38 @@ func _hide_hud() -> void:
 func _draw_hud() -> void:
 	if _hud_draw == null or state != State.RUNNING:
 		return
+	var red: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	var rem: float = maxf(0.0, TIME_LIMIT - elapsed_s)
 	var frac: float = clampf(rem / TIME_LIMIT, 0.0, 1.0)
-	_hud_draw.draw_rect(Rect2(114.0, 10.0, 92.0, 10.0), PAL["void"] as Color)
-	_hud_draw.draw_rect(Rect2(116.0, 12.0, roundf(88.0 * frac), 6.0), (PAL["gold"] if frac > 0.28 else PAL["coral"]) as Color)
+	var low_t: bool = frac <= 0.28
+	_hud_draw.draw_rect(Rect2(114.0, 10.0, 92.0, 10.0), c_void)
+	_hud_draw.draw_rect(Rect2(115.0, 11.0, 90.0, 8.0), PAL["night"] as Color)
+	var bar_c: Color = (PAL["apricot"] if red else PAL["coral"]) as Color if low_t else PAL["gold"] as Color
+	var fill_w: float = roundf(88.0 * frac)
+	if fill_w > 0.0:
+		_hud_draw.draw_rect(Rect2(116.0, 12.0, fill_w, 6.0), bar_c)
+		_hud_draw.draw_rect(Rect2(116.0, 12.0, fill_w, 1.0), c_cream)
+	# Gold & Silver cutoff ticks for greyscale-legible medal pacing
+	var gold_x: float = roundf(116.0 + 88.0 * ((TIME_LIMIT - TIME_GOLD) / TIME_LIMIT))
+	var silv_x: float = roundf(116.0 + 88.0 * ((TIME_LIMIT - TIME_SILVER) / TIME_LIMIT))
+	_hud_draw.draw_rect(Rect2(gold_x, 11.0, 1.0, 8.0), c_cream)
+	_hud_draw.draw_rect(Rect2(silv_x, 11.0, 1.0, 8.0), PAL["stone"] as Color)
 	for i: int in range(bell_ids.size()):
 		var done: bool = i < rung_set.size()
-		_hud_draw.draw_rect(Rect2(116.0 + float(i) * 8.0, 21.0, 5.0, 3.0), (PAL["gold"] if done else PAL["dusk"]) as Color)
+		var px: float = 115.0 + float(i) * 8.0
+		_hud_draw.draw_rect(Rect2(px, 21.0, 7.0, 5.0), c_void)
+		if done:
+			_hud_draw.draw_rect(Rect2(px + 1.0, 21.0, 5.0, 4.0), PAL["gold"] as Color)
+			_hud_draw.draw_rect(Rect2(px + 1.0, 21.0, 2.0, 1.0), c_cream)
+		else:
+			_hud_draw.draw_rect(Rect2(px + 1.0, 23.0, 5.0, 2.0), PAL["dusk"] as Color)
 
 
 func get_light_pool() -> Vector4:
-	return Vector4(pos.x, pos.y - 6.0, 48.0 if state != State.READY else 34.0, 0.78 if state != State.READY else 0.50) if active else Vector4.ZERO
+	var active_i: float = 0.65 if LxHudFx.flash_reduced() else 0.78
+	return Vector4(pos.x, pos.y - 6.0, 48.0 if state != State.READY else 34.0, active_i if state != State.READY else 0.50) if active else Vector4.ZERO
 
 
 func save_state() -> Dictionary:
@@ -183,13 +205,23 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var c_void: Color = PAL["void"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 12.0, 3.0)
-	LxToyDraw.draw_bevel_box(self, Rect2(-12.0, -14.0, 6.0, 21.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, PAL["void"] as Color)
-	LxToyDraw.draw_bevel_box(self, Rect2(6.0, -14.0, 6.0, 21.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, PAL["void"] as Color)
-	LxToyDraw.draw_bevel_box(self, Rect2(-13.0, -17.0, 26.0, 5.0), PAL["night"] as Color, PAL["plum"] as Color, PAL["gold"] as Color if state == State.WON else PAL["coral"] as Color, PAL["void"] as Color)
+	LxToyDraw.draw_bevel_box(self, Rect2(-12.0, -14.0, 6.0, 21.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(6.0, -14.0, 6.0, 21.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, c_void)
+	LxToyDraw.draw_bevel_box(self, Rect2(-13.0, -17.0, 26.0, 5.0), PAL["night"] as Color, PAL["plum"] as Color, PAL["gold"] as Color if state == State.WON else PAL["coral"] as Color, c_void)
+	if state == State.RUNNING:
+		draw_rect(Rect2(-3.0, -20.0, 6.0, 3.0), c_void)
+		draw_rect(Rect2(-2.0, -19.0, 4.0, 2.0), PAL["gold"] as Color)
+		draw_rect(Rect2(-1.0, -19.0, 2.0, 1.0), c_cream)
 	var best: int = _best_medal()
-	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -6.0), 5 if state == State.WON else 1, state != State.READY, PAL["gold"] as Color if state == State.WON else PAL["coral"] as Color, PAL["cream"] as Color)
+	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, -6.0), 5 if state == State.WON else 1, state != State.READY, PAL["gold"] as Color if state == State.WON else PAL["coral"] as Color, c_cream)
 	for m: int in range(3):
 		var mc: Color = (PAL["gold"] if m == 2 else (PAL["ice"] if m == 1 else PAL["apricot"])) as Color
-		draw_rect(Rect2(-5.0 + float(m) * 4.0, 5.0, 3.0, 2.0), mc if best > m else PAL["void"] as Color)
+		var mx: float = -6.0 + float(m) * 4.0
+		draw_rect(Rect2(mx, 4.0, 4.0, 4.0), c_void)
+		draw_rect(Rect2(mx + 1.0, 5.0, 2.0, 2.0), mc if best > m else PAL["night"] as Color)
+		if best > m:
+			draw_rect(Rect2(mx + 1.0, 5.0, 1.0, 1.0), c_cream)
 	_draw_signal_pulses()

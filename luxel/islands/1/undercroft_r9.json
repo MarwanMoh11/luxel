@@ -463,7 +463,7 @@
         464,
         42
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -532,7 +532,7 @@
       "sheet": "theme_undercroft",
       "prop": "chapel_pew",
       "pos": [
-        496,
+        504,
         200
       ],
       "layer": "sort",

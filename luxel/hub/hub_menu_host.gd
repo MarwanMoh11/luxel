@@ -59,6 +59,8 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
+	if _scrim != null and is_instance_valid(_scrim) and _scrim.draw.is_connected(_draw_scrim):
+		_scrim.draw.disconnect(_draw_scrim)
 	if _paused_tree and get_tree() != null:
 		get_tree().paused = false
 		_paused_tree = false
@@ -96,6 +98,8 @@ func get_active_panel() -> Node2D:
 
 
 func _open_panel(panel: Node2D) -> void:
+	if panel == null:
+		return
 	close_all()
 	_active_panel = panel
 	if _scrim != null:
@@ -129,5 +133,19 @@ func _input(event: InputEvent) -> void:
 
 
 func _draw_scrim() -> void:
-	if _scrim != null and _scrim.visible:
-		_scrim.draw_rect(Rect2(0.0, 0.0, 320.0, 180.0), Color(LxPalette.PAL["void"] as Color, 0.72))
+	if _scrim == null or not _scrim.visible:
+		return
+	# Strict opaque Last Light stepped atmospheric frame border (zero alpha, matches pause.gd)
+	var v: Color = LxPalette.PAL["void"]
+	var n: Color = LxPalette.PAL["night"]
+	_scrim.draw_rect(Rect2(0.0, 0.0, 320.0, 4.0), v)
+	_scrim.draw_rect(Rect2(0.0, 176.0, 320.0, 4.0), v)
+	_scrim.draw_rect(Rect2(0.0, 4.0, 4.0, 172.0), v)
+	_scrim.draw_rect(Rect2(316.0, 4.0, 4.0, 172.0), v)
+	_scrim.draw_rect(Rect2(4.0, 4.0, 312.0, 2.0), n)
+	_scrim.draw_rect(Rect2(4.0, 174.0, 312.0, 2.0), n)
+	_scrim.draw_rect(Rect2(4.0, 6.0, 2.0, 168.0), n)
+	_scrim.draw_rect(Rect2(314.0, 6.0, 2.0, 168.0), n)
+	for c: Vector2 in [Vector2(4.0, 4.0), Vector2(310.0, 4.0), Vector2(4.0, 170.0), Vector2(310.0, 170.0)]:
+		_scrim.draw_rect(Rect2(c, Vector2(6.0, 6.0)), v)
+		_scrim.draw_rect(Rect2(c + Vector2(1.0, 1.0), Vector2(4.0, 4.0)), n)

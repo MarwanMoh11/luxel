@@ -139,7 +139,7 @@ func tick(dt: float) -> void:
 				var bpos: Vector2 = _find_bell_pos(_demo_tone)
 				_emit_sfx(str(BELL_SFX.get(_demo_tone, "bell_dawn_ring")))
 				if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-					LxDarknessLayer.active_instance.add_burst_light(bpos, 52.0, 1.1, 0.36)
+					LxDarknessLayer.active_instance.add_burst_light(bpos, 52.0, 0.72 if LxHudFx.flash_reduced() else 1.1, 0.36)
 				queue_redraw()
 			else:
 				_demo_tone = ""
@@ -192,23 +192,37 @@ func get_light_pool() -> Vector4:
 
 
 func _draw() -> void:
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 9.0, 2.5)
-	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -8.0, 18.0, 13.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, PAL["void"] as Color)
-	# 3 miniature tone chime bars
+	var red: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 5.0), 9.0, 3.0)
+	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -8.0, 18.0, 13.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["apricot"] as Color, c_void)
+	# 3 stepped miniature tone chime bars (distinct heights + specular cap for greyscale readability)
 	var bar_cols: Array[Color] = [PAL["gold"] as Color, PAL["ice"] as Color, PAL["coral"] as Color]
 	var bar_tones: Array[String] = ["dawn", "dusk", "war"]
+	var bar_hs: Array[float] = [7.0, 6.0, 5.0]
 	for i: int in range(3):
 		var bx: float = -6.0 + float(i) * 5.0
+		var bh: float = bar_hs[i]
+		var by: float = 1.0 - bh
 		var lit: bool = (_demo_tone == bar_tones[i] and _flash_t > 0.0) or mode == Mode.WON
-		draw_rect(Rect2(bx, -6.0, 3.0, 7.0), PAL["cream"] as Color if lit else bar_cols[i])
-	# Medal pips below plinth (Bronze / Silver / Gold)
+		draw_rect(Rect2(bx - 1.0, by - 1.0, 5.0, bh + 2.0), c_void)
+		draw_rect(Rect2(bx, by, 3.0, bh), c_cream if (lit and not red) else bar_cols[i])
+		if lit:
+			draw_rect(Rect2(bx, by - 1.0, 3.0, 2.0), c_cream)
+	# Void-backed medal pips below plinth (Bronze / Silver / Gold) with cream glint when earned
 	var best: int = _best_medal()
 	for m: int in range(3):
 		var mc: Color = (PAL["gold"] if m == 2 else (PAL["ice"] if m == 1 else PAL["apricot"])) as Color
-		draw_rect(Rect2(-5.0 + float(m) * 4.0, 3.0, 3.0, 2.0), mc if best > m else PAL["void"] as Color)
-	# Highlight active demo bell in world space relative to self
+		var mx: float = -6.0 + float(m) * 4.0
+		draw_rect(Rect2(mx, 2.0, 4.0, 4.0), c_void)
+		draw_rect(Rect2(mx + 1.0, 3.0, 2.0, 2.0), mc if best > m else PAL["night"] as Color)
+		if best > m:
+			draw_rect(Rect2(mx + 1.0, 3.0, 1.0, 1.0), c_cream)
+	# Highlight active demo bell in world space relative to self (ring + tone crest for greyscale/deaf players)
 	if mode == Mode.DEMO and not _demo_tone.is_empty() and _flash_t > 0.0:
-		var rel: Vector2 = _find_bell_pos(_demo_tone) - pos
+		var rel: Vector2 = (_find_bell_pos(_demo_tone) - pos).round()
 		var col: Color = PAL[str(BELL_COLORS.get(_demo_tone, "gold"))] as Color
-		draw_arc(rel.round(), 14.0, 0.0, TAU, 16, col, 2.0)
-		draw_arc(rel.round(), 10.0, 0.0, TAU, 12, PAL["cream"] as Color, 1.0)
+		draw_arc(rel, 14.0, 0.0, TAU, 16, Color(col, 0.62 if red else 0.94), 1.0 if red else 2.0)
+		draw_arc(rel, 10.0, 0.0, TAU, 12, Color(c_cream, 0.55 if red else 0.90), 1.0)
+		LxToyDraw.draw_tone_crest(self, rel + Vector2(0.0, -18.0), _demo_tone, true)

@@ -57,6 +57,14 @@ func get_interact_prompt() -> String:
 		_: return "PROMPT_TALK"
 
 
+func interact(_actor: Node = null) -> bool:
+	if _talk_idx < 0:
+		var last_isl: int = LxHubState.get_last_relit_island()
+		if last_isl > 0 and _hub_narrated_isl != last_isl:
+			_narrated_once = false
+	return super.interact(_actor)
+
+
 func _resolved_pages() -> Array:
 	var pages: Array = []
 	# 1. Active hub quest bubble takes top priority if not finished
@@ -135,3 +143,52 @@ func _tick_wander(dt: float) -> void:
 	else:
 		_routine_idx = (_routine_idx + 1) % routine_points.size()
 		_routine_wait = 1.4
+
+
+func _draw() -> void:
+	super._draw()
+	if not active or (_bubble != null and _bubble.visible):
+		return
+	var fr: bool = LxHudFx.flash_reduced()
+	var bob: float = 0.0 if fr else roundf(sin(_clock * 3.5) * 1.0)
+	var c_void: Color = LxPalette.PAL["void"]
+	var c_cream: Color = LxPalette.PAL["cream"]
+	# 1. Quest status badge (! available / ! ready to turn in / ? in progress)
+	if not quest_id.is_empty():
+		var q: LxQuests = LxQuests.current()
+		if not q.is_quest_done(quest_id):
+			var started: bool = q.is_quest_started(quest_id)
+			var step: Dictionary = q.get_current_step(quest_id)
+			var need: String = str(step.get("need", ""))
+			var ready: bool = started and (need.is_empty() or q.has_flag(need))
+			var py: float = -29.0 + bob
+			draw_rect(Rect2(-3.0, py - 1.0, 7.0, 10.0), c_void)
+			if not started or ready:
+				var col: Color = LxPalette.PAL["lime"] if ready else LxPalette.PAL["gold"]
+				draw_rect(Rect2(-1.0, py, 3.0, 5.0), col)
+				draw_rect(Rect2(0.0, py, 1.0, 2.0), c_cream)
+				draw_rect(Rect2(-1.0, py + 6.0, 3.0, 2.0), c_cream if ready else col)
+			else:
+				# Crisp pixel '?' for active in-progress hub quest
+				var col_q: Color = LxPalette.PAL["sky"]
+				draw_rect(Rect2(-2.0, py, 5.0, 2.0), col_q)
+				draw_rect(Rect2(1.0, py + 2.0, 2.0, 2.0), LxPalette.PAL["ice"])
+				draw_rect(Rect2(-1.0, py + 3.0, 2.0, 2.0), col_q)
+				draw_rect(Rect2(-1.0, py + 6.0, 2.0, 2.0), LxPalette.PAL["ice"])
+			return
+	# 2. Fresh island-relit reaction spark badge
+	var last_isl: int = LxHubState.get_last_relit_island()
+	if last_isl > 0 and ISLAND_REACTIONS.has(last_isl) and _hub_narrated_isl != last_isl:
+		var ry: float = -26.0 + bob
+		draw_rect(Rect2(-3.0, ry - 1.0, 7.0, 7.0), c_void)
+		draw_rect(Rect2(-1.0, ry, 3.0, 5.0), LxPalette.PAL["gold"])
+		draw_rect(Rect2(-2.0, ry + 1.0, 5.0, 3.0), LxPalette.PAL["gold"])
+		draw_rect(Rect2(0.0, ry + 2.0, 1.0, 1.0), c_cream)
+		return
+	# 3. Workshop service emblem pip when NPC offers a direct service menu
+	if not service_mode.is_empty():
+		var sy: float = -25.0 + bob
+		var sc: Color = LxPalette.PAL["apricot"] if service_mode == "lead_shop" else (LxPalette.PAL["rose"] if service_mode == "tailor" else (LxPalette.PAL["ice"] if service_mode == "journal" else LxPalette.PAL["sky"]))
+		draw_rect(Rect2(-3.0, sy - 1.0, 7.0, 5.0), c_void)
+		draw_rect(Rect2(-2.0, sy, 5.0, 3.0), sc)
+		draw_rect(Rect2(-1.0, sy, 2.0, 1.0), c_cream)

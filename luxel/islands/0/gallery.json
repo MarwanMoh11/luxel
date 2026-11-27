@@ -430,7 +430,7 @@
       "prop": "pane_stained_easel",
       "pos": [
         312,
-        26
+        48
       ],
       "layer": "sort"
     },
@@ -438,8 +438,8 @@
       "sheet": "theme_wick_house",
       "prop": "warm_porch_lantern",
       "pos": [
-        136,
-        234
+        104,
+        236
       ],
       "layer": "sort"
     },
@@ -448,7 +448,7 @@
       "prop": "wooden_bookshelf_home",
       "pos": [
         232,
-        26
+        48
       ],
       "layer": "sort"
     },
@@ -457,7 +457,7 @@
       "prop": "potted_herb_urn",
       "pos": [
         152,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -465,8 +465,8 @@
       "sheet": "theme_wick_house",
       "prop": "music_box_phonograph",
       "pos": [
-        488,
-        26
+        480,
+        48
       ],
       "layer": "sort"
     }

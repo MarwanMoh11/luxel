@@ -42,7 +42,7 @@ func tick(dt: float) -> void:
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 16.0, 6.0)
 		queue_redraw()
-	elif _unlocked and not claimed:
+	elif _unlocked and not claimed and not LxHudFx.flash_reduced():
 		queue_redraw()
 
 
@@ -59,7 +59,7 @@ func interact(_actor: Node = null) -> bool:
 		LxIsland1Rule.active_instance.sync_shutter_hood()
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL1_POW_HOOD", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+	_emit_shake(0.16)
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -73,6 +73,11 @@ func interact(_actor: Node = null) -> bool:
 	return true
 
 
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
+
+
 func get_interact_prompt() -> String:
 	return "ISL1_PROMPT_HOOD" if (active and _unlocked and not claimed) else ""
 
@@ -82,10 +87,10 @@ func get_light_pool() -> Vector4:
 		return Vector4.ZERO
 	if _claim_t > 0.0:
 		var u: float = clampf(_claim_t / 0.65, 0.0, 1.0)
-		return Vector4(pos.x, pos.y - 6.0, 68.0 * u, 1.15 * u)
+		return Vector4(pos.x, pos.y - 6.0, 68.0 * u, (0.85 if LxHudFx.flash_reduced() else 1.15) * u)
 	if claimed:
 		return Vector4(pos.x, pos.y - 4.0, 24.0, 0.32)
-	return Vector4(pos.x, pos.y - 6.0, 48.0, 0.85)
+	return Vector4(pos.x, pos.y - 6.0, 48.0, 0.72 if LxHudFx.flash_reduced() else 0.85)
 
 
 func save_state() -> Dictionary:
@@ -111,16 +116,17 @@ func _draw() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
+	var red: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	# Velvet tailor mannequin plinth
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), c_night, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), c_wine if not claimed else PAL["mauve"] as Color)
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.2) * 2.0)
+		var bob: float = 0.0 if red else roundf(sin(_clock * 3.2) * 2.0)
 		var cy: float = -12.0 + bob
 		# Soft dusk stealth aura behind the Shutter Hood
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 12.0, 9.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_ice, 0.55), 1.0, false)
+		var r1: float = 8.0 + (0.0 if red else fmod(_clock * 12.0, 9.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_ice, 0.38 if red else 0.55), 1.0, false)
 		# Hooded velvet mantle silhouette with brass shutter clasp
 		draw_rect(Rect2(-6.0, cy - 6.0, 12.0, 12.0), c_void)
 		draw_rect(Rect2(-5.0, cy - 5.0, 10.0, 5.0), c_plum)
@@ -131,8 +137,13 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, cy, 2.0, 1.0), c_cream)
 		draw_rect(Rect2(-2.0, cy - 3.0, 1.0, 2.0), c_ice)
 		draw_rect(Rect2(1.0, cy - 3.0, 1.0, 2.0), c_ice)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, c_ice, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 16, c_gold, 1.0, false)
+	else:
+		# Recessed empty clasp cradle once claimed (greyscale-legible)
+		draw_rect(Rect2(-4.0, -3.0, 8.0, 3.0), c_void)
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 1.0), PAL["mauve"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
+			var a_ring: float = (1.0 - u) * (0.55 if red else 0.92)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 24.0 if red else 32.0, u)), 0.0, TAU, 20, Color(c_ice, a_ring), 1.0 if red else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 18.0 if red else 22.0, u)), 0.0, TAU, 16, Color(c_gold, a_ring), 1.0, false)
 	_draw_signal_pulses()

@@ -137,7 +137,7 @@ func step_launch(dt: float, _raw_dt: float, wick: Node2D) -> Dictionary:
 		if w != null:
 			w.z_index = 5
 			if not fred: w.scale = Vector2(1.0 + 0.14 * u3, 1.0 - 0.06 * u3)
-			w.modulate = Color(1.0, 1.0, 1.0, clampf(1.0 - (u3 - 0.78) / 0.22, 0.0, 1.0) if u3 > 0.78 else 1.0)
+			w.modulate.a = clampf(1.0 - (u3 - 0.78) / 0.22, 0.0, 1.0) if u3 > 0.78 else 1.0
 		if _trail.size() >= MAX_TRAIL: _trail.remove_at(0)
 		_trail.append(arc_p + Vector2(0.0, -5.0))
 		if int(floorf(_launch_t * 60.0)) % (3 if fred else 2) == 0:
@@ -180,7 +180,7 @@ func _place_wick(w: LxWick, pos: Vector2, dir: Vector2) -> void:
 
 func _restore_wick_visuals(wick: Node2D, snap_safe: bool) -> void:
 	if wick == null or not is_instance_valid(wick): return
-	wick.z_index = 0; wick.scale = Vector2.ONE; wick.rotation = 0.0; wick.modulate = Color.WHITE; wick.visible = true
+	wick.z_index = 0; wick.scale = Vector2.ONE; wick.rotation = 0.0; wick.modulate.a = 1.0; wick.visible = true
 	if snap_safe:
 		wick.global_position = SAFE_RESTORE_POS
 		if wick is LxWick:
@@ -252,7 +252,7 @@ func _draw() -> void:
 	# Compass rose breathing glow & crisp Phase 1 flare at [1160, 168], radius 20
 	draw_circle(cp, COMPASS_RADIUS, Color(c_apricot, (0.10 + flare * 0.16) * breath))
 	draw_circle(cp, 11.0, Color(c_gold, (0.14 + flare * 0.24) * breath))
-	draw_arc(cp, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), 1.5 if flare > 0.25 else 1.0)
+	draw_arc(cp, COMPASS_RADIUS, 0.0, TAU, 24, Color(c_gold if flare < 0.35 else c_cream, clampf((0.44 + flare * 0.48) * breath, 0.0, 0.95)), 2.0 if (flare > 0.25 and not fred) else 1.0)
 	draw_arc(cp, 12.0, 0.0, TAU, 16, Color(c_cream, clampf((0.28 + flare * 0.46) * breath, 0.0, 0.92)), 1.0)
 	for k: int in range(8):
 		var ang: float = float(k) * (PI * 0.25)
@@ -352,11 +352,11 @@ func _draw_air_fx() -> void:
 			_air_fx.draw_line(at, ah, Color(c_gold if ai % 2 == 0 else c_ice, sin(u1 * PI) * 0.78), 1.0)
 	if _launch_t < 0.52:
 		var u_r: float = clampf(_launch_t / 0.52, 0.0, 1.0)
-		_air_fx.draw_arc(cp, roundf(lerpf(6.0, 32.0 if fred else 38.0, u_r)), 0.0, TAU, 24, Color(c_cream if u_r < 0.35 else c_gold, (1.0 - u_r) * (0.65 if fred else 0.92)), 1.5)
+		_air_fx.draw_arc(cp, roundf(lerpf(6.0, 32.0 if fred else 38.0, u_r)), 0.0, TAU, 24, Color(c_cream if u_r < 0.35 else c_gold, (1.0 - u_r) * (0.65 if fred else 0.92)), 1.0 if fred else 2.0)
 	if _liftoff_fired:
 		var u_l: float = clampf((_launch_t - PHASE2_END) / 0.42, 0.0, 1.0)
 		if u_l < 1.0:
-			_air_fx.draw_arc(ap, roundf(lerpf(5.0, 30.0 if fred else 38.0, u_l)), 0.0, TAU, 22, Color(c_gold, (1.0 - u_l) * 0.85), 1.5)
+			_air_fx.draw_arc(ap, roundf(lerpf(5.0, 30.0 if fred else 38.0, u_l)), 0.0, TAU, 22, Color(c_gold, (1.0 - u_l) * (0.60 if fred else 0.85)), 1.0 if fred else 2.0)
 			_air_fx.draw_arc(ap, roundf(lerpf(3.0, 22.0, u_l)), 0.0, TAU, 18, Color(c_cream, (1.0 - u_l) * 0.90), 1.0)
 		if u_l < 0.65:
 			var lf_a: float = sin(clampf(u_l / 0.65, 0.0, 1.0) * PI)

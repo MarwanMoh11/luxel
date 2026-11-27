@@ -414,7 +414,7 @@
       "sheet": "theme_great_toll_shaft",
       "prop": "small_bronze_gear",
       "pos": [
-        80,
+        112,
         192
       ],
       "layer": "sort",
@@ -427,7 +427,7 @@
       "prop": "small_bronze_gear",
       "pos": [
         496,
-        224
+        232
       ],
       "layer": "sort",
       "flip_x": true,

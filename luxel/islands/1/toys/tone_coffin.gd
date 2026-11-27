@@ -150,8 +150,7 @@ func _shatter() -> void:
 	z_index = -4
 	_emit_sfx("stone_break")
 	_emit_gust(maxf(size.x, size.y) + 28.0, 68.0)
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.16)
+	_emit_shake(0.16)
 	if not _reward_given and not contains.is_empty():
 		_reward_given = true
 		_spawn_contents()
@@ -160,6 +159,11 @@ func _shatter() -> void:
 	if persist and region != null and region.has_method("save_interactables_to_state"):
 		region.call("save_interactables_to_state")
 	queue_redraw()
+
+
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _spawn_contents() -> void:
@@ -271,6 +275,7 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var red: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
@@ -279,10 +284,12 @@ func _draw() -> void:
 	var end_local: Vector2 = (origin_pos + track_dir * (slide_tiles * 16.0) - pos).round()
 	var start_local: Vector2 = (origin_pos - pos).round()
 
-	# Recessed stone coffin track rail
+	# Recessed stone coffin track rail + directional end-stop marker (greyscale-legible)
 	draw_line(start_local, end_local, c_void, 5.0, false)
 	draw_line(start_local, end_local, c_night, 3.0, false)
 	draw_line(start_local, end_local, c_dusk, 1.0, false)
+	draw_rect(Rect2(end_local - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+	draw_rect(Rect2(end_local - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color if state != State.SHATTERED else c_dusk)
 
 	var r := Rect2((-size * 0.5).round(), size.round())
 	if state == State.SHATTERED:
@@ -294,10 +301,12 @@ func _draw() -> void:
 		draw_rect(Rect2(-3.0, -2.0, 5.0, 3.0), c_dusk)
 		if _shatter_t > 0.0:
 			var u: float = 1.0 - clampf(_shatter_t / 0.42, 0.0, 1.0)
+			var da: float = (1.0 - u) * (0.60 if red else 0.95)
 			for k: int in range(6):
 				var a: float = (TAU * float(k)) / 6.0
-				var dp := Vector2(roundf(cos(a) * lerpf(3.0, 16.0, u)), roundf(sin(a) * lerpf(3.0, 16.0, u)))
-				draw_rect(Rect2(dp, Vector2(2.0, 2.0)), PAL["coral"] as Color if k % 2 == 0 else c_stone)
+				var dp := Vector2(roundf(cos(a) * lerpf(3.0, 11.0 if red else 16.0, u)), roundf(sin(a) * lerpf(3.0, 11.0 if red else 16.0, u)))
+				var sc: Color = PAL["coral"] as Color if k % 2 == 0 else c_stone
+				draw_rect(Rect2(dp, Vector2(2.0, 2.0)), Color(sc, da))
 		_draw_signal_pulses()
 		return
 

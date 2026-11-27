@@ -427,8 +427,8 @@
       "sheet": "theme_wick_house",
       "prop": "warm_porch_lantern",
       "pos": [
-        312,
-        26
+        296,
+        44
       ],
       "layer": "sort"
     },
@@ -436,8 +436,8 @@
       "sheet": "theme_wick_house",
       "prop": "wooden_bookshelf_home",
       "pos": [
-        312,
-        378
+        264,
+        376
       ],
       "layer": "sort"
     },
@@ -446,7 +446,7 @@
       "prop": "potted_herb_urn",
       "pos": [
         232,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -454,7 +454,7 @@
       "sheet": "theme_wick_house",
       "prop": "music_box_phonograph",
       "pos": [
-        264,
+        224,
         314
       ],
       "layer": "sort"

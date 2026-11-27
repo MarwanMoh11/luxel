@@ -117,11 +117,16 @@ func _open_seal() -> void:
 			Lx.state.opened_doors.append(id)
 	_emit_sfx("seal_break")
 	_emit_gust(64.0, 56.0)
+	_emit_shake(0.22)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.22 if not LxHudFx.flash_reduced() else 0.08)
 		if LxStrings.has_id("ISL1_SEAL_OPEN"):
 			Lx.events.narration_requested.emit("ISL1_SEAL_OPEN", "title", 3.0)
 	queue_redraw()
+
+
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func interact(_actor: Node = null) -> bool:
@@ -182,13 +187,16 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var red: bool = LxHudFx.flash_reduced()
 	var w: float = roundf(size.x)
 	var h: float = roundf(size.y)
-	var rx: float = (1.0 if int(_rattle_t * 36.0) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled()) else 0.0
+	var rx: float = (1.0 if int(_rattle_t * 36.0) % 2 == 0 else -1.0) if (_rattle_t > 0.0 and LxHudFx.shake_enabled() and not red) else 0.0
 	var x0: float = floorf(-w * 0.5) + rx
 	var y0: float = floorf(-h * 0.5)
 	var uc_lit: bool = _has_undercroft()
 	var mn_lit: bool = _has_manor()
+	var c_void: Color = PAL["void"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 
 	if opened:
 		# Recessed bronze jambs with twin glowing clapper crests
@@ -200,21 +208,31 @@ func _draw() -> void:
 		draw_rect(Rect2(x0 + w - 4.0, y0 + 3.0, 2.0, 4.0), PAL["gold"] as Color)
 		if _open_t > 0.0:
 			var u: float = 1.0 - clampf(_open_t / 0.65, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(10.0 + u * 34.0), 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
+			var r_col := Color(PAL["gold"] as Color, (1.0 - u) * (0.55 if red else 0.90))
+			draw_arc(Vector2.ZERO, roundf(10.0 + u * (24.0 if red else 34.0)), 0.0, TAU, 20, r_col, 1.0 if red else 2.0)
 		return
 
 	# Grand bronze Twin Clapper Gate
-	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), PAL["night"] as Color, PAL["dusk"] as Color, PAL["mauve"] as Color, PAL["void"] as Color)
+	LxToyDraw.draw_bevel_box(self, Rect2(x0, y0, w, h), PAL["night"] as Color, PAL["dusk"] as Color, PAL["mauve"] as Color, c_void)
 	# Center seal bar
 	draw_rect(Rect2(-3.0 + rx, y0 + 2.0, 6.0, h - 4.0), PAL["plum"] as Color)
 	draw_rect(Rect2(-1.0 + rx, y0 + 3.0, 2.0, h - 6.0), PAL["gold"] as Color if (uc_lit and mn_lit) else PAL["stone"] as Color)
-	# Left socket: Undercroft Spade
+	# Left socket: Undercroft Spade (pointed spade silhouette when lit vs empty hollow slot)
 	var lx: float = -12.0 + rx
-	draw_rect(Rect2(lx - 4.0, -4.0, 8.0, 8.0), PAL["void"] as Color)
+	draw_rect(Rect2(lx - 4.0, -4.0, 8.0, 8.0), c_void)
 	draw_rect(Rect2(lx - 3.0, -3.0, 6.0, 6.0), (PAL["jade"] if uc_lit else PAL["night"]) as Color)
-	draw_rect(Rect2(lx - 1.0, -2.0, 2.0, 4.0), (PAL["cream"] if uc_lit else PAL["mauve"]) as Color)
-	# Right socket: Manor Clapper
+	if uc_lit:
+		draw_rect(Rect2(lx - 2.0, -1.0, 4.0, 2.0), c_cream)
+		draw_rect(Rect2(lx - 1.0, -3.0, 2.0, 5.0), c_cream)
+		draw_rect(Rect2(lx - 2.0, 2.0, 4.0, 1.0), PAL["gold"] as Color)
+	else:
+		draw_rect(Rect2(lx - 1.0, -2.0, 2.0, 4.0), c_void)
+	# Right socket: Manor Clapper (weighted pendulum bulb silhouette when lit vs empty hollow slot)
 	var rxx: float = 12.0 + rx
-	draw_rect(Rect2(rxx - 4.0, -4.0, 8.0, 8.0), PAL["void"] as Color)
+	draw_rect(Rect2(rxx - 4.0, -4.0, 8.0, 8.0), c_void)
 	draw_rect(Rect2(rxx - 3.0, -3.0, 6.0, 6.0), (PAL["coral"] if mn_lit else PAL["night"]) as Color)
-	draw_rect(Rect2(rxx - 1.0, -2.0, 2.0, 4.0), (PAL["cream"] if mn_lit else PAL["mauve"]) as Color)
+	if mn_lit:
+		draw_rect(Rect2(rxx - 1.0, -3.0, 2.0, 3.0), PAL["gold"] as Color)
+		draw_rect(Rect2(rxx - 2.0, 0.0, 4.0, 3.0), c_cream)
+	else:
+		draw_rect(Rect2(rxx - 1.0, -2.0, 2.0, 4.0), c_void)

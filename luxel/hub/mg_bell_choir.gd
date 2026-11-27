@@ -57,6 +57,9 @@ func _on_trial_start() -> void:
 func _on_trial_end() -> void:
 	_phase = "idle"
 	_highlight_bell = -1
+	_highlight_t = 0.0
+	_step_idx = 0
+	_show_t = 0.0
 	_clear_overlay()
 
 
@@ -73,6 +76,8 @@ func _on_trial_tick(dt: float) -> void:
 		_highlight_t = maxf(0.0, _highlight_t - dt)
 		if _highlight_t <= 0.0:
 			_highlight_bell = -1
+	if wave_idx >= WAVE_PATTERNS.size():
+		return
 	if _phase == "show":
 		_show_t -= dt
 		if _show_t <= 0.0:
@@ -121,7 +126,7 @@ func _poll_player_rings() -> void:
 
 
 func submit_note(bi: int) -> bool:
-	if not trial_running or _phase != "play":
+	if not trial_running or _phase != "play" or bi < 0 or bi >= 3 or wave_idx >= WAVE_PATTERNS.size():
 		return false
 	var pat: Array = WAVE_PATTERNS[wave_idx] as Array
 	var expected: int = int(pat[_step_idx])
@@ -176,6 +181,8 @@ func _ensure_overlay() -> void:
 
 func _clear_overlay() -> void:
 	if _choir_overlay != null and is_instance_valid(_choir_overlay):
+		if _choir_overlay.draw.is_connected(_draw_choir):
+			_choir_overlay.draw.disconnect(_draw_choir)
 		_choir_overlay.queue_free()
 	_choir_overlay = null
 
@@ -183,17 +190,61 @@ func _clear_overlay() -> void:
 func _draw_choir() -> void:
 	if not trial_running or _choir_overlay == null:
 		return
+	var fr: bool = LxHudFx.flash_reduced()
+	var c_void: Color = LxPalette.PAL["void"]
+	var c_cream: Color = LxPalette.PAL["cream"]
 	var tone_cols: Array[Color] = [LxPalette.PAL["gold"], LxPalette.PAL["ice"], LxPalette.PAL["coral"]]
-	if _highlight_bell >= 0 and _highlight_bell < 3:
-		var b: LxInteractable = _get_bell(_highlight_bell)
-		if b != null:
-			_choir_overlay.draw_arc(b.pos + Vector2(0.0, -8.0), 18.0, 0.0, TAU, 18, tone_cols[_highlight_bell], 2.0)
-	# Draw note progress pips above the plinth
+	# Distinct greyscale-legible tone crests above each of the 3 bells (Dawn diamond, Dusk bar, War chevron)
+	for bi: int in range(3):
+		var b: LxInteractable = _get_bell(bi)
+		if b == null:
+			continue
+		var bp: Vector2 = b.pos.round() + Vector2(0.0, -20.0)
+		var tc: Color = tone_cols[bi]
+		_choir_overlay.draw_rect(Rect2(bp + Vector2(-4.0, -3.0), Vector2(8.0, 6.0)), c_void)
+		if bi == 0:
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-1.0, -2.0), Vector2(2.0, 4.0)), tc)
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-3.0, -1.0), Vector2(6.0, 2.0)), tc)
+		elif bi == 1:
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-3.0, -2.0), Vector2(6.0, 4.0)), tc)
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-1.0, -1.0), Vector2(2.0, 2.0)), LxPalette.PAL["night"])
+		else:
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-3.0, -2.0), Vector2(2.0, 4.0)), tc)
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(1.0, -2.0), Vector2(2.0, 4.0)), tc)
+			_choir_overlay.draw_rect(Rect2(bp + Vector2(-1.0, 0.0), Vector2(2.0, 2.0)), c_cream)
+		if bi == _highlight_bell and _highlight_t > 0.0:
+			var u: float = 1.0 - clampf(_highlight_t / 0.52, 0.0, 1.0)
+			var ring_r: float = 16.0 if fr else roundf(14.0 + u * 8.0)
+			var bc: Vector2 = b.pos.round() + Vector2(0.0, -8.0)
+			_choir_overlay.draw_arc(bc, ring_r + 1.0, 0.0, TAU, 18, c_void, 3.0)
+			_choir_overlay.draw_arc(bc, ring_r, 0.0, TAU, 18, tc, 1.0 if fr else 2.0)
+
+	# Void-backed note progress tray centered above the plinth
 	var pat: Array = WAVE_PATTERNS[mini(wave_idx, WAVE_PATTERNS.size() - 1)] as Array
+	var tray_w: float = float(pat.size() * 8 + 4)
+	var tx0: float = roundf(pos.x - tray_w * 0.5)
+	var ty0: float = roundf(pos.y - 31.0)
+	_choir_overlay.draw_rect(Rect2(tx0, ty0, tray_w, 8.0), c_void)
+	_choir_overlay.draw_rect(Rect2(tx0 + 1.0, ty0 + 1.0, tray_w - 2.0, 6.0), LxPalette.PAL["night"])
 	for pi: int in range(pat.size()):
 		var done: bool = _phase == "play" and pi < _step_idx
-		var col: Color = tone_cols[int(pat[pi])] if (done or (_phase == "show" and pi < _step_idx)) else LxPalette.PAL["dusk"]
-		_choir_overlay.draw_rect(Rect2(pos.x - float(pat.size() * 4) + float(pi * 8), pos.y - 26.0, 6.0, 4.0), col)
+		var shown: bool = _phase == "show" and pi < _step_idx
+		var is_cur: bool = _phase == "play" and pi == _step_idx
+		var px: float = tx0 + 3.0 + float(pi * 8)
+		var col: Color = tone_cols[int(pat[pi])] if (done or shown) else LxPalette.PAL["dusk"]
+		_choir_overlay.draw_rect(Rect2(px, ty0 + 2.0, 6.0, 4.0), col)
+		if done or shown:
+			_choir_overlay.draw_rect(Rect2(px, ty0 + 2.0, 2.0, 1.0), c_cream)
+		elif is_cur:
+			var cur_c: Color = LxPalette.PAL["gold"] if (fr or int(_clock * 6.0) % 2 == 0) else c_cream
+			_choir_overlay.draw_rect(Rect2(px + 2.0, ty0 + 3.0, 2.0, 2.0), cur_c)
+	# Remaining tries (3 mistake pips) right above the note tray
+	var rem_tries: int = maxi(0, 3 - mistakes)
+	var mx0: float = roundf(pos.x - 9.0)
+	_choir_overlay.draw_rect(Rect2(mx0 - 1.0, ty0 - 5.0, 19.0, 4.0), c_void)
+	for mi: int in range(3):
+		var mc: Color = LxPalette.PAL["lime"] if mi < rem_tries else LxPalette.PAL["wine"]
+		_choir_overlay.draw_rect(Rect2(mx0 + float(mi * 6), ty0 - 4.0, 5.0, 2.0), mc)
 
 
 func _get_hud_primary_text() -> String:

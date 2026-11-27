@@ -198,6 +198,7 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var red: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
@@ -212,7 +213,7 @@ func _draw() -> void:
 	var is_fr: bool = frozen_t > 0.0
 
 	# Subtle clock dial ring on pit below
-	draw_arc(Vector2.ZERO, length, 0.0, TAU, 32, Color(c_dusk, 0.42), 1.0)
+	draw_arc(Vector2.ZERO, roundf(length), 0.0, TAU, 32, Color(c_dusk, 0.28 if red else 0.42), 1.0)
 	# Walkable brass hand polygon
 	var poly := PackedVector2Array([
 		(-perp * hw).round(),
@@ -227,6 +228,20 @@ func _draw() -> void:
 	for i: int in range(poly.size()):
 		draw_line(poly[i], poly[(i + 1) % poly.size()], c_void, 2.0)
 		draw_line(poly[i], poly[(i + 1) % poly.size()], edge_c, 1.0)
+	# Greyscale-distinct hand landmarks: hour counterweight, bridge rung notches, minute eyelet
+	if hand_kind == "hour":
+		var cw_p: Vector2 = (-dir * 10.0).round()
+		draw_circle(cw_p, 5.0, c_void)
+		draw_circle(cw_p, 3.0, c_apricot)
+	elif hand_kind == "bridge":
+		for ri: int in range(1, 4):
+			var rp: Vector2 = (dir * (length * float(ri) * 0.25)).round()
+			draw_line((rp - perp * 4.0).round(), (rp + perp * 4.0).round(), c_void, 2.0)
+			draw_line((rp - perp * 3.0).round(), (rp + perp * 3.0).round(), c_cream, 1.0)
+	else:
+		var eye_p: Vector2 = (dir * (length * 0.72)).round()
+		draw_circle(eye_p, 3.0, c_void)
+		draw_circle(eye_p, 2.0, c_ice if is_fr else c_cream)
 	# Center ridge & brass hub
 	draw_line(Vector2.ZERO, tip.round(), c_night, 2.0)
 	draw_line(Vector2.ZERO, tip.round(), edge_c, 1.0)
@@ -234,5 +249,9 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, 6.0, c_night)
 	draw_circle(Vector2.ZERO, 3.0, c_ice if is_fr else c_gold)
 	if is_fr:
+		# Void-backed frost studs + countdown bar so frozen state pops in greyscale
+		for fp: Vector2 in [Vector2(-6.0, -6.0), Vector2(5.0, 5.0)]:
+			draw_rect(Rect2(fp - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+			draw_rect(Rect2(fp, Vector2(2.0, 2.0)), c_cream)
 		LxToyDraw.draw_bar(self, Vector2(-7.0, -14.0), 14.0, frozen_t / maxf(0.1, freeze_secs), c_ice)
 	_draw_signal_pulses()

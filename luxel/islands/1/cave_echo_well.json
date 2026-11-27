@@ -246,7 +246,7 @@
         192,
         240
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -315,8 +315,8 @@
       "sheet": "theme_cave_1",
       "prop": "cavern_brazier_bowl",
       "pos": [
-        160,
-        232
+        144,
+        224
       ],
       "layer": "sort",
       "flip_x": false,

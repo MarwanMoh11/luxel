@@ -58,10 +58,14 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if not active:
 		return
+	var prev_vis: bool = visible
 	_sync_visibility()
+	var dirty: bool = visible != prev_vis
 	if _claim_t > 0.0:
 		_claim_t = maxf(0.0, _claim_t - dt)
-	queue_redraw()
+		dirty = true
+	if dirty or (visible and not collected and not LxHudFx.flash_reduced()):
+		queue_redraw()
 
 
 func reset_toy() -> void:
@@ -96,8 +100,8 @@ func interact(_actor: Node = null) -> bool:
 	emit_power(true)
 	_emit_sfx(sfx_id)
 	_emit_gust(56.0, 48.0)
+	_emit_shake(0.14)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.14 if not LxHudFx.flash_reduced() else 0.06)
 		if not narrate_key.is_empty() and LxStrings.has_id(narrate_key):
 			Lx.events.narration_requested.emit(narrate_key, "title", 3.2)
 	if region != null and region.has_method("save_interactables_to_state"):
@@ -107,12 +111,17 @@ func interact(_actor: Node = null) -> bool:
 	return true
 
 
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
+
+
 func get_light_pool() -> Vector4:
 	if not active or not _is_req_met():
 		return Vector4.ZERO
 	if collected:
 		return Vector4(pos.x, pos.y - 2.0, 28.0, 0.38)
-	return Vector4(pos.x, pos.y - 4.0, 46.0, 0.85)
+	return Vector4(pos.x, pos.y - 4.0, 46.0, 0.72 if LxHudFx.flash_reduced() else 0.85)
 
 
 func save_state() -> Dictionary:
@@ -141,20 +150,23 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 
-	_draw_ground_shadow(9.0, 3.5, Vector2(0.0, 6.0))
+	var red: bool = LxHudFx.flash_reduced()
+	_draw_ground_shadow(9.0, 4.0, Vector2(0.0, 6.0))
 	# Fluted clockwork brass pedestal
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -3.0, 16.0, 10.0), c_night, c_dusk, c_mauve, c_void)
 	draw_rect(Rect2(-6.0, -4.0, 12.0, 2.0), c_apricot if not collected else c_mauve)
 
 	if not collected:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 1.6)
+		var bob: float = 0.0 if red else roundf(sin(_clock * 3.4) * 1.6)
 		var ry: float = -10.0 + bob
 		if relic_kind == "mainspring":
 			draw_circle(Vector2(0.0, ry), 7.0, c_void)
-			draw_arc(Vector2(0.0, ry), 5.5, 0.0, TAU, 16, c_gold, 2.0)
-			draw_arc(Vector2(0.0, ry), 3.0, 0.4, TAU - 0.6, 12, c_ice, 1.5)
+			draw_arc(Vector2(0.0, ry), 6.0, 0.0, TAU, 16, c_gold, 2.0)
+			draw_arc(Vector2(0.0, ry), 3.0, 0.4, TAU - 0.6, 12, c_ice, 1.0)
 			draw_rect(Rect2(-1.0, ry - 1.0, 2.0, 2.0), c_cream)
 		elif relic_kind == "crank":
+			draw_rect(Rect2(-7.0, ry - 5.0, 14.0, 5.0), c_void)
+			draw_rect(Rect2(3.0, ry - 8.0, 5.0, 6.0), c_void)
 			draw_rect(Rect2(-2.0, ry - 5.0, 4.0, 10.0), c_void)
 			draw_rect(Rect2(-1.0, ry - 4.0, 2.0, 8.0), c_apricot)
 			draw_rect(Rect2(-6.0, ry - 4.0, 12.0, 3.0), c_gold)
@@ -169,14 +181,17 @@ func _draw() -> void:
 			draw_circle(Vector2(0.0, ry), 6.0, c_void)
 			draw_circle(Vector2(0.0, ry), 5.0, c_apricot)
 			for i: int in range(6):
-				var a: float = (TAU * float(i)) / 6.0 + (_clock * 0.8 if not LxHudFx.flash_reduced() else 0.0)
+				var a: float = (TAU * float(i)) / 6.0 + (0.0 if red else _clock * 0.8)
 				var tp := Vector2(roundf(cos(a) * 6.0), roundf(ry + sin(a) * 6.0))
 				draw_rect(Rect2(tp - Vector2.ONE, Vector2(2.0, 2.0)), c_gold)
 			draw_circle(Vector2(0.0, ry), 2.0, c_cream)
 	else:
-		# Engaged socket glow
+		# Engaged recessed socket with void backing & cream lock stud (greyscale-legible)
+		draw_rect(Rect2(-4.0, -4.0, 8.0, 4.0), c_void)
 		draw_rect(Rect2(-3.0, -3.0, 6.0, 2.0), c_gold)
+		draw_rect(Rect2(-1.0, -3.0, 2.0, 1.0), c_cream)
 		if _claim_t > 0.0:
 			var u: float = 1.0 - clampf(_claim_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -6.0), roundf(6.0 + u * 24.0), 0.0, TAU, 18, c_gold, 1.5)
+			var r_col := Color(c_gold, (1.0 - u) * (0.55 if red else 0.90))
+			draw_arc(Vector2(0.0, -6.0), roundf(6.0 + u * (18.0 if red else 24.0)), 0.0, TAU, 18, r_col, 1.0 if red else 2.0)
 	_draw_signal_pulses()

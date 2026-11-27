@@ -41,7 +41,7 @@ func tick(dt: float) -> void:
 		if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 			LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.PRISM_STAR, pos, 16.0, 6.0)
 		queue_redraw()
-	elif _unlocked and not claimed:
+	elif _unlocked and not claimed and not LxHudFx.flash_reduced():
 		queue_redraw()
 
 
@@ -55,7 +55,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["item_echo_clapper"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL1_POW_ECHO", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+	_emit_shake(0.16)
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -69,6 +69,11 @@ func interact(_actor: Node = null) -> bool:
 	return true
 
 
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
+
+
 func get_interact_prompt() -> String:
 	return "ISL1_PROMPT_CLAPPER" if (active and _unlocked and not claimed) else ""
 
@@ -78,10 +83,10 @@ func get_light_pool() -> Vector4:
 		return Vector4.ZERO
 	if _claim_t > 0.0:
 		var u: float = clampf(_claim_t / 0.65, 0.0, 1.0)
-		return Vector4(pos.x, pos.y - 6.0, 72.0 * u, 1.2 * u)
+		return Vector4(pos.x, pos.y - 6.0, 72.0 * u, (0.85 if LxHudFx.flash_reduced() else 1.2) * u)
 	if claimed:
 		return Vector4(pos.x, pos.y - 4.0, 26.0, 0.35)
-	return Vector4(pos.x, pos.y - 6.0, 52.0, 0.92)
+	return Vector4(pos.x, pos.y - 6.0, 52.0, 0.78 if LxHudFx.flash_reduced() else 0.92)
 
 
 func save_state() -> Dictionary:
@@ -100,27 +105,33 @@ func load_state(d: Dictionary) -> void:
 func _draw() -> void:
 	if not visible:
 		return
+	var red: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	# Carved reliquary plinth
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), PAL["night"] as Color, PAL["dusk"] as Color, PAL["stone"] as Color, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), PAL["gold"] as Color if not claimed else PAL["mauve"] as Color)
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 2.0)
+		var bob: float = 0.0 if red else roundf(sin(_clock * 3.4) * 2.0)
 		var cy: float = -12.0 + bob
 		# Twin concentric acoustic echo rings behind clapper
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 14.0, 10.0))
-		var r2: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 14.0 + 5.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["gold"] as Color, 0.65), 1.0, false)
-		draw_arc(Vector2(0.0, cy), roundf(r2), 0.0, TAU, 16, Color(PAL["cream"] as Color, 0.45), 1.0, false)
+		var r1: float = 8.0 + (0.0 if red else fmod(_clock * 14.0, 10.0))
+		var r2: float = 8.0 + (0.0 if red else fmod(_clock * 14.0 + 5.0, 10.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["gold"] as Color, 0.42 if red else 0.65), 1.0, false)
+		draw_arc(Vector2(0.0, cy), roundf(r2), 0.0, TAU, 16, Color(PAL["cream"] as Color, 0.30 if red else 0.45), 1.0, false)
 		# Bronze Echo Clapper mallet silhouette
 		draw_rect(Rect2(-2.0, cy - 6.0, 4.0, 12.0), c_void)
 		draw_rect(Rect2(-4.0, cy + 1.0, 8.0, 6.0), c_void)
 		draw_rect(Rect2(-1.0, cy - 5.0, 2.0, 8.0), PAL["apricot"] as Color)
 		draw_rect(Rect2(-3.0, cy + 2.0, 6.0, 4.0), PAL["gold"] as Color)
 		draw_rect(Rect2(-2.0, cy + 2.0, 3.0, 2.0), PAL["cream"] as Color)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, PAL["gold"] as Color, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.0, false)
+	else:
+		# Recessed empty mallet cradle once claimed (greyscale-legible)
+		draw_rect(Rect2(-4.0, -3.0, 8.0, 3.0), c_void)
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 1.0), PAL["mauve"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
+			var a_ring: float = (1.0 - u) * (0.55 if red else 0.92)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 26.0 if red else 34.0, u)), 0.0, TAU, 20, Color(PAL["gold"] as Color, a_ring), 1.0 if red else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 18.0 if red else 24.0, u)), 0.0, TAU, 16, Color(PAL["cream"] as Color, a_ring), 1.0, false)
 	_draw_signal_pulses()

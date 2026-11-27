@@ -27,6 +27,19 @@ func setup(spec: Dictionary) -> void:
 	super.setup(spec)
 	kind = "training_dummy"
 	radius = 11.0
+	_hit_t = 0.0
+	_recoil_dir = Vector2.RIGHT
+	_pips.clear()
+	_samples.clear()
+	_sim_t = 0.0
+	_since_hit = 99.0
+	_plaque_t = 0.0
+	total_hits = 0
+	last_damage = 0.0
+	combo_streak = 0
+	tempo_hps = 0.0
+	live_dps = 0.0
+	peak_dps = 0.0
 	queue_redraw()
 
 
@@ -107,42 +120,49 @@ func tick(dt: float) -> void:
 
 
 func _draw() -> void:
-	_draw_ground_shadow(7.0, 2.5, Vector2(0.0, 1.0))
+	_draw_ground_shadow(7.0, 3.0, Vector2(0.0, 1.0))
+	var fr: bool = LxHudFx.flash_reduced()
 	var tilt: float = 0.0
-	if _hit_t > 0.0:
-		tilt = roundf(sin(_hit_t * 36.0) * 2.5 * signf(_recoil_dir.x if absf(_recoil_dir.x) > 0.1 else 1.0))
-	# Post & burlap lantern-target dummy
-	draw_rect(Rect2(-2.0, -4.0, 4.0, 6.0), LxPalette.PAL["night"])
+	if _hit_t > 0.0 and LxHudFx.shake_enabled():
+		var amp: float = 1.0 if fr else 2.5
+		tilt = roundf(sin(_hit_t * (18.0 if fr else 36.0)) * amp * signf(_recoil_dir.x if absf(_recoil_dir.x) > 0.1 else 1.0))
+	# Void-backed post & burlap lantern-target dummy
+	var c_void: Color = LxPalette.PAL["void"]
+	draw_rect(Rect2(-2.0, -4.0, 4.0, 6.0), c_void)
 	draw_rect(Rect2(-1.0, -3.0, 2.0, 4.0), LxPalette.PAL["dusk"])
-	var body_c: Color = LxPalette.PAL["cream"] if _hit_t > 0.20 else LxPalette.PAL["stone"]
-	draw_rect(Rect2(-6.0 + tilt, -14.0, 12.0, 10.0), LxPalette.PAL["night"])
+	var body_c: Color = (LxPalette.PAL["apricot"] if fr else LxPalette.PAL["cream"]) if _hit_t > 0.20 else LxPalette.PAL["stone"]
+	draw_rect(Rect2(-6.0 + tilt, -14.0, 12.0, 10.0), c_void)
 	draw_rect(Rect2(-5.0 + tilt, -13.0, 10.0, 8.0), body_c)
 	# Crossbar arms & brass bullseye
+	draw_rect(Rect2(-10.0 + tilt, -12.0, 20.0, 4.0), c_void)
 	draw_rect(Rect2(-9.0 + tilt, -11.0, 18.0, 2.0), LxPalette.PAL["apricot"])
+	draw_rect(Rect2(-3.0 + tilt, -12.0, 6.0, 6.0), c_void)
 	draw_rect(Rect2(-2.0 + tilt, -11.0, 4.0, 4.0), LxPalette.PAL["coral"])
 	draw_rect(Rect2(-1.0 + tilt, -10.0, 2.0, 2.0), LxPalette.PAL["gold"])
+	draw_rect(Rect2(-1.0 + tilt, -10.0, 1.0, 1.0), LxPalette.PAL["cream"])
 	# Head lantern cap
-	draw_rect(Rect2(-4.0 + tilt, -20.0, 8.0, 6.0), LxPalette.PAL["night"])
+	draw_rect(Rect2(-4.0 + tilt, -20.0, 8.0, 6.0), c_void)
 	draw_rect(Rect2(-3.0 + tilt, -19.0, 6.0, 4.0), LxPalette.PAL["dusk"])
 	draw_rect(Rect2(-2.0 + tilt, -18.0, 1.0, 1.0), LxPalette.PAL["gold"])
 	draw_rect(Rect2(1.0 + tilt, -18.0, 1.0, 1.0), LxPalette.PAL["gold"])
 
-	# Live Tempo & DPS Readout Plaque
+	# Live Tempo & DPS Readout Plaque (UI-W9 beveled chrome)
 	if _plaque_t > 0.0:
-		var pr := Rect2(-32.0, -42.0, 64.0, 18.0)
-		draw_rect(pr, LxPalette.PAL["void"])
-		draw_rect(pr.grow(-1.0), LxPalette.PAL["night"])
-		draw_rect(Rect2(pr.position.x + 1.0, pr.position.y + 1.0, pr.size.x - 2.0, 1.0), LxPalette.PAL["gold"])
+		var pr := Rect2(-32.0, -43.0, 64.0, 19.0)
+		draw_rect(Rect2(pr.position + Vector2(1.0, 1.0), pr.size), c_void)
+		LxPixelFont.draw_panel(self, pr, "night", "gold", "void")
 		var bpm: int = clampi(roundi(tempo_hps * 60.0), 0, 999)
 		var l1: String = "%d BPM x%d" % [bpm, combo_streak]
 		var l2: String = "DPS %.1f" % live_dps
 		LxPixelFont.draw_centered(self, l1, 0.0, pr.position.y + 3.0, LxPalette.PAL["gold"], 1)
 		LxPixelFont.draw_centered(self, l2, 0.0, pr.position.y + 10.0, LxPalette.PAL["cream"], 1)
+		if peak_dps > 0.5 and live_dps >= peak_dps - 0.1:
+			draw_rect(Rect2(pr.end.x - 5.0, pr.position.y + 3.0, 2.0, 2.0), LxPalette.PAL["lime"])
 		# Tempo meter pips along plaque bottom
 		var lit_pips: int = clampi(roundi(tempo_hps * 2.0), 0, 8)
 		for bi: int in range(8):
 			var bc: Color = LxPalette.PAL["coral"] if bi >= 6 else (LxPalette.PAL["gold"] if bi >= 3 else LxPalette.PAL["lime"])
-			draw_rect(Rect2(-15.0 + float(bi * 4), pr.end.y - 2.0, 3.0, 1.0), bc if bi < lit_pips else LxPalette.PAL["dusk"])
+			draw_rect(Rect2(-15.0 + float(bi * 4), pr.end.y - 3.0, 3.0, 1.0), bc if bi < lit_pips else LxPalette.PAL["dusk"])
 
 	# Floating damage pips
 	for entry: Dictionary in _pips:
@@ -151,12 +171,12 @@ func _draw() -> void:
 		var u: float = clampf(age / maxf(life, 0.01), 0.0, 1.0)
 		var count: int = int(entry["pips"])
 		var heavy: bool = bool(entry["heavy"])
-		var col: Color = LxPalette.PAL["gold"] if heavy else LxPalette.PAL["cream"]
+		var col: Color = (LxPalette.PAL["apricot"] if fr else LxPalette.PAL["gold"]) if heavy else LxPalette.PAL["cream"]
 		if u > 0.72:
 			col = LxPalette.PAL["mauve"]
-		var py: float = roundf(-25.0 - u * 14.0)
+		var py: float = roundf(-25.0 - u * (10.0 if fr else 14.0))
 		var row_w: float = float(count * 3 - 1)
 		var px0: float = roundf(float(entry["dx"]) - row_w * 0.5)
-		draw_rect(Rect2(px0 - 1.0, py - 1.0, row_w + 2.0, 4.0), LxPalette.PAL["void"])
+		draw_rect(Rect2(px0 - 1.0, py - 1.0, row_w + 2.0, 4.0), c_void)
 		for p: int in range(count):
 			draw_rect(Rect2(px0 + float(p * 3), py, 2.0, 2.0), col)

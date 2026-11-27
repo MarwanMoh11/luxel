@@ -384,7 +384,7 @@
       "kind": "hub_curio",
       "pos": [
         288,
-        72
+        80
       ],
       "props": {
         "curio": "hearth_fire"
@@ -613,7 +613,7 @@
       "prop": "music_box_phonograph",
       "pos": [
         344,
-        250
+        272
       ],
       "layer": "sort"
     }

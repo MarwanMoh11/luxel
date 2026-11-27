@@ -55,19 +55,32 @@ func tick(dt: float) -> void:
 func get_light_pool() -> Vector4:
 	if not active:
 		return Vector4.ZERO
-	return Vector4(pos.x, pos.y - 10.0, 52.0 if is_unlocked() else 24.0, 0.85 if is_unlocked() else 0.30)
+	var open_i: float = 0.72 if LxHudFx.flash_reduced() else 0.85
+	return Vector4(pos.x, pos.y - 10.0, 52.0 if is_unlocked() else 24.0, open_i if is_unlocked() else 0.30)
 
 
 func _draw() -> void:
 	var open_now: bool = is_unlocked()
-	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 4.0), 12.0, 3.5)
-	draw_rect(Rect2(-11.0, -24.0, 22.0, 26.0), PAL["void"] as Color)
+	var red: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
+	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 4.0), 12.0, 4.0)
+	draw_rect(Rect2(-11.0, -24.0, 22.0, 26.0), c_void)
 	draw_rect(Rect2(-10.0, -23.0, 20.0, 24.0), (PAL["apricot"] if open_now else PAL["dusk"]) as Color)
 	draw_rect(Rect2(-8.0, -21.0, 16.0, 22.0), PAL["night"] as Color)
-	draw_rect(Rect2(-7.0, -20.0, 14.0, 20.0), (PAL["gold"] if open_now else PAL["plum"]) as Color)
+	draw_rect(Rect2(-7.0, -20.0, 14.0, 20.0), (c_gold if open_now else PAL["plum"]) as Color)
 	if open_now:
-		draw_rect(Rect2(-5.0, -18.0, 10.0, 16.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-5.0, -18.0, 10.0, 16.0), c_cream)
+		draw_rect(Rect2(-9.0, -22.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(7.0, -22.0, 2.0, 2.0), c_cream)
+	else:
+		# Locked iron cross-bar & keyhole notch (greyscale-legible)
+		draw_rect(Rect2(-8.0, -11.0, 16.0, 3.0), c_void)
+		draw_rect(Rect2(-7.0, -10.0, 14.0, 1.0), PAL["stone"] as Color)
+		draw_rect(Rect2(-1.0, -6.0, 2.0, 4.0), c_void)
 	LxBubble.draw_icon(self, "home", Vector2(-4.0, -14.0), 1.0)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(6.0 + u * 22.0), 0.0, TAU, 16, PAL["gold"] as Color, 1.0)
+		var r_col := Color(c_gold, (1.0 - u) * (0.55 if red else 0.90))
+		draw_arc(Vector2(0.0, -10.0), roundf(6.0 + u * (16.0 if red else 22.0)), 0.0, TAU, 16, r_col, 1.0)

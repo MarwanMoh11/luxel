@@ -127,7 +127,9 @@ static func record_minigame_result(mg_id: String, value: float, medal: int, lowe
 	var bkey: String = "hub:mg:%s:best" % mg_id
 	var has_prev: bool = Lx.state.story_flags.has(bkey)
 	var prev: float = float(Lx.state.story_flags.get(bkey, 0.0))
-	var improved: bool = not has_prev or (value < prev if lower_is_better else value > prev)
+	var valid_val: bool = (value > 0.0) if lower_is_better else (value >= 0.0)
+	var prev_valid: bool = has_prev and ((prev > 0.0) if lower_is_better else true)
+	var improved: bool = valid_val and (not prev_valid or (value < prev if lower_is_better else value > prev))
 	if improved:
 		Lx.state.story_flags[bkey] = snappedf(value, 0.01)
 		out["new_best"] = true
@@ -212,7 +214,8 @@ static func boss_time_targets(boss_meta: Dictionary) -> Vector3:
 	var is_mini: bool = bool(boss_meta.get("mini", false))
 	if is_mini:
 		return Vector3(35.0, 55.0, 85.0)
-	var phases: Array = boss_meta.get("phases", [0.5]) as Array
+	var raw_phases: Variant = boss_meta.get("phases", [0.5])
+	var phases: Array = raw_phases as Array if raw_phases is Array else [0.5]
 	if phases.size() >= 3:
 		return Vector3(90.0, 135.0, 195.0)
 	return Vector3(60.0, 95.0, 140.0)

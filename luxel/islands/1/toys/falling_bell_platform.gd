@@ -94,8 +94,7 @@ func start_fall() -> void:
 	if region != null and region.has_method("set_room_anchor"):
 		region.call("set_room_anchor", pos)
 	_emit_sfx("bell_toll_heavy")
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.18)
+	_emit_shake(0.18)
 	queue_redraw()
 
 
@@ -222,13 +221,17 @@ func _complete_crash() -> void:
 	if not complete_flag.is_empty() and Lx.state != null:
 		Lx.state.story_flags[complete_flag] = true
 	_emit_sfx("bell_toll_heavy")
-	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.28)
+	_emit_shake(0.28)
 	set_powered(true)
 	_notify_linked_targets(true)
 	if region != null and region.has_method("notify"):
 		region.call("notify", "falling_bell_crashed", {"id": id, "brakes": brakes_engaged})
 	queue_redraw()
+
+
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _pick_sfx(preferred: String, fallback: String) -> String:
@@ -315,6 +318,10 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, c_gold, 1.0)
 	if state in [State.FALLING, State.BRAKED]:
 		LxToyDraw.draw_bar(self, Vector2(-16.0, r + 5.0), 32.0, clampf(elapsed_s / duration_s, 0.0, 1.0), c_gold)
+	elif _crash_t > 0.0:
+		var cu: float = 1.0 - clampf(_crash_t / 0.65, 0.0, 1.0)
+		var ring_c := Color(c_gold, (1.0 - cu) * (0.50 if red else 0.88))
+		draw_arc(Vector2.ZERO, roundf(r * 0.5 + cu * (r * 0.65 if red else r * 0.95)), 0.0, TAU, 24, ring_c, 1.0 if red else 2.0)
 
 	# Active scrolling timber beams and cracked stone grates
 	for hz: Dictionary in _hazards:
@@ -327,7 +334,15 @@ func _draw() -> void:
 			var bc: Color = PAL["ice"] as Color if frozen else c_wine
 			var bh: Color = c_cream if frozen else c_apricot
 			LxToyDraw.draw_bevel_box(self, Rect2(-r, hy - 4.0, r * 2.0, 8.0), c_night, bc, bh, c_void)
+			if frozen:
+				draw_rect(Rect2(-r + 2.0, hy - 2.0, 3.0, 2.0), c_cream)
+				draw_rect(Rect2(r - 5.0, hy - 2.0, 3.0, 2.0), c_cream)
 		elif hk == "grate":
 			LxToyDraw.draw_bevel_box(self, Rect2(-r, hy - 5.0, r * 2.0, 10.0), c_night, PAL["coral"] as Color, c_apricot, c_void)
+			var gx: float = -r + 8.0
+			while gx <= r - 8.0:
+				if absf(gx) > 8.0:
+					draw_rect(Rect2(roundf(gx), hy - 4.0, 2.0, 8.0), c_void)
+				gx += 10.0
 			LxToyDraw.draw_tone_crest(self, Vector2(0.0, hy), "war", true)
 	_draw_signal_pulses()

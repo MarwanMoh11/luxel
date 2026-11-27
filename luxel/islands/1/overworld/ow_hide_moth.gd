@@ -72,7 +72,7 @@ func tick(dt: float) -> void:
 	if _pop_t > 0.0:
 		_pop_t = maxf(0.0, _pop_t - dt)
 		queue_redraw()
-	elif not found and _is_midnight():
+	elif not found and _is_midnight() and not LxHudFx.flash_reduced():
 		queue_redraw()
 
 
@@ -85,19 +85,30 @@ func get_light_pool() -> Vector4:
 func _draw() -> void:
 	if not active:
 		return
+	var red: bool = LxHudFx.flash_reduced()
+	var c_void: Color = PAL["void"] as Color
+	var c_gold: Color = PAL["gold"] as Color
+	var c_cream: Color = PAL["cream"] as Color
 	if _pop_t > 0.0:
 		var u: float = 1.0 - clampf(_pop_t / 0.75, 0.0, 1.0)
 		var lift: float = -roundf(u * 14.0)
-		draw_arc(Vector2(0.0, lift - 4.0), roundf(4.0 + u * 16.0), 0.0, TAU, 16, PAL["gold"] as Color, 1.0)
-		draw_rect(Rect2(-4.0, lift - 6.0, 8.0, 6.0), PAL["gold"] as Color)
-		draw_rect(Rect2(-2.0, lift - 5.0, 4.0, 4.0), PAL["cream"] as Color)
+		var r_col := Color(c_gold, (1.0 - u) * (0.55 if red else 0.92))
+		draw_arc(Vector2(0.0, lift - 4.0), roundf(4.0 + u * (12.0 if red else 16.0)), 0.0, TAU, 16, r_col, 1.0)
+		draw_rect(Rect2(-5.0, lift - 7.0, 10.0, 8.0), c_void)
+		draw_rect(Rect2(-4.0, lift - 6.0, 8.0, 6.0), c_gold)
+		draw_rect(Rect2(-2.0, lift - 5.0, 4.0, 4.0), c_cream)
 		return
 	if found or not _is_midnight():
 		return
-	# Subtle golden eyes & fluttering wing tips peeking from cover at Midnight
-	var peek: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 4.5) * 1.0)
+	# Void-backed golden eyes, feathery antennae & wing tips peeking from cover at Midnight
+	var peek: float = 0.0 if red else roundf(sin(_clock * 4.5) * 1.0)
+	draw_rect(Rect2(-6.0, -5.0 + peek, 12.0, 8.0), c_void)
+	draw_rect(Rect2(-3.0, -7.0 + peek, 2.0, 2.0), c_void)
+	draw_rect(Rect2(1.0, -7.0 + peek, 2.0, 2.0), c_void)
 	draw_rect(Rect2(-5.0, -4.0 + peek, 10.0, 6.0), PAL["night"] as Color)
 	draw_rect(Rect2(-4.0, -3.0 + peek, 3.0, 3.0), PAL["apricot"] as Color)
 	draw_rect(Rect2(1.0, -3.0 + peek, 3.0, 3.0), PAL["apricot"] as Color)
-	draw_rect(Rect2(-2.0, -2.0 + peek, 1.0, 1.0), PAL["cream"] as Color)
-	draw_rect(Rect2(1.0, -2.0 + peek, 1.0, 1.0), PAL["cream"] as Color)
+	draw_rect(Rect2(-2.0, -6.0 + peek, 1.0, 2.0), c_gold)
+	draw_rect(Rect2(1.0, -6.0 + peek, 1.0, 2.0), c_gold)
+	draw_rect(Rect2(-2.0, -2.0 + peek, 1.0, 1.0), c_cream)
+	draw_rect(Rect2(1.0, -2.0 + peek, 1.0, 1.0), c_cream)

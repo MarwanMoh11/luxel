@@ -256,7 +256,7 @@
       "prop": "crypt_candelabra",
       "pos": [
         144,
-        224
+        216
       ],
       "layer": "sort",
       "flip_x": false,
@@ -268,7 +268,7 @@
       "prop": "crypt_candelabra",
       "pos": [
         296,
-        224
+        216
       ],
       "layer": "sort",
       "flip_x": true,
@@ -291,7 +291,7 @@
       "sheet": "theme_undercroft",
       "prop": "mossy_headstone",
       "pos": [
-        272,
+        248,
         96
       ],
       "layer": "sort",

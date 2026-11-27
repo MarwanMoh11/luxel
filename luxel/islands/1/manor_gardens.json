@@ -510,8 +510,8 @@
       "sheet": "island1_scenery",
       "prop": "stone_lantern_garden",
       "pos": [
-        208,
-        368
+        200,
+        360
       ],
       "layer": "sort",
       "flip_x": false,

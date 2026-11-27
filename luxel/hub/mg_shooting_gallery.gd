@@ -13,6 +13,9 @@ var hits_scored: int = 0
 var _spawn_cd: float = 0.0
 var _pattern_i: int = 0
 var _targets: Array[LxGalleryTarget] = []
+var _set_flash_t: float = 0.0
+var _gallery_overlay: Node2D = null
+var _pops: Array[Dictionary] = [] # {pos: Vector2, age: float, life: float, col: Color}
 
 
 func setup(spec: Dictionary) -> void:
@@ -32,6 +35,7 @@ func on_hit(hit: LxHit) -> bool:
 	if not active or trial_running or hit == null:
 		return false
 	set_idx = (set_idx + 1) % 3
+	_set_flash_t = 0.25
 	_emit_sfx("ui_move")
 	if Lx.events != null:
 		Lx.events.narration_requested.emit(SET_KEYS[set_idx], "narration", 2.0)
@@ -44,26 +48,39 @@ func set_mode(idx: int) -> void:
 	queue_redraw()
 
 
+func tick(dt: float) -> void:
+	super.tick(dt)
+	if _set_flash_t > 0.0:
+		_set_flash_t = maxf(0.0, _set_flash_t - dt)
+		queue_redraw()
+
+
 func _on_trial_start() -> void:
 	streak = 0
 	hits_scored = 0
 	_pattern_i = 0
 	_spawn_cd = 0.2
+	_pops.clear()
 	_clear_targets()
+	_ensure_overlay()
 	trial_subtext = SET_NAMES[set_idx]
 
 
 func _on_trial_end() -> void:
+	_pops.clear()
 	_clear_targets()
+	_clear_overlay()
 
 
 func _on_trial_tick(dt: float) -> void:
-	# Prune expired targets
+	# Prune expired targets (reset streak if one timed out unhit)
 	var alive_n: int = 0
 	for i: int in range(_targets.size() - 1, -1, -1):
 		var t: LxGalleryTarget = _targets[i]
 		if not is_instance_valid(t) or not t.active:
 			if is_instance_valid(t):
+				if not t.hit_done:
+					streak = 0
 				if t.target_scored.is_connected(_on_target_scored):
 					t.target_scored.disconnect(_on_target_scored)
 				if is_instance_valid(region):
@@ -71,11 +88,17 @@ func _on_trial_tick(dt: float) -> void:
 			_targets.remove_at(i)
 		else:
 			alive_n += 1
+	for pi: int in range(_pops.size() - 1, -1, -1):
+		_pops[pi]["age"] = float(_pops[pi]["age"]) + dt
+		if float(_pops[pi]["age"]) >= float(_pops[pi]["life"]):
+			_pops.remove_at(pi)
 	_spawn_cd -= dt
 	if _spawn_cd <= 0.0 and alive_n < 3:
 		_spawn_next_target()
 		_spawn_cd = 1.15 if set_idx == 0 else 1.45
 	trial_subtext = "%s x%d" % [SET_NAMES[set_idx], streak]
+	if _gallery_overlay != null and is_instance_valid(_gallery_overlay):
+		_gallery_overlay.queue_redraw()
 
 
 func _spawn_next_target() -> void:
@@ -110,17 +133,57 @@ func _spawn_next_target() -> void:
 		_targets.append(gt)
 
 
-func _on_target_scored(_tgt: LxGalleryTarget, _hit: LxHit, pts: int) -> void:
+func _on_target_scored(tgt: LxGalleryTarget, _hit: LxHit, pts: int) -> void:
 	if not trial_running:
 		return
 	streak += 1
 	hits_scored += 1
 	var bonus: int = mini(streak * 3, 24)
 	trial_score += float(pts + bonus)
+	if tgt != null and is_instance_valid(tgt):
+		_pops.append({
+			"pos": tgt.pos.round(),
+			"age": 0.0,
+			"life": 0.28,
+			"col": LxPalette.color(_get_plinth_accent(), "gold"),
+		})
 
 
 func _exit_tree() -> void:
+	_clear_overlay()
 	_clear_targets()
+	super._exit_tree()
+
+
+func _ensure_overlay() -> void:
+	if region == null:
+		return
+	_clear_overlay()
+	_gallery_overlay = Node2D.new()
+	_gallery_overlay.name = "ShootingGalleryOverlay"
+	_gallery_overlay.z_index = 4
+	_gallery_overlay.draw.connect(_draw_gallery_overlay)
+	region.add_child(_gallery_overlay)
+
+
+func _clear_overlay() -> void:
+	if _gallery_overlay != null and is_instance_valid(_gallery_overlay):
+		if _gallery_overlay.draw.is_connected(_draw_gallery_overlay):
+			_gallery_overlay.draw.disconnect(_draw_gallery_overlay)
+		_gallery_overlay.queue_free()
+	_gallery_overlay = null
+
+
+func _draw_gallery_overlay() -> void:
+	if not trial_running or _gallery_overlay == null:
+		return
+	var fr: bool = LxHudFx.flash_reduced()
+	for pop: Dictionary in _pops:
+		var u: float = clampf(float(pop["age"]) / maxf(float(pop["life"]), 0.01), 0.0, 1.0)
+		var pc: Vector2 = (pop["pos"] as Vector2) + Vector2(0.0, -8.0)
+		var r: float = roundf(5.0 + u * (8.0 if fr else 14.0))
+		_gallery_overlay.draw_arc(pc, r + 1.0, 0.0, TAU, 16, LxPalette.PAL["void"], 2.0)
+		_gallery_overlay.draw_arc(pc, r, 0.0, TAU, 16, pop["col"] as Color, 1.0)
 
 
 func _clear_targets() -> void:
@@ -139,5 +202,18 @@ func _get_plinth_accent() -> String: return "coral" if set_idx == 2 else ("sky" 
 
 func _draw() -> void:
 	super._draw()
-	if active:
-		LxPixelFont.draw_centered(self, SET_NAMES[set_idx], 0.0, -23.0, LxPalette.color(_get_plinth_accent(), "gold"), 1)
+	if not active:
+		return
+	var fr: bool = LxHudFx.flash_reduced()
+	var acc: Color = LxPalette.color(_get_plinth_accent(), "gold")
+	var c_void: Color = LxPalette.PAL["void"]
+	# Void-backed SET plaque positioned cleanly above the plinth beacon + 3 set pips
+	var pill := Rect2(-15.0, -32.0, 30.0, 9.0)
+	draw_rect(pill, c_void)
+	draw_rect(pill.grow(-1.0), LxPalette.PAL["plum"] if (_set_flash_t > 0.0 and not fr) else LxPalette.PAL["night"])
+	draw_rect(Rect2(pill.position.x + 1.0, pill.position.y + 1.0, pill.size.x - 2.0, 1.0), acc)
+	LxPixelFont.draw_centered(self, SET_NAMES[set_idx], 0.0, pill.position.y + 3.0, acc, 1)
+	var set_cols: Array[Color] = [LxPalette.PAL["gold"], LxPalette.PAL["sky"], LxPalette.PAL["coral"]]
+	draw_rect(Rect2(-7.0, -23.0, 14.0, 3.0), c_void)
+	for si: int in range(3):
+		draw_rect(Rect2(-6.0 + float(si * 4), -22.0, 3.0, 1.0), set_cols[si] if si == set_idx else LxPalette.PAL["dusk"])

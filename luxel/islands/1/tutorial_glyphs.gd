@@ -43,13 +43,13 @@ static func draw_gamepad_glyph(ci: CanvasItem, center: Vector2, action_id: Strin
 	var c_txt: Color = LxPalette.fade_step(w, "cream" if pulse else "gold")
 	if c_txt.a <= 0.0:
 		return
-	var bw: float = maxf(15.0, (float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 7.0) + 8.0)
+	var bw: float = roundf(maxf(15.0, (float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 7.0) + 8.0))
 	var rect := Rect2(roundf(center.x - bw * 0.5), roundf(center.y - 5.5), bw, 11.0)
 	ci.draw_rect(Rect2(rect.position + Vector2(2.0, -1.0), Vector2(bw - 4.0, 1.0)), PAL["void"] as Color)
 	LxPixelFont.draw_panel(ci, rect, "dusk", "cream" if pulse else "gold", "void")
 	ci.draw_rect(Rect2(rect.position + Vector2(2.0, 1.0), Vector2(bw - 4.0, 1.0)), LxPalette.fade_step(w, "gold" if pulse else "apricot"))
 	if not glyph.is_empty():
-		LxPixelFont.draw_centered(ci, glyph, rect.position.x + bw * 0.5, rect.position.y + 3.0, c_txt, 1)
+		LxPixelFont.draw_centered(ci, glyph, roundf(rect.position.x + bw * 0.5), rect.position.y + 3.0, c_txt, 1)
 	else:
 		ci.draw_rect(Rect2((center - Vector2(1.0, 1.0)).round(), Vector2(2.0, 2.0)), c_txt)
 
@@ -60,12 +60,12 @@ static func draw_dash_keycap(ci: CanvasItem, center: Vector2, w: float, clock: f
 	if col.a <= 0.0:
 		return
 	var glyph: String = LxStrings.sanitize(Lx.input.get_glyph("lx_dash"), 6) if Lx.input != null else ""
-	var bw: float = maxf(15.0, (float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 7.0) + 8.0)
+	var bw: float = roundf(maxf(15.0, (float(LxPixelFont.width(glyph, 1)) if not glyph.is_empty() else 7.0) + 8.0))
 	var rect := Rect2(roundf(center.x - bw * 0.5), roundf(center.y - 5.5), bw, 11.0)
 	ci.draw_rect(Rect2(rect.position + Vector2(1.0, rect.size.y), Vector2(bw - 2.0, 1.0)), PAL["void"] as Color)
 	LxPixelFont.draw_panel(ci, rect, "night", "cream" if pulse else "gold", "void")
 	if not glyph.is_empty():
-		LxPixelFont.draw_centered(ci, glyph, rect.position.x + bw * 0.5, rect.position.y + 3.0, col, 1)
+		LxPixelFont.draw_centered(ci, glyph, roundf(rect.position.x + bw * 0.5), rect.position.y + 3.0, col, 1)
 	else:
 		var c := Vector2(roundf(rect.position.x + bw * 0.5), roundf(rect.position.y + 5.0))
 		for r: Rect2 in [Rect2(0.0, -2.0, 1.0, 5.0), Rect2(-2.0, 0.0, 5.0, 1.0), Rect2(-1.0, -1.0, 3.0, 1.0)]:

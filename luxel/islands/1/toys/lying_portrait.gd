@@ -171,14 +171,18 @@ func accuse() -> bool:
 		if Lx.state != null:
 			Lx.state.story_flags["manor_verdict_wrong"] = true
 		_emit_sfx("bell_slam")
-		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.24)
-			if LxStrings.has_id("ISL1_VERDICT_BAD"):
-				Lx.events.narration_requested.emit("ISL1_VERDICT_BAD", "title", 3.2)
+		_emit_shake(0.24)
+		if Lx.events != null and LxStrings.has_id("ISL1_VERDICT_BAD"):
+			Lx.events.narration_requested.emit("ISL1_VERDICT_BAD", "title", 3.2)
 		if region != null and region.has_method("notify"):
 			region.call("notify", "verdict_wrong", {"id": id, "suspect": suspect})
 	queue_redraw()
 	return true
+
+
+func _emit_shake(amp: float) -> void:
+	if Lx.events != null:
+		Lx.events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func tick(dt: float) -> void:
@@ -320,6 +324,7 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var red: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_night: Color = PAL["night"] as Color
 	var c_gold: Color = PAL["gold"] as Color
@@ -330,16 +335,18 @@ func _draw() -> void:
 
 	# Watcher vision cone on floor
 	if mode == "watcher" and state not in [State.FROZEN, State.CRACKED]:
-		var cone_c: Color = c_coral if state == State.ALERTED else (PAL["gold"] as Color if _last_alert_kind == "lured" else PAL["sky"] as Color)
+		var cone_c: Color = c_coral if state == State.ALERTED else (c_gold if _last_alert_kind == "lured" else PAL["sky"] as Color)
 		var a0: float = current_look.angle() - cone_half_rad
 		var a1: float = current_look.angle() + cone_half_rad
 		var pts := PackedVector2Array([Vector2.ZERO])
 		for i: int in range(9):
 			var a: float = lerpf(a0, a1, float(i) / 8.0)
 			pts.append((Vector2.from_angle(a) * cone_range).round())
-		draw_colored_polygon(pts, Color(cone_c, 0.16 if state == State.ALERTED else 0.09))
-		draw_line(Vector2.ZERO, pts[1], Color(cone_c, 0.45), 1.0)
-		draw_line(Vector2.ZERO, pts[pts.size() - 1], Color(cone_c, 0.45), 1.0)
+		var fill_a: float = (0.11 if red else 0.16) if state == State.ALERTED else (0.06 if red else 0.09)
+		var edge_a: float = 0.32 if red else 0.45
+		draw_colored_polygon(pts, Color(cone_c, fill_a))
+		draw_line(Vector2.ZERO, pts[1], Color(cone_c, edge_a), 1.0)
+		draw_line(Vector2.ZERO, pts[pts.size() - 1], Color(cone_c, edge_a), 1.0)
 
 	# Swung-open doorway on ACCUSED_RIGHT
 	if state == State.ACCUSED_RIGHT:
@@ -356,7 +363,7 @@ func _draw() -> void:
 
 	# Ornate gilded picture frame with corner medallions
 	var frame_mid: Color = PAL["sky"] as Color if state == State.FROZEN else (c_coral if state in [State.ACCUSED_WRONG, State.ALERTED] else PAL["apricot"] as Color)
-	var frame_hi: Color = c_ice if state == State.FROZEN else (c_cream if _flare_t > 0.0 else c_gold)
+	var frame_hi: Color = c_ice if state == State.FROZEN else (c_cream if (_flare_t > 0.0 and not red) else c_gold)
 	LxToyDraw.draw_bevel_box(self, r, PAL["wine"] as Color, frame_mid, frame_hi, c_void)
 	for cx: float in [r.position.x, r.end.x - 3.0]:
 		for cy: float in [r.position.y, r.end.y - 3.0]:
@@ -400,14 +407,28 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0 + ex, -3.0 + ey, 1.0, 1.0), c_void if state == State.IDLE else c_gold)
 		draw_rect(Rect2(2.0 + ex, -3.0 + ey, 1.0, 1.0), c_void if state == State.IDLE else c_gold)
 		# Subtle eerie glint on portrait frame when active/exposed
-		if (state in [State.EXPOSED, State.ALERTED]) and (LxHudFx.flash_reduced() or int(floorf(_clock * 4.0)) % 2 == 0):
+		if (state in [State.EXPOSED, State.ALERTED]) and (red or int(floorf(_clock * 4.0)) % 2 == 0):
 			draw_rect(Rect2(r.position.x + 1.0, r.position.y + 1.0, 3.0, 1.0), c_cream)
+		# Greyscale-distinct alert pip above watcher frame ('!' spotted vs dot lured)
+		if mode == "watcher" and state == State.ALERTED:
+			var ay: float = r.position.y - 10.0
+			draw_rect(Rect2(-2.0, ay, 4.0, 7.0), c_void)
+			if _last_alert_kind == "lured":
+				draw_rect(Rect2(-1.0, ay + 2.0, 2.0, 3.0), c_gold)
+				draw_rect(Rect2(-1.0, ay + 2.0, 1.0, 1.0), c_cream)
+			else:
+				draw_rect(Rect2(-1.0, ay + 1.0, 2.0, 3.0), c_coral)
+				draw_rect(Rect2(-1.0, ay + 5.0, 2.0, 1.0), c_cream)
 
-	# Evidence lectern pip beneath portrait when EXPOSED
+	# Evidence lectern pip beneath portrait when EXPOSED (tall crowned notch on culprit vs flat bar)
 	if state == State.EXPOSED:
 		draw_rect(Rect2(-5.0, r.end.y + 1.0, 10.0, 4.0), c_void)
 		draw_rect(Rect2(-4.0, r.end.y + 2.0, 8.0, 2.0), c_coral if is_culprit else c_gold)
-		draw_rect(Rect2(-1.0, r.end.y + 2.0, 2.0, 2.0), c_cream)
+		if is_culprit:
+			draw_rect(Rect2(-2.0, r.end.y, 4.0, 2.0), c_void)
+			draw_rect(Rect2(-1.0, r.end.y + 1.0, 2.0, 3.0), c_cream)
+		else:
+			draw_rect(Rect2(-1.0, r.end.y + 2.0, 2.0, 2.0), c_cream)
 	_draw_signal_pulses()
 
 

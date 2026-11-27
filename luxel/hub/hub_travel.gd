@@ -50,9 +50,16 @@ static func return_from_hub() -> bool:
 	if Lx.state != null:
 		ret_isl = clampi(int(Lx.state.story_flags.get(FLAG_RETURN_ISLAND, 1)), 1, 8)
 		ret_ws = str(Lx.state.story_flags.get(FLAG_RETURN_WAYSTONE, "ws_plaza"))
-		if ret_ws.is_empty() or ret_ws == HUB_WAYSTONE_ID:
-			ret_ws = "ws_plaza"
-	if Lx.root != null and Lx.root.has_method("fast_travel_waystone"):
+		if ret_ws.is_empty() or ret_ws == HUB_WAYSTONE_ID or LxMapFormat.find_waystone(ret_isl, ret_ws).is_empty():
+			ret_ws = ""
+			for i: int in range(Lx.state.lit_waystones.size() - 1, -1, -1):
+				var cand: String = Lx.state.lit_waystones[i]
+				if cand != HUB_WAYSTONE_ID and not LxMapFormat.find_waystone(ret_isl, cand).is_empty():
+					ret_ws = cand
+					break
+			if ret_ws.is_empty() and ret_isl == 1:
+				ret_ws = "ws_plaza"
+	if not ret_ws.is_empty() and Lx.root != null and Lx.root.has_method("fast_travel_waystone"):
 		if bool(Lx.root.call("fast_travel_waystone", ret_isl, ret_ws)):
 			return true
 	if Lx.root != null and Lx.root.has_method("load_island_region"):

@@ -118,7 +118,7 @@ func _place_wick(pos: Vector2, aim: Vector2) -> void:
 		wick.reset_for_room(pos)
 		wick.facing = a
 		wick.sync_unlocks_from_state()
-	if Lx.camera != null and Lx.world != null:
+	if Lx.camera != null and Lx.world is LxRegionLoader:
 		Lx.camera.set_bounds((Lx.world as LxRegionLoader).get_bounds(), false)
 		Lx.camera.snap_to(pos)
 

@@ -294,7 +294,7 @@
       "sheet": "theme_cave_1",
       "prop": "stalagmite_cluster",
       "pos": [
-        348,
+        332,
         224
       ],
       "layer": "sort"
@@ -322,7 +322,7 @@
       "prop": "warm_porch_lantern",
       "pos": [
         312,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -331,7 +331,7 @@
       "prop": "cavern_brazier_bowl",
       "pos": [
         376,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -340,7 +340,7 @@
       "prop": "potted_herb_urn",
       "pos": [
         136,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -348,8 +348,8 @@
       "sheet": "theme_cave_4",
       "prop": "cave_lantern_post",
       "pos": [
-        24,
-        42
+        32,
+        48
       ],
       "layer": "sort"
     }

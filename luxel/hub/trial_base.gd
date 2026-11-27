@@ -27,6 +27,9 @@ var _hud_draw: Node2D = null
 func _exit_tree() -> void:
 	if trial_running:
 		stop_trial(false)
+	if _hud_draw != null and is_instance_valid(_hud_draw) and _hud_draw.draw.is_connected(_draw_hud):
+		_hud_draw.draw.disconnect(_draw_hud)
+	_hud_draw = null
 	if _hud_layer != null and is_instance_valid(_hud_layer):
 		_hud_layer.queue_free()
 		_hud_layer = null
@@ -103,6 +106,8 @@ func tick(dt: float) -> void:
 			stop_trial(true, trial_score)
 		if _hud_draw != null and is_instance_valid(_hud_draw):
 			_hud_draw.queue_redraw()
+		if not LxHudFx.flash_reduced():
+			queue_redraw()
 	elif _result_banner_t > 0.0:
 		_result_banner_t = maxf(0.0, _result_banner_t - dt)
 		if _hud_draw != null and is_instance_valid(_hud_draw):
@@ -144,6 +149,7 @@ func _ensure_hud() -> void:
 func _draw_hud() -> void:
 	if _hud_draw == null or (not trial_running and _result_banner_t <= 0.0):
 		return
+	var fr: bool = LxHudFx.flash_reduced()
 	var box := Rect2(82.0, 4.0, 156.0, 24.0)
 	_hud_draw.draw_rect(Rect2(box.position + Vector2(1.0, 1.0), box.size), LxPalette.PAL["void"])
 	LxPixelFont.draw_panel(_hud_draw, box, "night", _get_plinth_accent(), "void")
@@ -152,36 +158,53 @@ func _draw_hud() -> void:
 
 	if trial_running:
 		var prim: String = _get_hud_primary_text()
-		LxPixelFont.draw(_hud_draw, prim, Vector2(box.position.x + 6.0, box.position.y + 13.0), LxPalette.PAL["cream"], 1)
+		var urgent: bool = trial_time_limit > 0.0 and (trial_time_limit - trial_elapsed) <= 5.0
+		var prim_col: Color = LxPalette.PAL["coral"] if (urgent and (fr or int(_clock * 6.0) % 2 == 0)) else LxPalette.PAL["cream"]
+		LxPixelFont.draw(_hud_draw, prim, Vector2(box.position.x + 6.0, box.position.y + 13.0), prim_col, 1)
 		if not trial_subtext.is_empty():
 			LxPixelFont.draw_right(_hud_draw, trial_subtext, box.end.x - 6.0, box.position.y + 13.0, LxPalette.PAL["gold"], 1)
 		# Live medal progress pips (void-backed with cream specular glint when earned)
 		var cur_m: int = evaluate_medal(trial_score if not lower_is_better else trial_elapsed)
 		if lower_is_better:
 			cur_m = LxHubState.get_minigame_medal(mg_id)
-		for mi: int in range(3):
-			var mc: Color = LxPalette.PAL["gold"] if mi == 2 else (LxPalette.PAL["ice"] if mi == 1 else LxPalette.PAL["apricot"])
-			var px: float = roundf(box.end.x - 25.0 + float(mi * 7))
-			var py: float = roundf(box.position.y + 4.0)
-			_hud_draw.draw_rect(Rect2(px, py, 6.0, 6.0), LxPalette.PAL["void"])
-			_hud_draw.draw_rect(Rect2(px + 1.0, py + 1.0, 4.0, 4.0), mc if cur_m > mi else LxPalette.PAL["dusk"])
-			if cur_m > mi:
-				_hud_draw.draw_rect(Rect2(px + 1.0, py + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+		_draw_hud_medal_pips(box, cur_m)
+		# Compact time-limit bar along bottom inner edge
+		if trial_time_limit > 0.0:
+			var frac: float = clampf(1.0 - trial_elapsed / maxf(trial_time_limit, 0.1), 0.0, 1.0)
+			var bw: float = box.size.x - 12.0
+			_hud_draw.draw_rect(Rect2(box.position.x + 6.0, box.end.y - 3.0, bw, 1.0), LxPalette.PAL["dusk"])
+			_hud_draw.draw_rect(Rect2(box.position.x + 6.0, box.end.y - 3.0, roundf(bw * frac), 1.0), LxPalette.PAL["coral"] if urgent else accent)
 	else:
 		var m_key: String = "HUB_MEDAL_GOLD" if _result_medal >= 3 else ("HUB_MEDAL_SILVER" if _result_medal == 2 else ("HUB_MEDAL_BRONZE" if _result_medal == 1 else "HUB_TRIAL_DONE"))
 		LxPixelFont.draw(_hud_draw, LxStrings.text(m_key), Vector2(box.position.x + 6.0, box.position.y + 13.0), LxPalette.PAL["gold"] if _result_medal > 0 else LxPalette.PAL["stone"], 1)
+		_draw_hud_medal_pips(box, _result_medal)
 		if _result_new_best:
 			LxPixelFont.draw_right(_hud_draw, LxStrings.text("HUB_NEW_BEST"), box.end.x - 6.0, box.position.y + 13.0, LxPalette.PAL["lime"], 1)
 
 
+func _draw_hud_medal_pips(box: Rect2, earned: int) -> void:
+	for mi: int in range(3):
+		var mc: Color = LxPalette.PAL["gold"] if mi == 2 else (LxPalette.PAL["ice"] if mi == 1 else LxPalette.PAL["apricot"])
+		var px: float = roundf(box.end.x - 25.0 + float(mi * 7))
+		var py: float = roundf(box.position.y + 4.0)
+		_hud_draw.draw_rect(Rect2(px, py, 6.0, 6.0), LxPalette.PAL["void"])
+		_hud_draw.draw_rect(Rect2(px + 1.0, py + 1.0, 4.0, 4.0), mc if earned > mi else LxPalette.PAL["dusk"])
+		if earned > mi:
+			_hud_draw.draw_rect(Rect2(px + 1.0, py + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+
+
 func get_light_pool() -> Vector4:
-	return Vector4(pos.x, pos.y - 8.0, 44.0 if trial_running else 30.0, 0.85 if trial_running else 0.55)
+	if not active:
+		return Vector4.ZERO
+	var fr: bool = LxHudFx.flash_reduced()
+	return Vector4(pos.x, pos.y - 8.0, 44.0 if trial_running else 30.0, (0.72 if fr else 0.85) if trial_running else 0.55)
 
 
 func _draw() -> void:
 	if not active:
 		return
-	_draw_ground_shadow(11.0, 3.5, Vector2(0.0, 2.0))
+	_draw_ground_shadow(11.0, 4.0, Vector2(0.0, 2.0))
+	var fr: bool = LxHudFx.flash_reduced()
 	var acc: Color = LxPalette.color(_get_plinth_accent(), "gold")
 	var c_void: Color = LxPalette.PAL["void"]
 	var c_night: Color = LxPalette.PAL["night"]
@@ -204,10 +227,12 @@ func _draw() -> void:
 	draw_rect(Rect2(-6.0, -13.0, 1.0, 1.0), top_col)
 	draw_rect(Rect2(5.0, -13.0, 1.0, 1.0), top_col)
 	LxBubble.draw_icon(self, _get_plinth_icon(), Vector2(-4.0, -12.0), 1.0)
-	# Active flame beacon above crown when trial is live
+	# Void-backed active flame beacon above crown when trial is live
 	if trial_running:
-		draw_rect(Rect2(-2.0, -21.0, 4.0, 3.0), LxPalette.PAL["lime"])
-		draw_rect(Rect2(-1.0, -20.0, 2.0, 2.0), c_cream)
+		var bh: float = 3.0 if fr else (3.0 + roundf(absf(sin(_clock * 6.0))))
+		draw_rect(Rect2(-3.0, -19.0 - bh, 6.0, bh + 1.0), c_void)
+		draw_rect(Rect2(-2.0, -18.0 - bh, 4.0, bh), LxPalette.PAL["lime"])
+		draw_rect(Rect2(-1.0, -18.0 - bh + 1.0, 2.0, bh - 1.0), c_cream)
 	# 3 saved medal sockets inset on stepped base
 	var best_m: int = LxHubState.get_minigame_medal(mg_id)
 	for mi: int in range(3):

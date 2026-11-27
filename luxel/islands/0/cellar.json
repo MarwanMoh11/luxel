@@ -347,8 +347,8 @@
       "sheet": "theme_wick_house",
       "prop": "warm_porch_lantern",
       "pos": [
-        440,
-        106
+        448,
+        120
       ],
       "layer": "sort"
     },
@@ -357,7 +357,7 @@
       "prop": "cavern_brazier_bowl",
       "pos": [
         344,
-        26
+        44
       ],
       "layer": "sort"
     },
@@ -365,8 +365,8 @@
       "sheet": "theme_wick_house",
       "prop": "potted_herb_urn",
       "pos": [
-        104,
-        26
+        88,
+        44
       ],
       "layer": "sort"
     },
@@ -374,8 +374,8 @@
       "sheet": "theme_cave_4",
       "prop": "cave_lantern_post",
       "pos": [
-        24,
-        26
+        36,
+        44
       ],
       "layer": "sort"
     }

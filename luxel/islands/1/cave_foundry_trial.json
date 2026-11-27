@@ -324,7 +324,7 @@
       "prop": "giant_clock_gear",
       "pos": [
         384,
-        44
+        32
       ],
       "layer": "sort",
       "flip_x": false,
