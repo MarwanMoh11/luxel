@@ -101,6 +101,10 @@ static func draw_ground_danger_ring(ci: CanvasItem, center: Vector2, rad: float,
 		var su: float = fposmod(clk * (0.9 if fred else 1.6) + float(ti) * 0.25, 1.0)
 		var sp: Vector2 = (c + Vector2.from_angle(a + 0.78) * (r - 1.0) + Vector2(0.0, -su * 6.0)).round()
 		ci.draw_rect(Rect2(sp, Vector2.ONE), Color(c_cream if su < 0.35 else c_rim, (1.0 - su) * 0.85))
+		if u >= 0.80:
+			var dp: Vector2 = (c + Vector2.from_angle(a + 0.785398) * r).round()
+			ci.draw_rect(Rect2(dp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+			ci.draw_rect(Rect2(dp - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if pulse_hi else c_rim)
 
 
 static func draw_ground_danger_lane(ci: CanvasItem, from_p: Vector2, to_p: Vector2, half_w: float, urgency: float, clk: float, fill_key: String = "coral", rim_key: String = "gold") -> void:
@@ -139,6 +143,10 @@ static func draw_ground_danger_lane(ci: CanvasItem, from_p: Vector2, to_p: Vecto
 		var t_pos: float = base_t if fred else fposmod(base_t + clk * 0.62, 1.0)
 		var tip: Vector2 = from_p.lerp(to_p, clampf(t_pos, 0.15, 0.90)).round()
 		_draw_rune_chevron(ci, tip, dir, wing, back, c_chev, c_void)
+	if u >= 0.80:
+		for ep: Vector2 in [a1, b1]:
+			ci.draw_rect(Rect2(ep - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+			ci.draw_rect(Rect2(ep - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if pulse_hi else c_rim)
 
 
 static func draw_ground_danger_sector(ci: CanvasItem, origin: Vector2, ang0: float, ang1: float, rad: float, urgency: float, clk: float, fill_key: String = "coral", rim_key: String = "gold") -> void:
@@ -173,6 +181,10 @@ static func draw_ground_danger_sector(ci: CanvasItem, origin: Vector2, ang0: flo
 
 	var r_in: float = maxf(6.0, roundf(r * lerpf(0.82, 0.34, u)))
 	_draw_pixel_rune_arc(ci, o, r_in, a_lo, a_hi, c_cream if (u > 0.78 and pulse_hi) else c_rim, c_void, 1.0, false, 0.0)
+	if u >= 0.80:
+		var mid_tip: Vector2 = (o + Vector2.from_angle((a_lo + a_hi) * 0.5) * r).round()
+		ci.draw_rect(Rect2(mid_tip - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
+		ci.draw_rect(Rect2(mid_tip - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if pulse_hi else c_rim)
 
 
 static func draw_ground_summon_ring(ci: CanvasItem, center: Vector2, rad: float, prog: float, clk: float, col_key: String = "gold") -> void:

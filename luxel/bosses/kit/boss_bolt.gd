@@ -205,10 +205,20 @@ func draw_bolt(ci: CanvasItem, local_off: Vector2, clock: float, flash_red: bool
 		ci.draw_line(tail, p, void_col, r + 1.6)
 		ci.draw_line(tail, p, rim_col, maxf(1.2, r * 0.7))
 
-	ci.draw_circle(p, r + 1.2, void_col)
+	ci.draw_circle(p, r + (1.8 if not reflectable else 1.2), void_col)
 	ci.draw_circle(p, r, rim_col)
 	var pulse_r: float = maxf(1.2, r * (0.55 if flash_red else (0.50 + 0.12 * sin(clock * 14.0))))
 	ci.draw_circle(p, pulse_r, core_col)
+
+	if reflected:
+		var sr: float = r + 2.5
+		ci.draw_line(p + Vector2(-sr, 0.0), p + Vector2(sr, 0.0), PAL["cream"] as Color, 1.0)
+		ci.draw_line(p + Vector2(0.0, -sr), p + Vector2(0.0, sr), PAL["cream"] as Color, 1.0)
+	elif reflectable and frozen_t <= 0.0:
+		# Crisp bright specular diamond glint distinguishing reflectable bolts even in greyscale
+		ci.draw_rect(Rect2(p + Vector2(-1.0, -roundf(r)), Vector2(2.0, 1.0)), PAL["cream"] as Color)
+	elif not reflectable:
+		ci.draw_arc(p, r + 1.0, 0.0, TAU, 10, PAL["night"] as Color, 1.0)
 
 	if frozen_t > 0.0:
 		var fr: float = r + 2.4

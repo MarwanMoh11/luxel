@@ -276,9 +276,10 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Comedy indicator: exposed spinning wind-up key during compulsive formal bow!
 	if _bowing and boss_state == BossState.STAGGER:
 		var kp: Vector2 = (off + Vector2(0.0, -24.0)).round()
-		var spin: float = sin(anim_t * 20.0) * 4.0
+		var fred: bool = is_flash_reduced()
+		var spin: float = roundf((sin(anim_t * 5.0) * 1.4) if fred else (sin(anim_t * 20.0) * 4.0))
 		draw_circle(kp, 4.5, PAL["gold"] as Color)
-		draw_line(kp + Vector2(-spin, -3.0), kp + Vector2(spin, 3.0), PAL["cream"] as Color, 1.6)
+		draw_line((kp + Vector2(-spin, -3.0)).round(), (kp + Vector2(spin, 3.0)).round(), PAL["cream"] as Color, 1.6)
 
 	# Death wind-up springs & teacup steam
 	for sp: Dictionary in _death_springs:

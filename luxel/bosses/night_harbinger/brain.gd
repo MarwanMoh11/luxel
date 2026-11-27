@@ -174,7 +174,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				_do_lateral_feint(tgt, BLINK_DIST)
 				_echo_dir = (tgt - _echo_pos).normalized() if tgt.distance_to(_echo_pos) > 1.0 else _main_dir
 				ground.warn_lane(_echo_pos, clamp_to_arena(_echo_pos + _echo_dir * ECHO_CRESCENT_RANGE), ECHO_CRESCENT_HALF_W * 0.75, maxf(0.45, state_timer + MAIN_SLASH_TIME), 0.0, "sky", "ice")
-			if state_timer > 0.16:
+			if state_timer > 0.16 * get_tell_scale():
 				_face_point(tgt, 4.2, dt)
 				_main_dir = Vector2.from_angle(facing)
 				if tgt.distance_to(_echo_pos) > 1.0:

@@ -527,24 +527,32 @@ func _draw() -> void:
 	if is_boss and phase >= 2:
 		LxDamageFx.draw_phase_sigil(self, off)
 
+	var off_r: Vector2 = off.round()
+	var fred: bool = LxHudFx.flash_reduced()
 	if state == State.TELL:
 		var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
 		var ring_r: float = lerpf(r + 10.0, r + 3.0, prog)
-		var tc: Color = (PAL["gold"] as Color) if is_counter_attack else (PAL["coral"] as Color)
-		draw_arc(off, ring_r, facing - 0.95, facing + 0.95, 16, tc, 2.0)
-		draw_line(off, off + Vector2.from_angle(facing) * (r + 5.0 + prog * 5.0), PAL["cream"] as Color, 1.5)
+		var locked_aim: bool = state_timer <= 0.16 * _assist_tell_scale()
+		var tc: Color = (PAL["cream"] if (locked_aim and (fred or int(anim_t * 12.0) % 2 == 0)) else (PAL["gold"] if is_counter_attack else PAL["coral"])) as Color
+		var tip: Vector2 = (off_r + Vector2.from_angle(facing) * (r + 5.0 + prog * 5.0)).round()
+		draw_arc(off_r, ring_r, facing - 0.95, facing + 0.95, 16, PAL["void"] as Color, 3.6)
+		draw_arc(off_r, ring_r, facing - 0.95, facing + 0.95, 16, tc, 2.0)
+		draw_line(off_r, tip, PAL["void"] as Color, 3.0)
+		draw_line(off_r, tip, PAL["cream"] as Color, 1.4)
+		if locked_aim: draw_rect(Rect2(tip - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color)
 	elif state == State.COMMIT:
-		draw_arc(off, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.5)
+		draw_arc(off_r, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["void"] as Color, 4.0)
+		draw_arc(off_r, r + 14.0, facing - 1.1, facing + 1.1, 16, PAL["gold"] as Color, 2.4)
 
 	var drew_sprite: bool = false
-	var sq: float = clampf(flash_t / 0.12, 0.0, 1.0)
+	var sq: float = clampf(flash_t / 0.12, 0.0, 1.0) * (0.5 if fred else 1.0)
 	var draw_sc: Vector2 = _sprite_scale * Vector2(1.0 + 0.18 * sq, 1.0 - 0.16 * sq)
 	if _sprite_sheet != null:
 		var anim_name: String = str(_STATE_ANIMS.get(state, ("phase%d" % phase) if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase%d" % phase)) else ("phase2" if (phase >= 2 and state == State.ROUTINE and _sprite_sheet.animations.has("phase2")) else "routine")))
-		var mod: Color = (PAL["cream"] as Color) if flash_t > 0.0 else _sprite_tint
+		var mod: Color = (_sprite_tint.lerp(PAL["gold"] as Color, 0.45) if fred else (PAL["cream"] as Color)) if flash_t > 0.0 else _sprite_tint
 		drew_sprite = _sprite_sheet.draw_actor(self, off, anim_name, Vector2.from_angle(facing), anim_t, mod, draw_sc)
 	if not drew_sprite:
-		var fill: Color = (PAL["cream"] as Color) if flash_t > 0.0 else ((PAL["stone"] as Color) if state == State.STAGGER else ((PAL["dusk"] as Color) if state == State.RECOVER else _body_color()))
+		var fill: Color = ((PAL["apricot"] if fred else PAL["cream"]) as Color) if flash_t > 0.0 else ((PAL["stone"] as Color) if state == State.STAGGER else ((PAL["dusk"] as Color) if state == State.RECOVER else _body_color()))
 		var sz := Vector2(r * 2.0 * (1.0 + 0.16 * sq), r * 2.0 * (1.0 - 0.14 * sq))
 		var box := Rect2(off - sz * 0.5, sz)
 		draw_rect(box, fill, true); draw_rect(box, PAL["night"] as Color, false, 1.0)
@@ -566,10 +574,13 @@ func _draw() -> void:
 		draw_rect(Rect2(lt, Vector2.ONE), PAL["cream"] as Color)
 
 	if state == State.RECOVER or state == State.STAGGER:
-		var scol: Color = (PAL["cream"] if (LxHudFx.flash_reduced() or int(anim_t * 10.0) % 2 == 0) else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)
+		var scol: Color = (PAL["cream"] if (fred or int(anim_t * 10.0) % 2 == 0) else PAL["gold"]) if state == State.STAGGER else (PAL["gold"] as Color)
+		var orb_s: float = (3.0 if fred else 7.5) if state == State.STAGGER else (2.4 if fred else 5.0)
 		for i: int in range(3):
-			var ang: float = anim_t * (7.5 if state == State.STAGGER else 5.0) + float(i) * (TAU / 3.0)
-			draw_circle(off + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0), 1.5, scol)
+			var ang: float = anim_t * orb_s + float(i) * (TAU / 3.0)
+			var sp: Vector2 = (off_r + Vector2(cos(ang) * (r + 2.0), -r - 4.0 + sin(ang) * 2.0)).round()
+			draw_rect(Rect2(sp - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), PAL["void"] as Color)
+			draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), scol)
 
 	if not is_boss and hp < max_hp - 0.01:
 		var w: float = maxf(12.0, r * 2.4)

@@ -252,8 +252,9 @@ func _draw_boss_extra(_off: Vector2) -> void:
 		draw_circle(cp, 2.2, PAL["rose"] as Color)
 
 	# Comedy beat: jammed blades make brass tail wag + mainspring glint!
+	var fred: bool = is_flash_reduced()
 	if _jammed and boss_state == BossState.STAGGER:
-		var wag: float = sin(anim_t * 28.0) * 5.0
+		var wag: float = (sin(anim_t * 6.0) * 1.75) if fred else (sin(anim_t * 28.0) * 5.0)
 		var tail_p: Vector2 = (-Vector2.from_angle(facing) * 14.0 + Vector2(0.0, -4.0 + wag)).round()
 		draw_circle(tail_p, 2.4, PAL["gold"] as Color)
 		draw_circle(Vector2(0.0, -18.0), 3.0, PAL["cream"] as Color)
@@ -261,6 +262,6 @@ func _draw_boss_extra(_off: Vector2) -> void:
 	# Death butterflies
 	for bf: Dictionary in _butterflies:
 		var bp: Vector2 = ((bf["pos"] as Vector2) - pos).round()
-		var flap: float = 2.0 + absf(sin(anim_t * 18.0 + bp.x)) * 2.5
-		draw_rect(Rect2(bp + Vector2(-flap, -1.0), Vector2(flap * 2.0, 2.0)), PAL["gold"] as Color)
+		var flap: float = roundf(2.0 + (absf(sin(anim_t * 5.0 + bp.x)) * 0.875 if fred else absf(sin(anim_t * 18.0 + bp.x)) * 2.5))
+		draw_rect(Rect2((bp + Vector2(-flap, -1.0)).round(), Vector2(flap * 2.0, 2.0)), PAL["gold"] as Color)
 		draw_rect(Rect2(bp, Vector2.ONE), PAL["cream"] as Color)

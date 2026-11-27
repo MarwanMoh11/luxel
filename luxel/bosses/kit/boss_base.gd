@@ -341,7 +341,7 @@ func _step_tell_state(dt: float, target: Vector2) -> void:
 	var c: Dictionary = _attacks.get(active_attack_id, {}) as Dictionary
 	state_timer -= dt
 	var prog: float = 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0)
-	if state_timer > 0.16: _face_point(target, 2.8, dt)
+	if state_timer > 0.16 * get_tell_scale(): _face_point(target, 2.8, dt)
 	var cb: Variant = c.get("on_tell", Callable())
 	if cb is Callable and (cb as Callable).is_valid(): (cb as Callable).call(self, target, dt, prog)
 	if state_timer <= 0.0: _enter_attack_commit(c, target)
@@ -410,6 +410,10 @@ func add_stagger(amount: float) -> bool:
 		stagger_meter = 0.0; _release_token(); active_attack_id = ""
 		_set_boss_state(BossState.STAGGER, stagger_duration)
 		staggered.emit(stagger_duration)
+		if Lx.hitstop != null and is_instance_valid(Lx.hitstop): Lx.hitstop.trigger(0.065)
+		if Lx.player != null and is_instance_valid(Lx.player):
+			if Lx.player.has_method("spawn_ring"): Lx.player.call("spawn_ring", pos, body_radius + 2.0, body_radius + 24.0, 0.30, PAL["gold"] as Color, 1.8)
+			if Lx.player.has_method("spawn_sparks"): Lx.player.call("spawn_sparks", pos, Vector2.UP, 8, PAL["cream"] as Color, 32.0, 96.0, 0.28)
 		LxDamageFx.boss_impact(pos, 0.18, 76.0, 82.0, 80.0, 1.38, 0.32)
 		_emit_sfx("stagger_break")
 		return true
@@ -538,12 +542,33 @@ func _draw_extra(off: Vector2) -> void:
 	if segments != null: segments.draw_segments(self, pos)
 	if adds != null: adds.draw_summons(self, pos)
 	if patterns != null: patterns.draw_patterns(self, pos)
+	var c_off: Vector2 = off.round()
+	var fred_b: bool = is_flash_reduced()
+	if boss_state == BossState.INTRO or boss_state == BossState.PHASE_SHIFT:
+		var dur_s: float = maxf(0.15, intro_duration if boss_state == BossState.INTRO else phase_shift_duration)
+		var rp: float = 1.0 - clampf(state_timer / dur_s, 0.0, 1.0)
+		var rr: float = roundf(body_radius + 6.0 + rp * (16.0 if boss_state == BossState.INTRO else 22.0))
+		var bcol: Color = LxBiomePalette.col(island_id, "glow")
+		var alpha_s: float = (1.0 - rp * 0.65) * (0.55 if fred_b else 0.88)
+		draw_arc(c_off, rr, 0.0, TAU, 24, Color(PAL["void"] as Color, alpha_s * 0.8), 2.8)
+		draw_arc(c_off, rr, 0.0, TAU, 24, Color(bcol, alpha_s), 1.4)
+		for ki: int in range(4):
+			var ka: float = float(ki) * (PI * 0.5) + rp * (0.25 if fred_b else 0.75)
+			var kp: Vector2 = (c_off + Vector2.from_angle(ka) * rr).round()
+			draw_rect(Rect2(kp - Vector2.ONE, Vector2(2.0, 2.0)), Color(PAL["cream"] as Color, alpha_s))
+	elif boss_state == BossState.STAGGER:
+		var s_pulse: float = 0.0 if fred_b else sin(anim_t * 10.0) * 1.2
+		var sr: float = roundf(body_radius + 6.5 + s_pulse)
+		draw_arc(c_off, sr, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
+		draw_arc(c_off, sr, 0.0, TAU, 20, PAL["gold"] as Color, 1.5)
 	if stagger_meter > stagger_threshold * 0.25 and boss_state != BossState.STAGGER and boss_state != BossState.DEATH:
 		var frac: float = clampf(stagger_meter / maxf(stagger_threshold, 0.01), 0.0, 1.0)
 		var bw: float = roundf(body_radius * 2.2)
-		var bp: Vector2 = (off + Vector2(-bw * 0.5, body_radius + 4.0)).round()
+		var bp: Vector2 = (c_off + Vector2(-bw * 0.5, body_radius + 4.0)).round()
+		draw_rect(Rect2(bp - Vector2.ONE, Vector2(bw + 2.0, 4.0)), PAL["void"] as Color)
 		draw_rect(Rect2(bp, Vector2(bw, 2.0)), PAL["night"] as Color)
-		draw_rect(Rect2(bp, Vector2(roundf(bw * frac), 2.0)), PAL["gold"] as Color)
+		var fw: float = roundf(bw * frac)
+		draw_rect(Rect2(bp, Vector2(fw, 2.0)), (PAL["cream"] if frac >= 0.78 else PAL["gold"]) as Color)
 	_draw_boss_extra(off)
 
 

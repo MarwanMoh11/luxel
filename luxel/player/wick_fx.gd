@@ -100,6 +100,7 @@ func _spawn_streak(p0: Vector2, p1: Vector2, life: float, col: Color, width: flo
 func age(dt: float) -> void:
 	_lantern_ignite_t = maxf(0.0, _lantern_ignite_t - dt)
 	_land_squash_t = maxf(0.0, _land_squash_t - dt)
+	_turn_squash_t = maxf(0.0, _turn_squash_t - dt)
 	for arr: Array[Dictionary] in [afterimages, rings, streaks, wedges]:
 		for i: int in range(arr.size() - 1, -1, -1):
 			arr[i]["age"] = float(arr[i]["age"]) + dt
@@ -314,10 +315,14 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	var air_lift: float = absf(hop_y) + absf(glide_lift) + (2.5 if wick.is_zipping() else 0.0)
 	_draw_shadow(wick, air_lift)
-	if wick.is_gliding() and wick.move_wings != null and wick.move_wings.glide_duration > 0.05:
+	if wick.is_gliding() and wick.move_wings != null and wick.move_wings.glide_duration > 0.05 and wick.move_wings._arc_node == null:
 		var gfrac: float = clampf(wick.move_wings.glide_time_left / wick.move_wings.glide_duration, 0.0, 1.0)
 		var gcol: Color = LxWick.PAL_CORAL if gfrac < 0.28 else (LxWick.PAL_GOLD if gfrac < 0.55 else LxWick.PAL_ICE)
 		wick.draw_arc(Vector2(0.0, 1.0), 9.0, PI * 0.15, PI * 0.15 + PI * 0.70 * gfrac, 12, gcol, 1.5, false)
+	if wick.mercy_t > 0.0 and flash_red:
+		var mc: Vector2 = Vector2(0.0, -4.0)
+		wick.draw_arc(mc, 9.0, 0.0, TAU, 16, Color(LxWick.PAL_VOID, 0.55), 2.0)
+		wick.draw_arc(mc, 8.5, 0.0, TAU, 16, Color(LxWick.PAL_ICE, 0.62), 1.0)
 	_draw_motes(wick, off, false)
 
 	for a: Dictionary in afterimages:
@@ -377,7 +382,7 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 			wick.draw_line(hand_pos + Vector2(0.0, -sg), hand_pos + Vector2(0.0, sg), Color(LxWick.PAL_CREAM, 0.65), 1.0)
 
 	var hit_white: bool = wick.hurt_flash > 0.55 and not flash_red
-	var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else Color(1.0, 1.0, 1.0, alpha)
+	var mod: Color = Color(LxWick.PAL_CREAM, alpha) if hit_white else (Color(LxWick.PAL_APRICOT, alpha) if (flash_red and wick.hurt_flash > 0.35) else Color(1.0, 1.0, 1.0, alpha))
 	var anim_name: String = "idle"
 	if wick.is_zipping():
 		anim_name = "zip"
@@ -400,8 +405,10 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 		_turn_squash_t = 0.08; _squash_vec = Vector2(1.14, 0.88)
 	_was_moving = cur_moving; _prev_face_quad = cur_quad
 	var dscale: Vector2 = Vector2.ONE
-	if _turn_squash_t > 0.0 and not flash_red:
-		_turn_squash_t = maxf(0.0, _turn_squash_t - 0.016)
+	if _land_squash_t > 0.0:
+		var lu: float = clampf(_land_squash_t / 0.085, 0.0, 1.0) * (0.5 if flash_red else 1.0)
+		dscale = Vector2.ONE.lerp(Vector2(1.16, 0.86), lu)
+	elif _turn_squash_t > 0.0 and not flash_red:
 		dscale = Vector2.ONE.lerp(_squash_vec, clampf(_turn_squash_t / 0.08, 0.0, 1.0))
 	var drew_sprite: bool = sprite_sheet != null and sprite_sheet.draw_actor(wick, draw_base, "throw" if not has_lan else anim_name, wick.facing, 1.0 if not has_lan else clock_t, mod, dscale)
 	if not drew_sprite:
@@ -412,10 +419,12 @@ func draw(wick: LxWick, walk_phase: float, clock_t: float) -> void:
 
 	_draw_motes(wick, off, true)
 	if wick.move_dash != null and wick.move_dash.counter_t > 0.0:
-		var ca: float = clock_t * (3.5 if flash_red else 7.5)
+		var ca: float = clock_t * (3.2 if flash_red else 7.2)
+		wick.draw_arc(hand_pos, 5.5, ca, ca + PI * 1.1, 8, Color(LxWick.PAL_ICE, 0.65 if flash_red else 0.85), 1.0)
 		for ci: int in range(2):
 			var cp: Vector2 = (hand_pos + Vector2(cos(ca + float(ci) * PI) * 5.0, sin(ca + float(ci) * PI) * 4.0)).round()
-			wick.draw_rect(Rect2(cp, Vector2.ONE), LxWick.PAL_CREAM if ci == 0 else LxWick.PAL_ICE)
+			wick.draw_rect(Rect2(cp - Vector2.ONE, Vector2(3.0, 3.0)), Color(LxWick.PAL_VOID, 0.75))
+			wick.draw_rect(Rect2(cp, Vector2(2.0, 2.0)), LxWick.PAL_CREAM if ci == 0 else LxWick.PAL_ICE)
 	if wick.move_sunflare != null and wick.move_sunflare.unlocked and wick.get_ember_ratio() >= 0.999:
 		for si: int in range(2):
 			var sa: float = clock_t * 3.4 + float(si) * PI

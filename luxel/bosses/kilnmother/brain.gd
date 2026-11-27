@@ -117,7 +117,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_lane(pos, pos + _gust_dir * 54.0, 12.0, last_tell_duration, 0.0, "coral", "gold")
 			stage.play_sfx("kilnmother_bellows_inhale", pos),
 		"on_tell": func(_b: LxBossBase, _tgt: Vector2, _dt: float, _prog: float) -> void:
-			if state_timer > 0.22:
+			if state_timer > 0.22 * get_tell_scale():
 				_gust_dir = Vector2.from_angle(facing),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_gust_hit = false
@@ -184,6 +184,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_ring(tgt, 20.0, last_tell_duration + 0.08, 0.5, "coral", "gold")
 			stage.play_sfx("golem_stomp_tell", pos),
 		"on_commit_start": func(_b: LxBossBase, tgt: Vector2) -> void:
+			state_timer = RING_COMMIT_DUR * 2.0 + RING_PAUSE_P3 * get_tell_scale()
 			_ring_stage = RingStage.RING_1
 			_ring_progress = 0.0
 			_ring_hit = false
@@ -385,14 +386,15 @@ func _step_single_ring(el: float, dur: float) -> void:
 
 
 func _step_meltdown_commit(el: float, tgt: Vector2) -> void:
+	var pause_t: float = RING_PAUSE_P3 * get_tell_scale()
 	if el < RING_COMMIT_DUR:
 		_step_single_ring(el, RING_COMMIT_DUR)
-	elif el < RING_COMMIT_DUR + RING_PAUSE_P3:
+	elif el < RING_COMMIT_DUR + pause_t:
 		if _ring_stage == RingStage.RING_1:
 			_ring_stage = RingStage.PAUSE
 			_ring_progress = 0.0
 			_ring_hit = false
-			ground.warn_ring(pos, KILN_RING_MAX_R, RING_PAUSE_P3, 0.0, "coral", "cream")
+			ground.warn_ring(pos, KILN_RING_MAX_R, pause_t, 0.0, "coral", "cream")
 			stage.play_sfx("golem_stomp_tell", pos)
 	else:
 		if _ring_stage != RingStage.RING_2:
@@ -403,7 +405,7 @@ func _step_meltdown_commit(el: float, tgt: Vector2) -> void:
 			patterns.emit_gap_ring(pos, 14, 126.0, gap_a, 0.85, {"color": "coral", "source": "meltdown_ring2", "damage": 0.5})
 			_boss_impact(0.24, 100.0, 102.0)
 			stage.play_sfx("golem_stomp_shockwave", pos)
-		_step_single_ring(el - RING_COMMIT_DUR - RING_PAUSE_P3, RING_COMMIT_DUR)
+		_step_single_ring(el - RING_COMMIT_DUR - pause_t, RING_COMMIT_DUR)
 
 
 func _step_cross_commit(el: float, dur: float) -> void:
@@ -506,13 +508,17 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	var belly_exposed: bool = active_attack_id == "bellows_gust" and boss_state == BossState.TELL
 	if armour_intact:
 		LxDamageFx.draw_armour_plates(self, off, body_radius + 3.5, 2.0, armour_hp, armour_max)
 	if belly_exposed:
-		var br: float = 5.5 + (0.0 if is_flash_reduced() else 1.2 * sin(anim_t * 22.0))
-		draw_arc(c + Vector2(0.0, 1.0), br, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
-		draw_circle(c + Vector2(0.0, 1.0), 2.5, PAL["cream"] as Color)
+		var bc: Vector2 = (c + Vector2(0.0, 1.0)).round()
+		var br: float = 5.5 + (0.0 if fred else 1.2 * sin(anim_t * 22.0))
+		draw_arc(bc, br, 0.0, TAU, 16, PAL["void"] as Color, 3.0)
+		draw_arc(bc, br, 0.0, TAU, 16, PAL["gold"] as Color, 1.8)
+		draw_circle(bc, 2.5, PAL["cream"] as Color)
+		_draw_core_target_pips(bc, br + 2.0, fred)
 	elif active_attack_id == "bellows_gust" and boss_state == BossState.COMMIT:
 		var side2 := Vector2(-_gust_dir.y, _gust_dir.x)
 		var g_len: float = GUST_RANGE * 0.88
@@ -537,9 +543,13 @@ func _draw_boss_extra(off: Vector2) -> void:
 			draw_circle(cend, 2.4, (PAL["ice"] if arm_len < raw_len - 1.0 else PAL["gold"]) as Color)
 	elif active_attack_id in ["molten_ring", "core_meltdown_rings"] and boss_state == BossState.COMMIT:
 		if _ring_stage == RingStage.PAUSE:
-			var pr: float = KILN_RING_MAX_R * 0.45 + (0.0 if is_flash_reduced() else 2.0 * sin(anim_t * 18.0))
+			var pr: float = KILN_RING_MAX_R * 0.45 + (0.0 if fred else 2.0 * sin(anim_t * 18.0))
+			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["void"] as Color, 3.4)
 			draw_arc(c, pr + 2.0, 0.0, TAU, 24, PAL["coral"] as Color, 2.0)
 			draw_arc(c, pr, 0.0, TAU, 24, PAL["cream"] as Color, 2.2)
+			draw_circle(c, 4.5, PAL["void"] as Color)
+			draw_circle(c, 3.0, PAL["cream"] as Color)
+			_draw_core_target_pips(c, body_radius + 3.0, fred)
 		else:
 			var ring_r: float = lerpf(KILN_RING_START_R, KILN_RING_MAX_R, _ring_progress)
 			draw_arc(c, ring_r + 2.8, 0.0, TAU, 36, PAL["wine"] as Color, 2.5)
@@ -554,6 +564,18 @@ func _draw_boss_extra(off: Vector2) -> void:
 		draw_arc(c, body_radius + 7.5, facing - 0.9, facing + 0.9, 12, PAL["gold"] as Color, 1.3)
 	elif is_punishable() and boss_state != BossState.DEATH:
 		draw_arc(c, body_radius + 5.0, 0.0, TAU, 20, PAL["gold"] as Color, 1.6)
+
+
+func _draw_core_target_pips(center: Vector2, rad: float, fred: bool) -> void:
+	var rot: float = 0.0 if fred else anim_t * 2.4
+	var pip_col: Color = (PAL["cream"] if fred else PAL["gold"]) as Color
+	for pi: int in range(4):
+		var pd: Vector2 = Vector2.from_angle(rot + float(pi) * (PI * 0.5))
+		var p0: Vector2 = (center + pd * (rad - 1.5)).round()
+		var p1: Vector2 = (center + pd * (rad + 2.5)).round()
+		draw_line(p0, p1, PAL["void"] as Color, 3.0)
+		draw_line(p0, p1, pip_col, 1.4)
+		draw_circle(p1, 1.2, PAL["cream"] as Color)
 
 
 func _boss_impact(shake: float, gust_r: float, gust_s: float) -> void:

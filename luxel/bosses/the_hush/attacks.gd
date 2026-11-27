@@ -85,7 +85,7 @@ static func _register_p2(b: LxTheHushBoss) -> void:
 			b.ground.warn_ring(b.void_orb_pos, 26.0, b.last_tell_duration, 0.0, "jade", "coral")
 			b.stage.play_sfx("hush_tell", b.pos),
 		"on_tell": func(_x: LxBossBase, tgt: Vector2, _dt: float, _p: float) -> void:
-			if b.state_timer > 0.22:
+			if b.state_timer > 0.22 * b.get_tell_scale():
 				var att: Vector2 = b._attention_target(tgt)
 				b.commit_dir = (att - b.pos).normalized() if att.distance_to(b.pos) > 1.0 else b.commit_dir
 				b.void_orb_pos = b.clamp_to_arena(b.pos + b.commit_dir * clampf(att.distance_to(b.pos), 36.0, 100.0)),

@@ -56,7 +56,7 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 		var v_outer: Color = (pal["sky"] if lit else pal["plum"]) as Color
 		var v_mid: Color = (pal["ice"] if lit else pal["wine"]) as Color
 		var v_hi: Color = (pal["cream"] if lit else pal["mauve"]) as Color
-		var spin: float = b.anim_t * (1.7 if lit else 0.9)
+		var spin: float = b.anim_t * ((0.8 if lit else 0.45) if fred else (1.7 if lit else 0.9))
 		var seg_step: float = TAU / 8.0
 		for i: int in range(8):
 			var a: float = spin + float(i) * seg_step
@@ -93,13 +93,13 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 	if b.boss_state == LxBossBase.BossState.COMMIT:
 		if active_move == 3 and ring_stage != 1: # SILENCE_RING
 			var ring_r: float = lerpf(12.0, 54.0, ring_prog)
-			b.draw_arc(off, ring_r + 2.2, 0.0, TAU, 36, pal["deep"] as Color, 2.2)
-			b.draw_arc(off, ring_r, 0.0, TAU, 36, pal["sky"] as Color, 3.6)
-			b.draw_arc(off, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, pal["ice"] as Color, 1.8)
-			b.draw_arc(off, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, pal["cream"] as Color, 1.0)
+			b.draw_arc(c, ring_r + 2.2, 0.0, TAU, 36, pal["deep"] as Color, 2.2)
+			b.draw_arc(c, ring_r, 0.0, TAU, 36, pal["sky"] as Color, 3.6)
+			b.draw_arc(c, maxf(2.0, ring_r - 2.0), 0.0, TAU, 28, pal["ice"] as Color, 1.8)
+			b.draw_arc(c, maxf(2.0, ring_r - 3.6), 0.0, TAU, 24, pal["cream"] as Color, 1.0)
 			for ni: int in range(8):
-				var na: float = b.anim_t * 2.5 + float(ni) * (TAU / 8.0)
-				_draw_diamond(b, off + Vector2.from_angle(na) * ring_r, 3.0, pal["ice"] as Color, pal["cream"] as Color)
+				var na: float = b.anim_t * (1.0 if fred else 2.5) + float(ni) * (TAU / 8.0)
+				_draw_diamond(b, c + Vector2.from_angle(na) * ring_r, 3.0, pal["ice"] as Color, pal["cream"] as Color)
 		elif active_move == 5: # WARD_BASH
 			var ca_c: float = commit_dir.angle()
 			b.draw_arc(c, 34.0, ca_c - 1.20, ca_c + 1.20, 16, pal["sky"] as Color, 3.2)
@@ -149,8 +149,9 @@ static func draw_hush(b: LxBossBase, off: Vector2) -> void:
 		if arena_obj != null:
 			var surge_t: float = float(arena_obj.get("comeback_surge_t"))
 			if surge_t > 0.0:
+				var sr: float = b.anim_t * (1.0 if fred else 2.5)
 				b.draw_arc(w_loc, 13.0, 0.0, TAU, 20, pal["gold"] as Color, 1.6)
-				b.draw_arc(w_loc, 16.0, b.anim_t * 2.5, b.anim_t * 2.5 + PI, 12, pal["cream"] as Color, 1.2)
+				b.draw_arc(w_loc, 16.0, sr, sr + PI, 12, pal["cream"] as Color, 1.2)
 			var burst_t: float = float(arena_obj.get("comeback_burst_t"))
 			if burst_t > 0.0:
 				var bu: float = 1.0 - clampf(burst_t / 0.85, 0.0, 1.0)
@@ -184,7 +185,9 @@ static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: 
 		if bool(ar_obj.get("echo_ghost_active")):
 			var ep: Vector2 = ((ar_obj.get("echo_ghost_pos") as Vector2) - b.pos + off).round()
 			var hot_e: bool = float(ar_obj.get("echo_flash_t")) > 0.0
+			b.draw_circle(ep, 7.0, Color(pal["void"] as Color, 0.72))
 			b.draw_circle(ep, 6.0, Color(pal["teal"] as Color, 0.45))
+			b.draw_arc(ep, 8.5, 0.0, TAU, 16, pal["void"] as Color, 2.8)
 			b.draw_arc(ep, 8.5, 0.0, TAU, 16, (pal["cream"] if hot_e else pal["lime"]) as Color, 1.4)
 			_draw_diamond(b, ep, 3.0, pal["ice"] as Color, pal["cream"] as Color)
 	elif ph == 3:
@@ -221,7 +224,9 @@ static func _draw_arena_rules(b: LxBossBase, ar_obj: Object, off: Vector2, pal: 
 			b.draw_line(c_loc + Vector2(-140.0, 86.0), c_loc + Vector2(140.0, -86.0), Color(pal["rose"] as Color, 0.62), 1.0)
 		if bool(ar_obj.get("mirror_active")):
 			var mp: Vector2 = ((ar_obj.get("mirror_pos") as Vector2) - b.pos + off).round()
+			b.draw_circle(mp, 10.0, Color(pal["void"] as Color, 0.78))
 			b.draw_circle(mp, 9.0, Color(pal["deep"] as Color, 0.72))
+			b.draw_arc(mp, 10.5, 0.0, TAU, 18, pal["void"] as Color, 3.0)
 			b.draw_arc(mp, 10.5, 0.0, TAU, 18, pal["rose"] as Color, 1.6)
 			_draw_diamond(b, mp, 4.5, pal["ice"] as Color, pal["cream"] as Color)
 		var ms_t: float = float(ar_obj.get("mirror_shatter_t"))

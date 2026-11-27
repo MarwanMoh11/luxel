@@ -90,7 +90,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				ground.warn_ring(tgt, 24.0, last_tell_duration, 1.0, "sky", "coral")
 			stage.play_sfx("hollow_wick_tell", pos),
 		"on_tell": func(_b: LxBossBase, tgt: Vector2, dt: float, _prog: float) -> void:
-			if state_timer > 0.16:
+			if state_timer > 0.16 * get_tell_scale():
 				var att: Vector2 = _attention_target(tgt)
 				_face_point(att, 3.6, dt)
 				commit_dir = Vector2.from_angle(facing),
@@ -135,13 +135,13 @@ func _configure_boss(spec: Dictionary) -> void:
 			ground.warn_ring(dark_lantern_pos, ZIP_BURST_R, last_tell_duration, 0.0, "sky", "coral")
 			stage.play_sfx("hollow_wick_tell", pos),
 		"on_tell": func(_b: LxBossBase, tgt: Vector2, dt: float, _prog: float) -> void:
-			if state_timer > 0.16:
+			if state_timer > 0.16 * get_tell_scale():
 				var att: Vector2 = _attention_target(tgt)
 				_face_point(att, 3.4, dt)
 				commit_dir = Vector2.from_angle(facing)
 				dark_lantern_pos = clamp_to_arena(pos + commit_dir * clampf(att.distance_to(pos), 36.0, 240.0)),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
-			var th_dur: float = CLASH_THROW_TIME_P3 if phase >= 3 else ZIP_THROW_TIME
+			var th_dur: float = (CLASH_THROW_TIME_P3 * get_tell_scale()) if phase >= 3 else ZIP_THROW_TIME
 			state_timer = th_dur + ZIP_FLY_TIME
 			dark_lantern_pos = clamp_to_arena(dark_lantern_pos)
 			dark_lantern_out = true
@@ -168,7 +168,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				ground.warn_lane(clone_pos, clamp_to_arena(clone_pos + cd * 110.0), 7.0, last_tell_duration, 0.0, "ice", "rose")
 			stage.play_sfx("hollow_wick_tell", pos),
 		"on_tell": func(_b: LxBossBase, tgt: Vector2, dt: float, _prog: float) -> void:
-			if state_timer > 0.16:
+			if state_timer > 0.16 * get_tell_scale():
 				var att: Vector2 = _attention_target(tgt)
 				_face_point(att, 3.0, dt)
 				commit_dir = Vector2.from_angle(facing),
@@ -278,7 +278,7 @@ func _step_volley_commit(el: float) -> void:
 
 
 func _step_zip_commit(dt: float, el: float) -> void:
-	var th_dur: float = CLASH_THROW_TIME_P3 if phase >= 3 else ZIP_THROW_TIME
+	var th_dur: float = (CLASH_THROW_TIME_P3 * get_tell_scale()) if phase >= 3 else ZIP_THROW_TIME
 	if el < th_dur:
 		return
 	clash_window_open = false
@@ -327,7 +327,7 @@ func _check_clone_bolts() -> void:
 	for bi: int in range(w.bolts.size() - 1, -1, -1):
 		var bv: Variant = w.bolts[bi]
 		if bv is Object and (bv.get("pos") as Vector2).distance_to(clone_pos) <= 13.0:
-			var is_b: bool = str(bv.get("color")) == LxHit.COLOR_BLUE
+			var is_b: bool = (str(bv.get("light_color")) == LxHit.COLOR_BLUE) or bool(bv.get("is_prism"))
 			w.bolts.remove_at(bi)
 			if is_b:
 				_shatter_mirror_clone()
@@ -554,9 +554,18 @@ func _draw_boss_extra(off: Vector2) -> void:
 		draw_circle(lp, 4.5, PAL["void"] as Color)
 		draw_arc(lp, 5.5, 0.0, TAU, 14, PAL["sky"] as Color, 1.4)
 		if phase >= 3 and clash_window_open:
-			var cu: float = clampf(_commit_elapsed / CLASH_THROW_TIME_P3, 0.0, 1.0)
-			draw_arc(lp, roundf(lerpf(18.0, 8.0, cu)), 0.0, TAU, 18, PAL["coral"] as Color, 1.8)
+			var cu: float = clampf(_commit_elapsed / maxf(CLASH_THROW_TIME_P3 * get_tell_scale(), 0.05), 0.0, 1.0)
+			var cr: float = roundf(lerpf(18.0, 8.0, cu))
+			draw_arc(lp, cr, 0.0, TAU, 18, PAL["void"] as Color, 3.0)
+			draw_arc(lp, cr, 0.0, TAU, 18, PAL["coral"] as Color, 1.8)
 			draw_arc(lp, 11.0, 0.0, TAU, 16, PAL["ice"] as Color, 1.4)
+			var tc: Color = (PAL["cream"] if (fred or int(anim_t * 8.0) % 2 == 0) else PAL["gold"]) as Color
+			for ti: int in range(4):
+				var td: Vector2 = Vector2.from_angle(float(ti) * (PI * 0.5))
+				var p0: Vector2 = (lp + td * (cr - 2.0)).round()
+				var p1: Vector2 = (lp + td * (cr + (2.0 if fred else 3.0))).round()
+				draw_line(p0, p1, PAL["void"] as Color, 3.0)
+				draw_line(p0, p1, tc, 1.4)
 			draw_circle(lp, 2.5, PAL["cream"] as Color)
 
 	if clash_flash_t > 0.0:

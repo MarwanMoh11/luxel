@@ -162,6 +162,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 				move_boss(perp * 22.0, false)
 				_ambush_dir = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else _ambush_dir
 				facing = _ambush_dir.angle()
+				ground.warn_lane(pos, clamp_to_arena(pos + _ambush_dir * 76.0), 11.0, maxf(0.25, state_timer), 0.0, "coral", "cream")
 				stage.play_sfx("briar_scuttle", pos),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			patterns.emit_fan(pos, _ambush_dir, 5, 1.05, 126.0, {"color": "coral", "source": "scuttle_slash"})
@@ -395,19 +396,37 @@ func _body_color() -> Color:
 
 func _draw_boss_extra(off: Vector2) -> void:
 	var c: Vector2 = off.round()
+	var fred: bool = is_flash_reduced()
 	# Bounce bulbs
 	for b_d: Dictionary in _bounce_bulbs:
 		var bp: Vector2 = ((b_d["pos"] as Vector2) - pos).round()
 		var bl: float = float(b_d["bloom"])
+		var r_bulb: float = 7.0 + bl * 3.5
+		draw_arc(bp, r_bulb, 0.0, TAU, 16, PAL["void"] as Color, 2.8)
 		draw_circle(bp, 6.0 + bl * 2.5, Color(PAL["pine"] as Color, 0.72))
-		draw_arc(bp, 7.0 + bl * 3.5, 0.0, TAU, 14, (PAL["lime"] if bl >= 0.70 else PAL["jade"]) as Color, 1.3)
+		draw_arc(bp, r_bulb, 0.0, TAU, 16, (PAL["lime"] if bl >= 0.70 else PAL["jade"]) as Color, 1.4)
+		draw_circle(bp, 3.2, PAL["void"] as Color)
 		draw_circle(bp, 2.5, (PAL["gold"] if bl >= 0.70 else PAL["lime"]) as Color)
 
 	# P3 Heartwood Sun-Bloom bulb at center
 	if phase >= 3:
 		var sb: Vector2 = (_sun_bloom_pos - pos).round()
 		var lit: bool = _sun_bloom_lit_t > 0.0
-		draw_arc(sb, 18.0 if lit else 11.0, 0.0, TAU, 18, (PAL["gold"] if lit else PAL["dusk"]) as Color, 1.6 if lit else 1.1)
+		var sb_r: float = 18.0 if lit else 11.0
+		var petal_spin: float = anim_t * (0.45 if fred else (1.35 if lit else 0.75))
+		var petal_r: float = (11.5 if lit else 7.2) + (0.0 if fred else sin(anim_t * (5.0 if lit else 2.8)) * 0.8)
+		draw_arc(sb, sb_r, 0.0, TAU, 20, PAL["void"] as Color, 3.0)
+		draw_arc(sb, sb_r, 0.0, TAU, 20, (PAL["gold"] if lit else PAL["dusk"]) as Color, 1.6 if lit else 1.2)
+		for pi: int in range(6):
+			var pa: float = petal_spin + float(pi) * (TAU / 6.0)
+			var pd: Vector2 = Vector2.from_angle(pa)
+			var p_in: Vector2 = (sb + pd * 3.5).round()
+			var p_out: Vector2 = (sb + pd * petal_r).round()
+			draw_line(p_in, p_out, PAL["void"] as Color, 3.0 if lit else 2.4)
+			draw_line(p_in, p_out, (PAL["gold"] if lit else PAL["apricot"]) as Color, 1.5 if lit else 1.1)
+			draw_circle(p_out, 1.9 if lit else 1.4, PAL["void"] as Color)
+			draw_circle(p_out, 1.2 if lit else 0.9, (PAL["cream"] if lit else PAL["gold"]) as Color)
+		draw_circle(sb, 5.5 if lit else 4.0, PAL["void"] as Color)
 		draw_circle(sb, 4.5 if lit else 3.0, (PAL["cream"] if lit else PAL["apricot"]) as Color)
 
 	# Active 3-Lane Silk Web Snares
@@ -417,12 +436,23 @@ func _draw_boss_extra(off: Vector2) -> void:
 		var llen: float = float(lane["length"])
 		var lp := Vector2(-ld.y, ld.x)
 		var le: Vector2 = (lo + ld * llen).round()
+		var side_off: Vector2 = lp * (SNARE_HALF_W * 0.6)
+		var s0_a: Vector2 = (lo + side_off).round()
+		var s0_b: Vector2 = (le + side_off).round()
+		var s1_a: Vector2 = (lo - side_off).round()
+		var s1_b: Vector2 = (le - side_off).round()
+		draw_line(lo, le, PAL["void"] as Color, 3.8)
+		draw_line(s0_a, s0_b, PAL["void"] as Color, 2.4)
+		draw_line(s1_a, s1_b, PAL["void"] as Color, 2.4)
 		draw_line(lo, le, PAL["stone"] as Color, 2.2)
-		draw_line((lo + lp * (SNARE_HALF_W * 0.6)).round(), (le + lp * (SNARE_HALF_W * 0.6)).round(), PAL["ice"] as Color, 1.0)
-		draw_line((lo - lp * (SNARE_HALF_W * 0.6)).round(), (le - lp * (SNARE_HALF_W * 0.6)).round(), PAL["ice"] as Color, 1.0)
+		draw_line(s0_a, s0_b, PAL["ice"] as Color, 1.0)
+		draw_line(s1_a, s1_b, PAL["ice"] as Color, 1.0)
 		for wi: int in range(1, 6):
 			var mid: Vector2 = lo.lerp(le, float(wi) / 6.0)
-			draw_line((mid - lp * (SNARE_HALF_W * 0.65)).round(), (mid + lp * (SNARE_HALF_W * 0.65)).round(), PAL["cream"] as Color, 1.0)
+			var ra: Vector2 = (mid - lp * (SNARE_HALF_W * 0.65)).round()
+			var rb: Vector2 = (mid + lp * (SNARE_HALF_W * 0.65)).round()
+			draw_line(ra, rb, PAL["void"] as Color, 2.2)
+			draw_line(ra, rb, PAL["cream"] as Color, 1.0)
 
 	# Scuttle ambush silk afterimage
 	if _ambush_ghost_t > 0.0:

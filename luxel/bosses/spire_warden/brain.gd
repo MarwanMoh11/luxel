@@ -127,7 +127,7 @@ func _configure_boss(spec: Dictionary) -> void:
 				mirror_dir = (tgt - mirror_pos).normalized() if tgt.distance_to(mirror_pos) > 1.0 else spear_dir
 				if silver_ghost_active or _is_spire_black():
 					ground.warn_lane(mirror_pos, clamp_to_arena(mirror_pos + mirror_dir * MIRROR_RANGE), MIRROR_HALF_W, maxf(0.45, state_timer + SPEAR_COMMIT_TIME), 0.0, "sky", "ice")
-			if state_timer > 0.16:
+			if state_timer > 0.16 * get_tell_scale():
 				_face_point(tgt, 4.0, dt)
 				spear_dir = Vector2.from_angle(facing)
 				if tgt.distance_to(mirror_pos) > 1.0:

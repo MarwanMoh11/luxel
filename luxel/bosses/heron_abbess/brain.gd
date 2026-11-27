@@ -56,8 +56,8 @@ func _init() -> void:
 	reward_heart = "full"
 	music_cue = "island4_boss_p1"
 	music_p2_cue = "island4_boss_p2"
-	max_hp = 122.0
-	hp = 122.0
+	max_hp = 136.0
+	hp = 136.0
 	body_radius = 9.0
 	move_speed = 42.0
 	intro_duration = 0.90
@@ -193,8 +193,10 @@ func _configure_boss(_spec: Dictionary) -> void:
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			leap_from = pos
 			leap_stage = 0
+			state_timer = LEAP_AIR_TIME + DOUBLE_RIPPLE_GAP * get_tell_scale() + 0.07
 			stage.play_sfx("heron_gust_fire", pos),
 		"on_commit": func(_b: LxBossBase, tgt: Vector2, _dt: float, el: float) -> void:
+			var gap_s: float = DOUBLE_RIPPLE_GAP * get_tell_scale()
 			if el < LEAP_AIR_TIME:
 				var u: float = clampf(el / LEAP_AIR_TIME, 0.0, 1.0)
 				abbess_z = sin(u * PI) * LEAP_HEIGHT
@@ -204,11 +206,12 @@ func _configure_boss(_spec: Dictionary) -> void:
 				abbess_z = 0.0
 				var gap_a: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 				patterns.emit_gap_ring(pos, 9, 102.0, gap_a, 1.16, {"color": "sky", "source": "gale_ripple_1", "damage": 0.5})
+				ground.warn_ring(pos, LEAP_RING_MAX_R, gap_s, 0.0, "gold", "coral")
 				stage.shake(0.22)
 				stage.play_sfx("heron_ring_fire", pos)
 			else:
-				ring_progress = clampf((el - LEAP_AIR_TIME) / maxf(DOUBLE_RIPPLE_GAP, 0.05), 0.0, 1.0)
-				if not _double_ripple_done and el >= LEAP_AIR_TIME + DOUBLE_RIPPLE_GAP:
+				ring_progress = clampf((el - LEAP_AIR_TIME) / maxf(gap_s, 0.05), 0.0, 1.0)
+				if not _double_ripple_done and el >= LEAP_AIR_TIME + gap_s:
 					_double_ripple_done = true
 					var gap_b: float = (tgt - pos).angle() if tgt.distance_to(pos) > 1.0 else facing
 					patterns.emit_gap_ring(pos, 10, 108.0, gap_b, 1.16, {"color": "gold", "source": "gale_ripple_2", "damage": 0.5})
@@ -307,19 +310,47 @@ func _step_boss_reposition(dt: float, target: Vector2) -> void:
 func _step_skylights(dt: float) -> void:
 	var wick: LxWick = Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null
 	var gliding: bool = wick != null and not wick.dead and wick.is_gliding()
-	var bolts: Array = wick.move_bolt.get("bolts") as Array if (wick != null and wick.move_bolt != null and wick.move_bolt.get("bolts") is Array) else []
+	var bolts: Array = wick.bolts if wick != null else []
 	for sk: Dictionary in _skylights:
 		sk["catch_cd"] = maxf(0.0, float(sk["catch_cd"]) - dt)
 		var sp: Vector2 = sk["pos"] as Vector2
 		if not bool(sk["shattered"]):
-			for b_v: Variant in bolts:
-				if b_v is Dictionary and bool((b_v as Dictionary).get("active", true)):
-					var bp: Vector2 = (b_v as Dictionary).get("pos", Vector2.INF) as Vector2
-					if bp.is_finite() and bp.distance_to(sp) <= 15.0:
-						sk["shattered"] = true
+			for bi: int in range(bolts.size() - 1, -1, -1):
+				var b_v: Variant = bolts[bi]
+				var bp: Vector2 = Vector2.INF
+				var b_prev: Vector2 = Vector2.INF
+				var b_dir: Vector2 = Vector2.UP
+				if b_v is Object and is_instance_valid(b_v as Object):
+					var bo: Object = b_v as Object
+					var pos_v: Variant = bo.get("pos")
+					if pos_v is Vector2:
+						bp = pos_v as Vector2
+					var prev_v: Variant = bo.get("prev_pos")
+					if prev_v is Vector2:
+						b_prev = prev_v as Vector2
+					var dir_v: Variant = bo.get("dir")
+					if dir_v is Vector2 and (dir_v as Vector2).length_squared() > 0.01:
+						b_dir = (dir_v as Vector2).normalized()
+				elif b_v is Dictionary and bool((b_v as Dictionary).get("active", true)):
+					var bd: Dictionary = b_v as Dictionary
+					var dp_v: Variant = bd.get("pos", Vector2.INF)
+					if dp_v is Vector2:
+						bp = dp_v as Vector2
+				if not bp.is_finite():
+					continue
+				var hit_d: float = Geometry2D.get_closest_point_to_segment(sp, b_prev, bp).distance_to(sp) if b_prev.is_finite() else bp.distance_to(sp)
+				if hit_d <= 15.0:
+					sk["shattered"] = true
+					if b_v is Dictionary:
 						(b_v as Dictionary)["active"] = false
-						stage.play_sfx("seal_break", sp)
-						break
+					else:
+						bolts.remove_at(bi)
+					if wick != null:
+						wick.spawn_sparks(sp, -b_dir, 6, PAL["ice"] as Color, 32.0, 92.0, 0.22)
+						wick.spawn_sparks(sp, b_dir, 4, PAL["cream"] as Color, 24.0, 74.0, 0.18)
+						wick.spawn_ring(sp, 4.0, SKYLIGHT_UPDRAFT_R, 0.24, PAL["ice"] as Color, 1.4)
+					stage.play_sfx("seal_break", sp)
+					break
 		elif gliding and wick.move_wings != null and wick.global_position.distance_to(sp) <= SKYLIGHT_UPDRAFT_R + 6.0:
 			wick.move_wings.refresh_glide(1.25, 2.2)
 			if float(sk["catch_cd"]) <= 0.0:

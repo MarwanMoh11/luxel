@@ -47,13 +47,23 @@ static func apply_damage_internal(w: LxWick, amount: float, from_pos: Vector2, k
 
 	var kdir: Vector2 = knock_dir.normalized() if knock_dir.length_squared() > 0.0001 else ((w.global_position - from_pos).normalized() if w.global_position.distance_to(from_pos) > 0.1 else Vector2.ZERO)
 	w.mercy_t = LxWick.MERCY_TIME
-	w.hurt_flash = 1.0
-	w.knock = kdir * 170.0
-	w.trigger_hitstop(LxWick.HS_HURT)
-	w.trigger_shake(LxWick.SHAKE_HURT)
-	w.spawn_ring(w.global_position, 2.0, 16.0, 0.24, LxWick.PAL_CORAL, 1.5)
-	w.spawn_sparks(w.global_position, kdir, 10, LxWick.PAL_CORAL, 35.0, 100.0, 0.26)
-	w.emit_sfx("wick_hurt", w.global_position, false)
+	if mult <= 0.0:
+		# Invincible Assist (assist_damage_mult == 0): calm ice ward feedback instead of harsh hurt flash.
+		w.hurt_flash = 0.0
+		w.knock = kdir * 75.0
+		w.spawn_ring(w.global_position, 2.0, 14.0, 0.22, LxWick.PAL_ICE, 1.3)
+		w.spawn_sparks(w.global_position, kdir, 5, LxWick.PAL_ICE, 24.0, 68.0, 0.20)
+		w.emit_sfx("shield_clang", w.global_position, false)
+	else:
+		w.hurt_flash = 1.0
+		w.knock = kdir * 170.0
+		w.trigger_hitstop(LxWick.HS_HURT)
+		w.trigger_shake(LxWick.SHAKE_HURT)
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick") and kdir.length_squared() > 0.0001:
+			Lx.camera.call("add_kick", kdir, 2.2)
+		w.spawn_ring(w.global_position, 2.0, 16.0, 0.24, LxWick.PAL_CORAL, 1.5)
+		w.spawn_sparks(w.global_position, kdir, 10, LxWick.PAL_CORAL, 35.0, 100.0, 0.26)
+		w.emit_sfx("wick_hurt", w.global_position, false)
 	if Lx.events != null:
 		Lx.events.player_damaged.emit(dmg, from_pos, kdir, source)
 
@@ -106,7 +116,8 @@ static func kill_by_void(w: LxWick, at_pos: Vector2) -> void:
 	w._interact_held = false
 	w._interact_cand = null
 	var prev_hp: float = w.get_hearts()
-	var cost: float = float(VOID_FALL_HEART_COST)
+	var dmg_mult: float = clampf(float(Lx.save.settings.get("assist_damage_mult", 1.0)), 0.0, 1.0) if Lx.save != null else 1.0
+	var cost: float = maxf(0.0, float(VOID_FALL_HEART_COST) * dmg_mult)
 	var remaining: float = maxf(0.0, prev_hp - cost)
 	var fatal: bool = remaining <= 0.001
 	if Lx.state != null:
@@ -329,16 +340,31 @@ static func on_hit_landed(w: LxWick, hit: LxHit, result: int, target_pos: Vector
 	if result == 0:
 		w.trigger_hitstop(LxWick.HS_BLOCK)
 		w.trigger_shake(LxWick.SHAKE_BLOCK)
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+			Lx.camera.call("add_kick", -hit.dir, 1.1)
+		w.spawn_ring(target_pos, 1.5, 9.0, 0.14, LxWick.PAL_STONE, 1.1)
 		w.spawn_sparks(target_pos, -hit.dir, 5, LxWick.PAL_STONE, 25.0, 75.0, 0.16)
 		w.emit_sfx("shield_clang", target_pos, true)
 		return
-	w.trigger_hitstop(hitstop_s)
-	w.trigger_shake(shake_i)
 	var heavy: bool = hit.is_heavy()
-	w.spawn_sparks(target_pos, hit.dir, 8 if heavy else 4, LxWick.PAL_GOLD if heavy else LxWick.PAL_CREAM, 30.0, 95.0, 0.20)
-	if heavy:
+	var is_opened: bool = result == LxEnemyBrain.HitResult.OPENED
+	var is_killed: bool = result == LxEnemyBrain.HitResult.KILLED
+	var eff_hs: float = hitstop_s + (0.018 if is_killed else (0.010 if (is_opened and heavy) else 0.0))
+	var eff_sh: float = shake_i + (0.04 if is_killed else (0.02 if is_opened else 0.0))
+	w.trigger_hitstop(eff_hs)
+	w.trigger_shake(eff_sh)
+	if (heavy or is_opened or is_killed) and Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", hit.dir, 1.8 if is_killed else (1.3 if (heavy or is_opened) else 0.8))
+	var sp_cnt: int = 10 if is_killed else (8 if (heavy or is_opened) else 4)
+	var sp_col: Color = LxWick.PAL_GOLD if (heavy or is_opened or is_killed) else LxWick.PAL_CREAM
+	w.spawn_sparks(target_pos, hit.dir, sp_cnt, sp_col, 30.0, 102.0 if is_killed else 95.0, 0.22 if is_killed else 0.20)
+	if is_opened or is_killed:
+		var isl_h: int = Lx.state.island_id if Lx.state != null else 1
+		w.spawn_sparks(target_pos, -hit.dir, 5 if is_killed else 3, LxBiomePalette.col(isl_h, "glow"), 24.0, 78.0, 0.20)
+		w.spawn_ring(target_pos, 2.0, 18.0 if is_killed else 14.0, 0.24 if is_killed else 0.18, LxWick.PAL_CREAM if is_killed else LxWick.PAL_GOLD, 1.5 if is_killed else 1.2)
+	elif heavy:
 		w.spawn_ring(target_pos, 2.0, 14.0, 0.20, LxWick.PAL_GOLD, 1.0)
-	w.emit_sfx("heavy_hit" if heavy else "bolt_chip", target_pos, true)
+	w.emit_sfx("heavy_hit" if (heavy or is_opened) else "bolt_chip", target_pos, true)
 	if hit.source != LxHit.SOURCE_SUNFLARE:
 		var sd: Dictionary = Lx.get_move_data("sunflare")
 		var gain: float = float(sd.get("ember_per_kill", 20.0)) if result == LxEnemyBrain.HitResult.KILLED else (float(sd.get("ember_per_heavy", 18.0)) if heavy else float(sd.get("ember_per_bolt", 6.0)))

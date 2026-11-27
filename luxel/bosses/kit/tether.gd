@@ -30,6 +30,7 @@ func add_tether(id: String, a: Variant, b: Variant, cfg: Dictionary = {}) -> Dic
 		"pull_strength": float(cfg.get("pull_strength", 0.0)),
 		"electric": bool(cfg.get("electric", false)),
 		"electric_warn_t": float(cfg.get("electric_warn_t", 0.0)),
+		"electric_warn_dur": maxf(0.45, float(cfg.get("electric_warn_t", 0.55))),
 		"electric_damage": float(cfg.get("electric_damage", 1.0)),
 		"color": str(cfg.get("color", "stone")),
 		"flash_t": 0.0,
@@ -62,8 +63,10 @@ func get_tether(id: String) -> Dictionary:
 func charge_electric(id: String, warn_s: float = 0.55) -> void:
 	var t: Dictionary = get_tether(id)
 	if not t.is_empty() and not bool(t["cut"]):
+		var dur: float = maxf(0.45, warn_s) * _assist_scale()
 		t["electric"] = true
-		t["electric_warn_t"] = maxf(0.45, warn_s)
+		t["electric_warn_t"] = dur
+		t["electric_warn_dur"] = dur
 
 
 func discharge_all() -> void:
@@ -167,7 +170,8 @@ func draw_tethers(ci: CanvasItem, origin_world: Vector2) -> void:
 		var is_elec: bool = bool(t["electric"])
 		var warn_t: float = float(t["electric_warn_t"])
 		if is_elec and warn_t > 0.0:
-			LxBossTelegraphFx.draw_ground_danger_lane(ci, pa, pb, 7.0, 1.0 - clampf(warn_t / 0.55, 0.0, 1.0), _clock, "sky", "gold")
+			var warn_d: float = maxf(0.05, float(t.get("electric_warn_dur", 0.55)))
+			LxBossTelegraphFx.draw_ground_danger_lane(ci, pa, pb, 7.0, 1.0 - clampf(warn_t / warn_d, 0.0, 1.0), _clock, "sky", "gold")
 		var col: Color = PAL["cream"] as Color if float(t["flash_t"]) > 0.0 else (
 			PAL["ice"] as Color if (is_elec and warn_t <= 0.0) else LxPalette.color(str(t["color"]), "stone")
 		)
@@ -183,6 +187,14 @@ func draw_tethers(ci: CanvasItem, origin_world: Vector2) -> void:
 		ci.draw_circle(pa.round(), 1.8, PAL["gold"] as Color)
 		ci.draw_circle(pb.round(), 3.0, PAL["night"] as Color)
 		ci.draw_circle(pb.round(), 1.8, col)
+
+
+func _assist_scale() -> float:
+	if boss != null and boss.has_method("get_tell_scale"):
+		return float(boss.call("get_tell_scale"))
+	if Lx.save != null and Lx.save.settings.has("assist_tell_scale"):
+		return clampf(float(Lx.save.settings["assist_tell_scale"]), 1.0, 1.5)
+	return 1.0
 
 
 static func _eval_end(v: Variant) -> Vector2:

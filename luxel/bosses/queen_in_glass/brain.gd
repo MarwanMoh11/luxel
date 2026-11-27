@@ -27,8 +27,8 @@ func _init() -> void:
 	reward_heart = "half"
 	music_cue = "isl7_boss_minor_p1"
 	music_p2_cue = "isl7_boss_minor_p2"
-	max_hp = 204.0
-	hp = 204.0
+	max_hp = 224.0
+	hp = 224.0
 	body_radius = 11.0
 	move_speed = 34.0
 	stagger_threshold = 24.0
@@ -189,11 +189,11 @@ func _modify_incoming_damage(hit: LxHit, dmg: float) -> float:
 
 	if is_reflected_or_blue:
 		stage.play_sfx("mirror_crack", pos)
-		return dmg * 1.30
+		return dmg * 1.00
 	if _is_black_world():
-		return dmg * 1.15
+		return dmg * 1.00
 	if is_punishable():
-		return dmg * 0.52
+		return dmg * 0.40
 	if is_flank_or_open or is_heavy_pierce:
 		return dmg * 0.24
 	return dmg * 0.16

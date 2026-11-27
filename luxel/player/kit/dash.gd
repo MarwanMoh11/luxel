@@ -110,6 +110,8 @@ func _execute_dash() -> bool:
 	var b_glow: Color = LxBiomePalette.col(isl_d, "glow")
 	wick.spawn_afterimage(b_hi)
 	wick.spawn_ring(wick.global_position, 2.0, 12.0, 0.16, b_glow, 1.0)
+	if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+		Lx.camera.call("add_kick", dash_dir, 1.3)
 	_gust(38.0, 42.0)
 	_shore_spray(true)
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
@@ -288,6 +290,8 @@ func on_perfect_dodge() -> bool:
 		wick.perfect_dodges += 1
 		wick.trigger_hitstop(0.045)
 		wick.trigger_shake(0.10)
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+			Lx.camera.call("add_kick", dash_dir, 2.0)
 		var isl_p: int = Lx.state.island_id if Lx.state != null else 1
 		var p_glow: Color = LxBiomePalette.col(isl_p, "glow")
 		wick.spawn_ring(wick.global_position, 3.0, 18.0, 0.24, LxWick.PAL_ICE, 1.5)

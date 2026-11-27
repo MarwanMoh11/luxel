@@ -103,7 +103,9 @@ func sync_bosses(live_bosses: Array) -> void:
 		var mh: float = maxf(1.0, b.max_hp)
 		var ch: float = clampf(b.hp, 0.0, mh)
 		var tr: float = clampf(float(prev_trails.get(iid, prev_trails.get(bid, ch))), ch, mh)
-		next_list.append({"id": bid, "iid": iid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase)})
+		var stag_r: float = clampf(float(b.get("stagger_meter")) / maxf(0.01, float(b.get("stagger_threshold"))), 0.0, 1.0) if (b is LxBossBase) else 0.0
+		var stag_on: bool = b.state == LxEnemyBrain.State.STAGGER
+		next_list.append({"id": bid, "iid": iid, "name_key": nk, "hp": ch, "max_hp": mh, "trail_hp": tr, "phase": maxi(1, b.phase), "stagger_ratio": stag_r, "staggered": stag_on})
 		_check_hollow_twist(nk)
 		if next_list.size() >= 2: break
 	if next_list.is_empty(): hide_boss(); return

@@ -368,7 +368,7 @@ func _draw_boss_extra(off: Vector2) -> void:
 	# Rain-shield shimmer when in RAIN with intact urns
 	if _weather == "rain" and _intact_urn_count() > 0 and boss_state != BossState.DEATH:
 		var sa: float = 0.25 if is_flash_reduced() else 0.42
-		draw_arc(off + Vector2(0.0, -14.0), 18.0, 0.0, TAU, 20, Color(PAL["sky"] as Color, sa), 1.6)
+		draw_arc((off + Vector2(0.0, -14.0)).round(), 18.0, 0.0, TAU, 20, Color(PAL["sky"] as Color, sa), 1.6)
 
 	# Orbiting Porcelain Rain-Urns (wide in WIND, tight in RAIN!)
 	if boss_state != BossState.DEATH:
@@ -384,8 +384,9 @@ func _draw_boss_extra(off: Vector2) -> void:
 
 	# Comedy beat in SUN: fanning steam puffs!
 	if _weather == "sun" and boss_state != BossState.DEATH:
-		var fan_x: float = sin(anim_t * 18.0) * 6.0
-		draw_line(off + Vector2(10.0, -16.0), off + Vector2(14.0 + fan_x, -26.0), PAL["cream"] as Color, 1.4)
+		var fred: bool = is_flash_reduced()
+		var fan_x: float = (sin(anim_t * 5.0) * 2.1) if fred else (sin(anim_t * 18.0) * 6.0)
+		draw_line((off + Vector2(10.0, -16.0)).round(), (off + Vector2(14.0 + fan_x, -26.0)).round(), PAL["cream"] as Color, 1.4)
 
 	# Death steam puffs
 	for st: Dictionary in _death_steam:

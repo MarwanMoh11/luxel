@@ -86,9 +86,13 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 		var pr: float = roundf(cx + bar_w * 0.5)
 		ci.draw_rect(Rect2(pr - pw - 2.0, y - 10.0, pw + 4.0, 8.0), pill_bg)
 		LxPixelFont.draw_right(ci, ptxt, pr, y - 8.0, LxPalette.PAL["coral"], 1)
-	LxPixelFont.draw_panel(ci, Rect2(x, y, bar_w, bar_h), "night", "gold" if phase >= 2 else "mauve", "void")
-	ci.draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
-	ci.draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["gold"])
+	var stagger_ratio: float = clampf(float(b.get("stagger_ratio", 0.0)), 0.0, 1.0)
+	var is_staggered: bool = bool(b.get("staggered", false))
+	var fred_hud: bool = LxHudFx.flash_reduced()
+	var frame_col: String = "cream" if (is_staggered and (fred_hud or fmod(blink_t, 0.24) < 0.12)) else ("gold" if (is_staggered or phase >= 2) else "mauve")
+	LxPixelFont.draw_panel(ci, Rect2(x, y, bar_w, bar_h), "night", frame_col, "void")
+	ci.draw_rect(Rect2(x - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["cream"] if is_staggered else LxPalette.PAL["gold"])
+	ci.draw_rect(Rect2(x + bar_w - 1.0, y + 2.0, 2.0, 4.0), LxPalette.PAL["cream"] if is_staggered else LxPalette.PAL["gold"])
 	if not dual:
 		LxHudFx.draw_boss_biome_header(ci, Lx.state.island_id if Lx.state != null else 1, nw, x, y, bar_w, phase)
 	var cur_frac: float = clampf(hp / max_hp, 0.0, 1.0)
@@ -103,6 +107,13 @@ static func _draw_one(ci: CanvasItem, b: Dictionary, idx: int, dual: bool, blink
 		ci.draw_rect(Rect2(x + 2.0, y + 2.0, cur_w, 1.0), LxPalette.PAL["rose"])
 	for frac: float in resolve_notches(bid, resolved_key):
 		ci.draw_rect(Rect2(roundf(x + 2.0 + (bar_w - 4.0) * frac), y + 1.0, 1.0, bar_h - 2.0), LxPalette.PAL["gold"] if cur_frac > frac else LxPalette.PAL["dusk"])
+	if is_staggered or stagger_ratio > 0.02:
+		var sw: float = floorf((bar_w - 4.0) * (1.0 if is_staggered else stagger_ratio))
+		var sy: float = y + bar_h
+		ci.draw_rect(Rect2(x + 1.0, sy, bar_w - 2.0, 2.0), LxPalette.PAL["void"])
+		if sw > 0.0:
+			var sc: Color = LxPalette.PAL["cream"] if (is_staggered or stagger_ratio >= 0.78) else LxPalette.PAL["gold"]
+			ci.draw_rect(Rect2(x + 2.0, sy, sw, 1.0), sc)
 
 
 # ---- Runtime boss HUD, pack music crossfade & boss-rush lifecycle helpers (extracted from LxMain) ----

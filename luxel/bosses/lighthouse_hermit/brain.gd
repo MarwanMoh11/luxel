@@ -118,7 +118,8 @@ func _configure_boss(_spec: Dictionary) -> void:
 			_reflected_active = false
 			_beam_light_t = 0.0
 			if phase >= 3:
-				state_timer = BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE + BEAM_REVERSE_TIME
+				var rev_pause: float = BEAM_REVERSE_PAUSE * get_tell_scale()
+				state_timer = BEAM_SWEEP_TIME + rev_pause + BEAM_REVERSE_TIME
 			var aim_v: Vector2 = (tgt - pos).normalized() if tgt.distance_to(pos) > 1.0 else Vector2.from_angle(facing)
 			patterns.emit_fan(pos, aim_v, 3, 0.82, 116.0, {"color": "gold", "source": "lamp_beam_bolt", "damage": 0.5})
 			_boss_impact(0.16, 78.0, 72.0)
@@ -356,13 +357,15 @@ func _step_lamp_beam_commit(dt: float, el: float) -> void:
 	var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
 	var prog: float = 0.0
 	if phase >= 3 and el >= BEAM_SWEEP_TIME:
-		if el < BEAM_SWEEP_TIME + BEAM_REVERSE_PAUSE:
+		var rev_pause: float = BEAM_REVERSE_PAUSE * get_tell_scale()
+		if el < BEAM_SWEEP_TIME + rev_pause:
 			if _beam_stage == BeamStage.SWEEP_1:
 				_beam_stage = BeamStage.COUNTER_PAUSE
 				_sweep_dir = -_sweep_dir
 				_sweep_start_ang = _beam_angle
 				_beam_hit = false
 				_reflected_active = false
+				ground.warn_sector(pos, _sweep_start_ang, _sweep_start_ang + _sweep_dir * arc, BEAM_BURN_RANGE, rev_pause, 0.0, "coral", "cream")
 				stage.play_sfx("hermit_beam_tell", pos)
 			return
 		if _beam_stage != BeamStage.SWEEP_2:
@@ -370,7 +373,7 @@ func _step_lamp_beam_commit(dt: float, el: float) -> void:
 			_beam_hit = false
 			_boss_impact(0.16, 78.0, 72.0)
 			stage.play_sfx("hermit_beam_sweep", pos)
-		prog = clampf((el - BEAM_SWEEP_TIME - BEAM_REVERSE_PAUSE) / BEAM_REVERSE_TIME, 0.0, 1.0)
+		prog = clampf((el - BEAM_SWEEP_TIME - rev_pause) / BEAM_REVERSE_TIME, 0.0, 1.0)
 	else:
 		prog = clampf(el / BEAM_SWEEP_TIME, 0.0, 1.0)
 
@@ -480,13 +483,17 @@ func _draw_boss_extra(off: Vector2) -> void:
 	if _arena != null:
 		_arena.draw_extras(self, off)
 	if lamp_cracked_t > 0.0:
+		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["void"] as Color, 3.2)
 		draw_arc(lc, body_radius + 4.5, 0.0, TAU, 20, PAL["sky"] as Color, 1.8)
 		draw_arc(lc, body_radius + 2.5, 0.0, TAU, 16, PAL["ice"] as Color, 1.1)
 	if active_attack_id == "whirlpool_shell_pull" and boss_state in [BossState.TELL, BossState.COMMIT]:
 		var pulling_now: bool = boss_state == BossState.COMMIT
 		var r_pull: float = 52.0 if pulling_now else lerpf(64.0, 22.0, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
-		draw_arc(lc, r_pull, anim_t * 3.0, anim_t * 3.0 + PI * 1.5, 24, PAL["coral" if pulling_now else "sky"] as Color, 2.0)
-		draw_arc(lc, r_pull * 0.62, -anim_t * 4.0, -anim_t * 4.0 + PI * 1.4, 18, PAL["cream" if pulling_now else "ice"] as Color, 1.4)
+		var fred_w: bool = is_flash_reduced()
+		var sp_out: float = 1.2 if fred_w else 3.0
+		var sp_in: float = -1.6 if fred_w else -4.0
+		draw_arc(lc, r_pull, anim_t * sp_out, anim_t * sp_out + PI * 1.5, 24, PAL["coral" if pulling_now else "sky"] as Color, 2.0)
+		draw_arc(lc, r_pull * 0.62, anim_t * sp_in, anim_t * sp_in + PI * 1.4, 18, PAL["cream" if pulling_now else "ice"] as Color, 1.4)
 	elif active_attack_id == "lamp_beam_sweep" and boss_state == BossState.TELL:
 		var arc: float = BEAM_SWEEP_ARC_P3 if phase >= 3 else BEAM_SWEEP_ARC_P1
 		_draw_sweep_mirror_glints(_sweep_start_ang + _sweep_dir * (arc * 0.5), arc * 0.5 + 0.14, 1.0 - clampf(state_timer / maxf(last_tell_duration, 0.05), 0.0, 1.0))
@@ -532,9 +539,11 @@ func _draw_sweep_mirror_glints(mid_a: float, half_arc: float, prog: float) -> vo
 			if not m.is_reflective() or rel.length() <= body_radius + 2.0 or rel.length() > BEAM_RANGE + 8.0 or absf(angle_difference(mid_a, rel.angle())) > half_arc:
 				continue
 			var mp: Vector2 = rel.round()
-			var pts := PackedVector2Array([mp + Vector2(0.0, -rad_d), mp + Vector2(rad_d, 0.0), mp + Vector2(0.0, rad_d), mp + Vector2(-rad_d, 0.0), mp + Vector2(0.0, -rad_d)])
-			draw_polyline(pts, PAL["void"] as Color, 2.6)
+			var r_snap: float = roundf(rad_d)
+			var pts := PackedVector2Array([mp + Vector2(0.0, -r_snap), mp + Vector2(r_snap, 0.0), mp + Vector2(0.0, r_snap), mp + Vector2(-r_snap, 0.0), mp + Vector2(0.0, -r_snap)])
+			draw_polyline(pts, PAL["void"] as Color, 3.0)
 			draw_polyline(pts, col_d, 1.5)
+			draw_circle(mp, 3.2, PAL["void"] as Color)
 			draw_circle(mp, 2.2, PAL["cream"] as Color)
 
 

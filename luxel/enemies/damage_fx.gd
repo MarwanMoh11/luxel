@@ -57,21 +57,24 @@ static func draw_wear(enemy: LxEnemyBrain, off: Vector2) -> void:
 	if enemy.awaken_t > 0.0:
 		var prog: float = 1.0 - clampf(enemy.awaken_t / 0.55, 0.0, 1.0)
 		var ease_p: float = 1.0 - pow(1.0 - prog, 2.0)
-		var outer_r: float = lerpf(r + 3.0, r + 34.0, ease_p)
-		var inner_r: float = lerpf(r + 1.0, r + 20.0, ease_p)
+		var outer_r: float = roundf(lerpf(r + 3.0, r + 34.0, ease_p))
+		var inner_r: float = roundf(lerpf(r + 1.0, r + 20.0, ease_p))
 		var a_out: float = (1.0 - prog) * (0.55 if fred else 0.90)
 		var isl_a: int = Lx.state.island_id if Lx.state != null else 1
-		enemy.draw_arc(off, outer_r, 0.0, TAU, 24, Color(LxBiomePalette.col(isl_a, "glow"), a_out), 1.5)
-		enemy.draw_arc(off, inner_r, 0.0, TAU, 18, Color(pal["cream"] as Color, a_out * 0.85), 1.0)
+		var c_off: Vector2 = off.round()
+		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(pal["void"] as Color, a_out * 0.85), 3.0)
+		enemy.draw_arc(c_off, outer_r, 0.0, TAU, 24, Color(LxBiomePalette.col(isl_a, "glow"), a_out), 1.5)
+		enemy.draw_arc(c_off, inner_r, 0.0, TAU, 18, Color(pal["cream"] as Color, a_out * 0.85), 1.0)
 		for ci: int in range(4):
-			var ang: float = float(ci) * (PI * 0.5) + prog * 0.45
-			var p0: Vector2 = (off + Vector2.from_angle(ang) * (r + 4.0 + ease_p * 10.0)).round()
-			var p1: Vector2 = (off + Vector2.from_angle(ang) * (r + 8.0 + ease_p * 16.0)).round()
+			var ang: float = float(ci) * (PI * 0.5) + prog * (0.20 if fred else 0.45)
+			var p0: Vector2 = (c_off + Vector2.from_angle(ang) * (r + 4.0 + ease_p * 10.0)).round()
+			var p1: Vector2 = (c_off + Vector2.from_angle(ang) * (r + 8.0 + ease_p * 16.0)).round()
+			enemy.draw_line(p0, p1, Color(pal["void"] as Color, a_out * 0.8), 2.5)
 			enemy.draw_line(p0, p1, Color(LxBiomePalette.col(isl_a, "hi"), a_out), 1.0)
 			if enemy.is_boss and enemy.phase >= 2:
-				var da: float = float(ci) * (PI * 0.5) + PI * 0.25 - prog * 0.35
-				var q0: Vector2 = (off + Vector2.from_angle(da) * (r + 6.0 + ease_p * 14.0)).round()
-				var q1: Vector2 = (off + Vector2.from_angle(da) * (r + 12.0 + ease_p * 22.0)).round()
+				var da: float = float(ci) * (PI * 0.5) + PI * 0.25 - prog * (0.15 if fred else 0.35)
+				var q0: Vector2 = (c_off + Vector2.from_angle(da) * (r + 6.0 + ease_p * 14.0)).round()
+				var q1: Vector2 = (c_off + Vector2.from_angle(da) * (r + 12.0 + ease_p * 22.0)).round()
 				enemy.draw_line(q0, q1, Color(pal["gold"] as Color, a_out * 0.90), 1.2)
 
 	if enemy.max_hp <= 0.01 or enemy.hp <= 0.0:
@@ -400,6 +403,8 @@ static func _draw_stagger_halo(enemy: LxEnemyBrain, off: Vector2, r: float, t: f
 		var col: Color = (pal["cream"] if (k % 3 == 0 and (fred or int(t * 8.0) % 2 == 0)) else (bio_g if k % 2 == 0 else (pal["gold"] as Color))) as Color
 		enemy.draw_rect(Rect2(pt, Vector2(2.0, 1.0)), col)
 	var top: Vector2 = (off + Vector2(0.0, -r - 8.0)).round()
+	enemy.draw_rect(Rect2(top + Vector2(-3.0, -1.0), Vector2(7.0, 3.0)), pal["void"] as Color)
+	enemy.draw_rect(Rect2(top + Vector2(-1.0, -3.0), Vector2(3.0, 7.0)), pal["void"] as Color)
 	enemy.draw_rect(Rect2(top + Vector2(-2.0, 0.0), Vector2(5.0, 1.0)), bio_g)
 	enemy.draw_rect(Rect2(top + Vector2(0.0, -2.0), Vector2(1.0, 5.0)), bio_g)
 	enemy.draw_rect(Rect2(top, Vector2.ONE), pal["cream"] as Color)

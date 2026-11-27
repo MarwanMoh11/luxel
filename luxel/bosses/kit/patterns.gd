@@ -436,9 +436,10 @@ func draw_patterns(ci: CanvasItem, origin_world: Vector2) -> void:
 			if el < wd:
 				LxBossTelegraphFx.draw_ground_danger_lane(ci, a, b, hw, clampf(el / maxf(wd, 0.05), 0.0, 1.0), _clock, "sky", "gold")
 			else:
-				ci.draw_line(a.round(), b.round(), PAL["blue"] as Color, 5.0)
-				ci.draw_line(a.round(), b.round(), PAL["ice"] as Color, 2.6)
-				ci.draw_line(a.round(), b.round(), PAL["cream"] as Color, 1.2)
+				ci.draw_line(a.round(), b.round(), PAL["void"] as Color, 6.4)
+				ci.draw_line(a.round(), b.round(), PAL["blue"] as Color, 4.6 if fred else 5.0)
+				ci.draw_line(a.round(), b.round(), PAL["ice"] as Color, 2.2 if fred else 2.6)
+				ci.draw_line(a.round(), b.round(), Color(PAL["cream"] as Color, 0.72 if fred else 1.0), 1.0 if fred else 1.2)
 
 	# Erupting pillars
 	for pl: Dictionary in _pillars:
@@ -453,9 +454,11 @@ func draw_patterns(ci: CanvasItem, origin_world: Vector2) -> void:
 			var frac: float = 1.0 - clampf((el - wd) / maxf(float(pl["linger_dur"]), 0.05), 0.0, 1.0)
 			var h: float = roundf(lerpf(10.0, 44.0, frac))
 			var col_m: Color = LxPalette.color(col_k, "gold")
+			var pr_r := Rect2((pp + Vector2(-pr * 0.55, -h)).round(), Vector2(roundf(pr * 1.1), h))
 			ci.draw_circle(pp.round(), pr, Color(col_m, 0.42 * frac))
-			ci.draw_rect(Rect2((pp + Vector2(-pr * 0.55, -h)).round(), Vector2(roundf(pr * 1.1), h)), col_m)
-			ci.draw_rect(Rect2((pp + Vector2(-pr * 0.25, -h)).round(), Vector2(maxf(2.0, roundf(pr * 0.5)), h)), PAL["cream"] as Color)
+			ci.draw_rect(pr_r.grow(1.0), PAL["void"] as Color)
+			ci.draw_rect(pr_r, col_m)
+			ci.draw_rect(Rect2((pp + Vector2(-pr * 0.25, -h)).round(), Vector2(maxf(2.0, roundf(pr * (0.35 if fred else 0.5))), h)), Color(PAL["cream"] as Color, 0.78 if fred else 1.0))
 
 	# Active pooled bolts
 	for b: LxBossBolt in pool:

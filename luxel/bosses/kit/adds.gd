@@ -72,7 +72,8 @@ func queue_wave(specs: Array[Dictionary], summon_delay: float = 0.75, max_alive:
 	var room_left: int = maxi(0, max_alive - (_live_adds.size() + _pending.size()))
 	if room_left <= 0:
 		return 0
-	var delay: float = maxf(MIN_SUMMON_DELAY, summon_delay)
+	var ascale: float = float(boss.call("get_tell_scale")) if (boss != null and boss.has_method("get_tell_scale")) else (clampf(float(Lx.save.settings["assist_tell_scale"]), 1.0, 1.5) if (Lx.save != null and Lx.save.settings.has("assist_tell_scale")) else 1.0)
+	var delay: float = maxf(MIN_SUMMON_DELAY, summon_delay) * ascale
 	var added: int = 0
 	var arena: Rect2 = boss.call("get_arena_rect") as Rect2 if (boss != null and boss.has_method("get_arena_rect")) else Rect2()
 	var wp: Vector2 = boss.call("_get_wick_pos") as Vector2 if (boss != null and boss.has_method("_get_wick_pos")) else Vector2(-9999.0, -9999.0)

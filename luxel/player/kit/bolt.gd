@@ -158,6 +158,8 @@ func _fire_bolt() -> bool:
 		b.is_counter = true
 		b.damage *= 1.25
 		b.shield_wear += 0.15
+		if Lx.camera != null and is_instance_valid(Lx.camera) and Lx.camera.has_method("add_kick"):
+			Lx.camera.call("add_kick", -aim, 1.3)
 		wick.spawn_ring(b.pos, 2.0, 11.0, 0.16, LxWick.PAL_CREAM, 1.0)
 		wick.spawn_sparks(b.pos, aim, 5, LxWick.PAL_CREAM, 55.0, 115.0, 0.16)
 	var br: LxBiomeRules = LxBiomeRules.active_instance

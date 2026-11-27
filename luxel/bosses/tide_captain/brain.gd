@@ -82,7 +82,7 @@ func _configure_boss(_spec: Dictionary) -> void:
 			ground.warn_sector(pos, facing - SURGE_HALF_ARC, facing + SURGE_HALF_ARC, SURGE_MAX_R, last_tell_duration, 0.0, "sky", "coral")
 			stage.play_sfx("tide_captain_slam_tell", pos),
 		"on_tell": func(_b: LxBossBase, tgt: Vector2, _dt: float, _prog: float) -> void:
-			if state_timer > 0.20 and tgt.distance_to(pos) > 1.0:
+			if state_timer > 0.20 * get_tell_scale() and tgt.distance_to(pos) > 1.0:
 				_surge_dir = Vector2.from_angle(facing),
 		"on_commit_start": func(_b: LxBossBase, _tgt: Vector2) -> void:
 			_surge_progress = 0.0

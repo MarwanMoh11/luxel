@@ -375,18 +375,21 @@ func _draw_boss_extra(off: Vector2) -> void:
 	draw_circle((b_c + sdir * 16.0).round(), 2.2, PAL["cream"] as Color)
 
 	# 3. Shared Sea-Glass Hex Shield & transfer ribbon
+	var fred: bool = is_flash_reduced()
 	if _shield_fly_u > 0.0:
-		draw_line(off.round(), b_c, PAL["ice"] as Color, 2.0)
+		draw_line(off.round(), b_c.round(), PAL["ice"] as Color, 2.0)
 	if _shield_holder != "dropped":
 		var sp: Vector2 = (_shield_pos - pos + off).round()
 		var hex := PackedVector2Array()
+		var h_spd: float = 0.8 if fred else 2.0
 		for k: int in range(7):
-			var ha: float = anim_t * 2.0 + float(k % 6) * (TAU / 6.0)
+			var ha: float = anim_t * h_spd + float(k % 6) * (TAU / 6.0)
 			hex.append((sp + Vector2.from_angle(ha) * 7.5).round())
 		draw_polyline(hex, PAL["cream"] as Color, 1.6)
 		draw_circle(sp, 2.4, PAL["sky"] as Color)
 
 	# 4. P3 Bicker clack sparks between twins
-	if _bicker_t > 0.0 and not is_flash_reduced():
+	if _bicker_t > 0.0:
 		var mid: Vector2 = off.lerp(b_c, 0.5).round()
-		draw_arc(mid, 10.0 + sin(anim_t * 24.0) * 3.0, 0.0, TAU, 12, PAL["gold"] as Color, 1.5)
+		var b_rad: float = roundf(10.0 + (0.0 if fred else sin(anim_t * 24.0) * 3.0))
+		draw_arc(mid, b_rad, 0.0, TAU, 12, PAL["gold"] as Color, 1.5)

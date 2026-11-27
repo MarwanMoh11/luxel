@@ -259,6 +259,12 @@ func draw_ground(ci: CanvasItem, origin_world: Vector2) -> void:
 			ci.draw_circle(sc, sr - 1.5, Color(s_col, 0.22))
 			ci.draw_arc(sc, sr + 1.0, 0.0, TAU, 24, PAL["void"] as Color, 2.4)
 			ci.draw_arc(sc, sr, 0.0, TAU, 24, PAL["cream"] as Color if u > 0.72 else s_col, 1.6)
+			# Greyscale-legible sanctuary cross & inward notches marking the safe zone
+			ci.draw_rect(Rect2(sc + Vector2(-3.0, 0.0), Vector2(7.0, 1.0)), PAL["cream"] as Color)
+			ci.draw_rect(Rect2(sc + Vector2(0.0, -3.0), Vector2(1.0, 7.0)), PAL["cream"] as Color)
+			for ni: int in range(4):
+				var nd: Vector2 = Vector2.from_angle(float(ni) * (PI * 0.5))
+				ci.draw_line((sc + nd * (sr - 4.0)).round(), (sc + nd * (sr + 1.0)).round(), PAL["cream"] as Color, 1.2)
 			if not active_now:
 				ci.draw_arc(sc, maxf(3.0, roundf(sr * lerpf(1.35, 1.0, u))), 0.0, TAU, 20, PAL["gold"] as Color, 1.0)
 
@@ -271,11 +277,13 @@ func draw_ground(ci: CanvasItem, origin_world: Vector2) -> void:
 			var hc: Vector2 = ((h["pos"] as Vector2) + off).round()
 			var hr: float = float(h["radius"])
 			ci.draw_circle(hc, hr, Color(col, 0.34 * frac))
+			ci.draw_arc(hc, hr + 1.0, 0.0, TAU, 20, Color(PAL["void"] as Color, 0.72 * frac), 2.2)
 			ci.draw_arc(hc, hr, 0.0, TAU, 20, Color(rim, 0.80 * frac), 1.3)
 		else:
 			var hr2: Rect2 = h["rect"] as Rect2
 			var rl := Rect2((hr2.position + off).round(), hr2.size.round())
 			ci.draw_rect(rl, Color(col, 0.34 * frac), true)
+			ci.draw_rect(rl.grow(1.0), Color(PAL["void"] as Color, 0.72 * frac), false, 2.0)
 			ci.draw_rect(rl, Color(rim, 0.80 * frac), false, 1.2)
 
 	# 3. Telegraphed decals (via LxBossTelegraphFx)
@@ -301,6 +309,10 @@ func draw_ground(ci: CanvasItem, origin_world: Vector2) -> void:
 				ci.draw_rect(rl, Color(c_fill, lerpf(0.14, 0.28, u)), true)
 				ci.draw_rect(rl.grow(1.0), PAL["void"] as Color, false, 2.2)
 				ci.draw_rect(rl, PAL["cream"] as Color if u > 0.78 else c_rim, false, 1.4)
+				var inset_x: float = roundf(rl.size.x * 0.42 * u)
+				var inset_y: float = roundf(rl.size.y * 0.42 * u)
+				var inner_r := Rect2(rl.position + Vector2(inset_x, inset_y), Vector2(maxf(2.0, rl.size.x - inset_x * 2.0), maxf(2.0, rl.size.y - inset_y * 2.0)))
+				ci.draw_rect(inner_r, PAL["cream"] as Color if u > 0.78 else c_rim, false, 1.0)
 
 
 func _point_in_decal(p: Vector2, d: Dictionary) -> bool:

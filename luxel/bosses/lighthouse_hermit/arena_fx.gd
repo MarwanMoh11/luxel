@@ -163,13 +163,15 @@ func draw_extras(ci: CanvasItem, off: Vector2) -> void:
 	var lc: Vector2 = off.round()
 	for m: Dictionary in tide_mines:
 		var mp: Vector2 = ((m["pos"] as Vector2) - boss.pos + off).round()
+		ci.draw_arc(mp, 6.4, 0.0, TAU, 12, PAL["void"] as Color, 2.6)
 		ci.draw_circle(mp, 5.2, PAL["night"] as Color)
 		ci.draw_circle(mp, 3.6, PAL["gold" if bool(m["batted"]) else "coral"] as Color)
-		ci.draw_arc(mp, 6.4, 0.0, TAU, 10, PAL["cream" if bool(m["batted"]) else "apricot"] as Color, 1.0)
+		ci.draw_arc(mp, 6.4, 0.0, TAU, 12, PAL["cream" if bool(m["batted"]) else "apricot"] as Color, 1.0)
 	# P3 Personality beat: cracked cupola reveals tiny terrified crab plugging golden light leaks!
 	if boss.phase >= 3:
-		var leak_p: Vector2 = lc + Vector2(sin(boss.anim_t * 14.0) * 1.2, -boss.body_radius - 6.0)
-		ci.draw_line(lc + Vector2(-5.0, -9.0), lc + Vector2(4.0, -3.0), PAL["cream"] as Color, 1.4)
+		var jitter_x: float = 0.0 if boss.is_flash_reduced() else sin(boss.anim_t * 14.0) * 1.2
+		var leak_p: Vector2 = (lc + Vector2(jitter_x, -boss.body_radius - 6.0)).round()
+		ci.draw_line((lc + Vector2(-5.0, -9.0)).round(), (lc + Vector2(4.0, -3.0)).round(), PAL["cream"] as Color, 1.4)
 		ci.draw_circle(leak_p, 2.4, PAL["coral"] as Color)
-		ci.draw_rect(Rect2(leak_p + Vector2(-1.5, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color)
-		ci.draw_rect(Rect2(leak_p + Vector2(0.5, -1.0), Vector2(1.0, 1.0)), PAL["cream"] as Color)
+		ci.draw_rect(Rect2((leak_p + Vector2(-1.5, -1.0)).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color)
+		ci.draw_rect(Rect2((leak_p + Vector2(0.5, -1.0)).round(), Vector2(1.0, 1.0)), PAL["cream"] as Color)
