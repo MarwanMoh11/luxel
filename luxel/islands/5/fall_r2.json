@@ -326,16 +326,7 @@
         184
       ],
       "radius": 26,
-      "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        168,
-        128,
-        24,
-        32
-      ]
+      "glow": false
     },
     {
       "kind": "circle",
@@ -343,8 +334,10 @@
         432,
         152
       ],
-      "radius": 36,
-      "style": "astrolabe"
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "mauve",
+      "secondary": "apricot"
     },
     {
       "kind": "cracks",
@@ -428,6 +421,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        488,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        162,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "triggers": [],

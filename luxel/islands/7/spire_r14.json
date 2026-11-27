@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "ISL7_SP_R14",
-  "theme": "inverted_palace_silver",
+  "theme": "mirror_spire",
   "music": "island7_dungeon",
   "ambience": [
     "night_breeze"
@@ -474,6 +474,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        440,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "layers": [

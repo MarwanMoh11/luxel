@@ -307,6 +307,66 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        232,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        104,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        126,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        274,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "star_chart_lectern",
+      "pos": [
+        328,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
     }
   ],
   "design": {
@@ -351,5 +411,19 @@
         "exit": "ex_dr4_next"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        132
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "warm"
+    }
+  ]
 }

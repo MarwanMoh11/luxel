@@ -350,21 +350,14 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        240,
-        168
-      ],
-      "radius": 38,
-      "style": "astrolabe"
-    },
-    {
       "kind": "compass",
       "pos": [
         64,
         168
       ],
-      "radius": 20
+      "radius": 20,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -397,8 +390,8 @@
       "sheet": "theme_planetarium",
       "prop": "dome_arch_rib",
       "pos": [
-        272,
-        40
+        266,
+        46
       ],
       "layer": "sort",
       "flip_x": true,
@@ -440,6 +433,54 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        104,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        40,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        82,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        206,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "layers": [

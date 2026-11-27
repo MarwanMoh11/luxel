@@ -435,5 +435,6 @@
         "exit": "exit_spire_r3_north"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

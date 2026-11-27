@@ -477,5 +477,6 @@
         "exit": "exit_spire_r8_west"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

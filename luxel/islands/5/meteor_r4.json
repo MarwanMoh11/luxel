@@ -243,21 +243,14 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        56,
-        216,
-        24,
-        16
-      ]
-    },
-    {
       "kind": "compass",
       "pos": [
         104,
         224
       ],
-      "radius": 20
+      "radius": 20,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -266,7 +259,7 @@
         152
       ],
       "radius": 22,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "circle",
@@ -275,7 +268,9 @@
         64
       ],
       "radius": 28,
-      "style": "astrolabe"
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -362,6 +357,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        126,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

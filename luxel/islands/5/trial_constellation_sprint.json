@@ -372,6 +372,78 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        174,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        226,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        456,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        104,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.92
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "celestial_bench",
+      "pos": [
+        382,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "design": {
@@ -494,5 +566,19 @@
         "target": "chest_5_ember_3"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        232,
+        128
+      ],
+      "size": [
+        38,
+        56
+      ],
+      "tint": "warm"
+    }
+  ]
 }

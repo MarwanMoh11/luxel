@@ -248,15 +248,6 @@
       "ring": "ice"
     },
     {
-      "kind": "inlay",
-      "x": 192,
-      "y": 80,
-      "w": 128,
-      "h": 144,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
       "kind": "circle",
       "x": 128,
       "y": 224,
@@ -357,6 +348,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        24,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        488,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

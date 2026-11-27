@@ -211,24 +211,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "x": 160,
-      "y": 56,
-      "w": 48,
-      "h": 16,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 160,
-      "y": 216,
-      "w": 48,
-      "h": 16,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
       "kind": "circle",
       "x": 288,
       "y": 152,
@@ -243,15 +225,6 @@
       "r": 24,
       "col": "sky",
       "ring": "ice"
-    },
-    {
-      "kind": "inlay",
-      "x": 80,
-      "y": 88,
-      "w": 32,
-      "h": 80,
-      "col": "stone",
-      "border": "sky"
     }
   ],
   "scenery": [
@@ -338,6 +311,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        264,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        392,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

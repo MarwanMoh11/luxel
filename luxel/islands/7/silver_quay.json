@@ -396,16 +396,6 @@
       "secondary": "ice"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        328,
-        72,
-        80,
-        72
-      ],
-      "color": "ice"
-    },
-    {
       "kind": "circle",
       "pos": [
         368,

@@ -527,5 +527,6 @@
         "exit": "exit_spire_r7_west"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

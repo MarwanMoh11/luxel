@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": false,
   "name_key": "ISL7_Z_CAVE_TIDE",
-  "theme": "cave_7",
+  "theme": "moon_shoals_cave",
   "music": "island7_dungeon",
   "ambience": [
     "night_breeze"
@@ -217,16 +217,6 @@
       "secondary": "ice"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        36,
-        36,
-        68,
-        52
-      ],
-      "color": "gold"
-    },
-    {
       "kind": "stain",
       "pos": [
         328,
@@ -332,6 +322,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        120,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
     }
   ],
   "layers": [

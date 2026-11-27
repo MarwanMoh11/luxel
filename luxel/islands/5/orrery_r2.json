@@ -233,30 +233,13 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "compass",
-      "pos": [
-        104,
-        152
-      ],
-      "radius": 24
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        336,
-        112,
-        48,
-        48
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         176,
         72
       ],
       "radius": 20,
-      "glow": true
+      "glow": false
     }
   ],
   "scenery": [

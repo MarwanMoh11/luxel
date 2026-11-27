@@ -274,22 +274,15 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        72,
-        216,
-        32,
-        16
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         164,
         156
       ],
       "radius": 24,
-      "style": "astrolabe"
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "compass",
@@ -297,7 +290,9 @@
         400,
         144
       ],
-      "radius": 24
+      "radius": 24,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -397,6 +392,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        456,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "gravity_gyro_pillar",
+      "pos": [
+        344,
+        34
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

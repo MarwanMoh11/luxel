@@ -232,16 +232,9 @@
         232
       ],
       "radius": 26,
-      "style": "ritual"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        176,
-        216,
-        24,
-        16
-      ]
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "compass",
@@ -249,7 +242,9 @@
         224,
         56
       ],
-      "radius": 18
+      "radius": 18,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -349,6 +344,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        312,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "brass_caliper_stand",
+      "pos": [
+        158,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

@@ -214,31 +214,13 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 84,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "mural",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 44,
-      "style": "constellation"
-    },
-    {
       "kind": "cracks",
       "pos": [
         184,
         160
       ],
       "radius": 26,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "cracks",
@@ -247,7 +229,7 @@
         224
       ],
       "radius": 26,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "light_shaft",
@@ -359,6 +341,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "triggers": [],

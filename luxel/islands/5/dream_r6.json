@@ -351,6 +351,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        408,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        248,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        450,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "tether_anchor_post",
+      "pos": [
+        136,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "design": {
@@ -428,5 +476,30 @@
         "target": "chest_dr6_crown"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "circle",
+      "pos": [
+        248,
+        168
+      ],
+      "radius": 24,
+      "style": "astrolabe",
+      "color": "mauve",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        148
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "warm"
+    }
+  ]
 }

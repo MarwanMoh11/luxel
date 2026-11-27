@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": false,
   "name_key": "ISL7_Z_CAVE_GROTTO",
-  "theme": "cave_7",
+  "theme": "moon_shoals_cave",
   "music": "island7_dungeon",
   "ambience": [
     "night_breeze"
@@ -245,16 +245,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        40,
-        72,
-        64,
-        128
-      ],
-      "color": "ice"
-    },
-    {
       "kind": "circle",
       "pos": [
         168,
@@ -359,6 +349,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "subterranean_shroom",
+      "pos": [
+        392,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "mossy_boulder_large",
+      "pos": [
+        136,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

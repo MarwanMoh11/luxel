@@ -349,33 +349,6 @@
       "r": 26,
       "col": "sky",
       "ring": "ice"
-    },
-    {
-      "kind": "inlay",
-      "x": 160,
-      "y": 64,
-      "w": 80,
-      "h": 96,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 160,
-      "y": 208,
-      "w": 80,
-      "h": 96,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 336,
-      "y": 208,
-      "w": 96,
-      "h": 48,
-      "col": "ice",
-      "border": "sky"
     }
   ],
   "scenery": [
@@ -462,6 +435,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        328,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        24,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

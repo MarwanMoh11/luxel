@@ -184,32 +184,6 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 92,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "mural",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 48,
-      "style": "constellation"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        256,
-        192
-      ],
-      "radius": 24
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         256,
@@ -276,7 +250,7 @@
       "sheet": "theme_planetarium",
       "prop": "brass_star_globe",
       "pos": [
-        136,
+        142,
         264
       ],
       "layer": "sort",
@@ -317,6 +291,18 @@
       ],
       "layer": "sort",
       "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        56,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }

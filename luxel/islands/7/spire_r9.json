@@ -572,5 +572,6 @@
         "exit": "exit_spire_r9_north"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

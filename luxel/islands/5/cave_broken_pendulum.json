@@ -347,6 +347,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cave_lantern_post",
+      "pos": [
+        136,
+        170
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cavern_brazier_bowl",
+      "pos": [
+        56,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        120,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "design": {
@@ -440,5 +476,28 @@
         "target": "qi_5_brass_lens"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        200,
+        120
+      ],
+      "size": [
+        32,
+        46
+      ],
+      "tint": "warm"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        200,
+        136
+      ],
+      "radius": 18,
+      "style": "water"
+    }
+  ]
 }

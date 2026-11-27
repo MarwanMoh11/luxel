@@ -265,6 +265,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "shadow_glass_urn",
+      "pos": [
+        216,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "eclipse_brazier_bowl",
+      "pos": [
+        392,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "veiled_statue_bust",
+      "pos": [
+        120,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "dusk_bell_pedestal",
+      "pos": [
+        56,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "layers": [

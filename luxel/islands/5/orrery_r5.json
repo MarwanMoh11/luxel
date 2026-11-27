@@ -224,15 +224,9 @@
         80
       ],
       "radius": 30,
-      "style": "ritual"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        392,
-        152
-      ],
-      "radius": 24
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -300,7 +294,7 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        384,
+        378,
         192
       ],
       "layer": "sort",

@@ -312,30 +312,14 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        80,
-        216,
-        32,
-        16
-      ]
-    },
-    {
       "kind": "compass",
       "pos": [
         264,
         80
       ],
-      "radius": 24
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        264,
-        64
-      ],
-      "radius": 38,
-      "style": "ritual"
+      "radius": 24,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -344,7 +328,7 @@
         240
       ],
       "radius": 20,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "light_shaft",
@@ -456,6 +440,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        424,
+        184
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "triggers": [],

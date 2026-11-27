@@ -6,29 +6,57 @@
   "name_key": "ISL7_TH_R3",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [224, 272],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    224,
+    272
+  ],
   "zones": [
     {
       "id": "theatre_act1_b",
       "name_key": "ISL7_TH_R3",
-      "rect": [0, 0, 448, 320],
+      "rect": [
+        0,
+        0,
+        448,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r3_south",
-      "rect": [208, 304, 32, 16],
+      "rect": [
+        208,
+        304,
+        32,
+        16
+      ],
       "to_region": "theatre_r2",
-      "to_spawn": [360, 48]
+      "to_spawn": [
+        360,
+        48
+      ]
     },
     {
       "id": "exit_r3_short",
-      "rect": [0, 224, 16, 48],
+      "rect": [
+        0,
+        224,
+        16,
+        48
+      ],
       "to_region": "theatre_r1",
-      "to_spawn": [432, 264],
-      "requires_flags": ["act1_done"],
+      "to_spawn": [
+        432,
+        264
+      ],
+      "requires_flags": [
+        "act1_done"
+      ],
       "locked_door_id": "door_r3_short"
     }
   ],
@@ -36,13 +64,21 @@
     {
       "id": "anc_r3_south",
       "kind": "room_anchor",
-      "pos": [224, 272],
-      "props": { "auto": true }
+      "pos": [
+        224,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "echo_r3_center",
       "kind": "echo_rose",
-      "pos": [224, 168],
+      "pos": [
+        224,
+        168
+      ],
       "props": {
         "secs": 6.0,
         "loop": true
@@ -51,20 +87,31 @@
     {
       "id": "door_r3_mask_gate",
       "kind": "door",
-      "pos": [224, 88],
+      "pos": [
+        224,
+        88
+      ],
       "props": {
         "door_kind": "combat_gate",
         "zone": "theatre_act1_b",
-        "size": [32, 16]
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "mask_r3_break",
       "kind": "mask_plinth",
-      "pos": [208, 48],
+      "pos": [
+        208,
+        48
+      ],
       "props": {
         "act": 1,
-        "steals": ["throw"],
+        "steals": [
+          "throw"
+        ],
         "mask_icon": "throw",
         "hp": 2.2,
         "auto_steal": true,
@@ -78,9 +125,14 @@
     {
       "id": "plate_r3_encore",
       "kind": "pressure_plate",
-      "pos": [208, 32],
+      "pos": [
+        208,
+        32
+      ],
       "props": {
-        "by": ["wick"],
+        "by": [
+          "wick"
+        ],
         "latch": true,
         "persist": true,
         "sets_flag": "act1_done",
@@ -90,7 +142,10 @@
     {
       "id": "theatre_key_1",
       "kind": "wick_key",
-      "pos": [256, 48],
+      "pos": [
+        256,
+        48
+      ],
       "props": {
         "dungeon_id": "theatre",
         "key_kind": "wick_key",
@@ -101,80 +156,247 @@
     {
       "id": "door_r3_short",
       "kind": "door",
-      "pos": [24, 248],
+      "pos": [
+        24,
+        248
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act1_done"],
-        "size": [16, 48]
+        "requires_flags": [
+          "act1_done"
+        ],
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "lamp_r3_nw",
       "kind": "road_lamp",
-      "pos": [128, 88],
-      "props": { "zone": "theatre_act1_b", "lit": true }
+      "pos": [
+        128,
+        88
+      ],
+      "props": {
+        "zone": "theatre_act1_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r3_ne",
       "kind": "road_lamp",
-      "pos": [320, 88],
-      "props": { "zone": "theatre_act1_b", "lit": true }
+      "pos": [
+        320,
+        88
+      ],
+      "props": {
+        "zone": "theatre_act1_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r3_sw",
       "kind": "road_lamp",
-      "pos": [128, 256],
-      "props": { "zone": "theatre_act1_b", "lit": true }
+      "pos": [
+        128,
+        256
+      ],
+      "props": {
+        "zone": "theatre_act1_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r3_se",
       "kind": "road_lamp",
-      "pos": [320, 256],
-      "props": { "zone": "theatre_act1_b", "lit": true }
+      "pos": [
+        320,
+        256
+      ],
+      "props": {
+        "zone": "theatre_act1_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r3_alcove",
       "kind": "road_lamp",
-      "pos": [224, 32],
-      "props": { "zone": "theatre_act1_b", "lit": true }
+      "pos": [
+        224,
+        32
+      ],
+      "props": {
+        "zone": "theatre_act1_b",
+        "lit": true
+      }
     }
   ],
   "enemies": [
     {
       "id": "r3_snatcher",
       "kind": "moonshade_snatcher",
-      "pos": [224, 128],
+      "pos": [
+        224,
+        128
+      ],
       "zone": "theatre_act1_b",
       "leash": 136
     },
     {
       "id": "r3_puppet_w",
       "kind": "puppet",
-      "pos": [136, 152],
+      "pos": [
+        136,
+        152
+      ],
       "zone": "theatre_act1_b",
       "leash": 132
     },
     {
       "id": "r3_puppet_e",
       "kind": "puppet",
-      "pos": [312, 152],
+      "pos": [
+        312,
+        152
+      ],
       "zone": "theatre_act1_b",
       "leash": 132
     }
   ],
   "decor": [
-    { "kind": "circle", "pos": [224, 168], "radius": 44, "style": "spotlight", "color": "rose", "secondary": "gold" },
-    { "kind": "rug", "rect": [192, 32, 64, 48], "color": "wine", "border": "gold" },
-    { "kind": "inlay", "rect": [144, 128, 160, 80], "color": "gold" }
+    {
+      "kind": "circle",
+      "pos": [
+        224,
+        168
+      ],
+      "radius": 44,
+      "style": "spotlight",
+      "color": "rose",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        192,
+        32,
+        64,
+        48
+      ],
+      "color": "wine",
+      "border": "gold"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [112, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [368, 160], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [152, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [296, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [224, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [64, 168], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.3 },
-    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [384, 168], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.7 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        112,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        368,
+        160
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        152,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        296,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        224,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        64,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.3
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        384,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.7
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        408,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
+    }
   ],
   "layers": [],
   "events": [
@@ -183,7 +405,13 @@
       "on": "flag:act1_done",
       "once": true,
       "do": [
-        { "narrate": { "id": "ISL7_TH_SHORTCUT", "style": "narration", "duration": 2.4 } }
+        {
+          "narrate": {
+            "id": "ISL7_TH_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
       ]
     }
   ],
@@ -198,13 +426,44 @@
     "why": "Act I payoff arena restoring Throw, granting Theatre Key 1, and closing Cycle 1 back to the Foyer.",
     "exit": "exit_r3_short",
     "solution": [
-      { "op": "interact", "target": "echo_r3_center" },
-      { "op": "clear", "timeout": 75.0 },
-      { "op": "goto", "to": [224, 108], "tol": 10 },
-      { "op": "shoot", "from": [208, 72], "target": "mask_r3_break", "count": 7 },
-      { "op": "wait_until", "flag": "act1_done", "timeout": 3.0 },
-      { "op": "interact", "target": "theatre_key_1" },
-      { "op": "expect_exit", "exit": "exit_r3_short" }
+      {
+        "op": "interact",
+        "target": "echo_r3_center"
+      },
+      {
+        "op": "clear",
+        "timeout": 75.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          224,
+          108
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "from": [
+          208,
+          72
+        ],
+        "target": "mask_r3_break",
+        "count": 7
+      },
+      {
+        "op": "wait_until",
+        "flag": "act1_done",
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "theatre_key_1"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r3_short"
+      }
     ]
   }
 }

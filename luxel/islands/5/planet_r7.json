@@ -308,22 +308,15 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        240,
-        176
-      ],
-      "radius": 44,
-      "style": "astrolabe"
-    },
-    {
       "kind": "mural",
       "pos": [
         392,
         168
       ],
       "radius": 24,
-      "style": "constellation"
+      "style": "constellation",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -399,6 +392,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        360,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        366,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

@@ -288,7 +288,7 @@
         176
       ],
       "radius": 24,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "circle",
@@ -297,7 +297,9 @@
         72
       ],
       "radius": 24,
-      "style": "astrolabe"
+      "style": "astrolabe",
+      "color": "mauve",
+      "secondary": "apricot"
     },
     {
       "kind": "cracks",
@@ -306,7 +308,7 @@
         200
       ],
       "radius": 28,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "compass",
@@ -314,7 +316,9 @@
         448,
         176
       ],
-      "radius": 22
+      "radius": 22,
+      "color": "mauve",
+      "secondary": "apricot"
     }
   ],
   "scenery": [
@@ -401,6 +405,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        472,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        414,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

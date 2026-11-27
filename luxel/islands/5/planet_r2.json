@@ -251,21 +251,14 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        280,
-        176,
-        32,
-        32
-      ]
-    },
-    {
       "kind": "compass",
       "pos": [
         112,
         48
       ],
-      "radius": 18
+      "radius": 18,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",

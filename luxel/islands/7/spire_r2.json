@@ -334,6 +334,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.55
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        392,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "standing_mirror_tall",
+      "pos": [
+        264,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "is_2x2_room": true,
@@ -534,5 +558,6 @@
         "exit": "exit_spire_r2_north"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

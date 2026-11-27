@@ -384,30 +384,15 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "compass",
-      "pos": [
-        104,
-        144
-      ],
-      "radius": 24
-    },
-    {
       "kind": "circle",
       "pos": [
         304,
         88
       ],
       "radius": 28,
-      "style": "ritual"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        360,
-        48,
-        72,
-        64
-      ]
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -494,6 +479,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        24,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        402,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "layers": [],

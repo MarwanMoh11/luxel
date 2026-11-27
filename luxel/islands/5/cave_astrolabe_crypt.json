@@ -289,6 +289,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cave_lantern_post",
+      "pos": [
+        312,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        88,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "broken_astrolabe_ring",
+      "pos": [
+        306,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "star_chart_lectern",
+      "pos": [
+        174,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "design": {
@@ -346,5 +394,28 @@
         "target": "chest_5_ember_4"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        216,
+        120
+      ],
+      "size": [
+        32,
+        46
+      ],
+      "tint": "warm"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        216,
+        136
+      ],
+      "radius": 18,
+      "style": "water"
+    }
+  ]
 }

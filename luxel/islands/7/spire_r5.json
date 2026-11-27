@@ -496,5 +496,6 @@
         "exit": "exit_spire_r5_south"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

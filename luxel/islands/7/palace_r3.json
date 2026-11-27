@@ -291,24 +291,6 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "x": 64,
-      "y": 56,
-      "w": 112,
-      "h": 112,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 264,
-      "y": 56,
-      "w": 128,
-      "h": 112,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
       "kind": "circle",
       "x": 296,
       "y": 152,
@@ -408,6 +390,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        24,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        424,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

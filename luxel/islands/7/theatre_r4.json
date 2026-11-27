@@ -6,28 +6,54 @@
   "name_key": "ISL7_TH_R4",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [464, 224],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    464,
+    224
+  ],
   "zones": [
     {
       "id": "theatre_act2_a",
       "name_key": "ISL7_TH_R4",
-      "rect": [0, 0, 512, 320],
+      "rect": [
+        0,
+        0,
+        512,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r4_east",
-      "rect": [496, 192, 16, 48],
+      "rect": [
+        496,
+        192,
+        16,
+        48
+      ],
       "to_region": "theatre_r1",
-      "to_spawn": [48, 184]
+      "to_spawn": [
+        48,
+        184
+      ]
     },
     {
       "id": "exit_r4_north",
-      "rect": [80, 0, 48, 16],
+      "rect": [
+        80,
+        0,
+        48,
+        16
+      ],
       "to_region": "theatre_r5",
-      "to_spawn": [240, 272],
+      "to_spawn": [
+        240,
+        272
+      ],
       "locked_door_id": "door_r4_north"
     }
   ],
@@ -35,34 +61,60 @@
     {
       "id": "anc_r4_east",
       "kind": "room_anchor",
-      "pos": [464, 224],
-      "props": { "auto": true }
+      "pos": [
+        464,
+        224
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anc_r4_mid",
       "kind": "room_anchor",
-      "pos": [272, 240],
-      "props": { "auto": true }
+      "pos": [
+        272,
+        240
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anc_r4_north",
       "kind": "room_anchor",
-      "pos": [288, 96],
-      "props": { "auto": true }
+      "pos": [
+        288,
+        96
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "anc_r4_west",
       "kind": "room_anchor",
-      "pos": [104, 96],
-      "props": { "auto": true }
+      "pos": [
+        104,
+        96
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "mask_r4_act2",
       "kind": "mask_plinth",
-      "pos": [448, 200],
+      "pos": [
+        448,
+        200
+      ],
       "props": {
         "act": 2,
-        "steals": ["dash", "wings"],
+        "steals": [
+          "dash",
+          "wings"
+        ],
         "mask_icon": "wings",
         "hp": 3.5,
         "auto_steal": true,
@@ -74,17 +126,26 @@
     {
       "id": "bloom_r4_1",
       "kind": "bounce_bloom",
-      "pos": [392, 240],
+      "pos": [
+        392,
+        240
+      ],
       "props": {
         "dir": "w",
         "dist": 100,
-        "size": [18, 18]
+        "size": [
+          18,
+          18
+        ]
       }
     },
     {
       "id": "hook_r4_1",
       "kind": "lantern_hook",
-      "pos": [272, 120],
+      "pos": [
+        272,
+        120
+      ],
       "props": {
         "light_radius": 64
       }
@@ -92,7 +153,10 @@
     {
       "id": "turret_r4_1",
       "kind": "turret_eye",
-      "pos": [336, 96],
+      "pos": [
+        336,
+        96
+      ],
       "props": {
         "dir": "w",
         "cadence": 2.4,
@@ -102,7 +166,10 @@
     {
       "id": "hook_r4_2",
       "kind": "lantern_hook",
-      "pos": [144, 96],
+      "pos": [
+        144,
+        96
+      ],
       "props": {
         "light_radius": 64
       }
@@ -110,7 +177,10 @@
     {
       "id": "pull_r4_1",
       "kind": "pull_ring",
-      "pos": [80, 160],
+      "pos": [
+        80,
+        160
+      ],
       "props": {
         "axis": "n",
         "dist": 24,
@@ -122,7 +192,10 @@
     {
       "id": "sw_r4_curtain",
       "kind": "switch_eye",
-      "pos": [128, 160],
+      "pos": [
+        128,
+        160
+      ],
       "props": {
         "target_id": "door_r4_north"
       }
@@ -130,66 +203,248 @@
     {
       "id": "bridge_r4_return",
       "kind": "door",
-      "pos": [192, 96],
+      "pos": [
+        192,
+        96
+      ],
       "props": {
         "door_kind": "bridge_platform",
         "starts_open": false,
-        "requires_signals": ["pull_r4_1"],
+        "requires_signals": [
+          "pull_r4_1"
+        ],
         "persistent": true,
-        "size": [64, 32]
+        "size": [
+          64,
+          32
+        ]
       }
     },
     {
       "id": "door_r4_north",
       "kind": "door",
-      "pos": [104, 24],
+      "pos": [
+        104,
+        24
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["sw_r4_curtain"],
+        "requires_signals": [
+          "sw_r4_curtain"
+        ],
         "sets_flag": "theatre_r4_solved",
         "persistent": true,
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "lamp_r4_se",
       "kind": "road_lamp",
-      "pos": [448, 272],
-      "props": { "zone": "theatre_act2_a", "lit": true }
+      "pos": [
+        448,
+        272
+      ],
+      "props": {
+        "zone": "theatre_act2_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r4_mid",
       "kind": "road_lamp",
-      "pos": [248, 272],
-      "props": { "zone": "theatre_act2_a", "lit": true }
+      "pos": [
+        248,
+        272
+      ],
+      "props": {
+        "zone": "theatre_act2_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r4_cn",
       "kind": "road_lamp",
-      "pos": [288, 64],
-      "props": { "zone": "theatre_act2_a", "lit": true }
+      "pos": [
+        288,
+        64
+      ],
+      "props": {
+        "zone": "theatre_act2_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r4_nw",
       "kind": "road_lamp",
-      "pos": [72, 64],
-      "props": { "zone": "theatre_act2_a", "lit": true }
+      "pos": [
+        72,
+        64
+      ],
+      "props": {
+        "zone": "theatre_act2_a",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "circle", "pos": [448, 200], "radius": 24, "style": "spotlight", "color": "coral", "secondary": "gold" },
-    { "kind": "circle", "pos": [272, 240], "radius": 22, "style": "spotlight", "color": "apricot", "secondary": "gold" },
-    { "kind": "rug", "rect": [80, 40, 48, 88], "color": "wine", "border": "gold" },
-    { "kind": "rug", "rect": [256, 72, 64, 48], "color": "wine", "border": "gold" }
+    {
+      "kind": "circle",
+      "pos": [
+        448,
+        200
+      ],
+      "radius": 24,
+      "style": "spotlight",
+      "color": "coral",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        272,
+        240
+      ],
+      "radius": 22,
+      "style": "spotlight",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        80,
+        40,
+        48,
+        88
+      ],
+      "color": "wine",
+      "border": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        256,
+        72,
+        64,
+        48
+      ],
+      "color": "wine",
+      "border": "gold"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [144, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [480, 264], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [328, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.6 },
-    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [272, 212], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "stage_prop_trunk", "pos": [64, 112], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "tattered_act_banner", "pos": [416, 204], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        144,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        480,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        328,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        272,
+        212
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "stage_prop_trunk",
+      "pos": [
+        64,
+        112
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "tattered_act_banner",
+      "pos": [
+        416,
+        204
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        56,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        72,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        408,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.61
+    }
   ],
   "layers": [],
   "events": [
@@ -199,12 +454,18 @@
       "if": "!flag:act2_done",
       "once": true,
       "do": [
-        { "narrate": { "id": "ISL7_ACT2_STEAL", "style": "narration", "duration": 3.0 } }
+        {
+          "narrate": {
+            "id": "ISL7_ACT2_STEAL",
+            "style": "narration",
+            "duration": 3.0
+          }
+        }
       ]
     }
   ],
   "design": {
-    "idea": "ACT II — CLIPPED WINGS: Hollow Wick shears Dash and Wings; cross a four-deck abyssal rigging stage via a Bounce Bloom launch, two brass Lantern-Hook Zip chains past a Turret Eye, and a Pull-Ring curtain winch.",
+    "idea": "ACT II \u2014 CLIPPED WINGS: Hollow Wick shears Dash and Wings; cross a four-deck abyssal rigging stage via a Bounce Bloom launch, two brass Lantern-Hook Zip chains past a Turret Eye, and a Pull-Ring curtain winch.",
     "kind": "traversal",
     "beat": "sho",
     "teaches": "Zero-Dash/Zero-Wings pit traversal using Bounce Blooms, Lantern-Hook Throw+Zip chains, and Pull-Ring curtain winches.",
@@ -214,23 +475,93 @@
     "why": "Act II stage teaching Throw+Zip gap mastery immediately before fighting The Prompter without Dash or Wings.",
     "exit": "exit_r4_north",
     "solution": [
-      { "op": "goto", "to": [392, 240], "tol": 8 },
-      { "op": "wait", "secs": 0.55 },
-      { "op": "goto", "to": [272, 200], "tol": 8 },
-      { "op": "throw", "target": "hook_r4_1" },
-      { "op": "zip" },
-      { "op": "recall" },
-      { "op": "shoot", "from": [272, 96], "target": "turret_r4_1" },
-      { "op": "goto", "to": [232, 96], "tol": 8 },
-      { "op": "throw", "target": "hook_r4_2" },
-      { "op": "zip" },
-      { "op": "recall" },
-      { "op": "goto", "to": [80, 104], "tol": 8 },
-      { "op": "throw", "target": "pull_r4_1" },
-      { "op": "recall" },
-      { "op": "shoot", "from": [104, 128], "target": "sw_r4_curtain" },
-      { "op": "wait", "secs": 0.35 },
-      { "op": "expect_exit", "exit": "exit_r4_north" }
+      {
+        "op": "goto",
+        "to": [
+          392,
+          240
+        ],
+        "tol": 8
+      },
+      {
+        "op": "wait",
+        "secs": 0.55
+      },
+      {
+        "op": "goto",
+        "to": [
+          272,
+          200
+        ],
+        "tol": 8
+      },
+      {
+        "op": "throw",
+        "target": "hook_r4_1"
+      },
+      {
+        "op": "zip"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          272,
+          96
+        ],
+        "target": "turret_r4_1"
+      },
+      {
+        "op": "goto",
+        "to": [
+          232,
+          96
+        ],
+        "tol": 8
+      },
+      {
+        "op": "throw",
+        "target": "hook_r4_2"
+      },
+      {
+        "op": "zip"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "goto",
+        "to": [
+          80,
+          104
+        ],
+        "tol": 8
+      },
+      {
+        "op": "throw",
+        "target": "pull_r4_1"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "shoot",
+        "from": [
+          104,
+          128
+        ],
+        "target": "sw_r4_curtain"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r4_north"
+      }
     ]
   }
 }

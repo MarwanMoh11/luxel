@@ -359,6 +359,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "gilded_ballroom_pillar",
+      "pos": [
+        56,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_masquerade",
+      "prop": "moon_lantern_urn",
+      "pos": [
+        376,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "events": [

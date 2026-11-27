@@ -1897,5 +1897,6 @@
     "why": "Central twin-crescent overworld uniting all Island 7 districts, camps, dungeons, and the Island 8 bridge.",
     "optional": true,
     "exit": "exit_to_silver_quay"
-  }
+  },
+  "theme": "moon_shoals_overworld"
 }

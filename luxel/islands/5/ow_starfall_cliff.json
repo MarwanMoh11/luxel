@@ -414,6 +414,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        184,
+        74
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        488,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        386,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "design": {
@@ -484,5 +520,38 @@
         ]
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 24,
+      "color": "mauve",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        248,
+        164
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "warm"
+    },
+    {
+      "kind": "cracks",
+      "pos": [
+        248,
+        184
+      ],
+      "radius": 18,
+      "glow": false
+    }
+  ]
 }

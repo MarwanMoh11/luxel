@@ -225,26 +225,7 @@
     }
   ],
   "triggers": [],
-  "decor": [
-    {
-      "kind": "circle",
-      "pos": [
-        216,
-        128
-      ],
-      "radius": 38,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        144,
-        88,
-        112,
-        64
-      ]
-    }
-  ],
+  "decor": [],
   "scenery": [
     {
       "sheet": "island5_scenery",

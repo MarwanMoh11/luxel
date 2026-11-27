@@ -2643,5 +2643,6 @@
       }
     ]
   },
-  "theme": "starfall_overworld"
+  "theme": "starfall_overworld",
+  "decor": []
 }

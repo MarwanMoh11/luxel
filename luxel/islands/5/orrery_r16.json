@@ -327,8 +327,10 @@
         240,
         160
       ],
-      "radius": 44,
-      "style": "astrolabe"
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "compass",
@@ -336,7 +338,9 @@
         240,
         224
       ],
-      "radius": 22
+      "radius": 22,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -345,7 +349,7 @@
         144
       ],
       "radius": 22,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "cracks",
@@ -354,7 +358,7 @@
         144
       ],
       "radius": 22,
-      "glow": true
+      "glow": false
     }
   ],
   "scenery": [
@@ -417,6 +421,54 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        74
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        152,
+        74
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        158,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        322,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "layers": [],

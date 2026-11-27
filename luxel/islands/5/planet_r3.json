@@ -285,17 +285,10 @@
         208,
         80
       ],
-      "radius": 34,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        152,
-        48,
-        48
-      ]
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -371,6 +364,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        296,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        62,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        88,
+        152
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        62,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

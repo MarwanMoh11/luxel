@@ -469,16 +469,6 @@
       "style": "spotlight",
       "color": "gold",
       "secondary": "apricot"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        584,
-        112,
-        72,
-        72
-      ],
-      "color": "gold"
     }
   ],
   "scenery": [

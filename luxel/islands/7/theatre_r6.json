@@ -423,16 +423,6 @@
       "style": "spotlight",
       "color": "gold",
       "secondary": "cream"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        192,
-        40,
-        64,
-        56
-      ],
-      "color": "gold"
     }
   ],
   "scenery": [
@@ -507,6 +497,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        408,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        408,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        40,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        216,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "layers": [],

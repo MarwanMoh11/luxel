@@ -314,6 +314,30 @@
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        440,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        40,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [],

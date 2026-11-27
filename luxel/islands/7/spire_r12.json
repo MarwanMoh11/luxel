@@ -505,6 +505,30 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.6
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        440,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        120,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "design": {

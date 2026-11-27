@@ -242,22 +242,15 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        224,
-        144
-      ],
-      "radius": 52,
-      "style": "astrolabe"
-    },
-    {
       "kind": "mural",
       "pos": [
         224,
         64
       ],
       "radius": 22,
-      "style": "constellation"
+      "style": "constellation",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -333,6 +326,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        88,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_star_globe",
+      "pos": [
+        312,
+        32
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        62,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        354,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

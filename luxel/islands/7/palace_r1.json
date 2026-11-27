@@ -316,24 +316,6 @@
       "ring": "ice"
     },
     {
-      "kind": "inlay",
-      "x": 208,
-      "y": 40,
-      "w": 64,
-      "h": 96,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 208,
-      "y": 216,
-      "w": 64,
-      "h": 88,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
       "kind": "cracks",
       "x": 144,
       "y": 272,

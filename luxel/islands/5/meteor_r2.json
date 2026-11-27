@@ -203,39 +203,14 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        336,
-        208,
-        32,
-        16
-      ]
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        208,
-        208,
-        32,
-        16
-      ]
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        96,
-        136,
-        32,
-        16
-      ]
-    },
-    {
       "kind": "compass",
       "pos": [
         240,
         120
       ],
-      "radius": 20
+      "radius": 20,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "cracks",
@@ -331,6 +306,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        24,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        258,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

@@ -435,16 +435,6 @@
       ],
       "color": "wine",
       "border": "ice"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        56,
-        160,
-        88,
-        48
-      ],
-      "color": "ice"
     }
   ],
   "scenery": [
@@ -507,6 +497,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        360,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        360,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        136,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        56,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "layers": [],
@@ -528,7 +566,7 @@
     }
   ],
   "design": {
-    "idea": "ACT III — THE BLIND EYE: Hollow Wick blinds Lens and Prism; track the Silvered Owl by shadow/Beam, slide Ice Block 1 to chalk-bridge the first chasm, record an Echo Rose ghost (12s via Cue-Mirror!) holding the baffle plate so Ice Block 2 slides into the east socket, and unlock the Fly-Loft.",
+    "idea": "ACT III \u2014 THE BLIND EYE: Hollow Wick blinds Lens and Prism; track the Silvered Owl by shadow/Beam, slide Ice Block 1 to chalk-bridge the first chasm, record an Echo Rose ghost (12s via Cue-Mirror!) holding the baffle plate so Ice Block 2 slides into the east socket, and unlock the Fly-Loft.",
     "kind": "puzzle",
     "beat": "ten",
     "teaches": "Tracking Silvered Owls without Lens and chaining Cue-Mirror's 12s Echo Rose with sliding ice blocks and moving stage baffles.",

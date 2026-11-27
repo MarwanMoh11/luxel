@@ -525,5 +525,6 @@
         "exit": "exit_spire_r4_east"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

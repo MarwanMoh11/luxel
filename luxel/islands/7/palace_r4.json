@@ -234,15 +234,6 @@
       "ring": "ice"
     },
     {
-      "kind": "inlay",
-      "x": 176,
-      "y": 56,
-      "w": 80,
-      "h": 144,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
       "kind": "cracks",
       "x": 288,
       "y": 216,
@@ -334,6 +325,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        408,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        344,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

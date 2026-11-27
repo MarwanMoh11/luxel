@@ -322,30 +322,14 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        256,
-        184
-      ],
-      "radius": 44,
-      "style": "astrolabe"
-    },
-    {
       "kind": "compass",
       "pos": [
         232,
         48
       ],
-      "radius": 20
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        176,
-        48,
-        48
-      ]
+      "radius": 20,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -433,6 +417,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        264,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        248,
+        280
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "triggers": [],

@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": true,
   "name_key": "ISL7_SP_R11",
-  "theme": "inverted_palace_silver",
+  "theme": "mirror_spire",
   "music": "island7_dungeon",
   "ambience": [
     "night_breeze"
@@ -407,6 +407,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        56,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        424,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
     }
   ],
   "layers": [

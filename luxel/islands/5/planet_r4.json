@@ -216,24 +216,6 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        224,
-        160
-      ],
-      "radius": 48,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        336,
-        256,
-        32,
-        32
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         224,
@@ -307,6 +289,54 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.2
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        168,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "constellation_projector",
+      "pos": [
+        248,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        254,
+        296
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        424,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

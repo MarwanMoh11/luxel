@@ -327,8 +327,10 @@
         168,
         144
       ],
-      "radius": 34,
-      "style": "astrolabe"
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -342,15 +344,6 @@
       ],
       "tint": "cool",
       "shear": 0.35
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        48,
-        40,
-        56,
-        48
-      ]
     }
   ],
   "scenery": [
@@ -425,6 +418,42 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        40,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        232,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        46,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

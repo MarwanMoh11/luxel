@@ -225,22 +225,13 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        240,
-        160
-      ],
-      "radius": 68,
-      "style": "astrolabe"
-    },
-    {
       "kind": "cracks",
       "pos": [
         160,
         120
       ],
       "radius": 24,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "cracks",
@@ -249,15 +240,7 @@
         200
       ],
       "radius": 24,
-      "glow": true
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        240,
-        160
-      ],
-      "radius": 24
+      "glow": false
     }
   ],
   "scenery": [
@@ -356,6 +339,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        392,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "triggers": [],

@@ -327,22 +327,15 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        192,
-        112,
-        128,
-        48
-      ]
-    },
-    {
       "kind": "circle",
       "pos": [
         264,
         56
       ],
       "radius": 22,
-      "style": "astrolabe"
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -417,6 +410,42 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.75
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        296,
+        106
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        78,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "clockwork_gear_pillar",
+      "pos": [
+        312,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

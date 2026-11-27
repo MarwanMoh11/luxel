@@ -431,16 +431,9 @@
         240,
         288
       ],
-      "radius": 22
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        240,
-        184
-      ],
-      "radius": 44,
-      "style": "astrolabe"
+      "radius": 22,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "mural",
@@ -449,7 +442,9 @@
         64
       ],
       "radius": 20,
-      "style": "constellation"
+      "style": "constellation",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",

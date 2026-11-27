@@ -4,7 +4,7 @@
   "tile_size": 16,
   "is_dungeon": false,
   "name_key": "ISL7_Z_CAVE_PHASE",
-  "theme": "cave_7",
+  "theme": "moon_shoals_cave",
   "music": "island7_combat",
   "ambience": [
     "night_breeze"
@@ -283,16 +283,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        152,
-        136,
-        240,
-        44
-      ],
-      "color": "sky"
-    },
-    {
       "kind": "circle",
       "pos": [
         240,
@@ -302,16 +292,6 @@
       "style": "ritual",
       "color": "gold",
       "secondary": "ice"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        40,
-        56,
-        72,
-        88
-      ],
-      "color": "gold"
     }
   ],
   "scenery": [
@@ -386,6 +366,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "stalagmite_cluster",
+      "pos": [
+        296,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "rock_cairn_marker",
+      "pos": [
+        392,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_cave_7",
+      "prop": "subterranean_shroom",
+      "pos": [
+        152,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.61
     }
   ],
   "layers": [

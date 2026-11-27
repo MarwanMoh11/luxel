@@ -299,6 +299,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.45
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "lunar_lantern_post",
+      "pos": [
+        200,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "standing_mirror_tall",
+      "pos": [
+        296,
+        200
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "crescent_monolith",
+      "pos": [
+        328,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "island7_scenery",
+      "prop": "shattered_mirror_shard",
+      "pos": [
+        200,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "is_2x2_room": true,
@@ -372,5 +420,6 @@
         "exit": "exit_spire_r6_north"
       }
     ]
-  }
+  },
+  "theme": "mirror_spire"
 }

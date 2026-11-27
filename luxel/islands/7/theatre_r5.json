@@ -6,29 +6,57 @@
   "name_key": "ISL7_TH_R5",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [240, 272],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
   "zones": [
     {
       "id": "theatre_orchestra_pit",
       "name_key": "ISL7_TH_R5",
-      "rect": [0, 0, 480, 320],
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r5_south",
-      "rect": [224, 304, 32, 16],
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
       "to_region": "theatre_r4",
-      "to_spawn": [104, 48]
+      "to_spawn": [
+        104,
+        48
+      ]
     },
     {
       "id": "exit_r5_north",
-      "rect": [224, 0, 32, 16],
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
       "to_region": "theatre_r6",
-      "to_spawn": [224, 272],
-      "requires_flags": ["act2_done"],
+      "to_spawn": [
+        224,
+        272
+      ],
+      "requires_flags": [
+        "act2_done"
+      ],
       "locked_door_id": "door_r5_north"
     }
   ],
@@ -36,50 +64,89 @@
     {
       "id": "anc_r5_south",
       "kind": "room_anchor",
-      "pos": [240, 272],
-      "props": { "auto": true }
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "hook_r5_nw",
       "kind": "lantern_hook",
-      "pos": [128, 128],
-      "props": { "light_radius": 62 }
+      "pos": [
+        128,
+        128
+      ],
+      "props": {
+        "light_radius": 62
+      }
     },
     {
       "id": "hook_r5_ne",
       "kind": "lantern_hook",
-      "pos": [352, 128],
-      "props": { "light_radius": 62 }
+      "pos": [
+        352,
+        128
+      ],
+      "props": {
+        "light_radius": 62
+      }
     },
     {
       "id": "hook_r5_sw",
       "kind": "lantern_hook",
-      "pos": [128, 224],
-      "props": { "light_radius": 62 }
+      "pos": [
+        128,
+        224
+      ],
+      "props": {
+        "light_radius": 62
+      }
     },
     {
       "id": "hook_r5_se",
       "kind": "lantern_hook",
-      "pos": [352, 224],
-      "props": { "light_radius": 62 }
+      "pos": [
+        352,
+        224
+      ],
+      "props": {
+        "light_radius": 62
+      }
     },
     {
       "id": "door_r5_reward",
       "kind": "door",
-      "pos": [240, 88],
+      "pos": [
+        240,
+        88
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["theatre_miniboss_done"],
-        "size": [32, 16]
+        "requires_flags": [
+          "theatre_miniboss_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "mask_r5_break",
       "kind": "mask_plinth",
-      "pos": [192, 56],
+      "pos": [
+        192,
+        56
+      ],
       "props": {
         "act": 2,
-        "steals": ["dash", "wings"],
+        "steals": [
+          "dash",
+          "wings"
+        ],
         "mask_icon": "wings",
         "hp": 2.2,
         "auto_steal": true,
@@ -93,9 +160,14 @@
     {
       "id": "plate_r5_encore",
       "kind": "pressure_plate",
-      "pos": [192, 40],
+      "pos": [
+        192,
+        40
+      ],
       "props": {
-        "by": ["wick"],
+        "by": [
+          "wick"
+        ],
         "latch": true,
         "persist": true,
         "sets_flag": "act2_done",
@@ -105,7 +177,10 @@
     {
       "id": "altar_r5_cue_mirror",
       "kind": "theatre_cue_mirror_altar",
-      "pos": [240, 56],
+      "pos": [
+        240,
+        56
+      ],
       "props": {
         "requires_flag": "theatre_miniboss_done"
       }
@@ -113,7 +188,10 @@
     {
       "id": "theatre_key_2",
       "kind": "wick_key",
-      "pos": [288, 56],
+      "pos": [
+        288,
+        56
+      ],
       "props": {
         "dungeon_id": "theatre",
         "key_kind": "wick_key",
@@ -124,76 +202,277 @@
     {
       "id": "door_r5_north",
       "kind": "door",
-      "pos": [240, 24],
+      "pos": [
+        240,
+        24
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act2_done"],
-        "size": [32, 16]
+        "requires_flags": [
+          "act2_done"
+        ],
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "lamp_r5_sw",
       "kind": "road_lamp",
-      "pos": [168, 272],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        168,
+        272
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_se",
       "kind": "road_lamp",
-      "pos": [312, 272],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        312,
+        272
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_w",
       "kind": "road_lamp",
-      "pos": [80, 176],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        80,
+        176
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_e",
       "kind": "road_lamp",
-      "pos": [400, 176],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        400,
+        176
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_alcove",
       "kind": "road_lamp",
-      "pos": [160, 56],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        160,
+        56
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r5_alcove_e",
       "kind": "road_lamp",
-      "pos": [320, 56],
-      "props": { "zone": "theatre_orchestra_pit", "lit": true }
+      "pos": [
+        320,
+        56
+      ],
+      "props": {
+        "zone": "theatre_orchestra_pit",
+        "lit": true
+      }
     }
   ],
   "enemies": [
     {
       "id": "boss_the_prompter",
       "kind": "the_prompter",
-      "pos": [240, 168],
+      "pos": [
+        240,
+        168
+      ],
       "zone": "theatre_orchestra_pit"
     }
   ],
   "decor": [
-    { "kind": "circle", "pos": [240, 168], "radius": 52, "style": "spotlight", "color": "gold", "secondary": "cream" },
-    { "kind": "circle", "pos": [128, 128], "radius": 20, "style": "spotlight", "color": "apricot", "secondary": "gold" },
-    { "kind": "circle", "pos": [352, 128], "radius": 20, "style": "spotlight", "color": "apricot", "secondary": "gold" },
-    { "kind": "rug", "rect": [176, 36, 128, 40], "color": "wine", "border": "gold" }
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        168
+      ],
+      "radius": 52,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        128
+      ],
+      "radius": 20,
+      "style": "spotlight",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        128
+      ],
+      "radius": 20,
+      "style": "spotlight",
+      "color": "apricot",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        176,
+        36,
+        128,
+        40
+      ],
+      "color": "wine",
+      "border": "gold"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "proscenium_mask_arch", "pos": [240, 44], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [136, 96], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [344, 96], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [240, 248], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "theatre_box_seat", "pos": [80, 120], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "theatre_box_seat", "pos": [400, 120], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "proscenium_mask_arch",
+      "pos": [
+        240,
+        44
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        136,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        344,
+        96
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        240,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        80,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        400,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        40,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        40,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "stage_prop_trunk",
+      "pos": [
+        440,
+        120
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        168,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.84
+    }
   ],
   "layers": [],
   "events": [],
   "design": {
-    "idea": "ACT II CLIMAX — Mini-Boss THE PROMPTER: duel a velvet marionette conductor with Dash and Wings STOLEN, Zipping between 4 brass music-stand hooks over crimson baton sweeps and severing its 2 overhead cords to reclaim Dash & Wings, Stagehand's Cue-Mirror, and Theatre Key 2.",
+    "idea": "ACT II CLIMAX \u2014 Mini-Boss THE PROMPTER: duel a velvet marionette conductor with Dash and Wings STOLEN, Zipping between 4 brass music-stand hooks over crimson baton sweeps and severing its 2 overhead cords to reclaim Dash & Wings, Stagehand's Cue-Mirror, and Theatre Key 2.",
     "kind": "boss",
     "beat": "sho",
     "teaches": "Using Throw+Zip hooks as primary evasion when Dash/Wings are stolen and cutting boss marionette cords for crash-staggers.",
@@ -203,14 +482,49 @@
     "why": "Act II mini-boss climax granting the dungeon's signature Cue-Mirror power, Theatre Key 2, and backstage lift access to the Greenroom.",
     "exit": "exit_r5_north",
     "solution": [
-      { "op": "clear", "timeout": 110.0 },
-      { "op": "wait_until", "flag": "theatre_miniboss_done", "timeout": 5.0 },
-      { "op": "goto", "to": [240, 72], "tol": 10 },
-      { "op": "shoot", "from": [224, 68], "target": "mask_r5_break", "count": 7 },
-      { "op": "wait_until", "flag": "act2_done", "timeout": 3.0 },
-      { "op": "interact", "target": "altar_r5_cue_mirror" },
-      { "op": "interact", "target": "theatre_key_2" },
-      { "op": "expect_exit", "exit": "exit_r5_north" }
+      {
+        "op": "clear",
+        "timeout": 110.0
+      },
+      {
+        "op": "wait_until",
+        "flag": "theatre_miniboss_done",
+        "timeout": 5.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          72
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "from": [
+          224,
+          68
+        ],
+        "target": "mask_r5_break",
+        "count": 7
+      },
+      {
+        "op": "wait_until",
+        "flag": "act2_done",
+        "timeout": 3.0
+      },
+      {
+        "op": "interact",
+        "target": "altar_r5_cue_mirror"
+      },
+      {
+        "op": "interact",
+        "target": "theatre_key_2"
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r5_north"
+      }
     ]
   }
 }

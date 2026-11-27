@@ -6,28 +6,54 @@
   "name_key": "ISL7_TH_R9",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [240, 304],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    304
+  ],
   "zones": [
     {
       "id": "theatre_act4_a",
       "name_key": "ISL7_TH_R9",
-      "rect": [0, 0, 480, 352],
+      "rect": [
+        0,
+        0,
+        480,
+        352
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r9_south",
-      "rect": [224, 336, 32, 16],
+      "rect": [
+        224,
+        336,
+        32,
+        16
+      ],
       "to_region": "theatre_r6",
-      "to_spawn": [360, 48]
+      "to_spawn": [
+        360,
+        48
+      ]
     },
     {
       "id": "exit_r9_north",
-      "rect": [224, 0, 32, 16],
+      "rect": [
+        224,
+        0,
+        32,
+        16
+      ],
       "to_region": "theatre_r10",
-      "to_spawn": [240, 272],
+      "to_spawn": [
+        240,
+        272
+      ],
       "locked_door_id": "door_r9_north"
     }
   ],
@@ -35,16 +61,27 @@
     {
       "id": "anc_r9_south",
       "kind": "room_anchor",
-      "pos": [240, 304],
-      "props": { "auto": true }
+      "pos": [
+        240,
+        304
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "mask_r9_act4",
       "kind": "mask_plinth",
-      "pos": [192, 296],
+      "pos": [
+        192,
+        296
+      ],
       "props": {
         "act": 4,
-        "steals": ["bolt", "beam"],
+        "steals": [
+          "bolt",
+          "beam"
+        ],
         "mask_icon": "bolt",
         "hp": 3.5,
         "auto_steal": true,
@@ -56,7 +93,10 @@
     {
       "id": "emitter_r9_1",
       "kind": "beam_emitter",
-      "pos": [80, 144],
+      "pos": [
+        80,
+        144
+      ],
       "props": {
         "dir": "e",
         "color": "gold",
@@ -66,7 +106,10 @@
     {
       "id": "emitter_r9_2",
       "kind": "beam_emitter",
-      "pos": [80, 208],
+      "pos": [
+        80,
+        208
+      ],
       "props": {
         "dir": "e",
         "color": "gold",
@@ -76,9 +119,15 @@
     {
       "id": "rotor_r9",
       "kind": "rotor",
-      "pos": [240, 176],
+      "pos": [
+        240,
+        176
+      ],
       "props": {
-        "size": [80, 80],
+        "size": [
+          80,
+          80
+        ],
         "quarter_on_signal": true,
         "start_quarter": 0
       }
@@ -86,7 +135,10 @@
     {
       "id": "mirror_r9_t1",
       "kind": "blue_transformer",
-      "pos": [208, 176],
+      "pos": [
+        208,
+        176
+      ],
       "props": {
         "angle_deg": 45,
         "angle_step_deg": 45,
@@ -97,7 +149,10 @@
     {
       "id": "mirror_r9_t2",
       "kind": "blue_transformer",
-      "pos": [272, 176],
+      "pos": [
+        272,
+        176
+      ],
       "props": {
         "angle_deg": 315,
         "angle_step_deg": 45,
@@ -108,10 +163,16 @@
     {
       "id": "glass_r9_rose",
       "kind": "color_glass",
-      "pos": [144, 248],
+      "pos": [
+        144,
+        248
+      ],
       "props": {
         "color": "rose",
-        "size": [16, 16],
+        "size": [
+          16,
+          16
+        ],
         "solid": true,
         "movable": true,
         "cycles_color": false
@@ -120,7 +181,10 @@
     {
       "id": "pull_r9_1",
       "kind": "pull_ring",
-      "pos": [128, 272],
+      "pos": [
+        128,
+        272
+      ],
       "props": {
         "axis": "e",
         "dist": 24,
@@ -132,7 +196,10 @@
     {
       "id": "pull_r9_2",
       "kind": "pull_ring",
-      "pos": [352, 112],
+      "pos": [
+        352,
+        112
+      ],
       "props": {
         "axis": "w",
         "dist": 24,
@@ -144,7 +211,10 @@
     {
       "id": "sensor_r9_s1",
       "kind": "beam_sensor",
-      "pos": [240, 88],
+      "pos": [
+        240,
+        88
+      ],
       "props": {
         "color": "blue",
         "latch": true,
@@ -155,7 +225,10 @@
     {
       "id": "sensor_r9_s2",
       "kind": "beam_sensor",
-      "pos": [240, 264],
+      "pos": [
+        240,
+        264
+      ],
       "props": {
         "color": "blue",
         "latch": true,
@@ -166,7 +239,10 @@
     {
       "id": "sensor_r9_s3",
       "kind": "beam_sensor",
-      "pos": [384, 208],
+      "pos": [
+        384,
+        208
+      ],
       "props": {
         "color": "rose",
         "latch": true,
@@ -177,7 +253,10 @@
     {
       "id": "motes_r9_ember",
       "kind": "theatre_ember_motes",
-      "pos": [176, 112],
+      "pos": [
+        176,
+        112
+      ],
       "props": {
         "charge_radius": 22
       }
@@ -185,18 +264,31 @@
     {
       "id": "seal_r9_os",
       "kind": "obsidian_seal",
-      "pos": [240, 56],
+      "pos": [
+        240,
+        56
+      ],
       "props": {
-        "size": [48, 16]
+        "size": [
+          48,
+          16
+        ]
       }
     },
     {
       "id": "gate_r9_all",
       "kind": "logic_gate",
-      "pos": [296, 88],
+      "pos": [
+        296,
+        88
+      ],
       "props": {
         "op": "all",
-        "inputs": ["sensor_r9_s1", "sensor_r9_s2", "sensor_r9_s3"],
+        "inputs": [
+          "sensor_r9_s1",
+          "sensor_r9_s2",
+          "sensor_r9_s3"
+        ],
         "target_id": "door_r9_north",
         "persist": true
       }
@@ -204,54 +296,229 @@
     {
       "id": "door_r9_north",
       "kind": "door",
-      "pos": [240, 24],
+      "pos": [
+        240,
+        24
+      ],
       "props": {
         "door_kind": "switch_door",
-        "requires_signals": ["gate_r9_all"],
+        "requires_signals": [
+          "gate_r9_all"
+        ],
         "sets_flag": "theatre_r9_solved",
         "persistent": true,
-        "size": [32, 16]
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "lamp_r9_w",
       "kind": "road_lamp",
-      "pos": [96, 176],
-      "props": { "zone": "theatre_act4_a", "lit": true }
+      "pos": [
+        96,
+        176
+      ],
+      "props": {
+        "zone": "theatre_act4_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r9_e",
       "kind": "road_lamp",
-      "pos": [400, 176],
-      "props": { "zone": "theatre_act4_a", "lit": true }
+      "pos": [
+        400,
+        176
+      ],
+      "props": {
+        "zone": "theatre_act4_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r9_n",
       "kind": "road_lamp",
-      "pos": [200, 88],
-      "props": { "zone": "theatre_act4_a", "lit": true }
+      "pos": [
+        200,
+        88
+      ],
+      "props": {
+        "zone": "theatre_act4_a",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r9_s",
       "kind": "road_lamp",
-      "pos": [296, 288],
-      "props": { "zone": "theatre_act4_a", "lit": true }
+      "pos": [
+        296,
+        288
+      ],
+      "props": {
+        "zone": "theatre_act4_a",
+        "lit": true
+      }
     }
   ],
   "enemies": [],
   "decor": [
-    { "kind": "circle", "pos": [240, 176], "radius": 52, "style": "spotlight", "color": "gold", "secondary": "apricot" },
-    { "kind": "circle", "pos": [192, 296], "radius": 24, "style": "spotlight", "color": "coral", "secondary": "gold" },
-    { "kind": "rug", "rect": [208, 32, 64, 64], "color": "wine", "border": "gold" },
-    { "kind": "inlay", "rect": [80, 136, 320, 80], "color": "gold" }
+    {
+      "kind": "circle",
+      "pos": [
+        240,
+        176
+      ],
+      "radius": 52,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        192,
+        296
+      ],
+      "radius": 24,
+      "style": "spotlight",
+      "color": "coral",
+      "secondary": "gold"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        32,
+        64,
+        64
+      ],
+      "color": "wine",
+      "border": "gold"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [64, 128], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [64, 224], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [184, 64], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [296, 64], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [384, 240], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "trapdoor_stage_hatch", "pos": [328, 256], "layer": "ground", "flip_x": false, "shadow": false, "phase": 0.0 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        64,
+        128
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        64,
+        224
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        184,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        296,
+        64
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        384,
+        240
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "trapdoor_stage_hatch",
+      "pos": [
+        328,
+        256
+      ],
+      "layer": "ground",
+      "flip_x": false,
+      "shadow": false,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        184,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "stage_prop_trunk",
+      "pos": [
+        440,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "playbill_easel_stand",
+      "pos": [
+        296,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.84
+    }
   ],
   "layers": [],
   "events": [
@@ -261,12 +528,18 @@
       "if": "!flag:act4_done",
       "once": true,
       "do": [
-        { "narrate": { "id": "ISL7_ACT4_STEAL", "style": "narration", "duration": 3.0 } }
+        {
+          "narrate": {
+            "id": "ISL7_ACT4_STEAL",
+            "style": "narration",
+            "duration": 3.0
+          }
+        }
       ]
     }
   ],
   "design": {
-    "idea": "ACT IV — THE SNUFFED WICK (ASTONISHING ROOM): Hollow Wick steals BOTH Bolt and Beam! Completely gunless, angle two Blue Transformers atop a revolving stage turntable, pull brass winch rings to swing them into Hollow Wick's own stolen beams (latching Blue sensors S1 & S2), push Rose Glass into beam E2 and rotate clear to latch S3, draw drifting golden spotlight Ember-Motes, and shatter the Obsidian Seal with Sunflare!",
+    "idea": "ACT IV \u2014 THE SNUFFED WICK (ASTONISHING ROOM): Hollow Wick steals BOTH Bolt and Beam! Completely gunless, angle two Blue Transformers atop a revolving stage turntable, pull brass winch rings to swing them into Hollow Wick's own stolen beams (latching Blue sensors S1 & S2), push Rose Glass into beam E2 and rotate clear to latch S3, draw drifting golden spotlight Ember-Motes, and shatter the Obsidian Seal with Sunflare!",
     "kind": "puzzle",
     "beat": "ketsu",
     "teaches": "Zero-gun optical mastery: rotating turntable mirrors + Pull-Ring winches + Rose Glass tinting + Spotlight Ember-Motes fueling Sunflare.",
@@ -276,28 +549,109 @@
     "why": "Signature astonishing Act IV puzzle room where losing both shooting buttons turns the revolving stage itself into your optical weapon.",
     "exit": "exit_r9_north",
     "start": {
-      "flags": ["act2_done", "item_cue_mirror"]
+      "flags": [
+        "act2_done",
+        "item_cue_mirror"
+      ]
     },
     "solution": [
-      { "op": "rotate", "target": "mirror_r9_t1", "angle": 135 },
-      { "op": "rotate", "target": "mirror_r9_t2", "angle": 45 },
-      { "op": "goto", "to": [184, 272], "tol": 8 },
-      { "op": "throw", "target": "pull_r9_1" },
-      { "op": "recall" },
-      { "op": "wait", "secs": 0.75 },
-      { "op": "expect", "interactable": "sensor_r9_s1", "prop": "powered", "value": true },
-      { "op": "expect", "interactable": "sensor_r9_s2", "prop": "powered", "value": true },
-      { "op": "push", "target": "glass_r9_rose", "to": [144, 208] },
-      { "op": "goto", "to": [296, 112], "tol": 8 },
-      { "op": "throw", "target": "pull_r9_2" },
-      { "op": "recall" },
-      { "op": "wait", "secs": 0.75 },
-      { "op": "expect", "interactable": "sensor_r9_s3", "prop": "powered", "value": true },
-      { "op": "interact", "target": "motes_r9_ember" },
-      { "op": "goto", "to": [240, 76], "tol": 8 },
-      { "op": "sunflare" },
-      { "op": "wait", "secs": 0.35 },
-      { "op": "expect_exit", "exit": "exit_r9_north" }
+      {
+        "op": "rotate",
+        "target": "mirror_r9_t1",
+        "angle": 135
+      },
+      {
+        "op": "rotate",
+        "target": "mirror_r9_t2",
+        "angle": 45
+      },
+      {
+        "op": "goto",
+        "to": [
+          184,
+          272
+        ],
+        "tol": 8
+      },
+      {
+        "op": "throw",
+        "target": "pull_r9_1"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r9_s1",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r9_s2",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "push",
+        "target": "glass_r9_rose",
+        "to": [
+          144,
+          208
+        ]
+      },
+      {
+        "op": "goto",
+        "to": [
+          296,
+          112
+        ],
+        "tol": 8
+      },
+      {
+        "op": "throw",
+        "target": "pull_r9_2"
+      },
+      {
+        "op": "recall"
+      },
+      {
+        "op": "wait",
+        "secs": 0.75
+      },
+      {
+        "op": "expect",
+        "interactable": "sensor_r9_s3",
+        "prop": "powered",
+        "value": true
+      },
+      {
+        "op": "interact",
+        "target": "motes_r9_ember"
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          76
+        ],
+        "tol": 8
+      },
+      {
+        "op": "sunflare"
+      },
+      {
+        "op": "wait",
+        "secs": 0.35
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r9_north"
+      }
     ]
   }
 }

@@ -252,7 +252,9 @@
         152
       ],
       "radius": 24,
-      "style": "astrolabe"
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "compass",
@@ -260,16 +262,9 @@
         64,
         224
       ],
-      "radius": 22
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        376,
-        96,
-        48,
-        48
-      ]
+      "radius": 22,
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -301,7 +296,7 @@
       "sheet": "island5_scenery",
       "prop": "star_chart_lectern",
       "pos": [
-        96,
+        90,
         48
       ],
       "layer": "sort",
@@ -344,6 +339,42 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.8
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        46,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "moon_phase_obelisk",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "hanging_pendulum",
+      "pos": [
+        104,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

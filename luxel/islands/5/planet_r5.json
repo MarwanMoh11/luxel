@@ -233,7 +233,9 @@
         224
       ],
       "radius": 28,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "compass",
@@ -241,7 +243,9 @@
         224,
         48
       ],
-      "radius": 18
+      "radius": 18,
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -310,13 +314,61 @@
       "sheet": "theme_planetarium",
       "prop": "hanging_orrery_pendulum",
       "pos": [
-        344,
+        338,
         208
       ],
       "layer": "sort",
       "flip_x": true,
       "shadow": true,
       "phase": 0.5
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        88,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        344,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        158,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "zodiac_pillar_stone",
+      "pos": [
+        88,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "triggers": [],

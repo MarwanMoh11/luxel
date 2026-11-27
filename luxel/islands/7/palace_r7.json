@@ -348,24 +348,6 @@
       "r": 22,
       "col": "sky",
       "ring": "ice"
-    },
-    {
-      "kind": "inlay",
-      "x": 64,
-      "y": 96,
-      "w": 64,
-      "h": 112,
-      "col": "stone",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 328,
-      "y": 88,
-      "w": 64,
-      "h": 112,
-      "col": "ice",
-      "border": "sky"
     }
   ],
   "scenery": [
@@ -440,6 +422,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "tall_silver_mirror",
+      "pos": [
+        72,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        24,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "gilded_statue_bust",
+      "pos": [
+        264,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        360,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "layers": [

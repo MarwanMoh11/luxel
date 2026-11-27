@@ -295,31 +295,13 @@
   "triggers": [],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        224,
-        152
-      ],
-      "radius": 44,
-      "style": "gear"
-    },
-    {
       "kind": "cracks",
       "pos": [
         344,
         128
       ],
       "radius": 22,
-      "glow": true
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        72,
-        216,
-        48,
-        32
-      ]
+      "glow": false
     }
   ],
   "scenery": [
@@ -394,6 +376,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.3
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        408,
+        232
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        136,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        130,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [

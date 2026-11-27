@@ -436,28 +436,6 @@
       ],
       "color": "wine",
       "border": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        56,
-        136,
-        56,
-        48
-      ],
-      "color": "plum",
-      "border": "ice"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        392,
-        136,
-        56,
-        48
-      ],
-      "color": "plum",
-      "border": "ice"
     }
   ],
   "scenery": [

@@ -6,37 +6,76 @@
   "name_key": "ISL7_TH_R8",
   "theme": "doppel_theatre",
   "music": "isl7_theatre",
-  "ambience": ["night_breeze"],
-  "spawn": [240, 272],
+  "ambience": [
+    "night_breeze"
+  ],
+  "spawn": [
+    240,
+    272
+  ],
   "zones": [
     {
       "id": "theatre_act3_b",
       "name_key": "ISL7_TH_R8",
-      "rect": [0, 0, 480, 320],
+      "rect": [
+        0,
+        0,
+        480,
+        320
+      ],
       "dark": true
     }
   ],
   "exits": [
     {
       "id": "exit_r8_south",
-      "rect": [224, 304, 32, 16],
+      "rect": [
+        224,
+        304,
+        32,
+        16
+      ],
       "to_region": "theatre_r7",
-      "to_spawn": [440, 48]
+      "to_spawn": [
+        440,
+        48
+      ]
     },
     {
       "id": "exit_r8_short",
-      "rect": [0, 208, 16, 48],
+      "rect": [
+        0,
+        208,
+        16,
+        48
+      ],
       "to_region": "theatre_r6",
-      "to_spawn": [48, 104],
-      "requires_flags": ["act3_done"],
+      "to_spawn": [
+        48,
+        104
+      ],
+      "requires_flags": [
+        "act3_done"
+      ],
       "locked_door_id": "door_r8_short"
     },
     {
       "id": "exit_r8_east",
-      "rect": [464, 144, 16, 48],
+      "rect": [
+        464,
+        144,
+        16,
+        48
+      ],
       "to_region": "theatre_r10",
-      "to_spawn": [48, 168],
-      "requires_flags": ["act3_done", "act4_done"],
+      "to_spawn": [
+        48,
+        168
+      ],
+      "requires_flags": [
+        "act3_done",
+        "act4_done"
+      ],
       "locked_door_id": "door_r8_east"
     }
   ],
@@ -44,13 +83,21 @@
     {
       "id": "anc_r8_south",
       "kind": "room_anchor",
-      "pos": [240, 272],
-      "props": { "auto": true }
+      "pos": [
+        240,
+        272
+      ],
+      "props": {
+        "auto": true
+      }
     },
     {
       "id": "spot_r8_w",
       "kind": "mirror",
-      "pos": [128, 192],
+      "pos": [
+        128,
+        192
+      ],
       "props": {
         "cue_spotlight": true,
         "floor_only": true,
@@ -60,16 +107,25 @@
     {
       "id": "curtain_r8_w",
       "kind": "mirror",
-      "pos": [128, 144],
+      "pos": [
+        128,
+        144
+      ],
       "props": {
         "cue_curtain": true,
-        "size": [32, 16]
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "spot_r8_e",
       "kind": "mirror",
-      "pos": [352, 192],
+      "pos": [
+        352,
+        192
+      ],
       "props": {
         "cue_spotlight": true,
         "floor_only": true,
@@ -79,29 +135,47 @@
     {
       "id": "curtain_r8_e",
       "kind": "mirror",
-      "pos": [352, 144],
+      "pos": [
+        352,
+        144
+      ],
       "props": {
         "cue_curtain": true,
-        "size": [32, 16]
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "door_r8_mask_gate",
       "kind": "door",
-      "pos": [240, 88],
+      "pos": [
+        240,
+        88
+      ],
       "props": {
         "door_kind": "combat_gate",
         "zone": "theatre_act3_b",
-        "size": [32, 16]
+        "size": [
+          32,
+          16
+        ]
       }
     },
     {
       "id": "mask_r8_break",
       "kind": "mask_plinth",
-      "pos": [240, 48],
+      "pos": [
+        240,
+        48
+      ],
       "props": {
         "act": 3,
-        "steals": ["lens", "prism"],
+        "steals": [
+          "lens",
+          "prism"
+        ],
         "mask_icon": "lens",
         "hp": 2.2,
         "auto_steal": true,
@@ -115,9 +189,14 @@
     {
       "id": "plate_r8_encore",
       "kind": "pressure_plate",
-      "pos": [240, 32],
+      "pos": [
+        240,
+        32
+      ],
       "props": {
-        "by": ["wick"],
+        "by": [
+          "wick"
+        ],
         "latch": true,
         "persist": true,
         "sets_flag": "act3_done",
@@ -127,16 +206,25 @@
     {
       "id": "plat_r8_phantom",
       "kind": "phantom_platform",
-      "pos": [112, 40],
+      "pos": [
+        112,
+        40
+      ],
       "props": {
-        "size": [32, 48],
+        "size": [
+          32,
+          48
+        ],
         "persist_grace": 1.2
       }
     },
     {
       "id": "chest_ember_7_theatre",
       "kind": "chest",
-      "pos": [56, 48],
+      "pos": [
+        56,
+        48
+      ],
       "props": {
         "reward_kind": "ember_piece",
         "amount": 1
@@ -145,92 +233,275 @@
     {
       "id": "door_r8_short",
       "kind": "door",
-      "pos": [24, 232],
+      "pos": [
+        24,
+        232
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act3_done"],
-        "size": [16, 48]
+        "requires_flags": [
+          "act3_done"
+        ],
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "door_r8_east",
       "kind": "door",
-      "pos": [456, 168],
+      "pos": [
+        456,
+        168
+      ],
       "props": {
         "door_kind": "ward_barrier",
-        "requires_flags": ["act3_done", "act4_done"],
-        "size": [16, 48]
+        "requires_flags": [
+          "act3_done",
+          "act4_done"
+        ],
+        "size": [
+          16,
+          48
+        ]
       }
     },
     {
       "id": "lamp_r8_sw",
       "kind": "road_lamp",
-      "pos": [144, 272],
-      "props": { "zone": "theatre_act3_b", "lit": true }
+      "pos": [
+        144,
+        272
+      ],
+      "props": {
+        "zone": "theatre_act3_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r8_se",
       "kind": "road_lamp",
-      "pos": [336, 272],
-      "props": { "zone": "theatre_act3_b", "lit": true }
+      "pos": [
+        336,
+        272
+      ],
+      "props": {
+        "zone": "theatre_act3_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r8_nw",
       "kind": "road_lamp",
-      "pos": [208, 48],
-      "props": { "zone": "theatre_act3_b", "lit": true }
+      "pos": [
+        208,
+        48
+      ],
+      "props": {
+        "zone": "theatre_act3_b",
+        "lit": true
+      }
     },
     {
       "id": "lamp_r8_ne",
       "kind": "road_lamp",
-      "pos": [384, 112],
-      "props": { "zone": "theatre_act3_b", "lit": true }
+      "pos": [
+        384,
+        112
+      ],
+      "props": {
+        "zone": "theatre_act3_b",
+        "lit": true
+      }
     }
   ],
   "enemies": [
     {
       "id": "r8_puppet_w",
       "kind": "puppet",
-      "pos": [144, 120],
+      "pos": [
+        144,
+        120
+      ],
       "zone": "theatre_act3_b",
       "leash": 136
     },
     {
       "id": "r8_puppet_e",
       "kind": "puppet",
-      "pos": [336, 120],
+      "pos": [
+        336,
+        120
+      ],
       "zone": "theatre_act3_b",
       "leash": 136
     },
     {
       "id": "r8_reflection",
       "kind": "reflection",
-      "pos": [240, 152],
+      "pos": [
+        240,
+        152
+      ],
       "zone": "theatre_act3_b",
       "leash": 136
     },
     {
       "id": "r8_owl",
       "kind": "silvered_owl",
-      "pos": [240, 112],
+      "pos": [
+        240,
+        112
+      ],
       "zone": "theatre_act3_b",
       "leash": 152
     }
   ],
   "decor": [
-    { "kind": "circle", "pos": [128, 192], "radius": 32, "style": "spotlight", "color": "gold", "secondary": "cream" },
-    { "kind": "circle", "pos": [352, 192], "radius": 32, "style": "spotlight", "color": "gold", "secondary": "cream" },
-    { "kind": "rug", "rect": [208, 32, 64, 48], "color": "wine", "border": "ice" },
-    { "kind": "inlay", "rect": [176, 128, 128, 112], "color": "gold" }
+    {
+      "kind": "circle",
+      "pos": [
+        128,
+        192
+      ],
+      "radius": 32,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "circle",
+      "pos": [
+        352,
+        192
+      ],
+      "radius": 32,
+      "style": "spotlight",
+      "color": "gold",
+      "secondary": "cream"
+    },
+    {
+      "kind": "rug",
+      "rect": [
+        208,
+        32,
+        64,
+        48
+      ],
+      "color": "wine",
+      "border": "ice"
+    }
   ],
   "scenery": [
-    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [168, 108], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 },
-    { "sheet": "theme_doppel_theatre", "prop": "puppet_crossbar_stand", "pos": [312, 108], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.5 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [80, 192], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.2 },
-    { "sheet": "theme_doppel_theatre", "prop": "spot_lantern_rig", "pos": [400, 192], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.6 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [196, 48], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.1 },
-    { "sheet": "theme_doppel_theatre", "prop": "velvet_stage_curtain", "pos": [284, 48], "layer": "sort", "flip_x": true, "shadow": true, "phase": 0.4 },
-    { "sheet": "theme_doppel_theatre", "prop": "brass_footlight_row", "pos": [240, 248], "layer": "sort", "flip_x": false, "shadow": true, "phase": 0.0 }
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        168,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "puppet_crossbar_stand",
+      "pos": [
+        312,
+        108
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.5
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        80,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.2
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "spot_lantern_rig",
+      "pos": [
+        400,
+        192
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.6
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        196,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.1
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "velvet_stage_curtain",
+      "pos": [
+        284,
+        48
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.4
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "brass_footlight_row",
+      "pos": [
+        240,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "dressing_vanity_mirror",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_doppel_theatre",
+      "prop": "theatre_box_seat",
+      "pos": [
+        360,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    }
   ],
   "layers": [],
   "events": [
@@ -239,12 +510,18 @@
       "on": "flag:act3_done",
       "once": true,
       "do": [
-        { "narrate": { "id": "ISL7_TH_SHORTCUT", "style": "narration", "duration": 2.4 } }
+        {
+          "narrate": {
+            "id": "ISL7_TH_SHORTCUT",
+            "style": "narration",
+            "duration": 2.4
+          }
+        }
       ]
     }
   ],
   "design": {
-    "idea": "ACT III CLIMAX — THE FLY-LOFT: Stand in dual golden Cue-Mirror spotlights to fire Solar Beam straight through velvet curtain baffles and sever hidden Puppet cords while tracking the Silvered Owl without Lens; break the Act III Mask to reclaim Lens & Prism, then pulse Lens to cross the NW phantom rafters for ember_7_theatre!",
+    "idea": "ACT III CLIMAX \u2014 THE FLY-LOFT: Stand in dual golden Cue-Mirror spotlights to fire Solar Beam straight through velvet curtain baffles and sever hidden Puppet cords while tracking the Silvered Owl without Lens; break the Act III Mask to reclaim Lens & Prism, then pulse Lens to cross the NW phantom rafters for ember_7_theatre!",
     "kind": "combat",
     "beat": "ten",
     "teaches": "Using Cue-Mirror spotlight piercing in live combat, then immediately rewarding reclaimed True Lens with a phantom-rafter Ember Piece cache.",
@@ -254,20 +531,76 @@
     "why": "Act III climax arena synthesizing Cue-Mirror curtain piercing with stealth-owl combat and a restored-Lens reward.",
     "exit": "exit_r8_short",
     "start": {
-      "flags": ["act2_done", "item_cue_mirror"]
+      "flags": [
+        "act2_done",
+        "item_cue_mirror"
+      ]
     },
     "solution": [
-      { "op": "clear", "timeout": 85.0 },
-      { "op": "goto", "to": [240, 108], "tol": 10 },
-      { "op": "shoot", "from": [240, 72], "target": "mask_r8_break", "count": 7 },
-      { "op": "wait_until", "flag": "act3_done", "timeout": 3.0 },
-      { "op": "goto", "to": [160, 48], "tol": 10 },
-      { "op": "lens" },
-      { "op": "goto", "to": [64, 48], "tol": 10 },
-      { "op": "interact", "target": "chest_ember_7_theatre" },
-      { "op": "lens" },
-      { "op": "goto", "to": [160, 48], "tol": 10 },
-      { "op": "expect_exit", "exit": "exit_r8_short" }
+      {
+        "op": "clear",
+        "timeout": 85.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          240,
+          108
+        ],
+        "tol": 10
+      },
+      {
+        "op": "shoot",
+        "from": [
+          240,
+          72
+        ],
+        "target": "mask_r8_break",
+        "count": 7
+      },
+      {
+        "op": "wait_until",
+        "flag": "act3_done",
+        "timeout": 3.0
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          48
+        ],
+        "tol": 10
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          64,
+          48
+        ],
+        "tol": 10
+      },
+      {
+        "op": "interact",
+        "target": "chest_ember_7_theatre"
+      },
+      {
+        "op": "lens"
+      },
+      {
+        "op": "goto",
+        "to": [
+          160,
+          48
+        ],
+        "tol": 10
+      },
+      {
+        "op": "expect_exit",
+        "exit": "exit_r8_short"
+      }
     ]
   }
 }

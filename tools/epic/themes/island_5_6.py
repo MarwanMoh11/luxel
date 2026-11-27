@@ -6,7 +6,18 @@ from typing import Any
 import numpy as np
 
 from .base import ThemePainter, ThemeSpec
-from .kit import IX, SHADE_IX, fbm_grid, hash01_grid, ramp_blend
+from .kit import (
+    COOL_IX,
+    IX,
+    LIGHT_IX,
+    SHADE_IX,
+    WALKABLE_TYPES,
+    chamfer_dist,
+    expand_neighbor_mask,
+    fbm_grid,
+    hash01_grid,
+    ramp_blend,
+)
 
 
 def _paint_star_water(buf: np.ndarray, ctx: dict[str, Any], seed: int) -> None:
@@ -41,6 +52,207 @@ def _paint_star_water(buf: np.ndarray, ctx: dict[str, Any], seed: int) -> None:
     buf[mask] = out[mask]
 
 
+def _paint_observatory_inlaid_path(
+    buf: np.ndarray,
+    ctx: dict[str, Any],
+    main_c: str,
+    hi_c: str,
+    seam_c: str,
+    trim_c: str,
+    seed: int,
+) -> None:
+    """Refined brass-inlaid ashlar observatory causeway (calm stone curbing, zero harsh dashed boxes)."""
+    mask = ctx["m_path"]
+    if not np.any(mask):
+        return
+    xs, ys = ctx["xs"], ctx["ys"]
+    lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+    bg, nb = ctx["bg"], ctx["n_broad"]
+
+    edge_n = (~ctx["n_up_path"]) & (ly == 0)
+    edge_s = (~ctx["n_dn_path"]) & (ly == ts - 1)
+    edge_w = (~ctx["n_lt_path"]) & (lx == 0)
+    edge_e = (~ctx["n_rt_path"]) & (lx == ts - 1)
+    is_edge = edge_n | edge_s | edge_w | edge_e
+
+    in_n = (~ctx["n_up_path"]) & (ly == 1)
+    in_s = (~ctx["n_dn_path"]) & (ly == ts - 2)
+    in_w = (~ctx["n_lt_path"]) & (lx == 1)
+    in_e = (~ctx["n_rt_path"]) & (lx == ts - 2)
+    is_inner = (in_n | in_s | in_w | in_e) & (~is_edge)
+    is_corner = (in_n | in_s) & (in_w | in_e)
+
+    # Dressed staggered ashlar slabs (16x8)
+    row_id = ys // 8
+    ox = np.where((row_id & 1) == 1, 8, 0)
+    sx = (xs + ox) % 16
+    sy = ys % 8
+    slab_h = hash01_grid((xs + ox) // 16, row_id, seed)
+    field = np.clip(nb * 0.36 + slab_h * 0.24 + 0.24, 0.08, 0.86)
+    out = ramp_blend((seam_c, main_c, main_c, hi_c), field, bg)
+
+    # Soft Bayer-dithered ashlar seams & quiet top catchlight
+    seam = ((sx == 0) | (sy == 0)) & (bg < 0.44)
+    out = np.where(seam, IX["night"], out)
+    bev = (sy == 1) & (sx > 1) & (sx < 14) & (slab_h > 0.68) & (bg < 0.28)
+    out = np.where(bev, IX[hi_c], out)
+
+    # Refined recessed curbstone & delicate inlaid brass rivets (never loud 67% dashed neon border)
+    coping = is_inner & (bg < 0.46)
+    out = np.where(coping, IX[hi_c], out)
+    brass_tick = is_inner & (is_corner | (((xs + ys) % 8) == 0))
+    out = np.where(brass_tick, IX[trim_c], out)
+    out = np.where(is_edge, np.where(bg < 0.76, IX["night"], IX[seam_c]), out)
+
+    # Quiet brass inlay alignment stud along wide walkway interiors
+    stud = (~is_edge) & (~is_inner) & (lx == 8) & (ly == 4) & (slab_h > 0.52)
+    out = np.where(stud, IX[trim_c], out)
+    buf[mask] = out[mask]
+
+
+def _paint_observatory_balustrade_walls(buf: np.ndarray, ctx: dict[str, Any], mode: str) -> None:
+    """Vaulted celestial-dome masonry walls for Planetarium & Freefall (replaces flat pinstripe balustrade)."""
+    mask = ctx["m_wall"] | ctx["m_foliage"]
+    if not np.any(mask):
+        return
+    s = self_spec = ctx.get("_spec")  # unused; read colors by mode below
+    _ = s, self_spec
+    xs, ys = ctx["xs"], ctx["ys"]
+    lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+    bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
+
+    up_open = ~ctx["n_up_wall"]
+    dn_open = ~ctx["n_dn_wall"]
+    lt_open = ~ctx["n_lt_wall"]
+    rt_open = ~ctx["n_rt_wall"]
+
+    wall_d = chamfer_dist(ctx["m_wall"])
+    edge_boost = np.clip(1.0 - wall_d / 14.0, 0.0, 1.0) * 0.36
+
+    if mode == "planetarium":
+        cap_ramp = ("void", "night", "deep")
+        north_lip = IX["blue"]
+        south_lip = IX["blue"]
+        face_c = IX["night"]
+        face_hi = IX["deep"]
+        pil_sp = 32
+        west_c = IX["blue"]
+    else:
+        # freefall weathered twilight-marble parapets
+        cap_ramp = ("void", "night", "dusk")
+        north_lip = IX["mauve"]
+        south_lip = IX["dusk"]
+        face_c = IX["night"]
+        face_hi = IX["dusk"]
+        pil_sp = 28
+        west_c = IX["mauve"]
+
+    # Smooth dressed masonry cap with depth shading toward wall interior
+    out = ramp_blend(cap_ramp, np.clip(nb * 0.50 + edge_boost + 0.08, 0.0, 0.92), bg)
+    row_id = ys // 8
+    ox = np.where((row_id & 1) == 1, 8, 0)
+    cap_seam = (((xs + ox) % 16 == 0) | (ys % 8 == 0)) & (bg < 0.42)
+    out = np.where(cap_seam, IX["void"], out)
+
+    # South-facing 6px sculpted architectural facade
+    south = dn_open & (ly >= ts - 6)
+    out = np.where(south & (ly == ts - 6), south_lip, out)
+    out = np.where(south & (ly > ts - 6) & (ly < ts - 1), face_c, out)
+    # Subtle horizontal molding course & ashlar joints on facade
+    out = np.where(south & (ly == ts - 4) & ((xs % 8) < 6) & (bg < 0.55), face_hi, out)
+    out = np.where(south & (ly == ts - 3) & ((xs % 16) == 0), IX["void"], out)
+    out = np.where(south & (ly == ts - 1), IX["void"], out)
+
+    # Crisp north cornice (calm stone edge + gilded capitals only at pilaster intervals)
+    pil_cap = (xs % pil_sp) <= 1
+    out = np.where(up_open & (ly == 0), np.where(pil_cap, IX["apricot"], north_lip), out)
+    # Lit WNW west rim & shaded east rim
+    west_rim = lt_open & (lx == 0) & (~(dn_open & (ly >= ts - 5)))
+    out = np.where(west_rim & (bg < 0.55 + 0.35 * warm), west_c, out)
+    out = np.where(west_rim & (warm < 0.25) & (bg < 0.45), COOL_IX[out], out)
+    east_rim = rt_open & (lx == ts - 1) & (~(dn_open & (ly >= ts - 5)))
+    out = np.where(east_rim, IX["void"], out)
+
+    buf[mask] = out[mask]
+
+
+def _paint_sconce_light_aprons(
+    buf: np.ndarray,
+    ctx: dict[str, Any],
+    spacing: int,
+    center_x: int,
+    radius: float = 14.0,
+) -> None:
+    """Paint warm Last Light brass wall sconces & Bayer-dithered golden-apricot floor light aprons."""
+    m_wall = ctx["m_wall"]
+    m_walk = ctx["m_walk"]
+    if not (np.any(m_wall) and np.any(m_walk)):
+        return
+    xs, lx, ly, ts = ctx["xs"], ctx["lx"], ctx["ly"], ctx["ts"]
+    bg = ctx["bg"]
+    dn_open = ~ctx["n_dn_wall"]
+    lt_open = ~ctx["n_lt_wall"]
+    rt_open = ~ctx["n_rt_wall"]
+
+    dn_walk = expand_neighbor_mask(ctx["grid"], 1, 0, WALKABLE_TYPES, ts)
+    sx_mod = xs % spacing
+    dx = np.minimum(np.abs(sx_mod - center_x), spacing - np.abs(sx_mod - center_x))
+
+    # Avoid clipping a sconce fixture onto the extreme 2px edge of a floating pillar
+    wall_ok = m_wall & dn_open & dn_walk & (~(lt_open & (lx < 2))) & (~(rt_open & (lx >= ts - 2)))
+
+    # 1) Brass lantern sconce fixture mounted on south-facing wall face
+    buf[wall_ok & (dx == 0) & (ly == ts - 5)] = IX["apricot"]
+    buf[wall_ok & (dx == 0) & (ly == ts - 4)] = IX["cream"]
+    buf[wall_ok & (dx == 0) & (ly == ts - 3)] = IX["gold"]
+    buf[wall_ok & (dx == 0) & (ly == ts - 2)] = IX["apricot"]
+    buf[wall_ok & (dx == 1) & (ly == ts - 4)] = IX["apricot"]
+    buf[wall_ok & (dx == 1) & (ly == ts - 3) & (bg < 0.72)] = IX["apricot"]
+    buf[wall_ok & (dx == 1) & (ly == ts - 5)] = IX["dusk"]
+    # Subtle warm bounce halo on dark masonry flanking the sconce
+    wall_halo = wall_ok & (dx >= 2) & (dx <= 5) & (ly >= ts - 5) & (ly <= ts - 2)
+    buf[wall_halo & (dx <= 3) & (bg < 0.42)] = IX["plum"]
+    buf[wall_halo & (dx >= 4) & (bg < 0.24)] = IX["dusk"]
+
+    # 2) Soft Bayer-dithered golden-apricot-to-mauve light apron spilling onto walkable floor below
+    up_lt_open = expand_neighbor_mask(ctx["grid"], -1, -1, {"wall"}, ts)
+    up_rt_open = expand_neighbor_mask(ctx["grid"], -1, 1, {"wall"}, ts)
+    floor_ok = (
+        m_walk
+        & ctx["n_up_wall"]
+        & (~((~up_lt_open) & (lx < 2)))
+        & (~((~up_rt_open) & (lx >= ts - 2)))
+    )
+    if not np.any(floor_ok):
+        return
+
+    dist = np.hypot(dx.astype(np.float32) * 0.74, (ly.astype(np.float32) + 0.6) * 1.05)
+    in_pool = floor_ok & (dist < radius) & (ly >= 1)
+    if not np.any(in_pool):
+        return
+
+    t = np.clip(1.0 - dist / float(radius), 0.0, 1.0)
+    # Do not overwrite bright focal decor (cream/gold/ice/apricot already on floor)
+    cur = buf
+    is_bright = (cur == IX["cream"]) | (cur == IX["gold"]) | (cur == IX["ice"]) | (cur == IX["apricot"])
+    paintable = in_pool & (~is_bright)
+
+    # Outer warm violet-mauve wash (warms cold night/deep/blue without blowing out floor luma)
+    outer_plum = paintable & (t < 0.44) & (t * 0.78 > bg) & ((cur == IX["night"]) | (cur == IX["deep"]) | (cur == IX["dusk"]))
+    outer_mauve = paintable & (t >= 0.30) & (t * 0.68 > bg)
+    mid_apricot = paintable & (dist < radius * 0.58) & ((1.0 - dist / (radius * 0.60)) * 0.56 > bg)
+    core_gold = paintable & (dist < 4.2) & ((1.0 - dist / 4.6) * 0.48 > bg)
+
+    buf[outer_plum] = IX["plum"]
+    buf[outer_mauve] = IX["mauve"]
+    buf[mid_apricot] = IX["apricot"]
+    buf[core_gold] = IX["gold"]
+
+    # Gentle contact glint right beneath sconce at ly==0 (keeps plinth grounded everywhere else)
+    base_glint = floor_ok & (ly == 0) & (dx <= 2) & (bg < 0.52) & (~is_bright)
+    buf[base_glint] = IX["apricot"]
+
+
 def _paint_observatory_walls(buf: np.ndarray, ctx: dict[str, Any], mode: str) -> None:
     """Paint architectural observatory silhouettes onto walls (dome ribs, astrolabe arcs, arches, skylights)."""
     m_wall = ctx["m_wall"]
@@ -72,7 +284,7 @@ def _paint_observatory_walls(buf: np.ndarray, ctx: dict[str, Any], mode: str) ->
         buf[arch_cut] = IX["void"]
         # Gilded astrolabe arch lintel & tiny star-dial pip inside
         lintel = m_wall & dn_open & (ly == ts - 6) & (rx >= 10) & (rx <= 14)
-        buf[lintel] = IX["gold"]
+        buf[lintel] = IX["apricot"]
         pip = m_wall & dn_open & (ly == ts - 3) & (rx == 12)
         buf[pip] = IX["sky"]
 
@@ -89,37 +301,42 @@ def _paint_observatory_walls(buf: np.ndarray, ctx: dict[str, Any], mode: str) ->
         arch_cut = bay & ~((ly == ts - 5) & ((rx == 10) | (rx == 18)))
         buf[arch_cut] = IX["void"]
         ore = m_wall & dn_open & (ly == ts - 3) & ((rx == 13) | (rx == 15))
-        buf[ore & (rx == 13)] = IX["ice"]
-        buf[ore & (rx == 15)] = IX["gold"]
+        buf[ore & (rx == 13)] = IX["sky"]
+        buf[ore & (rx == 15)] = IX["apricot"]
 
     elif mode == "planetarium":
         buf[dome_arc] = IX["deep"]
-        # Meridian dome ribs every 32px
+        # Fluted observatory dome pilasters every 32px
         rx = xs % 32
         rib = m_wall & ((rx == 0) | (rx == 1))
-        buf[rib & cap_interior & (bg < 0.70)] = IX["deep"]
-        buf[rib & dn_open & (ly >= ts - 6) & (ly < ts - 1)] = IX["blue"]
-        buf[m_wall & (rx == 0) & dn_open & (ly == ts - 6)] = IX["gold"]
+        buf[rib & cap_interior & (bg < 0.65)] = IX["deep"]
+        buf[m_wall & (rx == 0) & dn_open & (ly >= ts - 5) & (ly < ts - 1)] = IX["blue"]
+        buf[m_wall & (rx == 1) & dn_open & (ly >= ts - 5) & (ly < ts - 1)] = IX["deep"]
+        buf[m_wall & (rx == 2) & dn_open & (ly >= ts - 5) & (ly < ts - 1)] = IX["void"]
+        buf[m_wall & ((rx == 0) | (rx == 1)) & dn_open & (ly == ts - 6)] = IX["gold"]
         # Arched starry clerestory skylights recessed along south-facing walls
         sky_w = m_wall & dn_open & (rx >= 10) & (rx <= 22) & (ly >= ts - 5) & (ly <= ts - 2)
         arch = sky_w & ~((ly == ts - 5) & ((rx == 10) | (rx == 22)))
-        buf[arch] = IX["deep"]
+        buf[arch] = IX["void"]
+        buf[arch & (ly <= ts - 4) & (bg < 0.65)] = IX["deep"]
         # Central skylight mullion & starlight panes
         mull = arch & (rx == 16)
         buf[mull] = IX["night"]
         star_l = arch & (ly == ts - 4) & ((rx == 13) | (rx == 19))
         buf[star_l] = IX["ice"]
         buf[arch & (ly == ts - 3) & ((rx == 12) | (rx == 20))] = IX["sky"]
-        # Gilded arch crown
-        buf[m_wall & dn_open & (ly == ts - 6) & (rx >= 12) & (rx <= 20)] = IX["gold"]
+        # Refined gilded arch keystone (restrained, never a harsh continuous yellow bar)
+        buf[m_wall & dn_open & (ly == ts - 6) & (rx >= 13) & (rx <= 19)] = IX["apricot"]
+        buf[m_wall & dn_open & (ly == ts - 6) & (rx == 16)] = IX["gold"]
 
     elif mode == "freefall":
         buf[dome_arc] = IX["dusk"]
-        # Broken observatory skylight bays & jagged ruined dome ribs every 28px
+        # Broken observatory skylight bays & weathered ruined dome pilasters every 28px
         rx = xs % 28
         rib = m_wall & ((rx == 0) | (rx == 1))
-        buf[rib & cap_interior & (bg < 0.65)] = IX["dusk"]
-        buf[rib & dn_open & (ly >= ts - 6) & (ly < ts - 1)] = IX["mauve"]
+        buf[rib & cap_interior & (bg < 0.62)] = IX["dusk"]
+        buf[m_wall & (rx == 0) & dn_open & (ly >= ts - 5) & (ly < ts - 1)] = IX["mauve"]
+        buf[m_wall & (rx == 1) & dn_open & (ly >= ts - 5) & (ly < ts - 1)] = IX["dusk"]
         buf[m_wall & (rx == 0) & dn_open & (ly == ts - 6)] = IX["gold"]
         # Shattered skylight window gap with jagged ice glass shards
         gap = m_wall & dn_open & (rx >= 9) & (rx <= 19) & (ly >= ts - 5) & (ly <= ts - 2)
@@ -153,7 +370,7 @@ def _paint_observatory_walls(buf: np.ndarray, ctx: dict[str, Any], mode: str) ->
 
 
 class OrreryPainter(ThemePainter):
-    """Grand Clockwork Orrery (unified for orrery_r1..r16): luminous twilight slate, brass arcs & dome ribs."""
+    """Grand Clockwork Orrery (unified for orrery_r1..r16): luminous twilight slate, brass arcs & warm sconce glow."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -171,34 +388,41 @@ class OrreryPainter(ThemePainter):
         sy = ys % sh
         slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
 
-        # Luminous twilight slate-indigo flagstones (~76-82 luma)
-        field = np.clip(nb * 0.42 + slab_h * 0.26 + warm * 0.08 + 0.08, 0.04, 0.78)
-        out = ramp_blend(s.floor_ramp, field, bg)
+        # Harmonious twilight flagstones (~76-81 luma; reduced blue/plum checkerboard, warm-west -> cool-east)
+        field = np.clip(nb * 0.46 + slab_h * 0.16 + 0.22, 0.12, 0.84)
+        west_out = ramp_blend(("dusk", "plum", "plum", "mauve"), field, bg)
+        east_out = ramp_blend(("deep", "dusk", "blue", "mauve"), np.clip(field * 0.96, 0.10, 0.80), bg)
+        out = np.where(warm * 0.76 + (nb - 0.5) * 0.24 > bg, west_out, east_out)
+
         # Soft Bayer-dithered mortar seams (calm, never harsh dark grid)
-        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.46)
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.42)
         out = np.where(is_seam, IX["night"], out)
         # Gentle top-left sunlit catchlight on select dressed stones
-        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.70) & (bg < 0.34)
+        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.70) & (bg < 0.30)
         out = np.where(is_bev, IX["mauve"], out)
         # Quiet room-centered brass astrolabe meridian arc inlaid into walkable stonework
         cx, cy = W * 0.5, H * 0.5
         rad = np.hypot(xs - cx, (ys - cy) * 1.08)
         arc = (np.abs(rad - 58.0) < 0.65) | (np.abs(rad - 98.0) < 0.65)
-        out = np.where(arc & (((xs + ys) % 4) < 2) & (~is_seam), IX["apricot"], out)
+        out = np.where(arc & (((xs + ys) % 4) < 2) & (~is_seam) & (bg < 0.72), IX["apricot"], out)
         # Ultra-sparse gilded brass pin at select intersections
         pin = (sx == 8) & (sy == 6) & (slab_h > 0.94) & (nf > 0.5)
         out = np.where(pin, IX["gold"], out)
         buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_inlaid_path(buf, ctx, "plum", "mauve", "dusk", "apricot", self.spec.seed + 601)
 
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_star_water(buf, ctx, self.spec.seed)
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "orrery")
+        _paint_sconce_light_aprons(buf, ctx, spacing=48, center_x=24, radius=13.5)
 
 
 class MeteorVaultPainter(ThemePainter):
-    """Meteor Vault: calm volcanic-indigo basalt slabs (zero noisy crack static!), dark iron-dome walls."""
+    """Meteor Vault: calm volcanic-indigo basalt slabs, dark iron-dome walls & warm brass sconces."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -206,7 +430,7 @@ class MeteorVaultPainter(ThemePainter):
             return
         s = self.spec
         xs, ys = ctx["xs"], ctx["ys"]
-        bg, nb, nf, warm = ctx["bg"], ctx["n_broad"], ctx["n_fine"], ctx["warm"]
+        bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
 
         # Large calm dressed asteroid-basalt slabs (20x14 staggered ashlar)
         sw, sh = 20, 14
@@ -216,31 +440,44 @@ class MeteorVaultPainter(ThemePainter):
         sy = ys % sh
         slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 109)
 
-        # Calibrated mid-tone asteroid basalt (~72-80 luma, clean figure-ground clarity!)
-        field = np.clip(nb * 0.44 + slab_h * 0.30 + warm * 0.08 + 0.24, 0.12, 0.92)
+        # Calibrated mid-tone asteroid basalt (~76-81 luma, smooth cohesive figure-ground)
+        field = np.clip(nb * 0.46 + slab_h * 0.18 + warm * 0.08 + 0.28, 0.16, 0.92)
         out = ramp_blend(s.floor_ramp, field, bg)
         # Soft Bayer-dithered seams (NEVER bright gold/ice confetti cracks!)
-        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.50)
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.46)
         out = np.where(is_seam, IX["night"], out)
         # Quiet top-left catchlight on weathered basalt faces
-        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.30)
+        is_bev = (sy == 1) & (sx > 2) & (sx < sw - 2) & (slab_h > 0.72) & (bg < 0.28)
         out = np.where(is_bev, IX["mauve"], out)
         # Very subtle embedded star-ore glints tucked strictly near rare block corners (<0.25%)
-        glint_a = (sx == 2) & (sy == 2) & (slab_h > 0.92) & (nb > 0.52)
-        glint_b = (sx == sw - 3) & (sy == sh - 3) & (slab_h < 0.08) & (nb < 0.48)
+        glint_a = (sx == 2) & (sy == 2) & (slab_h > 0.93) & (nb > 0.52)
+        glint_b = (sx == sw - 3) & (sy == sh - 3) & (slab_h < 0.07) & (nb < 0.48)
         out = np.where(glint_a, IX["gold"], out)
         out = np.where(glint_b, IX["ice"], out)
         buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_inlaid_path(buf, ctx, "plum", "mauve", "dusk", "apricot", self.spec.seed + 611)
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        super().paint_walls(buf, ctx)
+        # Calm bright rivet polka-dots on dark iron roof caps so south cornices & sconces lead the eye
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        cap_in = m_wall & (~(dn_open & (ctx["ly"] >= ctx["ts"] - 6))) & (~((~ctx["n_up_wall"]) & (ctx["ly"] == 0)))
+        dot = cap_in & (buf == IX[self.spec.wall_lip])
+        buf[dot] = IX["dusk"]
 
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_star_water(buf, ctx, self.spec.seed)
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "meteor")
+        _paint_sconce_light_aprons(buf, ctx, spacing=56, center_x=28, radius=14.0)
 
 
 class PlanetariumPainter(ThemePainter):
-    """Planetarium: smooth satin sapphire-indigo star dome (~80-86 luma), dark arched skylight dome walls."""
+    """Planetarium: satin sapphire-indigo dome stonework, vaulted skylight pilasters & warm brass sconce halos."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -251,33 +488,49 @@ class PlanetariumPainter(ThemePainter):
         bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
         H, W = ctx["H"], ctx["W"]
 
-        # Smooth satin sapphire-indigo dome stone (~78-85 luma; calm jewel-like clarity)
-        field = np.clip(nb * 0.36 + warm * 0.10 + 0.08, 0.02, 0.48)
-        out = ramp_blend(s.floor_ramp, field, bg)
-        # Fine 32x32 meridian grid (dashed night/deep so floor stays calm)
-        grid_line = (((xs % 32 == 0) & (ys % 2 == 0)) | ((ys % 32 == 0) & (xs % 2 == 0))) & (bg < 0.65)
+        # Subtle warm-west twilight plum-indigo to cool-east satin sapphire (~77-82 luma)
+        slab_h = hash01_grid(xs // 16, ys // 16, s.seed + 117)
+        field = np.clip(nb * 0.36 + slab_h * 0.14 + 0.16, 0.08, 0.64)
+        east_out = ramp_blend(("deep", "blue", "sky"), np.clip(field * 0.80, 0.06, 0.48), bg)
+        west_out = ramp_blend(("deep", "dusk", "plum", "blue"), np.clip(field * 1.15, 0.12, 0.88), bg)
+        out = np.where(warm * 0.48 + (nb - 0.5) * 0.20 > bg, west_out, east_out)
+
+        # Fine calm 32x32 celestial meridian grid (Bayer-dithered night/deep)
+        grid_line = (((xs % 32 == 0) & (ys % 2 == 0)) | ((ys % 32 == 0) & (xs % 2 == 0))) & (bg < 0.52)
         out = np.where(grid_line, IX["night"], out)
-        # Star intersection crosses
+        # Restrained brass meridian intersection pips (no glaring white cream dot grid!)
         node = (xs % 32 == 0) & (ys % 32 == 0)
-        node_arm = ((np.abs((xs % 32) - 0) <= 1) & (ys % 32 == 0)) | ((xs % 32 == 0) & (np.abs((ys % 32) - 0) <= 1))
-        out = np.where(node_arm, IX["apricot"], out)
-        out = np.where(node, IX["cream"], out)
-        # Concentric gilded celestial dome arcs centered in room
+        major = (xs % 64 == 0) & (ys % 64 == 0)
+        node_arm = (
+            (((xs % 32 == 1) | (xs % 32 == 31)) & (ys % 32 == 0))
+            | ((xs % 32 == 0) & ((ys % 32 == 1) | (ys % 32 == 31)))
+        )
+        out = np.where(node_arm & (bg < 0.55), IX["mauve"], out)
+        out = np.where(node, IX["apricot"], out)
+        out = np.where(major, IX["gold"], out)
+        # Soft concentric gilded celestial dome arcs centered in room
         cx, cy = W * 0.5, H * 0.5
         rad = np.hypot(xs - cx, (ys - cy) * 1.1)
-        arc = (np.abs(rad - 54.0) < 0.75) | (np.abs(rad - 92.0) < 0.75)
-        out = np.where(arc & (((xs + ys) % 3) != 0), IX["apricot"], out)
+        arc = (np.abs(rad - 54.0) < 0.65) | (np.abs(rad - 92.0) < 0.65)
+        out = np.where(arc & (((xs + ys) % 4) < 2) & (bg < 0.75), IX["apricot"], out)
         buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_inlaid_path(buf, ctx, "deep", "blue", "night", "apricot", self.spec.seed + 621)
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_balustrade_walls(buf, ctx, "planetarium")
 
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_star_water(buf, ctx, self.spec.seed)
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "planetarium")
+        _paint_sconce_light_aprons(buf, ctx, spacing=64, center_x=32, radius=14.5)
 
 
 class FreefallPainter(ThemePainter):
-    """Observatory Freefall: twilight-lavender shattered masonry (~82-88 luma) & broken-skylight dark parapets."""
+    """Observatory Freefall: twilight-lavender shattered masonry, weathered dome parapets & warm sconce glow."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -288,34 +541,43 @@ class FreefallPainter(ThemePainter):
         bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
         H, W = ctx["H"], ctx["W"]
 
-        sx = xs % 16
         sy = ys % 12
         row_id = ys // 12
         ox = np.where((row_id & 1) == 1, 7, 0)
         cx_s = (xs + ox) % 16
         sh = hash01_grid((xs + ox) // 16, row_id, s.seed + 127)
 
-        # Calibrated windswept twilight marble (~80-86 luma; open-air yet crisp for gold bolts)
-        field = np.clip(nb * 0.42 + sh * 0.24 + warm * 0.08 + 0.14, 0.05, 0.74)
-        out = ramp_blend(s.floor_ramp, field, bg)
-        is_seam = ((cx_s == 0) | (sy == 0)) & (bg < 0.54)
+        # Calibrated windswept twilight masonry (~77-82 luma; cohesive warm-west to cool-east)
+        field = np.clip(nb * 0.44 + sh * 0.18 + 0.22, 0.12, 0.82)
+        west_out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
+        east_out = ramp_blend(("deep", "dusk", "blue", "mauve"), field, bg)
+        out = np.where(warm * 0.70 + (nb - 0.5) * 0.25 > bg, west_out, east_out)
+
+        is_seam = ((cx_s == 0) | (sy == 0)) & (bg < 0.46)
         out = np.where(is_seam, IX["night"], out)
-        out = np.where((sy == 1) & (cx_s > 1) & (sh > 0.64) & (bg < 0.34), IX["ice"], out)
-        # Subtle organic fracture cracks across floating marble fragments
-        frac_n = np.abs(fbm_grid(H, W, 26.0, seed=s.seed + 131, octaves=2) - 0.5)
-        out = np.where(frac_n < 0.014, IX["night"], out)
-        out = np.where((frac_n >= 0.014) & (frac_n < 0.022) & (bg < 0.38), IX["apricot"], out)
+        out = np.where((sy == 1) & (cx_s > 1) & (sh > 0.68) & (bg < 0.30), IX["sky"], out)
+        # Crisp restrained stone fracture cracks (no loud golden spaghetti loops!)
+        frac_n = np.abs(fbm_grid(H, W, 30.0, seed=s.seed + 131, octaves=2) - 0.5)
+        out = np.where((frac_n < 0.011) & (nb > 0.38), IX["night"], out)
+        out = np.where((frac_n >= 0.011) & (frac_n < 0.016) & (nb > 0.58) & (bg < 0.30), IX["mauve"], out)
         buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_inlaid_path(buf, ctx, "plum", "mauve", "dusk", "apricot", self.spec.seed + 631)
+
+    def paint_walls(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_balustrade_walls(buf, ctx, "freefall")
 
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_star_water(buf, ctx, self.spec.seed)
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "freefall")
+        _paint_sconce_light_aprons(buf, ctx, spacing=56, center_x=28, radius=13.5)
 
 
 class StarfallGeodePainter(ThemePainter):
-    """Starfall Geode Caverns: calm twilight cavern stone (~74-80 luma), carved crypt arches & teal star water."""
+    """Starfall Geode Caverns: calm twilight cavern stone, hand-dressed stepping flagstones & warm crypt lanterns."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -327,15 +589,68 @@ class StarfallGeodePainter(ThemePainter):
         H, W = ctx["H"], ctx["W"]
 
         warp_n = fbm_grid(H, W, 32.0, seed=s.seed + 163, octaves=3)
-        strata = np.clip(nb * 0.44 + warp_n * 0.30 + warm * 0.06 + 0.28, 0.16, 0.94)
-        out = ramp_blend(s.floor_ramp, strata, bg)
+        # Calm luminous twilight cavern stone (~75-80 luma, clearly below teal water ~102)
+        strata = np.clip(nb * 0.42 + warp_n * 0.28 + warm * 0.06 + 0.24, 0.14, 0.84)
+        out = ramp_blend(("deep", "dusk", "plum", "blue"), strata, bg)
         # Calm natural bedrock crevices
-        crack = (np.abs(warp_n - 0.46) < 0.012) & (nb < 0.56)
+        crack = (np.abs(warp_n - 0.46) < 0.011) & (nb < 0.56)
         out = np.where(crack, IX["night"], out)
-        out = np.where((np.abs(warp_n - 0.475) < 0.010) & (nb > 0.54) & (bg < 0.34), IX["sky"], out)
+        out = np.where((np.abs(warp_n - 0.474) < 0.009) & (nb > 0.54) & (bg < 0.30), IX["sky"], out)
         # Sparse quartz & star-brass mineral flecks
-        out = np.where((nf < 0.005) & (warp_n > 0.58), IX["gold"], out)
-        out = np.where((nf > 0.996) & (nb > 0.50), IX["ice"], out)
+        out = np.where((nf < 0.004) & (warp_n > 0.58), IX["gold"], out)
+        out = np.where((nf > 0.997) & (nb > 0.50), IX["ice"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        """Hand-dressed star-slate cavern stepping-flagstones with organic feathered edges (replaces sand_trail confetti!)."""
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
+        H, W = ctx["H"], ctx["W"]
+
+        # Paint underlying cavern stone first so organic edges blend seamlessly without rectangular cutouts
+        warp_n = fbm_grid(H, W, 32.0, seed=s.seed + 163, octaves=3)
+        strata = np.clip(nb * 0.42 + warp_n * 0.28 + warm * 0.06 + 0.24, 0.14, 0.84)
+        cavern_bg = ramp_blend(("deep", "dusk", "plum", "blue"), strata, bg)
+
+        # Soft organic distance from non-path border so flagstones settle naturally into cavern bedrock
+        d_edge = np.full((H, W), 8.0, dtype=np.float32)
+        d_edge = np.where(~ctx["n_up_path"], np.minimum(d_edge, ly.astype(np.float32)), d_edge)
+        d_edge = np.where(~ctx["n_dn_path"], np.minimum(d_edge, (ts - 1 - ly).astype(np.float32)), d_edge)
+        d_edge = np.where(~ctx["n_lt_path"], np.minimum(d_edge, lx.astype(np.float32)), d_edge)
+        d_edge = np.where(~ctx["n_rt_path"], np.minimum(d_edge, (ts - 1 - lx).astype(np.float32)), d_edge)
+        feather = (d_edge + (nb - 0.5) * 3.0) / 3.2
+        in_flag = feather > (bg * 0.85 + 0.12)
+
+        # Dressed staggered star-slate stepping stones (14x10)
+        sw, sh = 14, 10
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 641)
+
+        sf = np.clip(nb * 0.34 + slab_h * 0.24 + 0.20, 0.10, 0.82)
+        flag = ramp_blend(("dusk", "plum", "blue", "mauve"), sf, bg)
+        # Soft recessed stepping-stone seams
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.52)
+        flag = np.where(is_seam, IX["night"], flag)
+        # Subtle WNW catchlight on top bevel of dressed flagstones
+        is_bev = (sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.64) & (bg < 0.30)
+        flag = np.where(is_bev, IX["mauve"], flag)
+        # Delicate inlaid brass/sky stepping-stone trim along outer stepping curb (sparse, calm)
+        curb = (d_edge >= 1.0) & (d_edge <= 2.0) & in_flag & (~is_seam)
+        flag = np.where(curb & (((xs + ys) % 7) == 0), IX["apricot"], flag)
+        flag = np.where(curb & (((xs + ys) % 11) == 3) & (bg < 0.45), IX["sky"], flag)
+        # Ultra-sparse brass center guide stud on occasional flagstones
+        stud = (sx == sw // 2) & (sy == sh // 2) & (slab_h > 0.88) & (d_edge > 2.0)
+        flag = np.where(stud, IX["apricot"], flag)
+
+        out = np.where(in_flag, flag, cavern_bg)
         buf[mask] = out[mask]
 
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
@@ -343,10 +658,11 @@ class StarfallGeodePainter(ThemePainter):
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "geode")
+        _paint_sconce_light_aprons(buf, ctx, spacing=56, center_x=14, radius=14.0)
 
 
 class StarfallOverworldPainter(ThemePainter):
-    """Starfall Observatory Overworld: luminous twilight archipelago (~76 luma), warm west / cool east & cliff skirts."""
+    """Starfall Observatory Overworld: luminous twilight archipelago, brass-trimmed causeways, calm bridges & cliff skirts."""
 
     def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         mask = ctx["m_ground"]
@@ -364,7 +680,7 @@ class StarfallOverworldPainter(ThemePainter):
         sy = ys % sh
         slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 77)
 
-        field = np.clip(nb * 0.42 + slab_h * 0.24 + 0.18, 0.06, 0.84)
+        field = np.clip(nb * 0.44 + slab_h * 0.20 + 0.18, 0.06, 0.82)
         west_out = ramp_blend(("dusk", "plum", "blue", "mauve"), field, bg)
         east_out = ramp_blend(("deep", "deep", "blue", "sky"), np.clip(field * 0.82, 0.04, 0.72), bg)
         # Smooth Bayer blend between warm west and moonlit east
@@ -380,25 +696,113 @@ class StarfallOverworldPainter(ThemePainter):
         out = np.where(glint, np.where(warm > 0.45, IX["mauve"], IX["sky"]), out)
         buf[mask] = out[mask]
 
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        _paint_observatory_inlaid_path(buf, ctx, "plum", "mauve", "dusk", "apricot", self.spec.seed + 651)
+
+    def paint_bridge(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        """Refined weathered twilight-timber & gilded brass observatory bridges (replaces loud coral stripes!)."""
+        mask = ctx["m_bridge"]
+        if not np.any(mask):
+            return
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        open_n = (~ctx["n_up_bridge"]) & (~ctx["n_up_land"])
+        open_s = (~ctx["n_dn_bridge"]) & (~ctx["n_dn_land"])
+        open_w = (~ctx["n_lt_bridge"]) & (~ctx["n_lt_land"])
+        open_e = (~ctx["n_rt_bridge"]) & (~ctx["n_rt_land"])
+
+        rail_n = (ly == 0) & open_n
+        rail_s = (ly == ts - 1) & open_s
+        rail_w = (lx == 0) & open_w
+        rail_e = (lx == ts - 1) & open_e
+        rail = rail_n | rail_s | rail_w | rail_e
+
+        in_n = (ly == 1) & open_n
+        in_s = (ly == ts - 2) & open_s
+        in_w = (lx == 1) & open_w
+        in_e = (lx == ts - 2) & open_e
+        stringer = in_n | in_s | in_w | in_e
+
+        # Orient plank slats perpendicular to bridge span (vertical bridge -> horizontal planks)
+        is_vert = (open_w | open_e) & (~(open_n | open_s))
+        p_coord = np.where(is_vert, ys, xs)
+        p_along = np.where(is_vert, xs, ys)
+        plank_id = p_coord // 5
+        plank_pos = p_coord % 5
+        ph = hash01_grid(plank_id, p_along // 16, self.spec.seed + 661)
+
+        # Calm weathered mahogany/plum timber deck (dusk -> plum -> wine, soft subtle mauve catchlight)
+        out = ramp_blend(("dusk", "plum", "plum", "wine"), np.clip(nb * 0.42 + ph * 0.28 + 0.14, 0.06, 0.84), bg)
+        out = np.where((plank_pos == 0) & (bg < 0.72), IX["night"], out)
+        out = np.where((plank_pos == 1) & (ph > 0.68) & (bg < 0.28), IX["mauve"], out)
+        # Subtle iron/brass deck nails near stringers
+        nail = (plank_pos == 2) & ((ly == 2) | (ly == ts - 3) | (lx == 2) | (lx == ts - 3)) & (ph > 0.45)
+        out = np.where(nail, IX["dusk"], out)
+
+        # Recessed dark timber stringer & refined gilded brass side balustrade
+        out = np.where(stringer, IX["night"], out)
+        post = ((xs + ys) % 8 == 0)
+        out = np.where(rail, np.where(post, IX["gold"], np.where(((xs + ys) % 2) == 0, IX["apricot"], IX["dusk"])), out)
+        # Subtle warm catchlight next to gilded bridge posts
+        post_glow = (~rail) & (~stringer) & (
+            ((ly == 2) & open_n & (xs % 8 == 0))
+            | ((ly == ts - 3) & open_s & (xs % 8 == 0))
+            | ((lx == 2) & open_w & (ys % 8 == 0))
+            | ((lx == ts - 3) & open_e & (ys % 8 == 0))
+        )
+        out = np.where(post_glow, IX["apricot"], out)
+        buf[mask] = out[mask]
+
     def paint_water(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_star_water(buf, ctx, self.spec.seed)
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         _paint_observatory_walls(buf, ctx, "overworld")
-        # Sculpted terraced twilight cliff skirt hanging below southern island rims into starry void
+        _paint_sconce_light_aprons(buf, ctx, spacing=48, center_x=12, radius=11.0)
+
+        # Warm observatory corner beacon catchlights on outer terrace promontories
+        m_walk = ctx["m_walk"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        c_nw = m_walk & ctx["n_up_abyss"] & ctx["n_lt_abyss"] & (lx < 6) & (ly < 6)
+        c_ne = m_walk & ctx["n_up_abyss"] & ctx["n_rt_abyss"] & (lx >= ts - 6) & (ly < 6)
+        c_sw = m_walk & ctx["n_dn_abyss"] & ctx["n_lt_abyss"] & (lx < 6) & (ly >= ts - 6)
+        c_se = m_walk & ctx["n_dn_abyss"] & ctx["n_rt_abyss"] & (lx >= ts - 6) & (ly >= ts - 6)
+        d_c = np.full(buf.shape, 99.0, dtype=np.float32)
+        d_c = np.where(c_nw, np.hypot(lx - 1.5, ly - 1.5), d_c)
+        d_c = np.where(c_ne, np.hypot((ts - 2.5) - lx, ly - 1.5), d_c)
+        d_c = np.where(c_sw, np.hypot(lx - 1.5, (ts - 2.5) - ly), d_c)
+        d_c = np.where(c_se, np.hypot((ts - 2.5) - lx, (ts - 2.5) - ly), d_c)
+        # Subtle warm brass corner stud + soft Bayer apricot glow
+        buf[(d_c < 1.3)] = IX["gold"]
+        buf[(d_c >= 1.3) & (d_c < 3.6) & ((1.0 - d_c / 4.0) * 0.55 > bg)] = IX["apricot"]
+        buf[(d_c >= 3.6) & (d_c < 5.4) & ((1.0 - d_c / 5.6) * 0.45 > bg)] = IX["mauve"]
+
+        # Refined 8px stratified twilight cliff skirt hanging below southern island rims into starry void
         m_void = ctx["m_void"]
         n_up_land = ctx["n_up_land"]
-        xs, ly = ctx["xs"], ctx["ly"]
-        bg = ctx["bg"]
-        cliff = m_void & n_up_land & (ly < 6)
-        buf[cliff & (ly == 0)] = IX["blue"]
-        buf[cliff & (ly == 1)] = IX["deep"]
-        c2 = cliff & (ly == 2)
-        buf[c2] = np.where(((xs[c2] % 4) == 0) | (bg[c2] < 0.50), IX["dusk"], IX["deep"])
-        buf[cliff & (ly == 3)] = IX["dusk"]
-        c4 = cliff & (ly == 4)
-        buf[c4] = np.where(bg[c4] < 0.65, IX["night"], IX["dusk"])
-        buf[cliff & (ly == 5) & (bg < 0.55)] = IX["night"]
+        xs = ctx["xs"]
+        warm = ctx["warm"]
+        cliff = m_void & n_up_land & (ly < 8)
+        if np.any(cliff):
+            c0 = cliff & (ly == 0)
+            buf[c0] = np.where(warm[c0] > bg[c0], IX["mauve"], IX["blue"])
+            c1 = cliff & (ly == 1)
+            buf[c1] = np.where((xs[c1] % 8) == 0, IX["night"], np.where(warm[c1] > bg[c1], IX["plum"], IX["deep"]))
+            c2 = cliff & (ly == 2)
+            buf[c2] = np.where(((xs[c2] + 4) % 8) == 0, IX["night"], IX["deep"])
+            c3 = cliff & (ly == 3)
+            buf[c3] = np.where(((xs[c3] % 6) == 0) | (bg[c3] < 0.55), IX["dusk"], IX["deep"])
+            c4 = cliff & (ly == 4)
+            buf[c4] = np.where((xs[c4] % 5) == 0, IX["night"], IX["dusk"])
+            c5 = cliff & (ly == 5)
+            buf[c5] = np.where(bg[c5] < 0.62, IX["night"], IX["dusk"])
+            c6 = cliff & (ly == 6) & (bg < 0.52)
+            buf[c6] = IX["night"]
+            c7 = cliff & (ly == 7) & (bg < 0.24)
+            buf[c7] = IX["night"]
 
 
 class EmberExpressInteriorPainter(ThemePainter):
@@ -524,19 +928,19 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Grand Orrery",
             island=5,
             floor_style="orrery_slate",
-            floor_ramp=("deep", "dusk", "blue", "mauve"),
+            floor_ramp=("deep", "dusk", "plum", "blue", "mauve"),
             floor_seam="night",
             floor_bevel="mauve",
-            floor_accent_a="apricot",
-            floor_accent_b="gold",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
             path_style="inlaid_strip",
             path_main="plum",
             path_hi="mauve",
             path_edge="night",
-            path_trim="gold",
+            path_trim="apricot",
             wall_style="masonry",
             wall_cap=("void", "night", "deep"),
-            wall_lip="sky",
+            wall_lip="apricot",
             wall_face="night",
             wall_face_hi="deep",
             wall_base="void",
@@ -558,8 +962,8 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             prop_sheet="island5_scenery",
             door_sheet="island5_doors",
             special_tiles=("G:glass",),
-            default_decor=("circle", "compass", "inlay"),
-            notes="Unified Grand Clockwork Orrery: luminous twilight-slate flagstones, subtle brass astrolabe arcs & vaulted dome walls.",
+            default_decor=("circle", "compass"),
+            notes="Unified Grand Clockwork Orrery: luminous twilight-slate flagstones, refined brass causeways & warm sconce dome walls.",
         ),
         OrreryPainter,
     ),
@@ -572,8 +976,8 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             floor_ramp=("deep", "dusk", "plum", "blue"),
             floor_seam="night",
             floor_bevel="mauve",
-            floor_accent_a="gold",
-            floor_accent_b="ice",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
             path_style="inlaid_strip",
             path_main="plum",
             path_hi="mauve",
@@ -581,7 +985,7 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             path_trim="apricot",
             wall_style="riveted_iron",
             wall_cap=("void", "night", "dusk"),
-            wall_lip="sky",
+            wall_lip="apricot",
             wall_face="night",
             wall_face_hi="mauve",
             wall_base="void",
@@ -604,7 +1008,7 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_meteor_vault_doors",
             special_tiles=(),
             default_decor=("cracks", "circle", "compass"),
-            notes="Cosmic asteroid treasury: calm dressed basalt slabs with sparse mineral glints & dark vaulted iron-dome walls.",
+            notes="Cosmic asteroid treasury: calm dressed basalt slabs, brass-inlaid ashlar paths & warm sconce iron-dome walls.",
         ),
         MeteorVaultPainter,
     ),
@@ -617,13 +1021,13 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             floor_ramp=("deep", "blue", "sky"),
             floor_seam="night",
             floor_bevel="ice",
-            floor_accent_a="apricot",
-            floor_accent_b="cream",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
             path_style="inlaid_strip",
             path_main="deep",
             path_hi="blue",
             path_edge="night",
-            path_trim="gold",
+            path_trim="apricot",
             wall_style="marble_balustrade",
             wall_cap=("void", "night", "deep"),
             wall_lip="gold",
@@ -649,7 +1053,7 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_planetarium_doors",
             special_tiles=("G:glass",),
             default_decor=("compass", "circle", "light_shaft"),
-            notes="Grand star-chart dome: satin sapphire-indigo stone with gilded meridian grids & dark clerestory skylight dome walls.",
+            notes="Grand star-chart dome: twilight-sapphire stone, vaulted skylight pilaster walls & warm brass sconce pools.",
         ),
         PlanetariumPainter,
     ),
@@ -661,17 +1065,17 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             floor_style="shattered_debris",
             floor_ramp=("deep", "dusk", "blue", "mauve"),
             floor_seam="night",
-            floor_bevel="ice",
-            floor_accent_a="apricot",
-            floor_accent_b="gold",
+            floor_bevel="sky",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
             path_style="inlaid_strip",
             path_main="plum",
             path_hi="mauve",
             path_edge="night",
-            path_trim="gold",
+            path_trim="apricot",
             wall_style="marble_balustrade",
             wall_cap=("void", "night", "dusk"),
-            wall_lip="ice",
+            wall_lip="mauve",
             wall_face="night",
             wall_face_hi="mauve",
             wall_base="void",
@@ -694,7 +1098,7 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_freefall_doors",
             special_tiles=(),
             default_decor=("cracks", "circle"),
-            notes="Mid-air observatory collapse: twilight-lavender fractured masonry & broken-skylight dark parapets over rushing star wind.",
+            notes="Mid-air observatory collapse: twilight-lavender fractured masonry & broken-skylight dome parapets over rushing star wind.",
         ),
         FreefallPainter,
     ),
@@ -704,16 +1108,16 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="Starfall Geode Cavern",
             island=5,
             floor_style="cave_floor",
-            floor_ramp=("deep", "dusk", "blue"),
+            floor_ramp=("deep", "dusk", "blue", "mauve"),
             floor_seam="night",
             floor_bevel="sky",
-            floor_accent_a="gold",
-            floor_accent_b="ice",
-            path_style="sand_trail",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
+            path_style="inlaid_strip",
             path_main="dusk",
             path_hi="blue",
             path_edge="night",
-            path_trim="gold",
+            path_trim="apricot",
             wall_style="cavern_rock",
             wall_cap=("void", "night", "deep"),
             wall_lip="sky",
@@ -738,8 +1142,8 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             prop_sheet="theme_cave_5",
             door_sheet="theme_cave_5_doors",
             special_tiles=(),
-            default_decor=("cracks", "circle"),
-            notes="Starfall geode hollows: calm twilight cavern stone, carved observatory crypt arches & luminous teal-cyan star water.",
+            default_decor=("cracks", "light_shaft"),
+            notes="Starfall geode hollows: calm twilight cavern stone, hand-dressed stepping flagstones, crypt arches & warm sconce glow.",
         ),
         StarfallGeodePainter,
     ),
@@ -752,8 +1156,8 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             floor_ramp=("deep", "dusk", "plum", "blue", "mauve"),
             floor_seam="night",
             floor_bevel="mauve",
-            floor_accent_a="apricot",
-            floor_accent_b="gold",
+            floor_accent_a="mauve",
+            floor_accent_b="apricot",
             path_style="inlaid_strip",
             path_main="plum",
             path_hi="mauve",
@@ -775,8 +1179,8 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="sky",
             rim_mid="gold",
             bridge_style="timber",
-            bridge_main="wine",
-            bridge_hi="coral",
+            bridge_main="plum",
+            bridge_hi="wine",
             bridge_rail="gold",
             bridge_dark="night",
             seed=501,
@@ -785,7 +1189,7 @@ SPECS_5_6: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="island5_doors",
             special_tiles=(),
             default_decor=("circle", "compass"),
-            notes="Starfall Observatory archipelago: luminous twilight terraces, warm brass-trimmed causeways, dark parapets & cliff skirts.",
+            notes="Starfall Observatory archipelago: luminous twilight terraces, brass-trimmed causeways, calm timber-brass bridges & cliff skirts.",
         ),
         StarfallOverworldPainter,
     ),

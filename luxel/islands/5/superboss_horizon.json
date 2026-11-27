@@ -358,6 +358,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        142,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "drifting_star_lantern",
+      "pos": [
+        280,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        424,
+        328
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
+    },
+    {
+      "sheet": "theme_freefall",
+      "prop": "wind_ribbon_banner",
+      "pos": [
+        120,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.69
     }
   ],
   "design": {
@@ -425,5 +473,29 @@
         "target": "chest_horizon_trophy"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        264,
+        200
+      ],
+      "radius": 28,
+      "color": "mauve",
+      "secondary": "apricot"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        264,
+        176
+      ],
+      "size": [
+        38,
+        56
+      ],
+      "tint": "warm"
+    }
+  ]
 }

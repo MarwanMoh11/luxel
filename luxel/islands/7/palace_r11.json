@@ -152,24 +152,6 @@
       "r": 26,
       "col": "sky",
       "ring": "ice"
-    },
-    {
-      "kind": "inlay",
-      "x": 160,
-      "y": 48,
-      "w": 96,
-      "h": 64,
-      "col": "ice",
-      "border": "sky"
-    },
-    {
-      "kind": "inlay",
-      "x": 176,
-      "y": 176,
-      "w": 64,
-      "h": 64,
-      "col": "stone",
-      "border": "sky"
     }
   ],
   "scenery": [
@@ -244,6 +226,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "alabaster_fluted_pillar",
+      "pos": [
+        312,
+        216
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "moon_glass_urn",
+      "pos": [
+        40,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "lunar_brazier_bowl",
+      "pos": [
+        392,
+        104
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_inverted_palace_silver",
+      "prop": "velvet_palace_bench",
+      "pos": [
+        344,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "layers": [

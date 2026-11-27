@@ -271,6 +271,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_cave_5",
+      "prop": "cave_lantern_post",
+      "pos": [
+        56,
+        90
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        296,
+        90
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "broken_astrolabe_ring",
+      "pos": [
+        296,
+        168
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "design": {
@@ -354,5 +390,28 @@
         "target": "chest_cg_shards"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "light_shaft",
+      "pos": [
+        184,
+        168
+      ],
+      "size": [
+        32,
+        46
+      ],
+      "tint": "warm"
+    },
+    {
+      "kind": "stain",
+      "pos": [
+        184,
+        184
+      ],
+      "radius": 18,
+      "style": "water"
+    }
+  ]
 }

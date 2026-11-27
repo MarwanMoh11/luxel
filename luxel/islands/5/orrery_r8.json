@@ -317,17 +317,10 @@
         224,
         136
       ],
-      "radius": 42,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        128,
-        96,
-        176,
-        80
-      ]
+      "radius": 28,
+      "style": "astrolabe",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -414,6 +407,30 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.25
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        392,
+        42
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        338,
+        218
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.23
     }
   ],
   "layers": [],

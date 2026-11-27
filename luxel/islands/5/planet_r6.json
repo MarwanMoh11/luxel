@@ -195,23 +195,6 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        240,
-        156
-      ],
-      "radius": 68,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        240,
-        156
-      ],
-      "radius": 24
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         240,
@@ -319,6 +302,18 @@
       ],
       "layer": "sort",
       "flip_x": true,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        88,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
       "shadow": true,
       "phase": 0.0
     }

@@ -280,28 +280,13 @@
     {
       "kind": "circle",
       "pos": [
-        248,
-        168
-      ],
-      "radius": 84,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        248,
-        168
-      ],
-      "radius": 36
-    },
-    {
-      "kind": "circle",
-      "pos": [
         232,
         64
       ],
       "radius": 28,
-      "style": "ritual"
+      "style": "ritual",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [

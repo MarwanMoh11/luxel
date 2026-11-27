@@ -390,39 +390,13 @@
   "enemies": [],
   "decor": [
     {
-      "kind": "compass",
-      "pos": [
-        240,
-        232
-      ],
-      "radius": 24
-    },
-    {
-      "kind": "circle",
-      "pos": [
-        240,
-        176
-      ],
-      "radius": 52,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        224,
-        224,
-        32,
-        16
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         392,
         168
       ],
       "radius": 20,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "light_shaft",
@@ -539,7 +513,7 @@
       "sheet": "theme_meteor_vault",
       "prop": "orbital_ring_totem",
       "pos": [
-        88,
+        82,
         168
       ],
       "layer": "sort",

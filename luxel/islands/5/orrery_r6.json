@@ -287,16 +287,10 @@
         248,
         128
       ],
-      "radius": 64,
-      "style": "gear"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        248,
-        128
-      ],
-      "radius": 28
+      "radius": 28,
+      "style": "gear",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -371,6 +365,42 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.65
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "starlight_lantern_post",
+      "pos": [
+        408,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "armillary_sphere",
+      "pos": [
+        222,
+        248
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        280,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "layers": [],

@@ -310,39 +310,6 @@
       "style": "mosaic",
       "color": "gold",
       "secondary": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        40,
-        32,
-        112,
-        80
-      ],
-      "color": "deep",
-      "border": "gold"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        296,
-        32,
-        120,
-        64
-      ],
-      "color": "wine",
-      "border": "rose"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        40,
-        232,
-        120,
-        56
-      ],
-      "color": "plum",
-      "border": "apricot"
     }
   ],
   "scenery": [
@@ -417,6 +384,54 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "black_candelabra",
+      "pos": [
+        392,
+        136
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.15
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "shadow_glass_urn",
+      "pos": [
+        200,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.38
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "veiled_statue_bust",
+      "pos": [
+        424,
+        72
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.61
+    },
+    {
+      "sheet": "theme_inverted_palace_black",
+      "prop": "obsidian_palace_bench",
+      "pos": [
+        344,
+        24
+      ],
+      "layer": "sort",
+      "flip_x": true,
+      "shadow": true,
+      "phase": 0.84
     }
   ],
   "events": [

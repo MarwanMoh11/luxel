@@ -513,6 +513,18 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
+    },
+    {
+      "sheet": "theme_meteor_vault",
+      "prop": "vault_lantern_brazier",
+      "pos": [
+        56,
+        56
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "design": {
@@ -589,5 +601,29 @@
         "var": "ow_dial==90"
       }
     ]
-  }
+  },
+  "decor": [
+    {
+      "kind": "compass",
+      "pos": [
+        280,
+        120
+      ],
+      "radius": 24,
+      "color": "apricot",
+      "secondary": "mauve"
+    },
+    {
+      "kind": "light_shaft",
+      "pos": [
+        280,
+        100
+      ],
+      "size": [
+        32,
+        48
+      ],
+      "tint": "warm"
+    }
+  ]
 }

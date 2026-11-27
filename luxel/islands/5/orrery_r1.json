@@ -327,30 +327,16 @@
   ],
   "decor": [
     {
-      "kind": "circle",
+      "kind": "light_shaft",
       "pos": [
         176,
-        152
+        136
       ],
-      "radius": 44,
-      "style": "astrolabe"
-    },
-    {
-      "kind": "compass",
-      "pos": [
-        176,
-        152
-      ],
-      "radius": 22
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        352,
-        64,
-        56,
+      "size": [
+        34,
         48
-      ]
+      ],
+      "tint": "warm"
     }
   ],
   "scenery": [
@@ -449,6 +435,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.7
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "celestial_globe",
+      "pos": [
+        94,
+        88
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "layers": [],

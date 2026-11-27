@@ -263,22 +263,13 @@
   ],
   "decor": [
     {
-      "kind": "circle",
-      "pos": [
-        240,
-        144
-      ],
-      "radius": 34,
-      "style": "astrolabe"
-    },
-    {
       "kind": "cracks",
       "pos": [
         128,
         136
       ],
       "radius": 20,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "cracks",
@@ -287,7 +278,7 @@
         152
       ],
       "radius": 20,
-      "glow": true
+      "glow": false
     },
     {
       "kind": "mural",
@@ -296,7 +287,9 @@
         56
       ],
       "radius": 24,
-      "style": "moon"
+      "style": "moon",
+      "color": "apricot",
+      "secondary": "mauve"
     }
   ],
   "scenery": [
@@ -395,6 +388,18 @@
       "flip_x": true,
       "shadow": true,
       "phase": 0.4
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        168,
+        30
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
     }
   ],
   "triggers": [],

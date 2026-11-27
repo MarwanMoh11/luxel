@@ -376,21 +376,15 @@
   ],
   "decor": [
     {
-      "kind": "compass",
-      "pos": [
-        240,
-        160
-      ],
-      "radius": 28
-    },
-    {
       "kind": "mural",
       "pos": [
         240,
         56
       ],
       "radius": 20,
-      "style": "constellation"
+      "style": "constellation",
+      "color": "apricot",
+      "secondary": "mauve"
     },
     {
       "kind": "light_shaft",
@@ -459,7 +453,7 @@
       "sheet": "theme_planetarium",
       "prop": "brass_star_globe",
       "pos": [
-        360,
+        366,
         240
       ],
       "layer": "sort",
@@ -478,13 +472,49 @@
       "flip_x": false,
       "shadow": true,
       "phase": 0.2
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "planetarium_lantern",
+      "pos": [
+        136,
+        40
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.0
+    },
+    {
+      "sheet": "island5_scenery",
+      "prop": "observatory_brazier_stand",
+      "pos": [
+        168,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.23
+    },
+    {
+      "sheet": "theme_planetarium",
+      "prop": "brass_telescope_stand",
+      "pos": [
+        306,
+        264
+      ],
+      "layer": "sort",
+      "flip_x": false,
+      "shadow": true,
+      "phase": 0.46
     }
   ],
   "triggers": [],
   "layers": [],
   "events": [],
   "design": {
-    "idea": "Four-bay Ecliptic Cathedral nave flanking a central gravity well: defeat the Meteor Carrier and Satellite Eye, then ignite the four micro-constellation bays (Ram horn SW, Scales beam SE, Archer bow NW, Serpent S-chain NE — directly foreshadowing The Zodiac boss's 4 forms!) to unseal the Zodiac Arch.",
+    "idea": "Four-bay Ecliptic Cathedral nave flanking a central gravity well: defeat the Meteor Carrier and Satellite Eye, then ignite the four micro-constellation bays (Ram horn SW, Scales beam SE, Archer bow NW, Serpent S-chain NE \u2014 directly foreshadowing The Zodiac boss's 4 forms!) to unseal the Zodiac Arch.",
     "kind": "puzzle",
     "beat": "ketsu",
     "teaches": "Reading the four Zodiac constellation silhouettes (Ram, Scales, Archer, Serpent) before the climax boss.",
