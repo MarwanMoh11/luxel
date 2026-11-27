@@ -25,11 +25,13 @@ class StarSupportCell:
 class ConstellationCanvas:
 	extends Node2D
 	var unlit_edges: Array[PackedVector2Array] = []
+	var half_lit_edges: Array[PackedVector2Array] = [] # [lit_pos, unlit_pos]
 	var lit_edges: Array[PackedVector2Array] = []
 	var sextant_edges: Array[PackedVector2Array] = []
 	var lit_triangles: Array[PackedVector2Array] = []
 	var lantern_vertex: Vector2 = Vector2.INF
 	var anim_t: float = 0.0
+	var mat_t: float = 0.0
 
 	func _ready() -> void:
 		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
@@ -37,62 +39,83 @@ class ConstellationCanvas:
 	func _draw() -> void:
 		var pal: Dictionary = LxInteractable.PAL
 		var fr: bool = LxHudFx.flash_reduced()
-		var shim: float = 0.85 if fr else (0.78 + 0.22 * sin(anim_t * 3.2))
+		var shim: float = 0.86 if fr else (0.78 + 0.22 * sin(anim_t * 3.2))
+		var mat_u: float = clampf(mat_t / 0.40, 0.0, 1.0)
 
-		# 1. Subtle etched chalk link hints between unlit/linked sockets
+		# 1. Subtle etched chalk star-chart links between fully unlit sockets
 		for e: PackedVector2Array in unlit_edges:
-			_draw_dashed(e[0], e[1], Color(pal["sky"] as Color, 0.26), 4.0, 5.0)
+			_draw_dashed(e[0], e[1], Color(pal["sky"] as Color, 0.22), 3.0, 6.0)
+
+		# 1b. Partially-linked (1/2 lit) next-star guide threads with directional pip toward unlit partner
+		for he: PackedVector2Array in half_lit_edges:
+			var a: Vector2 = he[0]
+			var b: Vector2 = he[1]
+			_draw_dashed(a, b, Color(pal["gold"] as Color, 0.44 if fr else 0.52), 4.0, 4.0)
+			var mid: Vector2 = a.lerp(b, 0.5).round()
+			var dn: Vector2 = (b - a).normalized() if b.distance_squared_to(a) > 1.0 else Vector2.RIGHT
+			LxPhysDraw.draw_chevron(self, mid, dn, Color(pal["ice"] as Color, 0.72 if fr else 0.86), Color(pal["void"] as Color, 0.70), 2.5)
 
 		# 2. Lit constellation triangles (solid walkable star-glass floor in void)
 		for tri: PackedVector2Array in lit_triangles:
-			draw_colored_polygon(tri, Color(pal["deep"] as Color, 0.72))
-			draw_colored_polygon(tri, Color(pal["gold"] as Color, 0.22 * shim))
+			var rtri := PackedVector2Array([tri[0].round(), tri[1].round(), tri[2].round()])
+			draw_colored_polygon(rtri, Color(pal["deep"] as Color, 0.72))
+			draw_colored_polygon(rtri, Color(pal["gold"] as Color, (0.20 + 0.14 * mat_u) * shim))
 			for k: int in range(3):
-				var a: Vector2 = tri[k]
-				var b: Vector2 = tri[(k + 1) % 3]
+				var a: Vector2 = rtri[k]
+				var b: Vector2 = rtri[(k + 1) % 3]
 				draw_line(a, b, Color(pal["gold"] as Color, 0.85), 2.0)
-				draw_line(a, b, Color(pal["cream"] as Color, 0.75 * shim), 1.0)
-			var cen: Vector2 = ((tri[0] + tri[1] + tri[2]) / 3.0).round()
-			draw_line(cen + Vector2(-3.0, 0.0), cen + Vector2(3.0, 0.0), Color(pal["cream"] as Color, 0.68), 1.0)
-			draw_line(cen + Vector2(0.0, -3.0), cen + Vector2(0.0, 3.0), Color(pal["cream"] as Color, 0.68), 1.0)
+				draw_line(a, b, Color(pal["cream"] as Color, (0.75 + 0.22 * mat_u) * shim), 1.0)
+			var cen: Vector2 = ((rtri[0] + rtri[1] + rtri[2]) / 3.0).round()
+			draw_line(cen + Vector2(-3.0, 0.0), cen + Vector2(3.0, 0.0), Color(pal["cream"] as Color, 0.72), 1.0)
+			draw_line(cen + Vector2(0.0, -3.0), cen + Vector2(0.0, 3.0), Color(pal["cream"] as Color, 0.72), 1.0)
 			draw_rect(Rect2(cen - Vector2.ONE, Vector2(2.0, 2.0)), pal["gold"] as Color)
 
 		# 3. Solid 12px star bridges between lit neighbors
 		for e: PackedVector2Array in lit_edges:
-			_draw_star_bridge(e[0], e[1], pal, false, shim)
+			_draw_star_bridge(e[0], e[1], pal, false, shim, mat_u, fr)
 
 		# 4. Starlight Sextant live bridges to thrown lantern
 		for e: PackedVector2Array in sextant_edges:
-			_draw_star_bridge(e[0], e[1], pal, true, shim)
+			_draw_star_bridge(e[0], e[1], pal, true, shim, mat_u, fr)
 
 		if lantern_vertex.is_finite():
 			var lp: Vector2 = lantern_vertex.round()
-			draw_arc(lp, 9.0, 0.0, TAU, 16, Color(pal["cream"] as Color, 0.85), 1.2)
+			draw_arc(lp, 9.0, 0.0, TAU, 16, Color(pal["cream"] as Color, 0.78 if fr else 0.90), 1.2)
+			draw_arc(lp, 6.0, 0.0, TAU, 12, Color(pal["ice"] as Color, 0.62), 1.0)
 			draw_line(lp + Vector2(-5.0, 0.0), lp + Vector2(5.0, 0.0), pal["gold"] as Color, 1.0)
 			draw_line(lp + Vector2(0.0, -5.0), lp + Vector2(0.0, 5.0), pal["gold"] as Color, 1.0)
 
-	func _draw_star_bridge(a: Vector2, b: Vector2, pal: Dictionary, is_sextant: bool, shim: float) -> void:
-		var d: Vector2 = b - a
+	func _draw_star_bridge(a: Vector2, b: Vector2, pal: Dictionary, is_sextant: bool, shim: float, mat_u: float, fr: bool) -> void:
+		var ra: Vector2 = a.round()
+		var rb: Vector2 = b.round()
+		var d: Vector2 = rb - ra
 		var dist: float = d.length()
 		if dist < 2.0:
 			return
 		var dn: Vector2 = d / dist
 		var perp := Vector2(-dn.y, dn.x)
 		var hw: float = 5.5
-		var quad := PackedVector2Array([a + perp * hw, b + perp * hw, b - perp * hw, a - perp * hw])
+		var quad := PackedVector2Array([(ra + perp * hw).round(), (rb + perp * hw).round(), (rb - perp * hw).round(), (ra - perp * hw).round()])
 		draw_colored_polygon(quad, Color(pal["night"] as Color, 0.86))
 		var inner_hw: float = 4.0
-		var inner := PackedVector2Array([a + perp * inner_hw, b + perp * inner_hw, b - perp * inner_hw, a - perp * inner_hw])
+		var inner := PackedVector2Array([(ra + perp * inner_hw).round(), (rb + perp * inner_hw).round(), (rb - perp * inner_hw).round(), (ra - perp * inner_hw).round()])
 		draw_colored_polygon(inner, Color((pal["sky"] if is_sextant else pal["deep"]) as Color, 0.62))
 		var rim_c: Color = (pal["ice"] if is_sextant else pal["gold"]) as Color
-		draw_line(a + perp * hw, b + perp * hw, rim_c, 1.0)
-		draw_line(a - perp * hw, b - perp * hw, rim_c, 1.0)
-		draw_line(a, b, Color(pal["cream"] as Color, 0.72 * shim), 1.0)
+		draw_line(quad[0], quad[1], rim_c, 1.0)
+		draw_line(quad[3], quad[2], rim_c, 1.0)
+		draw_line(ra, rb, Color(pal["cream"] as Color, minf(1.0, (0.72 + mat_u * 0.28) * shim)), 1.0)
 		var cur: float = 6.0
 		while cur < dist - 4.0:
-			var sp: Vector2 = (a + dn * cur).round()
+			var sp: Vector2 = (ra + dn * cur).round()
 			draw_rect(Rect2(sp - Vector2.ONE, Vector2(2.0, 2.0)), pal["cream"] as Color if is_sextant else pal["gold"] as Color)
 			cur += 10.0
+		# Luminous bridge-materialization gleam when newly linked
+		if mat_u > 0.0:
+			if fr:
+				draw_line(ra, rb, Color(pal["cream"] as Color, mat_u * 0.45), 2.0)
+			else:
+				var sweep_p: Vector2 = ra.lerp(rb, 1.0 - mat_u).round()
+				draw_rect(Rect2(sweep_p - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), Color(pal["cream"] as Color, mat_u * 0.90))
 
 	func _draw_dashed(a: Vector2, b: Vector2, col: Color, dash: float, gap: float) -> void:
 		var d: Vector2 = b - a
@@ -166,6 +189,8 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 	var canvas: ConstellationCanvas = entry["canvas"] as ConstellationCanvas
 	if dt > 0.0:
 		canvas.anim_t += dt
+		if canvas.mat_t > 0.0:
+			canvas.mat_t = maxf(0.0, canvas.mat_t - dt)
 
 	var stars: Array[LxI5StarNode] = collect_stars(reg)
 	var lan_v: Vector2 = _sextant_lantern_pos()
@@ -180,6 +205,7 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 		entry["room_token"] = room_token
 		entry["prev_edges"] = -1
 		entry["prev_tris"] = -1
+		entry["prev_sextant"] = -1
 
 	var sig_parts := PackedStringArray()
 	for s: LxI5StarNode in stars:
@@ -188,13 +214,14 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 		sig_parts.append("L:%d:%d" % [int(roundf(lan_v.x * 0.5)), int(roundf(lan_v.y * 0.5))])
 	var sig: String = "|".join(sig_parts)
 	if not force and str(entry.get("sig", "")) == sig:
-		if not canvas.lit_edges.is_empty() or not canvas.lit_triangles.is_empty() or not canvas.sextant_edges.is_empty():
+		if canvas.mat_t > 0.0 or not canvas.lit_edges.is_empty() or not canvas.lit_triangles.is_empty() or not canvas.sextant_edges.is_empty():
 			canvas.queue_redraw()
 		return
 	entry["sig"] = sig
 
 	var lit_stars: Array[LxI5StarNode] = []
 	var unlit_edges: Array[PackedVector2Array] = []
+	var half_lit_edges: Array[PackedVector2Array] = []
 	for i: int in range(stars.size()):
 		var sa: LxI5StarNode = stars[i]
 		if sa.is_lit_and_active():
@@ -203,7 +230,12 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 			var sb: LxI5StarNode = stars[j]
 			if sa.is_star_active() and sb.is_star_active() and sa.is_revealed() and sb.is_revealed():
 				if _stars_can_link(sa, sb) and not (sa.is_lit_and_active() and sb.is_lit_and_active()):
-					unlit_edges.append(PackedVector2Array([sa.pos, sb.pos]))
+					if sa.is_lit_and_active():
+						half_lit_edges.append(PackedVector2Array([sa.pos, sb.pos]))
+					elif sb.is_lit_and_active():
+						half_lit_edges.append(PackedVector2Array([sb.pos, sa.pos]))
+					else:
+						unlit_edges.append(PackedVector2Array([sa.pos, sb.pos]))
 
 	var n_lit: int = lit_stars.size()
 	var adj: Dictionary = {}
@@ -244,9 +276,14 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 
 	var prev_edges: int = int(entry.get("prev_edges", -1))
 	var prev_tris: int = int(entry.get("prev_tris", -1))
+	var prev_sextant: int = int(entry.get("prev_sextant", -1))
 	entry["prev_edges"] = lit_edges.size()
 	entry["prev_tris"] = lit_tris.size()
-	if prev_edges >= 0 and (lit_tris.size() > prev_tris or lit_edges.size() > prev_edges):
+	entry["prev_sextant"] = sextant_edges.size()
+	var grew: bool = prev_edges >= 0 and (lit_tris.size() > prev_tris or lit_edges.size() > prev_edges)
+	if grew or (prev_sextant >= 0 and sextant_edges.size() > prev_sextant):
+		canvas.mat_t = 0.40
+	if grew:
 		var fx_p: Vector2 = lit_tris[lit_tris.size() - 1][0] if not lit_tris.is_empty() else (lit_edges[lit_edges.size() - 1][0] if not lit_edges.is_empty() else Vector2.ZERO)
 		if Lx.events != null:
 			Lx.events.sfx_requested.emit("star_constellation", fx_p, fx_p != Vector2.ZERO)
@@ -255,6 +292,7 @@ static func sync(reg: Node, dt: float = 0.0, force: bool = false) -> void:
 
 	var has_sex_link: bool = not sextant_edges.is_empty()
 	canvas.unlit_edges = unlit_edges
+	canvas.half_lit_edges = half_lit_edges
 	canvas.lit_edges = lit_edges
 	canvas.sextant_edges = sextant_edges
 	canvas.lit_triangles = lit_tris

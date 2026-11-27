@@ -228,7 +228,7 @@
       "kind": "silver_tide_mimic",
       "pos": [
         240,
-        144
+        160
       ],
       "zone": "palace_treasury"
     }
@@ -237,7 +237,7 @@
     {
       "kind": "circle",
       "x": 240,
-      "y": 144,
+      "y": 160,
       "r": 46,
       "col": "sky",
       "ring": "ice"
@@ -263,9 +263,9 @@
       "prop": "crystal_chandelier_arch",
       "pos": [
         240,
-        48
+        32
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -310,7 +310,7 @@
       "sheet": "theme_inverted_palace_silver",
       "prop": "silver_candelabra",
       "pos": [
-        416,
+        400,
         168
       ],
       "layer": "sort",

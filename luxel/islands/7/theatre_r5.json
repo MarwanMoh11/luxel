@@ -296,7 +296,7 @@
       "kind": "the_prompter",
       "pos": [
         240,
-        168
+        160
       ],
       "zone": "theatre_orchestra_pit"
     }
@@ -306,7 +306,7 @@
       "kind": "circle",
       "pos": [
         240,
-        168
+        160
       ],
       "radius": 52,
       "style": "spotlight",
@@ -353,9 +353,9 @@
       "prop": "proscenium_mask_arch",
       "pos": [
         240,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

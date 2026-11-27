@@ -306,8 +306,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "velvet_stage_curtain",
       "pos": [
-        176,
-        36
+        168,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

@@ -434,10 +434,10 @@
       "sheet": "theme_inverted_palace_black",
       "prop": "rose_thorn_glass_arch",
       "pos": [
-        648,
-        168
+        696,
+        184
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

@@ -192,8 +192,8 @@
       "id": "npc_mirror_crab",
       "kind": "npc",
       "pos": [
-        440,
-        272
+        456,
+        264
       ],
       "props": {
         "folk": "mirror_crab",
@@ -426,9 +426,9 @@
       "prop": "crystal_chandelier_arch",
       "pos": [
         368,
-        44
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -449,7 +449,7 @@
       "sheet": "theme_inverted_palace_silver",
       "prop": "alabaster_fluted_pillar",
       "pos": [
-        448,
+        472,
         112
       ],
       "layer": "sort",

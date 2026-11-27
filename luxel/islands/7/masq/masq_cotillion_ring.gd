@@ -79,7 +79,7 @@ func tick(dt: float) -> void:
 					_riposte_t = 0.65
 					_riposte_hit_done = false
 					if Lx.events != null:
-						Lx.events.shake_requested.emit(0.18)
+						Lx.events.shake_requested.emit(0.08 if LxHudFx.flash_reduced() else 0.18)
 
 	# Periodic 9s chandelier dim & shuffle while Cotillion is unsolved
 	if not _solved:
@@ -123,9 +123,9 @@ func _draw() -> void:
 	var c_ice: Color = PAL["ice"] as Color
 	var fred: bool = LxHudFx.flash_reduced()
 
-	# Three nested Cotillion waltz rings
+	# Three nested Cotillion waltz rings (pixel-snapped radii)
 	for i: int in range(radii.size()):
-		var rr: float = radii[i]
+		var rr: float = roundf(radii[i])
 		var intact: bool = _solved or i < _last_rounds_left
 		var col: Color = (c_gold if i == 0 else (c_ice if i == 1 else c_plum)) if intact else c_wine
 		draw_arc(Vector2.ZERO, rr, 0.0, TAU, 36, Color(col, 0.52 if intact else 0.24), 1.5)
@@ -139,12 +139,12 @@ func _draw() -> void:
 	draw_circle(Vector2.ZERO, 7.0, c_wine if _dim_flash_t > 0.15 else c_gold)
 	draw_circle(Vector2.ZERO, 3.0, c_plum if _dim_flash_t > 0.15 else c_cream)
 	if _dim_flash_t <= 0.15 and not fred:
-		var cone_end: Vector2 = Vector2(cos(_sweep_ang), sin(_sweep_ang)) * radii[radii.size() - 1]
+		var cone_end: Vector2 = (Vector2(cos(_sweep_ang), sin(_sweep_ang)) * radii[radii.size() - 1]).round()
 		draw_line(Vector2.ZERO, cone_end, Color(c_cream, 0.20), 6.0)
 
 	# Telegraphed Hollow Wick riposte tell circle
 	if _riposte_t > 0.0:
 		var ro: Vector2 = (_riposte_origin - pos).round()
 		var u: float = 1.0 - clampf(_riposte_t / 0.65, 0.0, 1.0)
-		draw_arc(ro, 32.0, 0.0, TAU, 24, Color(c_rose, 0.85), 1.5)
-		draw_arc(ro, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, 0.78), 1.2)
+		draw_arc(ro, 32.0, 0.0, TAU, 24, Color(c_rose, 0.58 if fred else 0.85), 1.5)
+		draw_arc(ro, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, 0.52 if fred else 0.78), 1.2)

@@ -360,9 +360,9 @@
       "prop": "velvet_rosette_arch",
       "pos": [
         320,
-        68
+        40
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -383,8 +383,8 @@
       "sheet": "theme_masquerade",
       "prop": "gilded_ballroom_pillar",
       "pos": [
-        392,
-        176
+        424,
+        168
       ],
       "layer": "sort",
       "flip_x": true,
@@ -443,8 +443,8 @@
       "sheet": "theme_masquerade",
       "prop": "domino_mask_pedestal",
       "pos": [
-        272,
-        112
+        264,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -455,8 +455,8 @@
       "sheet": "theme_masquerade",
       "prop": "domino_mask_pedestal",
       "pos": [
-        368,
-        112
+        376,
+        120
       ],
       "layer": "sort",
       "flip_x": true,

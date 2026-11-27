@@ -386,9 +386,9 @@
       "prop": "velvet_rosette_arch",
       "pos": [
         272,
-        40
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -481,7 +481,7 @@
       "sheet": "theme_masquerade",
       "prop": "gilded_ballroom_pillar",
       "pos": [
-        192,
+        168,
         48
       ],
       "layer": "sort",

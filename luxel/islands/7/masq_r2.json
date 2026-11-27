@@ -357,7 +357,7 @@
       "id": "lamp_m2_sw",
       "kind": "road_lamp",
       "pos": [
-        168,
+        152,
         232
       ],
       "props": {
@@ -369,8 +369,8 @@
       "id": "lamp_m2_se",
       "kind": "road_lamp",
       "pos": [
-        336,
-        232
+        360,
+        248
       ],
       "props": {
         "zone": "masq_r2",
@@ -444,9 +444,9 @@
       "prop": "velvet_rosette_arch",
       "pos": [
         256,
-        44
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

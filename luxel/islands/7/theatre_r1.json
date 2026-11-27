@@ -397,9 +397,9 @@
       "prop": "proscenium_mask_arch",
       "pos": [
         240,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -444,7 +444,7 @@
       "sheet": "theme_doppel_theatre",
       "prop": "playbill_easel_stand",
       "pos": [
-        112,
+        104,
         152
       ],
       "layer": "sort",

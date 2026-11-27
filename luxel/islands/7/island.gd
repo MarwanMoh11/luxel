@@ -411,7 +411,7 @@ func _trigger_seal_shatter() -> void:
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.28)
+		_emit_shake(0.28)
 		_emit_narration("CUE_SEAL_SHATTER_7", "title", 3.5)
 		_emit_narration("DUNGEON_7_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_7")
@@ -452,13 +452,13 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 		return
 	if boss_id == "shadow_at_noon":
 		_emit_music("superboss_b")
-		_events.shake_requested.emit(0.32 if phase >= 3 else 0.26)
+		_emit_shake(0.32 if phase >= 3 else 0.26)
 	elif MINOR_BOSS_IDS.has(boss_id):
 		_emit_music("isl7_boss_minor_p2")
-		_events.shake_requested.emit(0.30 if phase >= 3 else 0.24)
+		_emit_shake(0.30 if phase >= 3 else 0.24)
 	elif boss_id == BOSS_ID or boss_id == "hollow_wick_boss" or _is_miniboss_id(boss_id):
 		_emit_music("island7_boss_p2")
-		_events.shake_requested.emit(0.28 if _is_miniboss_id(boss_id) else (0.38 if phase >= 3 else 0.32))
+		_emit_shake(0.28 if _is_miniboss_id(boss_id) else (0.38 if phase >= 3 else 0.32))
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
@@ -520,6 +520,11 @@ func _on_great_lamp_relit(island_id: int) -> void:
 		_emit_narration("ISL7_RELIGHT", "title", 4.0)
 		_emit_narration("ISL7_BRIDGE", "narration", 4.0)
 		_events.save_requested.emit("great_lamp_7")
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _emit_music(cue: String) -> void:

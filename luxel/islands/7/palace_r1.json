@@ -336,9 +336,9 @@
       "prop": "crystal_chandelier_arch",
       "pos": [
         240,
-        56
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

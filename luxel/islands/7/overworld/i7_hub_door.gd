@@ -109,5 +109,6 @@ func _draw() -> void:
 		LxBubble.draw_icon(self, "mirror", Vector2(-4.0 + dx, -14.0), 1.0)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2(dx, -10.0), roundf(6.0 + u * 24.0), 0.0, TAU, 16, c_gold, 1.5)
+		var pa: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+		draw_arc(Vector2(dx, -10.0), roundf(6.0 + u * 24.0), 0.0, TAU, 16, Color(c_gold, pa), 1.5)
 	_draw_signal_pulses()

@@ -60,7 +60,7 @@ func _trigger_shatter() -> bool:
 		Lx.state.story_flags[sets_flag_id] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL7_PL_FAKE_CROWN", "title", 2.8)
-		Lx.events.shake_requested.emit(0.18)
+		Lx.events.shake_requested.emit(0.08 if LxHudFx.flash_reduced() else 0.18)
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.05)
 	_emit_sfx("glass_shatter")
@@ -105,7 +105,8 @@ func _draw() -> void:
 			draw_rect(Rect2(sp, Vector2(1.0, 1.0)), c_rose)
 		if _shatter_t > 0.0:
 			var u: float = 1.0 - clampf(_shatter_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 18, c_rose, 1.5)
+			var sa: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+			draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 18, Color(c_rose, sa), 1.5)
 		return
 
 	# Telltale NW LIE shadow (betrays the false golden key!)

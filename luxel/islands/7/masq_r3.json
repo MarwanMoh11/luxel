@@ -365,9 +365,9 @@
       "prop": "velvet_rosette_arch",
       "pos": [
         272,
-        44
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

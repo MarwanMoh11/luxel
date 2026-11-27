@@ -538,48 +538,7 @@ func get_light_pool() -> Vector4:
 
 
 func _draw() -> void:
-	if state == State.SHATTERED:
-		# Shattered mirror shards on floor
-		for sp: Vector2 in [Vector2(-4.0, 2.0), Vector2(3.0, -1.0), Vector2(1.0, 4.0)]:
-			draw_rect(Rect2(sp, Vector2(2.0, 2.0)), PAL["ice"] as Color)
-		return
-	var in_blk: bool = is_in_world("black")
-	var c_void: Color = PAL["void"] as Color
-	var c_cloak_d: Color = (PAL["night"] if in_blk else PAL["deep"]) as Color
-	var c_cloak_m: Color = (PAL["plum"] if in_blk else PAL["sky"]) as Color
-	var c_cloak_h: Color = (PAL["rose"] if in_blk else PAL["ice"]) as Color
-	var c_cream: Color = PAL["cream"] as Color
-	var c_eye: Color = (PAL["coral"] as Color) if state == State.DESYNCED_WALL else c_cream
-
-	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 4.0), 5.5, 2.2, "nw_wrong" if in_blk else "se_gold", false)
-	# Cloaked mirror-Wick silhouette (distinct silver vs obsidian-rose world palette + specular rim)
-	draw_rect(Rect2(-3.0, -13.0, 6.0, 3.0), c_void)
-	draw_rect(Rect2(-5.0, -10.0, 10.0, 12.0), c_void)
-	draw_rect(Rect2(-2.0, -12.0, 4.0, 2.0), c_cloak_h)
-	draw_rect(Rect2(-4.0, -9.0, 8.0, 10.0), c_cloak_d)
-	draw_rect(Rect2(-3.0, -9.0, 6.0, 9.0), c_cloak_m)
-	draw_rect(Rect2(-3.0, -9.0, 2.0, 7.0), c_cloak_h)
-	draw_rect(Rect2(-2.0, -7.0, 4.0, 3.0), c_void)
-	draw_rect(Rect2(-2.0, -6.0, 1.0, 1.0), c_eye)
-	draw_rect(Rect2(1.0, -6.0, 1.0, 1.0), c_eye)
-	# Held mirrored lantern orb
-	var lpos: Vector2 = (facing * 7.0 + Vector2(0.0, -4.0)).round()
-	draw_rect(Rect2(lpos - Vector2.ONE, Vector2(3.0, 3.0)), c_cloak_h)
-	draw_rect(Rect2(lpos, Vector2.ONE), c_cream)
-	if _resync_t > 0.0:
-		draw_arc(Vector2(0.0, -4.0), 10.0, 0.0, TAU, 16, c_cream, 1.0)
-	# Draw live mirrored bolts
-	for b: Dictionary in _bolts:
-		var bp: Vector2 = ((b["pos"] as Vector2) - pos).round()
-		var bc: Color = (PAL["ice"] if bool(b["prism"]) else (PAL["rose"] if in_blk else PAL["gold"])) as Color
-		draw_rect(Rect2(bp - Vector2.ONE, Vector2(3.0, 3.0)), bc)
-		draw_rect(Rect2(bp, Vector2.ONE), c_cream)
-	# Draw mirrored beam segments
-	if _beam_vis_t > 0.0:
-		var ba: float = clampf(_beam_vis_t / 0.24, 0.0, 1.0)
-		for seg: Dictionary in _beam_segs:
-			var s0: Vector2 = (seg["start"] as Vector2) - pos
-			var s1: Vector2 = (seg["end"] as Vector2) - pos
-			var sc: Color = (PAL["ice"] if str(seg["color"]) == LxHit.COLOR_BLUE else PAL["gold"]) as Color
-			draw_line(s0, s1, Color(sc, ba), 3.0)
-			draw_line(s0, s1, Color(c_cream, ba), 1.0)
+	LxIsland7RuleFx.draw_mirror_avatar(
+		self, pos, state, is_in_world("black"), facing, pivot, link_range,
+		wick_pos(), _blocked_t, _shot_flash_t, _resync_t, _bolts, _beam_segs, _beam_vis_t
+	)

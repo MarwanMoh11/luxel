@@ -184,33 +184,80 @@ func _draw() -> void:
 		return
 	var fr: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
+	var c_deep: Color = PAL["deep"] as Color
 	var d_col: Color = (PAL["cream"] if is_push else PAL["ice"]) as Color
 	var e_col: Color = (PAL["coral"] if is_push else PAL["sky"]) as Color
 	var rim_col: Color = (PAL["gold"] if is_push else PAL["sky"]) as Color
-	var collar_a: float = 0.62 if fr else 0.88
+	var collar_a: float = 0.68 if fr else 0.90
+	var mid_r: float = roundf(field_radius * 0.56)
+	var outer_chev_r: float = roundf(clampf(field_radius * 0.76, 22.0, field_radius - 6.0))
 
-	# Calm steady outer polarity guide ring + cardinal direction ticks for instant still-frame readability
-	draw_arc(Vector2.ZERO, roundf(field_radius * 0.56), 0.0, TAU, 24, Color(rim_col, 0.24 if fr else 0.16), 1.0)
+	# Distinct still-frame & greyscale polarity rings: PUSH = double-bevel outward collar, PULL = recessed cool ring
+	draw_arc(Vector2.ZERO, mid_r, 0.0, TAU, 24, Color(rim_col, 0.28 if fr else 0.22), 1.0)
+	if is_push:
+		draw_arc(Vector2.ZERO, mid_r + 2.0, 0.0, TAU, 24, Color(e_col, 0.22 if fr else 0.18), 1.0)
+	else:
+		draw_arc(Vector2.ZERO, maxf(14.0, mid_r - 2.0), 0.0, TAU, 24, Color(c_deep, 0.36), 1.0)
+
+	# 4 diagonal outer flow chevrons (always stationary for instant still-frame & greyscale PULL vs PUSH readability)
+	for di: int in range(4):
+		var ddir := Vector2.from_angle(float(di) * PI * 0.5 + PI * 0.25)
+		var dp: Vector2 = (ddir * outer_chev_r).round()
+		var flow_dir: Vector2 = ddir if is_push else -ddir
+		LxPhysDraw.draw_chevron(self, dp, flow_dir, Color(rim_col, 0.72 if fr else 0.88), Color(c_void, 0.80), 3.0)
+
+	# 4 cardinal inward (PULL) vs outward (PUSH) directional ticks hugging the switchable center prism
 	for ci: int in range(4):
 		var cdir := Vector2.from_angle(float(ci) * PI * 0.5)
-		var r_a: float = 11.0 if is_push else 14.0
-		var r_b: float = 14.0 if is_push else 11.0
-		draw_line((cdir * r_a).round(), (cdir * r_b).round(), Color(e_col, collar_a), 1.0)
-		draw_rect(Rect2((cdir * r_b).round(), Vector2.ONE), Color(d_col, collar_a))
+		var r_tail: float = 10.0 if is_push else 16.0
+		var r_tip: float = 16.0 if is_push else 10.0
+		draw_line((cdir * r_tail).round(), (cdir * r_tip).round(), Color(e_col, collar_a), 1.0)
+		var tip_p: Vector2 = (cdir * r_tip).round()
+		draw_rect(Rect2(tip_p, Vector2.ONE), Color(d_col, collar_a))
+		if is_push:
+			var perp := Vector2(-cdir.y, cdir.x)
+			var wing_base: Vector2 = (cdir * (r_tip - 2.0)).round()
+			draw_rect(Rect2((wing_base + perp * 2.0).round(), Vector2.ONE), Color(rim_col, collar_a * 0.85))
+			draw_rect(Rect2((wing_base - perp * 2.0).round(), Vector2.ONE), Color(rim_col, collar_a * 0.85))
 
 	# Distinct switchable center crystal prism diamond (tells player: shoot center to flip!)
 	var diamond := PackedVector2Array([Vector2(0.0, -5.0), Vector2(5.0, 0.0), Vector2(0.0, 5.0), Vector2(-5.0, 0.0)])
 	draw_colored_polygon(diamond, c_void)
 	var inner := PackedVector2Array([Vector2(0.0, -3.0), Vector2(3.0, 0.0), Vector2(0.0, 3.0), Vector2(-3.0, 0.0)])
-	draw_colored_polygon(inner, Color(d_col, 0.88 if fr else 1.0))
+	draw_colored_polygon(inner, Color(d_col, 0.90 if fr else 1.0))
 	for i: int in range(4):
 		draw_line(diamond[i], diamond[(i + 1) % 4], Color(e_col, collar_a), 1.0)
-	if not is_push:
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["deep"] as Color)
-	elif not fr and _flip_flash_t > 0.0:
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
-	if _flip_flash_t > 0.0 and fr:
-		# Reduced-flash steady confirmation halo instead of bright expanding strobe
-		var fu: float = clampf(_flip_flash_t / 0.28, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, Color(rim_col, fu * 0.55), 1.0)
+	if is_push:
+		# Bright solar cross flare inside PUSH prism
+		draw_line(Vector2(-2.0, 0.0), Vector2(2.0, 0.0), PAL["gold"] as Color, 1.0)
+		draw_line(Vector2(0.0, -2.0), Vector2(0.0, 2.0), PAL["gold"] as Color, 1.0)
+		draw_rect(Rect2(Vector2.ZERO, Vector2.ONE), PAL["cream"] as Color)
+	else:
+		# Recessed dark singularity pupil inside PULL prism
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), c_deep)
+		draw_rect(Rect2(Vector2.ZERO, Vector2.ONE), c_void)
+
+	# Subtle brass corner rivets when phase-coupled to a crystal or world var
+	if not linked_crystal.is_empty() or not linked_var.is_empty():
+		var link_c: Color = PAL["gold"] as Color if is_push else PAL["apricot"] as Color
+		for lp: Vector2 in [Vector2(-5.0, -5.0), Vector2(4.0, -5.0), Vector2(-5.0, 4.0), Vector2(4.0, 4.0)]:
+			draw_rect(Rect2(lp, Vector2.ONE), Color(link_c, 0.78))
+
+	# Active Apogee Clasp orbit lock cardinal diamonds
+	if is_orbiting_lantern():
+		var or_r: float = roundf(orbit_r)
+		for oi: int in range(4):
+			var oa: float = float(oi) * PI * 0.5
+			var op: Vector2 = (Vector2.from_angle(oa) * or_r).round()
+			draw_rect(Rect2(op - Vector2.ONE, Vector2(3.0, 3.0)), c_void)
+			draw_rect(Rect2(op, Vector2.ONE), PAL["cream"] as Color)
+
+	# Directional flip confirmation ring (expands on PUSH, contracts on PULL; calm steady halo in flash_reduced)
+	if _flip_flash_t > 0.0:
+		var fu: float = 1.0 - clampf(_flip_flash_t / 0.28, 0.0, 1.0)
+		if fr:
+			draw_arc(Vector2.ZERO, 13.0, 0.0, TAU, 16, Color(rim_col, (1.0 - fu) * 0.52), 1.0)
+		else:
+			var wave_r: float = roundf(lerpf(10.0, mid_r, fu) if is_push else lerpf(mid_r, 10.0, fu))
+			draw_arc(Vector2.ZERO, wave_r, 0.0, TAU, 20, Color(d_col, (1.0 - fu) * 0.78), 1.2)
 	_draw_signal_pulses()

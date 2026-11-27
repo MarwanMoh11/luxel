@@ -62,7 +62,8 @@ func _draw() -> void:
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var boost: bool = _lens_boost_t > 0.0
-	var a_floor: float = 0.42 if boost else 0.24
+	var fr: bool = LxHudFx.flash_reduced()
+	var a_floor: float = (0.34 if fr else 0.42) if boost else 0.24
 
 	# Subtle under-glass diamond reflection filigree across the ballroom floor
 	for gx: int in range(-160, 176, 48):

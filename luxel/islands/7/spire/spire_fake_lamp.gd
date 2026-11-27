@@ -87,7 +87,7 @@ func _shatter_illusion() -> bool:
 	_emit_sfx("glass_shatter")
 	_emit_gust(90.0, 64.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.32)
+		Lx.events.shake_requested.emit(0.14 if LxHudFx.flash_reduced() else 0.32)
 		if LxStrings.has_id("ISL7_LORE_FAKE_DAWN"):
 			Lx.events.narration_requested.emit("ISL7_LORE_FAKE_DAWN", "ominous", 3.4)
 	if Lx.player is LxWick and is_instance_valid(Lx.player):
@@ -157,7 +157,8 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0, 2.0, 3.0, 2.0), c_gold)
 		if _burst_t > 0.0:
 			var u: float = 1.0 - clampf(_burst_t / 0.9, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -6.0), roundf(lerpf(8.0, 46.0, u)), 0.0, TAU, 22, Color(c_rose, 1.0 - u), 1.6)
+			var ba: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+			draw_arc(Vector2(0.0, -6.0), roundf(lerpf(8.0, 46.0, u)), 0.0, TAU, 22, Color(c_rose, ba), 1.6)
 		_draw_signal_pulses()
 		return
 

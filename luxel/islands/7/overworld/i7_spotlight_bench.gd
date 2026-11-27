@@ -86,4 +86,5 @@ func _draw() -> void:
 	draw_rect(Rect2(7.0, 5.0, 3.0, 3.0), c_void)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -2.0), roundf(6.0 + u * 22.0), 0.0, TAU, 16, c_cream, 1.5)
+		var fa: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+		draw_arc(Vector2(0.0, -2.0), roundf(6.0 + u * 22.0), 0.0, TAU, 16, Color(c_cream, fa), 1.5)

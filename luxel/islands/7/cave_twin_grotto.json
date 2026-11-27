@@ -273,7 +273,7 @@
         408,
         112
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -342,8 +342,8 @@
       "sheet": "theme_cave_7",
       "prop": "rock_cairn_marker",
       "pos": [
-        272,
-        224
+        296,
+        232
       ],
       "layer": "sort",
       "flip_x": false,

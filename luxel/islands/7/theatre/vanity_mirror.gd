@@ -109,18 +109,22 @@ func _draw() -> void:
 	draw_rect(Rect2(-8.0, -18.0, 16.0, 22.0), c_night)
 	draw_rect(Rect2(-7.0, -17.0, 14.0, 20.0), c_sky)
 	draw_rect(Rect2(-6.0, -16.0, 12.0, 18.0), c_night)
-	# Delayed mirrored Wick silhouette inside glass
+	# Delayed mirrored Wick silhouette inside glass (pixel-snapped)
+	var fr: bool = LxHudFx.flash_reduced()
 	var drel: Vector2 = _delayed_rel()
-	var rx: float = clampf(drel.x * 0.14, -3.5, 3.5)
-	var ry: float = -7.0 + clampf(drel.y * 0.05, -2.0, 2.0)
+	var rx: float = roundf(clampf(drel.x * 0.14, -3.5, 3.5))
+	var ry: float = roundf(-7.0 + clampf(drel.y * 0.05, -2.0, 2.0))
 	draw_rect(Rect2(rx - 3.0, ry - 4.0, 6.0, 8.0), c_void)
 	draw_rect(Rect2(rx - 2.0, ry - 3.0, 4.0, 6.0), c_wine)
 	# Eyes & late eerie coral smile + pointing hand north
 	draw_rect(Rect2(rx - 1.0, ry - 2.0, 1.0, 1.0), c_cream)
 	draw_rect(Rect2(rx + 1.0, ry - 2.0, 1.0, 1.0), c_cream)
 	if _smile_t > 0.0:
-		draw_line(Vector2(rx - 2.0, ry + 1.0), Vector2(rx + 2.0, ry + 1.0), c_coral, 1.0)
-		draw_rect(Rect2(rx - 1.0, ry - 6.0, 2.0, 2.0), c_gold)
+		var sa: float = 0.72 if fr else (0.78 + 0.22 * absf(sin(_clock * 8.0)))
+		draw_line(Vector2(rx - 2.0, ry + 1.0), Vector2(rx + 2.0, ry + 1.0), Color(c_coral, sa), 1.0)
+		draw_rect(Rect2(rx - 1.0, ry - 6.0, 2.0, 2.0), Color(c_gold, sa))
+		# Subtle north-pointing finger glint toward The Understudy
+		draw_rect(Rect2(rx, ry - 8.0, 1.0, 2.0), Color(c_cream, sa))
 	# Mirror sheen diagonal
 	draw_line(Vector2(-6.0, -14.0), Vector2(-2.0, -17.0), Color(c_ice, 0.55), 1.0)
 	# Vanity footlights

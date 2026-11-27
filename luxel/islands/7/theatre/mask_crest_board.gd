@@ -77,14 +77,18 @@ func _draw() -> void:
 	# Ornate velvet marquee crossbar holding 5 Act Masks
 	LxToyDraw.draw_bevel_box(self, Rect2(-46.0, -9.0, 92.0, 18.0), c_night, c_wine, c_gold, c_void)
 	draw_rect(Rect2(-44.0, -7.0, 88.0, 14.0), c_night)
+	var fr: bool = LxHudFx.flash_reduced()
 	for i: int in range(ACT_FLAGS.size()):
 		var mx: float = -34.0 + float(i) * 17.0
 		var done: bool = Lx.state != null and bool(Lx.state.story_flags.get(ACT_FLAGS[i], false))
-		var pulse: bool = _flash_t > 0.0 or (done and not LxHudFx.flash_reduced() and int(floorf(_clock * 2.0 + float(i))) % 3 == 0)
+		var pulse: bool = (not fr) and (_flash_t > 0.0 or (done and int(floorf(_clock * 2.0 + float(i))) % 3 == 0))
 		draw_rect(Rect2(mx - 6.0, -6.0, 12.0, 12.0), c_void)
 		draw_rect(Rect2(mx - 5.0, -5.0, 10.0, 10.0), c_gold if done else c_plum)
 		draw_rect(Rect2(mx - 4.0, -4.0, 8.0, 8.0), c_cream if (done and pulse) else (c_gold if done else c_wine))
 		LxToyDraw.draw_shape_glyph(self, Vector2(mx, 0.0), ACT_SHAPES[i], done, c_wine if done else c_coral, c_cream if done else c_gold)
-		if not done:
+		if done:
+			# Greyscale-distinct raised crown notch above cleared acts
+			draw_rect(Rect2(mx - 2.0, -7.0, 4.0, 1.0), c_cream)
+		else:
 			draw_rect(Rect2(mx - 2.0, -5.0, 1.0, 10.0), c_void)
 			draw_rect(Rect2(mx + 2.0, -5.0, 1.0, 10.0), c_void)

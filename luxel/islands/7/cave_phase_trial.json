@@ -300,9 +300,9 @@
       "prop": "cave_arch_rock",
       "pos": [
         240,
-        40
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

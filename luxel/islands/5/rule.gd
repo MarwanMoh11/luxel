@@ -11,6 +11,7 @@ const DIAL_VARS: Array[String] = ["ow_dial", "sky_turn", "orrery_ring"]
 const I5_TOY_KINDS: Array[String] = ["star_node", "star_bell", "meteor_orb", "polarity_well", "gravity_well"]
 const OVERWORLD_REGIONS: Array[String] = ["overworld", "ow_meteor_apron", "ow_dome_causeway", "ow_starfall_cliff"]
 const OW_WICK_FIELD_CAP: float = 42.0
+const DUNGEON_WICK_FIELD_CAP: float = 52.0
 
 class RuleRuntime:
 	extends LxInteractable
@@ -19,7 +20,11 @@ class RuleRuntime:
 	var _preview_deg: float = 0.0
 	var _preview_hit_wall: bool = false
 	var _tangent_lock_well: Vector2 = Vector2.INF
+	var _tangent_lock_pt: Vector2 = Vector2.INF
 	var _tangent_lock_r: float = 34.0
+	var _tangent_lock_sign: float = 1.0
+	var _sextant_preview_pt: Vector2 = Vector2.INF
+	var _sextant_preview_stars: PackedVector2Array = PackedVector2Array()
 	var _prev_star_cap_snuffs: int = 0
 
 	func _ready() -> void:
@@ -31,15 +36,23 @@ class RuleRuntime:
 
 	func tick(dt: float) -> void:
 		super.tick(dt)
-		_clamp_overworld_well_pull(dt)
+		_clamp_well_pull(dt)
 		LxI5StarNode.sync_region_constellations(region, dt, false)
 		_update_honest_preview()
 		if owner_rule != null:
 			owner_rule._sync_hud_badge(dt)
 		queue_redraw()
 
-	func _clamp_overworld_well_pull(dt: float) -> void:
-		if not (region_id in OVERWORLD_REGIONS):
+	func _has_live_boss() -> bool:
+		if region == null or not region.has_method("get_enemies"):
+			return false
+		for en_v: Variant in (region.call("get_enemies") as Array):
+			if en_v is LxBossBase and is_instance_valid(en_v as Object) and (en_v as LxBossBase).is_alive():
+				return true
+		return false
+
+	func _clamp_well_pull(dt: float) -> void:
+		if _has_live_boss():
 			return
 		if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 			return
@@ -47,12 +60,13 @@ class RuleRuntime:
 		var fv: Vector2 = w._field_vel
 		if fv.length_squared() <= 0.01:
 			return
-		# Keep overworld gravity wells tangible (slow visible struggle) yet always escapable on foot without Dash.
+		# Keep room gravity wells tangible (felt weight & drag) yet always escapable on foot without Dash.
+		var cap: float = OW_WICK_FIELD_CAP if (region_id in OVERWORLD_REGIONS) else DUNGEON_WICK_FIELD_CAP
 		var mv: Vector2 = w.get_move_input()
 		if mv.length_squared() > 0.01 and mv.normalized().dot(fv.normalized()) < -0.15:
 			fv = fv.move_toward(Vector2.ZERO, 90.0 * dt)
-		if fv.length() > OW_WICK_FIELD_CAP:
-			fv = fv.normalized() * OW_WICK_FIELD_CAP
+		if fv.length() > cap:
+			fv = fv.normalized() * cap
 		w._field_vel = fv
 
 	func _update_honest_preview() -> void:
@@ -60,7 +74,11 @@ class RuleRuntime:
 		_preview_deg = 0.0
 		_preview_hit_wall = false
 		_tangent_lock_well = Vector2.INF
-		if not LxFields.has_fields() or not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
+		_tangent_lock_pt = Vector2.INF
+		_tangent_lock_sign = 1.0
+		_sextant_preview_pt = Vector2.INF
+		_sextant_preview_stars = PackedVector2Array()
+		if not (Lx.player is LxWick) or not is_instance_valid(Lx.player):
 			return
 		var w: LxWick = Lx.player as LxWick
 		if w.dead or not w.has_lantern() or w.is_grabbing() or w.is_carrying():
@@ -70,50 +88,95 @@ class RuleRuntime:
 		if w.facing.length_squared() <= 0.0001:
 			return
 		var aim: Vector2 = w.facing.normalized()
-		var bolt_spd: float = float(Lx.get_move_data("bolt").get("speed", 330.0))
-		var bolt_rng: float = float(Lx.get_move_data("bolt").get("range", 118.0))
-		if w.temper == "lance":
-			bolt_spd *= 0.68
-			bolt_rng *= 1.35
-		elif w.temper == "skip":
-			bolt_spd *= 1.08
-		elif w.temper == "scatter":
-			bolt_rng *= 0.58
-		var start_p: Vector2 = w.global_position + aim * 6.0
-		var res: Dictionary = LxFields.sample_curve(start_p, aim, bolt_spd, "bolt", bolt_rng, 6.0, region)
-		if bool(res.get("bent", false)):
-			_preview_pts = res.get("points", PackedVector2Array()) as PackedVector2Array
-			_preview_deg = float(res.get("curve_angle_deg", 0.0))
-			_preview_hit_wall = bool(res.get("hit_wall", false))
 
-		# Apogee Clasp honest tangent-capture preview (zero aim assist)
-		if Lx.state != null and bool(Lx.state.story_flags.get("power_orbit_ring", false)):
-			var throw_spd: float = float(Lx.get_move_data("throw").get("throw_speed", 360.0))
-			var throw_rng: float = float(Lx.get_move_data("throw").get("throw_range", 108.0))
-			var tres: Dictionary = LxFields.sample_curve(w.global_position, aim, throw_spd, "lantern", throw_rng, 6.0, region)
-			var tpts: PackedVector2Array = tres.get("points", PackedVector2Array()) as PackedVector2Array
-			for i: int in range(1, tpts.size()):
-				var p_cur: Vector2 = tpts[i]
-				var p_dir: Vector2 = (p_cur - tpts[i - 1]).normalized()
-				var well: Object = LxFields.find_orbit_capture_well(p_cur, p_dir)
-				if well != null:
-					var wp: Variant = well.get("pos")
-					var wr: Variant = well.get("orbit_r")
-					if wp is Vector2:
-						_tangent_lock_well = wp as Vector2
-						_tangent_lock_r = float(wr) if (wr is float or wr is int) else 34.0
-					break
+		if LxFields.has_fields():
+			var bolt_spd: float = float(Lx.get_move_data("bolt").get("speed", 330.0))
+			var bolt_rng: float = float(Lx.get_move_data("bolt").get("range", 118.0))
+			if w.temper == "lance":
+				bolt_spd *= 0.68
+				bolt_rng *= 1.35
+			elif w.temper == "skip":
+				bolt_spd *= 1.08
+			elif w.temper == "scatter":
+				bolt_rng *= 0.58
+			var start_p: Vector2 = w.global_position + aim * 6.0
+			var res: Dictionary = LxFields.sample_curve(start_p, aim, bolt_spd, "bolt", bolt_rng, 6.0, region)
+			if bool(res.get("bent", false)):
+				_preview_pts = res.get("points", PackedVector2Array()) as PackedVector2Array
+				_preview_deg = float(res.get("curve_angle_deg", 0.0))
+				_preview_hit_wall = bool(res.get("hit_wall", false))
+
+			# Apogee Clasp honest tangent-capture preview (zero aim assist)
+			if Lx.state != null and bool(Lx.state.story_flags.get("power_orbit_ring", false)):
+				var throw_spd: float = float(Lx.get_move_data("throw").get("throw_speed", 360.0))
+				var throw_rng: float = float(Lx.get_move_data("throw").get("throw_range", 108.0))
+				var tres: Dictionary = LxFields.sample_curve(w.global_position, aim, throw_spd, "lantern", throw_rng, 6.0, region)
+				var tpts: PackedVector2Array = tres.get("points", PackedVector2Array()) as PackedVector2Array
+				for i: int in range(1, tpts.size()):
+					var p_cur: Vector2 = tpts[i]
+					var p_dir: Vector2 = (p_cur - tpts[i - 1]).normalized()
+					var well: Object = LxFields.find_orbit_capture_well(p_cur, p_dir)
+					if well != null:
+						var wp: Variant = well.get("pos")
+						var wr: Variant = well.get("orbit_r")
+						if wp is Vector2:
+							var wv: Vector2 = wp as Vector2
+							var rel: Vector2 = p_cur - wv
+							_tangent_lock_well = wv
+							_tangent_lock_r = float(wr) if (wr is float or wr is int) else 34.0
+							_tangent_lock_sign = 1.0 if (rel.x * p_dir.y - rel.y * p_dir.x) >= 0.0 else -1.0
+							_tangent_lock_pt = wv + rel.normalized() * _tangent_lock_r if rel.length_squared() > 0.01 else p_cur
+						break
+
+		# Starlight Sextant honest star-vertex alignment preview when aiming near lit stars
+		if Lx.state != null and bool(Lx.state.story_flags.get("power_sextant", false)) and region != null:
+			var stars: Array[LxI5StarNode] = LxI5Constellation.collect_stars(region)
+			var lit_stars: Array[LxI5StarNode] = []
+			for sn: LxI5StarNode in stars:
+				if sn.is_lit_and_active():
+					lit_stars.append(sn)
+			if not lit_stars.is_empty():
+				var throw_spd2: float = float(Lx.get_move_data("throw").get("throw_speed", 360.0))
+				var throw_rng2: float = float(Lx.get_move_data("throw").get("throw_range", 108.0))
+				var land_p: Vector2 = w.global_position + aim * throw_rng2
+				if LxFields.has_fields():
+					var sres: Dictionary = LxFields.sample_curve(w.global_position, aim, throw_spd2, "lantern", throw_rng2, 8.0, region)
+					var spts: PackedVector2Array = sres.get("points", PackedVector2Array()) as PackedVector2Array
+					if not spts.is_empty():
+						land_p = spts[spts.size() - 1]
+				elif region.has_method("tile_at"):
+					var step_d: float = 8.0
+					while step_d <= throw_rng2:
+						var probe: Vector2 = w.global_position + aim * step_d
+						if str(region.call("tile_at", probe)) in ["wall", "glass", "mirror"]:
+							land_p = w.global_position + aim * maxf(0.0, step_d - 8.0)
+							break
+						step_d += 8.0
+				var hits := PackedVector2Array()
+				for sn: LxI5StarNode in lit_stars:
+					if sn.pos.distance_to(land_p) <= maxf(84.0, sn.link_range):
+						hits.append(sn.pos)
+				if not hits.is_empty():
+					_sextant_preview_pt = land_p
+					_sextant_preview_stars = hits
 
 	func _draw() -> void:
 		var fr: bool = LxHudFx.flash_reduced()
 		if _preview_pts.size() >= 2:
 			var strong_curve: bool = _preview_deg >= 20.0
 			var base_a: float = 0.72 if fr else 0.92
+			var arc_col: Color = (PAL["gold"] if strong_curve else PAL["sky"]) as Color
+			# Subtle pixel-snapped dotted trajectory thread connecting the curve beads
+			for ti: int in range(1, _preview_pts.size() - 1):
+				var p0: Vector2 = (_preview_pts[ti] + Vector2(0.0, -5.0)).round()
+				var p1: Vector2 = (_preview_pts[ti + 1] + Vector2(0.0, -5.0)).round()
+				var ta: float = (0.28 if fr else 0.38) * (1.0 - float(ti) / float(_preview_pts.size()) * 0.4)
+				draw_line(p0, p1, Color(arc_col, ta), 1.0)
 			for i: int in range(1, _preview_pts.size()):
 				var pt: Vector2 = (_preview_pts[i] + Vector2(0.0, -5.0)).round()
 				var frac: float = float(i) / float(_preview_pts.size())
 				var is_end: bool = (i == _preview_pts.size() - 1)
-				var col: Color = (PAL["gold"] if strong_curve else PAL["sky"]) as Color
+				var col: Color = arc_col
 				if is_end:
 					col = (PAL["coral"] if _preview_hit_wall else (PAL["cream"] if strong_curve else PAL["ice"])) as Color
 				elif i % 2 == 0:
@@ -125,18 +188,61 @@ class RuleRuntime:
 						draw_line(pt + Vector2(-1.0, -1.0), pt + Vector2(2.0, 2.0), Color(col, a), 1.0)
 						draw_line(pt + Vector2(1.0, -1.0), pt + Vector2(-2.0, 2.0), Color(col, a), 1.0)
 					else:
-						draw_rect(Rect2(pt - Vector2(1.0, 1.0), Vector2(3.0, 3.0)), Color(col, a))
+						draw_line(pt + Vector2(-2.0, 0.0), pt + Vector2(2.0, 0.0), Color(col, a), 1.0)
+						draw_line(pt + Vector2(0.0, -2.0), pt + Vector2(0.0, 2.0), Color(col, a), 1.0)
+						draw_rect(Rect2(pt, Vector2.ONE), Color(PAL["cream"] as Color, a))
 				else:
 					draw_rect(Rect2(pt - Vector2(1.0, 1.0), Vector2(4.0, 4.0)), Color(PAL["void"] as Color, a * 0.72))
 					draw_rect(Rect2(pt, Vector2(2.0, 2.0)), Color(col, a))
+			# Apex bend-direction chevron on strong orbital curves
+			if strong_curve and _preview_pts.size() >= 4:
+				var mid_i: int = _preview_pts.size() / 2
+				var mp: Vector2 = (_preview_pts[mid_i] + Vector2(0.0, -5.0)).round()
+				var mdir: Vector2 = (_preview_pts[mid_i + 1] - _preview_pts[mid_i - 1]).normalized()
+				if mdir.length_squared() > 0.01:
+					LxPhysDraw.draw_chevron(self, mp, mdir, Color(PAL["cream"] as Color, base_a), Color(PAL["void"] as Color, 0.85), 3.0)
 
 		if _tangent_lock_well.is_finite():
 			var wp: Vector2 = _tangent_lock_well.round()
+			var or_r: float = roundf(_tangent_lock_r)
 			var c_orb := Color(PAL["gold"] as Color, 0.55 if fr else 0.78)
-			draw_arc(wp, roundf(_tangent_lock_r), 0.0, TAU, 24, c_orb, 1.2)
+			for si: int in range(12):
+				var sa0: float = float(si) * (TAU / 12.0)
+				draw_arc(wp, or_r, sa0, sa0 + 0.34, 4, c_orb, 1.2)
 			for ci: int in range(4):
-				var cp: Vector2 = (wp + Vector2.from_angle(float(ci) * PI * 0.5) * _tangent_lock_r).round()
+				var cp: Vector2 = (wp + Vector2.from_angle(float(ci) * PI * 0.5) * or_r).round()
 				draw_rect(Rect2(cp, Vector2.ONE), Color(PAL["cream"] as Color, 0.62 if fr else 0.88))
+			# Tangential CW/CCW orbit direction chevrons
+			var t_spin: float = _clock * (0.6 if fr else 1.8) * _tangent_lock_sign
+			for ti: int in range(2):
+				var ta: float = t_spin + float(ti) * PI
+				var tp: Vector2 = (wp + Vector2.from_angle(ta) * or_r).round()
+				var tdir := Vector2(-sin(ta), cos(ta)) * _tangent_lock_sign
+				LxPhysDraw.draw_chevron(self, tp, tdir, Color(PAL["cream"] as Color, 0.72 if fr else 0.92), Color(PAL["void"] as Color, 0.80), 3.0)
+			if _tangent_lock_pt.is_finite():
+				var lp: Vector2 = _tangent_lock_pt.round()
+				draw_rect(Rect2(lp - Vector2(2.0, 2.0), Vector2(5.0, 5.0)), Color(PAL["void"] as Color, 0.80))
+				draw_rect(Rect2(lp - Vector2.ONE, Vector2(3.0, 3.0)), Color(PAL["gold"] as Color, 0.82 if fr else 0.96))
+				draw_rect(Rect2(lp, Vector2.ONE), PAL["cream"] as Color)
+
+		# Starlight Sextant live star-ray alignment preview
+		if _sextant_preview_pt.is_finite() and not _sextant_preview_stars.is_empty():
+			var sp: Vector2 = _sextant_preview_pt.round()
+			var multi: bool = _sextant_preview_stars.size() >= 2
+			var ray_a: float = (0.34 if fr else 0.44) if multi else (0.24 if fr else 0.32)
+			var ray_c := Color((PAL["ice"] if multi else PAL["sky"]) as Color, ray_a)
+			for stp: Vector2 in _sextant_preview_stars:
+				var d: Vector2 = stp - sp
+				var dist: float = d.length()
+				if dist > 4.0:
+					var dn: Vector2 = d / dist
+					var cur: float = 4.0
+					while cur < dist - 4.0:
+						var seg_e: float = minf(cur + 4.0, dist - 4.0)
+						draw_line((sp + dn * cur).round(), (sp + dn * seg_e).round(), ray_c, 1.0)
+						cur += 9.0
+			draw_arc(sp, 5.0, 0.0, TAU, 12, Color(PAL["ice"] as Color, ray_a + 0.24), 1.0)
+			draw_rect(Rect2(sp, Vector2.ONE), Color(PAL["cream"] as Color, ray_a + 0.35))
 
 
 class RuleHudBadge:
@@ -175,12 +281,12 @@ class RuleHudBadge:
 		var box_h: float = 15.0
 
 		var bg_c := Color(pal["void"] as Color, 0.78)
-		var rim_c: Color = (pal["cream"] if flash_t > 0.05 else pal["gold"]) as Color
+		var rim_c: Color = (pal["cream"] if (flash_t > 0.05 and not fr) else pal["gold"]) as Color
 		draw_rect(Rect2(x0, y0, box_w, box_h), bg_c)
-		draw_rect(Rect2(x0, y0, box_w, box_h), Color(rim_c, 0.75 if fr else 0.90), false, 1.0)
+		draw_rect(Rect2(x0, y0, box_w, box_h), Color(rim_c, 0.78 if fr else 0.90), false, 1.0)
 
-		var cx: float = x0 + 9.0
-		var cy: float = y0 + 7.5
+		var cx: float = roundf(x0 + 9.0)
+		var cy: float = roundf(y0 + 7.5)
 		# 1. Astrolabe quarter compass
 		draw_circle(Vector2(cx, cy), 5.0, pal["night"] as Color)
 		draw_arc(Vector2(cx, cy), 5.0, 0.0, TAU, 12, pal["apricot"] as Color if dial_active else pal["dusk"] as Color, 1.0)
@@ -191,20 +297,24 @@ class RuleHudBadge:
 			draw_rect(Rect2(qp, Vector2.ONE), pal["cream"] as Color if hit_q else pal["mauve"] as Color)
 		var na: float = deg_to_rad(float(dial_deg) - 90.0)
 		draw_line(Vector2(cx, cy), (Vector2(cx, cy) + Vector2.from_angle(na) * 4.0).round(), pal["cream"] as Color if dial_active else pal["sky"] as Color, 1.0)
-		var cur_x: float = x0 + 18.0
+		var cur_x: float = roundf(x0 + 18.0)
 
-		# 2. Polarity well glyph (PULL inward vs PUSH outward)
+		# 2. Polarity well glyph (PULL inward vs PUSH outward, distinct in greyscale)
 		if has_polarity:
-			var pc := Vector2(cur_x + 5.0, cy)
+			var pc := Vector2(roundf(cur_x + 5.0), cy)
 			if polarity_push:
 				draw_circle(pc, 3.0, pal["gold"] as Color)
 				draw_rect(Rect2(pc - Vector2.ONE, Vector2(2.0, 2.0)), pal["cream"] as Color)
 				draw_line(pc + Vector2(-5.0, 0.0), pc + Vector2(-3.0, 0.0), pal["coral"] as Color, 1.0)
 				draw_line(pc + Vector2(3.0, 0.0), pc + Vector2(5.0, 0.0), pal["coral"] as Color, 1.0)
+				draw_line(pc + Vector2(0.0, -5.0), pc + Vector2(0.0, -3.0), pal["coral"] as Color, 1.0)
+				draw_line(pc + Vector2(0.0, 3.0), pc + Vector2(0.0, 5.0), pal["coral"] as Color, 1.0)
 			else:
-				draw_circle(pc, 3.5, pal["deep"] as Color)
-				draw_arc(pc, 3.5, 0.0, TAU, 10, pal["sky"] as Color, 1.0)
+				draw_circle(pc, 4.0, pal["deep"] as Color)
+				draw_arc(pc, 4.0, 0.0, TAU, 10, pal["sky"] as Color, 1.0)
 				draw_rect(Rect2(pc - Vector2.ONE, Vector2(2.0, 2.0)), pal["void"] as Color)
+				draw_rect(Rect2(pc + Vector2(-3.0, 0.0), Vector2.ONE), pal["ice"] as Color)
+				draw_rect(Rect2(pc + Vector2(2.0, 0.0), Vector2.ONE), pal["ice"] as Color)
 				draw_rect(Rect2(pc, Vector2.ONE), pal["ice"] as Color)
 			cur_x += 14.0
 
@@ -431,6 +541,11 @@ func _sync_hud_badge(dt: float) -> void:
 		if _events != null and not LxLegacy.is_legacy_region(ISLAND_ID, _region_id) and LxStrings.has_id("I5_CUE_STAR_CAP"):
 			_events.narration_requested.emit("I5_CUE_STAR_CAP", "narration", 1.8)
 
+	var cur_apogee: bool = has_apogee_clasp()
+	var cur_sextant: bool = has_sextant()
+	if (cur_apogee and not _hud_badge.has_apogee) or (cur_sextant and not _hud_badge.has_sextant):
+		_hud_badge.flash_t = 0.45
+
 	_hud_badge.visible = true
 	_hud_badge.dial_active = has_bell or dial_deg != 0
 	_hud_badge.dial_deg = dial_deg
@@ -438,6 +553,6 @@ func _sync_hud_badge(dt: float) -> void:
 	_hud_badge.polarity_push = any_push
 	_hud_badge.star_lit = cur_lit
 	_hud_badge.star_cap = max_cap
-	_hud_badge.has_apogee = has_apogee_clasp()
-	_hud_badge.has_sextant = has_sextant()
+	_hud_badge.has_apogee = cur_apogee
+	_hud_badge.has_sextant = cur_sextant
 	_hud_badge.queue_redraw()

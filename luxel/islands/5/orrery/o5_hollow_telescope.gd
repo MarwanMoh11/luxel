@@ -75,28 +75,36 @@ func _draw() -> void:
 	draw_line(Vector2(-7, -2), Vector2(9, -8), gold, 1.5)
 	draw_circle(Vector2(10, -7), 3.0, sky if inspected else ice)
 	draw_circle(Vector2(-8, -1), 2.0, night)
+	# Subtle lens invite glint when uninspected
+	if not inspected:
+		var fr_gl: bool = LxHudFx.flash_reduced()
+		var ga: float = 0.70 if fr_gl else (0.55 + 0.35 * sin(_clock * 3.0))
+		draw_line(Vector2(8, -7), Vector2(12, -7), Color(cream, ga), 1.0)
+		draw_line(Vector2(10, -9), Vector2(10, -5), Color(cream, ga), 1.0)
 
 	# Eyepiece wordless vignette of Hollow Wick on Moon Shoals when peered through
 	if _vista_t > 0.0:
 		var fred: bool = LxHudFx.flash_reduced()
 		var p: float = 1.0 - (_vista_t / _vista_dur)
+		var va: float = clampf(minf(p * 5.0, (1.0 - p) * 4.0), 0.0, 1.0)
 		var center := Vector2(0.0, -28.0)
 		var r: float = 14.0
-		draw_circle(center, r + 2.0, gold)
-		draw_circle(center, r, void_c)
+		draw_circle(center, r + 3.0, Color(void_c, va * 0.90))
+		draw_circle(center, r + 2.0, Color(gold, va))
+		draw_circle(center, r, Color(void_c, va))
 		# Distant moonlit shoal horizon & cold blue water line
-		draw_line(center + Vector2(-11, 5), center + Vector2(11, 5), deep, 2.0)
-		draw_line(center + Vector2(-9, 7), center + Vector2(9, 7), sky, 1.0)
+		draw_line(center + Vector2(-11, 5), center + Vector2(11, 5), Color(deep, va), 2.0)
+		draw_line(center + Vector2(-9, 7), center + Vector2(9, 7), Color(sky, va), 1.0)
 		# Dark Wick-shaped silhouette carrying a cold blue lantern
 		var sil_x: float = roundf(lerpf(-5.0, 2.0, minf(p * 1.4, 1.0)))
-		draw_rect(Rect2(center + Vector2(sil_x - 2.0, -4.0), Vector2(4.0, 8.0)), night)
-		draw_circle(center + Vector2(sil_x, -6.0), 2.5, night)
+		draw_rect(Rect2(center + Vector2(sil_x - 2.0, -4.0), Vector2(4.0, 8.0)), Color(night, va))
+		draw_circle(center + Vector2(sil_x, -6.0), 2.5, Color(night, va))
 		# Cold blue lantern glow (flickers gently)
 		var lpos: Vector2 = (center + Vector2(sil_x + 4.0, -1.0)).round()
-		var glow_r: float = 3.5 if fred else (3.5 + sin(p * 18.0) * 0.6)
-		draw_circle(lpos, glow_r, sky)
-		draw_circle(lpos, 1.5, ice)
+		var glow_r: float = 3.5 if fred else roundf(3.5 + sin(p * 18.0) * 0.6)
+		draw_circle(lpos, glow_r, Color(sky, va))
+		draw_circle(lpos, 1.5, Color(ice, va))
 		# Second half of vignette: Hollow Wick turns toward the lens (twin ice eyes glint)
 		if p >= 0.45:
-			draw_rect(Rect2((center + Vector2(sil_x - 2.0, -7.0)).round(), Vector2(1.0, 1.0)), cream)
-			draw_rect(Rect2((center + Vector2(sil_x + 1.0, -7.0)).round(), Vector2(1.0, 1.0)), cream)
+			draw_rect(Rect2((center + Vector2(sil_x - 2.0, -7.0)).round(), Vector2(1.0, 1.0)), Color(cream, va))
+			draw_rect(Rect2((center + Vector2(sil_x + 1.0, -7.0)).round(), Vector2(1.0, 1.0)), Color(cream, va))

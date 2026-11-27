@@ -490,8 +490,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "tattered_act_banner",
       "pos": [
-        224,
-        48
+        200,
+        40
       ],
       "layer": "sort",
       "flip_x": false,

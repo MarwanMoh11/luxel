@@ -555,9 +555,9 @@
       "prop": "velvet_rosette_arch",
       "pos": [
         240,
-        44
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -651,7 +651,7 @@
       "prop": "string_music_stand",
       "pos": [
         72,
-        184
+        200
       ],
       "layer": "sort",
       "flip_x": false,

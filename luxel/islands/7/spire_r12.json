@@ -427,9 +427,9 @@
       "prop": "proscenium_mask_arch",
       "pos": [
         240,
-        28
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

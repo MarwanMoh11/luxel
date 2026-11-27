@@ -138,18 +138,23 @@ func _draw() -> void:
 	var c_rose: Color = PAL["rose"] as Color
 	var c_coral: Color = PAL["coral"] as Color
 
+	var fr: bool = LxHudFx.flash_reduced()
 	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 5.0), 8.0, 2.5, "se_gold", false)
 	LxToyDraw.draw_bevel_box(self, Rect2(-8.0, -3.0, 16.0, 8.0), c_night, c_plum, c_gold if powered else c_ice, c_void)
+	# Greyscale-distinct completion crest on base (filled gold star vs hollow dark slot)
+	draw_rect(Rect2(-2.0, -1.0, 4.0, 4.0), c_void)
+	if powered:
+		draw_rect(Rect2(-1.0, 0.0, 2.0, 2.0), c_cream)
 	draw_rect(Rect2(-2.0, -10.0, 4.0, 7.0), c_void)
 	draw_rect(Rect2(-1.0, -9.0, 2.0, 5.0), c_gold if powered else c_ice)
 	if orb_active:
 		var op: Vector2 = (orb_pos - pos).round()
 		draw_circle(op, 6.0, c_void)
-		draw_arc(op, 6.0, 0.0, TAU, 16, c_coral, 1.5)
-		draw_circle(op, 2.5, c_rose)
+		draw_arc(op, 6.0, 0.0, TAU, 16, Color(c_coral, 0.72 if fr else 1.0), 1.5)
+		draw_circle(op, 2.0, c_rose)
 		draw_rect(Rect2(op - Vector2.ONE, Vector2(2.0, 2.0)), c_cream)
 	if _clash_t > 0.0:
 		var cp: Vector2 = (_clash_pos - pos).round()
 		var u: float = 1.0 - clampf(_clash_t / 0.75, 0.0, 1.0)
-		draw_arc(cp, roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 16, Color(c_cream, 1.0 - u), 1.5)
+		draw_arc(cp, roundf(lerpf(4.0, 22.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
 	_draw_signal_pulses()

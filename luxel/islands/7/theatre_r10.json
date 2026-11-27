@@ -354,8 +354,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "puppet_crossbar_stand",
       "pos": [
-        368,
-        168
+        376,
+        184
       ],
       "layer": "sort",
       "flip_x": true,
@@ -402,8 +402,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "stage_prop_trunk",
       "pos": [
-        80,
-        224
+        88,
+        216
       ],
       "layer": "sort",
       "flip_x": false,

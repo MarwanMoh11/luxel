@@ -90,18 +90,28 @@ func _draw() -> void:
 	var has_d: bool = Lx.state != null and bool(Lx.state.story_flags.get("spire_duchess_seal", false))
 	var has_l: bool = Lx.state != null and bool(Lx.state.story_flags.get("spire_false_lamp_broken", false))
 
+	var fr: bool = LxHudFx.flash_reduced()
 	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 5.0), 11.0, 3.0, "se_gold", false)
 	LxToyDraw.draw_bevel_box(self, Rect2(-11.0, -5.0, 22.0, 10.0), c_night, c_dusk, c_gold if (has_d and has_l) else c_ice, c_void)
-	# Left Crest: Kaleidoscope Duchess Diamond
+	# Left Crest: Kaleidoscope Duchess Diamond (greyscale-distinct filled diamond vs dark empty recess)
 	draw_rect(Rect2(-8.0, -3.0, 6.0, 6.0), c_void)
-	draw_rect(Rect2(-7.0, -2.0, 4.0, 4.0), c_ice if has_d else c_night)
 	if has_d:
+		var d_pts := PackedVector2Array([Vector2(-5.0, -3.0), Vector2(-2.0, 0.0), Vector2(-5.0, 3.0), Vector2(-8.0, 0.0)])
+		draw_colored_polygon(d_pts, c_ice)
 		draw_rect(Rect2(-6.0, -1.0, 2.0, 2.0), c_cream)
-	# Right Crest: Shattered Dawn Sun
+		draw_rect(Rect2(-6.0, -6.0, 2.0, 1.0), c_cream)
+	else:
+		draw_rect(Rect2(-7.0, -2.0, 4.0, 4.0), c_night)
+	# Right Crest: Shattered Dawn 4-point Star (greyscale-distinct bright star vs dark empty recess)
 	draw_rect(Rect2(2.0, -3.0, 6.0, 6.0), c_void)
-	draw_rect(Rect2(3.0, -2.0, 4.0, 4.0), c_rose if has_l else c_night)
 	if has_l:
+		draw_rect(Rect2(4.0, -3.0, 2.0, 6.0), c_rose)
+		draw_rect(Rect2(2.0, -1.0, 6.0, 2.0), c_rose)
 		draw_rect(Rect2(4.0, -1.0, 2.0, 2.0), c_gold)
+		draw_rect(Rect2(4.0, -6.0, 2.0, 1.0), c_gold)
+	else:
+		draw_rect(Rect2(3.0, -2.0, 4.0, 4.0), c_night)
 	if _flash_t > 0.0:
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 20.0, 1.0 - _flash_t / 0.55)), 0.0, TAU, 16, c_cream, 1.2)
+		var u: float = 1.0 - clampf(_flash_t / 0.55, 0.0, 1.0)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.2)
 	_draw_signal_pulses()

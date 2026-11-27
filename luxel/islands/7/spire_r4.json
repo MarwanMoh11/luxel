@@ -258,7 +258,7 @@
       "prop": "silver_brazier_stand",
       "pos": [
         392,
-        88
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -270,7 +270,7 @@
       "prop": "silver_brazier_stand",
       "pos": [
         392,
-        184
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -293,8 +293,8 @@
       "sheet": "island7_scenery",
       "prop": "lunar_lantern_post",
       "pos": [
-        40,
-        160
+        24,
+        168
       ],
       "layer": "sort",
       "flip_x": false,

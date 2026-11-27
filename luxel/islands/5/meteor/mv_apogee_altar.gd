@@ -123,6 +123,13 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, cy - 1.0, 2.0, 2.0), PAL["cream"] as Color)
 	elif _claim_t > 0.0:
 		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 36.0, u)), 0.0, TAU, 22, PAL["gold"] as Color, 1.6)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, PAL["ice"] as Color, 1.0)
+		var a: float = (1.0 - u) * (0.52 if fr else 0.88)
+		var r1: float = 14.0 if fr else roundf(lerpf(6.0, 36.0, u))
+		var r2: float = 10.0 if fr else roundf(lerpf(4.0, 24.0, u))
+		draw_arc(Vector2(0.0, -10.0), r1, 0.0, TAU, 22, Color(PAL["gold"] as Color, a), 1.6)
+		draw_arc(Vector2(0.0, -10.0), r2, 0.0, TAU, 16, Color(PAL["ice"] as Color, a * 0.85), 1.0)
+	if claimed:
+		# Calm etched brass orbit emblem resting on claimed pedestal
+		draw_arc(Vector2(0.0, -6.0), 4.0, 0.0, TAU, 12, Color(PAL["sky"] as Color, 0.70), 1.0)
+		draw_rect(Rect2(-1.0, -7.0, 2.0, 2.0), PAL["gold"] as Color)
 	_draw_signal_pulses()

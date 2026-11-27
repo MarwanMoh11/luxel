@@ -272,7 +272,7 @@
         376,
         104
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -317,8 +317,8 @@
       "sheet": "theme_cave_7",
       "prop": "glow_mineral_vein",
       "pos": [
-        48,
-        144
+        40,
+        120
       ],
       "layer": "sort",
       "flip_x": false,

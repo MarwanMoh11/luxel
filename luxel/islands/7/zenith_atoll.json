@@ -407,9 +407,9 @@
       "prop": "crystal_chandelier_arch",
       "pos": [
         288,
-        68
+        36
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -466,8 +466,8 @@
       "sheet": "theme_inverted_palace_silver",
       "prop": "lunar_brazier_bowl",
       "pos": [
-        240,
-        112
+        232,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -478,8 +478,8 @@
       "sheet": "theme_inverted_palace_silver",
       "prop": "lunar_brazier_bowl",
       "pos": [
-        336,
-        112
+        344,
+        120
       ],
       "layer": "sort",
       "flip_x": true,

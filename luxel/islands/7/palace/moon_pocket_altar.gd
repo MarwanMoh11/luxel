@@ -57,7 +57,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["item_moon_pocket"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL7_POW_POCKET", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+		Lx.events.shake_requested.emit(0.08 if LxHudFx.flash_reduced() else 0.16)
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -123,6 +123,7 @@ func _draw() -> void:
 		draw_rect(Rect2(-3.0, cy - 2.0, 2.0, 2.0), c_cream)
 	elif _claim_t > 0.0:
 		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, c_ice, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, c_rose, 1.0, false)
+		var ca: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, Color(c_ice, ca), 1.6, false)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, Color(c_rose, ca), 1.0, false)
 	_draw_signal_pulses()

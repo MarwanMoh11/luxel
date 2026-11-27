@@ -22,6 +22,8 @@ var turn_scope: String = ""
 var lit: bool = false
 var star_state: int = StarState.UNLIT
 var lit_order: int = 0
+var _fifo_rank: int = 0 # 1 = oldest unpinned in cap group
+var _fifo_count: int = 0
 
 var _init_lit: bool = false
 var _revealed_t: float = 0.0
@@ -235,8 +237,11 @@ func _refresh_group_warnings() -> void:
 	for i: int in range(group_lit.size()):
 		var nd: LxI5StarNode = group_lit[i]
 		var want_st: int = StarState.WARN if (at_cap and i == 0) else StarState.LIT
-		if nd.star_state != want_st:
+		var want_rank: int = i + 1
+		if nd.star_state != want_st or nd._fifo_rank != want_rank or nd._fifo_count != group_lit.size():
 			nd.star_state = want_st
+			nd._fifo_rank = want_rank
+			nd._fifo_count = group_lit.size()
 			nd.queue_redraw()
 
 
@@ -332,6 +337,9 @@ func _draw() -> void:
 		draw_rect(Rect2(-2.0, 5.0, 4.0, 1.0), ci)
 		draw_rect(Rect2(-6.0, -2.0, 1.0, 4.0), ci)
 		draw_rect(Rect2(5.0, -2.0, 1.0, 4.0), ci)
+		var cs := Color(c_sky, shimmer * 0.85)
+		for gp: Vector2 in [Vector2(-5.0, -5.0), Vector2(4.0, -5.0), Vector2(-5.0, 4.0), Vector2(4.0, 4.0)]:
+			draw_rect(Rect2(gp, Vector2.ONE), cs)
 		return
 
 	if not lit:
@@ -411,12 +419,21 @@ func _draw() -> void:
 		var w_off: float = 0.0 if fr else _clock * 2.0
 		for wi: int in range(8):
 			var wa: float = w_off + float(wi) * (TAU / 8.0)
-			draw_arc(Vector2.ZERO, 12.0, wa, wa + 0.35, 3, rim_c, 1.2)
+			draw_arc(Vector2.ZERO, 12.0, wa, wa + 0.35, 3, Color(rim_c, 0.72 if fr else 0.95), 1.2)
+	if max_lit > 0 and not pinned and _fifo_rank > 0:
+		# Tiny pixel-snapped FIFO order pips below socket (1 = oldest/next to snuff, N = newest)
+		var n_dots: int = mini(_fifo_rank, 4)
+		var pip_c: Color = c_coral if is_warn else c_cream
+		for pi: int in range(n_dots):
+			var px: float = roundf((float(pi) - float(n_dots - 1) * 0.5) * 3.0)
+			draw_rect(Rect2(px - 1.0, 11.0, 3.0, 3.0), c_void)
+			draw_rect(Rect2(px, 12.0, 1.0, 1.0), pip_c)
 	if pinned:
 		_draw_pin_rivets(c_cream)
 	if _ignite_fx_t > 0.0:
 		var iu: float = 1.0 - clampf(_ignite_fx_t / 0.34, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, iu)), 0.0, TAU, 16, Color(c_cream, (1.0 - iu) * 0.9), 1.5)
+		var ia: float = (1.0 - iu) * (0.55 if fr else 0.90)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 18.0, iu)), 0.0, TAU, 16, Color(c_cream, ia), 1.5)
 	_draw_signal_pulses()
 
 

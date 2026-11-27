@@ -33,6 +33,8 @@ func _draw() -> void:
 	var pal: Dictionary = LxPalette.PAL
 	var ice: Color = pal["ice"] as Color
 	var sky: Color = pal["sky"] as Color
+	var gold: Color = pal["gold"] as Color
+	var cream: Color = pal["cream"] as Color
 	var apricot: Color = pal["apricot"] as Color
 	var night: Color = pal["night"] as Color
 	var fred: bool = LxHudFx.flash_reduced()
@@ -49,6 +51,13 @@ func _draw() -> void:
 		var c: Color = ice if (i % 3 == 0) else sky
 		draw_line(Vector2(sx, sy), Vector2(sx, sy + slen), Color(c, 0.30), 1.0)
 
+	# Rising golden starlight motes giving extra depth to the free-fall updraft
+	var motes: int = 3 if fred else 7
+	for mi: int in range(motes):
+		var mx: float = roundf(-half_w + 24.0 + (float(mi) + 0.35) / float(motes) * (_span_w - 48.0))
+		var my: float = roundf(-half_h + fposmod(-_t * (_speed * 1.25) + float(mi) * 67.0, _span_h))
+		draw_rect(Rect2(Vector2(mx, my), Vector2.ONE), Color(cream if (mi % 2 == 0) else gold, 0.55 if fred else 0.75))
+
 	# Distant tumbling snapped brass anchor chain silhouettes along outer flanks
 	var chains: int = 2 if fred else 4
 	for ci: int in range(chains):
@@ -56,5 +65,5 @@ func _draw() -> void:
 		var cy: float = -half_h + fposmod(-_t * (_speed * 0.65) + float(ci) * 89.0, _span_h)
 		for link: int in range(4):
 			var lp := Vector2(roundf(cx + sin(_t * 2.2 + float(ci + link)) * 2.5), roundf(cy + float(link) * 8.0))
-			draw_circle(lp, 2.5, night)
-			draw_arc(lp, 2.5, 0.0, TAU, 8, Color(apricot, 0.45), 1.0)
+			draw_circle(lp, 2.0, night)
+			draw_arc(lp, 2.0, 0.0, TAU, 8, Color(apricot, 0.45), 1.0)

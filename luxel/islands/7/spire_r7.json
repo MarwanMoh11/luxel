@@ -291,7 +291,7 @@
       "sheet": "island7_scenery",
       "prop": "glass_colonade_pillar",
       "pos": [
-        152,
+        184,
         104
       ],
       "layer": "sort",
@@ -327,7 +327,7 @@
       "sheet": "island7_scenery",
       "prop": "moon_crystal_cluster",
       "pos": [
-        380,
+        392,
         56
       ],
       "layer": "sort",
@@ -364,7 +364,7 @@
       "prop": "lunar_lantern_post",
       "pos": [
         88,
-        136
+        152
       ],
       "layer": "sort",
       "flip_x": false,

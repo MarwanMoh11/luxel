@@ -272,7 +272,9 @@ func _draw() -> void:
 	draw_rect(Rect2(-8.0, -3.0, 16.0, 1.0), c_gold)
 
 	if state == State.RECLAIMED:
-		# Broken porcelain mask shards + fallen rose plume resting on open velvet cushion
+		# Open reclaimed pedestal ring + broken porcelain mask shards & fallen rose plume
+		draw_rect(Rect2(-3.0, -1.0, 6.0, 4.0), c_void)
+		draw_rect(Rect2(-2.0, 0.0, 4.0, 2.0), c_dusk)
 		draw_rect(Rect2(-6.0, -6.0, 5.0, 2.0), c_void)
 		draw_rect(Rect2(-5.0, -6.0, 3.0, 2.0), c_ice)
 		draw_rect(Rect2(-5.0, -6.0, 2.0, 1.0), c_cream)
@@ -282,22 +284,29 @@ func _draw() -> void:
 		draw_rect(Rect2(0.0, -7.0, 1.0, 1.0), c_cream)
 		if _reclaim_burst_t > 0.0:
 			var u: float = 1.0 - clampf(_reclaim_burst_t / 0.55, 0.0, 1.0)
-			draw_arc(Vector2(0.0, -8.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.6 if fr else 1.0)), 1.5)
+			draw_arc(Vector2(0.0, -8.0), roundf(lerpf(5.0, 24.0, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
 		_draw_signal_pulses()
 		return
 
-	# Stolen move icon inset neatly as a pedestal medallion (keeps mask face 100% legible!)
+	# Stolen move icon inset neatly as a pedestal medallion with greyscale-legible cage bars
 	var shape_i: int = _move_shape_index(mask_icon)
 	LxToyDraw.draw_shape_glyph(self, Vector2(0.0, 1.0), shape_i, true, c_coral if state == State.CRACKING else c_gold, c_cream)
+	if state == State.SEALED_STOLEN:
+		draw_rect(Rect2(-4.0, -2.0, 1.0, 5.0), c_void)
+		draw_rect(Rect2(3.0, -2.0, 1.0, 5.0), c_void)
+	elif state == State.CRACKING:
+		draw_rect(Rect2(-4.0, -2.0, 1.0, 2.0), c_coral)
+		draw_rect(Rect2(3.0, 1.0, 1.0, 2.0), c_coral)
 
 	# Hovering unmistakable theatrical masquerade mask
 	var bob: float = 0.0 if fr else roundf(sin(_clock * 3.2) * 1.5)
 	var my: float = -13.0 + bob
 	var hit_f: bool = _hit_flash_t > 0.0
+	var hit_c: Color = c_ice if (hit_f and fr) else c_cream
 	var cracking: bool = state == State.CRACKING
 
 	if boss_mode:
-		draw_arc(Vector2(0.0, my + 1.0), 12.0, 0.0, TAU, 18, Color(c_gold, 0.48), 1.0)
+		draw_arc(Vector2(0.0, roundf(my + 1.0)), 12.0, 0.0, TAU, 18, Color(c_gold, 0.36 if fr else 0.48), 1.0)
 
 	# Theatrical crest plume fanning up from the brow jewel
 	var plume_main: Color = c_gold if boss_mode else c_rose
@@ -328,8 +337,8 @@ func _draw() -> void:
 	])
 	draw_colored_polygon(mask_out, c_void)
 	# Distinct silver-ice (left) vs gilded gold (right) two-tone theatrical mask sheen
-	draw_colored_polygon(left_half, c_cream if hit_f else c_ice)
-	draw_colored_polygon(right_half, c_cream if hit_f else (c_coral if cracking else c_gold))
+	draw_colored_polygon(left_half, hit_c if hit_f else c_ice)
+	draw_colored_polygon(right_half, hit_c if hit_f else (c_coral if cracking else c_gold))
 	# Brow specular highlights & cheek shading
 	draw_rect(Rect2(-5.0, my - 3.0, 4.0, 1.0), c_cream)
 	draw_rect(Rect2(-4.0, my + 2.0, 3.0, 1.0), c_sky)

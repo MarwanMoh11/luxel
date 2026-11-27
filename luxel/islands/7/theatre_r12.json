@@ -257,7 +257,7 @@
       "kind": "the_understudy",
       "pos": [
         256,
-        152
+        192
       ],
       "zone": "theatre_grand_stage"
     }
@@ -267,7 +267,7 @@
       "kind": "circle",
       "pos": [
         256,
-        168
+        192
       ],
       "radius": 62,
       "style": "spotlight",
@@ -314,9 +314,9 @@
       "prop": "proscenium_mask_arch",
       "pos": [
         256,
-        44
+        24
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -361,7 +361,7 @@
       "sheet": "theme_doppel_theatre",
       "prop": "spot_lantern_rig",
       "pos": [
-        64,
+        88,
         176
       ],
       "layer": "sort",

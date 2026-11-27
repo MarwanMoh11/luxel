@@ -240,8 +240,8 @@
       "id": "lamp_spire_r2_w",
       "kind": "road_lamp",
       "pos": [
-        72,
-        120
+        88,
+        136
       ],
       "props": {
         "zone": "spire_r2",

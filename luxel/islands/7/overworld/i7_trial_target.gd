@@ -107,8 +107,8 @@ func _draw() -> void:
 
 	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 5.0), 7.0, 2.5, "se_gold", lit)
 	draw_circle(Vector2.ZERO, 9.0, c_void)
-	draw_circle(Vector2.ZERO, 7.5, c_rim if lit else c_dusk)
-	draw_circle(Vector2.ZERO, 5.5, c_core if lit else c_night)
+	draw_circle(Vector2.ZERO, 7.0, c_rim if lit else c_dusk)
+	draw_circle(Vector2.ZERO, 5.0, c_core if lit else c_night)
 	if requires_blue:
 		# Diamond crest for Blue targets (greyscale-distinct from circular Yellow targets)
 		var pts := PackedVector2Array([
@@ -117,8 +117,9 @@ func _draw() -> void:
 		draw_colored_polygon(pts, c_cream if lit else c_rim)
 	else:
 		# Bullseye ring for Yellow targets
-		draw_circle(Vector2.ZERO, 2.5, c_cream if lit else c_core)
+		draw_circle(Vector2.ZERO, 2.0, c_cream if lit else c_core)
 	if _flash_t > 0.0:
 		var u: float = 1.0 - clampf(_flash_t / 0.35, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(8.0 + u * 12.0), 0.0, TAU, 16, c_cream, 1.5)
+		var fa: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+		draw_arc(Vector2.ZERO, roundf(8.0 + u * 12.0), 0.0, TAU, 16, Color(c_cream, fa), 1.5)
 	_draw_signal_pulses()

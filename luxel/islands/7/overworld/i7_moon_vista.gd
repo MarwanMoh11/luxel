@@ -115,7 +115,7 @@ func _draw() -> void:
 
 	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 4.0), 12.0, 4.0, "se_gold", viewed or _lit_t > 0.0)
 	draw_circle(Vector2.ZERO, 14.0, c_void)
-	draw_circle(Vector2.ZERO, 12.5, c_gold if viewed else c_plum)
+	draw_circle(Vector2.ZERO, 12.0, c_gold if viewed else c_plum)
 	draw_circle(Vector2.ZERO, 10.0, c_night)
 	draw_circle(Vector2.ZERO, 8.0, c_ice if viewed else c_rose)
 	draw_circle(Vector2(-1.0, -1.0), 4.0, c_cream if viewed else c_void)
@@ -123,5 +123,6 @@ func _draw() -> void:
 		draw_arc(Vector2.ZERO, 16.0, 0.0, TAU, 18, Color(c_gold, 0.65), 1.0)
 	if _bloom_t > 0.0:
 		var u: float = 1.0 - clampf(_bloom_t / 0.85, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, 1.0 - u), 1.5)
+		var ba: float = (1.0 - u) * (0.55 if LxHudFx.flash_reduced() else 0.95)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 32.0, u)), 0.0, TAU, 20, Color(c_cream, ba), 1.5)
 	_draw_signal_pulses()

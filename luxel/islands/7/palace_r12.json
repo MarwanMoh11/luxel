@@ -233,7 +233,7 @@
       "kind": "queen_in_glass",
       "pos": [
         256,
-        136
+        192
       ],
       "zone": "palace_queen_court"
     }
@@ -242,7 +242,7 @@
     {
       "kind": "circle",
       "x": 256,
-      "y": 136,
+      "y": 192,
       "r": 54,
       "col": "sky",
       "ring": "ice"
@@ -270,9 +270,9 @@
       "prop": "crystal_chandelier_arch",
       "pos": [
         256,
-        48
+        28
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0

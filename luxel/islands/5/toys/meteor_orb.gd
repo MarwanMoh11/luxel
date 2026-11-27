@@ -28,6 +28,8 @@ var curve_angle_deg: float = 0.0
 var _respawn_left: float = 0.0
 var _flight_t: float = 0.0
 var _roll_sfx_cd: float = 0.0
+var _impact_fx_t: float = 0.0
+var _impact_world_pos: Vector2 = Vector2.ZERO
 var _hit_ids: Array[int] = []
 var _trail: Array[Vector2] = []
 
@@ -110,6 +112,9 @@ func tick(dt: float) -> void:
 	super.tick(dt)
 	if not active:
 		return
+	if _impact_fx_t > 0.0:
+		_impact_fx_t = maxf(0.0, _impact_fx_t - dt)
+		queue_redraw()
 	match orb_state:
 		OrbState.RESPAWNING:
 			_respawn_left -= dt
@@ -276,6 +281,8 @@ func _check_interactable_hits(a: Vector2, b: Vector2) -> bool:
 
 
 func _start_respawn() -> void:
+	_impact_world_pos = pos
+	_impact_fx_t = 0.26
 	orb_state = OrbState.RESPAWNING
 	vel = Vector2.ZERO
 	_respawn_left = respawn_s
@@ -317,6 +324,12 @@ func _draw() -> void:
 		draw_rect(Rect2((cr + ct).round(), Vector2(1.0, 1.0)), c_gold)
 
 	if orb_state == OrbState.RESPAWNING:
+		if _impact_fx_t > 0.0:
+			var iu: float = 1.0 - clampf(_impact_fx_t / 0.26, 0.0, 1.0)
+			var imp_c: Color = c_ice if is_blue else c_gold
+			var imp_p: Vector2 = (_impact_world_pos - pos).round()
+			var imp_r: float = 10.0 if fr else roundf(lerpf(6.0, 18.0, iu))
+			draw_arc(imp_p, imp_r, 0.0, TAU, 16, Color(imp_c, (1.0 - iu) * (0.48 if fr else 0.86)), 1.5)
 		var u: float = 1.0 - clampf(_respawn_left / maxf(respawn_s, 0.01), 0.0, 1.0)
 		var ring_r: float = roundf(lerpf(14.0, 5.0, u))
 		draw_arc(cr, ring_r, 0.0, TAU, 14, Color(c_gold, 0.45 if fr else (0.35 + u * 0.6)), 1.0)
@@ -397,6 +410,12 @@ func _draw() -> void:
 	draw_rect(Rect2(-1.0, -1.0, 3.0, 3.0), fissure_mid)
 	draw_rect(Rect2(0.0, 0.0, 2.0, 2.0), fissure_hot)
 	draw_rect(Rect2(0.0, -1.0, 1.0, 1.0), c_cream)
+
+	# Curved-trajectory supercharge leading glint when gravity-slingshot bent >= 18 deg
+	if flying and curve_angle_deg >= 18.0 and vel.length_squared() > 16.0:
+		var ldir: Vector2 = vel.normalized()
+		var lp: Vector2 = (ldir * 9.0).round()
+		LxPhysDraw.draw_chevron(self, lp, ldir, Color(c_ice if is_blue else c_cream, 0.70 if fr else 0.92), Color(c_void, 0.78), 3.0)
 
 	# Orbital cosmic dust pips circling the asteroid
 	var orb_phase: float = 0.0 if fr else _clock * (2.6 if flying else 1.2)

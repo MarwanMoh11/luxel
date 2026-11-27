@@ -241,6 +241,11 @@ func _draw() -> void:
 		var qp: Vector2 = (Vector2(0.0, 4.0) + Vector2.from_angle(qa) * 5.0).round()
 		var cur_q: bool = (qi * 90 == current_angle)
 		draw_rect(Rect2(qp, Vector2(2.0 if cur_q else 1.0, 1.0)), c_cream if cur_q else c_plum)
+	# Subtle CW/CCW direction arc on plinth while turning
+	if turning:
+		var arc_c: Color = c_ice if _ring_color_blue else c_gold
+		var a_start: float = needle_ang - float(last_turn_dir) * (PI * 0.45)
+		draw_arc(Vector2(0.0, 4.0), 5.0, minf(a_start, needle_ang), maxf(a_start, needle_ang), 8, Color(arc_c, 0.65 if fr else 0.90), 1.0)
 
 	# Sculpted celestial brass astrolabe bell body
 	var bell_x: float = roundf(swing * 0.5)
@@ -301,6 +306,12 @@ func _draw() -> void:
 	draw_rect(Rect2(bell_x, -15.0, 1.0, 4.0), c_gold)
 	draw_rect(Rect2(bell_x - 2.0, -13.0, 5.0, 1.0), c_gold)
 	draw_rect(Rect2(bell_x, -13.0, 1.0, 1.0), c_cream)
+
+	# Subtle ice prism-facet glint on west bell rim when Blue/Prism CCW reversal is available
+	var can_ccw: bool = allow_ccw_blue and (not require_sextant_ccw or (Lx.state != null and bool(Lx.state.story_flags.get("power_sextant", false))))
+	if can_ccw:
+		draw_rect(Rect2(bell_x - 6.0, -6.0, 2.0, 2.0), c_sky)
+		draw_rect(Rect2(bell_x - 6.0, -6.0, 1.0, 1.0), c_ice)
 
 	# Clean resonant chime rings + cardinal chime glints when turning
 	if turning:

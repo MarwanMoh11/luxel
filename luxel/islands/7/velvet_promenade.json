@@ -379,7 +379,7 @@
       "id": "lamp_vp_e2",
       "kind": "road_lamp",
       "pos": [
-        624,
+        648,
         120
       ],
       "props": {
@@ -479,7 +479,7 @@
         712,
         144
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -489,7 +489,7 @@
       "prop": "velvet_stage_curtain",
       "pos": [
         616,
-        112
+        88
       ],
       "layer": "sort",
       "flip_x": false,
@@ -549,7 +549,7 @@
       "prop": "playbill_easel_stand",
       "pos": [
         568,
-        120
+        104
       ],
       "layer": "sort",
       "flip_x": false,
@@ -596,8 +596,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "brass_footlight_row",
       "pos": [
-        368,
-        368
+        344,
+        360
       ],
       "layer": "sort",
       "flip_x": false,
@@ -644,8 +644,8 @@
       "sheet": "theme_doppel_theatre",
       "prop": "tattered_act_banner",
       "pos": [
-        240,
-        368
+        216,
+        376
       ],
       "layer": "sort",
       "flip_x": true,

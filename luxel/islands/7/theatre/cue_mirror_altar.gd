@@ -57,7 +57,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["item_cue_mirror"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("ISL7_POW_CUE", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+		Lx.events.shake_requested.emit(0.08 if LxHudFx.flash_reduced() else 0.16)
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -111,20 +111,25 @@ func _draw() -> void:
 	LxIsland7Rule.draw_truth_shadow(self, Vector2(0.0, 6.0), 10.0, 3.0, "se_gold", false)
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), PAL["night"] as Color, c_wine, c_gold, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), c_gold if not claimed else PAL["dusk"] as Color)
+	var fr: bool = LxHudFx.flash_reduced()
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 2.0)
+		var bob: float = 0.0 if fr else roundf(sin(_clock * 3.4) * 2.0)
 		var cy: float = -12.0 + bob
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 13.0, 9.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_gold, 0.65), 1.0, false)
-		# Gilded stagehand Cue-Mirror hand-glass emblem
+		var r1: float = 8.0 + (0.0 if fr else fmod(_clock * 13.0, 9.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(c_gold, 0.45 if fr else 0.65), 1.0, false)
+		# Gilded stagehand Cue-Mirror hand-glass emblem + cardinal spotlight alignment ticks
 		draw_rect(Rect2(-1.0, cy + 4.0, 2.0, 5.0), c_gold)
 		draw_circle(Vector2(0.0, cy), 6.0, c_void)
 		draw_circle(Vector2(0.0, cy), 5.0, c_gold)
-		draw_circle(Vector2(0.0, cy), 3.5, c_ice)
+		draw_circle(Vector2(0.0, cy), 3.0, c_ice)
 		draw_rect(Rect2(-2.0, cy - 2.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(0.0, cy - 8.0, 1.0, 2.0), c_cream)
+		draw_rect(Rect2(-8.0, cy, 2.0, 1.0), c_gold)
+		draw_rect(Rect2(6.0, cy, 2.0, 1.0), c_gold)
 		draw_arc(Vector2(0.0, cy), 5.0, -PI * 0.2, PI * 0.4, 8, c_apricot, 1.0)
 	elif _claim_t > 0.0:
 		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, c_gold, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, c_cream, 1.0, false)
+		var ca: float = (1.0 - u) * (0.55 if fr else 0.95)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, Color(c_gold, ca), 1.6, false)
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, Color(c_cream, ca), 1.0, false)
 	_draw_signal_pulses()

@@ -69,8 +69,8 @@
       ],
       "props": {
         "mode": "pull",
-        "radius": 76.0,
-        "strength": 540.0
+        "radius": 48.0,
+        "strength": 360.0
       }
     },
     {
@@ -186,16 +186,16 @@
       "kind": "phantom_owl",
       "pos": [
         240,
-        128
+        108
       ],
       "perches": [
         [
           240,
-          128
+          108
         ],
         [
-          304,
-          152
+          336,
+          136
         ]
       ],
       "zone": "dream_r5",
@@ -205,17 +205,17 @@
       "id": "en_dr5_owl2",
       "kind": "phantom_owl",
       "pos": [
-        344,
-        152
+        352,
+        168
       ],
       "perches": [
         [
-          344,
-          152
+          352,
+          168
         ],
         [
-          224,
-          160
+          216,
+          200
         ]
       ],
       "zone": "dream_r5",
@@ -386,7 +386,7 @@
       },
       {
         "op": "clear",
-        "timeout": 45.0
+        "timeout": 55.0
       },
       {
         "op": "lens"

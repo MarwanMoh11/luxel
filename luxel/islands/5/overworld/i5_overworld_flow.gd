@@ -79,6 +79,7 @@ func on_region_loaded(region_id: String) -> void:
 				_events.music_mode_requested.emit("explore")
 	else:
 		_dream_active = false
+		_apply_dungeon_arc_entry(st, region_id)
 		_apply_region_music(region_id)
 
 
@@ -173,8 +174,35 @@ func _handle_relit_overworld(st: LxGameState) -> void:
 		_emit_narration("I5_RELIGHT_POST", "narration", 3.5)
 
 
+func _apply_dungeon_arc_entry(st: LxGameState, region_id: String) -> void:
+	if region_id == "meteor_r1" and not bool(st.story_flags.get("isl5_meteor_entered", false)):
+		st.story_flags["isl5_meteor_entered"] = true
+		_emit_narration("I5_DNG_METEOR", "title", 3.2)
+	elif region_id == "planet_r1" and not bool(st.story_flags.get("isl5_planet_entered", false)):
+		st.story_flags["isl5_planet_entered"] = true
+		_emit_narration("I5_DNG_PLANET", "title", 3.2)
+	elif region_id == "fall_r1" and not bool(st.story_flags.get("isl5_fall_entered", false)):
+		st.story_flags["isl5_fall_entered"] = true
+		_emit_narration("I5_DNG_FALL", "title", 3.2)
+
+
 func _apply_region_music(region_id: String) -> void:
 	if _events == null:
+		return
+	var st: LxGameState = _get_state()
+	if region_id.begins_with("meteor_"):
+		var mb: bool = (region_id == "meteor_r6" and st != null and not st.defeated_bosses.has("apogee_hound")) \
+			or (region_id == "meteor_r11" and st != null and not st.defeated_bosses.has("twin_moons"))
+		_events.music_mode_requested.emit("isl5_boss_minor_p1" if mb else "isl5_meteor")
+		return
+	if region_id.begins_with("planet_"):
+		var pb: bool = (region_id == "planet_r6" and st != null and not st.defeated_bosses.has("meridian_weaver")) \
+			or (region_id == "planet_r11" and st != null and not st.defeated_bosses.has("the_zodiac"))
+		_events.music_mode_requested.emit("isl5_boss_minor_p1" if pb else "isl5_planetarium")
+		return
+	if region_id.begins_with("fall_"):
+		var fb: bool = region_id == "fall_r4" and st != null and not st.defeated_bosses.has("the_counterweight")
+		_events.music_mode_requested.emit("isl5_boss_minor_p1" if fb else "isl5_setpiece")
 		return
 	match region_id:
 		"ow_meteor_apron", "trial_comet_range":
@@ -226,7 +254,10 @@ func _on_boss_defeated(boss_id: String, island_id: int) -> void:
 			st.story_flags["seal_broken_5"] = true
 			if _events != null:
 				_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
+				_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
+				_events.shake_requested.emit(0.24)
 				_emit_narration("I5_CUE_CHAINS", "title", 3.2)
+				_events.save_requested.emit("seal_broken_5")
 
 
 func _on_great_lamp_relit(island_id: int) -> void:

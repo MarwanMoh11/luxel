@@ -298,13 +298,18 @@ func _draw() -> void:
 	# Clearer Silver Full Moon vs Obsidian Eclipsed Moon reflection disc
 	var mr: float = roundf(maxf(4.0, r * 0.36))
 	if not is_blk:
-		# High-contrast luminous full silver moon disc with specular lunar glint
+		# High-contrast luminous full silver moon disc with specular lunar glint + 4-way starlight ticks
 		draw_circle(Vector2.ZERO, mr + 1.0, c_sky)
 		draw_circle(Vector2.ZERO, mr, c_ice)
 		draw_arc(Vector2.ZERO, mr, PI * 0.85, PI * 1.75, 12, c_cream, 1.2)
 		draw_rect(Rect2(-mr + 2.0, -mr + 2.0, 3.0, 2.0), c_cream)
 		draw_rect(Rect2(1.0, 1.0, 2.0, 2.0), c_sky)
 		draw_rect(Rect2(-1.0, 2.0, 1.0, 1.0), c_sky)
+		var st_r: float = mr + 2.0
+		draw_rect(Rect2(-1.0, -st_r - 1.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-1.0, st_r + 1.0, 2.0, 1.0), c_cream)
+		draw_rect(Rect2(-st_r - 1.0, -1.0, 1.0, 2.0), c_cream)
+		draw_rect(Rect2(st_r + 1.0, -1.0, 1.0, 2.0), c_cream)
 	else:
 		# Dramatic pitch-black obsidian eclipsed moon framed by razor-sharp rose/cream corona crescent
 		draw_circle(Vector2.ZERO, mr + 1.0, c_wine)
@@ -344,21 +349,27 @@ func _draw() -> void:
 	# Moon Pocket carried-orb shimmer
 	if _pocket_ring_t > 0.0:
 		var pu: float = 1.0 - clampf(_pocket_ring_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, r + 8.0, pu)), 0.0, TAU, 18, Color(c_cream, 1.0 - pu), 1.0)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, r + 8.0, pu)), 0.0, TAU, 18, Color(c_cream, (1.0 - pu) * (0.55 if fr else 0.95)), 1.0)
 
 	# Ghostly memory indicator if an un-pocketed orb stayed in the other world
 	if _ghost_orb_t > 0.0 and _ghost_orb_pos.is_finite():
 		var gp: Vector2 = (_ghost_orb_pos - pos).round()
-		var ga: float = clampf(_ghost_orb_t / 3.2, 0.0, 1.0) * 0.7
+		var ga: float = clampf(_ghost_orb_t / 3.2, 0.0, 1.0) * (0.52 if fr else 0.72)
 		draw_arc(gp, 6.0, 0.0, TAU, 12, Color(c_ice, ga), 1.0)
 		draw_rect(Rect2(gp - Vector2.ONE, Vector2(2.0, 2.0)), Color(c_cream, ga))
 
 	if locked_pool:
-		draw_line(Vector2(-r * 0.6, -r * 0.6), Vector2(r * 0.6, r * 0.6), c_void, 3.0)
-		draw_line(Vector2(r * 0.6, -r * 0.6), Vector2(-r * 0.6, r * 0.6), c_void, 3.0)
-		draw_line(Vector2(-r * 0.6, -r * 0.6), Vector2(r * 0.6, r * 0.6), c_wine, 1.0)
-		draw_line(Vector2(r * 0.6, -r * 0.6), Vector2(-r * 0.6, r * 0.6), c_wine, 1.0)
-		draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), c_coral)
+		var lr: float = roundf(r * 0.6)
+		draw_line(Vector2(-lr, -lr), Vector2(lr, lr), c_void, 3.0)
+		draw_line(Vector2(lr, -lr), Vector2(-lr, lr), c_void, 3.0)
+		draw_line(Vector2(-lr, -lr), Vector2(lr, lr), c_wine, 1.0)
+		draw_line(Vector2(lr, -lr), Vector2(-lr, lr), c_wine, 1.0)
+		# Greyscale-legible central padlock seal
+		draw_rect(Rect2(-4.0, -3.0, 8.0, 7.0), c_void)
+		draw_rect(Rect2(-3.0, -2.0, 6.0, 5.0), c_stone)
+		draw_rect(Rect2(-2.0, -5.0, 4.0, 3.0), c_void)
+		draw_rect(Rect2(-1.0, -4.0, 2.0, 2.0), c_stone)
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 3.0), c_coral)
 	_draw_signal_pulses()
 
 

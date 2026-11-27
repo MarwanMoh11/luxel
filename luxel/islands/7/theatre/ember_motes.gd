@@ -82,9 +82,10 @@ func _draw() -> void:
 	var c_cream: Color = PAL["cream"] as Color
 	var c_apricot: Color = PAL["apricot"] as Color
 	var fr: bool = LxHudFx.flash_reduced()
-	# Golden stage spotlight disc on floor
-	draw_circle(Vector2.ZERO, charge_radius * 0.78, Color(c_gold, 0.18))
-	draw_arc(Vector2.ZERO, charge_radius * 0.78, 0.0, TAU, 20, Color(c_gold, 0.55), 1.0)
+	# Golden stage spotlight disc on floor (pixel-snapped)
+	var spot_r: float = roundf(charge_radius * 0.78)
+	draw_circle(Vector2.ZERO, spot_r, Color(c_gold, 0.14 if fr else 0.18))
+	draw_arc(Vector2.ZERO, spot_r, 0.0, TAU, 20, Color(c_gold, 0.42 if fr else 0.55), 1.0)
 	# Floating golden ember-motes rising through cone
 	for i: int in range(6):
 		var a: float = float(i) * (TAU / 6.0) + (0.0 if fr else _clock * 1.4)
@@ -94,5 +95,5 @@ func _draw() -> void:
 		draw_rect(Rect2(mp - Vector2.ONE, Vector2(2.0, 2.0)), c_cream if i % 2 == 0 else c_apricot)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, charge_radius * 1.2, u)), 0.0, TAU, 18, Color(c_cream, 1.0 - u), 1.5)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, charge_radius * 1.2, u)), 0.0, TAU, 18, Color(c_cream, (1.0 - u) * (0.55 if fr else 0.95)), 1.5)
 	_draw_signal_pulses()
