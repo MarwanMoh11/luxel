@@ -102,6 +102,10 @@ static func draw_moths(ci: CanvasItem, area: Rect2, sel: int = 0) -> void:
 		var dot_y: float = roundf(area.position.y + 5.0)
 		ci.draw_rect(Rect2(dot_x, dot_y, 3.0, 3.0), LxPalette.PAL["lime"])
 		ci.draw_rect(Rect2(dot_x + 1.0, dot_y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
+		if LxFireflyState.is_special_unlocked():
+			ci.draw_rect(Rect2(dot_x - 4.0, dot_y + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(dot_x - 3.0, dot_y, 1.0, 3.0), LxPalette.PAL["gold"])
+			ci.draw_rect(Rect2(dot_x - 3.0, dot_y + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 		LxPixelFont.draw_right(ci, pip_txt, pip_rx, area.position.y + 4.0, LxPalette.PAL["lime"], 1)
 	var sel_isl: int = clampi(sel + 1, 1, 8)
 	# 8 islands in 2 columns x 4 rows, 10 moth pips per island + hint eye icon after 2 visits

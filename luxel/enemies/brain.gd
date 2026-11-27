@@ -63,7 +63,6 @@ var world_ctx: Node = null
 var flash_t: float = 0.0
 var clank_t: float = 0.0
 var awaken_t: float = 0.0
-var pip_mark_t: float = 0.0
 var knock: Vector2 = Vector2.ZERO
 var opened_kill: bool = false
 var last_tell_duration: float = 0.0
@@ -135,7 +134,7 @@ func setup(spec: Dictionary, p_director: LxAttackDirector = null, p_world: Node 
 	if spec.has("island_id"): island_id = int(spec["island_id"])
 
 	state = State.ROUTINE; phase = 1; state_timer = 0.0; anim_t = 0.0
-	flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0; lost_t = 0.0; pip_mark_t = 0.0
+	flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0; lost_t = 0.0
 	cooldown = 0.0; rally_t = -1.0; knock = Vector2.ZERO
 	opened_kill = false; is_counter_attack = false
 	last_tell_duration = 0.0; last_recover_duration = 0.0
@@ -171,7 +170,6 @@ func tick(dt: float) -> void:
 	clank_t = maxf(0.0, clank_t - dt)
 	awaken_t = maxf(0.0, awaken_t - dt)
 	alert_t = maxf(0.0, alert_t - dt)
-	pip_mark_t = maxf(0.0, pip_mark_t - dt)
 	cooldown = maxf(0.0, cooldown - dt)
 	if knock.length() > 1.0:
 		_move_step(knock * dt, is_flying())
@@ -212,8 +210,6 @@ func wants_token() -> bool: return state == State.POSITION or state == State.WAI
 func is_alive() -> bool: return state != State.DEAD and hp > 0.001
 func is_targetable() -> bool: return is_alive()
 func is_flying() -> bool: return false
-func apply_pip_mark(dur: float) -> void: pip_mark_t = maxf(0.0, dur)
-func is_pip_marked() -> bool: return is_alive() and pip_mark_t > 0.0
 func get_state_name() -> String: return STATE_NAMES[state] if (state >= 0 and state < STATE_NAMES.size()) else "UNKNOWN"
 
 

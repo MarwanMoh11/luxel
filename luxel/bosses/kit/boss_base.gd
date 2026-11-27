@@ -147,7 +147,7 @@ func register_attack(id: String, cfg: Dictionary) -> void:
 func reset_encounter() -> void:
 	_ensure_kit()
 	hp = max_hp; phase = 1; pos = home; position = pos.round()
-	knock = Vector2.ZERO; flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0; pip_mark_t = 0.0
+	knock = Vector2.ZERO; flash_t = 0.0; clank_t = 0.0; awaken_t = 0.0; alert_t = 0.0
 	cooldown = 0.25; stagger_meter = 0.0; stagger_immunity_t = 0.0; engaged = false; _wick_entered_arena = false
 	active_attack_id = ""; last_attack_id = ""
 	_commit_elapsed = 0.0; _commit_hit_done = false

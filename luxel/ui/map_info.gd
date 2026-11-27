@@ -50,6 +50,12 @@ static func draw_island_info(ci: CanvasItem, box: Rect2, isl_id: int, explored: 
 			var hub_pip: String = LxFolkData.fmt_id("PIP_HUB_MAP_FMT", [LxFireflyState.get_bond_rank(), LxFireflyState.get_nectar_count()])
 			_draw_pip_dot(ci, box.position + Vector2(6.0, 17.0))
 			LxPixelFont.draw_left(ci, hub_pip, box.position + Vector2(11.0, 16.0), LxPalette.PAL["lime"], 1)
+			if LxFireflyState.is_special_unlocked():
+				var sx_sp: float = box.end.x - 10.0
+				var sy_sp: float = box.position.y + 17.0
+				ci.draw_rect(Rect2(sx_sp, sy_sp + 1.0, 3.0, 1.0), LxPalette.PAL["gold"])
+				ci.draw_rect(Rect2(sx_sp + 1.0, sy_sp, 1.0, 3.0), LxPalette.PAL["gold"])
+				ci.draw_rect(Rect2(sx_sp + 1.0, sy_sp + 1.0, 1.0, 1.0), LxPalette.PAL["cream"])
 			var trial_line: String = LxFolkData.fmt_id("PIP_HUB_TRIAL_FMT", [LxFireflyState.get_charm_count(), LxFireflyState.get_trial_best()])
 			LxPixelFont.draw_left(ci, trial_line, box.position + Vector2(6.0, 26.0), LxPalette.PAL["gold"], 1)
 		LxPixelFont.draw_left(ci, LxStrings.fmt("MAP_SECRETS", [count_secrets()]), box.position + Vector2(6.0, 36.0), LxPalette.PAL["sky"], 1)

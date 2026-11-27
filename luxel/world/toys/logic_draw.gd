@@ -251,6 +251,15 @@ static func sample_light_at(region: Node, world_pos: Vector2, ignore: Object = n
 				var dl: float = world_pos.distance_to(lpos)
 				if dl < lrad and _clear_light_view(region, lpos, world_pos, ignore, null):
 					best = maxf(best, (1.0 - dl / lrad) * 1.05)
+	if Lx.companion != null and is_instance_valid(Lx.companion) and Lx.companion.has_method("get_light_pool"):
+		var is_pip_out: bool = Lx.companion.has_method("is_out") and bool(Lx.companion.call("is_out"))
+		if is_pip_out:
+			var plp: Vector4 = Lx.companion.call("get_light_pool") as Vector4
+			if plp.z > 1.0 and plp.w > 0.01:
+				var ppos := Vector2(plp.x, plp.y)
+				var dp: float = world_pos.distance_to(ppos)
+				if dp < plp.z and _clear_light_view(region, ppos, world_pos, ignore, null):
+					best = maxf(best, (1.0 - dp / plp.z) * plp.w)
 	return best
 
 

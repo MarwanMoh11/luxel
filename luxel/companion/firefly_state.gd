@@ -1,6 +1,7 @@
 class_name LxFireflyState
 extends RefCounted
-## Persistent state, bond progression, 8 Pip Charms, Hub Flight Trial medals,
+## Persistent state, bond progression, 8 exploration/puzzle Pip Charms,
+## late-game Starfall Radiance special unlock, Hub Flight Trial medals,
 ## and 7 wing tint unlocks for Pip the Firefly Companion.
 ## Backed by Lx.state.story_flags so atomic save/load and slot isolation work automatically.
 
@@ -45,11 +46,11 @@ const SHRINE_CHARMS: Array[Dictionary] = [
 	{"island": 8, "shrine_id": "shrine_8_grotto", "charm_id": "dawn_heart", "name_key": "PIP_CHARM_8_NAME", "desc_key": "PIP_CHARM_8_DESC"},
 ]
 
-const SEND_RANGES: Array[float] = [128.0, 152.0, 174.0, 196.0]
+const SEND_RANGES: Array[float] = [132.0, 156.0, 178.0, 200.0]
 const LIGHT_RADII: Array[float] = [58.0, 68.0, 76.0, 86.0]
-const MARK_BONUSES: Array[float] = [0.25, 0.30, 0.35, 0.40]
-const POP_DAMAGES: Array[float] = [1.25, 1.50, 1.75, 2.20]
-const COOLDOWNS: Array[float] = [0.45, 0.38, 0.32, 0.26]
+const COOLDOWNS: Array[float] = [0.42, 0.35, 0.28, 0.22]
+const SPECIAL_COOLDOWN_BASE: float = 45.0
+const SPECIAL_RADIUS_BASE: float = 72.0
 
 const TINT_KEYS: Dictionary = {
 	"meadow": {"core": "cream", "glow": "lime", "wing": "ice", "rim": "jade"},
@@ -174,6 +175,17 @@ static func get_bond_rank() -> int:
 	return clampi(rank, 1, 4)
 
 
+static func is_special_unlocked() -> bool:
+	if get_bond_rank() >= 4:
+		return true
+	if Lx.state != null:
+		if Lx.state.relit_islands.size() >= 4:
+			return true
+		if Lx.state.get_highest_island() >= 5:
+			return true
+	return false
+
+
 static func is_bloom_collected(bloom_id: String) -> bool:
 	return Lx.state != null and not bloom_id.is_empty() and bool(Lx.state.story_flags.get("pip_bloom:" + bloom_id, false))
 
@@ -206,26 +218,28 @@ static func complete_relay(relay_id: String) -> Dictionary:
 	return {"completed": true, "nectar": next_n, "rank": new_rank, "ranked_up": new_rank > old_rank}
 
 
+# ---- Exploration, Puzzle, Light, Wayfinding & Late-Game Special Perks ----
+
 static func get_send_range() -> float: return SEND_RANGES[get_bond_rank() - 1]
-static func get_light_radius() -> float: return LIGHT_RADII[get_bond_rank() - 1]
-static func get_mark_bonus() -> float: return MARK_BONUSES[get_bond_rank() - 1] + (0.15 if has_charm("prism_wing") else 0.0)
-static func get_pop_damage() -> float: return POP_DAMAGES[get_bond_rank() - 1]
 static func get_cooldown() -> float: return COOLDOWNS[get_bond_rank() - 1]
 
-static func get_send_speed_mult() -> float: return 1.15 if has_charm("chime_wing") else 1.0
-static func get_tether_bonus_mult() -> float: return 1.25 if has_charm("sea_spark") else 1.0
-static func get_pop_radius_mult() -> float: return 1.24 if has_charm("thorn_pollen") else 1.0
-static func get_dew_pop_interval() -> int: return 4 if has_charm("dew_veil") else 5
-static func get_perch_duration() -> float: return 8.0 if has_charm("comet_tail") else 6.5
-static func get_pop_ember_gain() -> float: return 18.0 if has_charm("ember_wisp") else 14.0
-static func get_shield_block_cap() -> int: return 2 if has_charm("dawn_heart") else 1
-
-
-static func record_pollen_pop() -> bool:
-	if Lx.state == null: return false
-	var pops: int = maxi(0, int(Lx.state.story_flags.get("pip_pops", 0))) + 1
-	Lx.state.story_flags["pip_pops"] = pops
-	return get_bond_rank() >= 2 and (pops % get_dew_pop_interval() == 0)
+# I1 Chime Wing: +18% Pip flight speed (faster puzzle sends & trials)
+static func get_send_speed_mult() -> float: return 1.18 if has_charm("chime_wing") else 1.0
+# I2 Sea Spark: +16 px Pip scout light radius (wider darkness illumination)
+static func get_light_radius() -> float: return LIGHT_RADII[get_bond_rank() - 1] + (16.0 if has_charm("sea_spark") else 0.0)
+# I3 Thorn Pollen: +4 px puzzle interaction & bloom/bell pass reach
+static func get_pass_radius() -> float: return 18.0 if has_charm("thorn_pollen") else 14.0
+# I4 Dew Veil: +12% movement in lit dungeon sanctuaries & faster wayfinder pulse
+static func get_sanctuary_speed_mult() -> float: return 1.12 if has_charm("dew_veil") else 1.06
+static func get_wayfinder_idle_delay() -> float: return 3.6 if has_charm("dew_veil") else 5.0
+# I5 Comet Tail: longer Pip perch duration (8.5s vs 6.5s)
+static func get_perch_duration() -> float: return 8.5 if has_charm("comet_tail") else 6.5
+# I6 Ember Wisp: -20% late-game Special Attack cooldown (36s vs 45s)
+static func get_special_cooldown() -> float: return SPECIAL_COOLDOWN_BASE * (0.80 if has_charm("ember_wisp") else 1.0)
+# I7 Prism Wing: +45% hidden secret & wayfinder sense range (+ ice-blue secret glint)
+static func get_sense_range_mult() -> float: return 1.45 if has_charm("prism_wing") else 1.0
+# I8 Dawn Heart: larger late-game Starfall Radiance wave (92 px vs 72 px)
+static func get_special_radius() -> float: return 92.0 if has_charm("dawn_heart") else SPECIAL_RADIUS_BASE
 
 
 static func get_trial_best() -> int:

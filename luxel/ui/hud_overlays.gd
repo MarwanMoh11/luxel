@@ -502,17 +502,27 @@ static func draw_firefly_slot(ci: CanvasItem, slot_x: float, origin_y: float, bl
 	if perch_frac <= 0.0 and float(st.get("perch_max", 0.0)) > 0.01:
 		perch_frac = clampf(float(st.get("perch_left", 0.0)) / float(st.get("perch_max", 1.0)), 0.0, 1.0)
 	var is_out: bool = bool(st.get("perched", st.get("out", st.get("is_out", false)))) or perch_frac > 0.001 or (state_s in ["perched", "dart", "darting", "returning", "out", "orbit_target"])
+	var is_guiding: bool = bool(st.get("guiding", false))
+	var sp_ready: bool = bool(st.get("special_unlocked", false)) and bool(st.get("special_ready", false))
 	var cd: float = float(st.get("cooldown", st.get("cooldown_left", st.get("cd", 0.0))))
 	var cd_max: float = maxf(0.1, float(st.get("cooldown_max", st.get("cd_max", 1.5))))
-	var on_cd: bool = not is_out and cd > 0.02
+	var on_cd: bool = not is_out and not is_guiding and cd > 0.02
 	var bond_rank: int = clampi(int(st.get("bond_rank", st.get("rank", st.get("bond", 1)))), 1, 4)
 	# Bond rank pips (1..4) above the slot
 	ci.draw_rect(Rect2(sx + 2.0, oy - 4.0, 9.0, 3.0), Color(pal["void"] as Color, 0.72))
 	for i: int in range(4):
 		var pip_c: Color = (pal["lime"] if i == bond_rank - 1 else pal["gold"]) as Color if i < bond_rank else (pal["dusk"] as Color)
 		ci.draw_rect(Rect2(sx + 3.0 + float(i) * 2.0, oy - 3.0, 1.0, 1.0), pip_c)
+	# Subtle golden star pip beside Pip's icon ONLY once late-game Starfall Radiance is unlocked & ready
+	if sp_ready:
+		var st_x: float = sx + 12.0
+		var st_y: float = oy - 4.0
+		ci.draw_rect(Rect2(st_x, st_y, 3.0, 3.0), pal["void"] as Color)
+		ci.draw_rect(Rect2(st_x + 1.0, st_y, 1.0, 3.0), pal["gold"] as Color)
+		ci.draw_rect(Rect2(st_x, st_y + 1.0, 3.0, 1.0), pal["gold"] as Color)
+		ci.draw_rect(Rect2(st_x + 1.0, st_y + 1.0, 1.0, 1.0), (pal["cream"] if pulse else pal["gold"]) as Color)
 	# 13x11 beveled moves-tray slot
-	var bdr_col: String = "cream" if (tethered and pulse) else ("lime" if is_out else ("dusk" if on_cd else "lime"))
+	var bdr_col: String = "gold" if (is_guiding or (tethered and pulse)) else ("lime" if is_out else ("dusk" if on_cd else "lime"))
 	LxPixelFont.draw_panel(ci, Rect2(sx, oy, 13.0, 11.0), "night", bdr_col, "void")
 	# Crisp 7x7 pixel Firefly icon at (slot_x + 3, origin_y + 2)
 	var ix: float = sx + 3.0

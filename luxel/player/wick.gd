@@ -308,7 +308,7 @@ func tick_sim(dt: float, world_ctx: Node) -> void:
 			desired_vel = Vector2.ZERO
 		elif bounce_t <= 0.0:
 			var surge_m: float = 1.14 if (LxBiomeRules.active_instance != null and is_instance_valid(LxBiomeRules.active_instance) and LxBiomeRules.active_instance.starlight_surge_t > 0.0) else 1.0
-			var pip_m: float = 1.12 if (firefly != null and is_instance_valid(firefly) and bool(firefly.get("sanctuary_buff_active"))) else 1.0
+			var pip_m: float = LxFireflyState.get_sanctuary_speed_mult() if (firefly != null and is_instance_valid(firefly) and bool(firefly.get("sanctuary_buff_active"))) else 1.0
 			var move_spd: float = MOVE_SPEED * surge_m * pip_m
 			var panes_m: LxPanes = LxPanes.current()
 			if panes_m != null and not panes_m.equipped_ids().is_empty():
@@ -372,13 +372,18 @@ func _poll_inputs(world_ctx: Node) -> void:
 				"lx_beam": press_beam()
 				"lx_lens": press_lens()
 				"lx_sunflare": press_sunflare()
-				"lx_firefly": press_firefly()
+				"lx_firefly":
+					if not dead and not is_grabbing() and firefly != null and is_instance_valid(firefly) and firefly.has_method("on_input_down"):
+						firefly.call("on_input_down", world_ctx)
 				"lx_interact": WickGrab.press_interact(self, world_ctx)
 		elif not now and was:
 			match act:
 				"lx_fire": release_fire()
 				"lx_dash": release_dash()
 				"lx_beam": release_beam()
+				"lx_firefly":
+					if firefly != null and is_instance_valid(firefly) and firefly.has_method("on_input_up"):
+						firefly.call("on_input_up", world_ctx)
 				"lx_interact": WickGrab.release_interact(self, world_ctx)
 
 
@@ -506,6 +511,12 @@ func press_firefly() -> bool:
 	if dead or is_grabbing() or firefly == null or not is_instance_valid(firefly): return false
 	return bool(firefly.call("press_command", _world_ctx)) if firefly.has_method("press_command") else false
 
+func trigger_firefly_wayfinder() -> bool:
+	return (not dead) and firefly != null and is_instance_valid(firefly) and firefly.has_method("trigger_wayfinder") and bool(firefly.call("trigger_wayfinder", _world_ctx, true))
+
+func trigger_firefly_special() -> bool:
+	return (not dead) and firefly != null and is_instance_valid(firefly) and firefly.has_method("trigger_special") and bool(firefly.call("trigger_special", _world_ctx))
+
 func try_zip() -> bool:
 	_ensure_kit()
 	if dead or is_grabbing() or not has_lantern() or move_throw == null: return false
@@ -579,10 +590,7 @@ func get_entity_radius(entity: Object, fallback: float = 8.0) -> float: return _
 func is_entity_alive(entity: Object) -> bool: return _world_q.is_entity_alive(entity)
 func is_snatcher_entity(entity: Object) -> bool: return _world_q.is_snatcher_entity(entity)
 func apply_hit_to_entity(entity: Object, hit: LxHit) -> int:
-	var res: int = _world_q.apply_hit_to_entity(entity, hit)
-	if res >= 0 and firefly != null and is_instance_valid(firefly) and firefly.has_method("on_wick_hit_enemy"):
-		firefly.call("on_wick_hit_enemy", self, entity, hit, res, get_entity_pos(entity), _world_ctx)
-	return res
+	return _world_q.apply_hit_to_entity(entity, hit)
 func get_method_arity(obj: Object, method_name: String) -> int: return _world_q.get_method_arity(obj, method_name)
 
 func spawn_afterimage(col: Color) -> void: _fx.spawn_afterimage(global_position, col, facing, "zip" if is_zipping() else "dash")

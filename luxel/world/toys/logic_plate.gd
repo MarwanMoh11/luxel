@@ -94,6 +94,11 @@ func _measure_weight() -> float:
 			var lp: Vector2 = region.call("get_lantern_pos") as Vector2 if region.has_method("get_lantern_pos") else Vector2(-9999.0, -9999.0)
 			if plate_rect.has_point(lp):
 				total += 1.0
+	if (allowed_by.has("lantern") or allowed_by.has("wick") or allowed_by.has("pip")) and Lx.companion != null and is_instance_valid(Lx.companion):
+		if Lx.companion.has_method("is_perched") and bool(Lx.companion.call("is_perched")):
+			var pp_v: Variant = Lx.companion.get("pos")
+			if pp_v is Vector2 and plate_rect.grow(4.0).has_point(pp_v as Vector2):
+				total += 1.0
 	if region != null and region.has_method("get_interactables"):
 		for it_v: Variant in (region.call("get_interactables") as Array):
 			if not is_instance_valid(it_v) or not (it_v is LxInteractable) or it_v == self:
