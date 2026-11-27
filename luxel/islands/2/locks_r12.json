@@ -198,7 +198,7 @@
       "kind": "twin_lockmasters",
       "pos": [
         272,
-        176
+        224
       ],
       "zone": "lck_r12"
     }
@@ -208,7 +208,7 @@
       "kind": "compass",
       "pos": [
         272,
-        192
+        224
       ],
       "radius": 52
     },
@@ -216,7 +216,7 @@
       "kind": "circle",
       "pos": [
         272,
-        192
+        224
       ],
       "radius": 68,
       "style": "ritual"
@@ -239,7 +239,7 @@
       "kind": "light_shaft",
       "pos": [
         272,
-        168
+        196
       ],
       "size": [
         68,

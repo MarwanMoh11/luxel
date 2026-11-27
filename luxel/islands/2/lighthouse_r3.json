@@ -293,8 +293,8 @@
       "sheet": "island2_scenery",
       "prop": "rope_coil",
       "pos": [
-        250,
-        42
+        248,
+        24
       ],
       "layer": "sort",
       "flip_x": false,

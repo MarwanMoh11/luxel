@@ -314,15 +314,6 @@
       "style": "ritual"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        176,
-        152,
-        96,
-        96
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         120,
@@ -349,7 +340,7 @@
         224,
         136
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -407,7 +398,7 @@
       "prop": "digestive_spore_bulb",
       "pos": [
         392,
-        216
+        208
       ],
       "layer": "sort",
       "flip_x": false,

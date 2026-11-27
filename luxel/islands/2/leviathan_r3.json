@@ -437,7 +437,7 @@
         144,
         72
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -495,7 +495,7 @@
       "prop": "whale_lantern_jar",
       "pos": [
         312,
-        280
+        296
       ],
       "layer": "sort",
       "flip_x": false,

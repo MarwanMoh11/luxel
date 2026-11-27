@@ -58,9 +58,9 @@ func tick(dt: float) -> void:
 		_shot_fired = true
 		_emit_sfx("prism_bounce")
 		if Lx.events != null:
-			Lx.events.shake_requested.emit(0.08)
+			Lx.events.shake_requested.emit(0.08 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-			LxDarknessLayer.active_instance.add_burst_light(lamp_pos, 52.0, 1.0, 0.25)
+			LxDarknessLayer.active_instance.add_burst_light(lamp_pos, 52.0, 0.65 if LxHudFx.flash_reduced() else 1.0, 0.25)
 	if _stage_t >= 1.85:
 		var u: float = clampf((_stage_t - 1.85) / 1.10, 0.0, 1.0)
 		_cur_pos = pos.lerp(portal_pos, u)
@@ -87,29 +87,35 @@ func get_light_pool() -> Vector4:
 
 
 func _draw() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_deep: Color = PAL["deep"] as Color
 	var c_blue: Color = PAL["blue"] as Color
 	var c_ice: Color = PAL["ice"] as Color
 	var c_cream: Color = PAL["cream"] as Color
 	var lp: Vector2 = (lamp_pos - pos).round()
-	# Dummy brass lamp behind the glass (lit until shattered at 1.15s)
-	draw_rect(Rect2(lp + Vector2(-4.0, -7.0), Vector2(8.0, 12.0)), c_void)
+	# Dummy brass lamp behind the glass (intact crowned lantern vs jagged shattered base)
 	if not _shot_fired:
+		draw_rect(Rect2(lp + Vector2(-4.0, -7.0), Vector2(8.0, 12.0)), c_void)
+		draw_rect(Rect2(lp + Vector2(-2.0, -9.0), Vector2(4.0, 2.0)), PAL["gold"] as Color)
 		draw_rect(Rect2(lp + Vector2(-3.0, -6.0), Vector2(6.0, 8.0)), PAL["gold"] as Color)
 		draw_rect(Rect2(lp + Vector2(-1.0, -4.0), Vector2(2.0, 4.0)), c_cream)
 	else:
+		draw_rect(Rect2(lp + Vector2(-4.0, 0.0), Vector2(8.0, 5.0)), c_void)
 		draw_rect(Rect2(lp + Vector2(-3.0, 1.0), Vector2(6.0, 4.0)), PAL["dusk"] as Color)
+		draw_rect(Rect2(lp + Vector2(-3.0, -1.0), Vector2(2.0, 2.0)), PAL["stone"] as Color)
+		draw_rect(Rect2(lp + Vector2(1.0, 0.0), Vector2(2.0, 1.0)), PAL["stone"] as Color)
 		draw_rect(Rect2(lp + Vector2(-6.0, 4.0), Vector2(2.0, 2.0)), c_ice)
 		draw_rect(Rect2(lp + Vector2(5.0, 3.0), Vector2(2.0, 2.0)), PAL["sky"] as Color)
 	# Cold blue bolt streak during 1.15..1.55s
 	if _playing and _stage_t >= 1.15 and _stage_t <= 1.55:
 		var bu: float = clampf((_stage_t - 1.15) / 0.20, 0.0, 1.0)
-		var bpt: Vector2 = Vector2.ZERO.lerp(lp, bu)
-		draw_line(Vector2.ZERO, bpt, c_blue, 3.0)
-		draw_line(Vector2.ZERO, bpt, c_ice, 1.4)
+		var bpt: Vector2 = Vector2.ZERO.lerp(lp, bu).round()
+		draw_line(Vector2.ZERO, bpt, Color(c_blue, 0.65 if fred else 1.0), 2.0 if fred else 3.0)
+		draw_line(Vector2.ZERO, bpt, Color(c_ice, 0.70 if fred else 1.0), 1.0)
 		if bu >= 0.85:
-			draw_arc(lp, roundf(lerpf(4.0, 14.0, (_stage_t - 1.15) / 0.40)), 0.0, TAU, 12, c_ice, 1.2)
+			var iu: float = clampf((_stage_t - 1.15) / 0.40, 0.0, 1.0)
+			draw_arc(lp, roundf(lerpf(4.0, 14.0, iu)), 0.0, TAU, 12, Color(c_ice, (1.0 - iu * 0.5) * (0.50 if fred else 0.95)), 1.0)
 	# Hollow Wick silhouette (cloak + unlit dark-glass lantern) before vanish
 	if _playing and not _vanished:
 		var hp: Vector2 = (_cur_pos - pos).round()
@@ -128,4 +134,4 @@ func _draw() -> void:
 	if _stage_t >= 2.85 and _stage_t <= 3.45:
 		var pp: Vector2 = (portal_pos - pos).round()
 		var vu: float = clampf((_stage_t - 2.85) / 0.60, 0.0, 1.0)
-		draw_arc(pp, roundf(lerpf(3.0, 16.0, vu)), 0.0, TAU, 14, Color(c_ice, 1.0 - vu), 1.4)
+		draw_arc(pp, roundf(lerpf(3.0, 16.0, vu)), 0.0, TAU, 14, Color(c_ice, (1.0 - vu) * (0.50 if fred else 0.90)), 1.0)

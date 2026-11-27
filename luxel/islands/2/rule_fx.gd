@@ -80,8 +80,10 @@ func draw_world(ci: CanvasItem, wick: LxWick, clock: float) -> void:
 		var u: float = clampf(float(r["age"]) / maxf(0.01, float(r["life"])), 0.0, 1.0)
 		var rp: Vector2 = (r["pos"] as Vector2).round()
 		var col: Color = pal.get(str(r["col"]), pal["ice"]) as Color
-		ci.draw_arc(rp, roundf(lerpf(8.0, 72.0, u)), 0.0, TAU, 24, Color(col, (1.0 - u) * 0.85), 1.5)
-		ci.draw_arc(rp, roundf(lerpf(4.0, 48.0, u)), 0.0, TAU, 18, Color(pal["cream"] as Color, (1.0 - u) * 0.65), 1.0)
+		var a1: float = (1.0 - u) * (0.45 if red else 0.85)
+		var a2: float = (1.0 - u) * (0.35 if red else 0.65)
+		ci.draw_arc(rp, roundf(lerpf(8.0, 72.0, u)), 0.0, TAU, 24, Color(col, a1), 1.0 if red else 2.0)
+		ci.draw_arc(rp, roundf(lerpf(4.0, 48.0, u)), 0.0, TAU, 18, Color(pal["cream"] as Color, a2), 1.0)
 
 	# Skiff twin V-wake ribbons
 	for wk: Dictionary in _wake_trail:
@@ -90,7 +92,7 @@ func draw_world(ci: CanvasItem, wick: LxWick, clock: float) -> void:
 		var wd: Vector2 = wk["dir"] as Vector2
 		var side := Vector2(-wd.y, wd.x)
 		var spread: float = lerpf(3.0, 11.0, u)
-		var alpha: float = (1.0 - u) * 0.72
+		var alpha: float = (1.0 - u) * (0.45 if red else 0.72)
 		var c_w: Color = Color((pal["cream"] if u < 0.35 else pal["ice"]) as Color, alpha)
 		ci.draw_rect(Rect2((wp + side * spread).round(), Vector2(2.0, 1.0)), c_w)
 		ci.draw_rect(Rect2((wp - side * spread).round(), Vector2(2.0, 1.0)), c_w)
@@ -135,11 +137,17 @@ func draw_hud_sweep(ci: CanvasItem, clock: float) -> void:
 	var u: float = 1.0 - clampf(sweep_t / SWEEP_DUR, 0.0, 1.0)
 	var fade: float = sin(u * PI)
 	if red:
-		# Reduced-flash calm tide crest bar at top/bottom edge
+		# Reduced-flash calm tide crest bar at top/bottom edge with directional chevrons
 		var bar_h: float = 3.0 if sweep_local else 5.0
 		var col: Color = (pal["ice"] if sweep_rising else pal["teal"]) as Color
 		var by: float = (180.0 - bar_h) if sweep_rising else 0.0
-		ci.draw_rect(Rect2(0.0, by, 320.0, bar_h), Color(col, fade * 0.70))
+		ci.draw_rect(Rect2(0.0, by, 320.0, bar_h), Color(col, fade * 0.60))
+		var ch_dir: Vector2 = Vector2.UP if sweep_rising else Vector2.DOWN
+		var ch_y: float = (by - 4.0) if sweep_rising else (by + bar_h + 3.0)
+		var ch_c := Color(pal["cream"] as Color, fade * 0.75)
+		var ch_sh := Color(pal["void"] as Color, fade * 0.65)
+		for cx: float in [80.0, 160.0, 240.0]:
+			LxPhysDraw.draw_chevron(ci, Vector2(cx, ch_y), ch_dir, ch_c, ch_sh, 2.0)
 		return
 
 	# Full 1.2s foaming tide-line sweep across the 320x180 viewport

@@ -434,7 +434,7 @@
       "prop": "harbor_crane_arm",
       "pos": [
         360,
-        56
+        48
       ],
       "layer": "sort",
       "flip_x": false,

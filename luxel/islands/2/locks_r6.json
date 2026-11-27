@@ -266,7 +266,7 @@
       "kind": "dredge_hulk",
       "pos": [
         256,
-        160
+        192
       ],
       "zone": "lck_r6"
     }
@@ -295,7 +295,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        176
+        192
       ],
       "size": [
         60,

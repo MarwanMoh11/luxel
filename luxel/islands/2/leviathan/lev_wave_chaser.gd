@@ -98,7 +98,7 @@ func _reset_chase_on_catch(w: LxWick) -> void:
 	_elapsed = 0.0
 	_emit_sfx("marsh_splash")
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.18)
+		Lx.events.shake_requested.emit(0.18 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	var rst: Vector2 = region.get_room_anchor() if (region != null and region.has_method("get_room_anchor")) else Vector2(start_x + 24.0, pos.y)
 	if w.is_mounted():
 		var veh: Node = w.get_mounted_vehicle()
@@ -130,23 +130,29 @@ func _draw() -> void:
 	draw_rect(Rect2(lx - 4.0, -half_h, 4.0, band_h), c_sky)
 	draw_rect(Rect2(lx - 1.0, -half_h, 2.0, band_h), c_ice)
 	# Looming Leviathan dorsal ridge & glowing amber eye surging behind the wave wall
-	var fin_y: float = 0.0 if red else roundf(sin(_clock * 3.2) * 10.0)
+	var fin_y: float = 0.0 if (red or halted) else roundf(sin(_clock * 3.2) * 10.0)
 	draw_rect(Rect2(lx - 32.0, fin_y - 26.0, 18.0, 52.0), PAL["night"] as Color)
 	draw_rect(Rect2(lx - 26.0, fin_y - 18.0, 12.0, 36.0), c_deep)
-	draw_rect(Rect2(lx - 18.0, fin_y - 6.0, 5.0, 4.0), PAL["gold"] as Color)
-	draw_rect(Rect2(lx - 17.0, fin_y - 5.0, 2.0, 2.0), c_cream)
+	if not halted:
+		draw_rect(Rect2(lx - 18.0, fin_y - 6.0, 5.0, 4.0), PAL["gold"] as Color)
+		draw_rect(Rect2(lx - 17.0, fin_y - 5.0, 2.0, 2.0), c_cream)
+		draw_rect(Rect2(lx - 14.0, fin_y - 16.0, 2.0, 4.0), c_ice)
+		draw_rect(Rect2(lx - 14.0, fin_y + 12.0, 2.0, 4.0), c_ice)
+	else:
+		# Halted calm closed eye slit (greyscale-distinct from active chase)
+		draw_rect(Rect2(lx - 18.0, fin_y - 4.0, 5.0, 1.0), PAL["stone"] as Color)
 	# Foaming scalloped crest pips + leaping storm-spray droplets
 	var y: float = -half_h + 6.0
 	var idx: int = 0
 	while y < half_h - 4.0:
-		var wob: float = 0.0 if red else roundf(sin(_clock * 7.0 + float(idx) * 1.1) * 2.5)
+		var wob: float = 0.0 if (red or halted) else roundf(sin(_clock * 7.0 + float(idx) * 1.1) * 2.5)
 		draw_rect(Rect2(lx + wob, y, 4.0, 4.0), c_cream if idx % 2 == 0 else c_ice)
 		draw_rect(Rect2(lx - 4.0 + wob, y + 4.0, 2.0, 3.0), c_sky)
-		if not red and idx % 2 == 0:
+		if not red and not halted and idx % 2 == 0:
 			var sp_x: float = lx + 4.0 + fmod(_clock * 28.0 + float(idx) * 7.0, 14.0)
 			draw_rect(Rect2(roundf(sp_x), y + 1.0, 2.0, 1.0), Color(c_cream, 0.75))
 		y += 12.0
 		idx += 1
 	if _splash_t > 0.0:
 		var u: float = 1.0 - clampf(_splash_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2(lx, 0.0), roundf(lerpf(10.0, 36.0, u)), 0.0, TAU, 16, Color(c_cream, 1.0 - u), 2.0)
+		draw_arc(Vector2(lx, 0.0), roundf(lerpf(10.0, 36.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.55 if red else 1.0)), 1.0 if red else 2.0)

@@ -357,7 +357,7 @@
       "prop": "buoy_bobbing",
       "pos": [
         376,
-        152
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -380,8 +380,8 @@
       "sheet": "island2_scenery",
       "prop": "rope_coil",
       "pos": [
-        124,
-        154
+        144,
+        152
       ],
       "layer": "sort",
       "flip_x": false,
@@ -392,7 +392,7 @@
       "sheet": "island2_scenery",
       "prop": "barnacle_piling",
       "pos": [
-        368,
+        352,
         184
       ],
       "layer": "sort",

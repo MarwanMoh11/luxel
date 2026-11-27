@@ -442,7 +442,7 @@
         400,
         212
       ],
-      "layer": "overhead",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
       "phase": 0.6
@@ -458,15 +458,6 @@
         120
       ],
       "radius": 28
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        352,
-        88,
-        64,
-        64
-      ]
     },
     {
       "kind": "light_shaft",

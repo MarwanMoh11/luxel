@@ -9,7 +9,6 @@ var allow_dismount: bool = true
 var state: String = "idle" # "idle" | "anchored" | "whipping"
 var _catch_cd: float = 0.0
 var _whip_t: float = 0.0
-var _whip_skiff: Node = null
 var _pulse_t: float = 0.0
 
 
@@ -22,7 +21,6 @@ func _toy_setup() -> void:
 	state = "idle"
 	_catch_cd = 0.0
 	_whip_t = 0.0
-	_whip_skiff = null
 	_pulse_t = 0.0
 	z_index = 0
 	queue_redraw()
@@ -31,7 +29,6 @@ func _toy_setup() -> void:
 func reset_toy() -> void:
 	state = "idle"
 	_whip_t = 0.0
-	_whip_skiff = null
 	_catch_cd = 0.0
 	queue_redraw()
 
@@ -64,8 +61,7 @@ func get_dismount_pos(from_pos: Vector2) -> Vector2:
 	return pos + dir * 10.0
 
 
-func begin_whip(skiff: Node) -> void:
-	_whip_skiff = skiff
+func begin_whip(_skiff: Node) -> void:
 	_whip_t = 0.68
 	state = "whipping"
 	_pulse_t = 0.42
@@ -74,7 +70,6 @@ func begin_whip(skiff: Node) -> void:
 
 
 func end_whip(_skiff: Node = null) -> void:
-	_whip_skiff = null
 	_whip_t = 0.0
 	if state == "whipping":
 		state = "anchored" if _is_lantern_here() else "idle"
@@ -112,7 +107,6 @@ func tick(dt: float) -> void:
 	if state == "anchored" or state == "whipping":
 		if lan == null or (lan.state != LxLantern.State.HANGING and lan.state != LxLantern.State.FLYING):
 			state = "idle"
-			_whip_skiff = null
 			_whip_t = 0.0
 			_catch_cd = 0.25
 			set_powered(false)
@@ -185,15 +179,17 @@ func _draw() -> void:
 	var wave_step: int = 0 if red else (int(floorf(_clock * 3.0)) % 2)
 
 	# Water ripple base + optional orbit radius hint while anchored or whipping
-	draw_arc(Vector2(0.0, 4.0), 9.0 + float(wave_step), 0.0, TAU, 14, Color(PAL["ice"] as Color, 0.55), 1.0)
+	draw_arc(Vector2(0.0, 4.0), 9.0 + float(wave_step), 0.0, TAU, 14, Color(PAL["ice"] as Color, 0.42 if red else 0.55), 1.0)
 	if state == "anchored" or state == "whipping":
 		var ring_c: Color = (PAL["cream"] if state == "whipping" else PAL["gold"]) as Color
 		var segs: int = 24
+		var spin: float = 0.0 if red else (_clock * (2.6 if state == "whipping" else 0.7))
+		var pip_sz: float = 2.0 if state == "whipping" else 1.0
 		for i: int in range(segs):
 			if i % 2 == 0:
-				var a0: float = (TAU * float(i)) / float(segs) + _clock * (2.6 if state == "whipping" else 0.7)
+				var a0: float = (TAU * float(i)) / float(segs) + spin
 				var pt: Vector2 = Vector2(roundf(cos(a0) * orbit_r), roundf(sin(a0) * orbit_r))
-				draw_rect(Rect2(pt, Vector2(2.0 if state == "whipping" else 1.0, 1.0)), Color(ring_c, 0.72))
+				draw_rect(Rect2(pt, Vector2(pip_sz, pip_sz if state == "whipping" else 1.0)), Color(ring_c, 0.45 if red else 0.72))
 
 	# Small timber dismount apron when allow_dismount is true
 	if allow_dismount:
@@ -213,6 +209,13 @@ func _draw() -> void:
 	draw_rect(Rect2(-6.0, -15.0, 12.0, 4.0), c_void)
 	draw_rect(Rect2(-5.0, -14.0, 10.0, 2.0), PAL["deep"] as Color if state == "idle" else PAL["apricot"] as Color)
 	draw_rect(Rect2(-4.0, -14.0, 8.0, 1.0), cap_c)
+	# Greyscale-distinct cap finials: anchored lantern-hook crown / whipping twin tangential chevrons
+	if state == "anchored" or state == "whipping":
+		draw_rect(Rect2(-2.0, -17.0, 4.0, 2.0), c_void)
+		draw_rect(Rect2(-1.0, -16.0, 2.0, 1.0), cap_c)
+	if state == "whipping":
+		LxPhysDraw.draw_chevron(self, Vector2(-10.0, -13.0), Vector2.LEFT, PAL["cream"] as Color, c_void, 2.0)
+		LxPhysDraw.draw_chevron(self, Vector2(10.0, -13.0), Vector2.RIGHT, PAL["cream"] as Color, c_void, 2.0)
 	# Mooring side horn cleats
 	draw_rect(Rect2(-7.0, -11.0, 2.0, 2.0), c_void)
 	draw_rect(Rect2(5.0, -11.0, 2.0, 2.0), c_void)
@@ -221,5 +224,6 @@ func _draw() -> void:
 
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.42, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(5.0, 18.0, u)), 0.0, TAU, 16, PAL["cream"] as Color if u < 0.4 else PAL["gold"] as Color, 1.2)
+		var pc: Color = PAL["cream"] as Color if u < 0.4 else PAL["gold"] as Color
+		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(5.0, 18.0, u)), 0.0, TAU, 16, Color(pc, (1.0 - u) * (0.55 if red else 0.90)), 1.0)
 	_draw_signal_pulses()

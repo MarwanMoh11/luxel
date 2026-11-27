@@ -249,15 +249,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        352,
-        32,
-        96,
-        80
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         184,
@@ -331,7 +322,7 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        424,
+        432,
         72
       ],
       "layer": "sort",

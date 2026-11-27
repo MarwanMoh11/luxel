@@ -248,7 +248,7 @@
       "kind": "bosun_rig",
       "pos": [
         224,
-        168
+        160
       ],
       "zone": "gal_r6"
     }
@@ -258,7 +258,7 @@
       "kind": "circle",
       "pos": [
         224,
-        168
+        160
       ],
       "radius": 46,
       "style": "gear"
@@ -326,7 +326,7 @@
       "prop": "oak_ship_barrel",
       "pos": [
         152,
-        280
+        288
       ],
       "layer": "sort",
       "flip_x": false,

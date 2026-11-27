@@ -762,15 +762,298 @@ class LighthousePainter(ThemePainter):
 
 
 class LocksPainter(ThemePainter):
-    """Smugglers' Locks: water-level tide marks along south quay walls."""
+    """Smugglers' Locks: dressed coastal twilight-slate quays (~82-88 luma), deep harbor masonry walls (~38-42),
+    warm timber boardwalks, pine tide-marks & warm brass harbor-lantern wall sconces."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, warm = ctx["bg"], ctx["n_broad"], ctx["warm"]
+
+        # Dressed harbor granite flagstones (16x10 running bond, luma ~82-88, pops off both ~40 walls & blue canals!)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        slab_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 59)
+
+        field = np.clip(nb * 0.42 + slab_h * 0.30 + warm * 0.08 + 0.14, 0.0, 0.92)
+        out = ramp_blend(s.floor_ramp, field, bg)
+
+        # Soft Bayer-dithered harbor mortar seams
+        is_seam = ((sx == 0) | (sy == 0)) & (bg < 0.50)
+        out = np.where(is_seam, IX["night"], out)
+        # Clean 3px damp stone darkening right along canal water edges
+        damp_rim = (
+            (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_lt_water"] & (lx < 3))
+            | (ctx["n_rt_water"] & (lx >= ts - 3))
+        )
+        out = np.where(damp_rim & (bg < 0.60) & (~is_seam), IX["deep"], out)
+        # Subtle sea-salt catchlight on dry flagstones + sparse brass harbor cleats
+        out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (slab_h > 0.72) & (~damp_rim) & (bg < 0.30), IX["stone"], out)
+        out = np.where((sx == 8) & (sy == 5) & (slab_h > 0.92) & (~damp_rim), IX["apricot"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys, lx, ly, ts = ctx["xs"], ctx["ys"], ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        is_edge = (
+            ((~ctx["n_up_path"]) & (ly == 0))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 1))
+            | ((~ctx["n_lt_path"]) & (lx == 0))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 1))
+        )
+        main, hi, edge, trim = IX[s.path_main], IX[s.path_hi], IX[s.path_edge], IX[s.path_trim]
+        dk = SHADE_IX[main]
+        # Warm timber lock boardwalk with 6px plank seams and brass edge studs
+        out = np.full(buf.shape, main, dtype=np.uint8)
+        out = np.where((nb > 0.56) & (bg < 0.40), hi, out)
+        out = np.where((ly % 6 == 0) & (bg < 0.50), dk, out)
+        rivet = (
+            (((~ctx["n_up_path"]) & (ly == 1)) | ((~ctx["n_dn_path"]) & (ly == ts - 2)))
+            & (xs % 8 == 4)
+        ) | (
+            (((~ctx["n_lt_path"]) & (lx == 1)) | ((~ctx["n_rt_path"]) & (lx == ts - 2)))
+            & (ys % 8 == 4)
+        )
+        out = np.where(rivet, trim, out)
+        out = np.where(is_edge & (bg < 0.78), edge, out)
+        buf[mask] = out[mask]
 
     def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
         m_wall = ctx["m_wall"]
         dn_open = ~ctx["n_dn_wall"]
-        ly, ts = ctx["ly"], ctx["ts"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
         bg = ctx["bg"]
-        damp = m_wall & dn_open & (ly >= ts - 3) & (ly < ts - 1) & (bg < 0.55)
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Subtle water-level pine tide-marks along south quay bases
+        damp = south_wall & (ly == ts - 2) & (bg < 0.46)
         buf[damp] = IX["pine"]
+
+        # Warm brass harbor-lantern sconces every 40px along south-facing quay walls above walkable ground
+        dn_walk = np.roll(ctx["m_walk"], -ts, axis=0)
+        dn_walk[-ts:, :] = False
+        sconce_wall = south_wall & dn_walk
+        sx_w = xs % 40
+        sconce = sconce_wall & (sx_w >= 19) & (sx_w <= 21) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[sconce] = IX["apricot"]
+        flame = sconce_wall & (sx_w == 20) & ((ly == ts - 4) | (ly == ts - 3))
+        buf[flame] = IX["gold"]
+
+        # Soft Bayer-dithered warm light aprons onto walkable quay tiles directly south
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 20 + 20) % 40) - 20).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 9.0, dy / 7.5), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 8) & (fall > 0.0)
+            buf[zone & ((fall * 0.40) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.26) > bg)] = IX["gold"]
+
+
+class LeviathanBellyPainter(ThemePainter):
+    """Inside the Leviathan: calm plum-wine organic chamber (~78-86 luma), deep shadowy ribcage walls (~38-46),
+    smooth bone-vertebrae causeways (zero white confetti glare!), and warm amber-lantern wall sconces."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, nf, warm = ctx["bg"], ctx["n_broad"], ctx["n_fine"], ctx["warm"]
+
+        # Calm organic membrane swells (dusk -> plum -> wine, luma ~76-84, zero harsh candy stripes!)
+        swell = fbm_grid(H, W, 28.0, seed=s.seed + 131, octaves=3)
+        dist_c = np.hypot((xs - W * 0.5) / max(1.0, W * 0.52), (ys - H * 0.5) / max(1.0, H * 0.54))
+        center_lift = np.clip(1.0 - dist_c, 0.0, 1.0) * 0.14
+        field = np.clip(nb * 0.42 + swell * 0.36 + warm * 0.08 + center_lift + 0.10, 0.0, 0.92)
+        out = ramp_blend(s.floor_ramp, field, bg)
+
+        # Gentle organic sinew contour veins (soft rose highlight + subtle night groove)
+        vein = (np.abs(swell - 0.50) < 0.016) & (bg < 0.52)
+        out = np.where(vein, IX["night"], out)
+        ridge = (np.abs(swell - 0.525) < 0.012) & (nb > 0.48) & (bg < 0.36)
+        out = np.where(ridge, IX["rose"], out)
+
+        # Clean 3px damp membrane shadow rim around bubbling digestive acid pools
+        damp_rim = (
+            (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_lt_water"] & (lx < 3))
+            | (ctx["n_rt_water"] & (lx >= ts - 3))
+        )
+        out = np.where(damp_rim & (bg < 0.58), IX["night"], out)
+        # Rare bioluminescent spore flecks
+        out = np.where((nf > 0.9965) & (nb > 0.54) & (~damp_rim), IX["jade"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys, lx, ly, ts = ctx["xs"], ctx["ys"], ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        # Smooth weathered bone-vertebrae / driftwood spine slabs (luma ~88-96, ZERO cream confetti!)
+        sh, sw = 10, 16
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        bone_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 223)
+
+        field = np.clip(nb * 0.40 + bone_h * 0.30 + 0.16, 0.0, 0.84)
+        out = ramp_blend(("plum", "mauve", "stone"), field, bg)
+        joint = ((sx == 0) | (sy == 0)) & (bg < 0.50)
+        out = np.where(joint, IX["dusk"], out)
+        out = np.where((sy == 1) & (sx > 2) & (sx < sw - 3) & (bone_h > 0.72) & (bg < 0.28), IX["stone"], out)
+
+        is_edge = (
+            ((~ctx["n_up_path"]) & (ly == 0))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 1))
+            | ((~ctx["n_lt_path"]) & (lx == 0))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 1))
+        )
+        out = np.where(is_edge & (bg < 0.78), IX["wine"], out)
+        buf[mask] = out[mask]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Warm swallowed ship-lanterns nestled between rib arches every 36px on south walls above walkable ground
+        dn_walk = np.roll(ctx["m_walk"], -ts, axis=0)
+        dn_walk[-ts:, :] = False
+        sconce_wall = south_wall & dn_walk
+        sx_w = xs % 36
+        sconce = sconce_wall & (sx_w >= 17) & (sx_w <= 19) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[sconce] = IX["apricot"]
+        flame = sconce_wall & (sx_w == 18) & ((ly == ts - 4) | (ly == ts - 3))
+        buf[flame] = IX["gold"]
+
+        # Soft Bayer-dithered amber floor aprons directly south of rib-wall lanterns
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 18 + 18) % 36) - 18).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 8.5, dy / 7.5), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 8) & (fall > 0.0)
+            buf[zone & ((fall * 0.38) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.24) > bg)] = IX["gold"]
+
+
+class SeabedPainter(ThemePainter):
+    """Ebb Seabed & Coastal Reef Caves: calm teal-jade tidal sandbars (~80-88 luma), deep reef-rock walls (~36-42),
+    weathered slate stepping paths (zero white sand_trail confetti!), and warm coastal reef lanterns."""
+
+    def paint_floor(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_ground"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        H, W = ctx["H"], ctx["W"]
+        xs, ys = ctx["xs"], ctx["ys"]
+        lx, ly, ts = ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb, nf, warm = ctx["bg"], ctx["n_broad"], ctx["n_fine"], ctx["warm"]
+
+        # Calm ebb-tide sandbar ripples (pine -> teal -> jade, luma ~80-88, zero glaring stone crests)
+        rip = fbm_grid(H, W, 24.0, seed=s.seed + 149, octaves=2, sx=0.7, sy=1.5)
+        field = np.clip(nb * 0.44 + rip * 0.36 + warm * 0.10 + 0.08, 0.0, 0.94)
+        out = ramp_blend(s.floor_ramp, field, bg)
+
+        # Gentle sinusoidal ebb-tide ripple crests
+        crest = (rip > 0.72) & (((ys + (nb * 4.0).astype(np.int32)) % 6) == 1) & (bg < 0.34)
+        out = np.where(crest, IX["jade"], out)
+        # Clean 3px wet tidal shadow rim along water banks
+        damp_rim = (
+            (ctx["n_dn_water"] & (ly >= ts - 3))
+            | (ctx["n_up_water"] & (ly < 3))
+            | (ctx["n_lt_water"] & (lx < 3))
+            | (ctx["n_rt_water"] & (lx >= ts - 3))
+        )
+        out = np.where(damp_rim & (bg < 0.56), IX["deep"], out)
+        # Sparse coral & shell flecks
+        out = np.where((nf > 0.9965) & (nb > 0.56) & (~damp_rim), IX["coral"], out)
+        out = np.where((nf < 0.004) & (nb > 0.48) & (~damp_rim), IX["apricot"], out)
+        buf[mask] = out[mask]
+
+    def paint_paths(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        mask = ctx["m_path"]
+        if not np.any(mask):
+            return
+        s = self.spec
+        xs, ys, lx, ly, ts = ctx["xs"], ctx["ys"], ctx["lx"], ctx["ly"], ctx["ts"]
+        bg, nb = ctx["bg"], ctx["n_broad"]
+
+        # Weathered coastal slate stepping slabs (dusk -> plum -> mauve, ZERO sand_trail white confetti!)
+        sh, sw = 8, 12
+        row_id = ys // sh
+        ox = np.where((row_id & 1) == 1, sw // 2, 0)
+        sx = (xs + ox) % sw
+        sy = ys % sh
+        st_h = hash01_grid((xs + ox) // sw, row_id, s.seed + 257)
+
+        field = np.clip(nb * 0.40 + st_h * 0.32 + 0.20, 0.0, 0.90)
+        out = ramp_blend(("dusk", "plum", "mauve"), field, bg)
+        joint = ((sx == 0) | (sy == 0)) & (bg < 0.54)
+        out = np.where(joint, IX["night"], out)
+        out = np.where(joint & (nb < 0.44) & (bg < 0.42), IX["pine"], out)
+        out = np.where((sy == 1) & (sx > 1) & (sx < sw - 2) & (st_h > 0.72) & (bg < 0.28), IX["stone"], out)
+
+        is_edge = (
+            ((~ctx["n_up_path"]) & (ly == 0))
+            | ((~ctx["n_dn_path"]) & (ly == ts - 1))
+            | ((~ctx["n_lt_path"]) & (lx == 0))
+            | ((~ctx["n_rt_path"]) & (lx == ts - 1))
+        )
+        out = np.where(is_edge & (bg < 0.70), IX["pine"], out)
+        buf[mask] = out[mask]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        m_wall = ctx["m_wall"]
+        dn_open = ~ctx["n_dn_wall"]
+        xs, ly, ts = ctx["xs"], ctx["ly"], ctx["ts"]
+        bg = ctx["bg"]
+        south_wall = m_wall & dn_open & (ctx["ty"] < ctx["h_t"] - 1)
+
+        # Warm coastal cave lanterns every 40px on south-facing reef cliffs above walkable ground (never ocean sea-stacks)
+        dn_walk = np.roll(ctx["m_walk"], -ts, axis=0)
+        dn_walk[-ts:, :] = False
+        sconce_wall = south_wall & dn_walk
+        sx_w = xs % 40
+        sconce = sconce_wall & (sx_w >= 19) & (sx_w <= 21) & (ly >= ts - 5) & (ly <= ts - 2)
+        buf[sconce] = IX["apricot"]
+        flame = sconce_wall & (sx_w == 20) & ((ly == ts - 4) | (ly == ts - 3))
+        buf[flame] = IX["gold"]
+
+        m_walk = ctx["m_walk"]
+        if np.any(m_walk):
+            dx = np.abs(((xs - 20 + 20) % 40) - 20).astype(np.float32)
+            dy = ly.astype(np.float32)
+            fall = np.clip(1.0 - np.hypot(dx / 8.5, dy / 7.5), 0.0, 1.0)
+            zone = m_walk & ctx["n_up_wall"] & (ly < 8) & (fall > 0.0)
+            buf[zone & ((fall * 0.38) > bg)] = IX["apricot"]
+            buf[zone & (ly <= 3) & ((fall * 0.24) > bg)] = IX["gold"]
 
 
 class GalleonPainter(ThemePainter):
@@ -888,6 +1171,21 @@ class GalleonPainter(ThemePainter):
         out = np.where((ly % 8 == 0) & (bg < 0.52), dk, out)
         out = np.where(is_edge & (bg < 0.74), edge, out)
         buf[mask] = out[mask]
+
+    def paint_post(self, buf: np.ndarray, ctx: dict[str, Any]) -> None:
+        # Soft warm brass porthole light aprons cast south onto walkable ship planks beneath south hull walls
+        m_walk = ctx["m_walk"]
+        if not np.any(m_walk):
+            return
+        xs, ly = ctx["xs"], ctx["ly"]
+        bg = ctx["bg"]
+        # ship_hull portholes sit at xs % 32 in 14..17 (center 15.5)
+        dx = np.abs(((xs - 16 + 16) % 32) - 16).astype(np.float32)
+        dy = ly.astype(np.float32)
+        fall = np.clip(1.0 - np.hypot(dx / 8.0, dy / 7.0), 0.0, 1.0)
+        zone = m_walk & ctx["n_up_wall"] & (ly < 7) & (fall > 0.0)
+        buf[zone & ((fall * 0.36) > bg)] = IX["apricot"]
+        buf[zone & (ly <= 3) & ((fall * 0.22) > bg)] = IX["gold"]
 
 
 SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
@@ -1303,9 +1601,9 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Smugglers' Locks",
             island=2,
             floor_style="quay_masonry",
-            floor_ramp=("deep", "blue", "mauve"),
+            floor_ramp=("dusk", "plum", "mauve"),
             floor_seam="night",
-            floor_bevel="sky",
+            floor_bevel="stone",
             floor_accent_a="teal",
             floor_accent_b="apricot",
             path_style="boardwalk",
@@ -1314,10 +1612,10 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             path_edge="night",
             path_trim="apricot",
             wall_style="masonry",
-            wall_cap=("deep", "mauve", "stone"),
-            wall_lip="ice",
-            wall_face="deep",
-            wall_face_hi="blue",
+            wall_cap=("void", "night", "dusk"),
+            wall_lip="sky",
+            wall_face="night",
+            wall_face_hi="dusk",
             wall_base="void",
             water_style="canal_water",
             water_deep="deep",
@@ -1337,8 +1635,8 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             prop_sheet="theme_locks",
             door_sheet="theme_locks_doors",
             special_tiles=("R:rail", "T:tide"),
-            default_decor=("grate", "stain", "inlay"),
-            notes="Canal locks and wharves: wet dressed harbor quays, timber lock decks, foaming canal channels.",
+            default_decor=("grate", "stain"),
+            notes="Canal locks and wharves: dressed twilight harbor slate quays, deep masonry walls, warm timber boardwalks & harbor lantern sconces.",
         ),
         LocksPainter,
     ),
@@ -1348,22 +1646,22 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="The Leviathan's Belly",
             island=2,
             floor_style="organic_membrane",
-            floor_ramp=("plum", "wine", "rose"),
+            floor_ramp=("dusk", "plum", "wine"),
             floor_seam="night",
-            floor_bevel="stone",
+            floor_bevel="rose",
             floor_accent_a="coral",
-            floor_accent_b="lime",
-            path_style="sand_trail",
-            path_main="stone",
-            path_hi="cream",
-            path_edge="plum",
+            floor_accent_b="jade",
+            path_style="flagstone",
+            path_main="mauve",
+            path_hi="stone",
+            path_edge="wine",
             path_trim="rose",
             wall_style="organic_rib",
-            wall_cap=("plum", "mauve", "stone"),
-            wall_lip="cream",
-            wall_face="wine",
-            wall_face_hi="rose",
-            wall_base="night",
+            wall_cap=("void", "night", "plum"),
+            wall_lip="rose",
+            wall_face="night",
+            wall_face_hi="wine",
+            wall_base="void",
             water_style="acid_digest",
             water_deep="pine",
             water_mid="teal",
@@ -1374,8 +1672,8 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             rim_hi="stone",
             rim_mid="rose",
             bridge_style="bone_span",
-            bridge_main="stone",
-            bridge_hi="cream",
+            bridge_main="mauve",
+            bridge_hi="stone",
             bridge_rail="rose",
             bridge_dark="plum",
             seed=231,
@@ -1383,9 +1681,9 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_leviathan_belly_doors",
             special_tiles=(),
             default_decor=("stain", "cracks"),
-            notes="Inside the Leviathan: ivory bone ribs, wine/rose membrane floor, bubbling jade/lime digestive pools.",
+            notes="Inside the Leviathan: deep twilight ribcage walls, smooth plum/wine organic chamber, weathered bone-vertebrae causeways & amber lanterns.",
         ),
-        ThemePainter,
+        LeviathanBellyPainter,
     ),
     (
         ThemeSpec(
@@ -1393,21 +1691,21 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             name="Ebb Seabed",
             island=2,
             floor_style="tidal_seabed",
-            floor_ramp=("pine", "teal", "jade", "stone"),
+            floor_ramp=("pine", "teal", "jade"),
             floor_seam="deep",
-            floor_bevel="ice",
+            floor_bevel="jade",
             floor_accent_a="coral",
-            floor_accent_b="rose",
-            path_style="sand_trail",
-            path_main="mauve",
-            path_hi="stone",
+            floor_accent_b="apricot",
+            path_style="flagstone",
+            path_main="plum",
+            path_hi="mauve",
             path_edge="pine",
-            path_trim="ice",
+            path_trim="stone",
             wall_style="cavern_rock",
-            wall_cap=("deep", "pine", "teal"),
-            wall_lip="sky",
-            wall_face="deep",
-            wall_face_hi="teal",
+            wall_cap=("void", "night", "deep"),
+            wall_lip="teal",
+            wall_face="night",
+            wall_face_hi="deep",
             wall_base="void",
             water_style="canal_water",
             water_deep="deep",
@@ -1429,8 +1727,8 @@ SPECS_1_2: list[tuple[ThemeSpec, type[ThemePainter]]] = [
             door_sheet="theme_seabed_doors",
             special_tiles=("T:tide",),
             default_decor=("stain", "circle"),
-            notes="Exposed ocean floor at ebb tide: rippled wet sandbars, coral shelves, tidepools, barnacle reefs.",
+            notes="Exposed ocean floor at ebb tide: calm teal/jade sandbars, deep reef-rock walls, weathered coastal slate paths & warm lanterns.",
         ),
-        ThemePainter,
+        SeabedPainter,
     ),
 ]

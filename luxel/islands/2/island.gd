@@ -302,7 +302,7 @@ func _check_leviathan_awakening() -> void:
 		_emit_narration("ISL2_LEV_WAKE", "title", 3.6)
 		if _events != null:
 			_events.sfx_requested.emit("whale_groan_low", Vector2.ZERO, false)
-			_events.shake_requested.emit(0.24)
+			_emit_shake(0.24)
 
 
 func _on_region_entered(island_id: int, region_id: String) -> void:
@@ -383,7 +383,7 @@ func _trigger_seal_shatter() -> void:
 	if _events != null:
 		_events.seal_broken.emit(ISLAND_ID, SEAL_ID)
 		_events.sfx_requested.emit("seal_break", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.28)
+		_emit_shake(0.28)
 		_emit_narration("CUE_SEAL_SHATTER_2", "title", 3.5)
 		_emit_narration("DUNGEON_2_NAME", "narration", 3.0)
 		_events.save_requested.emit("seal_broken_2")
@@ -409,12 +409,12 @@ func _on_boss_phase_changed(boss_id: String, phase: int) -> void:
 		return
 	if boss_id == BOSS_ID or boss_id == MINI_BOSS_KIND:
 		_events.music_mode_requested.emit("island2_boss_p2")
-		_events.shake_requested.emit(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
+		_emit_shake(0.28 if boss_id == MINI_BOSS_KIND else (0.38 if phase >= 3 else 0.32))
 	elif boss_id in ["bosun_rig", "figurehead", "dredge_hulk", "twin_lockmasters", "gullet_lamprey"]:
 		_events.music_mode_requested.emit("isl2_boss_minor_p2")
-		_events.shake_requested.emit(0.36 if phase >= 3 else 0.28)
+		_emit_shake(0.36 if phase >= 3 else 0.28)
 	elif boss_id == SUPERBOSS_ID:
-		_events.shake_requested.emit(0.40 if phase >= 3 else 0.32)
+		_emit_shake(0.40 if phase >= 3 else 0.32)
 
 
 func _on_boss_defeated(boss_id: String, island_id: int) -> void:
@@ -468,6 +468,11 @@ func _on_great_lamp_relit(island_id: int) -> void:
 func _emit_narration(string_id: String, style: String, duration: float) -> void:
 	if _events != null and LxStrings.has_id(string_id):
 		_events.narration_requested.emit(string_id, style, duration)
+
+
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
 
 
 func _get_state() -> LxGameState:

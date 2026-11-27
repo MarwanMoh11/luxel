@@ -84,18 +84,29 @@ func get_light_pool() -> Vector4:
 
 
 func _draw() -> void:
+	var red: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var high: bool = _last_val == "high"
-	var pulse: float = 0.5 + 0.5 * sin(_clock * TAU / 4.0)
+	var pulse: float = (0.5 if high else 0.0) if red else (0.5 + 0.5 * sin(_clock * TAU / 4.0))
 	var col_core: Color = (PAL["gold"] if high else PAL["rose"]) as Color
 	LxPhysDraw.draw_bevel_box(self, Rect2(-10.0, -8.0, 20.0, 16.0), PAL["night"] as Color, col_core, PAL["plum"] as Color, c_void)
 	var r: float = 3.0 + roundf(pulse * 2.0)
 	draw_circle(Vector2.ZERO, r, col_core)
-	draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+	if high:
+		# Expanded 4-point cardiac diamond ticks for greyscale high-tide inhale distinction
+		draw_rect(Rect2(-1.0, -5.0, 2.0, 10.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-5.0, -1.0, 10.0, 2.0), PAL["cream"] as Color)
+	else:
+		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
 	# Organic whale-breath pulse wave radiating across the rib-cage chamber
-	if not LxHudFx.flash_reduced():
+	if red:
+		draw_arc(Vector2.ZERO, 16.0 if high else 12.0, 0.0, TAU, 16, Color(col_core, 0.30), 1.0)
+	else:
 		var bu: float = fmod(_clock / maxf(2.0, period_s * 0.5), 1.0)
 		draw_arc(Vector2.ZERO, roundf(lerpf(8.0, 44.0, bu)), 0.0, TAU, 20, Color(col_core, (1.0 - bu) * 0.45), 1.0)
-	# Tide indicator pips (1 = low exhale, 2 = high inhale)
-	draw_rect(Rect2(-5.0, 5.0, 3.0, 2.0), PAL["ice"] as Color)
-	draw_rect(Rect2(2.0, 5.0, 3.0, 2.0), PAL["cream"] as Color if high else PAL["dusk"] as Color)
+	# Tide indicator pips (1 = low exhale, 2 raised = high inhale)
+	draw_rect(Rect2(-5.0, 4.0, 3.0, 3.0), PAL["ice"] as Color)
+	if high:
+		draw_rect(Rect2(2.0, 4.0, 3.0, 3.0), PAL["cream"] as Color)
+	else:
+		draw_rect(Rect2(2.0, 5.0, 3.0, 1.0), PAL["dusk"] as Color)

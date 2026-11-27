@@ -353,7 +353,7 @@
       "prop": "tide_bell_post",
       "pos": [
         168,
-        104
+        96
       ],
       "layer": "sort",
       "flip_x": false,
@@ -389,7 +389,7 @@
       "prop": "fresnel_pedestal",
       "pos": [
         280,
-        40
+        24
       ],
       "layer": "sort",
       "flip_x": true,
@@ -400,8 +400,8 @@
       "sheet": "theme_locks",
       "prop": "sluice_wheel_post",
       "pos": [
-        280,
-        216
+        272,
+        208
       ],
       "layer": "sort",
       "flip_x": false,

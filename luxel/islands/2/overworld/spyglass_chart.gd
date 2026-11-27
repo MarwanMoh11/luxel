@@ -113,19 +113,27 @@ func _draw() -> void:
 	# Sea-chart parchment
 	draw_rect(Rect2(-9.0, -5.0, 18.0, 9.0), PAL["cream"] as Color if charted else PAL["stone"] as Color)
 	draw_rect(Rect2(-7.0, -3.0, 14.0, 5.0), PAL["deep"] as Color)
-	# Maelstrom spiral mark on chart
+	var fred: bool = LxHudFx.flash_reduced()
+	# Maelstrom spiral mark on chart (+ 4-point compass star when charted for greyscale clarity)
 	draw_arc(Vector2(2.0, -1.0), 3.0, 0.0, TAU, 10, c_ice if charted else PAL["sky"] as Color, 1.0)
-	# 3 Lens-shard socket pips across the front rim
+	if charted:
+		draw_rect(Rect2(2.0, -3.0, 1.0, 5.0), c_cream)
+		draw_rect(Rect2(0.0, -1.0, 5.0, 1.0), c_cream)
+	# 3 Lens-shard socket pips across the front rim (raised gems when slotted vs flat slots when missing)
 	for i: int in range(3):
 		var px: float = -6.0 + float(i * 6)
 		var lit: bool = i < shards
 		draw_rect(Rect2(px - 1.0, 3.0, 4.0, 3.0), c_void)
-		draw_rect(Rect2(px, 4.0, 2.0, 1.0), c_cream if charted else (c_gold if lit else PAL["dusk"] as Color))
+		if lit:
+			draw_rect(Rect2(px, 3.0, 2.0, 2.0), c_cream if charted else c_gold)
+		else:
+			draw_rect(Rect2(px, 4.0, 2.0, 1.0), PAL["dusk"] as Color)
 	# Brass spyglass tube resting diagonally on west corner
 	draw_line(Vector2(-10.0, -8.0), Vector2(-3.0, -4.0), c_void, 4.0)
 	draw_line(Vector2(-10.0, -8.0), Vector2(-3.0, -4.0), c_gold, 2.0)
-	draw_rect(Rect2(-3.0, -5.0, 2.0, 2.0), c_ice if charted else PAL["sky"] as Color)
+	draw_rect(Rect2(-3.0, -5.0, 2.0, 2.0), c_cream if charted else PAL["sky"] as Color)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 24.0, u)), 0.0, TAU, 16, c_ice if charted else c_gold, 1.2)
+		var pc: Color = c_ice if charted else c_gold
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 24.0, u)), 0.0, TAU, 16, Color(pc, (1.0 - u) * (0.55 if fred else 0.90)), 1.0)
 	_draw_signal_pulses()

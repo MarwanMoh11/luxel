@@ -341,15 +341,6 @@
       "radius": 24
     },
     {
-      "kind": "inlay",
-      "rect": [
-        344,
-        56,
-        48,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         224,
@@ -413,7 +404,7 @@
       "sheet": "theme_locks",
       "prop": "iron_mooring_bollard",
       "pos": [
-        168,
+        160,
         264
       ],
       "layer": "sort",

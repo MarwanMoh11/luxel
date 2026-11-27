@@ -207,7 +207,7 @@
       "kind": "figurehead",
       "pos": [
         256,
-        168
+        224
       ],
       "zone": "gal_r12"
     }
@@ -217,7 +217,7 @@
       "kind": "compass",
       "pos": [
         256,
-        184
+        216
       ],
       "radius": 52
     },
@@ -225,7 +225,7 @@
       "kind": "circle",
       "pos": [
         256,
-        184
+        216
       ],
       "radius": 64,
       "style": "ritual"
@@ -252,7 +252,7 @@
       "kind": "light_shaft",
       "pos": [
         256,
-        152
+        196
       ],
       "size": [
         64,
@@ -303,8 +303,8 @@
       "sheet": "theme_galleon",
       "prop": "mast_stump_pillar",
       "pos": [
-        328,
-        88
+        312,
+        104
       ],
       "layer": "sort",
       "flip_x": true,
@@ -375,7 +375,7 @@
       "sheet": "theme_galleon",
       "prop": "tattered_sail_banner",
       "pos": [
-        312,
+        328,
         56
       ],
       "layer": "sort",

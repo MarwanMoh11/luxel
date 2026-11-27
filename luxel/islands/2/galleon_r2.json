@@ -368,15 +368,6 @@
       "style": "spotlight"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        224,
-        32,
-        96,
-        48
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         232,
@@ -429,7 +420,7 @@
       "prop": "brass_capstan",
       "pos": [
         392,
-        72
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -464,7 +455,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        40,
+        32,
         248
       ],
       "layer": "sort",

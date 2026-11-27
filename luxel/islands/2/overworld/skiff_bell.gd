@@ -100,13 +100,14 @@ func get_light_pool() -> Vector4:
 
 
 func _draw() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_dusk: Color = PAL["dusk"] as Color
 	var c_gold: Color = PAL["gold"] as Color
 	var c_cream: Color = PAL["cream"] as Color
-	var sway: float = 0.0 if (LxHudFx.flash_reduced() or _ring_t <= 0.0) else roundf(sin(_ring_t * 28.0) * 1.5)
+	var sway: float = 0.0 if (fred or _ring_t <= 0.0) else roundf(sin(_ring_t * 28.0) * 1.5)
 
-	_draw_ground_shadow(7.0, 2.5, Vector2(0.0, 2.0))
+	_draw_ground_shadow(7.0, 3.0, Vector2(0.0, 2.0))
 	# Timber post & crossbar
 	draw_rect(Rect2(-3.0, -14.0, 6.0, 18.0), c_void)
 	draw_rect(Rect2(-2.0, -13.0, 4.0, 16.0), PAL["wine"] as Color)
@@ -115,10 +116,12 @@ func _draw() -> void:
 	draw_rect(Rect2(-6.0, -14.0, 12.0, 1.0), c_dusk)
 	# Hanging brass bell
 	draw_rect(Rect2(-4.0 + sway, -12.0, 8.0, 7.0), c_void)
-	draw_rect(Rect2(-3.0 + sway, -11.0, 6.0, 5.0), c_cream if _ring_t > 0.25 else c_gold)
+	draw_rect(Rect2(-3.0 + sway, -11.0, 6.0, 5.0), c_cream if (not fred and _ring_t > 0.25) else c_gold)
 	draw_rect(Rect2(-4.0 + sway, -7.0, 8.0, 2.0), PAL["apricot"] as Color)
 	draw_rect(Rect2(-1.0 + sway, -5.0, 2.0, 2.0), c_cream)
 	if _ring_t > 0.0:
 		var u: float = 1.0 - clampf(_ring_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(5.0, 22.0, u)), 0.0, TAU, 16, PAL["ice"] as Color, 1.2)
+		draw_rect(Rect2(-7.0, -10.0, 1.0, 3.0), c_cream)
+		draw_rect(Rect2(6.0, -10.0, 1.0, 3.0), c_cream)
+		draw_arc(Vector2(0.0, -9.0), roundf(lerpf(5.0, 22.0, u)), 0.0, TAU, 16, Color(PAL["ice"] as Color, (1.0 - u) * (0.55 if fred else 0.90)), 1.0)
 	_draw_signal_pulses()

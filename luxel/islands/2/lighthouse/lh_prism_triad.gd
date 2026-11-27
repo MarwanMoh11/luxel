@@ -94,9 +94,9 @@ func _solve_triad() -> void:
 	_emit_sfx("waystone_lit")
 	_emit_gust(64.0, 48.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.10)
+		Lx.events.shake_requested.emit(0.10 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(pos, 86.0, 1.35, 0.36)
+		LxDarknessLayer.active_instance.add_burst_light(pos, 86.0, 0.85 if LxHudFx.flash_reduced() else 1.35, 0.36)
 	if region != null and region.has_method("save_interactables_to_state"):
 		region.call("save_interactables_to_state")
 	queue_redraw()
@@ -170,24 +170,36 @@ func load_state(d: Dictionary) -> void:
 
 
 func _draw() -> void:
+	var fred: bool = LxHudFx.flash_reduced()
 	var c_void: Color = PAL["void"] as Color
 	var c_rim: Color = (PAL["coral"] if _fail_flash_t > 0.0 else (PAL["cream"] if powered else PAL["gold"])) as Color
 	var c_core: Color = (PAL["ice"] if powered else (PAL["sky"] if not _hit_times.is_empty() else PAL["deep"])) as Color
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -9.0, 18.0, 18.0), PAL["night"] as Color, c_rim, PAL["dusk"] as Color, c_void)
-	# Prism triangle glyph in center
+	# Prism triangle glyph in center (with raised crown/starburst when solved vs X reject slash on timeout)
 	var tri := PackedVector2Array([Vector2(0.0, -5.0), Vector2(5.0, 4.0), Vector2(-5.0, 4.0)])
 	draw_colored_polygon(tri, c_core)
 	var tri_c := PackedVector2Array([Vector2(0.0, -5.0), Vector2(5.0, 4.0), Vector2(-5.0, 4.0), Vector2(0.0, -5.0)])
 	draw_polyline(tri_c, c_rim, 1.0)
-	# Input pips along bottom
+	if powered:
+		draw_rect(Rect2(-1.0, -11.0, 2.0, 2.0), PAL["cream"] as Color)
+		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), PAL["cream"] as Color)
+	elif _fail_flash_t > 0.0:
+		var fa: float = 0.65 if fred else 1.0
+		draw_line(Vector2(-3.0, -2.0), Vector2(3.0, 3.0), Color(PAL["cream"] as Color, fa), 1.0)
+		draw_line(Vector2(3.0, -2.0), Vector2(-3.0, 3.0), Color(PAL["cream"] as Color, fa), 1.0)
+	# Input pips along bottom (tall raised pips when lit vs flat recessed slots when unlit)
 	var n: int = mini(4, inputs.size())
 	if n > 0:
 		var span: float = float(n - 1) * 4.0
 		for i: int in range(n):
 			var lit_p: bool = powered or _hit_times.has(inputs[i])
 			var px: float = roundf(-span * 0.5 + float(i) * 4.0) - 1.0
-			draw_rect(Rect2(px, 6.0, 2.0, 2.0), PAL["cream"] as Color if lit_p else PAL["night"] as Color)
+			if lit_p:
+				draw_rect(Rect2(px, 5.0, 2.0, 3.0), PAL["cream"] as Color)
+			else:
+				draw_rect(Rect2(px, 6.0, 2.0, 1.0), PAL["dusk"] as Color)
 	if _solve_flash_t > 0.0:
 		var u: float = 1.0 - clampf(_solve_flash_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 22.0, u)), 0.0, TAU, 16, PAL["ice"] as Color, 1.5)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 22.0, u)), 0.0, TAU, 16, Color(PAL["ice"] as Color, (1.0 - u) * (0.55 if fred else 0.90)), 1.0 if fred else 2.0)
 	_draw_signal_pulses()

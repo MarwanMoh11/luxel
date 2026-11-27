@@ -62,7 +62,7 @@ func interact(_actor: Node = null) -> bool:
 		Lx.state.story_flags["locks_r6_aqueduct"] = true
 	if Lx.events != null:
 		Lx.events.narration_requested.emit("LCK_HARPOON", "title", 3.4)
-		Lx.events.shake_requested.emit(0.16)
+		Lx.events.shake_requested.emit(0.16 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if Lx.hitstop != null:
 		Lx.hitstop.trigger(0.06)
 	_emit_sfx("shrine_claimed")
@@ -110,15 +110,16 @@ func _draw() -> void:
 	if not visible:
 		return
 	var c_void: Color = PAL["void"] as Color
+	var fred: bool = LxHudFx.flash_reduced()
 	LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 7.0), 10.0, 3.0)
 	# Riveted brass quay winch plinth
 	LxToyDraw.draw_bevel_box(self, Rect2(-9.0, -2.0, 18.0, 9.0), PAL["night"] as Color, PAL["deep"] as Color, PAL["sky"] as Color, c_void)
 	draw_rect(Rect2(-6.0, 1.0, 12.0, 2.0), PAL["ice"] as Color if not claimed else PAL["blue"] as Color)
 	if not claimed:
-		var bob: float = 0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.4) * 2.0)
+		var bob: float = 0.0 if fred else roundf(sin(_clock * 3.4) * 2.0)
 		var cy: float = -12.0 + bob
-		var r1: float = 8.0 + (0.0 if LxHudFx.flash_reduced() else fmod(_clock * 14.0, 10.0))
-		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["ice"] as Color, 0.72), 1.0, false)
+		var r1: float = 8.0 + (0.0 if fred else fmod(_clock * 14.0, 10.0))
+		draw_arc(Vector2(0.0, cy), roundf(r1), 0.0, TAU, 16, Color(PAL["ice"] as Color, 0.45 if fred else 0.72), 1.0, false)
 		# Brass Sluice Harpoon barbed grapnel relic silhouette
 		draw_rect(Rect2(-6.0, cy - 6.0, 12.0, 12.0), c_void)
 		draw_line(Vector2(-4.0, cy + 4.0), Vector2(4.0, cy - 4.0), PAL["gold"] as Color, 2.0)
@@ -126,8 +127,14 @@ func _draw() -> void:
 		draw_rect(Rect2(-1.0, cy - 5.0, 3.0, 1.0), PAL["ice"] as Color)
 		draw_rect(Rect2(4.0, cy - 2.0, 1.0, 3.0), PAL["ice"] as Color)
 		draw_rect(Rect2(-5.0, cy + 3.0, 3.0, 2.0), PAL["apricot"] as Color)
-	elif _claim_t > 0.0:
-		var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, PAL["ice"] as Color, 1.6, false)
-		draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.0, false)
+	else:
+		# Recessed empty grapnel cradle slot on claimed plinth (greyscale-distinct)
+		draw_rect(Rect2(-5.0, -3.0, 10.0, 2.0), c_void)
+		draw_rect(Rect2(-4.0, -2.0, 8.0, 1.0), PAL["dusk"] as Color)
+		if _claim_t > 0.0:
+			var u: float = 1.0 - clampf(_claim_t / 0.65, 0.0, 1.0)
+			var a1: float = (1.0 - u) * (0.55 if fred else 0.90)
+			var a2: float = (1.0 - u) * (0.50 if fred else 0.85)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(6.0, 34.0, u)), 0.0, TAU, 20, Color(PAL["ice"] as Color, a1), 1.0 if fred else 2.0, false)
+			draw_arc(Vector2(0.0, -10.0), roundf(lerpf(4.0, 24.0, u)), 0.0, TAU, 16, Color(PAL["cream"] as Color, a2), 1.0, false)
 	_draw_signal_pulses()

@@ -14,11 +14,7 @@ const TOWER_TIDE_VALUES: Array[String] = ["low", "mid", "high"]
 const LIST_VALUES: Array[String] = ["port", "starboard"]
 const LOCK_VALUES: Array[String] = ["west_high", "east_high"]
 
-const TIDE_STRINGS: Dictionary = {
-	"ebb": "ISL2_TIDE_EBB",
-	"half": "ISL2_TIDE_HALF",
-	"flood": "ISL2_TIDE_FLOOD",
-}
+const TIDE_STRINGS: Dictionary = {"ebb": "ISL2_TIDE_EBB", "half": "ISL2_TIDE_HALF", "flood": "ISL2_TIDE_FLOOD"}
 const CLAMP_CATCH_RADIUS: float = 20.0
 const HARPOON_CATCH_RADIUS: float = 34.0
 
@@ -187,16 +183,16 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 		if _events != null:
 			_events.sfx_requested.emit("clockwork_chime", Vector2.ZERO, false)
 			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
-			_events.shake_requested.emit(0.10)
+			_emit_shake(0.10)
 	elif scope == "dungeon:galleon" and var_name == "list":
 		if _events != null:
 			_events.sfx_requested.emit("harbor_creak", Vector2.ZERO, false)
-			_events.shake_requested.emit(0.08)
+			_emit_shake(0.08)
 	elif scope == "dungeon:locks" and var_name == "lock_water":
 		_fx.trigger_tide_sweep(val_s == "west_high", true, Lx.player.global_position if (Lx.player is Node2D and is_instance_valid(Lx.player)) else Vector2.ZERO)
 		if _events != null:
 			_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
-			_events.shake_requested.emit(0.09)
+			_emit_shake(0.09)
 	elif scope == "dungeon:lighthouse" and var_name.begins_with("relay_f") and (val_s == "1" or val_s == "true"):
 		if _events != null and LxStrings.has_id("LH2_RELAY_ON"):
 			_events.narration_requested.emit("LH2_RELAY_ON", "ice", 3.0)
@@ -204,12 +200,17 @@ func _on_var_changed(scope: String, var_name: String, value: Variant) -> void:
 		_hud_node.queue_redraw()
 
 
+func _emit_shake(amp: float) -> void:
+	if _events != null:
+		_events.shake_requested.emit(amp * (0.45 if LxHudFx.flash_reduced() else 1.0))
+
+
 func _on_tide_shifted(level: String) -> void:
 	if _events != null:
 		var organ_sfx: String = "tide_organ_" + (level if level in TIDE_VALUES else "half")
 		_events.sfx_requested.emit(organ_sfx, Vector2.ZERO, false)
 		_events.sfx_requested.emit("water_level_sweep", Vector2.ZERO, false)
-		_events.shake_requested.emit(0.11)
+		_emit_shake(0.11)
 		var sid: String = str(TIDE_STRINGS.get(level, ""))
 		if not sid.is_empty() and LxStrings.has_id(sid):
 			if not LxLegacy.is_legacy_region(ISLAND_ID, _region_id) or _region_has_tide_organ():
@@ -445,48 +446,55 @@ func _free_runtime_nodes() -> void:
 
 func _draw_world_fx(ci: CanvasItem) -> void:
 	_fx.draw_world(ci, Lx.player as LxWick if (Lx.player is LxWick and is_instance_valid(Lx.player)) else null, _fx_clock)
+	var red: bool = LxHudFx.flash_reduced()
 	var c_gold: Color = LxPalette.PAL["gold"] as Color
 	var c_cream: Color = LxPalette.PAL["cream"] as Color
 	var c_ice: Color = LxPalette.PAL["ice"] as Color
 	if _clamped_target != null and is_instance_valid(_clamped_target):
 		var cp: Vector2 = _clamped_pos.round()
-		ci.draw_arc(cp, 12.0, 0.0, TAU, 16, c_gold, 1.0)
+		ci.draw_arc(cp, 12.0, 0.0, TAU, 16, Color(c_gold, 0.65 if red else 0.90), 1.0)
+		for tick_d: Vector2 in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
+			ci.draw_rect(Rect2((cp + tick_d * 13.0).round() - Vector2.ONE, Vector2(2.0, 2.0)), c_cream)
 		if _clamp_ring_t > 0.0:
 			var u: float = 1.0 - clampf(_clamp_ring_t / 0.36, 0.0, 1.0)
-			ci.draw_arc(cp, roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, c_cream, 1.2)
+			ci.draw_arc(cp, roundf(lerpf(6.0, 20.0, u)), 0.0, TAU, 16, Color(c_cream, (1.0 - u) * (0.50 if red else 0.90)), 1.0)
 	for hs: Dictionary in _harpoon_streaks:
 		var u: float = clampf(float(hs["age"]) / maxf(0.01, float(hs["life"])), 0.0, 1.0)
 		var a: Vector2 = (hs["from"] as Vector2).round()
 		var b: Vector2 = (hs["to"] as Vector2).round()
-		ci.draw_line(a, b, Color(c_ice, (1.0 - u) * 0.9), 1.5)
-		ci.draw_line(a, b, Color(c_cream, (1.0 - u)), 1.0)
+		ci.draw_line(a, b, Color(c_ice, (1.0 - u) * (0.55 if red else 0.90)), 1.0 if red else 2.0)
+		ci.draw_line(a, b, Color(c_cream, (1.0 - u) * (0.65 if red else 1.0)), 1.0)
 
 
 func _draw_tide_hud(ci: CanvasItem) -> void:
 	_fx.draw_hud_sweep(ci, _fx_clock)
+	var red: bool = LxHudFx.flash_reduced()
 	var origin := Vector2(5.0, 22.0)
 	var pal: Dictionary = LxPalette.PAL
-	var c_void: Color = pal["void"] as Color
-	var c_night: Color = pal["night"] as Color
-	var c_sky: Color = pal["sky"] as Color
-	var c_ice: Color = pal["ice"] as Color
-	var c_gold: Color = pal["gold"] as Color
-	var c_cream: Color = pal["cream"] as Color
+	var c_void: Color = pal["void"] as Color; var c_night: Color = pal["night"] as Color
+	var c_sky: Color = pal["sky"] as Color; var c_ice: Color = pal["ice"] as Color
+	var c_gold: Color = pal["gold"] as Color; var c_cream: Color = pal["cream"] as Color
 
 	var label_id: String = "HUD_I2_EBB"
 	var bars_lit: int = 1
 	var bars_max: int = 3
+	var mode_tag: String = "tide"
+	var mode_dir: int = 0
 	if _region_id.begins_with("lighthouse_"):
 		var tt: String = get_tower_tide()
 		bars_lit = 1 if tt == "low" else (2 if tt == "mid" else 3)
 		label_id = "HUD_I2_TLOW" if tt == "low" else ("HUD_I2_TMID" if tt == "mid" else "HUD_I2_THIGH")
 	elif _region_id.begins_with("galleon_"):
 		var lv: String = str(_vars.get_var("dungeon:galleon", "list", "port")) if _vars != null else "port"
+		mode_tag = "list"
+		mode_dir = -1 if lv == "port" else 1
 		bars_max = 2
 		bars_lit = 1 if lv == "port" else 2
 		label_id = "HUD_I2_PORT" if lv == "port" else "HUD_I2_STBD"
 	elif _region_id.begins_with("locks_"):
 		var lw: String = str(_vars.get_var("dungeon:locks", "lock_water", "west_high")) if _vars != null else "west_high"
+		mode_tag = "locks"
+		mode_dir = -1 if lw == "west_high" else 1
 		bars_max = 2
 		bars_lit = 1 if lw == "west_high" else 2
 		label_id = "HUD_I2_LWEST" if lw == "west_high" else "HUD_I2_LEAST"
@@ -515,29 +523,47 @@ func _draw_tide_hud(ci: CanvasItem) -> void:
 
 	var box_w: float = 54.0
 	var box_h: float = 12.0
-	var rim_c: Color = c_cream if _transition_flash_t > 0.25 else c_gold
+	var flash_hi: bool = not red and _transition_flash_t > 0.25
+	var rim_c: Color = c_cream if flash_hi else c_gold
 	ci.draw_rect(Rect2(origin, Vector2(box_w, box_h)), c_void)
 	ci.draw_rect(Rect2(origin + Vector2.ONE, Vector2(box_w - 2.0, box_h - 2.0)), c_night)
 	ci.draw_rect(Rect2(origin + Vector2.ONE, Vector2(box_w - 2.0, 1.0)), rim_c)
-	# Stepped tide-level bars (greyscale-distinct count & height)
-	for i: int in range(bars_max):
-		var bh: float = float((i + 1) * 2 + 1)
-		var bx: float = origin.x + 3.0 + float(i * 4)
-		var by: float = origin.y + box_h - 2.0 - bh
-		var on: bool = i < bars_lit
-		ci.draw_rect(Rect2(bx, by, 3.0, bh), c_ice if on else pal["deep"] as Color)
-		if on:
-			ci.draw_rect(Rect2(bx, by, 3.0, 1.0), c_cream)
+	# Greyscale-distinct micro-icon: tilt chevron (galleon), twin basin chambers (locks), or stepped tide bars
+	if mode_tag == "list":
+		var cx: float = origin.x + 8.0
+		var cy: float = origin.y + 6.0
+		ci.draw_line(Vector2(cx - 4.0, cy + float(-mode_dir)), Vector2(cx + 4.0, cy + float(mode_dir)), c_gold, 1.0)
+		LxPhysDraw.draw_chevron(ci, Vector2(cx + float(mode_dir * 3), cy), Vector2(float(mode_dir), 0.0), c_cream, c_void, 2.0)
+	elif mode_tag == "locks":
+		var wh: float = 7.0 if mode_dir < 0 else 3.0
+		var eh: float = 3.0 if mode_dir < 0 else 7.0
+		ci.draw_rect(Rect2(origin.x + 3.0, origin.y + box_h - 2.0 - wh, 4.0, wh), c_ice if mode_dir < 0 else pal["deep"] as Color)
+		ci.draw_rect(Rect2(origin.x + 9.0, origin.y + box_h - 2.0 - eh, 4.0, eh), c_ice if mode_dir > 0 else pal["deep"] as Color)
+		ci.draw_rect(Rect2(origin.x + (3.0 if mode_dir < 0 else 9.0), origin.y + box_h - 2.0 - 7.0, 4.0, 1.0), c_cream)
+	else:
+		for i: int in range(bars_max):
+			var bh: float = float((i + 1) * 2 + 1)
+			var bx: float = origin.x + 3.0 + float(i * 4)
+			var by: float = origin.y + box_h - 2.0 - bh
+			var on: bool = i < bars_lit
+			ci.draw_rect(Rect2(bx, by, 3.0, bh), c_ice if on else pal["deep"] as Color)
+			if on:
+				ci.draw_rect(Rect2(bx, by, 3.0, 1.0), c_cream)
 	var label_txt: String = LxStrings.text(label_id) if LxStrings.has_id(label_id) else "EBB"
-	LxPixelFont.draw(ci, label_txt, origin + Vector2(18.0, 4.0), c_cream if _transition_flash_t > 0.0 else c_sky, 1)
+	var label_c: Color = c_cream if (not red and _transition_flash_t > 0.0) else c_sky
+	LxPixelFont.draw(ci, label_txt, origin + Vector2(18.0, 4.0), label_c, 1)
 
 	# Power badges (Ballast Clamp anchor pip + Sluice Harpoon hook pip)
 	var px: float = origin.x + box_w + 2.0
 	if is_ballast_clamp_unlocked():
+		var clamped_now: bool = _clamped_target != null and is_instance_valid(_clamped_target)
 		ci.draw_rect(Rect2(px, origin.y + 1.0, 10.0, 10.0), c_void)
-		ci.draw_rect(Rect2(px + 1.0, origin.y + 2.0, 8.0, 8.0), c_gold if _clamped_target != null else pal["dusk"] as Color)
+		ci.draw_rect(Rect2(px + 1.0, origin.y + 2.0, 8.0, 8.0), c_gold if clamped_now else pal["dusk"] as Color)
 		ci.draw_rect(Rect2(px + 4.0, origin.y + 3.0, 2.0, 6.0), c_cream)
 		ci.draw_rect(Rect2(px + 2.0, origin.y + 7.0, 6.0, 2.0), c_cream)
+		if clamped_now:
+			ci.draw_rect(Rect2(px + 1.0, origin.y + 2.0, 2.0, 1.0), c_cream)
+			ci.draw_rect(Rect2(px + 7.0, origin.y + 2.0, 2.0, 1.0), c_cream)
 		px += 12.0
 	if is_sluice_harpoon_unlocked():
 		ci.draw_rect(Rect2(px, origin.y + 1.0, 10.0, 10.0), c_void)

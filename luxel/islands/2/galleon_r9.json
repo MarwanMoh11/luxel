@@ -348,15 +348,6 @@
       "style": "water"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        368,
-        32,
-        96,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         424,
@@ -387,7 +378,7 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        72,
+        64,
         136
       ],
       "layer": "sort",
@@ -400,7 +391,7 @@
       "prop": "oak_ship_barrel",
       "pos": [
         72,
-        296
+        304
       ],
       "layer": "sort",
       "flip_x": false,
@@ -436,7 +427,7 @@
       "prop": "brass_porthole_lamp",
       "pos": [
         376,
-        40
+        32
       ],
       "layer": "sort",
       "flip_x": false,

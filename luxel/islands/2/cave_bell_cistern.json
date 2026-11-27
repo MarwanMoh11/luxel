@@ -337,8 +337,8 @@
       "sheet": "theme_locks",
       "prop": "tide_gauge_pillar",
       "pos": [
-        312,
-        216
+        304,
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -386,7 +386,7 @@
       "prop": "lock_lantern_post",
       "pos": [
         200,
-        56
+        48
       ],
       "layer": "sort",
       "flip_x": false,
@@ -410,7 +410,7 @@
       "prop": "lock_lantern_post",
       "pos": [
         328,
-        200
+        208
       ],
       "layer": "sort",
       "flip_x": false,

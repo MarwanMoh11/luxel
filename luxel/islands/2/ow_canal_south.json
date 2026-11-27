@@ -668,15 +668,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        112,
-        48,
-        272,
-        80
-      ]
-    },
-    {
       "kind": "grate",
       "rect": [
         560,
@@ -721,8 +712,8 @@
       "sheet": "theme_locks",
       "prop": "harbor_crane_arm",
       "pos": [
-        664,
-        104
+        656,
+        112
       ],
       "layer": "sort",
       "flip_x": true,
@@ -805,7 +796,7 @@
       "sheet": "theme_locks",
       "prop": "coil_of_hawser",
       "pos": [
-        200,
+        208,
         344
       ],
       "layer": "sort",
@@ -829,7 +820,7 @@
       "sheet": "theme_locks",
       "prop": "hanging_fishing_net",
       "pos": [
-        648,
+        656,
         376
       ],
       "layer": "sort",

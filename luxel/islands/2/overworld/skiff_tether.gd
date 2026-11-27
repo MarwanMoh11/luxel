@@ -50,7 +50,7 @@ func _cut_rope() -> bool:
 	_emit_sfx("skiff_wake")
 	_emit_gust(54.0, 36.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.10)
+		Lx.events.shake_requested.emit(0.10 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if LxStrings.has_id("ISL2_SKIFF_CUT"):
 			Lx.events.narration_requested.emit("ISL2_SKIFF_CUT", "title", 3.6)
 		Lx.events.save_requested.emit("skiff_unlocked")
@@ -118,19 +118,24 @@ func _draw() -> void:
 	draw_rect(Rect2(-2.0, -5.0, 4.0, 4.0), c_void)
 	draw_rect(Rect2(-1.0, -4.0, 2.0, 3.0), c_gold if not cut else PAL["mauve"] as Color)
 
+	var fred: bool = LxHudFx.flash_reduced()
 	if not cut:
 		var rel: Vector2 = (rope_to - pos).round()
-		var mid: Vector2 = rel * 0.5 + Vector2(0.0, 3.0 + (0.0 if LxHudFx.flash_reduced() else roundf(sin(_clock * 3.0))))
+		var mid: Vector2 = (rel * 0.5).round() + Vector2(0.0, 3.0 + (0.0 if fred else roundf(sin(_clock * 3.0))))
 		draw_line(Vector2.ZERO, mid, c_void, 3.0)
 		draw_line(mid, rel, c_void, 3.0)
-		draw_line(Vector2.ZERO, mid, c_apricot, 1.5)
-		draw_line(mid, rel, c_apricot, 1.5)
+		draw_line(Vector2.ZERO, mid, c_apricot, 1.0)
+		draw_line(mid, rel, c_apricot, 1.0)
 		# Glowing cut target pip on the rope
-		var hot: bool = LxHudFx.flash_reduced() or int(floorf(_clock * 4.0)) % 2 == 0
+		var hot: bool = fred or int(floorf(_clock * 4.0)) % 2 == 0
 		draw_rect(Rect2(mid.x - 2.0, mid.y - 2.0, 4.0, 4.0), c_void)
 		draw_rect(Rect2(mid.x - 1.0, mid.y - 1.0, 2.0, 2.0), c_cream if hot else c_gold)
-	elif _snap_t > 0.0:
-		var u: float = 1.0 - clampf(_snap_t / 0.45, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(4.0, 18.0, u)), 0.0, TAU, 14, c_cream, 1.2)
-		draw_line(Vector2.ZERO, Vector2(6.0, 4.0) * (1.0 - u), c_wine, 1.0)
+	else:
+		# Short frayed rope stubs on cleat for greyscale untethered distinction
+		draw_line(Vector2(1.0, 0.0), Vector2(5.0, 3.0), c_wine, 1.0)
+		draw_line(Vector2(0.0, 1.0), Vector2(3.0, 4.0), c_apricot, 1.0)
+		if _snap_t > 0.0:
+			var u: float = 1.0 - clampf(_snap_t / 0.65, 0.0, 1.0)
+			draw_arc(Vector2.ZERO, roundf(lerpf(4.0, 18.0, u)), 0.0, TAU, 14, Color(c_cream, (1.0 - u) * (0.55 if fred else 0.90)), 1.0)
+			draw_line(Vector2.ZERO, (Vector2(6.0, 4.0) * (1.0 - u)).round(), c_wine, 1.0)
 	_draw_signal_pulses()

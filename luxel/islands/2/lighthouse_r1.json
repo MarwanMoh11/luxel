@@ -284,7 +284,7 @@
         144,
         22
       ],
-      "layer": "overhead",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
       "phase": 0.0
@@ -296,7 +296,7 @@
         288,
         22
       ],
-      "layer": "overhead",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
       "phase": 0.35
@@ -403,15 +403,6 @@
         136
       ],
       "radius": 32
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        112,
-        112,
-        32,
-        48
-      ]
     },
     {
       "kind": "stain",

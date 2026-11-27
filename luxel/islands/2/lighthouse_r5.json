@@ -443,7 +443,7 @@
       "sheet": "island2_scenery",
       "prop": "fresnel_pedestal",
       "pos": [
-        104,
+        96,
         72
       ],
       "layer": "sort",
@@ -468,7 +468,7 @@
       "prop": "coastal_lantern_post",
       "pos": [
         328,
-        200
+        208
       ],
       "layer": "sort",
       "flip_x": false,
@@ -494,7 +494,7 @@
         464,
         224
       ],
-      "layer": "overhead",
+      "layer": "over",
       "flip_x": false,
       "shadow": false,
       "phase": 0.4

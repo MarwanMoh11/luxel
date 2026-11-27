@@ -327,15 +327,6 @@
       "glow": false
     },
     {
-      "kind": "inlay",
-      "rect": [
-        32,
-        144,
-        64,
-        80
-      ]
-    },
-    {
       "kind": "cracks",
       "pos": [
         184,
@@ -395,7 +386,7 @@
       "sheet": "theme_galleon",
       "prop": "brass_porthole_lamp",
       "pos": [
-        280,
+        288,
         40
       ],
       "layer": "sort",
@@ -431,7 +422,7 @@
       "sheet": "theme_galleon",
       "prop": "tangled_cargo_net",
       "pos": [
-        264,
+        272,
         216
       ],
       "layer": "sort",

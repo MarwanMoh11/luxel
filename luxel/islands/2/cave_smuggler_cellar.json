@@ -349,8 +349,8 @@
       "sheet": "theme_locks",
       "prop": "canal_cargo_crate",
       "pos": [
-        360,
-        152
+        368,
+        144
       ],
       "layer": "sort",
       "flip_x": false,
@@ -421,8 +421,8 @@
       "sheet": "theme_locks",
       "prop": "lock_lantern_post",
       "pos": [
-        344,
-        184
+        328,
+        200
       ],
       "layer": "sort",
       "flip_x": false,

@@ -288,12 +288,12 @@ func _execute_blast() -> void:
 	_emit_sfx("sunflare_burst")
 	_emit_gust(blast_r * 1.8, 92.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.18)
+		Lx.events.shake_requested.emit(0.18 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		Lx.events.hitstop_requested.emit(0.05)
 	if LxGroundDecals.active_instance != null and is_instance_valid(LxGroundDecals.active_instance):
 		LxGroundDecals.active_instance.add_decal(LxGroundDecals.Kind.CRATER, _blast_pos, 14.0, 8.0)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(_blast_pos, 84.0, 1.45, 0.32)
+		LxDarknessLayer.active_instance.add_burst_light(_blast_pos, 84.0, 0.95 if LxHudFx.flash_reduced() else 1.45, 0.32)
 
 	# 1. Shatter cracked bulkheads & chain-detonate adjacent ballast kegs
 	if region != null and region.has_method("get_interactables"):
@@ -363,8 +363,10 @@ func _draw() -> void:
 		var u: float = 1.0 - clampf(_blast_fx_t / 0.36, 0.0, 1.0)
 		var b_rel: Vector2 = (_blast_pos - pos).round()
 		var rr: float = roundf(lerpf(6.0, blast_r, u))
-		draw_arc(b_rel, rr, 0.0, TAU, 20, PAL["cream"] as Color if u < 0.35 else PAL["coral"] as Color, 2.0 if u < 0.45 else 1.0)
-		draw_circle(b_rel, maxf(2.0, rr * (1.0 - u) * 0.65), Color(PAL["gold"] as Color, (1.0 - u) * 0.55))
+		var ring_c: Color = PAL["cream"] as Color if u < 0.35 else PAL["coral"] as Color
+		var ring_a: float = (1.0 - u * 0.5) * (0.55 if red else 1.0)
+		draw_arc(b_rel, rr, 0.0, TAU, 20, Color(ring_c, ring_a), 1.0 if red else (2.0 if u < 0.45 else 1.0))
+		draw_circle(b_rel, roundf(maxf(2.0, rr * (1.0 - u) * 0.65)), Color(PAL["gold"] as Color, (1.0 - u) * (0.35 if red else 0.55)))
 
 	# Respawning rack silhouette
 	if state == "respawning":
@@ -376,17 +378,17 @@ func _draw() -> void:
 
 	var bob: float = 0.0 if (red or not floating or clamped) else roundf(sin(_clock * 3.0) * 0.9)
 	if floating:
-		draw_arc(Vector2(0.0, 3.0), 9.0, 0.0, TAU, 12, Color(PAL["ice"] as Color, 0.65), 1.0)
+		draw_arc(Vector2(0.0, 3.0), 9.0, 0.0, TAU, 12, Color(PAL["ice"] as Color, 0.50 if red else 0.65), 1.0)
 	else:
-		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 7.0, 2.5)
+		LxToyDraw.draw_contact_shadow(self, Vector2(1.0, 6.0), 7.0, 3.0)
 
 	# Fuse danger radius preview while detonating
 	if state == "detonating":
-		var f_flash: bool = red or int(floorf(_clock * 18.0)) % 2 == 0
-		draw_arc(Vector2.ZERO, blast_r, 0.0, TAU, 24, Color(PAL["cream"] as Color if f_flash else PAL["coral"] as Color, 0.72), 1.0)
+		var f_flash: bool = not red and int(floorf(_clock * 18.0)) % 2 == 0
+		draw_arc(Vector2.ZERO, roundf(blast_r), 0.0, TAU, 24, Color(PAL["cream"] as Color if f_flash else PAL["coral"] as Color, 0.50 if red else 0.72), 1.0)
 
 	# Sculpted rounded oil keg barrel silhouette (tapered top/bottom staves + 3/4 cap)
-	var flash_det: bool = state == "detonating" and (red or int(floorf(_clock * 18.0)) % 2 == 0)
+	var flash_det: bool = state == "detonating" and (not red and int(floorf(_clock * 18.0)) % 2 == 0)
 	var wood_dark: Color = (PAL["coral"] if flash_det else PAL["night"]) as Color
 	var wood_mid: Color = (PAL["apricot"] if flash_det else PAL["wine"]) as Color
 	var wood_hi: Color = (PAL["cream"] if flash_det else PAL["coral"]) as Color

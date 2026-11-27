@@ -126,14 +126,15 @@ func _draw() -> void:
 	var frac: float = clampf(charge_left / maxf(0.01, hold_secs), 0.0, 1.0) if powered else 0.0
 	# Floating brass buoy ring with sea-glass capacitor core
 	draw_arc(Vector2.ZERO, 11.0, 0.0, TAU, 16, c_void, 3.0)
-	draw_arc(Vector2.ZERO, 11.0, 0.0, TAU, 16, PAL["ice"] as Color if powered else (PAL["coral"] as Color if _reject_t > 0.0 else PAL["deep"] as Color), 1.5)
+	draw_arc(Vector2.ZERO, 11.0, 0.0, TAU, 16, PAL["ice"] as Color if powered else (PAL["coral"] as Color if _reject_t > 0.0 else PAL["deep"] as Color), 1.0 if red else 2.0)
 	# Outer charge arc
 	if powered and frac > 0.01:
-		draw_arc(Vector2.ZERO, 13.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 16, PAL["cream"] as Color if _pulse_t > 0.0 else PAL["sky"] as Color, 1.5)
-	# Corner brass coil insulators (greyscale-distinct silhouette)
+		var arc_c: Color = PAL["cream"] as Color if (not red and _pulse_t > 0.0) else PAL["sky"] as Color
+		draw_arc(Vector2.ZERO, 13.0, -PI * 0.5, -PI * 0.5 + TAU * frac, 16, arc_c, 1.0 if red else 2.0)
+	# Corner brass coil insulators (greyscale-distinct silhouette: raised sparks when powered)
 	for off: Vector2 in [Vector2(-9.0, 0.0), Vector2(9.0, 0.0), Vector2(0.0, -9.0), Vector2(0.0, 9.0)]:
 		draw_rect(Rect2(off - Vector2(2.0, 2.0), Vector2(4.0, 4.0)), c_void)
-		draw_rect(Rect2(off - Vector2.ONE, Vector2(2.0, 2.0)), PAL["gold"] as Color if powered else PAL["stone"] as Color)
+		draw_rect(Rect2(off - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color if powered else PAL["stone"] as Color)
 	# Central sea-glass diamond coil
 	var core_r: float = 5.0 + (0.0 if (red or not powered) else roundf(sin(_clock * 6.0) * 0.8))
 	var pts := PackedVector2Array([
@@ -143,8 +144,13 @@ func _draw() -> void:
 	var closed := PackedVector2Array(pts); closed.append(pts[0])
 	draw_polyline(closed, PAL["cream"] as Color if powered else PAL["blue"] as Color, 1.0)
 	if powered:
-		draw_rect(Rect2(-1.0, -1.0, 2.0, 2.0), PAL["cream"] as Color)
+		draw_rect(Rect2(0.0, -2.0, 1.0, 5.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-2.0, 0.0, 5.0, 1.0), PAL["cream"] as Color)
+	elif _reject_t > 0.0:
+		# Greyscale-distinct diagonal reject X on wrong-color hit
+		draw_line(Vector2(-3.0, -3.0), Vector2(3.0, 3.0), PAL["cream"] as Color, 1.0)
+		draw_line(Vector2(3.0, -3.0), Vector2(-3.0, 3.0), PAL["cream"] as Color, 1.0)
 	if _pulse_t > 0.0:
 		var u: float = 1.0 - clampf(_pulse_t / 0.32, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 19.0, u)), 0.0, TAU, 16, PAL["cream"] as Color, 1.2)
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 19.0, u)), 0.0, TAU, 16, Color(PAL["cream"] as Color, (1.0 - u) * (0.55 if red else 0.90)), 1.0)
 	_draw_signal_pulses()

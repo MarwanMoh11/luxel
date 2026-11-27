@@ -349,15 +349,6 @@
       "glow": false
     },
     {
-      "kind": "inlay",
-      "rect": [
-        248,
-        56,
-        32,
-        32
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         104,

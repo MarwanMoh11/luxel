@@ -698,7 +698,7 @@
       "sheet": "theme_seabed",
       "prop": "barnacle_boulder",
       "pos": [
-        616,
+        608,
         440
       ],
       "layer": "sort",
@@ -722,8 +722,8 @@
       "sheet": "theme_seabed",
       "prop": "sunken_amphora_urn",
       "pos": [
-        648,
-        88
+        656,
+        80
       ],
       "layer": "sort",
       "flip_x": false,
@@ -758,7 +758,7 @@
       "sheet": "theme_seabed",
       "prop": "pearl_lantern_post",
       "pos": [
-        696,
+        688,
         232
       ],
       "layer": "sort",

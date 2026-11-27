@@ -57,11 +57,11 @@ func on_signal(_from_id: String, is_on: bool) -> void:
 	_emit_sfx("tide_surge")
 	_emit_gust(96.0, 72.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.28)
+		Lx.events.shake_requested.emit(0.28 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 		if LxStrings.has_id("ISL2_LEV_CALM"):
 			Lx.events.narration_requested.emit("ISL2_LEV_CALM", "title", 3.6)
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(pos, 118.0, 1.50, 0.50)
+		LxDarknessLayer.active_instance.add_burst_light(pos, 118.0, 0.95 if LxHudFx.flash_reduced() else 1.50, 0.50)
 	queue_redraw()
 
 
@@ -113,10 +113,13 @@ func _draw() -> void:
 	if state == "erupting":
 		var wob: float = 0.0 if red else roundf(sin(_clock * 14.0) * 1.5)
 		# Twilight sky-shaft piercing down through the open blowhole
-		draw_rect(Rect2(-12.0, -44.0, 24.0, 46.0), Color(c_gold, 0.16))
-		draw_rect(Rect2(-7.0 + wob, -34.0, 14.0, 36.0), Color(c_sky, 0.78))
+		draw_rect(Rect2(-12.0, -44.0, 24.0, 46.0), Color(c_gold, 0.12 if red else 0.16))
+		draw_rect(Rect2(-7.0 + wob, -34.0, 14.0, 36.0), Color(c_sky, 0.55 if red else 0.78))
 		draw_rect(Rect2(-4.0 - wob, -38.0, 8.0, 40.0), c_ice)
 		draw_rect(Rect2(-1.0, -42.0, 2.0, 44.0), c_cream)
+		# Raised crown vent lips (greyscale-distinct open eruption vs barred dormant grate)
+		draw_rect(Rect2(-13.0, -3.0, 3.0, 4.0), c_cream)
+		draw_rect(Rect2(10.0, -3.0, 3.0, 4.0), c_cream)
 		if not red:
 			for di: int in range(6):
 				var du: float = fmod(_clock * 1.6 + float(di) * 0.17, 1.0)
@@ -127,13 +130,17 @@ func _draw() -> void:
 		LxPhysDraw.draw_chevron(self, Vector2(0.0, -10.0), Vector2.UP, c_cream, c_void, 3.0)
 	else:
 		var pulse_y: float = 0.0 if red else roundf(sin(_clock * 4.5) * 1.5)
-		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, Color(c_sky, 0.55), 1.0)
+		draw_arc(Vector2.ZERO, 12.0, 0.0, TAU, 16, Color(c_sky, 0.40 if red else 0.55), 1.0)
+		# Sealed 3-bar brass grate across dormant blowhole mouth (greyscale-distinct)
+		for gy: float in [-5.0, 0.0, 5.0]:
+			draw_rect(Rect2(-8.0, gy - 1.0, 16.0, 2.0), c_void)
+			draw_rect(Rect2(-7.0, gy, 14.0, 1.0), PAL["stone"] as Color)
 		if not red:
 			for di: int in range(3):
 				var du: float = fmod(_clock * 0.9 + float(di) * 0.33, 1.0)
 				draw_rect(Rect2(roundf(sin(float(di) * 2.2) * 5.0), roundf(lerpf(3.0, -14.0, du)), 2.0, 2.0), Color(c_ice, (1.0 - du) * 0.75))
-		LxPhysDraw.draw_chevron(self, Vector2(0.0, -2.0 + pulse_y), Vector2.UP, c_gold, c_void, 2.5)
+		LxPhysDraw.draw_chevron(self, Vector2(0.0, -2.0 + pulse_y), Vector2.UP, c_gold, c_void, 2.0)
 	if _erupt_t > 0.0:
 		var u: float = 1.0 - clampf(_erupt_t / 0.80, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 38.0, u)), 0.0, TAU, 20, Color(c_cream, 1.0 - u), 2.0)
+		draw_arc(Vector2.ZERO, roundf(lerpf(10.0, 38.0, u)), 0.0, TAU, 20, Color(c_cream, (1.0 - u) * (0.55 if red else 1.0)), 1.0 if red else 2.0)
 	_draw_signal_pulses()

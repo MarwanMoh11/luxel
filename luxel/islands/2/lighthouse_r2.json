@@ -276,7 +276,7 @@
       "prop": "coastal_lantern_post",
       "pos": [
         328,
-        120
+        112
       ],
       "layer": "sort",
       "flip_x": true,
@@ -307,15 +307,6 @@
       ],
       "radius": 20,
       "style": "water"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        288,
-        48,
-        48,
-        48
-      ]
     }
   ],
   "design": {

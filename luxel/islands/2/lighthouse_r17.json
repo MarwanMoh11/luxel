@@ -404,15 +404,6 @@
       "style": "astrolabe"
     },
     {
-      "kind": "inlay",
-      "rect": [
-        248,
-        232,
-        48,
-        32
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         272,

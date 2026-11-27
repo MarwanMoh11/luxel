@@ -576,8 +576,8 @@
       "sheet": "theme_locks",
       "prop": "lock_lantern_post",
       "pos": [
-        232,
-        40
+        216,
+        24
       ],
       "layer": "sort",
       "flip_x": false,

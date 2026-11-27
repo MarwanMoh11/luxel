@@ -68,7 +68,7 @@
       "kind": "gullet_lamprey",
       "pos": [
         256,
-        176
+        224
       ],
       "route": [],
       "zone": "lev_r4",
@@ -195,7 +195,7 @@
       "kind": "circle",
       "pos": [
         256,
-        192
+        224
       ],
       "radius": 44,
       "style": "ritual"
@@ -236,7 +236,7 @@
         256,
         56
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -246,7 +246,7 @@
       "prop": "curled_rib_pillar",
       "pos": [
         136,
-        72
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -258,7 +258,7 @@
       "prop": "curled_rib_pillar",
       "pos": [
         376,
-        72
+        64
       ],
       "layer": "sort",
       "flip_x": true,
@@ -269,8 +269,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "whale_lantern_jar",
       "pos": [
-        72,
-        264
+        88,
+        248
       ],
       "layer": "sort",
       "flip_x": false,

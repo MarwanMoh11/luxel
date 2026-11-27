@@ -323,15 +323,6 @@
       "radius": 36
     },
     {
-      "kind": "inlay",
-      "rect": [
-        208,
-        144,
-        64,
-        64
-      ]
-    },
-    {
       "kind": "light_shaft",
       "pos": [
         240,

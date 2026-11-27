@@ -246,15 +246,6 @@
       ],
       "radius": 24,
       "style": "water"
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        320,
-        64,
-        64,
-        160
-      ]
     }
   ],
   "scenery": [
@@ -262,7 +253,7 @@
       "sheet": "theme_seabed",
       "prop": "shipwreck_rib_beam",
       "pos": [
-        72,
+        64,
         184
       ],
       "layer": "sort",
@@ -287,7 +278,7 @@
       "prop": "giant_clam_shell",
       "pos": [
         360,
-        72
+        64
       ],
       "layer": "sort",
       "flip_x": false,
@@ -359,7 +350,7 @@
       "prop": "sea_anemone_glow",
       "pos": [
         344,
-        152
+        144
       ],
       "layer": "sort",
       "flip_x": false,

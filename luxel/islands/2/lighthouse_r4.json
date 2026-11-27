@@ -380,15 +380,6 @@
   "music": "island2_dungeon",
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        272,
-        48,
-        64,
-        32
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         120,

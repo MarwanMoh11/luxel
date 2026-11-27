@@ -416,16 +416,19 @@ func _draw() -> void:
 	var hh: float = floorf(size.y * 0.5)
 	var c_void: Color = PAL["void"] as Color
 
-	# Water foam collar when floating (greyscale bright rim vs dark grounded shadow)
+	# Water foam collar when floating vs recessed ground-contact chocks when grounded (greyscale-distinct)
 	if floating:
 		var foam_r := Rect2(-hw - 2.0, -hh - 2.0, size.x + 4.0, size.y + 4.0)
-		draw_rect(foam_r, Color(PAL["sky"] as Color, 0.45), false, 1.0)
+		draw_rect(foam_r, Color(PAL["sky"] as Color, 0.35 if red else 0.45), false, 1.0)
 		var wave_off: float = 0.0 if red else float(int(floorf(_bob_t * 2.0)) % 2)
-		var fc: Color = PAL["cream"] as Color if _tow_fx_t > 0.0 else PAL["ice"] as Color
+		var fc: Color = PAL["cream"] as Color if (not red and _tow_fx_t > 0.0) else PAL["ice"] as Color
 		draw_rect(Rect2(-hw - 1.0 + wave_off, -hh - 2.0, 5.0, 1.0), fc)
 		draw_rect(Rect2(hw - 4.0 - wave_off, hh + 1.0, 5.0, 1.0), fc)
 		draw_rect(Rect2(-hw - 2.0, -2.0 + wave_off, 1.0, 4.0), fc)
 		draw_rect(Rect2(hw + 1.0, -2.0 - wave_off, 1.0, 4.0), fc)
+	else:
+		draw_rect(Rect2(-hw + 2.0, hh, 5.0, 2.0), c_void)
+		draw_rect(Rect2(hw - 7.0, hh, 5.0, 2.0), c_void)
 	# Drop shadow beneath timber deck (deeper when floating)
 	var sh_y: float = 3.0 if floating else 2.0
 	draw_rect(Rect2(-hw + 1.0, -hh + sh_y, size.x, size.y), Color(c_void, 0.46))
@@ -468,28 +471,35 @@ func _draw() -> void:
 	elif mounts == "blue_transformer":
 		_draw_mounted_transformer(center, c_void)
 
-	# Ballast Clamp locked jaws indicator (high-contrast gold/cream corners)
+	# Ballast Clamp locked jaws indicator (high-contrast gold/cream corners + cardinal jaw ticks)
 	if clamped:
 		var cc: Color = PAL["cream"] as Color if (red or int(floorf(_bob_t * 3.0)) % 2 == 0) else PAL["gold"] as Color
 		for cx: float in [deck.position.x - 1.0, deck.end.x - 3.0]:
 			for cy: float in [deck.position.y - 1.0, deck.end.y - 3.0]:
 				draw_rect(Rect2(cx, cy, 4.0, 4.0), c_void)
 				draw_rect(Rect2(cx + 1.0, cy + 1.0, 2.0, 2.0), cc)
-		draw_arc(center, 11.0, 0.0, TAU, 14, Color(PAL["gold"] as Color, 0.78), 1.0)
+		draw_arc(center, 11.0, 0.0, TAU, 14, Color(PAL["gold"] as Color, 0.50 if red else 0.78), 1.0)
+		for td: Vector2 in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
+			draw_rect(Rect2((center + td * 11.0).round() - Vector2.ONE, Vector2(2.0, 2.0)), cc)
 
 
 func _draw_mounted_transformer(center: Vector2, c_void: Color) -> void:
+	var active_ref: bool = is_reflective()
 	var lit: bool = _flash_t > 0.0 or _turn_t > 0.0
 	var pad := Rect2(center - Vector2(7.0, 7.0), Vector2(14.0, 14.0))
-	LxPhysDraw.draw_bevel_box(self, pad, PAL["deep"] as Color, PAL["gold"] as Color, PAL["night"] as Color, c_void)
+	LxPhysDraw.draw_bevel_box(self, pad, PAL["deep"] as Color, PAL["gold"] as Color if active_ref else PAL["stone"] as Color, PAL["night"] as Color, c_void)
 	# Angled sea-glass mirror bar perpendicular to normal
 	var n: Vector2 = normal.normalized()
 	var tang := Vector2(-n.y, n.x)
 	var a: Vector2 = (center - tang * 6.0).round()
 	var b: Vector2 = (center + tang * 6.0).round()
 	draw_line(a, b, c_void, 4.0)
-	draw_line(a, b, PAL["cream"] as Color if lit else PAL["ice"] as Color, 2.0)
-	draw_line(a, b, PAL["sky"] as Color, 1.0)
-	# Normal sight pips
-	draw_rect(Rect2((center + n * 7.0).round(), Vector2(2.0, 2.0)), PAL["cream"] as Color if lit else PAL["ice"] as Color)
-	draw_rect(Rect2((center + n * 10.0).round(), Vector2.ONE), PAL["gold"] as Color)
+	draw_line(a, b, PAL["cream"] as Color if lit else (PAL["ice"] as Color if active_ref else PAL["dusk"] as Color), 2.0)
+	draw_line(a, b, PAL["sky"] as Color if active_ref else PAL["mauve"] as Color, 1.0)
+	# Normal sight pips (greyscale-distinct active beam arrow vs shuttered bar when reflect_only_floating & grounded)
+	if active_ref:
+		draw_rect(Rect2((center + n * 7.0).round() - Vector2.ONE, Vector2(2.0, 2.0)), PAL["cream"] as Color if lit else PAL["ice"] as Color)
+		draw_rect(Rect2((center + n * 10.0).round(), Vector2.ONE), PAL["gold"] as Color)
+	else:
+		draw_rect(Rect2(center - Vector2(3.0, 1.0), Vector2(6.0, 2.0)), c_void)
+		draw_rect(Rect2(center - Vector2(2.0, 0.0), Vector2(4.0, 1.0)), PAL["stone"] as Color)

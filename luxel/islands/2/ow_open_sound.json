@@ -688,15 +688,6 @@
       "radius": 28
     },
     {
-      "kind": "inlay",
-      "rect": [
-        624,
-        416,
-        96,
-        80
-      ]
-    },
-    {
       "kind": "stain",
       "pos": [
         88,
@@ -723,7 +714,7 @@
         696,
         424
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -793,7 +784,7 @@
       "prop": "tide_bell_post",
       "pos": [
         280,
-        312
+        320
       ],
       "layer": "sort",
       "flip_x": false,
@@ -852,8 +843,8 @@
       "sheet": "theme_seabed",
       "prop": "sunken_amphora_urn",
       "pos": [
-        680,
-        104
+        664,
+        120
       ],
       "layer": "sort",
       "flip_x": false,
@@ -865,7 +856,7 @@
       "prop": "coral_fan_cluster",
       "pos": [
         632,
-        504
+        496
       ],
       "layer": "sort",
       "flip_x": false,
@@ -876,7 +867,7 @@
       "sheet": "theme_locks",
       "prop": "tide_gauge_pillar",
       "pos": [
-        472,
+        464,
         104
       ],
       "layer": "sort",

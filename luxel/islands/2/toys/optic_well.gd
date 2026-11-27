@@ -135,9 +135,9 @@ func _ignite_well() -> void:
 	_emit_sfx("waystone_lit")
 	_emit_gust(60.0, 44.0)
 	if Lx.events != null:
-		Lx.events.shake_requested.emit(0.10)
+		Lx.events.shake_requested.emit(0.10 * (0.45 if LxHudFx.flash_reduced() else 1.0))
 	if LxDarknessLayer.active_instance != null and is_instance_valid(LxDarknessLayer.active_instance):
-		LxDarknessLayer.active_instance.add_burst_light(pos, 84.0, 1.35, 0.36)
+		LxDarknessLayer.active_instance.add_burst_light(pos, 84.0, 0.85 if LxHudFx.flash_reduced() else 1.35, 0.36)
 	if region != null and region.has_method("save_interactables_to_state"):
 		region.call("save_interactables_to_state")
 	if role == "emitter":
@@ -390,33 +390,42 @@ func _draw() -> void:
 	var lens_core: Color = (PAL["cream"] if lit else PAL["dusk"]) as Color
 	draw_circle(Vector2.ZERO, 8.0, c_void)
 	draw_circle(Vector2.ZERO, 7.0, lens_outer)
-	draw_circle(Vector2.ZERO, 4.5, lens_mid)
+	draw_circle(Vector2.ZERO, 4.0, lens_mid)
 	draw_rect(Rect2(-2.0, -2.0, 4.0, 4.0), lens_core)
+	if lit:
+		# Crisp 4-point energized starburst reticle (greyscale-distinct lit vs dormant hollow square)
+		draw_rect(Rect2(0.0, -4.0, 1.0, 9.0), PAL["cream"] as Color)
+		draw_rect(Rect2(-4.0, 0.0, 9.0, 1.0), PAL["cream"] as Color)
+	elif _reject_t > 0.0:
+		draw_line(Vector2(-3.0, -3.0), Vector2(3.0, 3.0), PAL["cream"] as Color, 1.0)
+		draw_line(Vector2(3.0, -3.0), Vector2(-3.0, 3.0), PAL["cream"] as Color, 1.0)
 	# Role glyph: inward receiver arrows vs outward emitter chevrons (greyscale distinct!)
 	var g_col: Color = PAL["cream"] as Color if lit else PAL["stone"] as Color
 	if role == "receiver":
 		for dir_v: Vector2 in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
-			LxPhysDraw.draw_chevron(self, dir_v * 9.0, -dir_v, g_col, c_void, 2.0)
+			LxPhysDraw.draw_chevron(self, (dir_v * 9.0).round(), -dir_v, g_col, c_void, 2.0)
 	else:
 		var ed: Vector2 = _resolve_emit_direction()
 		if ed.length_squared() > 0.001:
-			LxPhysDraw.draw_chevron(self, ed * 10.0, ed, g_col, c_void, 3.0)
+			LxPhysDraw.draw_chevron(self, (ed * 10.0).round(), ed, g_col, c_void, 3.0)
 		else:
 			for dir_v: Vector2 in [Vector2.UP, Vector2.DOWN, Vector2.LEFT, Vector2.RIGHT]:
-				LxPhysDraw.draw_chevron(self, dir_v * 9.0, dir_v, g_col, c_void, 2.0)
+				LxPhysDraw.draw_chevron(self, (dir_v * 9.0).round(), dir_v, g_col, c_void, 2.0)
 
 	# Live emitted blue optical beam
 	if lit and role == "emitter":
 		var outer_w: float = 2.0 if red else 3.0
+		var glow_a: float = 0.45 if red else 0.65
 		for seg: Dictionary in segments:
-			var a: Vector2 = (seg["start"] as Vector2) - pos
-			var b: Vector2 = (seg["end"] as Vector2) - pos
+			var a: Vector2 = ((seg["start"] as Vector2) - pos).round()
+			var b: Vector2 = ((seg["end"] as Vector2) - pos).round()
 			var st: Array[Color] = LxToyDraw.color_triplet(str(seg["color"]))
-			draw_line(a, b, Color(st[0], 0.65), outer_w + 1.0, false)
+			draw_line(a, b, Color(st[0], glow_a), outer_w + 1.0, false)
 			draw_line(a, b, st[1], outer_w - 1.0, false)
 			draw_line(a, b, PAL["cream"] as Color, 1.0, false)
-			draw_rect(Rect2(b.round() - Vector2.ONE, Vector2(3.0, 3.0)), st[2])
+			draw_rect(Rect2(b - Vector2.ONE, Vector2(3.0, 3.0)), st[2])
 	if _ignite_t > 0.0:
 		var u: float = 1.0 - clampf(_ignite_t / 0.55, 0.0, 1.0)
-		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 22.0, u)), 0.0, TAU, 16, PAL["cream"] as Color if u < 0.4 else PAL["ice"] as Color, 1.5)
+		var ic: Color = PAL["cream"] as Color if u < 0.4 else PAL["ice"] as Color
+		draw_arc(Vector2.ZERO, roundf(lerpf(6.0, 22.0, u)), 0.0, TAU, 16, Color(ic, (1.0 - u) * (0.55 if red else 0.90)), 1.0 if red else 2.0)
 	_draw_signal_pulses()

@@ -333,15 +333,6 @@
       ],
       "radius": 24,
       "glow": false
-    },
-    {
-      "kind": "inlay",
-      "rect": [
-        400,
-        64,
-        64,
-        64
-      ]
     }
   ],
   "scenery": [
@@ -352,7 +343,7 @@
         88,
         168
       ],
-      "layer": "sort",
+      "layer": "over",
       "flip_x": false,
       "shadow": true,
       "phase": 0.0
@@ -445,8 +436,8 @@
       "sheet": "theme_leviathan_belly",
       "prop": "whale_lantern_jar",
       "pos": [
-        440,
-        88
+        424,
+        72
       ],
       "layer": "sort",
       "flip_x": false,

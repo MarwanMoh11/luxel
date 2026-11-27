@@ -286,15 +286,6 @@
   ],
   "decor": [
     {
-      "kind": "inlay",
-      "rect": [
-        304,
-        32,
-        112,
-        176
-      ]
-    },
-    {
       "kind": "grate",
       "rect": [
         272,
@@ -392,7 +383,7 @@
       "sheet": "theme_locks",
       "prop": "lock_lantern_post",
       "pos": [
-        232,
+        224,
         264
       ],
       "layer": "sort",

@@ -28,7 +28,6 @@ var table_rect: Rect2 = Rect2()
 var current_list: String = "port"
 var surge_left: float = 0.0
 var _rail_ys: Array[float] = []
-var _last_dir_x: float = -1.0
 var _entry_applied: bool = false
 
 
@@ -58,7 +57,6 @@ func _toy_setup() -> void:
 		table_rect = Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
 	_entry_applied = false
 	current_list = _read_list_var()
-	_last_dir_x = -1.0 if current_list == "port" else 1.0
 	surge_left = surge_secs if bool(props.get("initial_surge", false)) else 0.0
 	_rail_ys.clear()
 	queue_redraw()
@@ -66,7 +64,6 @@ func _toy_setup() -> void:
 
 func reset_toy() -> void:
 	current_list = _read_list_var()
-	_last_dir_x = -1.0 if current_list == "port" else 1.0
 	surge_left = 0.0
 	queue_redraw()
 
@@ -167,7 +164,6 @@ func _apply_entry_state() -> void:
 			Lx.vars.set_var("dungeon:galleon", "list", entry_list)
 			changed = true
 		current_list = entry_list
-		_last_dir_x = -1.0 if current_list == "port" else 1.0
 		surge_left = 0.0
 	var ev_scope: String = str(props.get("entry_var_scope", "")).strip_edges()
 	var ev_name: String = str(props.get("entry_var_name", "")).strip_edges()
@@ -199,7 +195,6 @@ func tick(dt: float) -> void:
 	var lv: String = _read_list_var()
 	if lv != current_list:
 		current_list = lv
-		_last_dir_x = -1.0 if current_list == "port" else 1.0
 		surge_left = surge_secs
 		queue_redraw()
 
@@ -322,7 +317,8 @@ func _check_beam_resets() -> void:
 			orb.queue_redraw()
 			_emit_sfx("phantom_phase")
 			if Lx.player is LxWick and is_instance_valid(Lx.player):
-				(Lx.player as LxWick).spawn_ring(rst, 3.0, 12.0, 0.22, PAL["rose"] as Color, 1.2)
+				var ring_c: Color = Color(PAL["rose"] as Color, 0.55 if LxHudFx.flash_reduced() else 0.90)
+				(Lx.player as LxWick).spawn_ring(rst.round(), 3.0, 12.0, 0.22, ring_c, 1.0)
 
 
 func _is_shielded_along_beam(beam_start: Vector2, orb_pos: Vector2) -> bool:
@@ -367,14 +363,20 @@ func _draw() -> void:
 		draw_rect(Rect2(x0 + 1.0, ly + 2.0, w - 2.0, 1.0), c_gold)
 
 	# Draw recessed circular brass ship inclinometer plate on deck
+	var fred: bool = LxHudFx.flash_reduced()
 	var active_roll: bool = continuous or surge_left > 0.0
 	var dir_x: float = -1.0 if current_list == "port" else 1.0
 	draw_circle(Vector2.ZERO, 9.0, c_void)
 	draw_circle(Vector2.ZERO, 8.0, PAL["dusk"] as Color)
 	draw_circle(Vector2.ZERO, 6.0, c_night)
-	draw_arc(Vector2.ZERO, 7.5, 0.0, TAU, 16, c_gold if active_roll else PAL["apricot"] as Color, 1.0)
+	var rim_c: Color = Color(c_gold if active_roll else PAL["apricot"] as Color, 0.72 if fred else 1.0)
+	draw_arc(Vector2.ZERO, 8.0, 0.0, TAU, 16, rim_c, 1.0)
+	# Cardinal dial ticks + active side notch for greyscale port/starboard legibility
 	draw_rect(Rect2(-1.0, -5.0, 2.0, 2.0), c_stone)
+	draw_rect(Rect2(dir_x * 7.0 - 1.0, -2.0, 2.0, 4.0), c_cream if active_roll else c_gold)
 	var bob := Vector2(dir_x * 4.0, 3.0)
 	draw_line(Vector2(0.0, -4.0), bob, c_cream if active_roll else c_gold, 1.0)
 	draw_rect(Rect2(bob - Vector2.ONE, Vector2(2.0, 2.0)), c_ice if current_list == "port" else c_gold)
 	LxPhysDraw.draw_chevron(self, Vector2(dir_x * 11.0, 0.0), Vector2(dir_x, 0.0), c_cream if active_roll else c_gold, c_void, 2.0)
+	if active_roll and not fred:
+		LxPhysDraw.draw_chevron(self, Vector2(dir_x * 15.0, 0.0), Vector2(dir_x, 0.0), c_gold, c_void, 2.0)
